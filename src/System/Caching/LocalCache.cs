@@ -60,7 +60,7 @@ namespace Microsoft.Omex.System.Caching
 		{
 			wasAdded = false;
 			if (!Code.ValidateArgument(type, nameof(type), TaggingUtilities.ReserveTag(0x238507cf /* tag_97q5p */)) ||
-				!Code.ValidateArgument(value, nameof(value), TaggingUtilities.ReserveTag(0x238507d0 /* tag_97q5q */)))
+				!Code.ValidateArgument(value, nameof(value), TaggingUtilities.ReserveTag(0)))
 			{
 				return null;
 			}
