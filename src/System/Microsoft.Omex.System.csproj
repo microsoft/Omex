@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(TargetFrameworks);net45;netstandard2.0</TargetFrameworks>
+    <!--
+    <DefineConstants>$(DefineConstants);OMEXSYSTEM</DefineConstants>
+    <AssemblyName>Microsoft.Omex.System</AssemblyName>
+    <RootNamespace>Microsoft.Omex.System</RootNamespace>
+    <NoWarn>$(NoWarn);1587;1591</NoWarn>
+    <Includes>$(SRCROOT)\$(BUILDAPP)\inc;$(Includes);$(S_PREPROCESS_DIR)</Includes>
+    <OTargetPath>$(OTargetDir)</OTargetPath>
+    <DocumentationFile>$(OTargetPath)\$(AssemblyName).xml</DocumentationFile>
+    <File_Version_Info>True</File_Version_Info>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    -->
+    <Description>Contains common classes for Omex libraries.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Readme.txt" PackagePath="%(Identity)" />
+  </ItemGroup>
+</Project>

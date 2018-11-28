@@ -1,0 +1,10 @@
+{
+    "contacts": ["annak@microsoft.com", "neilr@microsoft.com", "davidah@microsoft.com", "andreyt@microsoft.com", "adamsz@microsoft.com", "omexshi@microsoft.com"],
+    "description": "OMEX System repository containing shared code used across OMEX applications",
+    "deployedToProduction": true,
+    "complianceTypes": ["soc-2"],
+    "inventoryId": ["4dec5f5a-6016-4b6b-a130-3a56324ade82"],
+    "schema": {
+        "office": "1.0.0"
+    }
+}

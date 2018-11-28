@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<TestGroup name="SmapleGroup1">
+		<Member email="sample@hotmail.com" alias="samplealias"/>
+	</TestGroup>
+	<TestGroup name="SampleGroup2">
+		<Member email="sample1@microsoft.com" alias="alias1"/>
+		<Member email="sample2@microsoft.com"  alias="alias2"/>
+	</TestGroup>
+</TestGroups>

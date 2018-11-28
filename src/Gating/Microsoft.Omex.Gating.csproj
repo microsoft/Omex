@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!--
+    <TargetFrameworks>$(TargetFrameworkValue);netstandard2.0</TargetFrameworks>
+    -->
+    <Description>Contains Omex Gating code</Description>
+    <RootNamespace>Microsoft.Omex.Gating</RootNamespace>
+    <AssemblyName>Microsoft.Omex.Gating</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Readme.txt" PackagePath="%(Identity)" />
+    <EmbeddedResource Include="Authentication\Groups\TestGroupsConfiguration.xsd">
+      <Link>TestGroupsConfiguration.xsd</Link>
+      <LogicalName>TestGroupsConfiguration.xsd</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gating\Configuration\GatingConfiguration.xsd">
+      <Link>GatingConfiguration.xsd</Link>
+      <LogicalName>GatingConfiguration.xsd</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\System\Microsoft.Omex.System.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Collections" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,52 @@
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)\Dependencies.props" />
+  <PropertyGroup>
+    <TargetFrameworks>net452</TargetFrameworks>
+    <Platforms>AnyCPU</Platforms>
+    <TargetPlatform>AnyCPU</TargetPlatform>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)\nuget</PackageOutputPath>
+    <DocumentationFileValue>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFileValue>
+  </PropertyGroup>
+  <PropertyGroup>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>true</DelaySign>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\ship.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+     <!-- Correct version will be specified during packaging by VSTS pipeline, set to 16.1 to make dll version bigger then published from Omex (16.0) -->
+    <Version>16.1.0.0</Version>
+    <!-- <VersionSuffix>preview</VersionSuffix> -->
+    <Authors>OMEX Shared Infrastructure &lt;omexshi@microsoft.com&gt;</Authors>
+    <Owners>OMEX Shared Infrastructure &lt;omexshi@microsoft.com&gt;</Owners>
+    <Company>Microsoft</Company>
+    <Copyright>Copyright © Microsoft</Copyright>
+    <Tags>OMEX</Tags>
+    <Description>$(MSBuildProjectName)</Description>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ErrorReport>prompt</ErrorReport>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <!-- Don't need them due to source linking -->
+    <IncludeSource>false</IncludeSource>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Optional: Embed source files that are not tracked by the source control manager in the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Optional: Include the PDB in the built .nupkg -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+  <!-- Bad properties from old projects to make them work -->
+  <PropertyGroup>
+    <NoWarn>1591;NU5104</NoWarn>
+  </PropertyGroup>
+</Project>

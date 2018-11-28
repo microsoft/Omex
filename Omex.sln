@@ -1,0 +1,101 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2011
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.System", "src\System\Microsoft.Omex.System.csproj", "{6E08AF9B-BACC-47DB-BC47-5B818C4FB262}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.System.UnitTests.Shared", "src\System.UnitTests.Shared\Microsoft.Omex.System.UnitTests.Shared.csproj", "{FBB399FF-8374-46DE-AE42-7342E13525D4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.System.UnitTests", "tests\System.UnitTests\Microsoft.Omex.System.UnitTests.csproj", "{E1DB79D2-32A8-40AC-911F-FBAE1E410E41}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{551C93F8-6E89-4954-8905-7F5AC7173285}"
+	ProjectSection(SolutionItems) = preProject
+		tests\Directory.Build.props = tests\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3249ADDB-50EC-4C21-A8F0-65EF444662EE}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F8C02271-0086-4D86-A84C-B7A562202FCF}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		Dependencies.props = Dependencies.props
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		NuGet.Config = NuGet.Config
+		OmexSystem.v3.ncrunchsolution = OmexSystem.v3.ncrunchsolution
+		README.md = README.md
+		ship.snk = ship.snk
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Gating", "src\Gating\Microsoft.Omex.Gating.csproj", "{31A94470-8AB6-472C-9C44-EA5B04A26006}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Gating.Example", "src\Gating.Example\Microsoft.Omex.Gating.Example.csproj", "{C79F8F76-F62C-4F46-8D54-4B0E44BD53A6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6E08AF9B-BACC-47DB-BC47-5B818C4FB262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E08AF9B-BACC-47DB-BC47-5B818C4FB262}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E08AF9B-BACC-47DB-BC47-5B818C4FB262}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6E08AF9B-BACC-47DB-BC47-5B818C4FB262}.Debug|x64.Build.0 = Debug|Any CPU
+		{6E08AF9B-BACC-47DB-BC47-5B818C4FB262}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E08AF9B-BACC-47DB-BC47-5B818C4FB262}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E08AF9B-BACC-47DB-BC47-5B818C4FB262}.Release|x64.ActiveCfg = Release|Any CPU
+		{6E08AF9B-BACC-47DB-BC47-5B818C4FB262}.Release|x64.Build.0 = Release|Any CPU
+		{FBB399FF-8374-46DE-AE42-7342E13525D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBB399FF-8374-46DE-AE42-7342E13525D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBB399FF-8374-46DE-AE42-7342E13525D4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FBB399FF-8374-46DE-AE42-7342E13525D4}.Debug|x64.Build.0 = Debug|Any CPU
+		{FBB399FF-8374-46DE-AE42-7342E13525D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBB399FF-8374-46DE-AE42-7342E13525D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBB399FF-8374-46DE-AE42-7342E13525D4}.Release|x64.ActiveCfg = Release|Any CPU
+		{FBB399FF-8374-46DE-AE42-7342E13525D4}.Release|x64.Build.0 = Release|Any CPU
+		{E1DB79D2-32A8-40AC-911F-FBAE1E410E41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1DB79D2-32A8-40AC-911F-FBAE1E410E41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1DB79D2-32A8-40AC-911F-FBAE1E410E41}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E1DB79D2-32A8-40AC-911F-FBAE1E410E41}.Debug|x64.Build.0 = Debug|Any CPU
+		{E1DB79D2-32A8-40AC-911F-FBAE1E410E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1DB79D2-32A8-40AC-911F-FBAE1E410E41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1DB79D2-32A8-40AC-911F-FBAE1E410E41}.Release|x64.ActiveCfg = Release|Any CPU
+		{E1DB79D2-32A8-40AC-911F-FBAE1E410E41}.Release|x64.Build.0 = Release|Any CPU
+		{31A94470-8AB6-472C-9C44-EA5B04A26006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31A94470-8AB6-472C-9C44-EA5B04A26006}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31A94470-8AB6-472C-9C44-EA5B04A26006}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{31A94470-8AB6-472C-9C44-EA5B04A26006}.Debug|x64.Build.0 = Debug|Any CPU
+		{31A94470-8AB6-472C-9C44-EA5B04A26006}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31A94470-8AB6-472C-9C44-EA5B04A26006}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31A94470-8AB6-472C-9C44-EA5B04A26006}.Release|x64.ActiveCfg = Release|Any CPU
+		{31A94470-8AB6-472C-9C44-EA5B04A26006}.Release|x64.Build.0 = Release|Any CPU
+		{C79F8F76-F62C-4F46-8D54-4B0E44BD53A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C79F8F76-F62C-4F46-8D54-4B0E44BD53A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C79F8F76-F62C-4F46-8D54-4B0E44BD53A6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C79F8F76-F62C-4F46-8D54-4B0E44BD53A6}.Debug|x64.Build.0 = Debug|Any CPU
+		{C79F8F76-F62C-4F46-8D54-4B0E44BD53A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C79F8F76-F62C-4F46-8D54-4B0E44BD53A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C79F8F76-F62C-4F46-8D54-4B0E44BD53A6}.Release|x64.ActiveCfg = Release|Any CPU
+		{C79F8F76-F62C-4F46-8D54-4B0E44BD53A6}.Release|x64.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6E08AF9B-BACC-47DB-BC47-5B818C4FB262} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
+		{FBB399FF-8374-46DE-AE42-7342E13525D4} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
+		{E1DB79D2-32A8-40AC-911F-FBAE1E410E41} = {551C93F8-6E89-4954-8905-7F5AC7173285}
+		{31A94470-8AB6-472C-9C44-EA5B04A26006} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
+		{C79F8F76-F62C-4F46-8D54-4B0E44BD53A6} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E6FB7BCB-BF07-4F19-ACBA-457479D421BB}
+	EndGlobalSection
+EndGlobal

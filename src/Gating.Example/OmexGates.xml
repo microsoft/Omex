@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--build omexservices/shared/core to generated the class file-->
+<!--If removing a gate, add the removed gate to:-->
+<!--MS.Internal.Motif.Office.Web.OfficeMarketplace.Gating.GateUnitTests.PreviousGateNames_NotReused-->
+<Gates>
+  <Gate Name="sample_allowed_gate">
+    <Markets>
+      <Market Name="en-GB" />
+      <Market Name="en-US" />
+    </Markets>
+  </Gate>
+</Gates>

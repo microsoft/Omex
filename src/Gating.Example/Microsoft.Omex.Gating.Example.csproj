@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net452</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="OmexGates.xml" />
+    <None Remove="OmexTip.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="OmexGates.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <LogicalName>OmexGates.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OmexTip.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <LogicalName>OmexTip.xml</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gating\Microsoft.Omex.Gating.csproj" />
+    <ProjectReference Include="..\System\Microsoft.Omex.System.csproj" />
+  </ItemGroup>
+</Project>

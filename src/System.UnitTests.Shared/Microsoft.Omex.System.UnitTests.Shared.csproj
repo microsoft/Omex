@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!--
+    <AssemblyName>Microsoft.Omex.System.UnitTests.Shared</AssemblyName>
+    <RootNamespace>Microsoft.Omex.System.UnitTests.Shared</RootNamespace>
+    <Includes>$(Includes);$(VERSIONINCDIR);$(IntermediateOutputPath)</Includes>
+    <File_Version_Info>True</File_Version_Info>
+    <DefineConstants>PLATFORM_$(OPlatform)</DefineConstants>
+    <DocumentationFile>$(OTargetPath)\$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+    -->
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="xunit.assert" Version="$(XunitAssertVersion)" />
+    <PackageReference Include="xunit.core" Version="$(XunitCoreVersion)" />
+    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System\Microsoft.Omex.System.csproj" />
+  </ItemGroup>
+</Project>
