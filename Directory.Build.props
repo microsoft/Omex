@@ -19,14 +19,11 @@
   <PropertyGroup>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <CurrentDate>$([System.DateTime]::Now.ToString(yyyyMMdd-hhmmss))</CurrentDate>
-    <VersionPrefix>19.0.0</VersionPrefix>   
-    <VersionSuffix>CI-$(CurrentDate)</VersionSuffix>
-    <ReleaseVersion>$(VersionPrefix)</ReleaseVersion>
-    <ContinousIntegrationVersion>$(VersionPrefix)-$(VersionSuffix)</ContinousIntegrationVersion>
-    <PackageAndAssemblyVersion Condition="'$(IsReleaseBuild)' == 'true'">$(ReleaseVersion)</PackageAndAssemblyVersion>
-    <PackageAndAssemblyVersion Condition="'$(IsReleaseBuild)' == 'false'">$(ContinousIntegrationVersion)</PackageAndAssemblyVersion>
-    <PackageVersion>$(PackageAndAssemblyVersion)</PackageVersion>
-    <Version>$(PackageAndAssemblyVersion)</Version>
+    <!-- The release version should get updated on every new release -->
+    <ReleaseVersion>19.0.0</ReleaseVersion>
+    <Version Condition="'$(IsReleaseBuild)' == 'true'">$(ReleaseVersion)</Version>
+    <!-- Continuous integration version, which is updated on every build of the dev branch -->
+    <Version Condition="'$(IsReleaseBuild)' == 'false'">$(ReleaseVersion)-CI-$(CurrentDate)</Version>
     <Authors>OMEX Shared Infrastructure &lt;omexshi@microsoft.com&gt;</Authors>
     <Owners>OMEX Shared Infrastructure &lt;omexshi@microsoft.com&gt;</Owners>
     <Company>Microsoft</Company>
