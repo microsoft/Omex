@@ -13,46 +13,25 @@ pool:
 
 steps:
 - task: NuGetToolInstaller@0
-
   displayName: 'Use NuGet 4.7.1'
-
   inputs:
-
     versionSpec: 4.7.1
-
-  enabled: false
-
-
+  enabled: true
 
 - task: NuGetCommand@2
-
   displayName: 'NuGet restore'
-
-  enabled: false
-
-
+  enabled: truee
 
 - task: VSBuild@1
-
   displayName: 'Build solution **\*.sln'
-
   inputs:
-
     msbuildArgs: '/p:Deterministic=true'
-
     clean: true
-
     maximumCpuCount: true
-
     msbuildArchitecture: x64
-
-  enabled: false
-
-
+  enabled: true
 
 - task: VSTest@2
-
   displayName: 'Run Unit Tests'
-
-  enabled: false
+  enabled: true
 
