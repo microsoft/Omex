@@ -1,19 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <!--
-    <AssemblyName>Microsoft.Omex.System.UnitTests</AssemblyName>
-    <RootNamespace>Microsoft.Omex.System.UnitTests</RootNamespace>
-    <RunXUnitQTest>True</RunXUnitQTest>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <Includes>$(Includes);$(VERSIONINCDIR);$(IntermediateOutputPath)</Includes>
-    <File_Version_Info>True</File_Version_Info>
-    <DefineConstants>PLATFORM_$(OPlatform)</DefineConstants>
-    <DocumentationFile>$(OTargetPath)\$(AssemblyName).xml</DocumentationFile>
-    <NoWarn>$(NoWarn);1591</NoWarn>
-    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
-    -->
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Runtime" />
     <Reference Include="System.Threading.Tasks" />
