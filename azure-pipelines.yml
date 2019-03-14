@@ -1,0 +1,58 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- none
+
+pool:
+  vmImage: vs2017-win2016
+  demands: DotNetFramework
+
+
+steps:
+- task: NuGetToolInstaller@0
+
+  displayName: 'Use NuGet 4.7.1'
+
+  inputs:
+
+    versionSpec: 4.7.1
+
+  enabled: false
+
+
+
+- task: NuGetCommand@2
+
+  displayName: 'NuGet restore'
+
+  enabled: false
+
+
+
+- task: VSBuild@1
+
+  displayName: 'Build solution **\*.sln'
+
+  inputs:
+
+    msbuildArgs: '/p:Deterministic=true'
+
+    clean: true
+
+    maximumCpuCount: true
+
+    msbuildArchitecture: x64
+
+  enabled: false
+
+
+
+- task: VSTest@2
+
+  displayName: 'Run Unit Tests'
+
+  enabled: false
+
