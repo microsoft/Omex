@@ -20,7 +20,7 @@ steps:
 
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
-  enabled: truee
+  enabled: true
 
 - task: VSBuild@1
   displayName: 'Build solution **\*.sln'
