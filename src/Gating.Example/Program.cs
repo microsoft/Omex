@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Gating.Example
 		private static void Main(string[] args)
 		{
 
-			using (Program program = new Program()
+			using (Program program = new Program())
 			{
 				program.Run(args);
 			}
