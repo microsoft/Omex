@@ -6,5 +6,6 @@
 	<TestGroup name="SampleGroup2">
 		<Member email="sample1@microsoft.com" alias="alias1"/>
 		<Member email="sample2@microsoft.com"  alias="alias2"/>
+		<Member email="sample3@microsoft.com"  alias="alias3"/>
 	</TestGroup>
 </TestGroups>
