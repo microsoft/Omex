@@ -1,4 +1,4 @@
-<Project>
+﻿<Project>
   <Import Project="$(MSBuildThisFileDirectory)\Dependencies.props" />
   <PropertyGroup>
     <TargetFrameworks>net452</TargetFrameworks>
@@ -19,10 +19,11 @@
   <PropertyGroup>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <!-- The release version should get updated on every new release -->
-    <ReleaseVersion>19.0.0</ReleaseVersion>
-    <Version Condition="'$(IsReleaseBuild)' == 'true'">$(ReleaseVersion)</Version>
+    <Version>20.0.0</Version>
+    <PreReleaseSuffix Condition="'$(PreReleaseSuffix)' == ''">local</PreReleaseSuffix>
+    <PackageVersion Condition="'$(IsReleaseBuild)' == 'true'">$(Version)</PackageVersion>
     <!-- Continuous integration version, which is updated on every build of the dev branch -->
-    <Version Condition="'$(IsReleaseBuild)' != 'true'">$(ReleaseVersion)-CI-$(CurrentDate)</Version>
+    <PackageVersion Condition="'$(IsReleaseBuild)' != 'true'">$(Version)-CI-$(PreReleaseSuffix)</PackageVersion>
     <Authors>OMEX Shared Infrastructure &lt;omexshi@microsoft.com&gt;</Authors>
     <Owners>OMEX Shared Infrastructure &lt;omexshi@microsoft.com&gt;</Owners>
     <Company>Microsoft</Company>

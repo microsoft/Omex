@@ -74,7 +74,7 @@ namespace Microsoft.Omex.System.Model.Types
 		/// <param name="minor">The minor version number.</param>
 		public ProductVersion(int major, int minor)
 		{
-			Code.Expects<ArgumentOutOfRangeException>(major >= 0, "Major is less than zero.", TaggingUtilities.ReserveTag(0));
+			Code.Expects<ArgumentOutOfRangeException>(major >= 0, "Major is less than zero.", TaggingUtilities.ReserveTag(0x23841119 /* tag_97bez */));
 			Code.Expects<ArgumentOutOfRangeException>(minor >= 0, "Minor is less than zero.", TaggingUtilities.ReserveTag(0x2385059a /* tag_97qw0 */));
 
 			Major = major;
