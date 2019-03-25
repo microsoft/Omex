@@ -114,7 +114,7 @@ namespace Microsoft.Omex.System.Model.Types
 			Code.Expects<ArgumentOutOfRangeException>(major >= 0, "Major is less than zero.", TaggingUtilities.ReserveTag(0x2385059e /* tag_97qw4 */));
 			Code.Expects<ArgumentOutOfRangeException>(minor >= 0, "Minor is less than zero.", TaggingUtilities.ReserveTag(0x2385059f /* tag_97qw5 */));
 			Code.Expects<ArgumentOutOfRangeException>(build >= 0, "Build is less than zero.", TaggingUtilities.ReserveTag(0x238505a0 /* tag_97qw6 */));
-			Code.Expects<ArgumentOutOfRangeException>(revision >= 0, "Revision is less than zero.", TaggingUtilities.ReserveTag(0));
+			Code.Expects<ArgumentOutOfRangeException>(revision >= 0, "Revision is less than zero.", TaggingUtilities.ReserveTag(0x23841118 /* tag_97bey */));
 
 			Major = major;
 			Minor = minor;
