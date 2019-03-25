@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(TargetFrameworks);$(NetStandardVersion)</TargetFrameworks>
+    <IsTestProject>false</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != '$(NetStandardVersion)'">
+    <PackageReference Include="xunit.assert" Version="$(XunitAssertVersion)" />
+    <PackageReference Include="xunit.core" Version="$(XunitCoreVersion)" />
+    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == '$(NetStandardVersion)'">
+    <PackageReference Include="xunit.assert" Version="$(XunitAssertVersionCore)" />
+    <PackageReference Include="xunit.core" Version="$(XunitCoreVersionCore)" />
+    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersionCore)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gating\Microsoft.Omex.Gating.csproj" />
+    <ProjectReference Include="..\System.UnitTests.Shared\Microsoft.Omex.System.UnitTests.Shared.csproj" />
+    <ProjectReference Include="..\System\Microsoft.Omex.System.csproj" />
+  </ItemGroup>
+</Project>

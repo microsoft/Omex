@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="17.0">
+  <PropertyGroup>
+    <TargetFrameworks>$(TargetFrameworks);$(NetCoreVersion)</TargetFrameworks>
+    <Description>Contains Omex Gating Unit Tests</Description>
+    <RootNamespace>Microsoft.Omex.Gating.UnitTests</RootNamespace>
+    <AssemblyName>Microsoft.Omex.Gating.UnitTests</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != '$(NetCoreVersion)'">
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Collections" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == '$(NetCoreVersion)'">
+    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersionCore)" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(MicrosoftAspNetCoreHttpAbstractionsVersionCore)" />
+    <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersionCore)" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DefaultGates.xml" Link="DefaultGates.xml">
+      <LogicalName>DefaultGates.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestGroups.xml" Link="TestGroups.xml">
+      <LogicalName>TestGroups.xml</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Src\Gating.UnitTests.Shared\Microsoft.Omex.Gating.UnitTests.Shared.csproj" />
+    <ProjectReference Include="..\..\src\Gating\Microsoft.Omex.Gating.csproj" />
+    <ProjectReference Include="..\..\src\System.UnitTests.Shared\Microsoft.Omex.System.UnitTests.Shared.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Gates>
+	<Gate Name="GatingInfrastructure.Base" />
+	<Gate Name="GatingInfrastructure.Footer">
+		<ParentGate Name="GatingInfrastructure.Base" />
+	</Gate>
+</Gates>

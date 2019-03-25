@@ -1,0 +1,240 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Omex.System.Authentication;
+using Microsoft.Omex.System.Configuration.DataSets;
+using Microsoft.Omex.System.Logging;
+using Microsoft.Omex.System.Validation;
+
+namespace Microsoft.Omex.Gating.Authentication.Groups
+{
+	/// <summary>
+	/// Test groups based access validation
+	/// </summary>
+	public class TestGroups : ITestGroups
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="testGroupsLoader">TestGroups DataSet loader</param>
+		public TestGroups(IConfigurationDataSetLoader<ITestGroupsDataSet> testGroupsLoader)
+		{
+			m_testGroupsDataSetLoader = Code.ExpectsArgument(testGroupsLoader, nameof(testGroupsLoader), TaggingUtilities.ReserveTag(0x2384d59b /* tag_97nw1 */));
+		}
+
+
+		/// <summary>
+		/// Is one or more of the groups specified equal to a default?
+		/// </summary>
+		/// <param name="groupNames">A semicolon-delimited list of group names. This value cannot be null.</param>
+		/// <returns>True if one or more of the groups specified is equal to a default; false
+		/// otherwise.</returns>
+		public bool IsDefault(string groupNames)
+		{
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(groupNames, nameof(groupNames), TaggingUtilities.ReserveTag(0x2384d59c /* tag_97nw2 */)))
+			{
+				return false;
+			}
+
+			ITestGroupsDataSet testGroupsDataSet = GetTestGroupsDataSet();
+			if (testGroupsDataSet == null)
+			{
+				return false;
+			}
+
+			IEnumerable<string> groupNamesList = groupNames.Split(s_listSeparatorArray, StringSplitOptions.RemoveEmptyEntries);
+			if (groupNamesList.Intersect(testGroupsDataSet.DefaultGroups, StringComparer.OrdinalIgnoreCase).Any())
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+
+		/// <summary>
+		/// Retrieves all groups for the currently logged-in user.
+		/// </summary>
+		/// <param name="identity">The identity of the logged in user. This value cannot be null.</param>
+		/// <returns>The list of user groups.</returns>
+		public IEnumerable<string> GetUserGroups(IUserIdentity identity)
+		{
+			if (!Code.ValidateArgument(identity, nameof(identity), TaggingUtilities.ReserveTag(0x2384d59d /* tag_97nw3 */)))
+			{
+				return Enumerable.Empty<string>();
+			}
+
+			ITestGroupsDataSet testGroupsDataSet = GetTestGroupsDataSet();
+			if (testGroupsDataSet == null)
+			{
+				return Enumerable.Empty<string>();
+			}
+
+			if (!identity.IsAuthenticated)
+			{
+				return testGroupsDataSet.DefaultGroups;
+			}
+
+			IEnumerable<string> result = new List<string>();
+			if (!string.IsNullOrWhiteSpace(identity.EmailAddressSignIn))
+			{
+				result = result.Union(GetUserGroups(identity.EmailAddressSignIn), StringComparer.OrdinalIgnoreCase);
+			}
+
+			if (!string.IsNullOrWhiteSpace(identity.EmailAddressPreferred))
+			{
+				result = result.Union(GetUserGroups(identity.EmailAddressPreferred), StringComparer.OrdinalIgnoreCase);
+			}
+
+			return result;
+		}
+
+
+		/// <summary>
+		/// Retrieves all groups for a user
+		/// </summary>
+		/// <param name="userEmail">User email. This value cannot be null.</param>
+		/// <returns>List of user groups</returns>
+		public IEnumerable<string> GetUserGroups(string userEmail)
+		{
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(userEmail, nameof(userEmail), TaggingUtilities.ReserveTag(0x2384d59e /* tag_97nw4 */)))
+			{
+				return Enumerable.Empty<string>();
+			}
+
+			ITestGroupsDataSet testGroupsDataSet = GetTestGroupsDataSet();
+			if (testGroupsDataSet == null)
+			{
+				return Enumerable.Empty<string>();
+			}
+
+			return testGroupsDataSet.GetUserGroups(userEmail);
+		}
+
+
+		/// <summary>
+		/// Retrieves all groups for a deployment id
+		/// </summary>
+		/// <param name="deploymentId">Deployment id. This value cannot be null.</param>
+		/// <returns>List of user groups</returns>
+		public IEnumerable<string> GetDeploymentIdGroups(string deploymentId) => GetUserGroups(deploymentId);
+
+
+		/// <summary>
+		/// Retrieves all users for a group
+		/// </summary>
+		/// <remarks>This search is not meant to be efficient, to be used for diagnostics only</remarks>
+		/// <param name="groupName">Group name. This value cannot be null.</param>
+		/// <returns>List of group users</returns>
+		public IEnumerable<string> GetGroupUsers(string groupName)
+		{
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(groupName, nameof(groupName), TaggingUtilities.ReserveTag(0x2384d59f /* tag_97nw5 */)))
+			{
+				return Enumerable.Empty<string>();
+			}
+
+			ITestGroupsDataSet testGroupsDataSet = GetTestGroupsDataSet();
+			if (testGroupsDataSet == null)
+			{
+				return Enumerable.Empty<string>();
+			}
+
+			return testGroupsDataSet.GetGroupUsers(groupName);
+		}
+
+
+		/// <summary>
+		/// Checks if the logged-in user with the specified identity is in one or more of the
+		/// specified groups.
+		/// </summary>
+		/// <param name="identity">The identity of the logged in user. This value cannot be null.</param>
+		/// <param name="groupNames">A semicolon-delimited list of group names. This value cannot be null.</param>
+		/// <returns>True if the user belongs to one or more of the groups, false otherwise.</returns>
+		public bool IsUserInGroups(IUserIdentity identity, string groupNames)
+		{
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(groupNames, nameof(groupNames), TaggingUtilities.ReserveTag(0x2384d5a0 /* tag_97nw6 */)) ||
+				!Code.ValidateArgument(identity, nameof(identity), TaggingUtilities.ReserveTag(0x2384d5a1 /* tag_97nw7 */)))
+			{
+				return false;
+			}
+
+			if (!identity.IsAuthenticated)
+			{
+				return IsDefault(groupNames);
+			}
+
+			if (!string.IsNullOrWhiteSpace(identity.EmailAddressSignIn) && IsUserInGroups(identity.EmailAddressSignIn, groupNames))
+			{
+				return true;
+			}
+
+			if (!string.IsNullOrWhiteSpace(identity.EmailAddressPreferred) && IsUserInGroups(identity.EmailAddressPreferred, groupNames))
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+
+		/// <summary>
+		/// Checks if user is in one or more of the specified groups
+		/// </summary>
+		/// <param name="userEmail">User email. This value cannot be null.</param>
+		/// <param name="groupNames">Group names. This value cannot be null.</param>
+		/// <returns>true if the user belongs to one or more of the groups, false otherwise</returns>
+		public bool IsUserInGroups(string userEmail, string groupNames)
+		{
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(groupNames, nameof(groupNames), TaggingUtilities.ReserveTag(0x2384d5a2 /* tag_97nw8 */)) ||
+				!Code.ValidateNotNullOrWhiteSpaceArgument(userEmail, nameof(userEmail), TaggingUtilities.ReserveTag(0x2384d5a3 /* tag_97nw9 */)))
+			{
+				return false;
+			}
+
+			IEnumerable<string> groupNamesList = groupNames.Split(s_listSeparatorArray, StringSplitOptions.RemoveEmptyEntries);
+			if (groupNamesList.Intersect(GetUserGroups(userEmail), StringComparer.OrdinalIgnoreCase).Any())
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+
+		/// <summary>
+		/// Retrieves currently loaded TestGroups DataSet
+		/// </summary>
+		/// <returns>Currently loaded TestGroups DataSet</returns>
+		private ITestGroupsDataSet GetTestGroupsDataSet()
+		{
+			ITestGroupsDataSet dataSet = m_testGroupsDataSetLoader.LoadedDataSet;
+			if (dataSet == null)
+			{
+				ULSLogging.LogTraceTag(0x2384d5c0 /* tag_97nxa */, Categories.TestGroupsDataSet, Levels.Error,
+					"TestGroupsDataSet is null, TestGroups authentication will fail.");
+			}
+			else if (!dataSet.IsHealthy)
+			{
+				ULSLogging.LogTraceTag(0x2384d5c1 /* tag_97nxb */, Categories.TestGroupsDataSet, Levels.Error,
+					"TestGroupsDataSet is not healthy.");
+			}
+
+			return dataSet;
+		}
+
+
+		/// <summary>
+		/// TestGroups DataSet loader
+		/// </summary>
+		private readonly IConfigurationDataSetLoader<ITestGroupsDataSet> m_testGroupsDataSetLoader;
+
+
+		/// <summary>
+		/// The array of characters separating elements in a list stored within an asset field.
+		/// </summary>
+		private static readonly string[] s_listSeparatorArray = { ";" };
+	}
+}

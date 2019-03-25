@@ -1,0 +1,57 @@
+﻿<Project>
+  <Import Project="$(MSBuildThisFileDirectory)\Dependencies.props" />
+  <PropertyGroup>
+    <NetCoreVersion>netcoreapp2.1</NetCoreVersion>
+    <NetStandardVersion>netstandard2.0</NetStandardVersion>
+    <TargetFrameworks>net452</TargetFrameworks>
+    <Platforms>AnyCPU</Platforms>
+    <TargetPlatform>AnyCPU</TargetPlatform>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)\nuget</PackageOutputPath>
+    <DocumentationFileValue>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFileValue>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(SignAssemblies)' == 'true'">
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>true</DelaySign>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\ship.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- The release version should get updated on every new release -->
+    <Version>20.0.0</Version>
+    <PreReleaseSuffix Condition="'$(PreReleaseSuffix)' == ''">local</PreReleaseSuffix>
+    <PackageVersion Condition="'$(IsReleaseBuild)' == 'true'">$(Version)</PackageVersion>
+    <!-- Continuous integration version, which is updated on every build of the dev branch -->
+    <PackageVersion Condition="'$(IsReleaseBuild)' != 'true'">$(Version)-CI-$(PreReleaseSuffix)</PackageVersion>
+    <Authors>Microsoft Omex</Authors>
+    <Owners>Microsoft Omex</Owners>
+    <Company>Microsoft</Company>
+    <Copyright>Copyright © Microsoft</Copyright>
+    <Tags>Omex</Tags>
+    <Description>$(MSBuildProjectName)</Description>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ErrorReport>prompt</ErrorReport>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <!-- Don't need them due to source linking -->
+    <IncludeSource>false</IncludeSource>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Optional: Embed source files that are not tracked by the source control manager in the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Optional: Include the PDB in the built .nupkg -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+  <!-- Bad properties from old projects to make them work -->
+  <PropertyGroup>
+    <NoWarn>1591;NU5104</NoWarn>
+  </PropertyGroup>
+</Project>

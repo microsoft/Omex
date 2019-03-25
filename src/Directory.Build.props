@@ -1,0 +1,13 @@
+<Project>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('$(_DirectoryBuildPropsFile)', '$(MSBuildThisFileDirectory)../'))" />
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <DocumentationFile>$(DocumentationFileValue)</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(UseVstsSourceLink)' == 'true'">
+    <PackageReference Include="Microsoft.SourceLink.Vsts.Git" Version="$(MicrosoftSourceLinkVstsGitVersion)" PrivateAssets="All"/>
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseVstsSourceLink)' == ''">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="$(MicrosoftSourceLinkGitHubVersion)" PrivateAssets="All"/>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(TargetFrameworks);net45;$(NetStandardVersion)</TargetFrameworks>
+    <Description>Contains common classes for Omex libraries.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Readme.txt" PackagePath="%(Identity)" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,42 @@
+{
+  "TagFileManagedPattern": [
+    {
+      "Functions": [
+        "Log.DebugAssert",
+        "Log.ReportException",
+        "Log.ShipAssert",
+        "Log.Trace",
+        "Logger.LogCodeError",
+        "Logger.LogContentError",
+        "Logger.LogSystemStatus",
+        "Logger.LogTrace",
+        "Logger.LogVerbose",
+        "Logger.ReportException",
+        "SendTrace",
+        "TaggingUtilities.Reserve",
+        "ULSLogging.Generate",
+        "ULSLogging.LogCodeError",
+        "ULSLogging.LogContentError",
+        "ULSLogging.LogSystemStatus",
+        "ULSLogging.LogTrace",
+        "ULSLogging.LogVerbose",
+        "ULSLogging.ReportException"
+      ],
+      "Suffix": "Tag",
+      "Type": "ULS"
+    }
+  ],
+  "TagFileUnManagedPattern": [
+    {
+      "Functions": [
+        "telemetry.sendLogTrace",
+        "telemetry.sendTimedMetric"
+      ],
+      "Suffix": "Tag",
+      "Type": "ULS"
+    }
+  ],
+  "CustomizeFunctions": {},
+  "ExcludePaths": [],
+  "TaggedComments": []
+}

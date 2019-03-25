@@ -1,0 +1,14 @@
+<Project>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNetTestSdkVersion)" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitRunnerVisualStudioVersion)" PrivateAssets="All" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != '$(NetCoreVersion)'" >
+    <PackageReference Include="xunit.assert" Version="$(XunitAssertVersion)" />
+    <PackageReference Include="xunit.core" Version="$(XunitCoreVersion)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == '$(NetCoreVersion)'" >
+    <PackageReference Include="xunit.assert" Version="$(XunitAssertVersionCore)" />
+    <PackageReference Include="xunit.core" Version="$(XunitCoreVersionCore)" />
+  </ItemGroup>
+</Project>

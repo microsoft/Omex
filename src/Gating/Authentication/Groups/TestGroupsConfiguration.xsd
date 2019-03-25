@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="TestGroupsConfiguration" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="TestGroups">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TestGroup" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Test groups are used to filter user access to marketplace features and apps</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Member" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Group member node</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="email" type="xs:string" use="optional">
+										<xs:annotation>
+											<xs:documentation>Member's email</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="deploymentId" type="xs:string" use="optional">
+										<xs:annotation>
+											<xs:documentation>Member's deployment id</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="alias" type="xs:string" use="required">
+										<xs:annotation>
+											<xs:documentation>Alias of the person responsible for the account</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:string" use="required">
+							<xs:annotation>
+								<xs:documentation>Group name</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

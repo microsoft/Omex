@@ -1,0 +1,588 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="Gates">
+		<xs:annotation>
+			<xs:documentation>
+				Root node containing all the gates known to the system
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Gate" minOccurs="0" maxOccurs="unbounded" type="GateType">
+					<xs:annotation>
+						<xs:documentation>
+							Gate element, contains information about a specific gate
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Experiment" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>
+							Experiment containing a list of all the gates part of that experiment
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ExperimentGate" minOccurs="0" maxOccurs="unbounded" type="ExperimentGateType">
+								<xs:annotation>
+									<xs:documentation>
+										Experimental Gate element, contains information about a specific experimental gate
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="Name" type="xs:string" use="required" >
+							<xs:annotation>
+								<xs:documentation>
+									Name of the Experiment
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="Version">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(\d{1,8}\.\d{1,8}(\.\d{1,8}(\.\d{1,8})?)?)"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="BrowserFormat">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="Browser">
+				<xs:annotation>
+					<xs:documentation>
+						Type of the browser and its versions for which the gate is active.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="unbounded" name="Version">
+							<xs:annotation>
+								<xs:documentation>
+									The version of the browser for which the gate is active.
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="Value" type="xs:nonNegativeInteger" use="required">
+									<xs:annotation>
+										<xs:documentation>
+											Integer value for the version of the browser.
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="Name" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>
+								Name of the browser.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="BaseGateType">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="1" name="Markets">
+				<xs:annotation>
+					<xs:documentation>
+						List of markets that the gate is active in. If the Markets element is
+						missing, there are no restrictions. If the Markets element is an empty node, the gate is not
+						active in any markets.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="unbounded" name="Market">
+							<xs:annotation>
+								<xs:documentation>
+									A market that the gate is active in
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="Name" type="xs:string" use="required">
+									<xs:annotation>
+										<xs:documentation>
+											The name of the market the gate is active in
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" maxOccurs="1" name="Environments">
+				<xs:annotation>
+					<xs:documentation>
+						List of Environments that the gate is active in. If the Environments element is
+						missing, there are no restrictions. If the Environments element is an empty node, the gate is not
+						active in any Environment.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="unbounded" name="Environment">
+							<xs:annotation>
+								<xs:documentation>
+									An Environment that the gate is active in
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="Name" type="xs:string" use="required">
+									<xs:annotation>
+										<xs:documentation>
+											The name of the Environment the gate is active in
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" maxOccurs="1" name="UserGroups">
+				<xs:annotation>
+					<xs:documentation>
+						List of user groups that have access to the gate. If the UserGroups element is missing,
+						there are no restrictions. If the UserGroups element is an empty node, no users have
+						access to the gate.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="unbounded" name="UserGroup">
+							<xs:annotation>
+								<xs:documentation>
+									User group that has access to the gate.
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="Type" use="required">
+									<xs:annotation>
+										<xs:documentation>
+											Type of user group
+										</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:enumeration value="None">
+												<xs:annotation>
+													<xs:documentation>
+														No users have access
+													</xs:documentation>
+												</xs:annotation>
+											</xs:enumeration>
+											<xs:enumeration value="Dogfood">
+												<xs:annotation>
+													<xs:documentation>
+														Dogfood users have access
+													</xs:documentation>
+												</xs:annotation>
+											</xs:enumeration>
+											<xs:enumeration value="CustomGroup">
+												<xs:annotation>
+													<xs:documentation>
+														Users that are members of the specified test group have access
+													</xs:documentation>
+												</xs:annotation>
+											</xs:enumeration>
+											<xs:enumeration value="FeatureTeam">
+												<xs:annotation>
+													<xs:documentation>
+														Users listed in the members attribute have access
+													</xs:documentation>
+												</xs:annotation>
+											</xs:enumeration>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+								<xs:attribute name="Name" type="xs:string" use="optional" >
+									<xs:annotation>
+										<xs:documentation>
+											Name of the user group that has access to the gate. These user groups
+											should match the definition of user groups from the Test Groups Cache.
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="Members" type="xs:string" use="optional" >
+									<xs:annotation>
+										<xs:documentation>
+											Space delimited list of email aliases that are members of a Feature Team.
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" maxOccurs="1" name="ClientVersions">
+				<xs:annotation>
+					<xs:documentation>
+						List of client versions that have access to the gate. If the ClientVersions element is missing,
+						there are no restrictions. If the ClientVersions element is an empty node, no clients have
+						access to the gate.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="unbounded" name="ClientVersion">
+							<xs:annotation>
+								<xs:documentation>
+									Client that has access to the gate.
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element minOccurs="0" maxOccurs="unbounded" name="ApplicationOverride">
+										<xs:annotation>
+											<xs:documentation>
+												Version orderride per Application
+											</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:attribute name="AppCode" type="xs:integer" use="required">
+												<xs:annotation>
+													<xs:documentation>
+														Name of the application. This is AppCode
+													</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+											<xs:attribute name="MinVersion" type="Version" use="optional" >
+												<xs:annotation>
+													<xs:documentation>
+														Minimum version of the application (inclusive)
+													</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+											<xs:attribute name="MaxVersion" type="Version" use="optional" >
+												<xs:annotation>
+													<xs:documentation>
+														Maximum version of the application (exclusive)
+													</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+											<xs:attribute name="VersionRange" type="xs:string" use="optional" >
+												<xs:annotation>
+													<xs:documentation>
+														Version Range of the application (inclusive)
+													</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="Name" type="xs:string" use="required">
+									<xs:annotation>
+										<xs:documentation>
+											Name of the client
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="MinVersion" type="Version" use="optional" >
+									<xs:annotation>
+										<xs:documentation>
+											Minimum version of the client (inclusive)
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="MaxVersion" type="Version" use="optional" >
+									<xs:annotation>
+										<xs:documentation>
+											Maximum version of the client (exclusive)
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="VersionRange" type="xs:string" use="optional" >
+									<xs:annotation>
+										<xs:documentation>
+											Version Range of the client (inclusive)
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" maxOccurs="1" name="KnownIPRanges">
+				<xs:annotation>
+					<xs:documentation>
+						List of ip groups that have access to the gate. If the KnownIPRanges element is missing,
+						there are no restrictions. If the KnownIPRanges element is an empty node, no IP addresses have
+						access to the gate.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="unbounded" name="KnownIPRange">
+							<xs:annotation>
+								<xs:documentation>
+									IP range that has access to the gate.
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="Name" use="required" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>
+											Name of the ip range that has access to the gate.
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" maxOccurs="1" name="HostEnvironments">
+				<xs:annotation>
+					<xs:documentation>
+						List of host environments where the gate is active. If the HostEnvironments element is missing,
+						the gate is active in all environments. If the HostEnvironments element is an empty node,
+						the gate is not active in any environment.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="unbounded" name="HostEnvironment">
+							<xs:annotation>
+								<xs:documentation>
+									Host environments where the gate is active.
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="Name" use="required" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>
+											Name of the host environment where the gate is active.
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" maxOccurs="1" name="BlockedQueryParameters">
+				<xs:annotation>
+					<xs:documentation>
+					  List of query parameters that will make this gate not applicable.
+					  If the BlockedQueryParameters element is missing or if the BlockedBlockedQueryParameters
+					  element is an empty node the gate is active for all parameter combinations.
+					  '*' can be used as a value wildcard to indicate the gate is blocked for any
+					   parameter with that name.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="unbounded" name="BlockedQueryParameter">
+							<xs:annotation>
+								<xs:documentation>
+									Query parameters for which the gate is blocked.
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="Name" use="required" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>
+											Name of the query parameter for which the gate is blocked.
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							  <xs:attribute name="Value" use="required" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>
+											Value of the query parameter for which the gate is blocked.
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" maxOccurs="1" name="Services">
+				<xs:annotation>
+					<xs:documentation>
+						Type of service for which gate is active. If the Service element is missing,
+						the gate is active for all services. If the Service element is an empty node,
+						the gate is not active for any service.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="unbounded" name="Service">
+							<xs:annotation>
+								<xs:documentation>
+									Service that has access to this gate.
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="Type" use="required" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>
+											Type of service.
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="ActiveFor" type="xs:string" use="optional" default="All">
+									<xs:annotation>
+										<xs:documentation>
+											Optional flag for deciding if the service should be active for subset of the service (e.g. Slice1, CanaryService etc).
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" maxOccurs="1" name="Browsers">
+				<xs:annotation>
+					<xs:documentation>
+						Option to either specify allowed browsers or blocked browsers.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element type="BrowserFormat" name="AllowedBrowsers">
+							<xs:annotation>
+								<xs:documentation>
+									Browsers for which this gate will be active.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element type="BrowserFormat" name="BlockedBrowsers">
+							<xs:annotation>
+								<xs:documentation>
+									Browsers for which this gate won't be active.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" maxOccurs="1" name="StartDate">
+				<xs:annotation>
+					<xs:documentation>
+						Gate Active only after the start date.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="Value" type="xs:dateTime" use="required">
+						<xs:annotation>
+							<xs:documentation>
+								Value of the start date
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" maxOccurs="1" name="EndDate">
+				<xs:annotation>
+					<xs:documentation>
+						Gate Active only before the end date.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="Value" type="xs:dateTime" use="required" >
+						<xs:annotation>
+							<xs:documentation>
+								Value of the end date
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Name" type="xs:string" use="required" >
+			<xs:annotation>
+				<xs:documentation>
+					Name of the gate
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Secure" type="xs:boolean" use="optional" default="false" >
+			<xs:annotation>
+				<xs:documentation>
+					Is the gate secure, i.e. it cannot be requested
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Enabled" type="xs:boolean" use="optional" default="true" >
+			<xs:annotation>
+				<xs:documentation>
+					If it is enabled, all other conditions(pivotals) are evaluated, if disabled, no other condition is checked and the gate is deemed disabled.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="GateType">
+		<xs:complexContent>
+			<xs:extension base="BaseGateType">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="1" name="ParentGate">
+						<xs:annotation>
+							<xs:documentation>
+								Optional parent gate. If one is specified, all the restrictions of
+								the parent gate also applies to this gate.
+							</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:attribute name="Name" type="xs:string" use="required" >
+								<xs:annotation>
+									<xs:documentation>
+										Name of the parent gate
+									</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element minOccurs="0" maxOccurs="1" name="ReleasePlan">
+						<xs:annotation>
+							<xs:documentation>
+								Optional Release Plan for the gates. Inside Release Plan release gates can
+								be specified.
+							</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element minOccurs="0" maxOccurs="unbounded" name="ReleaseGate" type="BaseGateType">
+									<xs:annotation>
+										<xs:documentation>
+											Release Gate containing parameters for the planned release.
+										</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="ExperimentGateType">
+		<xs:complexContent>
+			<xs:extension base="GateType">
+				<xs:attribute name="Weight" type="xs:nonNegativeInteger" use="required" >
+					<xs:annotation>
+						<xs:documentation>
+							Weight of the gate in the experiment
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>
