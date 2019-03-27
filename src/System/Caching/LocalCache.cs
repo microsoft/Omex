@@ -30,7 +30,7 @@ namespace Microsoft.Omex.System.Caching
 		/// <returns>The object value.</returns>
 		public object Get(Type type)
 		{
-			if (!Code.ValidateArgument(type, nameof(type), TaggingUtilities.ReserveTag(0)))
+			if (!Code.ValidateArgument(type, nameof(type), TaggingUtilities.ReserveTag(0x23841023 /* tag_97ba9 */)))
 			{
 				return null;
 			}
