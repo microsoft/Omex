@@ -1,0 +1,10 @@
+{
+    "contacts": [ "omexgithub@microsoft.com" ],
+    "description": "Open source repository for nuget packages published by OMEX",
+    "deployedToProduction": false,
+    "complianceTypes": ["soc-2"],
+    "inventoryId": ["4dec5f5a-6016-4b6b-a130-3a56324ade82"],
+    "schema": {
+        "office": "1.0.0"
+    }
+}
