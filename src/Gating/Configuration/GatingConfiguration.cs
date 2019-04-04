@@ -581,9 +581,11 @@ namespace Gating.Configuration {
         private string maxVersionField;
         
         private string versionRangeField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="integer")]
+
+		private string audienceGroupField;
+
+		/// <remarks/>
+		[System.Xml.Serialization.XmlAttributeAttribute(DataType="integer")]
         public string AppCode {
             get {
                 return this.appCodeField;
@@ -625,10 +627,24 @@ namespace Gating.Configuration {
                 this.versionRangeField = value;
             }
         }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.7.2558.0")]
+
+		/// <remarks/>
+		[System.Xml.Serialization.XmlAttributeAttribute()]
+		public string AudienceGroup
+		{
+			get
+			{
+				return this.audienceGroupField;
+			}
+			set
+			{
+				this.audienceGroupField = value;
+			}
+		}
+	}
+
+	/// <remarks/>
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.7.2558.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]

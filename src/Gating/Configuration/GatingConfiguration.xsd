@@ -278,6 +278,13 @@
 													</xs:documentation>
 												</xs:annotation>
 											</xs:attribute>
+											<xs:attribute name="AudienceGroup" type="xs:string" use="optional" >
+												<xs:annotation>
+													<xs:documentation>
+														Audience Group of the application (inclusive)
+													</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
 										</xs:complexType>
 									</xs:element>
 								</xs:sequence>
@@ -306,6 +313,13 @@
 									<xs:annotation>
 										<xs:documentation>
 											Version Range of the client (inclusive)
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="AudienceGroup" type="xs:string" use="optional" >
+									<xs:annotation>
+										<xs:documentation>
+											Audience Group of the client (inclusive)
 										</xs:documentation>
 									</xs:annotation>
 								</xs:attribute>
@@ -375,11 +389,11 @@
 			<xs:element minOccurs="0" maxOccurs="1" name="BlockedQueryParameters">
 				<xs:annotation>
 					<xs:documentation>
-					  List of query parameters that will make this gate not applicable.
-					  If the BlockedQueryParameters element is missing or if the BlockedBlockedQueryParameters
-					  element is an empty node the gate is active for all parameter combinations.
-					  '*' can be used as a value wildcard to indicate the gate is blocked for any
-					   parameter with that name.
+						List of query parameters that will make this gate not applicable.
+						If the BlockedQueryParameters element is missing or if the BlockedBlockedQueryParameters
+						element is an empty node the gate is active for all parameter combinations.
+						'*' can be used as a value wildcard to indicate the gate is blocked for any
+						parameter with that name.
 					</xs:documentation>
 				</xs:annotation>
 				<xs:complexType>
@@ -398,7 +412,7 @@
 										</xs:documentation>
 									</xs:annotation>
 								</xs:attribute>
-							  <xs:attribute name="Value" use="required" type="xs:string">
+								<xs:attribute name="Value" use="required" type="xs:string">
 									<xs:annotation>
 										<xs:documentation>
 											Value of the query parameter for which the gate is blocked.

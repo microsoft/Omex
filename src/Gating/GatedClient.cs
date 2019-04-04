@@ -38,6 +38,11 @@ namespace Microsoft.Omex.Gating
 
 
 		/// <summary>
+		/// Audience Group of the client
+		/// </summary>
+		public string AudienceGroup { get; set; }
+
+		/// <summary>
 		/// Merge two gated clients
 		/// </summary>
 		/// <param name="client1">first client</param>
@@ -77,24 +82,28 @@ namespace Microsoft.Omex.Gating
 				mergedClient.Version = client2.Version;
 				mergedClient.ProductCode = client2.ProductCode ?? client1.ProductCode;
 				mergedClient.AppCode = client2.AppCode;
+				mergedClient.AudienceGroup = client2.AudienceGroup;
 			}
 			else if (client2.Version == null)
 			{
 				mergedClient.Version = client1.Version;
 				mergedClient.ProductCode = client1.ProductCode ?? client2.ProductCode;
 				mergedClient.AppCode = client1.AppCode;
+				mergedClient.AudienceGroup = client1.AudienceGroup;
 			}
 			else if (client1.Version > client2.Version)
 			{
 				mergedClient.Version = client1.Version;
 				mergedClient.ProductCode = client1.ProductCode ?? client2.ProductCode;
 				mergedClient.AppCode = client1.AppCode;
+				mergedClient.AudienceGroup = client1.AudienceGroup;
 			}
 			else
 			{
 				mergedClient.Version = client2.Version;
 				mergedClient.ProductCode = client2.ProductCode ?? client1.ProductCode;
 				mergedClient.AppCode = client2.AppCode;
+				mergedClient.AudienceGroup = client2.AudienceGroup;
 			}
 
 			return mergedClient;

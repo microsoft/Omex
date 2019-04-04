@@ -1575,6 +1575,11 @@ namespace Microsoft.Omex.Gating
 				}
 			}
 
+			if (!string.IsNullOrWhiteSpace(clientVersionOverride.AudienceGroup))
+			{
+				requiredApp.AudienceGroup = clientVersionOverride.AudienceGroup;
+			}
+
 			return requiredApp;
 		}
 
