@@ -281,7 +281,7 @@
 											<xs:attribute name="AudienceGroup" type="xs:string" use="optional" >
 												<xs:annotation>
 													<xs:documentation>
-														Audience Group of the application (inclusive)
+														Audience Group of the application
 													</xs:documentation>
 												</xs:annotation>
 											</xs:attribute>
@@ -319,7 +319,7 @@
 								<xs:attribute name="AudienceGroup" type="xs:string" use="optional" >
 									<xs:annotation>
 										<xs:documentation>
-											Audience Group of the client (inclusive)
+											Audience Group of the client
 										</xs:documentation>
 									</xs:annotation>
 								</xs:attribute>

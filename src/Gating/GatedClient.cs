@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.Model.Types;
@@ -40,7 +41,7 @@ namespace Microsoft.Omex.Gating
 		/// <summary>
 		/// Audience Group of the client
 		/// </summary>
-		public string AudienceGroup { get; set; }
+		public HashSet<string> AudienceGroups { get; set; }
 
 		/// <summary>
 		/// Merge two gated clients
@@ -82,28 +83,28 @@ namespace Microsoft.Omex.Gating
 				mergedClient.Version = client2.Version;
 				mergedClient.ProductCode = client2.ProductCode ?? client1.ProductCode;
 				mergedClient.AppCode = client2.AppCode;
-				mergedClient.AudienceGroup = client2.AudienceGroup;
+				mergedClient.AudienceGroups = client2.AudienceGroups;
 			}
 			else if (client2.Version == null)
 			{
 				mergedClient.Version = client1.Version;
 				mergedClient.ProductCode = client1.ProductCode ?? client2.ProductCode;
 				mergedClient.AppCode = client1.AppCode;
-				mergedClient.AudienceGroup = client1.AudienceGroup;
+				mergedClient.AudienceGroups = client1.AudienceGroups;
 			}
 			else if (client1.Version > client2.Version)
 			{
 				mergedClient.Version = client1.Version;
 				mergedClient.ProductCode = client1.ProductCode ?? client2.ProductCode;
 				mergedClient.AppCode = client1.AppCode;
-				mergedClient.AudienceGroup = client1.AudienceGroup;
+				mergedClient.AudienceGroups = client1.AudienceGroups;
 			}
 			else
 			{
 				mergedClient.Version = client2.Version;
 				mergedClient.ProductCode = client2.ProductCode ?? client1.ProductCode;
 				mergedClient.AppCode = client2.AppCode;
-				mergedClient.AudienceGroup = client2.AudienceGroup;
+				mergedClient.AudienceGroups = client2.AudienceGroups;
 			}
 
 			return mergedClient;
