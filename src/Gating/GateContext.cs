@@ -462,6 +462,13 @@ namespace Microsoft.Omex.Gating
 					// deny access in all cases.
 					grantAccess = false;
 				}
+
+				if (!grantAccess)
+				{
+					ULSLogging.LogTraceTag(0, Categories.GateSelection, Levels.Verbose,
+						"Not allowing access to gate '{0}' as '{1}' did not match the required criteria.",
+						gate.Name ?? "<NULL>", serviceName ?? "<NULL>");
+				}
 			}
 
 			return grantAccess;
