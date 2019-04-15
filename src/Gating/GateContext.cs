@@ -569,7 +569,8 @@ namespace Microsoft.Omex.Gating
 				RequiredClient requiredClient;
 				if (client == null ||
 					!allowedClients.TryGetValue(client.Name, out requiredClient) ||
-					!IsVersionInRange(client, requiredClient))
+					!IsVersionInRange(client, requiredClient) ||
+					!IsInAudienceGroup(client, requiredClient))
 				{
 					grantAccess = false;
 
@@ -648,6 +649,52 @@ namespace Microsoft.Omex.Gating
 				}
 
 				return true;
+			}
+		}
+
+
+		/// <summary>
+		/// Is the requesting in the audience group?
+		/// </summary>
+		/// <param name="callingClient">GatedClient</param>
+		/// <param name="requiredClient">RequiredClient</param>
+		/// <returns>true if the calling client is in required client audience group, false otherwise</returns>
+		private static bool IsInAudienceGroup(GatedClient callingClient, RequiredClient requiredClient)
+		{
+			if (string.IsNullOrWhiteSpace(requiredClient.AudienceGroup))
+			{
+				// Return true because AudienceGroup check is not needed
+				return true;
+			}
+
+			if (callingClient.AudienceGroups.Count == 0)
+			{
+				return false;
+			}
+
+			RequiredApplication requiredApplication;
+
+			if (callingClient.AppCode != null &&
+				requiredClient.Overrides.TryGetValue(callingClient.AppCode, out requiredApplication) &&
+				!string.IsNullOrWhiteSpace(requiredApplication.AudienceGroup))
+			{
+				// App Override
+				if (callingClient.AudienceGroups.Contains(requiredApplication.AudienceGroup, StringComparer.OrdinalIgnoreCase))
+				{
+					return true;
+				}
+
+				return false;
+			}
+			else
+			{
+				// ClientVersion
+				if (callingClient.AudienceGroups.Contains(requiredClient.AudienceGroup, StringComparer.OrdinalIgnoreCase))
+				{
+					return true;
+				}
+
+				return false;
 			}
 		}
 
