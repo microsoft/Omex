@@ -50,6 +50,12 @@ namespace Microsoft.Omex.Gating
 
 
 		/// <summary>
+		/// Value of Audience Group
+		/// </summary>
+		public string AudienceGroup { get; set; }
+
+
+		/// <summary>
 		/// Add version range to range set
 		/// </summary>
 		public bool AddVersionRange(ProductVersionRange range)

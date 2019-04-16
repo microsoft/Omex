@@ -588,6 +588,23 @@ namespace Microsoft.Omex.Gating.UnitTests
 
 
 		[Fact]
+		public void Load_GateSimpleAudienceGroup_ShouldLoadCorrectly()
+		{
+			GateDataSet dataSet = LoadGateDataSet(ValidSimpleWithAudienceGroup);
+
+			IGate gate = dataSet.GetGate("MyProduct.Test");
+
+			Assert.NotNull(gate);
+			Assert.NotNull(gate.ClientVersions);
+
+			RequiredClient client = gate.ClientVersions.Values.Single();
+			Assert.NotNull(client);
+			Assert.Equal(client.Name, "ClientOne");
+			Assert.Equal(client.AudienceGroup, "ClientLoop");
+		}
+
+
+		[Fact]
 		public void Load_GateSimpleAppOverride_ShouldLoadCorrectly()
 		{
 			GateDataSet dataSet = LoadGateDataSet(ValidSimpleWithApplicationOverride);
@@ -607,6 +624,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(app.Name, "8");
 			Assert.Equal(app.MinVersion, ProductVersion.Parse("16.8"));
 			Assert.Equal(app.MaxVersion, ProductVersion.Parse("16.9"));
+			Assert.Equal(app.AudienceGroup, "AppLoop");
 		}
 
 
@@ -1748,6 +1766,20 @@ namespace Microsoft.Omex.Gating.UnitTests
 
 
 		/// <summary>
+		/// Gating file with audience group
+		/// </summary>
+		private const string ValidSimpleWithAudienceGroup =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Gates>
+	<Gate Name=""MyProduct.Test"">
+		<ClientVersions>
+			<ClientVersion Name=""ClientOne"" MinVersion=""16.1"" MaxVersion=""16.2"" AudienceGroup=""ClientLoop""/>
+		</ClientVersions>
+	</Gate>
+</Gates>";
+
+
+		/// <summary>
 		/// Gating file with application override
 		/// </summary>
 		private const string ValidSimpleWithApplicationOverride =
@@ -1755,8 +1787,8 @@ namespace Microsoft.Omex.Gating.UnitTests
 <Gates>
 	<Gate Name=""MyProduct.Test"">
 		<ClientVersions>
-			<ClientVersion Name=""ClientOne"" MinVersion=""16.1"" MaxVersion=""16.2"">
-				<ApplicationOverride AppCode=""8"" MinVersion=""16.8"" MaxVersion=""16.9""/>
+			<ClientVersion Name=""ClientOne"" MinVersion=""16.1"" MaxVersion=""16.2"" AudienceGroup=""ClientLoop"">
+				<ApplicationOverride AppCode=""8"" MinVersion=""16.8"" MaxVersion=""16.9"" AudienceGroup=""AppLoop""/>
 			</ClientVersion>
 		</ClientVersions>
 	</Gate>

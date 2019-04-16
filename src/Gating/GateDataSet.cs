@@ -1417,6 +1417,7 @@ namespace Microsoft.Omex.Gating
 
 				RequiredClient client = new RequiredClient();
 				client.Name = clientVersion.Name;
+				client.AudienceGroup = clientVersion.AudienceGroup;
 				if (!string.IsNullOrWhiteSpace(clientVersion.MaxVersion))
 				{
 					if (ProductVersion.TryParse(clientVersion.MaxVersion, out ProductVersion version))
@@ -1573,6 +1574,11 @@ namespace Microsoft.Omex.Gating
 						}
 					}
 				}
+			}
+
+			if (!string.IsNullOrWhiteSpace(clientVersionOverride.AudienceGroup))
+			{
+				requiredApp.AudienceGroup = clientVersionOverride.AudienceGroup;
 			}
 
 			return requiredApp;
