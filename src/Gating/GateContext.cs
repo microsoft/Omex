@@ -462,6 +462,13 @@ namespace Microsoft.Omex.Gating
 					// deny access in all cases.
 					grantAccess = false;
 				}
+
+				if (!grantAccess)
+				{
+					ULSLogging.LogTraceTag(0x23840147 /* tag_97afh */, Categories.GateSelection, Levels.Verbose,
+						"Not allowing access to gate '{0}' as '{1}' did not match the required criteria.",
+						gate.Name ?? "<NULL>", serviceName ?? "<NULL>");
+				}
 			}
 
 			return grantAccess;
@@ -879,6 +886,12 @@ namespace Microsoft.Omex.Gating
 						"Not allowing access to gate '{0}' as user is not part of the set of users that have access.",
 						gate.Name);
 				}
+			}
+			else if (!grantAccess)
+			{
+				ULSLogging.LogTraceTag(0x23840148 /* tag_97afi */, Categories.GateSelection, Levels.Verbose,
+					"Not allowing access to gate '{0}' as user is not of the accepted user type '{1}'.",
+					gate.Name, userType);
 			}
 
 			if (!grantAccess)
