@@ -67,7 +67,7 @@ namespace Microsoft.Omex.Gating
 
 			if (!string.Equals(client1.Name, client2.Name, StringComparison.OrdinalIgnoreCase))
 			{
-				ULSLogging.LogTraceTag(0, Categories.GateSelection, Levels.Error,
+				ULSLogging.LogTraceTag(0x238217c0 /* tag_9675a */, Categories.GateSelection, Levels.Error,
 					"The name of the clients must be the same. Client1 '{0}', Client2 '{1}'.",
 					client1.Name, client2.Name);
 				return null;
