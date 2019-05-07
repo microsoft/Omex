@@ -30,14 +30,14 @@ namespace Microsoft.Omex.System.Caching
 		/// <returns>The object value.</returns>
 		public object Get(Type type)
 		{
-			if (!Code.ValidateArgument(type, nameof(type), TaggingUtilities.ReserveTag(0x23841023 /* tag_97ba9 */)))
+			if (!Code.ValidateArgument(type, nameof(type), TaggingUtilities.ReserveTag(0x238217c1 /* tag_9675b */)))
 			{
 				return null;
 			}
 
 			if (!Cache.TryGetValue(type, out object value))
 			{
-				ULSLogging.LogTraceTag(0x2385041e /* tag_97qq4 */, Categories.Common, Levels.Verbose,
+				ULSLogging.LogTraceTag(0x238217c2 /* tag_9675c */, Categories.Common, Levels.Verbose,
 					"Could not get type '{0}' from cache.", type);
 				return null;
 			}
@@ -56,8 +56,8 @@ namespace Microsoft.Omex.System.Caching
 		public object GetOrAdd(Type type, Func<object> value, out bool wasAdded)
 		{
 			wasAdded = false;
-			if (!Code.ValidateArgument(type, nameof(type), TaggingUtilities.ReserveTag(0x238507cf /* tag_97q5p */)) ||
-				!Code.ValidateArgument(value, nameof(value), TaggingUtilities.ReserveTag(0x238507d0 /* tag_97q5q */)))
+			if (!Code.ValidateArgument(type, nameof(type), TaggingUtilities.ReserveTag(0x238217c3 /* tag_9675d */)) ||
+				!Code.ValidateArgument(value, nameof(value), TaggingUtilities.ReserveTag(0x238217c4 /* tag_9675e */)))
 			{
 				return null;
 			}
@@ -66,7 +66,7 @@ namespace Microsoft.Omex.System.Caching
 			object attemptedToAdd = null;
 			object result = Cache.GetOrAdd(type, currentType =>
 				{
-					ULSLogging.LogTraceTag(0x2385041f /* tag_97qq5 */, Categories.Common, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x238217c5 /* tag_9675f */, Categories.Common, Levels.Verbose,
 						"Attempting to add type '{0}' to cache.", currentType);
 					wasAddedInternal = true;
 					attemptedToAdd = value();
@@ -77,13 +77,13 @@ namespace Microsoft.Omex.System.Caching
 			{
 				if (ReferenceEquals(result, attemptedToAdd))
 				{
-					ULSLogging.LogTraceTag(0x23850420 /* tag_97qq6 */, Categories.Common, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x238217c6 /* tag_9675g */, Categories.Common, Levels.Verbose,
 						"Type '{0}' was successfully added to cache.", type);
 					wasAdded = true;
 				}
 				else
 				{
-					ULSLogging.LogTraceTag(0x23850421 /* tag_97qq7 */, Categories.Common, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x238217c7 /* tag_9675h */, Categories.Common, Levels.Verbose,
 						"Type '{0}' was not successfully added to cache due to a benign multithreading collision.", type);
 				}
 			}
@@ -102,8 +102,8 @@ namespace Microsoft.Omex.System.Caching
 		public object AddOrUpdate(Type type, Func<object> value, out bool wasUpdated)
 		{
 			wasUpdated = false;
-			if (!Code.ValidateArgument(type, nameof(type), TaggingUtilities.ReserveTag(0x238507d1 /* tag_97q5r */)) ||
-				!Code.ValidateArgument(value, nameof(value), TaggingUtilities.ReserveTag(0x238507d2 /* tag_97q5s */)))
+			if (!Code.ValidateArgument(type, nameof(type), TaggingUtilities.ReserveTag(0x238217c8 /* tag_9675i */)) ||
+				!Code.ValidateArgument(value, nameof(value), TaggingUtilities.ReserveTag(0x238217c9 /* tag_9675j */)))
 			{
 				return null;
 			}
@@ -112,7 +112,7 @@ namespace Microsoft.Omex.System.Caching
 			object attemptedToUpdate = null;
 			object result = Cache.AddOrUpdate(type, currentType =>
 				{
-					ULSLogging.LogTraceTag(0x23850422 /* tag_97qq8 */, Categories.Common, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x238217ca /* tag_9675k */, Categories.Common, Levels.Verbose,
 						"Type '{0}' does not currently exist in cache. Attempting to add.", type);
 					wasUpdatedInternal = true;
 					attemptedToUpdate = value();
@@ -120,7 +120,7 @@ namespace Microsoft.Omex.System.Caching
 				},
 				(currentType, oldValue) =>
 				{
-					ULSLogging.LogTraceTag(0x23850423 /* tag_97qq9 */, Categories.Common, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x238217cb /* tag_9675l */, Categories.Common, Levels.Verbose,
 						"Attempting to update type '{0}' in cache.", currentType);
 					wasUpdatedInternal = true;
 					attemptedToUpdate = value();
@@ -131,13 +131,13 @@ namespace Microsoft.Omex.System.Caching
 			{
 				if (ReferenceEquals(result, attemptedToUpdate))
 				{
-					ULSLogging.LogTraceTag(0x23850440 /* tag_97qra */, Categories.Common, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x238217cc /* tag_9675m */, Categories.Common, Levels.Verbose,
 						"Type '{0}' was successfully updated in cache.", type);
 					wasUpdated = true;
 				}
 				else
 				{
-					ULSLogging.LogTraceTag(0x23850441 /* tag_97qrb */, Categories.Common, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x238217cd /* tag_9675n */, Categories.Common, Levels.Verbose,
 						"Type '{0}' was not successfully updated in cache due to a benign multithreading collision.", type);
 				}
 			}
