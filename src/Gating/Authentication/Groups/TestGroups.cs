@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <param name="testGroupsLoader">TestGroups DataSet loader</param>
 		public TestGroups(IConfigurationDataSetLoader<ITestGroupsDataSet> testGroupsLoader)
 		{
-			m_testGroupsDataSetLoader = Code.ExpectsArgument(testGroupsLoader, nameof(testGroupsLoader), TaggingUtilities.ReserveTag(0x2384d59b /* tag_97nw1 */));
+			m_testGroupsDataSetLoader = Code.ExpectsArgument(testGroupsLoader, nameof(testGroupsLoader), TaggingUtilities.ReserveTag(0x2382109b /* tag_967c1 */));
 		}
 
 
@@ -34,7 +34,7 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// otherwise.</returns>
 		public bool IsDefault(string groupNames)
 		{
-			if (!Code.ValidateNotNullOrWhiteSpaceArgument(groupNames, nameof(groupNames), TaggingUtilities.ReserveTag(0x2384d59c /* tag_97nw2 */)))
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(groupNames, nameof(groupNames), TaggingUtilities.ReserveTag(0x2382109c /* tag_967c2 */)))
 			{
 				return false;
 			}
@@ -62,7 +62,7 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <returns>The list of user groups.</returns>
 		public IEnumerable<string> GetUserGroups(IUserIdentity identity)
 		{
-			if (!Code.ValidateArgument(identity, nameof(identity), TaggingUtilities.ReserveTag(0x2384d59d /* tag_97nw3 */)))
+			if (!Code.ValidateArgument(identity, nameof(identity), TaggingUtilities.ReserveTag(0x2382109d /* tag_967c3 */)))
 			{
 				return Enumerable.Empty<string>();
 			}
@@ -100,7 +100,7 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <returns>List of user groups</returns>
 		public IEnumerable<string> GetUserGroups(string userEmail)
 		{
-			if (!Code.ValidateNotNullOrWhiteSpaceArgument(userEmail, nameof(userEmail), TaggingUtilities.ReserveTag(0x2384d59e /* tag_97nw4 */)))
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(userEmail, nameof(userEmail), TaggingUtilities.ReserveTag(0x2382109e /* tag_967c4 */)))
 			{
 				return Enumerable.Empty<string>();
 			}
@@ -131,7 +131,7 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <returns>List of group users</returns>
 		public IEnumerable<string> GetGroupUsers(string groupName)
 		{
-			if (!Code.ValidateNotNullOrWhiteSpaceArgument(groupName, nameof(groupName), TaggingUtilities.ReserveTag(0x2384d59f /* tag_97nw5 */)))
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(groupName, nameof(groupName), TaggingUtilities.ReserveTag(0x2382109f /* tag_967c5 */)))
 			{
 				return Enumerable.Empty<string>();
 			}
@@ -155,8 +155,8 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <returns>True if the user belongs to one or more of the groups, false otherwise.</returns>
 		public bool IsUserInGroups(IUserIdentity identity, string groupNames)
 		{
-			if (!Code.ValidateNotNullOrWhiteSpaceArgument(groupNames, nameof(groupNames), TaggingUtilities.ReserveTag(0x2384d5a0 /* tag_97nw6 */)) ||
-				!Code.ValidateArgument(identity, nameof(identity), TaggingUtilities.ReserveTag(0x2384d5a1 /* tag_97nw7 */)))
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(groupNames, nameof(groupNames), TaggingUtilities.ReserveTag(0x238210a0 /* tag_967c6 */)) ||
+				!Code.ValidateArgument(identity, nameof(identity), TaggingUtilities.ReserveTag(0x238210a1 /* tag_967c7 */)))
 			{
 				return false;
 			}
@@ -188,8 +188,8 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <returns>true if the user belongs to one or more of the groups, false otherwise</returns>
 		public bool IsUserInGroups(string userEmail, string groupNames)
 		{
-			if (!Code.ValidateNotNullOrWhiteSpaceArgument(groupNames, nameof(groupNames), TaggingUtilities.ReserveTag(0x2384d5a2 /* tag_97nw8 */)) ||
-				!Code.ValidateNotNullOrWhiteSpaceArgument(userEmail, nameof(userEmail), TaggingUtilities.ReserveTag(0x2384d5a3 /* tag_97nw9 */)))
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(groupNames, nameof(groupNames), TaggingUtilities.ReserveTag(0x238210a2 /* tag_967c8 */)) ||
+				!Code.ValidateNotNullOrWhiteSpaceArgument(userEmail, nameof(userEmail), TaggingUtilities.ReserveTag(0x238210a3 /* tag_967c9 */)))
 			{
 				return false;
 			}
@@ -213,12 +213,12 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			ITestGroupsDataSet dataSet = m_testGroupsDataSetLoader.LoadedDataSet;
 			if (dataSet == null)
 			{
-				ULSLogging.LogTraceTag(0x2384d5c0 /* tag_97nxa */, Categories.TestGroupsDataSet, Levels.Error,
+				ULSLogging.LogTraceTag(0x238210c0 /* tag_967da */, Categories.TestGroupsDataSet, Levels.Error,
 					"TestGroupsDataSet is null, TestGroups authentication will fail.");
 			}
 			else if (!dataSet.IsHealthy)
 			{
-				ULSLogging.LogTraceTag(0x2384d5c1 /* tag_97nxb */, Categories.TestGroupsDataSet, Levels.Error,
+				ULSLogging.LogTraceTag(0x238210c1 /* tag_967db */, Categories.TestGroupsDataSet, Levels.Error,
 					"TestGroupsDataSet is not healthy.");
 			}
 

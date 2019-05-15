@@ -33,8 +33,8 @@ namespace Microsoft.Omex.System.Extensions
 		/// <returns>Null if attribute is missing, otherwise its value</returns>
 		public static string GetAttributeValue(this XElement xmlElement, string attributeName, bool optional = false)
 		{
-			if (!Code.ValidateArgument(xmlElement, "xmlElement", TaggingUtilities.ReserveTag(0x2385060b /* tag_97qyl */)) ||
-				!Code.ValidateNotNullOrWhiteSpaceArgument(attributeName, "attributeName", TaggingUtilities.ReserveTag(0x2385060c /* tag_97qym */)))
+			if (!Code.ValidateArgument(xmlElement, "xmlElement", TaggingUtilities.ReserveTag(0x23820886 /* tag_9668g */)) ||
+				!Code.ValidateNotNullOrWhiteSpaceArgument(attributeName, "attributeName", TaggingUtilities.ReserveTag(0x23820887 /* tag_9668h */)))
 			{
 				return null;
 			}
@@ -43,7 +43,7 @@ namespace Microsoft.Omex.System.Extensions
 
 			if (!optional &&
 				!Code.Validate(attribute != null, string.Format(CultureInfo.InvariantCulture,
-					"{0} attribute is missing in the provided Xml", attributeName), TaggingUtilities.ReserveTag(0x2385060d /* tag_97qyn */)))
+					"{0} attribute is missing in the provided Xml", attributeName), TaggingUtilities.ReserveTag(0x23820888 /* tag_9668i */)))
 			{
 				return null;
 			}
@@ -288,14 +288,14 @@ namespace Microsoft.Omex.System.Extensions
 		{
 			if (type == null)
 			{
-				ULSLogging.LogTraceTag(0x23850322 /* tag_97qm8 */, Categories.Common, Levels.Error,
+				ULSLogging.LogTraceTag(0x23820889 /* tag_9668j */, Categories.Common, Levels.Error,
 					"Null type value passed to GetXmlReaderSettings.");
 				return null;
 			}
 
 			if (string.IsNullOrEmpty(schema))
 			{
-				ULSLogging.LogTraceTag(0x23850323 /* tag_97qm9 */, Categories.Common, Levels.Error,
+				ULSLogging.LogTraceTag(0x2382088a /* tag_9668k */, Categories.Common, Levels.Error,
 					"Null or empty schema value passed to GetXmlReaderSettings.");
 				return null;
 			}
@@ -363,19 +363,19 @@ namespace Microsoft.Omex.System.Extensions
 			}
 			catch (InvalidDataException exception)
 			{
-				ULSLogging.ReportExceptionTag(0x23850340 /* tag_97qna */, Categories.Common, exception,
+				ULSLogging.ReportExceptionTag(0x2382088b /* tag_9668l */, Categories.Common, exception,
 					"XmlExtensions failed to read/decompress incorrect file stream.");
 				return null;
 			}
 			catch (InvalidOperationException exception)
 			{
-				ULSLogging.ReportExceptionTag(0x23850341 /* tag_97qnb */, Categories.Common, exception,
+				ULSLogging.ReportExceptionTag(0x2382088c /* tag_9668m */, Categories.Common, exception,
 					"XmlExtensions failed to parse file for given object's state.");
 				return null;
 			}
 			catch (Exception exception)
 			{
-				ULSLogging.ReportExceptionTag(0x23850342 /* tag_97qnc */, Categories.Common, exception,
+				ULSLogging.ReportExceptionTag(0x2382088d /* tag_9668n */, Categories.Common, exception,
 					"XmlExtensions failed to parse file.");
 				return null;
 			}

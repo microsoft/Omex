@@ -23,9 +23,9 @@ namespace Microsoft.Omex.System.Data.FileSystem
 		/// <param name="name">File Name including extension</param>
 		public FileResource(IFile file, string folder, string name)
 		{
-			File = Code.ExpectsArgument(file, nameof(file), TaggingUtilities.ReserveTag(0x2384719c /* tag_97hg2 */));
-			Folder = Code.ExpectsNotNullOrWhiteSpaceArgument(folder, nameof(folder), TaggingUtilities.ReserveTag(0x2384719d /* tag_97hg3 */));
-			Name = Code.ExpectsNotNullOrWhiteSpaceArgument(name, nameof(name), TaggingUtilities.ReserveTag(0x2384719e /* tag_97hg4 */));
+			File = Code.ExpectsArgument(file, nameof(file), TaggingUtilities.ReserveTag(0x238208d2 /* tag_9669s */));
+			Folder = Code.ExpectsNotNullOrWhiteSpaceArgument(folder, nameof(folder), TaggingUtilities.ReserveTag(0x238208d3 /* tag_9669t */));
+			Name = Code.ExpectsNotNullOrWhiteSpaceArgument(name, nameof(name), TaggingUtilities.ReserveTag(0x238208d4 /* tag_9669u */));
 
 			bool locationSet = false;
 			try
@@ -37,13 +37,13 @@ namespace Microsoft.Omex.System.Data.FileSystem
 				}
 				else
 				{
-					ULSLogging.LogTraceTag(0x23847298 /* tag_97hky */, Categories.ConfigurationDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0x238208d5 /* tag_9669v */, Categories.ConfigurationDataSet, Levels.Error,
 						"Failed to combine FileResource.Location for folder: '{0}', name: '{1}'", Folder, Name);
 				}
 			}
 			catch (ArgumentException exception)
 			{
-				ULSLogging.ReportExceptionTag(0x2384710e /* tag_97heo */, Categories.ConfigurationDataSet, exception,
+				ULSLogging.ReportExceptionTag(0x238208d6 /* tag_9669w */, Categories.ConfigurationDataSet, exception,
 					"Exception constructing FileResource for folder: '{0}', name: '{1}'", Folder, Name);
 			}
 
@@ -64,7 +64,7 @@ namespace Microsoft.Omex.System.Data.FileSystem
 			content = null;
 			if (!File.Exists(Location))
 			{
-				ULSLogging.LogTraceTag(0x2384719f /* tag_97hg5 */, Categories.ConfigurationDataSet, Levels.Verbose,
+				ULSLogging.LogTraceTag(0x238208d7 /* tag_9669x */, Categories.ConfigurationDataSet, Levels.Verbose,
 					"FileResource does not exist: '{0}'", Location);
 				return ResourceReadStatus.NotFound;
 			}
@@ -76,7 +76,7 @@ namespace Microsoft.Omex.System.Data.FileSystem
 			}
 			catch (Exception exception)
 			{
-				ULSLogging.ReportExceptionTag(0x238471a0 /* tag_97hg6 */, Categories.ConfigurationDataSet, exception,
+				ULSLogging.ReportExceptionTag(0x238208d8 /* tag_9669y */, Categories.ConfigurationDataSet, exception,
 					"Exception reading file '{0}'", Location);
 
 				content = null;
