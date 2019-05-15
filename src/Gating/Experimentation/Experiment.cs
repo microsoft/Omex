@@ -29,12 +29,12 @@ namespace Microsoft.Omex.Gating.Experimentation
 		/// <returns>true if gate added successfully</returns>
 		public bool Add(IGate gate)
 		{
-			if (!Code.ValidateArgument(gate, nameof(gate), TaggingUtilities.ReserveTag(0x238507c5 /* tag_97q5f */)) ||
-				!Code.ValidateArgument(gate.ExperimentInfo, nameof(gate.ExperimentInfo), TaggingUtilities.ReserveTag(0x238507c6 /* tag_97q5g */)) ||
+			if (!Code.ValidateArgument(gate, nameof(gate), TaggingUtilities.ReserveTag(0x23821089 /* tag_967cj */)) ||
+				!Code.ValidateArgument(gate.ExperimentInfo, nameof(gate.ExperimentInfo), TaggingUtilities.ReserveTag(0x2382108a /* tag_967ck */)) ||
 				!Code.ValidateNotNullOrWhiteSpaceArgument(
 					gate.ExperimentInfo.ExperimentName,
 					nameof(gate.ExperimentInfo.ExperimentName),
-					TaggingUtilities.ReserveTag(0x238507c7 /* tag_97q5h */)))
+					TaggingUtilities.ReserveTag(0x2382108b /* tag_967cl */)))
 			{
 				return false;
 			}

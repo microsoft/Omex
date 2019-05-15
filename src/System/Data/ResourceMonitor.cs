@@ -53,8 +53,8 @@ namespace Microsoft.Omex.System.Data
 		/// <returns><c>true</c> if the operation succeeded; <c>false</c> otherwise.</returns>
 		public bool TryStartMonitoring(IEnumerable<IResource> resourcesToMonitor, ResourceUpdatedHandler callbackAction)
 		{
-			if (!Code.ValidateArgument(resourcesToMonitor, nameof(resourcesToMonitor), TaggingUtilities.ReserveTag(0x238506c2 /* tag_97q1c */)) ||
-				!Code.ValidateArgument(callbackAction, nameof(callbackAction), TaggingUtilities.ReserveTag(0x238506c3 /* tag_97q1d */)))
+			if (!Code.ValidateArgument(resourcesToMonitor, nameof(resourcesToMonitor), TaggingUtilities.ReserveTag(0x238208c9 /* tag_9669j */)) ||
+				!Code.ValidateArgument(callbackAction, nameof(callbackAction), TaggingUtilities.ReserveTag(0x238208ca /* tag_9669k */)))
 			{
 				return false;
 			}
@@ -92,7 +92,7 @@ namespace Microsoft.Omex.System.Data
 		{
 			if (!m_resourceMonitoringData.TryRemove(callback, out ResourceMonitoringData monitoringInstance))
 			{
-				ULSLogging.LogTraceTag(0x2385038e /* tag_97qoo */, Categories.ConfigurationDataSet, Levels.Verbose,
+				ULSLogging.LogTraceTag(0x238208cb /* tag_9669l */, Categories.ConfigurationDataSet, Levels.Verbose,
 					"An attempt to remove a non-existing handler");
 			}
 		}
@@ -172,7 +172,7 @@ namespace Microsoft.Omex.System.Data
 				IResourceDetails newDetails = GetFileDetails(resource);
 				if (newDetails == null)
 				{
-					ULSLogging.LogTraceTag(0x2385038f /* tag_97qop */, Categories.ConfigurationDataSet, Levels.Warning, "Failed to load resource details for '{0}'", resource.Name);
+					ULSLogging.LogTraceTag(0x238208cc /* tag_9669m */, Categories.ConfigurationDataSet, Levels.Warning, "Failed to load resource details for '{0}'", resource.Name);
 					continue;
 				}
 
@@ -237,7 +237,7 @@ namespace Microsoft.Omex.System.Data
 				() =>
 				{
 					iteration++;
-					ULSLogging.LogTraceTag(0x23850390 /* tag_97qoq */, Categories.ConfigurationDataSet, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x238208cd /* tag_9669n */, Categories.ConfigurationDataSet, Levels.Verbose,
 						"Attempting data set load for resource '{0}' in iteration '{1}' of '{2}'.",
 						resource.Name, iteration, retryPolicy.RetryLimit);
 
@@ -247,7 +247,7 @@ namespace Microsoft.Omex.System.Data
 
 			if (finalStatus.Item1 != ResourceReadStatus.Success)
 			{
-				ULSLogging.LogTraceTag(0x23850391 /* tag_97qor */, Categories.ConfigurationDataSet, Levels.Warning,
+				ULSLogging.LogTraceTag(0x238208ce /* tag_9669o */, Categories.ConfigurationDataSet, Levels.Warning,
 					"Failed to read resource '{0}' as the file read status is '{1}'.",
 					resource.Name, finalStatus);
 				return null;

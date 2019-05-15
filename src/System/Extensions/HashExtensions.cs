@@ -24,7 +24,7 @@ namespace Microsoft.Omex.System.Extensions
 		/// <returns>Hash as a Base64 string.</returns>
 		public static string GetHash<T>(this byte[] instance, bool convertToHexString = false) where T : HashAlgorithm, new()
 		{
-			if (!Code.ValidateArgument(instance, nameof(instance), TaggingUtilities.ReserveTag(0x23850383 /* tag_97qod */)))
+			if (!Code.ValidateArgument(instance, nameof(instance), TaggingUtilities.ReserveTag(0x23820893 /* tag_9668t */)))
 			{
 				return null;
 			}
@@ -45,7 +45,7 @@ namespace Microsoft.Omex.System.Extensions
 		/// <returns>Converted string.</returns>
 		private static string ConvertToString(byte[] input, bool convertToHexString = false)
 		{
-			if (!Code.ValidateArgument(input, nameof(input), TaggingUtilities.ReserveTag(0x23850385 /* tag_97qof */)))
+			if (!Code.ValidateArgument(input, nameof(input), TaggingUtilities.ReserveTag(0x23820894 /* tag_9668u */)))
 			{
 				return null;
 			}

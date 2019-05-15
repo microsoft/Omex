@@ -148,7 +148,7 @@ namespace Microsoft.Omex.System.Model.Types
 		{
 			if (code == null)
 			{
-				ULSLogging.LogTraceTag(0x23850284 /* tag_97qke */, Categories.Common, Levels.Verbose, "Cannot convert null product code to string.");
+				ULSLogging.LogTraceTag(0x23820885 /* tag_9668f */, Categories.Common, Levels.Verbose, "Cannot convert null product code to string.");
 				return null;
 			}
 
