@@ -33,7 +33,7 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <param name="fileDetails">The file details.</param>
 		protected override void OnLoad(IList<ConfigurationDataSetLoadDetails> fileDetails)
 		{
-			ULSLogging.LogTraceTag(0, Categories.TestGroupsDataSet, Levels.Info,
+			ULSLogging.LogTraceTag(0x2382108c /* tag_967cm */, Categories.TestGroupsDataSet, Levels.Info,
 				FormatOnLoadMessage(fileDetails));
 		}
 
@@ -46,7 +46,7 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		protected override void OnReload(IList<ConfigurationDataSetLoadDetails> oldFileDetails,
 			IList<ConfigurationDataSetLoadDetails> newFileDetails)
 		{
-			ULSLogging.LogTraceTag(0, Categories.TestGroupsDataSet, Levels.Info,
+			ULSLogging.LogTraceTag(0x2382108d /* tag_967cn */, Categories.TestGroupsDataSet, Levels.Info,
 				FormatOnReloadMessage(oldFileDetails, newFileDetails));
 		}
 	}

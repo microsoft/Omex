@@ -22,8 +22,8 @@ namespace Microsoft.Omex.System.Extensions
 		/// <returns>Resource as string, or null if not found</returns>
 		public static string LoadEmbeddedResourceAsString(this Assembly assembly, string resourceName)
 		{
-			if (!Code.ValidateArgument(assembly, nameof(assembly), TaggingUtilities.ReserveTag(0)) ||
-				!Code.ValidateNotNullOrWhiteSpaceArgument(resourceName, nameof(resourceName), TaggingUtilities.ReserveTag(0)))
+			if (!Code.ValidateArgument(assembly, nameof(assembly), TaggingUtilities.ReserveTag(0x23820895 /* tag_9668v */)) ||
+				!Code.ValidateNotNullOrWhiteSpaceArgument(resourceName, nameof(resourceName), TaggingUtilities.ReserveTag(0x23820896 /* tag_9668w */)))
 			{
 				return null;
 			}
@@ -41,7 +41,7 @@ namespace Microsoft.Omex.System.Extensions
 				}
 				else
 				{
-					ULSLogging.LogTraceTag(0, Categories.Infrastructure, Levels.Error,
+					ULSLogging.LogTraceTag(0x23820897 /* tag_9668x */, Categories.Infrastructure, Levels.Error,
 						"Embedded resource '{0}' was not found in '{1}'.", resourceName, assembly.FullName);
 
 					return null;
@@ -52,7 +52,7 @@ namespace Microsoft.Omex.System.Extensions
 			{
 				if (stream == null)
 				{
-					ULSLogging.LogTraceTag(0, Categories.Infrastructure, Levels.Error,
+					ULSLogging.LogTraceTag(0x23820898 /* tag_9668y */, Categories.Infrastructure, Levels.Error,
 						"Embedded resource '{0}' could not be loaded from '{1}'.", resourceName, assembly.FullName);
 
 					return null;

@@ -31,10 +31,10 @@ namespace Microsoft.Omex.System.Data
 
 			Code.Expects<ArgumentException>(length >= 0,
 				string.Format(CultureInfo.InvariantCulture, "'{0}' must be greater than or equal to zero but is '{1}'.", nameof(length), length),
-				TaggingUtilities.ReserveTag(0));
+				TaggingUtilities.ReserveTag(0x238208d0 /* tag_9669q */));
 			Length = length;
 
-			Contents = Code.ExpectsArgument(contents, nameof(contents), TaggingUtilities.ReserveTag(0));
+			Contents = Code.ExpectsArgument(contents, nameof(contents), TaggingUtilities.ReserveTag(0x238208d1 /* tag_9669r */));
 
 			SHA256Hash = contents.GetHash<SHA256CryptoServiceProvider>();
 		}

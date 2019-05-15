@@ -70,8 +70,8 @@ namespace Microsoft.Omex.System.Model.Types
 		/// <param name="minor">The minor version number.</param>
 		public ProductVersion(int major, int minor)
 		{
-			Code.Expects<ArgumentOutOfRangeException>(major >= 0, "Major is less than zero.", TaggingUtilities.ReserveTag(0));
-			Code.Expects<ArgumentOutOfRangeException>(minor >= 0, "Minor is less than zero.", TaggingUtilities.ReserveTag(0));
+			Code.Expects<ArgumentOutOfRangeException>(major >= 0, "Major is less than zero.", TaggingUtilities.ReserveTag(0x23820854 /* tag_9667u */));
+			Code.Expects<ArgumentOutOfRangeException>(minor >= 0, "Minor is less than zero.", TaggingUtilities.ReserveTag(0x23820855 /* tag_9667v */));
 
 			Major = major;
 			Minor = minor;
@@ -87,9 +87,9 @@ namespace Microsoft.Omex.System.Model.Types
 		/// <param name="build">The build number</param>
 		public ProductVersion(int major, int minor, int build)
 		{
-			Code.Expects<ArgumentOutOfRangeException>(major >= 0, "Major is less than zero.", TaggingUtilities.ReserveTag(0));
-			Code.Expects<ArgumentOutOfRangeException>(minor >= 0, "Minor is less than zero.", TaggingUtilities.ReserveTag(0));
-			Code.Expects<ArgumentOutOfRangeException>(build >= 0, "Build is less than zero.", TaggingUtilities.ReserveTag(0));
+			Code.Expects<ArgumentOutOfRangeException>(major >= 0, "Major is less than zero.", TaggingUtilities.ReserveTag(0x23820856 /* tag_9667w */));
+			Code.Expects<ArgumentOutOfRangeException>(minor >= 0, "Minor is less than zero.", TaggingUtilities.ReserveTag(0x23820857 /* tag_9667x */));
+			Code.Expects<ArgumentOutOfRangeException>(build >= 0, "Build is less than zero.", TaggingUtilities.ReserveTag(0x23820858 /* tag_9667y */));
 
 			Major = major;
 			Minor = minor;
@@ -107,10 +107,10 @@ namespace Microsoft.Omex.System.Model.Types
 		/// <param name="revision">The revision number</param>
 		public ProductVersion(int major, int minor, int build, int revision)
 		{
-			Code.Expects<ArgumentOutOfRangeException>(major >= 0, "Major is less than zero.", TaggingUtilities.ReserveTag(0));
-			Code.Expects<ArgumentOutOfRangeException>(minor >= 0, "Minor is less than zero.", TaggingUtilities.ReserveTag(0));
-			Code.Expects<ArgumentOutOfRangeException>(build >= 0, "Build is less than zero.", TaggingUtilities.ReserveTag(0));
-			Code.Expects<ArgumentOutOfRangeException>(revision >= 0, "Revision is less than zero.", TaggingUtilities.ReserveTag(0));
+			Code.Expects<ArgumentOutOfRangeException>(major >= 0, "Major is less than zero.", TaggingUtilities.ReserveTag(0x23820859 /* tag_9667z */));
+			Code.Expects<ArgumentOutOfRangeException>(minor >= 0, "Minor is less than zero.", TaggingUtilities.ReserveTag(0x23820880 /* tag_9668a */));
+			Code.Expects<ArgumentOutOfRangeException>(build >= 0, "Build is less than zero.", TaggingUtilities.ReserveTag(0x23820881 /* tag_9668b */));
+			Code.Expects<ArgumentOutOfRangeException>(revision >= 0, "Revision is less than zero.", TaggingUtilities.ReserveTag(0x23820882 /* tag_9668c */));
 
 			Major = major;
 			Minor = minor;
@@ -137,7 +137,7 @@ namespace Microsoft.Omex.System.Model.Types
 		/// <returns>True if v1 is less than v2; false otherwise.</returns>
 		public static bool operator <(ProductVersion v1, ProductVersion v2)
 		{
-			Code.ExpectsArgument(v1, nameof(v1), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(v1, nameof(v1), TaggingUtilities.ReserveTag(0x23820883 /* tag_9668d */));
 
 			return (v1.CompareTo(v2) < 0);
 		}
@@ -152,7 +152,7 @@ namespace Microsoft.Omex.System.Model.Types
 		/// <returns>True if v1 is less than or equal to v2; false otherwise.</returns>
 		public static bool operator <=(ProductVersion v1, ProductVersion v2)
 		{
-			Code.ExpectsArgument(v1, nameof(v1), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(v1, nameof(v1), TaggingUtilities.ReserveTag(0x23820884 /* tag_9668e */));
 
 			return (v1.CompareTo(v2) <= 0);
 		}

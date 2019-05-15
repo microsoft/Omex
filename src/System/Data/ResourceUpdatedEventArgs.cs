@@ -20,7 +20,7 @@ namespace Microsoft.Omex.System.Data
 		/// <param name="isInitialLoad">A value indicating whether this is the initial load.</param>
 		public ResourceUpdatedEventArgs(IDictionary<string, IResourceDetails> details, bool isInitialLoad)
 		{
-			Details = Code.ExpectsArgument(details, nameof(details), TaggingUtilities.ReserveTag(0));
+			Details = Code.ExpectsArgument(details, nameof(details), TaggingUtilities.ReserveTag(0x238208c3 /* tag_9669d */));
 
 			IsInitialLoad = isInitialLoad;
 		}

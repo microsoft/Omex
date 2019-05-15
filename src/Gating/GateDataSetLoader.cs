@@ -45,7 +45,7 @@ namespace Microsoft.Omex.Gating
 		/// <param name="fileDetails">The file details.</param>
 		protected override void OnLoad(IList<ConfigurationDataSetLoadDetails> fileDetails)
 		{
-			ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Info,
+			ULSLogging.LogTraceTag(0x23821048 /* tag_967bi */, Categories.GateDataSet, Levels.Info,
 				FormatOnLoadMessage(fileDetails));
 		}
 
@@ -58,7 +58,7 @@ namespace Microsoft.Omex.Gating
 		protected override void OnReload(IList<ConfigurationDataSetLoadDetails> oldFileDetails,
 			IList<ConfigurationDataSetLoadDetails> newFileDetails)
 		{
-			ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Info,
+			ULSLogging.LogTraceTag(0x23821049 /* tag_967bj */, Categories.GateDataSet, Levels.Info,
 				FormatOnReloadMessage(oldFileDetails, newFileDetails));
 		}
 	}

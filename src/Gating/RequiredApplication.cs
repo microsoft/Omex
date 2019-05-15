@@ -60,7 +60,7 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		public bool AddVersionRange(ProductVersionRange range)
 		{
-			if (!Code.ValidateArgument(range, nameof(range), TaggingUtilities.ReserveTag(0)))
+			if (!Code.ValidateArgument(range, nameof(range), TaggingUtilities.ReserveTag(0x23821044 /* tag_967be */)))
 			{
 				return false;
 			}

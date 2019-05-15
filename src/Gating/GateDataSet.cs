@@ -65,8 +65,8 @@ namespace Microsoft.Omex.Gating
 		/// <param name="testGroupsResourceName">Name of the test groups resource.</param>
 		public GateDataSet(string gatesResourceName, string testGroupsResourceName)
 		{
-			m_gatesResourceName = Code.ExpectsNotNullOrWhiteSpaceArgument(gatesResourceName, "gatesResourceName", TaggingUtilities.ReserveTag(0));
-			m_testGroupsResourceName = Code.ExpectsNotNullOrWhiteSpaceArgument(testGroupsResourceName, "testGroupsResourceName", TaggingUtilities.ReserveTag(0));
+			m_gatesResourceName = Code.ExpectsNotNullOrWhiteSpaceArgument(gatesResourceName, "gatesResourceName", TaggingUtilities.ReserveTag(0x238210c2 /* tag_967dc */));
+			m_testGroupsResourceName = Code.ExpectsNotNullOrWhiteSpaceArgument(testGroupsResourceName, "testGroupsResourceName", TaggingUtilities.ReserveTag(0x238210c3 /* tag_967dd */));
 
 			Experiments = new Experiments();
 		}
@@ -83,7 +83,7 @@ namespace Microsoft.Omex.Gating
 		{
 			if (string.IsNullOrWhiteSpace(gateName))
 			{
-				ULSLogging.LogTraceTag(0, Categories.GateDataSet,
+				ULSLogging.LogTraceTag(0x238210c4 /* tag_967de */, Categories.GateDataSet,
 					Levels.Error, true, "Parameter 'gateName' must not be null or whitespace.");
 				return null;
 			}
@@ -178,12 +178,12 @@ namespace Microsoft.Omex.Gating
 			bool gateResourceStatus = LoadResource(resources, m_gatesResourceName, out gateContent);
 			if (!gateResourceStatus)
 			{
-				ULSLogging.LogCodeErrorTag(0, Categories.GateDataSet, false,
+				ULSLogging.LogCodeErrorTag(0x238210c5 /* tag_967df */, Categories.GateDataSet, false,
 					true, "Failed to retrieve Gates resource content for GateDataSet.");
 			}
 			else if (gateContent == null || gateContent.Length == 0)
 			{
-				ULSLogging.LogCodeErrorTag(0, Categories.GateDataSet, false,
+				ULSLogging.LogCodeErrorTag(0x238210c6 /* tag_967dg */, Categories.GateDataSet, false,
 					true, "Null or empty Gate resource data encountered in GateDataSet loading method");
 			}
 			else
@@ -209,7 +209,7 @@ namespace Microsoft.Omex.Gating
 					GatingConfiguration.Gates gateObject = stream.Read<GatingConfiguration.Gates>(GatingSchema, null);
 					if (gateObject == null)
 					{
-						ULSLogging.LogCodeErrorTag(0, Categories.GateDataSet, false,
+						ULSLogging.LogCodeErrorTag(0x238210c7 /* tag_967dh */, Categories.GateDataSet, false,
 							true, "Null object returned after deserializing Gating Configuration xml data.");
 						return;
 					}
@@ -223,7 +223,7 @@ namespace Microsoft.Omex.Gating
 					{
 						if (m_gatesByKey.TryGetValue(gate.Key, out IGate duplicateKeyGate))
 						{
-							ULSLogging.LogCodeErrorTag(0, Categories.GateDataSet, false, true,
+							ULSLogging.LogCodeErrorTag(0x238210c8 /* tag_967di */, Categories.GateDataSet, false, true,
 								"Duplicate gate key '{0}' for '{1}' and '{2}'", gate.Key, gate.FullyQualifiedName,
 								duplicateKeyGate.FullyQualifiedName);
 						}
@@ -238,7 +238,7 @@ namespace Microsoft.Omex.Gating
 			}
 			catch (InvalidOperationException exception)
 			{
-				ULSLogging.ReportExceptionTag(0, Categories.GateDataSet, exception,
+				ULSLogging.ReportExceptionTag(0x238210c9 /* tag_967dj */, Categories.GateDataSet, exception,
 					true, "Failed to load gate DataSet due to exception.");
 			}
 		}
@@ -253,7 +253,7 @@ namespace Microsoft.Omex.Gating
 		{
 			if (configurationGates == null)
 			{
-				ULSLogging.LogCodeErrorTag(0, Categories.GateDataSet, false,
+				ULSLogging.LogCodeErrorTag(0x238210ca /* tag_967dk */, Categories.GateDataSet, false,
 					true, "The gates configuration object is empty.");
 				return null;
 			}
@@ -271,7 +271,7 @@ namespace Microsoft.Omex.Gating
 					{
 						if (string.IsNullOrWhiteSpace(configurationGate.Name))
 						{
-							ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+							ULSLogging.LogTraceTag(0x238210cb /* tag_967dl */, Categories.GateDataSet, Levels.Error,
 								true, "The name of a gate cannot be null or whitespace, ignoring gate.");
 							continue;
 						}
@@ -286,7 +286,7 @@ namespace Microsoft.Omex.Gating
 
 							if (duplicateGates.Add(configurationGate.Name))
 							{
-								ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+								ULSLogging.LogTraceTag(0x238210cc /* tag_967dm */, Categories.GateDataSet, Levels.Error,
 									true, "Gate '{0}' appears multiple times. Each gate must be unique.",
 									configurationGate.Name);
 							}
@@ -308,7 +308,7 @@ namespace Microsoft.Omex.Gating
 					{
 						if (string.IsNullOrWhiteSpace(experiment.Name))
 						{
-							ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+							ULSLogging.LogTraceTag(0x238210cd /* tag_967dn */, Categories.GateDataSet, Levels.Error,
 								true, "The name of an experiment cannot be null or whitespace, ignoring experiment.");
 							continue;
 						}
@@ -325,7 +325,7 @@ namespace Microsoft.Omex.Gating
 
 								if (duplicateGates.Add(configurationExperimentGate.Name))
 								{
-									ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+									ULSLogging.LogTraceTag(0x238210ce /* tag_967do */, Categories.GateDataSet, Levels.Error,
 										true, "Gate '{0}' appears multiple times. Each gate must be unique.",
 										configurationExperimentGate.Name);
 								}
@@ -499,7 +499,7 @@ namespace Microsoft.Omex.Gating
 			if (parent.UserTypes == UserGroupTypes.None)
 			{
 				// No user access, this gate should have no user access as well
-				ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Verbose, true,
+				ULSLogging.LogTraceTag(0x238210cf /* tag_967dp */, Categories.GateDataSet, Levels.Verbose, true,
 					"Parent gate '{0}' has UserGroupTypes set to 'None', setting to 'None' on gate '{1}' as well.",
 					parent.Name ?? "<NULL>", gate.Name ?? "<NULL>");
 
@@ -559,7 +559,7 @@ namespace Microsoft.Omex.Gating
 					if (!parent.ClientVersions.TryGetValue(clientName, out RequiredClient parentClient))
 					{
 						// Doesn't exist so remove it from our DataSet
-						ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+						ULSLogging.LogTraceTag(0x238210d0 /* tag_967dq */, Categories.GateDataSet, Levels.Error,
 							true, "Client '{0}' of gate '{1}' does not exist on parent gate '{2}', removing client.",
 							clientName, gate.Name, parent.Name);
 						clientsToRemove.Add(clientName);
@@ -927,7 +927,7 @@ namespace Microsoft.Omex.Gating
 
 			if (gatesToRemove.Count > 0)
 			{
-				ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+				ULSLogging.LogTraceTag(0x238210d1 /* tag_967dr */, Categories.GateDataSet, Levels.Error,
 					true, "The following gates have missing parent gates or circular dependencies in the hierarchy, removing all: {0}",
 					string.Join(", ", gatesToRemove));
 
@@ -968,7 +968,7 @@ namespace Microsoft.Omex.Gating
 
 			if (string.IsNullOrWhiteSpace(gate.ParentGate.Name))
 			{
-				ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+				ULSLogging.LogTraceTag(0x238210d2 /* tag_967ds */, Categories.GateDataSet, Levels.Error,
 					true, "Gate '{0}' has a null or whitespace only parent gate, ignoring parent gate.",
 					gate.Name);
 
@@ -978,7 +978,7 @@ namespace Microsoft.Omex.Gating
 
 			if (!gates.TryGetValue(gate.ParentGate.Name, out Gate parent))
 			{
-				ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+				ULSLogging.LogTraceTag(0x238210d3 /* tag_967dt */, Categories.GateDataSet, Levels.Error,
 					true, "Gate '{0}' has a parent gate '{1}' that does not exist, removing gate '{0}'.",
 					gate.Name, gate.ParentGate.Name);
 
@@ -989,7 +989,7 @@ namespace Microsoft.Omex.Gating
 
 			if (parent.ExperimentInfo != null)
 			{
-				ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+				ULSLogging.LogTraceTag(0x238210d4 /* tag_967du */, Categories.GateDataSet, Levels.Error,
 					true, "Gate '{0}' has a parent gate '{1}' that is experimental, removing gate '{0}'.",
 					gate.Name, gate.ParentGate.Name);
 
@@ -1007,7 +1007,7 @@ namespace Microsoft.Omex.Gating
 				if (ancestors.Contains(ancestor.Name))
 				{
 					// The hierarchy contains circular dependencies, removing the gates
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0x238210d5 /* tag_967dv */, Categories.GateDataSet, Levels.Error,
 						true, "The ancestor chain '{0}' for gate '{0}' contains a circular dependency, removing all gates in chain.",
 						string.Join(", ", ancestors), gate.Name);
 
@@ -1107,7 +1107,7 @@ namespace Microsoft.Omex.Gating
 				string environmentName = environment.Name.ToString();
 				if (!gate.HostEnvironments.Add(environmentName))
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0x238210d6 /* tag_967dw */, Categories.GateDataSet, Levels.Error,
 						true, "Host environment '{0}' is repeated multiple times for gate '{1}'.",
 						environmentName, gate.Name);
 				}
@@ -1139,7 +1139,7 @@ namespace Microsoft.Omex.Gating
 				string ipRangeName = ipRange.Name;
 				if (!gate.KnownIPRanges.Add(ipRangeName))
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0x238210d7 /* tag_967dx */, Categories.GateDataSet, Levels.Error,
 						true, "Known IP range '{0}' is repeated multiple times for gate '{1}'.",
 						ipRangeName, gate.Name);
 				}
@@ -1189,7 +1189,7 @@ namespace Microsoft.Omex.Gating
 				{
 					if (!int.TryParse(browserVersion.Value, out int version))
 					{
-						ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+						ULSLogging.LogTraceTag(0x238210d8 /* tag_967dy */, Categories.GateDataSet, Levels.Error,
 							false, "Unable to parse version '{0}' as integer of the browser '{1}'", browserVersion.Value, browser);
 
 						continue;
@@ -1261,7 +1261,7 @@ namespace Microsoft.Omex.Gating
 
 				if (releasePlan.ContainsKey(releaseGate.Name))
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0x238210d9 /* tag_967dz */, Categories.GateDataSet, Levels.Error,
 						false, "ReleaseGate '{0}' is repeated multiple times in ReleasePlan for gate '{1}'",
 						releaseGate.Name, gate.Name);
 
@@ -1294,7 +1294,7 @@ namespace Microsoft.Omex.Gating
 			{
 				if (string.IsNullOrWhiteSpace(market.Name))
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0x238210da /* tag_967d0 */, Categories.GateDataSet, Levels.Error,
 						true, "Market name for gate '{0}' is null or only whitespace, ignoring.",
 						gate.Name);
 
@@ -1303,7 +1303,7 @@ namespace Microsoft.Omex.Gating
 
 				if (!gate.Markets.Add(market.Name))
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0x238210db /* tag_967d1 */, Categories.GateDataSet, Levels.Error,
 						true, "Market '{0}' is repeated multiple times for gate '{1}'.",
 						market.Name, gate.Name);
 				}
@@ -1329,7 +1329,7 @@ namespace Microsoft.Omex.Gating
 				//Empty names are not valid
 				if (string.IsNullOrWhiteSpace(blockedQueryParameter.Name))
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error, true,
+					ULSLogging.LogTraceTag(0x238210dc /* tag_967d2 */, Categories.GateDataSet, Levels.Error, true,
 						"Blocked Query Parameter name for gate '{0}' is null or only whitespace, ignoring.",
 						gate.Name);
 
@@ -1339,7 +1339,7 @@ namespace Microsoft.Omex.Gating
 				//Empty values are not valid
 				if (string.IsNullOrWhiteSpace(blockedQueryParameter.Value))
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error, true,
+					ULSLogging.LogTraceTag(0x238210dd /* tag_967d3 */, Categories.GateDataSet, Levels.Error, true,
 						"Blocked Query Parameter value for gate '{0}' is null or only whitespace, ignoring.",
 						gate.Name);
 
@@ -1375,7 +1375,7 @@ namespace Microsoft.Omex.Gating
 			{
 				if (string.IsNullOrWhiteSpace(environment.Name))
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error, true,
+					ULSLogging.LogTraceTag(0x238210de /* tag_967d4 */, Categories.GateDataSet, Levels.Error, true,
 						"Environment name for gate '{0}' is null or only whitespace, ignoring.",
 						gate.Name);
 
@@ -1384,7 +1384,7 @@ namespace Microsoft.Omex.Gating
 
 				if (!gate.Environments.Add(environment.Name))
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error, true,
+					ULSLogging.LogTraceTag(0x238210df /* tag_967d5 */, Categories.GateDataSet, Levels.Error, true,
 						"Environment '{0}' is repeated multiple times for gate '{1}'.",
 						environment.Name, gate.Name);
 				}
@@ -1409,7 +1409,7 @@ namespace Microsoft.Omex.Gating
 			{
 				if (string.IsNullOrWhiteSpace(clientVersion.Name))
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0x238210e0 /* tag_967d6 */, Categories.GateDataSet, Levels.Error,
 						true, "Gate {0} contains a client version with a null or whitespace name.",
 						gate.Name);
 					continue;
@@ -1426,7 +1426,7 @@ namespace Microsoft.Omex.Gating
 					}
 					else
 					{
-						ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+						ULSLogging.LogTraceTag(0x238210e1 /* tag_967d7 */, Categories.GateDataSet, Levels.Error,
 							true, "Gate '{0}' contains an incorrect MaxVersion value '{1}' for client '{2}'.",
 							gate.Name, clientVersion.MaxVersion, client.Name);
 
@@ -1442,7 +1442,7 @@ namespace Microsoft.Omex.Gating
 					}
 					else
 					{
-						ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+						ULSLogging.LogTraceTag(0x238210e2 /* tag_967d8 */, Categories.GateDataSet, Levels.Error,
 							true, "Gate '{0}' contains an incorrect MinVersion value '{1}' for client '{2}'.",
 							gate.Name, clientVersion.MinVersion, client.Name);
 
@@ -1467,7 +1467,7 @@ namespace Microsoft.Omex.Gating
 							}
 							else
 							{
-								ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+								ULSLogging.LogTraceTag(0x238210e3 /* tag_967d9 */, Categories.GateDataSet, Levels.Error,
 									true, "Gate '{0}' contains an incorrect VersionRage value '{1}' for client '{2}'.",
 									gate.Name, clientVersion.VersionRange, client.Name);
 							}
@@ -1502,14 +1502,14 @@ namespace Microsoft.Omex.Gating
 		{
 			if (clientVersionOverride == null)
 			{
-				ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+				ULSLogging.LogTraceTag(0x23821100 /* tag_967ea */, Categories.GateDataSet, Levels.Error,
 					true, "Override is null.");
 				return null;
 			}
 
 			if (string.IsNullOrWhiteSpace(clientVersionOverride.AppCode))
 			{
-				ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+				ULSLogging.LogTraceTag(0x23821101 /* tag_967eb */, Categories.GateDataSet, Levels.Error,
 					true, "Override contains AppCode with a null or whitespace.");
 				return null;
 			}
@@ -1527,7 +1527,7 @@ namespace Microsoft.Omex.Gating
 				}
 				else
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0x23821102 /* tag_967ec */, Categories.GateDataSet, Levels.Error,
 						true, "Override '{0}' contains an incorrect MaxVersion value '{1}'.",
 						requiredApp.Name, clientVersionOverride.MaxVersion);
 
@@ -1543,7 +1543,7 @@ namespace Microsoft.Omex.Gating
 				}
 				else
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0x23821103 /* tag_967ed */, Categories.GateDataSet, Levels.Error,
 						true, "Override '{0}' contains an incorrect MinVersion value '{1}'.",
 						requiredApp.Name, clientVersionOverride.MinVersion);
 
@@ -1568,7 +1568,7 @@ namespace Microsoft.Omex.Gating
 						}
 						else
 						{
-							ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+							ULSLogging.LogTraceTag(0x23821104 /* tag_967ee */, Categories.GateDataSet, Levels.Error,
 								true, "Override '{0}' contains an incorrect VersionRage value '{1}'.",
 								requiredApp.Name, clientVersionOverride.VersionRange);
 						}
@@ -1595,7 +1595,7 @@ namespace Microsoft.Omex.Gating
 		{
 			if (gate.ClientVersions.TryGetValue(client.Name, out RequiredClient existingClient))
 			{
-				ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+				ULSLogging.LogTraceTag(0x23821105 /* tag_967ef */, Categories.GateDataSet, Levels.Error,
 					true, "Gate '{0}' contains multiple entries for the same client '{1}'.",
 					gate.Name, client.Name);
 
@@ -1678,7 +1678,7 @@ namespace Microsoft.Omex.Gating
 						// Lookup in the test groups and add it to the set of users
 						if (string.IsNullOrWhiteSpace(group.Name))
 						{
-							ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+							ULSLogging.LogTraceTag(0x23821106 /* tag_967eg */, Categories.GateDataSet, Levels.Error,
 								true, "Gate '{0}' contains a user group that is null or only whitespace.",
 								gate.Name);
 						}
@@ -1686,7 +1686,7 @@ namespace Microsoft.Omex.Gating
 						{
 							if (m_testGroupsDataSet == null)
 							{
-								ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+								ULSLogging.LogTraceTag(0x23821107 /* tag_967eh */, Categories.GateDataSet, Levels.Error,
 									true, "Unable to retrieve the test groups DataSet to resolve test group '{0}' for gate '{1}'.",
 									group.Name, gate.Name);
 							}
@@ -1710,7 +1710,7 @@ namespace Microsoft.Omex.Gating
 
 						if (string.IsNullOrEmpty(group.Members))
 						{
-							ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+							ULSLogging.LogTraceTag(0x23821108 /* tag_967ei */, Categories.GateDataSet, Levels.Error,
 								true, "Gate '{0}' contains a user group that is null or only whitespace",
 								gate.Name);
 						}
@@ -1734,7 +1734,7 @@ namespace Microsoft.Omex.Gating
 			{
 				if (users != null)
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0x23821109 /* tag_967ej */, Categories.GateDataSet, Levels.Error,
 						true, "Gate '{0}' contains user group type 'None' and additional user groups. Ignoring all other user groups.",
 						gate.Name);
 				}
@@ -1796,7 +1796,7 @@ namespace Microsoft.Omex.Gating
 			}
 			catch (Exception)
 			{
-				ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error, true,
+				ULSLogging.LogTraceTag(0x2382110a /* tag_967ek */, Categories.GateDataSet, Levels.Error, true,
 					"Experiment weight for gate '{0}' is not a proper non negative integer, ignoring.",
 					gateName);
 				return null;
@@ -1816,7 +1816,7 @@ namespace Microsoft.Omex.Gating
 			TestGroupsDataSet<T> testGroupsDataSet = new TestGroupsDataSet<T>(m_testGroupsResourceName);
 			if (!resources.TryGetValue(m_testGroupsResourceName, out IResourceDetails resource))
 			{
-				ULSLogging.LogCodeErrorTag(0, Categories.GateDataSet, false, true,
+				ULSLogging.LogCodeErrorTag(0x2382110b /* tag_967el */, Categories.GateDataSet, false, true,
 					"Resources passed to GateDataSet do not include TestGroups resource '{0}'.", m_testGroupsResourceName);
 				return null;
 			}
@@ -1829,7 +1829,7 @@ namespace Microsoft.Omex.Gating
 
 			if (!testGroupsDataSet.Load(reducedDictionary))
 			{
-				ULSLogging.LogCodeErrorTag(0, Categories.GateDataSet, false,
+				ULSLogging.LogCodeErrorTag(0x2382110c /* tag_967em */, Categories.GateDataSet, false,
 					true, "Failed to load TestGroupsDataSet.");
 			}
 

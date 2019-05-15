@@ -19,7 +19,7 @@ namespace Microsoft.Omex.System.Data
 		/// <returns>read status and resource details</returns>
 		public static Tuple<ResourceReadStatus, IResourceDetails> Read(this IResource resource)
 		{
-			if (!Code.ValidateArgument(resource, nameof(resource), TaggingUtilities.ReserveTag(0)))
+			if (!Code.ValidateArgument(resource, nameof(resource), TaggingUtilities.ReserveTag(0x238208cf /* tag_9669p */)))
 			{
 				return Tuple.Create<ResourceReadStatus, IResourceDetails>(ResourceReadStatus.ReadFailed, null);
 			}

@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Gating.Experimentation
 		/// <param name="experimentWeight">weight of the gate in the experiment</param>
 		public ExperimentInfo(string experimentName, uint experimentWeight)
 		{
-			ExperimentName = Code.ExpectsNotNullOrWhiteSpaceArgument(experimentName, nameof(experimentName), TaggingUtilities.ReserveTag(0));
+			ExperimentName = Code.ExpectsNotNullOrWhiteSpaceArgument(experimentName, nameof(experimentName), TaggingUtilities.ReserveTag(0x23821088 /* tag_967ci */));
 			ExperimentWeight = experimentWeight;
 		}
 

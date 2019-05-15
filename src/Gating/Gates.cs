@@ -39,7 +39,7 @@ namespace Microsoft.Omex.Gating
 		{
 			if (string.IsNullOrWhiteSpace(gateName))
 			{
-				ULSLogging.LogTraceTag(0, Categories.GateSelection,
+				ULSLogging.LogTraceTag(0x23821045 /* tag_967bf */, Categories.GateSelection,
 					Levels.Error, "Parameter 'gateName' must not be null or only whitespace.");
 				return null;
 			}
@@ -115,7 +115,7 @@ namespace Microsoft.Omex.Gating
 					if (gate == null)
 					{
 						// Return an Unknown gate here, which will never be applicable by setting the user group as none
-						ULSLogging.LogTraceTag(0, Categories.GateSelection, Levels.Verbose,
+						ULSLogging.LogTraceTag(0x23821046 /* tag_967bg */, Categories.GateSelection, Levels.Verbose,
 							"Gate '{0}' is not a known gate, creating a new disabled gate.", Name);
 
 						Gate unknownGate = new Gate(Name);

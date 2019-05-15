@@ -22,7 +22,7 @@ namespace Microsoft.Omex.System.Data.Resources
 		/// <param name="type">type to locate assembly</param>
 		/// <param name="resourceName">resource name in assembly</param>
 		public EmbeddedResource(Type type, string resourceName)
-			: this(Code.ExpectsArgument(type, nameof(type), TaggingUtilities.ReserveTag(0)).Assembly, resourceName)
+			: this(Code.ExpectsArgument(type, nameof(type), TaggingUtilities.ReserveTag(0x23820899 /* tag_9668z */)).Assembly, resourceName)
 		{
 		}
 
@@ -34,8 +34,8 @@ namespace Microsoft.Omex.System.Data.Resources
 		/// <param name="resourceName">resource name in assembly</param>
 		public EmbeddedResource(Assembly assembly, string resourceName)
 		{
-			Assembly = Code.ExpectsArgument(assembly, nameof(assembly), TaggingUtilities.ReserveTag(0));
-			Name = Code.ExpectsNotNullOrWhiteSpaceArgument(resourceName, nameof(resourceName), TaggingUtilities.ReserveTag(0));
+			Assembly = Code.ExpectsArgument(assembly, nameof(assembly), TaggingUtilities.ReserveTag(0x238208c0 /* tag_9669a */));
+			Name = Code.ExpectsNotNullOrWhiteSpaceArgument(resourceName, nameof(resourceName), TaggingUtilities.ReserveTag(0x238208c1 /* tag_9669b */));
 
 			ResourceContent = new Lazy<Tuple<ResourceReadStatus, byte[]>>(() =>
 			{
@@ -52,7 +52,7 @@ namespace Microsoft.Omex.System.Data.Resources
 				}
 				catch (Exception ex)
 				{
-					ULSLogging.ReportExceptionTag(0, Categories.ConfigurationDataSet, ex,
+					ULSLogging.ReportExceptionTag(0x238208c2 /* tag_9669c */, Categories.ConfigurationDataSet, ex,
 						"Unable to read resource {resourceName}", resourceName);
 					status = ResourceReadStatus.ReadFailed;
 				}

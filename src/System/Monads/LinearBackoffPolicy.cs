@@ -20,8 +20,8 @@ namespace Microsoft.Omex.System.Monads
 		/// <returns>Backoff timespan if success else returns default TimeSpan.</returns>
 		public TimeSpan CalculateBackoff(int exponent, int factor)
 		{
-			if (!Code.Validate(exponent >= 0, "exponent should be non negative.", TaggingUtilities.ReserveTag(0)) ||
-				!Code.Validate(factor >= 0, "factor should be non negative.", TaggingUtilities.ReserveTag(0)))
+			if (!Code.Validate(exponent >= 0, "exponent should be non negative.", TaggingUtilities.ReserveTag(0x23820850 /* tag_9667q */)) ||
+				!Code.Validate(factor >= 0, "factor should be non negative.", TaggingUtilities.ReserveTag(0x23820851 /* tag_9667r */)))
 			{
 				return default(TimeSpan);
 			}

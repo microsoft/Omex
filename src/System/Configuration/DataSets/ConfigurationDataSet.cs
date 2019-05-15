@@ -49,11 +49,11 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		/// <returns>true if load was successful, false otherwise</returns>
 		public virtual bool Load(IDictionary<string, IResourceDetails> resources)
 		{
-			if (!Code.Validate((resources?.Count ?? 0) > 0, TaggingUtilities.ReserveTag(0),
+			if (!Code.Validate((resources?.Count ?? 0) > 0, TaggingUtilities.ReserveTag(0x23821012 /* tag_967as */),
 				"{0} should containt at least one resource, unable to load '{1}'", nameof(resources), GetType().Name))
 			{
 				//Log error into ConfigurationDataSet error list to preserve old behaviour for backward compatibility
-				ULSLogging.LogCodeErrorTag(0, Categories.ConfigurationDataSet, false,
+				ULSLogging.LogCodeErrorTag(0x23821013 /* tag_967at */, Categories.ConfigurationDataSet, false,
 					true, "{0} should contaminant at least one resource, unable to load '{1}'", nameof(resources), GetType().Name);
 
 				return false;
@@ -74,15 +74,15 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		protected bool LoadResource(IDictionary<string, IResourceDetails> resources, string resourceName, out byte[] resourceContent)
 		{
 			resourceContent = null;
-			if (!Code.ValidateArgument(resources, nameof(resources), TaggingUtilities.ReserveTag(0)) ||
-				!Code.ValidateNotNullOrWhiteSpaceArgument(resourceName, nameof(resourceName), TaggingUtilities.ReserveTag(0)))
+			if (!Code.ValidateArgument(resources, nameof(resources), TaggingUtilities.ReserveTag(0x23821014 /* tag_967au */)) ||
+				!Code.ValidateNotNullOrWhiteSpaceArgument(resourceName, nameof(resourceName), TaggingUtilities.ReserveTag(0x23821015 /* tag_967av */)))
 			{
 				return false;
 			}
 
 			if (!resources.TryGetValue(resourceName, out IResourceDetails resource))
 			{
-				ULSLogging.LogCodeErrorTag(0, Categories.ConfigurationDataSet, false, true,
+				ULSLogging.LogCodeErrorTag(0x23821016 /* tag_967aw */, Categories.ConfigurationDataSet, false, true,
 					"Failed to find resource '{0}' for data set '{1}' in the set of loaded resources.", resourceName, GetType().Name);
 				return false;
 			}
