@@ -47,8 +47,8 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		/// <param name="dataSetOverride">The data set override.</param>
 		protected ConfigurationDataSetLoader(ICache cache, IResourceMonitor resourceMonitor, T dataSetOverride = null)
 		{
-			Cache = Code.ExpectsArgument(cache, nameof(cache), TaggingUtilities.ReserveTag(0x238506d1 /* tag_97q1r */));
-			m_resourceMonitor = Code.ExpectsArgument(resourceMonitor, nameof(resourceMonitor), TaggingUtilities.ReserveTag(0x238506d2 /* tag_97q1s */));
+			Cache = Code.ExpectsArgument(cache, nameof(cache), TaggingUtilities.ReserveTag(0));
+			m_resourceMonitor = Code.ExpectsArgument(resourceMonitor, nameof(resourceMonitor), TaggingUtilities.ReserveTag(0));
 
 			DataSetOverride = dataSetOverride;
 		}
@@ -83,16 +83,16 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		/// <param name="resources">resources</param>
 		protected virtual void Initialize(IEnumerable<IResource> resources)
 		{
-			Resources = Code.ExpectsArgument(resources, nameof(resources), TaggingUtilities.ReserveTag(0x238506d3 /* tag_97q1t */));
+			Resources = Code.ExpectsArgument(resources, nameof(resources), TaggingUtilities.ReserveTag(0));
 
 			if (!m_resourceMonitor.TryStartMonitoring(Resources, OnResourceUpdated))
 			{
-				ULSLogging.LogTraceTag(0x23850396 /* tag_97qow */, Categories.ConfigurationDataSet, Levels.Error,
+				ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Error,
 					"Failed to start resources monitoring for {0}", typeof(T).Name);
 			}
 			else
 			{
-				ULSLogging.LogTraceTag(0x23850397 /* tag_97qox */, Categories.ConfigurationDataSet, Levels.Verbose,
+				ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Verbose,
 					"Successfully started resource monitoring for {0}", typeof(T).Name);
 			}
 		}
@@ -156,7 +156,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				{
 					if (arguments.IsInitialLoad)
 					{
-						ULSLogging.LogTraceTag(0x23850398 /* tag_97qoy */, Categories.ConfigurationDataSet, Levels.Verbose,
+						ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Verbose,
 							"Adding data set type '{0}' to cache.", typeof(T).Name);
 
 						if (Cache.GetOrAdd(typeof(IConfigurationDataSetLoader<T>),
@@ -168,7 +168,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 					}
 					else
 					{
-						ULSLogging.LogTraceTag(0x23850399 /* tag_97qoz */, Categories.ConfigurationDataSet, Levels.Verbose,
+						ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Verbose,
 							"Updating data set type '{0}' in cache.", typeof(T).Name);
 						CachedConfigurationDataSet<T> dataSets = DataSets;
 						IList<ConfigurationDataSetLoadDetails> loadDetails = dataSets.LoadDetails;
@@ -206,7 +206,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		/// start a new correlation if one does not already exist</remarks>
 		protected virtual void OnResourceUpdated(ResourceUpdatedEventArgs arguments)
 		{
-			ULSLogging.LogTraceTag(0x2385039a /* tag_97qo0 */, Categories.ConfigurationDataSet, Levels.Verbose,
+			ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Verbose,
 				"'{0}' loader encountered an event for resources '{1}'.",
 				typeof(T).Name, string.Join(";", arguments.Details.Select(d => d.Key)));
 
@@ -249,7 +249,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				CachedConfigurationDataSet<T> dataSets = Cache.Get(typeof(IConfigurationDataSetLoader<T>)) as CachedConfigurationDataSet<T>;
 				if (dataSets == null)
 				{
-					ULSLogging.LogTraceTag(0x2385039b /* tag_97qo1 */, Categories.Common, Levels.Warning,
+					ULSLogging.LogTraceTag(0, Categories.Common, Levels.Warning,
 						"The set of data sets returned from the cache is null.");
 				}
 
@@ -296,7 +296,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			/// <param name="arguments">The arguments for the update event.</param>
 			public void UpdateLoadedDataSet(ResourceUpdatedEventArgs arguments)
 			{
-				if (!Code.ValidateArgument(arguments, nameof(arguments), TaggingUtilities.ReserveTag(0x238506d4 /* tag_97q1u */)))
+				if (!Code.ValidateArgument(arguments, nameof(arguments), TaggingUtilities.ReserveTag(0)))
 				{
 					return;
 				}
@@ -304,12 +304,12 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				TDataSet dataSet = LoadDataSet(arguments);
 				if (dataSet != null && dataSet.IsHealthy)
 				{
-					ULSLogging.LogTraceTag(0x2385039c /* tag_97qo2 */, Categories.ConfigurationDataSet, Levels.Verbose,
+					ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Verbose,
 						"Successfully loaded {0} with status 'Healthy'", typeof(TDataSet).Name);
 				}
 				else
 				{
-					ULSLogging.LogTraceTag(0x2385039d /* tag_97qo3 */, Categories.ConfigurationDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Error,
 						"Loaded {0} with status '{1}'", typeof(TDataSet).Name,
 						dataSet != null ? dataSet.IsHealthy ? "Healthy" : "Not healthy" : "DataSet is null");
 				}
@@ -320,14 +320,14 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				}
 				else if ((!LoadedDataSet.IsHealthy && dataSet != null) || (dataSet != null && dataSet.IsHealthy))
 				{
-					ULSLogging.LogTraceTag(0x2385039e /* tag_97qo4 */, Categories.ConfigurationDataSet, Levels.Verbose,
+					ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Verbose,
 						"Replacing old {0} loaded at {1} with data loaded with status '{2}'", typeof(TDataSet).Name, LoadedDataSet.LastReload,
 						dataSet.IsHealthy ? "Healthy" : "Not healthy");
 					LoadedDataSet = dataSet;
 				}
 				else
 				{
-					ULSLogging.LogTraceTag(0x2385039f /* tag_97qo5 */, Categories.ConfigurationDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Error,
 						"Not replacing old {0} with data loaded with status '{1}'", typeof(TDataSet).Name,
 						dataSet != null ? dataSet.IsHealthy ? "Healthy" : "Not healthy" : "DataSet is null");
 					FailedToLoadDataSet = dataSet;
@@ -344,7 +344,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			/// <returns>Loaded DataSet</returns>
 			private TDataSet LoadDataSet(ResourceUpdatedEventArgs arguments)
 			{
-				ULSLogging.LogTraceTag(0x238503a0 /* tag_97qo6 */, Categories.ConfigurationDataSet, Levels.Verbose,
+				ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Verbose,
 					"Loading data set for '{0}'.", typeof(TDataSet).Name);
 
 				TDataSet dataSet = m_dataSetDefault ?? new TDataSet();
@@ -355,7 +355,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				}
 				catch (Exception exception)
 				{
-					ULSLogging.ReportExceptionTag(0x238503a2 /* tag_97qo8 */, Categories.ConfigurationDataSet, exception,
+					ULSLogging.ReportExceptionTag(0, Categories.ConfigurationDataSet, exception,
 						"Exception encountered while loading '{0}'", typeof(TDataSet).Name);
 				}
 

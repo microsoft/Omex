@@ -40,7 +40,7 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <param name="testGroupsResourceName">Name of the Test Groups resource.</param>
 		public TestGroupsDataSet(string testGroupsResourceName)
 		{
-			TestGroupsResourceName = Code.ExpectsNotNullOrWhiteSpaceArgument(testGroupsResourceName, nameof(testGroupsResourceName), TaggingUtilities.ReserveTag(0x2384d58e /* tag_97nwo */));
+			TestGroupsResourceName = Code.ExpectsNotNullOrWhiteSpaceArgument(testGroupsResourceName, nameof(testGroupsResourceName), TaggingUtilities.ReserveTag(0));
 
 			DefaultGroups = new List<string> { "all" };
 		}
@@ -61,12 +61,12 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			bool resourceStatus = LoadResource(resources, TestGroupsResourceName, out byte[] file);
 			if (!resourceStatus)
 			{
-				ULSLogging.LogCodeErrorTag(0x2384d58f /* tag_97nwp */, Categories.TestGroupsDataSet, false,
+				ULSLogging.LogCodeErrorTag(0, Categories.TestGroupsDataSet, false,
 					true, "Failed to retrieve resource content for TestGroupsDataSet.");
 			}
 			else if (file == null || file.Length == 0)
 			{
-				ULSLogging.LogCodeErrorTag(0x2384d590 /* tag_97nwq */, Categories.TestGroupsDataSet, false,
+				ULSLogging.LogCodeErrorTag(0, Categories.TestGroupsDataSet, false,
 					true, "Null or empty resource data encountered in TestGroupsDataSet loading method");
 			}
 			else
@@ -88,7 +88,7 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		{
 			if (m_userGroups == null)
 			{
-				ULSLogging.LogCodeErrorTag(0x2384d591 /* tag_97nwr */, Categories.TestGroupsDataSet, false,
+				ULSLogging.LogCodeErrorTag(0, Categories.TestGroupsDataSet, false,
 					false, "Test groups DataSet is not loaded.");
 				return DefaultGroups;
 			}
@@ -114,14 +114,14 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			List<string> emptyList = new List<string>();
 			if (string.IsNullOrWhiteSpace(groupName))
 			{
-				ULSLogging.LogCodeErrorTag(0x2384d592 /* tag_97nws */, Categories.TestGroupsDataSet, false,
+				ULSLogging.LogCodeErrorTag(0, Categories.TestGroupsDataSet, false,
 					false, "Null or empty group passed to TestGroupsDataSet.GetGroupUsers");
 				return emptyList;
 			}
 
 			if (m_groupUsers == null)
 			{
-				ULSLogging.LogCodeErrorTag(0x2384d593 /* tag_97nwt */, Categories.TestGroupsDataSet, false,
+				ULSLogging.LogCodeErrorTag(0, Categories.TestGroupsDataSet, false,
 					false, "TestGroupsDataSet is not loaded.");
 				return emptyList;
 			}
@@ -177,7 +177,7 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			}
 			catch (InvalidOperationException exception)
 			{
-				ULSLogging.ReportExceptionTag(0x2384d594 /* tag_97nwu */, Categories.TestGroupsDataSet, exception,
+				ULSLogging.ReportExceptionTag(0, Categories.TestGroupsDataSet, exception,
 					true, "Failed to load test groups DataSet due to exception.");
 			}
 		}
@@ -194,7 +194,7 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		{
 			if (testGroupsRaw == null || testGroupsRaw.TestGroup == null)
 			{
-				ULSLogging.LogCodeErrorTag(0x2384d595 /* tag_97nwv */, Categories.TestGroupsDataSet, false,
+				ULSLogging.LogCodeErrorTag(0, Categories.TestGroupsDataSet, false,
 					true, "Null raw data has been passed to TestGroupsDataSet.LoadGroupsData.");
 				userGroups = null;
 				groupUsers = null;
@@ -209,14 +209,14 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 				string testGroupName = testGroup.name.Trim();
 				if (string.IsNullOrWhiteSpace(testGroupName))
 				{
-					ULSLogging.LogCodeErrorTag(0x2384d596 /* tag_97nww */, Categories.TestGroupsDataSet, false,
+					ULSLogging.LogCodeErrorTag(0, Categories.TestGroupsDataSet, false,
 						true, "A test user with empty name found, skipping.");
 					continue;
 				}
 
 				if (testGroupName.Contains(ListSeparator))
 				{
-					ULSLogging.LogCodeErrorTag(0x2384d597 /* tag_97nwx */, Categories.TestGroupsDataSet, false,
+					ULSLogging.LogCodeErrorTag(0, Categories.TestGroupsDataSet, false,
 						true, "Test user name '{0}' contains a semicolon. This name cannot be used as the semicolon is used to delimit groups within the asset field. Skipping.",
 							testGroupName);
 					continue;
@@ -224,14 +224,14 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 
 				if (DefaultGroups.Contains(testGroupName))
 				{
-					ULSLogging.LogCodeErrorTag(0x2384d598 /* tag_97nwy */, Categories.TestGroupsDataSet, false,
+					ULSLogging.LogCodeErrorTag(0, Categories.TestGroupsDataSet, false,
 						true, "Test user name '{0}' is a restricted user name and cannot be manually specified. Skipping.", testGroupName);
 					continue;
 				}
 
 				if (testGroup.Member == null)
 				{
-					ULSLogging.LogCodeErrorTag(0x2384d599 /* tag_97nwz */, Categories.TestGroupsDataSet, false,
+					ULSLogging.LogCodeErrorTag(0, Categories.TestGroupsDataSet, false,
 						true, "Skipping test user '{0}' : the user has no members", testGroupName);
 					continue;
 				}
@@ -302,7 +302,7 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			}
 			else
 			{
-				ULSLogging.LogCodeErrorTag(0x2384d59a /* tag_97nw0 */, Categories.TestGroupsDataSet, false,
+				ULSLogging.LogCodeErrorTag(0, Categories.TestGroupsDataSet, false,
 					true, "Empty user data found for group '{0}', skipping.", groupName);
 			}
 		}

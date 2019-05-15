@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Gating.Experimentation
 		/// </summary>
 		public void Load(IDictionary<string, IExperiment> experiments)
 		{
-			if (!Code.ValidateArgument(experiments, nameof(experiments), TaggingUtilities.ReserveTag(0x2384e4dd /* tag_97ot3 */)))
+			if (!Code.ValidateArgument(experiments, nameof(experiments), TaggingUtilities.ReserveTag(0)))
 			{
 				return;
 			}
@@ -33,7 +33,7 @@ namespace Microsoft.Omex.Gating.Experimentation
 		/// <returns>true if the list of experiment contains the experiment</returns>
 		public bool IsValidExperiment(string experimentName)
 		{
-			if (!Code.ValidateNotNullOrWhiteSpaceArgument(experimentName, nameof(experimentName), TaggingUtilities.ReserveTag(0x2384f211 /* tag_97pir */)))
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(experimentName, nameof(experimentName), TaggingUtilities.ReserveTag(0)))
 			{
 				return false;
 			}
@@ -42,7 +42,7 @@ namespace Microsoft.Omex.Gating.Experimentation
 
 			if (temporaryReadDictionary == null)
 			{
-				ULSLogging.LogTraceTag(0x2384e4de /* tag_97ot4 */, Categories.Experimentation, Levels.Error,
+				ULSLogging.LogTraceTag(0, Categories.Experimentation, Levels.Error,
 					"Experiment dictionary is being returned null");
 				return false;
 			}
@@ -58,7 +58,7 @@ namespace Microsoft.Omex.Gating.Experimentation
 		/// <returns>the experiment</returns>
 		public IExperiment GetExperiment(string experimentName)
 		{
-			if (!Code.ValidateNotNullOrWhiteSpaceArgument(experimentName, nameof(experimentName), TaggingUtilities.ReserveTag(0x2384e4df /* tag_97ot5 */)))
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(experimentName, nameof(experimentName), TaggingUtilities.ReserveTag(0)))
 			{
 				return null;
 			}
@@ -68,14 +68,14 @@ namespace Microsoft.Omex.Gating.Experimentation
 
 			if (temporaryReadDictionary == null)
 			{
-				ULSLogging.LogTraceTag(0x2384e4e0 /* tag_97ot6 */, Categories.Experimentation, Levels.Error,
+				ULSLogging.LogTraceTag(0, Categories.Experimentation, Levels.Error,
 					"Experiment dictionary is being returned null");
 				return null;
 			}
 
 			if (!temporaryReadDictionary.ContainsKey(experimentName))
 			{
-				ULSLogging.LogTraceTag(0x2384e4e1 /* tag_97ot7 */, Categories.Experimentation, Levels.Error,
+				ULSLogging.LogTraceTag(0, Categories.Experimentation, Levels.Error,
 					"Trying to get gates for an unknown experiment '{0}'", experimentName);
 				return null;
 			}

@@ -21,8 +21,8 @@ namespace Microsoft.Omex.System.Model.Types
 		/// <param name="max">The max version number.</param>
 		public ProductVersionRange(ProductVersion min, ProductVersion max)
 		{
-			Min = Code.ExpectsArgument(min, nameof(min), TaggingUtilities.ReserveTag(0x23850597 /* tag_97qwx */));
-			Max = Code.ExpectsArgument(max, nameof(max), TaggingUtilities.ReserveTag(0x23850598 /* tag_97qwy */));
+			Min = Code.ExpectsArgument(min, nameof(min), TaggingUtilities.ReserveTag(0));
+			Max = Code.ExpectsArgument(max, nameof(max), TaggingUtilities.ReserveTag(0));
 		}
 
 

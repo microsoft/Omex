@@ -23,8 +23,8 @@ namespace Microsoft.Omex.System.Data
 		/// <param name="resources">A set of resources to be monitored</param>
 		public ResourceMonitoringData(ResourceUpdatedHandler handler, IList<IResource> resources)
 		{
-			OnSomeOfTrackedResourcesUpdated = Code.ExpectsArgument(handler, nameof(handler), TaggingUtilities.ReserveTag(0x238506a2 /* tag_97q08 */));
-			m_trackedResources = Code.ExpectsArgument(resources, nameof(resources), TaggingUtilities.ReserveTag(0x238506a3 /* tag_97q09 */));
+			OnSomeOfTrackedResourcesUpdated = Code.ExpectsArgument(handler, nameof(handler), TaggingUtilities.ReserveTag(0));
+			m_trackedResources = Code.ExpectsArgument(resources, nameof(resources), TaggingUtilities.ReserveTag(0));
 
 			m_wasCalledAtLeastOnce = false;
 		}
@@ -38,8 +38,8 @@ namespace Microsoft.Omex.System.Data
 		public void CallHandlerIfNecessary(IDictionary<IResource, IResourceDetails> allKnownDetails,
 			ICollection<IResource> updatedResources)
 		{
-			if (!Code.ValidateArgument(allKnownDetails, nameof(allKnownDetails), TaggingUtilities.ReserveTag(0x238506c0 /* tag_97q1a */)) ||
-				!Code.ValidateArgument(updatedResources, nameof(updatedResources), TaggingUtilities.ReserveTag(0x238506c1 /* tag_97q1b */)))
+			if (!Code.ValidateArgument(allKnownDetails, nameof(allKnownDetails), TaggingUtilities.ReserveTag(0)) ||
+				!Code.ValidateArgument(updatedResources, nameof(updatedResources), TaggingUtilities.ReserveTag(0)))
 			{
 				return;
 			}
@@ -64,7 +64,7 @@ namespace Microsoft.Omex.System.Data
 			{
 				if (!allKnownDetails.ContainsKey(resource))
 				{
-					ULSLogging.LogTraceTag(0x2385038d /* tag_97qon */, Categories.ConfigurationDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Error,
 						"Resource details for '{0}' are not present although it should've been loaded at this stage", resource.Name);
 					continue;
 				}

@@ -26,22 +26,22 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		/// <param name="sha256Hash">The SHA256 hash of the file.</param>
 		public ConfigurationDataSetLoadDetails(string name, DateTime lastWrite, long length, string sha256Hash)
 		{
-			Name = Code.ExpectsNotNullOrWhiteSpaceArgument(name, nameof(name), TaggingUtilities.ReserveTag(0x238506d5 /* tag_97q1v */));
+			Name = Code.ExpectsNotNullOrWhiteSpaceArgument(name, nameof(name), TaggingUtilities.ReserveTag(0));
 
 			LastWrite = lastWrite;
 
 			Code.Expects<ArgumentException>(length > 0,
 				string.Format(CultureInfo.InvariantCulture, "'{0}' must be greater than zero but is '{1}'.", nameof(length), length),
-				TaggingUtilities.ReserveTag(0x238506d7 /* tag_97q1x */));
+				TaggingUtilities.ReserveTag(0));
 			Length = length;
 
-			SHA256Hash = Code.ExpectsNotNullOrWhiteSpaceArgument(sha256Hash, nameof(sha256Hash), 0x238506d8 /* tag_97q1y */);
+			SHA256Hash = Code.ExpectsNotNullOrWhiteSpaceArgument(sha256Hash, nameof(sha256Hash), 0);
 			Code.Expects<ArgumentException>(sha256Hash.Length == 44,
 				string.Format(CultureInfo.InvariantCulture, "'{0}' should be 44 bytes long but is '{1}' which is '{2}' bytes long.", nameof(sha256Hash), sha256Hash, sha256Hash.Length),
-				TaggingUtilities.ReserveTag(0x238506d9 /* tag_97q1z */));
+				TaggingUtilities.ReserveTag(0));
 			Code.Expects<ArgumentException>(sha256Hash.EndsWith("=", StringComparison.Ordinal),
 				string.Format(CultureInfo.InvariantCulture, "'{0}' should end with = but is '{1}'.", nameof(sha256Hash), sha256Hash),
-				TaggingUtilities.ReserveTag(0x238506da /* tag_97q10 */));
+				TaggingUtilities.ReserveTag(0));
 		}
 
 

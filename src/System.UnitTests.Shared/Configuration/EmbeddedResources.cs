@@ -45,7 +45,7 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration
 			{
 				if (stream == null)
 				{
-					ULSLogging.LogTraceTag(0x23850259 /* tag_97qjz */, Categories.Infrastructure,
+					ULSLogging.LogTraceTag(0, Categories.Infrastructure,
 						Levels.Error, "Cannot find embedded resource '{0}' in assembly '{1}'.",
 						resourceName, type.Assembly);
 					return null;
@@ -72,7 +72,7 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration
 			{
 				if (stream == null)
 				{
-					ULSLogging.LogTraceTag(0x2385025a /* tag_97qj0 */, Categories.Infrastructure,
+					ULSLogging.LogTraceTag(0, Categories.Infrastructure,
 						Levels.Error, "Cannot find embedded resource '{0}' in type '{1}' parent assembly '{2}'.",
 						resourceName, type, type.Assembly);
 					return null;

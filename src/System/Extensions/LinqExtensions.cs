@@ -24,8 +24,8 @@ namespace Microsoft.Omex.System.Extensions
 		/// <returns>Argument characterized by the max value</returns>
 		public static TKey ArgMax<TKey, TValue>(this IEnumerable<TKey> enumerable, Func<TKey, TValue> map, IComparer<TValue> comparer = null)
 		{
-			Code.ExpectsArgument(enumerable, nameof(enumerable), TaggingUtilities.ReserveTag(0x2385065a /* tag_97qz0 */));
-			Code.ExpectsArgument(map, nameof(map), TaggingUtilities.ReserveTag(0x2385065b /* tag_97qz1 */));
+			Code.ExpectsArgument(enumerable, nameof(enumerable), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(map, nameof(map), TaggingUtilities.ReserveTag(0));
 
 			if (comparer == null)
 			{
@@ -71,8 +71,8 @@ namespace Microsoft.Omex.System.Extensions
 		/// <returns>Argument characterized by the min value</returns>
 		public static TKey ArgMin<TKey, TValue>(this IEnumerable<TKey> enumerable, Func<TKey, TValue> map, IComparer<TValue> comparer = null)
 		{
-			Code.ExpectsArgument(enumerable, nameof(enumerable), TaggingUtilities.ReserveTag(0x2385065c /* tag_97qz2 */));
-			Code.ExpectsArgument(map, nameof(map), TaggingUtilities.ReserveTag(0x2385065d /* tag_97qz3 */));
+			Code.ExpectsArgument(enumerable, nameof(enumerable), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(map, nameof(map), TaggingUtilities.ReserveTag(0));
 
 			if (comparer == null)
 			{
@@ -89,7 +89,7 @@ namespace Microsoft.Omex.System.Extensions
 
 			public ReverseComparer(IComparer<T> comparer)
 			{
-				Comparer = Code.ExpectsObject(comparer, nameof(comparer), TaggingUtilities.ReserveTag(0x2385065e /* tag_97qz4 */));
+				Comparer = Code.ExpectsObject(comparer, nameof(comparer), TaggingUtilities.ReserveTag(0));
 			}
 
 			public int Compare(T x, T y)

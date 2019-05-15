@@ -23,9 +23,9 @@ namespace Microsoft.Omex.System.Data.FileSystem
 		/// <param name="name">File Name including extension</param>
 		public FileResource(IFile file, string folder, string name)
 		{
-			File = Code.ExpectsArgument(file, nameof(file), TaggingUtilities.ReserveTag(0x2384719c /* tag_97hg2 */));
-			Folder = Code.ExpectsNotNullOrWhiteSpaceArgument(folder, nameof(folder), TaggingUtilities.ReserveTag(0x2384719d /* tag_97hg3 */));
-			Name = Code.ExpectsNotNullOrWhiteSpaceArgument(name, nameof(name), TaggingUtilities.ReserveTag(0x2384719e /* tag_97hg4 */));
+			File = Code.ExpectsArgument(file, nameof(file), TaggingUtilities.ReserveTag(0));
+			Folder = Code.ExpectsNotNullOrWhiteSpaceArgument(folder, nameof(folder), TaggingUtilities.ReserveTag(0));
+			Name = Code.ExpectsNotNullOrWhiteSpaceArgument(name, nameof(name), TaggingUtilities.ReserveTag(0));
 
 			bool locationSet = false;
 			try
@@ -37,13 +37,13 @@ namespace Microsoft.Omex.System.Data.FileSystem
 				}
 				else
 				{
-					ULSLogging.LogTraceTag(0x23847298 /* tag_97hky */, Categories.ConfigurationDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Error,
 						"Failed to combine FileResource.Location for folder: '{0}', name: '{1}'", Folder, Name);
 				}
 			}
 			catch (ArgumentException exception)
 			{
-				ULSLogging.ReportExceptionTag(0x2384710e /* tag_97heo */, Categories.ConfigurationDataSet, exception,
+				ULSLogging.ReportExceptionTag(0, Categories.ConfigurationDataSet, exception,
 					"Exception constructing FileResource for folder: '{0}', name: '{1}'", Folder, Name);
 			}
 
@@ -64,7 +64,7 @@ namespace Microsoft.Omex.System.Data.FileSystem
 			content = null;
 			if (!File.Exists(Location))
 			{
-				ULSLogging.LogTraceTag(0x2384719f /* tag_97hg5 */, Categories.ConfigurationDataSet, Levels.Verbose,
+				ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Verbose,
 					"FileResource does not exist: '{0}'", Location);
 				return ResourceReadStatus.NotFound;
 			}
@@ -76,7 +76,7 @@ namespace Microsoft.Omex.System.Data.FileSystem
 			}
 			catch (Exception exception)
 			{
-				ULSLogging.ReportExceptionTag(0x238471a0 /* tag_97hg6 */, Categories.ConfigurationDataSet, exception,
+				ULSLogging.ReportExceptionTag(0, Categories.ConfigurationDataSet, exception,
 					"Exception reading file '{0}'", Location);
 
 				content = null;
