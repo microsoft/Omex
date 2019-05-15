@@ -53,7 +53,7 @@ namespace Microsoft.Omex.Gating
 		/// Initializes a new instance of the <see cref="GateDataSet"/> class.
 		/// </summary>
 		public GateDataSet()
-			: this("OmexGates.xml", "OmexTip.xml")
+			: this(DefaultGatesResourceName, DefaultTestGroupsResourceName)
 		{
 		}
 
@@ -1847,6 +1847,22 @@ namespace Microsoft.Omex.Gating
 		/// Experiments
 		/// </summary>
 		public IExperiments Experiments { get; protected set; }
+
+		#endregion
+
+
+		#region Constants
+
+		/// <summary>
+		/// The default gates resource name.
+		/// </summary>
+		public const string DefaultGatesResourceName = "OmexGates.xml";
+
+
+		/// <summary>
+		/// The default test groups resource name.
+		/// </summary>
+		public const string DefaultTestGroupsResourceName = "OmexTip.xml";
 
 		#endregion
 	}
