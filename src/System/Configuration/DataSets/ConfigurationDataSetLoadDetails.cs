@@ -35,7 +35,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				TaggingUtilities.ReserveTag(0x2382100f /* tag_967ap */));
 			Length = length;
 
-			SHA256Hash = Code.ExpectsNotNullOrWhiteSpaceArgument(sha256Hash, nameof(sha256Hash), 0);
+			SHA256Hash = Code.ExpectsNotNullOrWhiteSpaceArgument(sha256Hash, nameof(sha256Hash), TaggingUtilities.ReserveTag(0));
 			Code.Expects<ArgumentException>(sha256Hash.Length == 44,
 				string.Format(CultureInfo.InvariantCulture, "'{0}' should be 44 bytes long but is '{1}' which is '{2}' bytes long.", nameof(sha256Hash), sha256Hash, sha256Hash.Length),
 				TaggingUtilities.ReserveTag(0x23821010 /* tag_967aq */));
