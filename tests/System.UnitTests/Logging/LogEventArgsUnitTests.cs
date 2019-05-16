@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System.Threading;
 using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.UnitTests.Shared;
 using Xunit;
@@ -15,6 +16,7 @@ namespace Microsoft.Omex.System.UnitTests.Logging
 			LogEventArgs logEventArgs = new LogEventArgs(0, Categories.ArgumentValidation, Levels.Error, "My message {0}", "is this!");
 
 			Assert.Equal<uint>(0, logEventArgs.TagId);
+			Assert.Equal(Thread.CurrentThread.ManagedThreadId, logEventArgs.ThreadId);
 			Assert.Equal(Categories.ArgumentValidation, logEventArgs.Category);
 			Assert.Equal(Levels.Error, logEventArgs.Level);
 			Assert.Equal("My message {0}", logEventArgs.Message);
@@ -30,6 +32,7 @@ namespace Microsoft.Omex.System.UnitTests.Logging
 			LogEventArgs logEventArgs = new LogEventArgs(0, Categories.ArgumentValidation, Levels.Error, "My message {1}", "is this!");
 
 			Assert.Equal<uint>(0, logEventArgs.TagId);
+			Assert.Equal(Thread.CurrentThread.ManagedThreadId, logEventArgs.ThreadId);
 			Assert.Equal(Categories.ArgumentValidation, logEventArgs.Category);
 			Assert.Equal(Levels.Error, logEventArgs.Level);
 			Assert.Equal("My message {1}", logEventArgs.Message);
@@ -45,6 +48,7 @@ namespace Microsoft.Omex.System.UnitTests.Logging
 			LogEventArgs logEventArgs = new LogEventArgs(0, Categories.ArgumentValidation, Levels.Error, null, "is this!");
 
 			Assert.Equal<uint>(0, logEventArgs.TagId);
+			Assert.Equal(Thread.CurrentThread.ManagedThreadId, logEventArgs.ThreadId);
 			Assert.Equal(Categories.ArgumentValidation, logEventArgs.Category);
 			Assert.Equal(Levels.Error, logEventArgs.Level);
 			Assert.Equal(null, logEventArgs.Message);
