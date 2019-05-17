@@ -3,6 +3,7 @@
 
 using System;
 using System.Globalization;
+using System.Threading;
 
 namespace Microsoft.Omex.System.Logging
 {
@@ -24,6 +25,7 @@ namespace Microsoft.Omex.System.Logging
 			Category = category;
 			Level = level;
 			TagId = tagid;
+			ThreadId = Thread.CurrentThread.ManagedThreadId;
 			Message = message;
 			MessageParameters = parameters;
 		}
@@ -45,6 +47,12 @@ namespace Microsoft.Omex.System.Logging
 		/// Tag Id
 		/// </summary>
 		public uint TagId { get; }
+
+
+		/// <summary>
+		/// Thread Id
+		/// </summary>
+		public int ThreadId { get; }
 
 
 		/// <summary>
