@@ -8,5 +8,6 @@ namespace Microsoft.Omex.System.Validation
     /// <summary>
     /// Indicates to Code analysis tools that a method validates a particular parameter to not be null
     /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
     internal sealed class ValidatedNotNullAttribute : Attribute {}
 }
