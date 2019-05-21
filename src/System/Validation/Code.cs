@@ -207,7 +207,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="argumentName">Name of the argument.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null and contains only non-null elements; false otherwise.</returns>
-		public static bool ValidateAllNotNull<T>([ValidatedNotNull] IEnumerable<T> argumentValue, string argumentName, uint? tagId)
+		public static bool ValidateAllNotNull<T>(IEnumerable<T> argumentValue, string argumentName, uint? tagId)
 			where T : class
 		{
 			if (!ValidateArgument(argumentValue, argumentName, tagId))
@@ -238,7 +238,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null and contains at least one element; false otherwise.</returns>
 		/// <typeparam name="T">The element type.</typeparam>
-		public static bool ValidateAny<T>([ValidatedNotNull] IEnumerable<T> argumentValue, string argumentName, uint? tagId)
+		public static bool ValidateAny<T>(IEnumerable<T> argumentValue, string argumentName, uint? tagId)
 		{
 			if (!ValidateArgument(argumentValue, argumentName, tagId))
 			{
@@ -267,7 +267,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="argumentName">Name of the argument.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null; false otherwise.</returns>
-		public static bool ValidateArgument([ValidatedNotNull] object argumentValue, string argumentName, uint? tagId)
+		public static bool ValidateArgument(object argumentValue, string argumentName, uint? tagId)
 		{
 			if (argumentValue == null)
 			{
@@ -342,7 +342,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="argumentName">The argument name.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null, empty or only whitespace; false otherwise.</returns>
-		public static bool ValidateNotNullOrWhiteSpaceArgument([ValidatedNotNull] string argumentValue, string argumentName, uint? tagId = null)
+		public static bool ValidateNotNullOrWhiteSpaceArgument(string argumentValue, string argumentName, uint? tagId = null)
 		{
 			if (string.IsNullOrWhiteSpace(argumentValue))
 			{
