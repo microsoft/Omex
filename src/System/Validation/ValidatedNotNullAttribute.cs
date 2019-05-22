@@ -16,17 +16,16 @@ namespace Microsoft.Omex.System.Validation
 	/// </summary>
 	/// <example>
 	/// In this example the Guard.NotNull has the attribute present on its parameter. If it wasn't present the analyzer would not know
-	/// that s cannot be null following the execution of the method, resulting in a warning on the execution of the `.toUpper` method.
+	/// that s cannot be null following the execution of the method, resulting in a warning on the execution of the <c>toUpperInvariant</c> method.
 	/// <code>
 	/// string s = mightBeNullClass?.stringProperty;
 	///
 	/// Guard.NotNull(s);
 	///
 	/// // The analyzer now knows `s` will never be null here
-	/// return s.toUpper();
+	/// return s.toUpperInvariant();
 	/// </code>
 	/// </example>
-	/// 
 	[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
 	internal sealed class ValidatedNotNullAttribute : Attribute { }
 }
