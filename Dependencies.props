@@ -22,8 +22,8 @@
     <PollySignedVersion>4.3.0</PollySignedVersion>
     <StackExchangeRedisStrongNameVersion>1.2.6</StackExchangeRedisStrongNameVersion>
     <SystemCollectionsImmutableVersion>1.1.37</SystemCollectionsImmutableVersion>
-    <XunitAssertVersion>2.1.0</XunitAssertVersion>
-    <XunitCoreVersion>2.1.0</XunitCoreVersion>
+    <XunitAssertVersion>2.4.1</XunitAssertVersion>
+    <XunitCoreVersion>2.4.1</XunitCoreVersion>
   </PropertyGroup>
   <PropertyGroup Label="Package Versions Core">
     <MoqVersionCore>4.10.1</MoqVersionCore>
