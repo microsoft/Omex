@@ -14,6 +14,7 @@
     <MicrosoftAspNetWebApiCorsVersion>5.2.3</MicrosoftAspNetWebApiCorsVersion>
     <MicrosoftAspNetWebApiWebHostVersion>5.2.3</MicrosoftAspNetWebApiWebHostVersion>
     <MicrosoftAzureDataLakeStoreVersion>1.1.3</MicrosoftAzureDataLakeStoreVersion>
+    <MicrosoftAzureDocumentDbVersion>2.5.1</MicrosoftAzureDocumentDbVersion>
     <MicrosoftGraphVersion>1.15.0</MicrosoftGraphVersion>
     <MicrosoftIdentityClientVersion>2.1.0-preview</MicrosoftIdentityClientVersion>
     <MicrosoftIdentityModelClientsActiveDirectoryVersion>3.13.8</MicrosoftIdentityModelClientsActiveDirectoryVersion>
@@ -33,6 +34,7 @@
     <SystemCollectionsImmutableVersionCore>1.5.0</SystemCollectionsImmutableVersionCore>
     <MicrosoftAspNetCoreMvcAbstractionsVersionCore>2.2.0</MicrosoftAspNetCoreMvcAbstractionsVersionCore>
     <MicrosoftAspNetCoreHttpAbstractionsVersionCore>2.2.0</MicrosoftAspNetCoreHttpAbstractionsVersionCore>
+    <MicrosoftAzureDocumentDbVersionCore>2.5.1</MicrosoftAzureDocumentDbVersionCore>
     <NewtonsoftJsonVersionCore>12.0.2</NewtonsoftJsonVersionCore>
     <XunitAssertVersionCore>2.4.1</XunitAssertVersionCore>
     <XunitCoreVersionCore>2.4.1</XunitCoreVersionCore>

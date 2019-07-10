@@ -24,6 +24,11 @@ namespace Microsoft.Omex.System.Logging
 		public static Category ConfigurationDataSet { get; } = new Category("OmexConfigurationDataSet");
 
 		/// <summary>
+		/// Omex Configuration DataSet
+		/// </summary>
+		public static Category DocumentDb { get; } = new Category("OmexDocumentDb");
+
+		/// <summary>
 		/// Omex Infrastructure
 		/// </summary>
 		public static Category Infrastructure { get; } = new Category("OmexInfrastructure");
