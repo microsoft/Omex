@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(TargetFrameworks);net45;$(NetStandardVersion)</TargetFrameworks>
+    <TargetFrameworks>$(NetStandardVersion)</TargetFrameworks>
     <Description>Contains Omex Document Db code</Description>
     <RootNamespace>Microsoft.Omex.DocumentDb</RootNamespace>
     <AssemblyName>Microsoft.Omex.DocumentDb</AssemblyName>
@@ -11,11 +11,12 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == '$(NetStandardVersion)'">
     <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="$(MicrosoftAzureDocumentDbVersionCore)" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="$(SystemConfigurationConfigurationManager)" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != '$(NetStandardVersion)'">
-    <PackageReference Include="Microsoft.Azure.DocumentDB" Version="$(MicrosoftAzureDocumentDbVersion)" />
+    <ItemGroup>
+    <ProjectReference Include="..\..\src\System\Microsoft.Omex.System.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\System\Microsoft.Omex.System.csproj" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
 </Project>

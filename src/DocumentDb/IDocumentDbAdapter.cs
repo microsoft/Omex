@@ -17,12 +17,11 @@ namespace Microsoft.Omex.DocumentDb
 	/// </summary>
 	public interface IDocumentDbAdapter
 	{
-
 		#region common
 
 		/// <summary>
 		/// Gets IDocumentClient. The underlying tak is lazy initialized.
-		/// Once the task runs to completion, it will return the same 
+		/// Once the task runs to completion, it will return the same
 		/// </summary>
 		/// <returns>The IDocumentClient interface.</returns>
 		Task<IDocumentClient> GetDocumentClientAsync();
@@ -387,5 +386,66 @@ namespace Microsoft.Omex.DocumentDb
 
 		#endregion document
 
+		#region scripts
+
+		/// <summary>
+		/// Gets the stored procedure, or creates a new one if one with the specified storedProcedure.id doesn't exist.
+		/// </summary>
+		/// <param name="dbId">The id of the Database to search for, or create.</param>
+		/// <param name="collectionId">The id of the document db collection.</param>
+		/// <param name="storedProcedure">The stored procedure to get or create.</param>
+		/// <param name="deleteStoredProcedure">Indicator to delete the stored procedure before creating it.</param>
+		/// <returns>The matched, or created, StoredProcedure object</returns>
+		Task<StoredProcedure> GetOrCreateStoredProcedureAsync(
+			string dbId,
+			string collectionId,
+			StoredProcedure storedProcedure,
+			bool deleteStoredProcedure = false);
+
+
+		/// <summary>
+		/// Gets the trigger, or creates a new one if one with the specified trigger.id doesn't exist.
+		/// </summary>
+		/// <param name="dbId">The id of the Database to search for, or create.</param>
+		/// <param name="collectionId">The id of the document db collection.</param>
+		/// <param name="trigger">The trigger to get or create.</param>
+		/// <param name="deleteTrigger">Indicator to delete the trigger before creating it.</param>
+		/// <returns>The matched, or created, Trigger object</returns>
+		Task<Trigger> GetOrCreateTriggerAsync(
+			string dbId,
+			string collectionId,
+			Trigger trigger,
+			bool deleteTrigger = false);
+
+
+		/// <summary>
+		/// Deletes the stored procedure.
+		/// </summary>
+		/// <param name="dbId">The id of the Database to search for, or create.</param>
+		/// <param name="collectionId">The id of the document db collection.</param>
+		/// <param name="storedProcedureId">The stored procedure to get or create.</param>
+		/// <returns>True is operation is successful, false otherwise</returns>
+		Task<bool> TryDeleteStoredProcedureAsync(string dbId, string collectionId, string storedProcedureId);
+
+
+		/// <summary>
+		/// Deletes the trigger.
+		/// </summary>
+		/// <param name="dbId">The id of the Database to search for, or create.</param>
+		/// <param name="collectionId">The id of the document db collection.</param>
+		/// <param name="triggerId">The stored procedure to get or create.</param>
+		/// <returns>True is operation is successful, false otherwise</returns>
+		Task<bool> TryDeleteTriggerAsync(string dbId, string collectionId, string triggerId);
+
+
+		/// <summary>
+		/// Registers the provided stored procedures and triggers.
+		/// </summary>
+		/// <param name="dbId">The id of the Database to search for, or create.</param>
+		/// <param name="collectionId">The id of the document db collection.</param>
+		/// <param name="scriptOptions">The script options object holding references to stored procedures and triggers to register.</param>
+		Task RegisterScriptsAsync(string dbId, string collectionId, ScriptOptions scriptOptions);
+
+		#endregion scripts
 	}
 }
