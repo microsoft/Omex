@@ -88,7 +88,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <summary>
 		/// Deletes the database.
 		/// </summary>
-		/// <param name="dbId">Id of the databsae to delete.</param>
+		/// <param name="dbId">Id of the database to delete.</param>
 		/// <param name="requestOptions">Request options</param>
 		/// <returns>Database with specified database id.</returns>
 		public async Task<ResourceResponse<Database>> DeleteDatabaseAsync(
@@ -98,7 +98,7 @@ namespace Microsoft.Omex.DocumentDb
 
 			IDocumentClient client = await GetDocumentClientAsync();
 			return await DocumentDbAdapter.ExecuteAndLogAsync(
-				0x23854602 /* tag_97uyc */, () => client.DeleteDatabaseAsync(UriFactory.CreateDatabaseUri(dbId), requestOptions));
+				0, () => client.DeleteDatabaseAsync(UriFactory.CreateDatabaseUri(dbId), requestOptions));
 		}
 	}
 }

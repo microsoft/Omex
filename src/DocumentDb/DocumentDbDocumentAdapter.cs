@@ -90,7 +90,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// </summary>
 		/// <param name="dbId">Database id.</param>
 		/// <param name="collectionId">Collection id.</param>
-		/// <param name="docId">Collection id.</param>
+		/// <param name="docId">Document id.</param>
 		/// <param name="partitionKey">Partition key for the collection.</param>
 		/// <returns>Created document</returns>
 		public Task<ResourceResponse<Document>> GetDocumentAsync(
@@ -112,7 +112,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// </summary>
 		/// <param name="dbId">Database id.</param>
 		/// <param name="collectionId">Collection id.</param>
-		/// <param name="docId">Collection id.</param>
+		/// <param name="docId">Document id.</param>
 		/// <param name="requestOptions">Request options.</param>
 		/// <returns>Created document</returns>
 		public async Task<ResourceResponse<Document>> GetDocumentAsync(
@@ -124,7 +124,7 @@ namespace Microsoft.Omex.DocumentDb
 
 			IDocumentClient client = await GetDocumentClientAsync();
 
-			return await DocumentDbAdapter.ExecuteAndLogAsync(0x2385459e /* tag_97uw4 */,
+			return await DocumentDbAdapter.ExecuteAndLogAsync(0,
 				async () =>
 				{
 					try
@@ -144,7 +144,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// </summary>
 		/// <param name="dbId">Database id.</param>
 		/// <param name="collectionId">Collection id.</param>
-		/// <param name="docId">Collection id.</param>
+		/// <param name="docId">Document id.</param>
 		/// <param name="requestOptions">Request options.</param>
 		/// <returns>POCO object deserialized by default default json deserialization settings by document db sdk.</returns>
 		public async Task<T> GetDocumentAsync<T>(
@@ -177,7 +177,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// </summary>
 		/// <param name="dbId">Database id.</param>
 		/// <param name="collectionId">Collection id.</param>
-		/// <param name="docId">Collection id.</param>
+		/// <param name="docId">Document id.</param>
 		/// <param name="requestOptions">Request options.</param>
 		/// <param name="converter">Delegate to convert a document to a POCO object.</param>
 		/// <returns>POCO object converted from the retrieved Document.</returns>
@@ -192,7 +192,7 @@ namespace Microsoft.Omex.DocumentDb
 			IDocumentClient client = await GetDocumentClientAsync();
 
 			ResourceResponse<Document> response = await DocumentDbAdapter.ExecuteAndLogAsync(
-				0x238545c3 /* tag_97uxd */, () => client.ReadDocumentAsync(
+				0, () => client.ReadDocumentAsync(
 					UriFactory.CreateDocumentUri(dbId, collectionId, docId), requestOptions));
 
 			return converter(response.Resource);
@@ -263,7 +263,7 @@ namespace Microsoft.Omex.DocumentDb
 					client.CreateDocumentQuery<T>(colUri, feedOptions).AsDocumentQuery())
 				{
 					FeedResponse<T> page = await DocumentDbAdapter.ExecuteAndLogAsync(
-						0x238545c8 /* tag_97uxi */, () => query.ExecuteNextAsync<T>());
+						0, () => query.ExecuteNextAsync<T>());
 
 					return new Tuple<string, IEnumerable<T>>(page.ResponseContinuation, page);
 				}
@@ -365,7 +365,7 @@ namespace Microsoft.Omex.DocumentDb
 				while (query.HasMoreResults)
 				{
 					foreach (T t in await DocumentDbAdapter.ExecuteAndLogAsync(
-						0x238545cf /* tag_97uxp */, () => query.ExecuteNextAsync<T>()))
+						0, () => query.ExecuteNextAsync<T>()))
 					{
 						data.Add(t);
 					}
