@@ -17,6 +17,7 @@ namespace Microsoft.Omex.DocumentDb.Extensions
 		/// </summary>
 		/// <param name="document">Document db document.</param>
 		/// <param name="jsonSerializerSettings">Json serialization settings.</param>
+		/// <returns>Deserialized object of specified type T</returns>
 		public static T ConvertTo<T>(
 			this Document document, JsonSerializerSettings jsonSerializerSettings = null)
 		{

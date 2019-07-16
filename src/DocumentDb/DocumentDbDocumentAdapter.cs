@@ -37,6 +37,7 @@ namespace Microsoft.Omex.DocumentDb
 			Uri collectionUri = UriFactory.CreateDocumentCollectionUri(dbId, collectionId);
 
 			IDocumentClient client = await GetDocumentClientAsync();
+
 			return await DocumentDbAdapter.ExecuteAndLogAsync(
 				0,
 				() => client.CreateDocumentAsync(collectionUri, document, requestOptions, disableIdGeneration));
@@ -49,8 +50,8 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="dbId">Database id.</param>
 		/// <param name="collectionId">Collection id.</param>
 		/// <param name="document">Object to create.</param>
-		/// <param name="requestOptions">Request options</param>
 		/// <param name="partitionKeyField">Request options</param>
+		/// <param name="requestOptions">Request options</param>
 		/// <param name="disableIdGeneration">Disables automatic id generation</param>
 		/// <returns>Created document</returns>
 		public async Task<ResourceResponse<Document>> CreateDocumentAndContainersAsync(
@@ -79,6 +80,7 @@ namespace Microsoft.Omex.DocumentDb
 					catch (DocumentClientException e) when (e.StatusCode == HttpStatusCode.NotFound)
 					{
 						await GetOrCreateDbAndCollectionAsync(dbId, collectionId, partitionKeyField);
+
 						return await client.CreateDocumentAsync(collectionUri, document, requestOptions, disableIdGeneration);
 					}
 				});
@@ -155,7 +157,6 @@ namespace Microsoft.Omex.DocumentDb
 			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), 0);
 
 			IDocumentClient client = await GetDocumentClientAsync();
-
 
 			return await DocumentDbAdapter.ExecuteAndLogAsync(0,
 				async () =>
@@ -336,12 +337,11 @@ namespace Microsoft.Omex.DocumentDb
 			Code.ExpectsNotNullOrWhiteSpaceArgument(sqlQuery, nameof(sqlQuery), 0);
 
 			Uri colUri = UriFactory.CreateDocumentCollectionUri(dbId, collectionId);
-			List<T> data = new List<T>();
 
 			IDocumentClient client = await GetDocumentClientAsync();
 
 			using (IDocumentQuery<T> query =
-				client.CreateDocumentQuery<T>(colUri, feedOptions).AsDocumentQuery())
+				client.CreateDocumentQuery<T>(colUri, new SqlQuerySpec(sqlQuery), feedOptions).AsDocumentQuery())
 			{
 				return await QueryDocumentsAsync(query, feedOptions);
 			}
@@ -446,6 +446,7 @@ namespace Microsoft.Omex.DocumentDb
 			Code.ExpectsNotNullOrWhiteSpaceArgument(partitionKey, nameof(partitionKey), 0);
 
 			RequestOptions requestOptions = new RequestOptions { PartitionKey = new PartitionKey(partitionKey) };
+
 			return DeleteDocumentAsync(dbId, collectionId, docId, requestOptions);
 		}
 

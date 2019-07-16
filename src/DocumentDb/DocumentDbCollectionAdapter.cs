@@ -33,6 +33,7 @@ namespace Microsoft.Omex.DocumentDb
 			Code.ExpectsNotNullOrWhiteSpaceArgument(partitionKey, nameof(partitionKey), 0);
 
 			Database database = await GetOrCreateDatabaseAsync(dbId);
+
 			return await GetOrCreateCollectionAsync(dbId, collectionId, partitionKey, reservedRUs);
 		}
 

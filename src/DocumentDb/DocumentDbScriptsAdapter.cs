@@ -67,6 +67,7 @@ namespace Microsoft.Omex.DocumentDb
 						{
 							sproc = client.CreateStoredProcedureQuery(colUri)
 								.Where(p => p.Id == storedProcedure.Id).AsEnumerable().FirstOrDefault();
+
 							return sproc;
 						}
 
@@ -114,8 +115,8 @@ namespace Microsoft.Omex.DocumentDb
 							return tr;
 						}
 
-						tr = await client.CreateTriggerAsync(colUri, trigger);
-						return tr;
+						return await client.CreateTriggerAsync(colUri, trigger);
+						
 					}
 					catch (DocumentClientException ex)
 					{

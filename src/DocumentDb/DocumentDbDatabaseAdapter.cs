@@ -43,6 +43,7 @@ namespace Microsoft.Omex.DocumentDb
 			Code.ExpectsArgument(database, nameof(database), 0);
 
 			IDocumentClient client = await GetDocumentClientAsync();
+
 			return await DocumentDbAdapter.ExecuteAndLogAsync(0,
 				() => client.CreateDatabaseIfNotExistsAsync(database, requestOptions));
 		}
@@ -80,6 +81,7 @@ namespace Microsoft.Omex.DocumentDb
 				client.CreateDatabaseQuery().Where(db => db.Id == dbId).AsDocumentQuery())
 			{
 				IReadOnlyList<Database> dbs = await QueryDocumentsAsync(query, feedOptions);
+
 				return dbs.FirstOrDefault();
 			}
 		}
@@ -97,6 +99,7 @@ namespace Microsoft.Omex.DocumentDb
 			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId),0);
 
 			IDocumentClient client = await GetDocumentClientAsync();
+
 			return await DocumentDbAdapter.ExecuteAndLogAsync(
 				0, () => client.DeleteDatabaseAsync(UriFactory.CreateDatabaseUri(dbId), requestOptions));
 		}
