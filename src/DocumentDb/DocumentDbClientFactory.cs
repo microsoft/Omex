@@ -4,6 +4,7 @@
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
+using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.DocumentDb
@@ -25,7 +26,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="documentDbSettingsProvider">Document db settings provider.</param>
 		public DocumentClientFactory(IDocumentDbSettingsProvider documentDbSettingsProvider)
 		{
-			Code.ExpectsArgument(documentDbSettingsProvider, nameof(documentDbSettingsProvider), 0);
+			Code.ExpectsArgument(documentDbSettingsProvider, nameof(documentDbSettingsProvider), TaggingUtilities.ReserveTag(0));
 
 			m_DocumentDbSettingsProvider = documentDbSettingsProvider;
 		}
@@ -38,12 +39,18 @@ namespace Microsoft.Omex.DocumentDb
 		public async Task<IDocumentClient> GetDocumentClientAsync()
 		{
 			DocumentDbSettings settings = await DocumentDbAdapter.ExecuteAndLogAsync(
-				0, () => m_DocumentDbSettingsProvider.GetSettingsAsync());
+				0, () => m_DocumentDbSettingsProvider.GetSettingsAsync()).ConfigureAwait(false);
 
 			DocumentClient client = new DocumentClient(settings.Endpoint, settings.Key);
 
 			await DocumentDbAdapter.ExecuteAndLogAsync(
-				0, async () => { await client.OpenAsync(); return true; });
+			0,
+			async () =>
+				{
+					await client.OpenAsync().ConfigureAwait(false);
+
+					return true;
+				}).ConfigureAwait(false);
 
 			return client;
 		}

@@ -8,6 +8,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
+using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.DocumentDb
@@ -31,23 +32,23 @@ namespace Microsoft.Omex.DocumentDb
 			StoredProcedure storedProcedure,
 			bool deleteStoredProcedure = false)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
-			Code.ExpectsArgument(storedProcedure, nameof(storedProcedure), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(storedProcedure, nameof(storedProcedure), TaggingUtilities.ReserveTag(0));
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
 			StoredProcedure sproc = null;
 			var colUri = UriFactory.CreateDocumentCollectionUri(dbId, collectionId);
 
-			return await DocumentDbAdapter.ExecuteAndLogAsync(0,
+			return await DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0),
 				async () =>
 				{
 					try
 					{
 						if (deleteStoredProcedure)
 						{
-							await TryDeleteStoredProcedureAsync(dbId, collectionId, storedProcedure.Id);
+							await DeleteStoredProcedureAsync(dbId, collectionId, storedProcedure.Id).ConfigureAwait(false);
 						}
 
 						sproc = client.CreateStoredProcedureQuery(colUri)
@@ -58,7 +59,7 @@ namespace Microsoft.Omex.DocumentDb
 							return sproc;
 						}
 
-						sproc = await client.CreateStoredProcedureAsync(colUri, storedProcedure);
+						sproc = await client.CreateStoredProcedureAsync(colUri, storedProcedure).ConfigureAwait(false);
 						return sproc;
 					}
 					catch (DocumentClientException ex)
@@ -73,7 +74,7 @@ namespace Microsoft.Omex.DocumentDb
 
 						throw;
 					}
-				});
+				}).ConfigureAwait(false);
 		}
 
 
@@ -91,21 +92,21 @@ namespace Microsoft.Omex.DocumentDb
 			Trigger trigger,
 			bool deleteTrigger = false)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
-			Code.ExpectsArgument(trigger, nameof(trigger), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(trigger, nameof(trigger), TaggingUtilities.ReserveTag(0));
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
 			Uri colUri = UriFactory.CreateDocumentCollectionUri(dbId, collectionId);
-			return await DocumentDbAdapter.ExecuteAndLogAsync(0,
+			return await DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0),
 				async () =>
 				{
 					try
 					{
 						if (deleteTrigger)
 						{
-							await TryDeleteTriggerAsync(dbId, collectionId, trigger.Id);
+							await DeleteTriggerAsync(dbId, collectionId, trigger.Id).ConfigureAwait(false);
 						}
 
 						Trigger tr = client.CreateTriggerQuery(colUri).Where(t => t.Id == trigger.Id).AsEnumerable().FirstOrDefault();
@@ -115,7 +116,7 @@ namespace Microsoft.Omex.DocumentDb
 							return tr;
 						}
 
-						return await client.CreateTriggerAsync(colUri, trigger);
+						return await client.CreateTriggerAsync(colUri, trigger).ConfigureAwait(false);
 						
 					}
 					catch (DocumentClientException ex)
@@ -136,36 +137,26 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="collectionId">The id of the document db collection.</param>
 		/// <param name="storedProcedureId">The stored procedure to get or create.</param>
 		/// <returns>True is operation is successful, false otherwise</returns>
-		public async Task<bool> TryDeleteStoredProcedureAsync(string dbId, string collectionId, string storedProcedureId)
+		public Task DeleteStoredProcedureAsync(string dbId, string collectionId, string storedProcedureId)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(storedProcedureId, nameof(storedProcedureId), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(storedProcedureId, nameof(storedProcedureId), TaggingUtilities.ReserveTag(0));
 
-			return await DocumentDbAdapter.ExecuteAndLogAsync(0,
+			return DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0),
 				async () =>
 				{
-					bool success = true;
 					try
 					{
-						IDocumentClient client = await GetDocumentClientAsync();
+						IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
 						await client.DeleteStoredProcedureAsync(
-							UriFactory.CreateStoredProcedureUri(dbId, collectionId, storedProcedureId));
+							UriFactory.CreateStoredProcedureUri(dbId, collectionId, storedProcedureId))
+							.ConfigureAwait(false);
 					}
-					catch (DocumentClientException clientEx)
+					catch (DocumentClientException clientEx) when (clientEx.StatusCode == HttpStatusCode.NotFound)
 					{
-						if (clientEx.StatusCode != HttpStatusCode.NotFound)
-						{
-							success = false;
-						}
 					}
-					catch (Exception)
-					{
-						success = false;
-					}
-
-					return success;
 				});
 		}
 
@@ -177,35 +168,25 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="collectionId">The id of the document db collection.</param>
 		/// <param name="triggerId">The stored procedure to get or create.</param>
 		/// <returns>True is operation is successful, false otherwise</returns>
-		public async Task<bool> TryDeleteTriggerAsync(string dbId, string collectionId, string triggerId)
+		public Task DeleteTriggerAsync(string dbId, string collectionId, string triggerId)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(triggerId, nameof(triggerId), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(triggerId, nameof(triggerId), TaggingUtilities.ReserveTag(0));
 
-			return await DocumentDbAdapter.ExecuteAndLogAsync(0,
+			return DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0),
 				async () =>
 				{
-					IDocumentClient client = await GetDocumentClientAsync();
+					IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
-					bool success = true;
 					try
 					{
-						await client.DeleteTriggerAsync(UriFactory.CreateTriggerUri(dbId, collectionId, triggerId));
+						await client.DeleteTriggerAsync(UriFactory.CreateTriggerUri(dbId, collectionId, triggerId))
+							.ConfigureAwait(false);
 					}
-					catch (DocumentClientException clientEx)
+					catch (DocumentClientException clientEx) when (clientEx.StatusCode == HttpStatusCode.NotFound)
 					{
-						if (clientEx.StatusCode != HttpStatusCode.NotFound)
-						{
-							success = false;
-						}
 					}
-					catch (Exception)
-					{
-						success = false;
-					}
-
-					return success;
 				});
 		}
 
@@ -216,13 +197,13 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="dbId">The id of the Database to search for, or create.</param>
 		/// <param name="collectionId">The id of the document db collection.</param>
 		/// <param name="scriptOptions">The script options object holding references to stored procedures and triggers to register.</param>
-		public async Task RegisterScriptsAsync(string dbId, string collectionId, ScriptOptions scriptOptions)
+		public Task RegisterScriptsAsync(string dbId, string collectionId, ScriptOptions scriptOptions)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
-			Code.ExpectsArgument(scriptOptions, nameof(scriptOptions), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(scriptOptions, nameof(scriptOptions), TaggingUtilities.ReserveTag(0));
 
-			await DocumentDbAdapter.ExecuteAndLogAsync(0, () =>
+			return DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0), () =>
 				 {
 					 IEnumerable<Task> tasks = Enumerable.Empty<Task>();
 					 tasks = tasks.Union(scriptOptions?.Triggers?.Select(t => GetOrCreateTriggerAsync(dbId, collectionId, t, scriptOptions.ResetScripts)) ??

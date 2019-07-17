@@ -30,7 +30,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="clientFactory">Document db client factory.</param>
 		public DocumentDbAdapter(IDocumentClientFactory clientFactory)
 		{
-			Code.ExpectsArgument(clientFactory, nameof(clientFactory), 0);
+			Code.ExpectsArgument(clientFactory, nameof(clientFactory), TaggingUtilities.ReserveTag(0));
 
 			DocumentClientFactory = clientFactory;
 
@@ -54,7 +54,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>The IDocumentClient interface.</returns>
 		public Task<IDocumentClient> GetDocumentClientAsync()
 		{
-			return DocumentDbAdapter.ExecuteAndLogAsync(0, () => m_DocumentClient.Value);
+			return DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0), () => m_DocumentClient.Value);
 		}
 
 
@@ -74,7 +74,7 @@ namespace Microsoft.Omex.DocumentDb
 				tagId,
 				async () =>
 				{
-					ResourceResponse<T> response = await documentdbFunc();
+					ResourceResponse<T> response = await documentdbFunc().ConfigureAwait(false);
 					try
 					{
 						LogInfo(
@@ -102,11 +102,11 @@ namespace Microsoft.Omex.DocumentDb
 			Func<Task<T>> asyncFunc,
 			[CallerMemberName] string caller = null)
 		{
-			Code.ExpectsArgument(asyncFunc, nameof(asyncFunc), 0);
+			Code.ExpectsArgument(asyncFunc, nameof(asyncFunc), TaggingUtilities.ReserveTag(0));
 
 			try
 			{
-				return await asyncFunc();
+				return await asyncFunc().ConfigureAwait(false);
 			}
 			catch (DocumentClientException exception)
 			{
@@ -137,11 +137,11 @@ namespace Microsoft.Omex.DocumentDb
 			Func<Task> asyncFunc,
 			[CallerMemberName] string caller = null)
 		{
-			Code.ExpectsArgument(asyncFunc, nameof(asyncFunc), 0);
+			Code.ExpectsArgument(asyncFunc, nameof(asyncFunc), TaggingUtilities.ReserveTag(0));
 
 			try
 			{
-				await asyncFunc();
+				await asyncFunc().ConfigureAwait(false);
 			}
 			catch (DocumentClientException exception)
 			{

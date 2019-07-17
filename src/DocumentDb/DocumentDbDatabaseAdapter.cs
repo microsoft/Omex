@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
+using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.DocumentDb
@@ -25,7 +26,7 @@ namespace Microsoft.Omex.DocumentDb
 		public Task<ResourceResponse<Database>> GetOrCreateDatabaseAsync(
 			string dbId, RequestOptions requestOptions = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
 
 			return GetOrCreateDatabaseAsync(new Database { Id = dbId }, requestOptions);
 		}
@@ -40,12 +41,12 @@ namespace Microsoft.Omex.DocumentDb
 		public async Task<ResourceResponse<Database>> GetOrCreateDatabaseAsync(
 			Database database, RequestOptions requestOptions = null)
 		{
-			Code.ExpectsArgument(database, nameof(database), 0);
+			Code.ExpectsArgument(database, nameof(database), TaggingUtilities.ReserveTag(0));
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
-			return await DocumentDbAdapter.ExecuteAndLogAsync(0,
-				() => client.CreateDatabaseIfNotExistsAsync(database, requestOptions));
+			return await DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0),
+				() => client.CreateDatabaseIfNotExistsAsync(database, requestOptions)).ConfigureAwait(false);
 		}
 
 
@@ -56,11 +57,11 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>All databases in the account.</returns>
 		public async Task<IReadOnlyList<Database>> GetAllDatabasesAsync(FeedOptions feedOptions = null)
 		{
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
 			using (IDocumentQuery<Database> query = client.CreateDatabaseQuery().AsDocumentQuery())
 			{
-				return await QueryDocumentsAsync(query, feedOptions);
+				return await QueryDocumentsAsync(query, feedOptions).ConfigureAwait(false);
 			}
 		}
 
@@ -73,14 +74,14 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>The Database.</returns>
 		public async Task<Database> GetDatabaseAsync(string dbId, FeedOptions feedOptions = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
 			using (IDocumentQuery<Database> query =
 				client.CreateDatabaseQuery().Where(db => db.Id == dbId).AsDocumentQuery())
 			{
-				IReadOnlyList<Database> dbs = await QueryDocumentsAsync(query, feedOptions);
+				IReadOnlyList<Database> dbs = await QueryDocumentsAsync(query, feedOptions).ConfigureAwait(false);
 
 				return dbs.FirstOrDefault();
 			}
@@ -98,10 +99,11 @@ namespace Microsoft.Omex.DocumentDb
 		{
 			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId),0);
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
 			return await DocumentDbAdapter.ExecuteAndLogAsync(
-				0, () => client.DeleteDatabaseAsync(UriFactory.CreateDatabaseUri(dbId), requestOptions));
+				0, () => client.DeleteDatabaseAsync(UriFactory.CreateDatabaseUri(dbId), requestOptions))
+					.ConfigureAwait(false);
 		}
 	}
 }

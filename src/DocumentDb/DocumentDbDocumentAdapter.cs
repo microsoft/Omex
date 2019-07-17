@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
+using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.DocumentDb
@@ -30,17 +31,18 @@ namespace Microsoft.Omex.DocumentDb
 		public async Task<ResourceResponse<Document>> CreateDocumentAsync(
 			string dbId, string collectionId, object document, RequestOptions requestOptions = null, bool disableIdGeneration = true)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
-			Code.ExpectsArgument(document, nameof(document), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(document, nameof(document), TaggingUtilities.ReserveTag(0));
 
 			Uri collectionUri = UriFactory.CreateDocumentCollectionUri(dbId, collectionId);
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
 			return await DocumentDbAdapter.ExecuteAndLogAsync(
 				0,
-				() => client.CreateDocumentAsync(collectionUri, document, requestOptions, disableIdGeneration));
+				() => client.CreateDocumentAsync(collectionUri, document, requestOptions, disableIdGeneration))
+					.ConfigureAwait(false);
 		}
 
 
@@ -62,28 +64,29 @@ namespace Microsoft.Omex.DocumentDb
 			RequestOptions requestOptions = null,
 			bool disableIdGeneration = false)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
 			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId),0);
-			Code.ExpectsArgument(document, nameof(document), 0);
+			Code.ExpectsArgument(document, nameof(document), TaggingUtilities.ReserveTag(0));
 
 			Uri collectionUri = UriFactory.CreateDocumentCollectionUri(dbId, collectionId);
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
-			return await DocumentDbAdapter.ExecuteAndLogAsync(0,
+			return await DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0),
 				async () =>
 				{
 					try
 					{
-						return await client.CreateDocumentAsync(collectionUri, document, requestOptions, disableIdGeneration);
+						return await client.CreateDocumentAsync(collectionUri, document, requestOptions, disableIdGeneration).ConfigureAwait(false);
 					}
 					catch (DocumentClientException e) when (e.StatusCode == HttpStatusCode.NotFound)
 					{
-						await GetOrCreateDbAndCollectionAsync(dbId, collectionId, partitionKeyField);
+						// We get NotFound exception either when db and/or collection is not yet created. We create the missing component before retrying to create the document.
+						await GetOrCreateDbAndCollectionAsync(dbId, collectionId, partitionKeyField).ConfigureAwait(false);
 
-						return await client.CreateDocumentAsync(collectionUri, document, requestOptions, disableIdGeneration);
+						return await client.CreateDocumentAsync(collectionUri, document, requestOptions, disableIdGeneration).ConfigureAwait(false);
 					}
-				});
+				}).ConfigureAwait(false);
 		}
 
 
@@ -98,10 +101,10 @@ namespace Microsoft.Omex.DocumentDb
 		public Task<ResourceResponse<Document>> GetDocumentAsync(
 			string dbId, string collectionId, string docId, string partitionKey)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId),0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(partitionKey, nameof(partitionKey), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(partitionKey, nameof(partitionKey), TaggingUtilities.ReserveTag(0));
 
 			RequestOptions requestOptions = new RequestOptions { PartitionKey = new PartitionKey(partitionKey) };
 
@@ -120,24 +123,25 @@ namespace Microsoft.Omex.DocumentDb
 		public async Task<ResourceResponse<Document>> GetDocumentAsync(
 			string dbId, string collectionId, string docId, RequestOptions requestOptions = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), TaggingUtilities.ReserveTag(0));
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
-			return await DocumentDbAdapter.ExecuteAndLogAsync(0,
+			return await DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0),
 				async () =>
 				{
 					try
 					{
-						return await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(dbId, collectionId, docId), requestOptions);
+						return await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(dbId, collectionId, docId), requestOptions)
+						.ConfigureAwait(false);
 					}
 					catch (DocumentClientException e) when (e.StatusCode == HttpStatusCode.NotFound)
 					{
 						return default(ResourceResponse<Document>);
 					}
-				});
+				}).ConfigureAwait(false);
 		}
 
 
@@ -152,24 +156,25 @@ namespace Microsoft.Omex.DocumentDb
 		public async Task<T> GetDocumentAsync<T>(
 			string dbId, string collectionId, string docId, RequestOptions requestOptions = null) where T : class
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), TaggingUtilities.ReserveTag(0));
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
-			return await DocumentDbAdapter.ExecuteAndLogAsync(0,
+			return await DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0),
 				async () =>
 				{
 					try
 					{
-						return await client.ReadDocumentAsync<T>(UriFactory.CreateDocumentUri(dbId, collectionId, docId), requestOptions);
+						return await client.ReadDocumentAsync<T>(UriFactory.CreateDocumentUri(dbId, collectionId, docId), requestOptions)
+							.ConfigureAwait(false);
 					}
 					catch (DocumentClientException e) when (e.StatusCode == HttpStatusCode.NotFound)
 					{
 						return default(T);
 					}
-				});
+				}).ConfigureAwait(false);
 		}
 
 
@@ -185,16 +190,16 @@ namespace Microsoft.Omex.DocumentDb
 		public async Task<T> GetDocumentAsync<T>(
 			string dbId, string collectionId, string docId, Func<Document, T> converter, RequestOptions requestOptions = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), 0);
-			Code.ExpectsArgument(converter, nameof(converter), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(converter, nameof(converter), TaggingUtilities.ReserveTag(0));
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
 			ResourceResponse<Document> response = await DocumentDbAdapter.ExecuteAndLogAsync(
 				0, () => client.ReadDocumentAsync(
-					UriFactory.CreateDocumentUri(dbId, collectionId, docId), requestOptions));
+					UriFactory.CreateDocumentUri(dbId, collectionId, docId), requestOptions)).ConfigureAwait(false);
 
 			return converter(response.Resource);
 		}
@@ -206,7 +211,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="dbId">Database id.</param>
 		/// <param name="collectionId">Collection id.</param>
 		/// <param name="feedOptions">Feed options.</param>
-		/// <param name="queryFunc">Optional query</param>
+		/// <param name="queryFunc">Optional delegate to update the generated query before calling document db</param>
 		/// <returns>List of objects of specified type returned from specified database and collection.</returns>
 		public async Task<IReadOnlyList<T>> GetAllDocumentsAsync<T>(
 			string dbId,
@@ -214,10 +219,10 @@ namespace Microsoft.Omex.DocumentDb
 			FeedOptions feedOptions = null,
 			Func<IQueryable<T>, IQueryable<T>> queryFunc = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
 			IQueryable<T> queryable = client.CreateDocumentQuery<T>(
 				UriFactory.CreateDocumentCollectionUri(dbId, collectionId), feedOptions);
@@ -229,7 +234,7 @@ namespace Microsoft.Omex.DocumentDb
 
 			using (IDocumentQuery<T> query = queryable.AsDocumentQuery())
 			{
-				return await QueryDocumentsAsync(query, feedOptions);
+				return await QueryDocumentsAsync(query, feedOptions).ConfigureAwait(false);
 			}
 		}
 
@@ -249,22 +254,22 @@ namespace Microsoft.Omex.DocumentDb
 			string continuationToken,
 			FeedOptions feedOptions = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
 
 			Uri colUri = UriFactory.CreateDocumentCollectionUri(dbId, collectionId);
 
 			feedOptions = feedOptions ?? new FeedOptions();
 			feedOptions.RequestContinuation = continuationToken;
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 			try
 			{
 				using (IDocumentQuery<T> query =
 					client.CreateDocumentQuery<T>(colUri, feedOptions).AsDocumentQuery())
 				{
 					FeedResponse<T> page = await DocumentDbAdapter.ExecuteAndLogAsync(
-						0, () => query.ExecuteNextAsync<T>());
+						0, () => query.ExecuteNextAsync<T>()).ConfigureAwait(false);
 
 					return new Tuple<string, IEnumerable<T>>(page.ResponseContinuation, page);
 				}
@@ -283,13 +288,13 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="collectionId">Collection id.</param>
 		/// <param name="partitionKey">Partition key.</param>
 		/// <param name="feedOptions">Feed options.</param>
-		/// <param name="queryFunc">Optional linq query</param>
+		/// <param name="queryFunc">Optional delegate to update the generated query before calling document db</param>
 		/// <returns>List of objects of specified type returned from specified database and collection.</returns>
 		public Task<IReadOnlyList<T>> GetAllDocumentsFromPartitionAsync<T>(
 			string dbId, string collectionId, string partitionKey, FeedOptions feedOptions = null,
 			Func<IQueryable<T>, IQueryable<T>> queryFunc = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(partitionKey, nameof(partitionKey), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(partitionKey, nameof(partitionKey), TaggingUtilities.ReserveTag(0));
 
 			feedOptions = feedOptions ?? new FeedOptions();
 			feedOptions.PartitionKey = new PartitionKey(partitionKey);
@@ -311,7 +316,7 @@ namespace Microsoft.Omex.DocumentDb
 		public Task<Tuple<string, IEnumerable<T>>> GetAllDocumentsFromPartitionWithPagingAsync<T>(
 			string dbId, string collectionId, string partitionKey, string continuationToken, FeedOptions feedOptions = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(partitionKey, nameof(partitionKey), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(partitionKey, nameof(partitionKey), TaggingUtilities.ReserveTag(0));
 
 			feedOptions = feedOptions ?? new FeedOptions();
 			feedOptions.PartitionKey = new PartitionKey(partitionKey);
@@ -328,22 +333,21 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="sqlQuery">Sql query string</param>
 		/// <param name="feedOptions">Feed options.</param>
 		/// <returns>List of objects of specified type returned from sql query.</returns>
-
 		public async Task<IReadOnlyList<T>> QueryDocumentsWithSqlAsync<T>(
 			string dbId, string collectionId, string sqlQuery, FeedOptions feedOptions = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(sqlQuery, nameof(sqlQuery), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(sqlQuery, nameof(sqlQuery), TaggingUtilities.ReserveTag(0));
 
 			Uri colUri = UriFactory.CreateDocumentCollectionUri(dbId, collectionId);
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
 			using (IDocumentQuery<T> query =
 				client.CreateDocumentQuery<T>(colUri, new SqlQuerySpec(sqlQuery), feedOptions).AsDocumentQuery())
 			{
-				return await QueryDocumentsAsync(query, feedOptions);
+				return await QueryDocumentsAsync(query, feedOptions).ConfigureAwait(false);
 			}
 		}
 
@@ -357,7 +361,7 @@ namespace Microsoft.Omex.DocumentDb
 		public async Task<IReadOnlyList<T>> QueryDocumentsAsync<T>(
 			IDocumentQuery<T> query, FeedOptions feedOptions = null)
 		{
-			Code.ExpectsArgument(query, nameof(query), 0);
+			Code.ExpectsArgument(query, nameof(query), TaggingUtilities.ReserveTag(0));
 			List<T> data = new List<T>();
 
 			try
@@ -365,7 +369,7 @@ namespace Microsoft.Omex.DocumentDb
 				while (query.HasMoreResults)
 				{
 					foreach (T t in await DocumentDbAdapter.ExecuteAndLogAsync(
-						0, () => query.ExecuteNextAsync<T>()))
+						0, () => query.ExecuteNextAsync<T>()).ConfigureAwait(false))
 					{
 						data.Add(t);
 					}
@@ -392,16 +396,17 @@ namespace Microsoft.Omex.DocumentDb
 		public async Task<ResourceResponse<Document>> ReplaceDocumentAsync<T>(
 			string dbId, string collectionId, string docId, T entity, RequestOptions requestOptions = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), 0);
-			Code.ExpectsArgument(entity, nameof(entity), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(entity, nameof(entity), TaggingUtilities.ReserveTag(0));
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
-			return await DocumentDbAdapter.ExecuteAndLogAsync(0,
+			return await DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0),
 				() => client.ReplaceDocumentAsync(
-					UriFactory.CreateDocumentUri(dbId, collectionId, docId), entity, requestOptions));
+					UriFactory.CreateDocumentUri(dbId, collectionId, docId), entity, requestOptions))
+						.ConfigureAwait(false);
 		}
 
 
@@ -417,15 +422,16 @@ namespace Microsoft.Omex.DocumentDb
 		public async Task<ResourceResponse<Document>> UpsertDocumentAsync<T>(
 			string dbId, string collectionId, T entity, RequestOptions requestOptions = null, bool disableIdGeneration = true)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
-			Code.ExpectsArgument(entity, nameof(entity), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(entity, nameof(entity), TaggingUtilities.ReserveTag(0));
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
-			return await DocumentDbAdapter.ExecuteAndLogAsync(0,
+			return await DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0),
 				() => client.UpsertDocumentAsync(
-					UriFactory.CreateDocumentCollectionUri(dbId, collectionId), entity, requestOptions, disableIdGeneration));
+					UriFactory.CreateDocumentCollectionUri(dbId, collectionId), entity, requestOptions, disableIdGeneration))
+						.ConfigureAwait(false);
 		}
 
 
@@ -440,10 +446,10 @@ namespace Microsoft.Omex.DocumentDb
 		public Task<ResourceResponse<Document>> DeleteDocumentAsync(
 			string dbId, string collectionId, string docId, string partitionKey)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(partitionKey, nameof(partitionKey), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(partitionKey, nameof(partitionKey), TaggingUtilities.ReserveTag(0));
 
 			RequestOptions requestOptions = new RequestOptions { PartitionKey = new PartitionKey(partitionKey) };
 
@@ -462,15 +468,16 @@ namespace Microsoft.Omex.DocumentDb
 		public async Task<ResourceResponse<Document>> DeleteDocumentAsync(
 			string dbId, string collectionId, string docId, RequestOptions requestOptions = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(docId, nameof(docId), TaggingUtilities.ReserveTag(0));
 
-			IDocumentClient client = await GetDocumentClientAsync();
+			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
-			return await DocumentDbAdapter.ExecuteAndLogAsync(0,
+			return await DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0),
 				() => client.DeleteDocumentAsync(
-					UriFactory.CreateDocumentUri(dbId, collectionId, docId), requestOptions));
+					UriFactory.CreateDocumentUri(dbId, collectionId, docId), requestOptions))
+						.ConfigureAwait(false);
 		}
 	}
 }

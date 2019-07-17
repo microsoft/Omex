@@ -4,11 +4,10 @@
 function count(filterQuery, continuationToken) {
     var collection = getContext().getCollection();
     var maxResult = 500000; 
-    var result = 0;
+	var result = 0;
 
-    var q = "SELECT VALUE COUNT(1) FROM root";
-    if (!filterQuery) {
-        filterQuery = q;
+	if (!filterQuery) {
+		filterQuery = "SELECT VALUE COUNT(1) FROM root";
     }
 
     tryQuery(continuationToken);

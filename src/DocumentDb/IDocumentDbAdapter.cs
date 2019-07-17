@@ -250,7 +250,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="dbId">Database id.</param>
 		/// <param name="collectionId">Collection id.</param>
 		/// <param name="feedOptions">Feed options.</param>
-		/// <param name="queryFunc">Optional linq query</param>
+		/// <param name="queryFunc">Optional delegate to update the generated query before calling document db</param>
 		/// <returns>List of objects of specified type returned from specified database and collection.</returns>
 		Task<IReadOnlyList<T>> GetAllDocumentsAsync<T>(
 			string dbId,
@@ -282,7 +282,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="collectionId">Collection id.</param>
 		/// <param name="partitionKey">Partition key.</param>
 		/// <param name="feedOptions">Feed options.</param>
-		/// <param name="queryFunc">Optional linq query</param>
+		/// <param name="queryFunc">Optional delegate to update the generated query before calling document db</param>
 		/// <returns>List of objects of specified type returned from specified database and collection.</returns>
 		Task<IReadOnlyList<T>> GetAllDocumentsFromPartitionAsync<T>(
 			string dbId,
@@ -425,7 +425,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="collectionId">The id of the document db collection.</param>
 		/// <param name="storedProcedureId">The stored procedure to get or create.</param>
 		/// <returns>True is operation is successful, false otherwise</returns>
-		Task<bool> TryDeleteStoredProcedureAsync(string dbId, string collectionId, string storedProcedureId);
+		Task DeleteStoredProcedureAsync(string dbId, string collectionId, string storedProcedureId);
 
 
 		/// <summary>
@@ -435,7 +435,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="collectionId">The id of the document db collection.</param>
 		/// <param name="triggerId">The stored procedure to get or create.</param>
 		/// <returns>True is operation is successful, false otherwise</returns>
-		Task<bool> TryDeleteTriggerAsync(string dbId, string collectionId, string triggerId);
+		Task DeleteTriggerAsync(string dbId, string collectionId, string triggerId);
 
 
 		/// <summary>

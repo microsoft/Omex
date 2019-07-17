@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.Azure.Documents;
+using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.DocumentDb.Extensions
@@ -18,7 +19,7 @@ namespace Microsoft.Omex.DocumentDb.Extensions
 		/// <returns>Converted error string from document client exception information.</returns>
 		public static string ToErrorMessage(this DocumentClientException exception)
 		{
-			Code.ExpectsArgument(exception, nameof(exception), 0);
+			Code.ExpectsArgument(exception, nameof(exception), TaggingUtilities.ReserveTag(0));
 
 			return $"Cost: {exception.RequestCharge}" +
 				$" ContentLocation: {exception.ResponseHeaders["Content-Location"]}" +

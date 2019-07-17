@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.Azure.Documents;
+using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.Validation;
 using Newtonsoft.Json;
 
@@ -21,7 +22,7 @@ namespace Microsoft.Omex.DocumentDb.Extensions
 		public static T ConvertTo<T>(
 			this Document document, JsonSerializerSettings jsonSerializerSettings = null)
 		{
-			Code.ExpectsArgument(document, nameof(document), 0);
+			Code.ExpectsArgument(document, nameof(document), TaggingUtilities.ReserveTag(0));
 
 			return JsonConvert.DeserializeObject<T>(document.ToString(), jsonSerializerSettings);
 		}

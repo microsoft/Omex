@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.DocumentDb
@@ -11,6 +12,12 @@ namespace Microsoft.Omex.DocumentDb
 	/// </summary>
 	public class DocumentDbSettings
 	{
+		protected DocumentDbSettings(string endpoint)
+		{
+			Code.ExpectsNotNullOrWhiteSpaceArgument(endpoint, nameof(endpoint), TaggingUtilities.ReserveTag(0));
+			Endpoint = new Uri(endpoint);
+		}
+
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -18,8 +25,8 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="key">Document db key.</param>
 		public DocumentDbSettings(string endpoint, string key)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(endpoint, nameof(endpoint), 0);
-			Code.ExpectsNotNullOrWhiteSpaceArgument(key, nameof(key), 0);
+			Code.ExpectsNotNullOrWhiteSpaceArgument(endpoint, nameof(endpoint), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(key, nameof(key), TaggingUtilities.ReserveTag(0));
 
 			Endpoint = new Uri(endpoint);
 			Key = key;
@@ -35,6 +42,6 @@ namespace Microsoft.Omex.DocumentDb
 		/// <summary>
 		/// Document db key.
 		/// </summary>
-		public string Key { get; }
+		public virtual string Key { get; }
 	}
 }
