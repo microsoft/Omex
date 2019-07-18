@@ -28,14 +28,29 @@ namespace Microsoft.Omex.DocumentDb
 		/// Constructor.
 		/// </summary>
 		/// <param name="clientFactory">Document db client factory.</param>
-		public DocumentDbAdapter(IDocumentClientFactory clientFactory)
+		/// <param name="config">Document db settings config.</param>
+		public DocumentDbAdapter(IDocumentClientFactory clientFactory, DocumentDbSettingsConfig config = null)
 		{
 			Code.ExpectsArgument(clientFactory, nameof(clientFactory), TaggingUtilities.ReserveTag(0));
 
 			DocumentClientFactory = clientFactory;
 
 			m_DocumentClient = new Lazy<Task<IDocumentClient>>(
-				() => DocumentClientFactory.GetDocumentClientAsync(),
+				() => DocumentClientFactory.GetDocumentClientAsync(config),
+				LazyThreadSafetyMode.ExecutionAndPublication);
+		}
+
+
+		/// <summary>
+		/// Overloaded Constructor that uses the specified document db client instead of creating one.
+		/// </summary>
+		/// <param name="documentClient">Document db client.</param>
+		public DocumentDbAdapter(IDocumentClient documentClient)
+		{
+			Code.ExpectsArgument(documentClient, nameof(documentClient), TaggingUtilities.ReserveTag(0));
+
+			m_DocumentClient = new Lazy<Task<IDocumentClient>>(
+				() => Task.FromResult(documentClient),
 				LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 

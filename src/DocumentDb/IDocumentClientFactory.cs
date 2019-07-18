@@ -12,9 +12,10 @@ namespace Microsoft.Omex.DocumentDb
 	public interface IDocumentClientFactory
 	{
 		/// <summary>
-		/// Gets document db client.
+		/// Gets document client.
 		/// </summary>
-		/// <returns>Document db client</returns>
-		Task<IDocumentClient> GetDocumentClientAsync();
+		/// <param name="config">Document Db settings config, containing information like region, environment, access type etc.</param>
+		/// <returns>The IDocumentClient interface.</returns>
+		Task<IDocumentClient> GetDocumentClientAsync(DocumentDbSettingsConfig config = null);
 	}
 }

@@ -13,7 +13,8 @@ namespace Microsoft.Omex.DocumentDb
 		/// <summary>
 		/// Gets document db settings.
 		/// </summary>
-		/// <returns>Document db client</returns>
-		Task<DocumentDbSettings> GetSettingsAsync();
+		/// <param name="config">Document Db settings config, containing information like region, environment, access type etc.</param>
+		/// <returns>Document db settings</returns>
+		Task<DocumentDbSettings> GetSettingsAsync(DocumentDbSettingsConfig config = null);
 	}
 }

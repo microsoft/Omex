@@ -12,24 +12,29 @@ namespace Microsoft.Omex.DocumentDb
 	/// </summary>
 	public class DocumentDbSettings
 	{
-		protected DocumentDbSettings(string endpoint)
+		protected DocumentDbSettings(string endpoint, DocumentDbSettingsConfig config = null)
 		{
 			Code.ExpectsNotNullOrWhiteSpaceArgument(endpoint, nameof(endpoint), TaggingUtilities.ReserveTag(0));
+
 			Endpoint = new Uri(endpoint);
+			Config = config;
 		}
+
 
 		/// <summary>
 		/// Constructor.
 		/// </summary>
 		/// <param name="endpoint">Document db endpoint.</param>
 		/// <param name="key">Document db key.</param>
-		public DocumentDbSettings(string endpoint, string key)
+		/// <param name="config">Document db settings config.</param>
+		public DocumentDbSettings(string endpoint, string key, DocumentDbSettingsConfig config = null)
 		{
 			Code.ExpectsNotNullOrWhiteSpaceArgument(endpoint, nameof(endpoint), TaggingUtilities.ReserveTag(0));
 			Code.ExpectsNotNullOrWhiteSpaceArgument(key, nameof(key), TaggingUtilities.ReserveTag(0));
 
 			Endpoint = new Uri(endpoint);
 			Key = key;
+			Config = config;
 		}
 
 
@@ -43,5 +48,11 @@ namespace Microsoft.Omex.DocumentDb
 		/// Document db key.
 		/// </summary>
 		public virtual string Key { get; }
+
+
+		/// <summary>
+		/// Document db settings configuration.
+		/// </summary>
+		public DocumentDbSettingsConfig Config { get; }
 	}
 }

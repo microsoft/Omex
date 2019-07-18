@@ -14,8 +14,9 @@ namespace Microsoft.Omex.DocumentDb
 		/// <summary>
 		/// Get document db settings from app config.
 		/// </summary>
+		/// <param name="config">Document Db settings config, containing information like region, environment, access type etc.</param>
 		/// <returns>The document db settings</returns>
-		public Task<DocumentDbSettings> GetSettingsAsync()
+		public Task<DocumentDbSettings> GetSettingsAsync(DocumentDbSettingsConfig config = null)
 		{
 			string endpoint = ConfigurationManager.AppSettings["DocumentDbEndpoint"];
 			string key = ConfigurationManager.AppSettings["DocumentDbKey"];

@@ -35,11 +35,12 @@ namespace Microsoft.Omex.DocumentDb
 		/// <summary>
 		/// Gets document client.
 		/// </summary>
+		/// <param name="config">Document Db settings config, containing information like region, environment, access type etc.</param>
 		/// <returns>The IDocumentClient interface.</returns>
-		public async Task<IDocumentClient> GetDocumentClientAsync()
+		public async Task<IDocumentClient> GetDocumentClientAsync(DocumentDbSettingsConfig config = null)
 		{
 			DocumentDbSettings settings = await DocumentDbAdapter.ExecuteAndLogAsync(
-				0, () => m_DocumentDbSettingsProvider.GetSettingsAsync()).ConfigureAwait(false);
+				0, () => m_DocumentDbSettingsProvider.GetSettingsAsync(config)).ConfigureAwait(false);
 
 			DocumentClient client = new DocumentClient(settings.Endpoint, settings.Key);
 
