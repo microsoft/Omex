@@ -424,7 +424,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="dbId">The id of the Database to search for, or create.</param>
 		/// <param name="collectionId">The id of the document db collection.</param>
 		/// <param name="storedProcedureId">The stored procedure to get or create.</param>
-		/// <returns>True is operation is successful, false otherwise</returns>
+		/// <returns>True if operation is successful, false otherwise</returns>
 		Task DeleteStoredProcedureAsync(string dbId, string collectionId, string storedProcedureId);
 
 
@@ -433,8 +433,8 @@ namespace Microsoft.Omex.DocumentDb
 		/// </summary>
 		/// <param name="dbId">The id of the Database to search for, or create.</param>
 		/// <param name="collectionId">The id of the document db collection.</param>
-		/// <param name="triggerId">The stored procedure to get or create.</param>
-		/// <returns>True is operation is successful, false otherwise</returns>
+		/// <param name="triggerId">The trigger to get or create.</param>
+		/// <returns>True if operation is successful, false otherwise</returns>
 		Task DeleteTriggerAsync(string dbId, string collectionId, string triggerId);
 
 

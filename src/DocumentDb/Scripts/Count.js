@@ -2,47 +2,47 @@
 // Licensed under the MIT license.
 
 function count(filterQuery, continuationToken) {
-    var collection = getContext().getCollection();
-    var maxResult = 500000; 
+	var collection = getContext().getCollection();
+	var maxResult = 500000;
 	var result = 0;
 
 	if (!filterQuery) {
 		filterQuery = "SELECT VALUE COUNT(1) FROM root";
-    }
+	}
 
-    tryQuery(continuationToken);
+	tryQuery(continuationToken);
 
-    function tryQuery(nextContinuationToken) {
-        var responseOptions = { continuation: nextContinuationToken, pageSize: maxResult };
+	function tryQuery(nextContinuationToken) {
+		var responseOptions = { continuation: nextContinuationToken, pageSize: maxResult };
 
-        if (result >= maxResult || !query(responseOptions)) {
-            setBody(nextContinuationToken);
-        }
-    }
+		if (result >= maxResult || !query(responseOptions)) {
+			setBody(nextContinuationToken);
+		}
+	}
 
-    function query(responseOptions) {
-        return (filterQuery && filterQuery.length) ?
-            collection.queryDocuments(collection.getSelfLink(), filterQuery, responseOptions, onReadDocuments) :
-            collection.readDocuments(collection.getSelfLink(), responseOptions, onReadDocuments);
-    }
+	function query(responseOptions) {
+		return (filterQuery && filterQuery.length) ?
+			collection.queryDocuments(collection.getSelfLink(), filterQuery, responseOptions, onReadDocuments) :
+			collection.readDocuments(collection.getSelfLink(), responseOptions, onReadDocuments);
+	}
 
-    function onReadDocuments(err, docFeed, responseOptions) {
-        if (err) {
-            throw 'Error while reading document: ' + err;
-        }
-        
-        var doc1 = docFeed[0];
-        result += doc1;
+	function onReadDocuments(err, docFeed, responseOptions) {
+		if (err) {
+			throw 'Error while reading document: ' + err;
+		}
 
-        if (responseOptions.continuation) {
-            tryQuery(responseOptions.continuation);
-        } else {
-            setBody(null);
-        }
-    }
+		var doc1 = docFeed[0];
+		result += doc1;
 
-    function setBody(continuationToken) {
-        var body = { count: result, continuationToken: continuationToken };
-        getContext().getResponse().setBody(body);
-    }
+		if (responseOptions.continuation) {
+			tryQuery(responseOptions.continuation);
+		} else {
+			setBody(null);
+		}
+	}
+
+	function setBody(continuationToken) {
+		var body = { count: result, continuationToken: continuationToken };
+		getContext().getResponse().setBody(body);
+	}
 }
