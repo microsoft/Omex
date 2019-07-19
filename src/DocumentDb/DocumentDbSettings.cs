@@ -14,7 +14,7 @@ namespace Microsoft.Omex.DocumentDb
 	{
 		protected DocumentDbSettings(string endpoint, DocumentDbSettingsConfig config = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(endpoint, nameof(endpoint), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(endpoint, nameof(endpoint), TaggingUtilities.ReserveTag(0x2381b146 /* tag_961fg */));
 
 			Endpoint = new Uri(endpoint);
 			Config = config;
@@ -29,8 +29,8 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="config">Document db settings config.</param>
 		public DocumentDbSettings(string endpoint, string key, DocumentDbSettingsConfig config = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(endpoint, nameof(endpoint), TaggingUtilities.ReserveTag(0));
-			Code.ExpectsNotNullOrWhiteSpaceArgument(key, nameof(key), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(endpoint, nameof(endpoint), TaggingUtilities.ReserveTag(0x2381b147 /* tag_961fh */));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(key, nameof(key), TaggingUtilities.ReserveTag(0x2381b148 /* tag_961fi */));
 
 			Endpoint = new Uri(endpoint);
 			Key = key;

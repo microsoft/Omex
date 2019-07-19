@@ -31,7 +31,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="config">Document db settings config.</param>
 		public DocumentDbAdapter(IDocumentClientFactory clientFactory, DocumentDbSettingsConfig config = null)
 		{
-			Code.ExpectsArgument(clientFactory, nameof(clientFactory), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(clientFactory, nameof(clientFactory), TaggingUtilities.ReserveTag(0x2381b1dc /* tag_961h2 */));
 
 			DocumentClientFactory = clientFactory;
 
@@ -47,7 +47,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="documentClient">Document db client.</param>
 		public DocumentDbAdapter(IDocumentClient documentClient)
 		{
-			Code.ExpectsArgument(documentClient, nameof(documentClient), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(documentClient, nameof(documentClient), TaggingUtilities.ReserveTag(0x2381b1dd /* tag_961h3 */));
 
 			m_DocumentClient = new Lazy<Task<IDocumentClient>>(
 				() => Task.FromResult(documentClient),
@@ -69,7 +69,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>The IDocumentClient interface.</returns>
 		public Task<IDocumentClient> GetDocumentClientAsync()
 		{
-			return DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0), () => m_DocumentClient.Value);
+			return DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0x2381b1de /* tag_961h4 */), () => m_DocumentClient.Value);
 		}
 
 
@@ -117,7 +117,7 @@ namespace Microsoft.Omex.DocumentDb
 			Func<Task<T>> asyncFunc,
 			[CallerMemberName] string caller = null)
 		{
-			Code.ExpectsArgument(asyncFunc, nameof(asyncFunc), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(asyncFunc, nameof(asyncFunc), TaggingUtilities.ReserveTag(0x2381b1df /* tag_961h5 */));
 
 			try
 			{
@@ -152,7 +152,7 @@ namespace Microsoft.Omex.DocumentDb
 			Func<Task> asyncFunc,
 			[CallerMemberName] string caller = null)
 		{
-			Code.ExpectsArgument(asyncFunc, nameof(asyncFunc), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(asyncFunc, nameof(asyncFunc), TaggingUtilities.ReserveTag(0x2381b1e0 /* tag_961h6 */));
 
 			try
 			{

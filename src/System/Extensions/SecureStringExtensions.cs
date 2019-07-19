@@ -21,7 +21,7 @@ namespace Microsoft.Omex.System.Extensions
 		/// <returns>Plain text value of secure string</returns>
 		public static string ToPlainText(this SecureString secureString)
 		{
-			if (!Code.ValidateArgument(secureString, nameof(secureString), TaggingUtilities.ReserveTag(0)))
+			if (!Code.ValidateArgument(secureString, nameof(secureString), TaggingUtilities.ReserveTag(0x2381b143 /* tag_961fd */)))
 			{
 				return null;
 			}

@@ -24,7 +24,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="key">Document db key.</param>
 		public DocumentDbSecureSettings(string endpoint, SecureString key) : base(endpoint)
 		{
-			Code.ExpectsArgument(key, nameof(key), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(key, nameof(key), TaggingUtilities.ReserveTag(0x2381b149 /* tag_961fj */));
 
 			SecureKey = key;
 			m_lazyKey = new Lazy<string>(() => SecureKey.ToPlainText(), LazyThreadSafetyMode.ExecutionAndPublication);

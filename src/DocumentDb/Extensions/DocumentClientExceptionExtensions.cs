@@ -19,7 +19,7 @@ namespace Microsoft.Omex.DocumentDb.Extensions
 		/// <returns>Converted error string from document client exception information.</returns>
 		public static string ToErrorMessage(this DocumentClientException exception)
 		{
-			Code.ExpectsArgument(exception, nameof(exception), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(exception, nameof(exception), TaggingUtilities.ReserveTag(0x2381b145 /* tag_961ff */));
 
 			return $"Cost: {exception.RequestCharge}" +
 				$" ContentLocation: {exception.ResponseHeaders["Content-Location"]}" +
