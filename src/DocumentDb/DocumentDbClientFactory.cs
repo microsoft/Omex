@@ -26,7 +26,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="documentDbSettingsProvider">Document db settings provider.</param>
 		public DocumentClientFactory(IDocumentDbSettingsProvider documentDbSettingsProvider)
 		{
-			Code.ExpectsArgument(documentDbSettingsProvider, nameof(documentDbSettingsProvider), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(documentDbSettingsProvider, nameof(documentDbSettingsProvider), TaggingUtilities.ReserveTag(0x2381b1db /* tag_961h1 */));
 
 			m_DocumentDbSettingsProvider = documentDbSettingsProvider;
 		}

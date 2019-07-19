@@ -26,7 +26,7 @@ namespace Microsoft.Omex.DocumentDb
 		public Task<ResourceResponse<Database>> GetOrCreateDatabaseAsync(
 			string dbId, RequestOptions requestOptions = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0x2381b1c7 /* tag_961hh */));
 
 			return GetOrCreateDatabaseAsync(new Database { Id = dbId }, requestOptions);
 		}
@@ -41,11 +41,11 @@ namespace Microsoft.Omex.DocumentDb
 		public async Task<ResourceResponse<Database>> GetOrCreateDatabaseAsync(
 			Database database, RequestOptions requestOptions = null)
 		{
-			Code.ExpectsArgument(database, nameof(database), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(database, nameof(database), TaggingUtilities.ReserveTag(0x2381b1c8 /* tag_961hi */));
 
 			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
-			return await DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0),
+			return await DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0x2381b1c9 /* tag_961hj */),
 				() => client.CreateDatabaseIfNotExistsAsync(database, requestOptions)).ConfigureAwait(false);
 		}
 
@@ -74,7 +74,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>The Database.</returns>
 		public async Task<Database> GetDatabaseAsync(string dbId, FeedOptions feedOptions = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0x2381b1ca /* tag_961hk */));
 
 			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 

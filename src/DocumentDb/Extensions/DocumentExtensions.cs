@@ -22,7 +22,7 @@ namespace Microsoft.Omex.DocumentDb.Extensions
 		public static T ConvertTo<T>(
 			this Document document, JsonSerializerSettings jsonSerializerSettings = null)
 		{
-			Code.ExpectsArgument(document, nameof(document), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(document, nameof(document), TaggingUtilities.ReserveTag(0x2381b144 /* tag_961fe */));
 
 			return JsonConvert.DeserializeObject<T>(document.ToString(), jsonSerializerSettings);
 		}
