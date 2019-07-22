@@ -1,4 +1,4 @@
-Microsoft Omex Document Db library.
+# Microsoft Omex Document Db library.
 (c) Microsoft Corporation.
 
 This library contains wrapper APIs over Microsoft Azure Document Db .Net Client SDK. Current library provides helper methods on:
