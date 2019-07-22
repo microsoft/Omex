@@ -20,7 +20,6 @@
   <ItemGroup Condition="'$(TargetFramework)' == '$(NetCoreVersion)'">
     <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersionCore)" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(MicrosoftAspNetCoreHttpAbstractionsVersionCore)" />
-    <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersionCore)" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DefaultGates.xml" Link="DefaultGates.xml">

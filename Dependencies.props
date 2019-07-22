@@ -36,7 +36,6 @@
     <MicrosoftAspNetCoreMvcAbstractionsVersionCore>2.2.0</MicrosoftAspNetCoreMvcAbstractionsVersionCore>
     <MicrosoftAspNetCoreHttpAbstractionsVersionCore>2.2.0</MicrosoftAspNetCoreHttpAbstractionsVersionCore>
     <MicrosoftAzureDocumentDbVersionCore>2.5.1</MicrosoftAzureDocumentDbVersionCore>
-    <NewtonsoftJsonVersionCore>12.0.2</NewtonsoftJsonVersionCore>
     <XunitAssertVersionCore>2.4.1</XunitAssertVersionCore>
     <XunitCoreVersionCore>2.4.1</XunitCoreVersionCore>
     <MicrosoftNetHttpHeadersVersionCore>2.2.0</MicrosoftNetHttpHeadersVersionCore>
