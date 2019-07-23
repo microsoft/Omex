@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(TargetFrameworks);$(NetStandardVersion)</TargetFrameworks>
+    <Description>Contains Omex Gating generator code</Description>
+    <RootNamespace>Microsoft.Omex.CodeGenerators.GateGen</RootNamespace>
+    <AssemblyName>Microsoft.Omex.CodeGenerator.GateGen</AssemblyName>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject></StartupObject>
+    <Win32Resource />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="GatePropertyTemplate.txt" />
+    <None Include="GatesClassTemplate.txt" />
+    <None Include="NestingTemplate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\System\Microsoft.Omex.System.csproj" />
+    <ProjectReference Include="..\..\..\src\Gating\Microsoft.Omex.Gating.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="build\**\*" Pack="true" PackagePath="build" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
