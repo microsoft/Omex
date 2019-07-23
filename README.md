@@ -1,18 +1,26 @@
-# Microsoft OMEX
+# Microsoft Omex
 
-This repository contains source code for libraries created by the OMEX team at Microsoft.
+This repository contains source code for shared components used by the Omex team at Microsoft to build scalable and highly available distributed systems.
 
 The code is released under the [MIT license](https://github.com/microsoft/Omex/blob/master/LICENSE).
 
+The pre-release NuGet packages are available to download from the MyGet feed
+
+    https://www.myget.org/F/omex/api/v3/index.json
+
 ### Projects in this repository
 
-* __Gating__ - This library provides an implementation of a feature/code path gating mechanism.
-* __DocumentDb__ - This library contains wrapper APIs over Microsoft Azure Document Db .Net Client SDK.
-* __System__ - This library contains shared code for Omex libraries. You'll find there utilities for logging,
+* [__Gating__](https://github.com/microsoft/Omex/tree/master/src/Gating) - This library provides an implementation of a flighting mechanism for new features.
+* [__DocumentDb__](https://github.com/microsoft/Omex/tree/master/src/DocumentDb) - This library contains wrapper APIs over Microsoft Azure Document Db .Net Client SDK.
+* [__System__](https://github.com/microsoft/Omex/tree/master/src/System) - This library contains shared code for Omex libraries. You'll find there utilities for logging,
 argument validation, resource management, caching and more.
-* __System.UnitTests.Shared__ - This library contains abstractions and utilities used for creating unit tests.
-* __Gating.UnitTests.Shared__ - This library provides classes used in unit tests for Gating library.
-* __Gating.Example__ - This is a small console application that uses the Gating library to showcase some of its features.
+* [__System.UnitTests.Shared__](https://github.com/microsoft/Omex/tree/master/src/System.UnitTests.Shared) - This library contains abstractions and utilities used for creating unit tests.
+* [__Gating.UnitTests.Shared__](https://github.com/microsoft/Omex/tree/master/src/Gating.UnitTests.Shared) - This library provides classes used in unit tests for Gating library.
+* [__Gating.Example__](https://github.com/microsoft/Omex/tree/master/src/Gating.Example) - This is a small console application that uses the Gating library to showcase some of its features.
+
+Please contribute to this repository via [pull requests](https://github.com/Microsoft/Omex/pulls) against the __master__ branch.
+
+[![Build Status](https://dev.azure.com/ms/Omex/_apis/build/status/Microsoft.Omex?branchName=master)](https://dev.azure.com/ms/Omex/_build/latest?definitionId=73&branchName=master)
 
 ## Building
 
@@ -41,3 +49,24 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+
+## Communicating with the Team
+The easiest way to communicate with the team is via GitHub issues. Please file new issues, feature requests and suggestions.
+
+# FAQ
+## What is the difference between the master and release branches?
+There are two types of NuGet packages that get built from the code in this repository:
+* __Pre-release packages__: the pre-release packages are built after every change on the master branch
+* __Release packages__: after a period of time when more changes are made to master, the Team creates release packages which are published to NuGet.org.
+The release packages are built from the master branch. Public contributions are accepted only from the master branch.
+
+## Where are the NuGet packages for the components in this repository available for download?
+The pre-release NuGet packages which are built from the master branch are available to download from the MyGet feed
+
+    https://www.myget.org/F/omex/api/v3/index.json
+
+
+Soon, the release packages will be available for download from NuGet.org.
+
+
