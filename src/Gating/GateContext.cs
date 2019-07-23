@@ -239,6 +239,7 @@ namespace Microsoft.Omex.Gating
 			grantAccess = grantAccess && DoesUserHaveAccess(gate);
 			grantAccess = grantAccess && IsCurrentDateEnabled(gate);
 			grantAccess = grantAccess && DoQueryParametersHaveAccess(gate);
+			grantAccess = grantAccess && DoesCloudContextHaveAccess(gate);
 
 			if (gate.ExperimentInfo != null)
 			{
@@ -729,6 +730,25 @@ namespace Microsoft.Omex.Gating
 			return true;
 		}
 
+		private bool DoesCloudContextHaveAccess(IGate gate)
+		{
+			bool grantAccess = true;
+			HashSet<string> contexts = gate.CloudContexts;
+			if (contexts != null)
+			{
+				string requestContext = Request?.CloudContext;
+				if (requestContext == null || !gate.CloudContexts.Contains(Request.CloudContext))
+				{
+					grantAccess = false;
+
+					ULSLogging.LogTraceTag(0, Categories.GateSelection, Levels.Verbose,
+						"Not allowing access to gate '{0}' as the cloud context of the request '{1}' is not in the set of allowed cloud contexts '{2}'.",
+						gate.Name ?? "<NULL>", requestContext ?? "<NULL>", string.Join(", ", contexts));
+				}
+			}
+
+			return grantAccess;
+		}
 
 		/// <summary>
 		/// Checks the gate's applicability based on the user agent browser. This is a common method which checks gate's applicability for

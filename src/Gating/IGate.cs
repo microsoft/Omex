@@ -146,6 +146,10 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		DateTime? EndDate { get; }
 
+		/// <summary>
+		/// Set of cloud contexts that apply to this gate
+		/// </summary>
+		HashSet<string> CloudContexts { get; }
 
 		/// <summary>
 		/// Information about the experiment
