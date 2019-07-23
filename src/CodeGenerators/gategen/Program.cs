@@ -28,10 +28,10 @@ namespace Microsoft.Omex.CodeGenerators.GateGen
 			const string version = "2.0.0.0";
 			try
 			{
-				if (arguments.Length != 3)
+				if (arguments.Length < 3)
 				{
 					Console.WriteLine("Omex gate generator, version {0}", version);
-					Console.WriteLine("Usage: gategen.exe [omexgates.xml] [omextip.xml] [output.cs]");
+					Console.WriteLine("Usage: gategen.exe omexgates.xml omextip.xml output.cs [namespace]");
 					return 1;
 				}
 
@@ -61,10 +61,16 @@ namespace Microsoft.Omex.CodeGenerators.GateGen
 
 				try
 				{
+					string omexGatesNamespace = "Microsoft.Omex.Gating";
+					if (arguments.Length >= 4 && !string.IsNullOrWhiteSpace(arguments[3]))
+					{
+						omexGatesNamespace = arguments[3];
+					}
+
 					using (StreamWriter writer = new StreamWriter(arguments[2]))
 					{
 						writer.Write(string.Format(CultureInfo.InvariantCulture, Properties.Resources.GatesClassTemplate, assemblyName.Name, version,
-							OutputTree(root, "\t"), "Microsoft.Omex.Gating", "OmexGates", "Microsoft.Omex.Gating.Gates"));
+							OutputTree(root, "\t"), omexGatesNamespace, "OmexGates", "Microsoft.Omex.Gating.Gates"));
 					}
 				}
 				catch (Exception ex)
