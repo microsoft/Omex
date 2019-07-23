@@ -27,5 +27,5 @@ without recompiling the whole project. Once the feature is tested it can easily 
 
 ## Usage
 
-You can find usage information in the [Gating tutorial](GatingTutorial.md).
+You can find usage information in the [Gating tutorial](https://github.com/microsoft/Omex/blob/master/docs/Microsoft.Omex.Gating/GatingTutorial.md).
 Also take a look at the [Gating.Example application](https://github.com/microsoft/Omex/tree/master/src/Gating.Example).
