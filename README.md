@@ -50,6 +50,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
+## Documentation
+
+All documentation is located in the `./doc` folder. If you would like to contribute to the documentation, please submit a pull request.
 
 ## Communicating with the Team
 The easiest way to communicate with the team is via GitHub issues. Please file new issues, feature requests and suggestions.
