@@ -108,11 +108,11 @@ namespace Microsoft.Omex.CodeGenerators.GateGen
 				{
 					if (!parentItem.Gates.TryGetValue(sections[i], out item))
 					{
-                        item = new GateItem
-                        {
-                            GateGroupName = sections[i]
-                        };
-                        parentItem.Gates[sections[i]] = item;
+ 						item = new GateItem
+						{
+							GateGroupName = sections[i]
+						};
+						parentItem.Gates[sections[i]] = item;
 					}
 					parentItem = item;
 				}
@@ -132,7 +132,7 @@ namespace Microsoft.Omex.CodeGenerators.GateGen
 		/// <returns>string representing the (sub)tree</returns>
 		private static string OutputTree(GateItem root, string indent)
 		{
-			StringBuilder builder = new StringBuilder(2000);
+			StringBuilder builder = new StringBuilder();
 			if (!string.IsNullOrWhiteSpace(root.Name))
 			{
 				// This is a gate to output
@@ -142,7 +142,7 @@ namespace Microsoft.Omex.CodeGenerators.GateGen
 			int childCount = root.Gates.Count;
 			if (childCount > 0)
 			{
-				StringBuilder childGates = new StringBuilder(childCount * 100);
+				StringBuilder childGates = new StringBuilder();
 				foreach (GateItem child in root.Gates.Values)
 				{
 					childGates.Append(OutputTree(child, indent + "\t"));
@@ -180,7 +180,7 @@ namespace Microsoft.Omex.CodeGenerators.GateGen
 			IDictionary<string, IResourceDetails> resources =
 				new Dictionary<string, IResourceDetails>(2, StringComparer.OrdinalIgnoreCase)
 			{
-				{  settingsFile.Name, new ResourceDetails(settingsFile.LastWriteTimeUtc , settingsFile.Length, File.ReadAllBytes(settingsFile.FullName)) },
+				{ settingsFile.Name, new ResourceDetails(settingsFile.LastWriteTimeUtc , settingsFile.Length, File.ReadAllBytes(settingsFile.FullName)) },
 				{ tipFile.Name, new ResourceDetails(tipFile.LastWriteTimeUtc , tipFile.Length, File.ReadAllBytes(tipFile.FullName)) }
 			};
 			GateDataSet dataSet = new GateDataSet(settingsFile.Name, tipFile.Name);
