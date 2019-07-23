@@ -29,7 +29,7 @@ _From the [Gating.Example](https://github.com/microsoft/Omex/tree/master/src/Gat
 ## Usage scenarios
 
 For each gate defined in the XML configuration you'd create a class containing
-the appropriate definitions. This can be done using the `gategen` tool.
+the appropriate definitions. This can be done using the [`GateGen` tool](https://github.com/microsoft/Omex/tree/master/src/CodeGenerators/GateGen).
 
 Any class whose behaviour depends on gates will take `GateContext` in its constructor.
 Then you can use `GateExtensions.PerformAction(gate, Action)` on the context like an If statement.
