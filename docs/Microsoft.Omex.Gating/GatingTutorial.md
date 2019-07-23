@@ -2,7 +2,7 @@
 
 In your code you will define `Gates` that define access control.
 A `Gate` can then be used to create a `GatedAction` or a `GatedFunc`.
-Those are istances of the `GatedCode` class. `GatedCode` can be invoked in a `GateContext`.
+Those are instances of the `GatedCode` class. `GatedCode` can be invoked in a `GateContext`.
 To create a `GateContext` you will need a `GatedRequest` containing user information
 and an instance of `IMachineInformation` for current machine environment information.
 
@@ -91,15 +91,15 @@ When using the Gating library you'll need to implement your own `GatedRequest` c
 You can implement `IMachineInformation` interface from `Microsoft.Omex.System.Diagnostics` namespace
 to provide more information about the machine your app is running on.
 
-You can also implement `IGateSettings` interface to overriade applicability of gates.
+You can also implement `IGateSettings` interface to override applicability of gates.
 
 ## Combining Gates
 
 You can combine gates by using `GateCombination` subclasses
 
 * `GatesAll` - applicable if all combined gates are applicable
-* `GatesAny` - applicable if at least on of the combined gates is applicable
-* `GatesNone` - applicable if none of the combined gates is applicable
+* `GatesAny` - applicable if at least one of the combined gates is applicable
+* `GatesNone` - applicable if none of the combined gates are applicable
 
 Gates can also be setup in a hierarchical structure. Every gate has a property `ParentGate` and
 restrictions which are applied on a parent gate apply to all of its child gates. So in effect
