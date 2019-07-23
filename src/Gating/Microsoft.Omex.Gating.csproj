@@ -8,7 +8,6 @@
     <AssemblyName>Microsoft.Omex.Gating</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Readme.txt" PackagePath="%(Identity)" />
     <EmbeddedResource Include="Authentication\Groups\TestGroupsConfiguration.xsd">
       <Link>TestGroupsConfiguration.xsd</Link>
       <LogicalName>TestGroupsConfiguration.xsd</LogicalName>

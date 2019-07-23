@@ -5,7 +5,4 @@
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersion)</TargetFrameworks>
     <Description>Contains common classes for Omex libraries.</Description>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Include="Readme.txt" PackagePath="%(Identity)" />
-  </ItemGroup>
 </Project>
