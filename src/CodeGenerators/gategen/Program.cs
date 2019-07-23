@@ -7,8 +7,6 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
-//using Microsoft.Office.Web.OfficeMarketplace.ConsoleContext;
-//using Microsoft.Office.Web.OfficeMarketplace.Shared.Data.Deployment;
 using Microsoft.Omex.Gating;
 using Microsoft.Omex.System.Data;
 
@@ -26,7 +24,6 @@ namespace Microsoft.Omex.CodeGenerators.GateGen
 		/// <returns>0 if successfull; 1 otherwise</returns>
 		public static int Main(string[] arguments)
 		{
-			//ConsoleTypes.Initialize();
 			ConsoleColor originalColor = Console.ForegroundColor;
 			const string version = "2.0.0.0";
 			try
