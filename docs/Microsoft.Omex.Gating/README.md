@@ -12,7 +12,7 @@ or code paths on/off depending on user request details, such as:
 * Allowed browsers
 * Start/End dates of availability
 
-All possible atributes can be found in [`IGate`](https://github.com/microsoft/Omex/blob/master/src/Gating/IGate.cs
+All possible attributes can be found in [`IGate`](https://github.com/microsoft/Omex/blob/master/src/Gating/IGate.cs
 ).
 
 ## Purpose

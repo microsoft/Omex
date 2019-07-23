@@ -85,7 +85,7 @@ Very similar will be the use of `PerformFunction` and `GatedFunc`, but with a re
 
 ## Required implementations
 
-When using the Gating library you'll need to implement your own `GatedRequest` class inheriting from
+When using the Gating library, you'll need to implement your own `GatedRequest` class inheriting from
 `AbstractGatedRequest` or just implementing `IGatedRequest`.
 
 You can implement `IMachineInformation` interface from `Microsoft.Omex.System.Diagnostics` namespace
@@ -102,5 +102,5 @@ You can combine gates by using `GateCombination` subclasses
 * `GatesNone` - applicable if none of the combined gates are applicable
 
 Gates can also be setup in a hierarchical structure. Every gate has a property `ParentGate` and
-restrictions which are applied on a parent gate apply to all of its child gates. So in effect
-restrictions on a child gate are an intersection of the restrictions between its parent and itself. 
+restrictions which are applied on a parent gate apply to all of its child gates. So, in effect
+restrictions on a child gate are an intersection of the restrictions between its parent and itself.
