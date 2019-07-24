@@ -4,12 +4,24 @@
     <TargetFrameworks>$(TargetFrameworks);$(NetStandardVersion)</TargetFrameworks>
     <Description>Contains Omex Gating generator code</Description>
     <RootNamespace>Microsoft.Omex.CodeGenerators.GateGen</RootNamespace>
-    <AssemblyName>Microsoft.Omex.CodeGenerator.GateGen</AssemblyName>
+    <AssemblyName>Microsoft.Omex.CodeGenerators.GateGen</AssemblyName>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
     <StartupObject></StartupObject>
     <Win32Resource />
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.CodeGenerators.GateGen</Title>
+    <DevelopmentDependency>True</DevelopmentDependency>
+    <Authors>Omex Liffey &lt;omexshi@microsoft.com&gt;</Authors>
+    <Summary>Microsoft Omex GateGen</Summary>
+    <Description>Generates strongly typed gates from a gates xml.</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <ProjectUrl>https://github.com/microsoft/Omex/</ProjectUrl>
+    <LicenseUrl></LicenseUrl>
+    <Copyright>Copyright © Microsoft</Copyright>
+    <Tags>Omex</Tags>
   </PropertyGroup>
   <ItemGroup>
     <None Include="GatePropertyTemplate.txt" />
@@ -22,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="build\**\*" Pack="true" PackagePath="build" />
+    <Content Include ="Microsoft.Omex.CodeGenerators.GateGen.targets" Pack="true" PackagePath="build" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
