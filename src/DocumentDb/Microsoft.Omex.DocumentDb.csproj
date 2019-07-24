@@ -6,9 +6,6 @@
     <RootNamespace>Microsoft.Omex.DocumentDb</RootNamespace>
     <AssemblyName>Microsoft.Omex.DocumentDb</AssemblyName>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Include="Readme.txt" PackagePath="%(Identity)" />
-  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == '$(NetStandardVersion)'">
     <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="$(MicrosoftAzureDocumentDbVersionCore)" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="$(SystemConfigurationConfigurationManager)" />
