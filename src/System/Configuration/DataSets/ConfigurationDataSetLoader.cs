@@ -301,7 +301,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			/// Initializes a new instance of the <see cref="CachedConfigurationDataSet{TDataSet}" /> class.
 			/// </summary>
 			/// <param name="dataSetDefault">The data set default.</param>
-			/// /// <param name="dataSetFactory">Data set factory.</param>
+			/// <param name="dataSetFactory">Data set factory.</param>
 			public CachedConfigurationDataSet(TDataSet dataSetDefault, IDataSetFactory<TDataSet> dataSetFactory)
 			{
 				m_dataSetDefault = dataSetDefault;
