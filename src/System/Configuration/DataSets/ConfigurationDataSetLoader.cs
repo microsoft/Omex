@@ -19,12 +19,18 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 	/// </summary>
 	/// <typeparam name="T">DataSet type</typeparam>
 	public abstract class ConfigurationDataSetLoader<T> : ConfigurationDataSetLoader, IConfigurationDataSetLoader<T>
-		where T : class, IConfigurationDataSet, new()
+		where T : class, IConfigurationDataSet
 	{
 		/// <summary>
 		/// The override instance of the configuration data set.
 		/// </summary>
 		private T DataSetOverride { get; }
+
+
+		/// <summary>
+		/// Factory used to create new data sets
+		/// </summary>
+		private IDataSetFactory<T> DataSetFactory { get; }
 
 
 		/// <summary>
@@ -44,11 +50,13 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		/// </summary>
 		/// <param name="cache">The cache object.</param>
 		/// <param name="resourceMonitor">Resource Watcher instance</param>
+		/// <param name="dataSetFactory">The data set factory.</param>
 		/// <param name="dataSetOverride">The data set override.</param>
-		protected ConfigurationDataSetLoader(ICache cache, IResourceMonitor resourceMonitor, T dataSetOverride = null)
+		protected ConfigurationDataSetLoader(ICache cache, IResourceMonitor resourceMonitor, IDataSetFactory<T> dataSetFactory, T dataSetOverride = null)
 		{
 			Cache = Code.ExpectsArgument(cache, nameof(cache), TaggingUtilities.ReserveTag(0x238208d9 /* tag_9669z */));
 			m_resourceMonitor = Code.ExpectsArgument(resourceMonitor, nameof(resourceMonitor), TaggingUtilities.ReserveTag(0x23821000 /* tag_967aa */));
+			DataSetFactory = Code.ExpectsArgument(dataSetFactory, nameof(dataSetFactory), TaggingUtilities.ReserveTag(0));
 
 			DataSetOverride = dataSetOverride;
 		}
@@ -160,7 +168,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 							"Adding data set type '{0}' to cache.", typeof(T).Name);
 
 						if (Cache.GetOrAdd(typeof(IConfigurationDataSetLoader<T>),
-							() => CreateCachedConfigurationDataSet(new CachedConfigurationDataSet<T>(DataSetOverride), arguments),
+							() => CreateCachedConfigurationDataSet(new CachedConfigurationDataSet<T>(DataSetOverride, DataSetFactory), arguments),
 							out bool wasAdded) is CachedConfigurationDataSet<T> result && wasAdded)
 						{
 							OnLoad(result.LoadDetails);
@@ -275,7 +283,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		/// </summary>
 		/// <typeparam name="TDataSet">The data set type.</typeparam>
 		private sealed class CachedConfigurationDataSet<TDataSet>
-			where TDataSet : class, IConfigurationDataSet, new()
+			where TDataSet : class, IConfigurationDataSet
 		{
 			/// <summary>
 			/// The default dataset for creating a data set instance.
@@ -284,10 +292,21 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 
 
 			/// <summary>
+			/// Factory used to create a new data set.
+			/// </summary>
+			private readonly IDataSetFactory<TDataSet> m_dataSetFactory;
+
+
+			/// <summary>
 			/// Initializes a new instance of the <see cref="CachedConfigurationDataSet{TDataSet}" /> class.
 			/// </summary>
 			/// <param name="dataSetDefault">The data set default.</param>
-			public CachedConfigurationDataSet(TDataSet dataSetDefault) => m_dataSetDefault = dataSetDefault;
+			/// /// <param name="dataSetFactory">Data set factory.</param>
+			public CachedConfigurationDataSet(TDataSet dataSetDefault, IDataSetFactory<TDataSet> dataSetFactory)
+			{
+				m_dataSetDefault = dataSetDefault;
+				m_dataSetFactory = Code.ExpectsArgument(dataSetFactory, nameof(dataSetFactory), TaggingUtilities.ReserveTag(0));
+			}
 
 
 			/// <summary>
@@ -347,7 +366,13 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				ULSLogging.LogTraceTag(0x2382100c /* tag_967am */, Categories.ConfigurationDataSet, Levels.Verbose,
 					"Loading data set for '{0}'.", typeof(TDataSet).Name);
 
-				TDataSet dataSet = m_dataSetDefault ?? new TDataSet();
+				TDataSet dataSet = m_dataSetDefault ?? m_dataSetFactory.Create();
+
+				if (dataSet == null)
+				{
+					ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Error,
+						"Unable to create data set of type '{0}'", typeof(TDataSet).Name);
+				}
 
 				try
 				{

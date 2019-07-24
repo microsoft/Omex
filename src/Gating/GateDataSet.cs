@@ -1856,13 +1856,13 @@ namespace Microsoft.Omex.Gating
 		/// <summary>
 		/// The default gates resource name.
 		/// </summary>
-		public const string DefaultGatesResourceName = "OmexGates.xml";
+		public const string DefaultGatesResourceName = "DefaultGates.xml";
 
 
 		/// <summary>
 		/// The default test groups resource name.
 		/// </summary>
-		public const string DefaultTestGroupsResourceName = "OmexTip.xml";
+		public const string DefaultTestGroupsResourceName = "DefaultTip.xml";
 
 		#endregion
 	}
