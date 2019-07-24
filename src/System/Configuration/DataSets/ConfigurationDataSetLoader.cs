@@ -372,6 +372,8 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				{
 					ULSLogging.LogTraceTag(0, Categories.ConfigurationDataSet, Levels.Error,
 						"Unable to create data set of type '{0}'", typeof(TDataSet).Name);
+
+					return null;
 				}
 
 				try
