@@ -54,9 +54,9 @@ namespace Microsoft.Omex.Gating
 		IDictionary<string, HashSet<string>> QueryParameters { get; }
 
 		/// <summary>
-		/// The cloud context
+		/// The cloud contexts
 		/// </summary>
-		string CloudContext { get; }
+		HashSet<string> CloudContexts { get; }
 
 		/// <summary>
 		/// Update the gating request based on the set of expected clients

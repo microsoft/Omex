@@ -86,9 +86,9 @@ namespace Microsoft.Omex.Gating.UnitTests.Shared
 		public virtual IDictionary<string, HashSet<string>> QueryParameters { get; set; }
 
 		/// <summary>
-		/// Cloud context of the gated request
+		/// Cloud contexts of the gated request
 		/// </summary>
-		public string CloudContext { get; set; }
+		public HashSet<string> CloudContexts { get; set; }
 
 
 		/// <summary>

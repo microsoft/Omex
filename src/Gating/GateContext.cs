@@ -736,14 +736,14 @@ namespace Microsoft.Omex.Gating
 			HashSet<string> contexts = gate.CloudContexts;
 			if (contexts != null)
 			{
-				string requestContext = Request?.CloudContext;
-				if (requestContext == null || !gate.CloudContexts.Contains(Request.CloudContext))
+				HashSet<string> requestContexts = Request?.CloudContexts;
+				if (requestContexts == null || gate.CloudContexts.Intersect(Request.CloudContexts).Count() == 0)
 				{
 					grantAccess = false;
 
 					ULSLogging.LogTraceTag(0, Categories.GateSelection, Levels.Verbose,
-						"Not allowing access to gate '{0}' as the cloud context of the request '{1}' is not in the set of allowed cloud contexts '{2}'.",
-						gate.Name ?? "<NULL>", requestContext ?? "<NULL>", string.Join(", ", contexts));
+						"Not allowing access to gate '{0}' as the cloud contexts of the request '{1}' are not in the set of allowed cloud contexts '{2}'.",
+						gate.Name ?? "<NULL>", requestContexts == null ? "<NULL>" : string.Join(", ", requestContexts), string.Join(", ", contexts));
 				}
 			}
 

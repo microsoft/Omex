@@ -628,7 +628,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 		[Fact]
 		public void RequestWithCloudContext_Specified()
 		{
-			IGatedRequest gatedRequest = SetupGatedRequest("ClientOne", "16.3.0.0", "en-us", "PreProduction", 8, cloudContext: "Public");
+			IGatedRequest gatedRequest = SetupGatedRequest("ClientOne", "16.3.0.0", "en-us", "PreProduction", 8, cloudContext: new HashSet<string> { "Public" });
 			GateContext context = new GateContext(gatedRequest, new UnitTestMachineInformation(), new DefaultExperimentContext());
 
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.CloudContextPublic")), "Gate with cloud context restrictions should be applicable");
@@ -962,7 +962,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 		/// <param name="blockedGates">The blocked gates.</param>
 		/// <returns>Gated Request</returns>
 		private static IGatedRequest SetupGatedRequest(string product, string productVersion, string market, string environment,
-			int app, HashSet<string> audienceGroups = null, HashSet<string> requestedGates = null, HashSet<string> blockedGates = null, string cloudContext = null)
+			int app, HashSet<string> audienceGroups = null, HashSet<string> requestedGates = null, HashSet<string> blockedGates = null, HashSet<string> cloudContext = null)
 		{
 			IGatedRequest gatedRequest = new UnitTestGatedRequest()
 			{
@@ -979,7 +979,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 				Users = null,
 				RequestedGateIds = requestedGates,
 				BlockedGateIds = blockedGates,
-				CloudContext = cloudContext
+				CloudContexts = cloudContext
 			};
 
 			return gatedRequest;
