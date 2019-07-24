@@ -127,7 +127,9 @@ namespace Microsoft.Omex.Gating.Example
 			{"sample_parameter_name2", new HashSet<string>() {"*"}},
 		};
 
+
 		public HashSet<string> CloudContexts => throw new NotImplementedException();
+
 
 		public Tuple<string, int> GetUserAgentBrowser() => throw new NotImplementedException();
 

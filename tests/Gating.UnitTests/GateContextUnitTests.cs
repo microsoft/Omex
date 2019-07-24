@@ -625,6 +625,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.LoopUser")), "Gate should not be applicable for audience group.");
 		}
 
+
 		[Fact]
 		public void RequestWithCloudContext_Specified()
 		{

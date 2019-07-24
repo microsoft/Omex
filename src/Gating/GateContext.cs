@@ -730,6 +730,7 @@ namespace Microsoft.Omex.Gating
 			return true;
 		}
 
+
 		private bool DoesCloudContextHaveAccess(IGate gate)
 		{
 			bool grantAccess = true;
@@ -749,6 +750,7 @@ namespace Microsoft.Omex.Gating
 
 			return grantAccess;
 		}
+
 
 		/// <summary>
 		/// Checks the gate's applicability based on the user agent browser. This is a common method which checks gate's applicability for

@@ -686,6 +686,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(serviceFlags.ToString(), GatedServiceTypes.None.ToString());
 		}
 
+
 		[Fact]
 		public void Load_GateOneCloudContext_ShouldLoadCorrectly()
 		{
@@ -698,6 +699,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(gate.CloudContexts.Count(), 1);
 			Assert.Equal(gate.CloudContexts.Single(), "Public");
 		}
+
 
 		[Fact]
 		public void Load_GateThreeCloudContexts_ShouldLoadCorrectly()
@@ -713,6 +715,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gate.CloudContexts.Contains("Sovereign"));
 			Assert.True(gate.CloudContexts.Contains("Local"));
 		}
+
 
 		/// <summary>
 		/// Loads GateDataSet with required contents
@@ -1821,6 +1824,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</Gate>
 </Gates>";
 
+
 		/// <summary>
 		/// Gating file with a sigle cloud context
 		/// </summary>
@@ -1833,6 +1837,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 		</CloudContexts>
 	</Gate>
 </Gates>";
+
 
 		/// <summary>
 		/// Gating file with multiple cloud context

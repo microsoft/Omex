@@ -49,10 +49,12 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		public virtual IDictionary<string, HashSet<string>> QueryParameters { get; set; }
 
+
 		/// <summary>
 		/// The cloud contexts
 		/// </summary>
 		public virtual HashSet<string> CloudContexts { get; set; }
+
 
 		/// <summary>
 		/// Update the gate request based on the set of expected clients

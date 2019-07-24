@@ -167,6 +167,7 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		public DateTime? EndDate { get; set; }
 
+
 		/// <summary>
 		/// Set of cloud contexts that apply to this gate
 		/// </summary>

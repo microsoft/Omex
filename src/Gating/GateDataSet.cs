@@ -855,6 +855,7 @@ namespace Microsoft.Omex.Gating
 			experiments[gate.ExperimentInfo.ExperimentName].Add(gate);
 		}
 
+
 		/// <summary>
 		/// Consolidate the cloud contexts of a gate and the host environments of a parent gate
 		/// </summary>
@@ -879,6 +880,7 @@ namespace Microsoft.Omex.Gating
 				gate.CloudContexts.IntersectWith(parent.CloudContexts);
 			}
 		}
+
 
 		/// <summary>
 		/// Build the hierarchy of the gates, by resolving the name of each parent gate to the actual
@@ -1808,6 +1810,7 @@ namespace Microsoft.Omex.Gating
 			gate.EndDate = configurationGate.EndDate.Value;
 		}
 
+
 		/// <summary>
 		/// Read the cloud contexts from a configuration gate
 		/// </summary>
@@ -1838,6 +1841,7 @@ namespace Microsoft.Omex.Gating
 				}
 			}
 		}
+
 
 		/// <summary>
 		/// Read the end date from a configuration gate
