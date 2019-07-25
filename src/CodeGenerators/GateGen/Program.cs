@@ -31,7 +31,7 @@ namespace Microsoft.Omex.CodeGenerators.GateGen
 				if (arguments.Length < 3)
 				{
 					Console.WriteLine("Omex gate generator, version {0}", version);
-					Console.WriteLine("Usage: Microsoft.Omex.CodeGenerator.GateGen.exe omexgates.xml omextip.xml output.cs [namespace]");
+					Console.WriteLine("Usage: Microsoft.Omex.CodeGenerators.GateGen.exe omexgates.xml omextip.xml output.cs [namespace]");
 					return 1;
 				}
 
