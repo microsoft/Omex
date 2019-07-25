@@ -1826,7 +1826,7 @@ namespace Microsoft.Omex.Gating
 			gate.CloudContexts = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 			foreach (GatingConfiguration.BaseGateTypeCloudContext context in configurationGate.CloudContexts)
 			{
-				if (context.Name == "None")
+				if (context.Name.Equals("None", StringComparison.InvariantCultureIgnoreCase))
 				{
 					gate.CloudContexts.Clear();
 					break;
@@ -1835,7 +1835,7 @@ namespace Microsoft.Omex.Gating
 				string contextName = context.Name.ToString();
 				if (!gate.CloudContexts.Add(contextName))
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Warning,
 						true, "Cloud context '{0}' is repeated multiple times for gate '{1}'.",
 						contextName, gate.Name);
 				}
