@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(TargetFrameworks);$(NetStandardVersion)</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks)</TargetFrameworks>
     <Description>Contains Omex Gating generator code</Description>
     <RootNamespace>Microsoft.Omex.CodeGenerators.GateGen</RootNamespace>
     <AssemblyName>Microsoft.Omex.CodeGenerators.GateGen</AssemblyName>
@@ -36,7 +36,8 @@
     <ProjectReference Include="..\..\..\src\Gating\Microsoft.Omex.Gating.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="build\**\*" Pack="true" PackagePath="build" />
+    <Content Include="$(OutputPath)\**\Microsoft.Omex.Gating.*" Pack="true" PackagePath="lib" />
+    <Content Include="$(OutputPath)\**\Microsoft.Omex.System.*" Pack="true" PackagePath="lib" />
     <Content Include ="Microsoft.Omex.CodeGenerators.GateGen.targets" Pack="true" PackagePath="build" />
   </ItemGroup>
   <ItemGroup>
