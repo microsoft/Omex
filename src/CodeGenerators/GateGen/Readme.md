@@ -19,8 +19,8 @@ The `OmexGatesNamespace` value is optional.
 
 Manual usage (strongly not recommended, see above on how to use it from another project):
 
-```dos
-  C:\>Microsoft.Omex.CodeGenerators.GateGen.exe omexgates.xml omextip.xml output.cs [namespace]
+```cmd
+Microsoft.Omex.CodeGenerators.GateGen.exe omexgates.xml omextip.xml output.cs [namespace]
 ```
 
 where `omexgates.xml` and `omextip.xml` are the input files, `output.cs` is the generated C# file and an optional `namespace` can be given to be used in the generated C# file.
