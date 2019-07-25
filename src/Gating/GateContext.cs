@@ -239,6 +239,7 @@ namespace Microsoft.Omex.Gating
 			grantAccess = grantAccess && DoesUserHaveAccess(gate);
 			grantAccess = grantAccess && IsCurrentDateEnabled(gate);
 			grantAccess = grantAccess && DoQueryParametersHaveAccess(gate);
+			grantAccess = grantAccess && DoesCloudContextHaveAccess(gate);
 
 			if (gate.ExperimentInfo != null)
 			{
@@ -727,6 +728,27 @@ namespace Microsoft.Omex.Gating
 			}
 
 			return true;
+		}
+
+
+		private bool DoesCloudContextHaveAccess(IGate gate)
+		{
+			bool grantAccess = true;
+			HashSet<string> contexts = gate.CloudContexts;
+			if (contexts != null)
+			{
+				HashSet<string> requestContexts = Request?.CloudContexts;
+				if (requestContexts == null || gate.CloudContexts.Intersect(Request.CloudContexts).Count() == 0)
+				{
+					grantAccess = false;
+
+					ULSLogging.LogTraceTag(0, Categories.GateSelection, Levels.Verbose,
+						"Not allowing access to gate '{0}' as the cloud contexts of the request '{1}' are not in the set of allowed cloud contexts '{2}'.",
+						gate.Name ?? "<NULL>", requestContexts == null ? "<NULL>" : string.Join(", ", requestContexts), string.Join(", ", contexts));
+				}
+			}
+
+			return grantAccess;
 		}
 
 

@@ -517,6 +517,35 @@
 					</xs:attribute>
 				</xs:complexType>
 			</xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="CloudContexts">
+        <xs:annotation>
+          <xs:documentation>
+            List of cloud contexts where the gate is active. If the CloudContexts element is missing,
+            the gate is active in all environments. If the CloudContexts element is an empty node,
+            the gate is not active in any environment.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="CloudContext">
+              <xs:annotation>
+                <xs:documentation>
+                  Cloud contexts where the gate is active.
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:attribute name="Name" use="required" type="xs:string">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Name of the cloud context where the gate is active.
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
 		</xs:sequence>
 		<xs:attribute name="Name" type="xs:string" use="required" >
 			<xs:annotation>

@@ -417,6 +417,8 @@ namespace Microsoft.Omex.Gating
 
 				ConsolidateEndDate(gateToConsolidate, gateToConsolidateFrom);
 
+				ConsolidateCloudContexts(gateToConsolidate, gateToConsolidateFrom);
+
 				if (gateToConsolidateFrom.IsSecureGate)
 				{
 					gateToConsolidate.IsSecureGate = true;
@@ -855,6 +857,32 @@ namespace Microsoft.Omex.Gating
 
 
 		/// <summary>
+		/// Consolidate the cloud contexts of a gate and the host environments of a parent gate
+		/// </summary>
+		/// <param name="gate">gate</param>
+		/// <param name="parent">parent gate</param>
+		private static void ConsolidateCloudContexts(Gate gate, IGate parent)
+		{
+			if (parent.CloudContexts == null)
+			{
+				// No cloud context restrictions on parent, nothing to consolidate
+				return;
+			}
+
+			if (gate.CloudContexts == null)
+			{
+				// Promote the parent cloud context restrictions
+				gate.CloudContexts = parent.CloudContexts;
+			}
+			else
+			{
+				// Only cloud context that exist both on the parent gate and this gate are applicable
+				gate.CloudContexts.IntersectWith(parent.CloudContexts);
+			}
+		}
+
+
+		/// <summary>
 		/// Build the hierarchy of the gates, by resolving the name of each parent gate to the actual
 		/// gate in the DataSet. Any gate with missing parent gate or with a circular chain in the
 		/// hierarchy is removed from the DataSet.
@@ -1054,6 +1082,8 @@ namespace Microsoft.Omex.Gating
 			ReadStartDate(configurationGate, gate);
 
 			ReadEndDate(configurationGate, gate);
+
+			ReadCloudContexts(configurationGate, gate);
 
 			gate.IsSecureGate = configurationGate.Secure;
 
@@ -1778,6 +1808,38 @@ namespace Microsoft.Omex.Gating
 			}
 
 			gate.EndDate = configurationGate.EndDate.Value;
+		}
+
+
+		/// <summary>
+		/// Read the cloud contexts from a configuration gate
+		/// </summary>
+		/// <param name="configurationGate">configuration to read from</param>
+		/// <param name="gate">gate to add information to</param>
+		private void ReadCloudContexts(GatingConfiguration.BaseGateType configurationGate, Gate gate)
+		{
+			if (configurationGate.CloudContexts == null)
+			{
+				return;
+			}
+
+			gate.CloudContexts = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+			foreach (GatingConfiguration.BaseGateTypeCloudContext context in configurationGate.CloudContexts)
+			{
+				if (context.Name.Equals("None", StringComparison.InvariantCultureIgnoreCase))
+				{
+					gate.CloudContexts.Clear();
+					break;
+				}
+
+				string contextName = context.Name.ToString();
+				if (!gate.CloudContexts.Add(contextName))
+				{
+					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Warning,
+						true, "Cloud context '{0}' is repeated multiple times for gate '{1}'.",
+						contextName, gate.Name);
+				}
+			}
 		}
 
 
