@@ -7,7 +7,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 	/// Data set factory interface
 	/// </summary>
 	/// <typeparam name="T">Type of the data set to create</typeparam>
-	public interface IDataSetFactory<T>
+	public interface IDataSetFactory<T> where T : class, IConfigurationDataSet
 	{
 		T Create();
 	}
