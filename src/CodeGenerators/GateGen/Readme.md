@@ -19,7 +19,7 @@ The `OmexGatesNamespace` value is optional.
 
 Manual usage (strongly not recommended, see above on how to use it from another project):
 
-```shell
+```cmd
   Microsoft.Omex.CodeGenerators.GateGen.exe omexgates.xml omextip.xml output.cs [namespace]
 ```
 
