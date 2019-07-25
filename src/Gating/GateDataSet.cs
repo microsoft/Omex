@@ -1835,7 +1835,7 @@ namespace Microsoft.Omex.Gating
 				string contextName = context.Name.ToString();
 				if (!gate.CloudContexts.Add(contextName))
 				{
-					ULSLogging.LogTraceTag(0, Categories.GateDataSet, Levels.Warning,
+					ULSLogging.LogTraceTag(0x23818880 /* tag_96y8a */, Categories.GateDataSet, Levels.Warning,
 						true, "Cloud context '{0}' is repeated multiple times for gate '{1}'.",
 						contextName, gate.Name);
 				}

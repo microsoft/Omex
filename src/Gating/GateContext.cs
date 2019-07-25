@@ -742,7 +742,7 @@ namespace Microsoft.Omex.Gating
 				{
 					grantAccess = false;
 
-					ULSLogging.LogTraceTag(0, Categories.GateSelection, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x23818881 /* tag_96y8b */, Categories.GateSelection, Levels.Verbose,
 						"Not allowing access to gate '{0}' as the cloud contexts of the request '{1}' are not in the set of allowed cloud contexts '{2}'.",
 						gate.Name ?? "<NULL>", requestContexts == null ? "<NULL>" : string.Join(", ", requestContexts), string.Join(", ", contexts));
 				}
