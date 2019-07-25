@@ -8,5 +8,8 @@
       <Market Name="en-GB" />
       <Market Name="en-US" />
     </Markets>
+    <CloudContexts>
+      <CloudContext Name="Public" />
+    </CloudContexts>
   </Gate>
 </Gates>

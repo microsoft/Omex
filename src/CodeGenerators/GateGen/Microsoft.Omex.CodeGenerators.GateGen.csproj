@@ -1,15 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(TargetFrameworks);$(NetStandardVersion)</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks)</TargetFrameworks>
     <Description>Contains Omex Gating generator code</Description>
     <RootNamespace>Microsoft.Omex.CodeGenerators.GateGen</RootNamespace>
-    <AssemblyName>Microsoft.Omex.CodeGenerator.GateGen</AssemblyName>
+    <AssemblyName>Microsoft.Omex.CodeGenerators.GateGen</AssemblyName>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
     <StartupObject></StartupObject>
     <Win32Resource />
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.CodeGenerators.GateGen</Title>
+    <DevelopmentDependency>True</DevelopmentDependency>
+    <Authors>Microsoft</Authors>
+    <Summary>Microsoft Omex GateGen</Summary>
+    <Description>Generates strongly typed gates from a gates xml.</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/CodeGenerators/GateGen</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/microsoft/Omex/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <PackageTags>Microsoft;Omex;Gating</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <None Include="GatePropertyTemplate.txt" />
@@ -21,7 +36,9 @@
     <ProjectReference Include="..\..\..\src\Gating\Microsoft.Omex.Gating.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="build\**\*" Pack="true" PackagePath="build" />
+    <Content Include="$(OutputPath)\**\Microsoft.Omex.Gating.*" Pack="true" PackagePath="lib" />
+    <Content Include="$(OutputPath)\**\Microsoft.Omex.System.*" Pack="true" PackagePath="lib" />
+    <Content Include ="Microsoft.Omex.CodeGenerators.GateGen.targets" Pack="true" PackagePath="build" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">

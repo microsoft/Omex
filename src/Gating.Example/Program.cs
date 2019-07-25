@@ -128,6 +128,12 @@ namespace Microsoft.Omex.Gating.Example
 		};
 
 
+		public HashSet<string> CloudContexts => new HashSet<string>
+		{
+			"Public"
+		};
+
+
 		public Tuple<string, int> GetUserAgentBrowser() => throw new NotImplementedException();
 
 
