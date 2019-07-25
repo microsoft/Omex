@@ -87,6 +87,12 @@ namespace Microsoft.Omex.Gating.UnitTests.Shared
 
 
 		/// <summary>
+		/// Cloud contexts of the gated request
+		/// </summary>
+		public HashSet<string> CloudContexts { get; set; }
+
+
+		/// <summary>
 		/// Update the gated request based on the set of expected clients
 		/// </summary>
 		/// <param name="expectedClients">expected clients</param>
