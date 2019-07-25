@@ -8,11 +8,11 @@ This package should be used from another project that uses gating. After being a
 The project needs to define the following content in the csproj file and include the corresponding gates and tip xml files:
 
 ```xml
-  <PropertyGroup>
-    <GatesXml>OmexGates.xml</GatesXml>
-    <TipXml>OmexTip.xml</TipXml>
-    <OmexGatesNamespace></OmexGatesNamespace>
-  </PropertyGroup>
+<PropertyGroup>
+  <GatesXml>OmexGates.xml</GatesXml>
+  <TipXml>OmexTip.xml</TipXml>
+  <OmexGatesNamespace></OmexGatesNamespace>
+</PropertyGroup>
 ```
 
 The `OmexGatesNamespace` value is optional.
