@@ -1,0 +1,6 @@
+{0}/// <summary>
+{0}/// {1} gates
+{0}/// </summary>
+{0}public static class {1}
+{0}{{
+{2}{0}}}

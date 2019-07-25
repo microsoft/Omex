@@ -66,7 +66,7 @@ namespace Microsoft.Omex.Gating.Example
 
 		private static void SampleAction()
 		{
-			Console.WriteLine("SmapleAction has been called");
+			Console.WriteLine("SampleAction has been called");
 		}
 
 		#region IDisposable Support
