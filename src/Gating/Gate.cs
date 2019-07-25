@@ -169,6 +169,12 @@ namespace Microsoft.Omex.Gating
 
 
 		/// <summary>
+		/// Set of cloud contexts that apply to this gate
+		/// </summary>
+		public HashSet<string> CloudContexts { get; set; }
+
+
+		/// <summary>
 		/// Information about the experiment
 		/// </summary>
 		/// <remarks> it is null for the non experimental gate</remarks>
