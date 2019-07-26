@@ -10,9 +10,9 @@
     <DevelopmentDependency>True</DevelopmentDependency>
     <Authors>Microsoft</Authors>
     <Summary>Microsoft Omex System Library</Summary>
-    <Description>This library provides a gating mechanism that can be used to switch application features or code paths on/off depending on user request details</Description>
+    <Description>This library contains shared code for Omex libraries.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
-    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/Gating</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/System</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
