@@ -12,7 +12,7 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 	/// <summary>
 	/// TestGroups DataSet Loader
 	/// </summary>
-	public class TestGroupsDataSetLoader<T> : ConfigurationDataSetLoader<T> where T : class, ITestGroupsDataSet, new()
+	public class TestGroupsDataSetLoader<T> : ConfigurationDataSetLoader<T> where T : class, ITestGroupsDataSet
 	{
 		/// <summary>
 		/// Constructor
@@ -20,8 +20,9 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <param name="cache">The cache object.</param>
 		/// <param name="resourceMonitor">Resource monitor</param>
 		/// <param name="testGroups">The test groups resource.</param>
-		public TestGroupsDataSetLoader(ICache cache, IResourceMonitor resourceMonitor, IResource testGroups)
-			: base(cache, resourceMonitor)
+		/// <param name="dataSetFactory">Data set factory.</param> 
+		public TestGroupsDataSetLoader(ICache cache, IResourceMonitor resourceMonitor, IResource testGroups, IDataSetFactory<T> dataSetFactory)
+			: base(cache, resourceMonitor, dataSetFactory)
 		{
 			Initialize(new List<IResource> { testGroups });
 		}
@@ -63,8 +64,9 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <param name="cache">The cache object.</param>
 		/// <param name="resourceMonitor">The resource monitor.</param>
 		/// <param name="testGroups">The test groups.</param>
-		public TestGroupsDataSetLoader(ICache cache, IResourceMonitor resourceMonitor, IResource testGroups)
-			: base(cache, resourceMonitor, testGroups)
+		/// <param name="dataSetFactory">Data set factory.</param>
+		public TestGroupsDataSetLoader(ICache cache, IResourceMonitor resourceMonitor, IResource testGroups, IDataSetFactory<TestGroupsDataSet> dataSetFactory)
+			: base(cache, resourceMonitor, testGroups, dataSetFactory)
 		{
 		}
 	}
