@@ -55,6 +55,12 @@ namespace Microsoft.Omex.Gating
 
 
 		/// <summary>
+		/// The cloud contexts
+		/// </summary>
+		HashSet<string> CloudContexts { get; }
+
+
+		/// <summary>
 		/// Update the gating request based on the set of expected clients
 		/// </summary>
 		/// <param name="clients">expected clients</param>

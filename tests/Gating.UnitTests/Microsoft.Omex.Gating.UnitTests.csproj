@@ -2,6 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk" ToolsVersion="17.0">
   <PropertyGroup>
     <TargetFrameworks>$(TargetFrameworks);$(NetCoreVersion)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersion)</TargetFrameworks>
     <Description>Contains Omex Gating Unit Tests</Description>
     <RootNamespace>Microsoft.Omex.Gating.UnitTests</RootNamespace>
     <AssemblyName>Microsoft.Omex.Gating.UnitTests</AssemblyName>
@@ -21,6 +22,9 @@
     <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersionCore)" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(MicrosoftAspNetCoreHttpAbstractionsVersionCore)" />
     <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersionCore)" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="$(MoqVersion)" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DefaultGates.xml" Link="DefaultGates.xml">

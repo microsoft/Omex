@@ -285,6 +285,12 @@ namespace Microsoft.Omex.Gating
 			/// <remarks> it is null for the non experimental gate</remarks>
 			public IExperimentInfo ExperimentInfo => Gate.ExperimentInfo;
 
+
+			/// <summary>
+			/// Set of cloud contexts of the gate
+			/// </summary>
+			public HashSet<string> CloudContexts => Gate.CloudContexts;
+
 			#endregion
 		}
 

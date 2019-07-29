@@ -66,7 +66,7 @@ namespace Microsoft.Omex.Gating.Example
 
 		private static void SampleAction()
 		{
-			Console.WriteLine("SmapleAction has been called");
+			Console.WriteLine("SampleAction has been called");
 		}
 
 		#region IDisposable Support
@@ -125,6 +125,12 @@ namespace Microsoft.Omex.Gating.Example
 		{
 			{"sample_parameter_name", new HashSet<string>() {"sample_value1", "sample_value2" }},
 			{"sample_parameter_name2", new HashSet<string>() {"*"}},
+		};
+
+
+		public HashSet<string> CloudContexts => new HashSet<string>
+		{
+			"Public"
 		};
 
 
