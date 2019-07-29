@@ -19,7 +19,7 @@
     <Description>Generates strongly typed gates from a gates xml.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
     <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/CodeGenerators/GateGen</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/microsoft/Omex/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
