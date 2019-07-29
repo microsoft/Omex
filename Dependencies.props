@@ -19,13 +19,17 @@
     <MicrosoftIdentityClientVersion>2.1.0-preview</MicrosoftIdentityClientVersion>
     <MicrosoftIdentityModelClientsActiveDirectoryVersion>3.13.8</MicrosoftIdentityModelClientsActiveDirectoryVersion>
     <MicrosoftOfficeMSOTagUtilsVersion>16.0.7412.5176-preview</MicrosoftOfficeMSOTagUtilsVersion>
-    <MoqVersion>4.5.22</MoqVersion>
+    <MoqVersion>4.12.0</MoqVersion>
     <PollySignedVersion>4.3.0</PollySignedVersion>
     <StackExchangeRedisStrongNameVersion>1.2.6</StackExchangeRedisStrongNameVersion>
-    <SystemCollectionsImmutableVersion>1.1.37</SystemCollectionsImmutableVersion>
+    <SystemCollectionsImmutableVersion>1.5.0</SystemCollectionsImmutableVersion>
     <SystemConfigurationConfigurationManager>4.5.0</SystemConfigurationConfigurationManager>
     <XunitAssertVersion>2.4.1</XunitAssertVersion>
     <XunitCoreVersion>2.4.1</XunitCoreVersion>
+    <MicrosoftAspNetCoreHttpVersion>2.2.2</MicrosoftAspNetCoreHttpVersion>
+    <SystemThreadingTasks>4.0.11</SystemThreadingTasks>
+    <MSTestAdapterVersion>1.4.0</MSTestAdapterVersion>
+    <MSTestFrameworkVersion>1.4.0</MSTestFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Label="Package Versions Core">
     <MoqVersionCore>4.10.1</MoqVersionCore>

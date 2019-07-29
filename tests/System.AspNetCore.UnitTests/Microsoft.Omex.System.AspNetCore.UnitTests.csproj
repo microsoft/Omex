@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net461;$(NetCoreVersion)</TargetFrameworks>
+    <Description>Contains unit tests for Omex libraries in AspNetCore.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="$(MoqVersion)" />
+    <PackageReference Include="MSTest.TestAdapter" Version="$(MSTestAdapterVersion)" />
+    <PackageReference Include="MSTest.TestFramework" Version="$(MSTestAdapterVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\System\Microsoft.Omex.System.csproj" />
+    <ProjectReference Include="..\..\src\System.AspNetCore\Microsoft.Omex.System.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\src\System.UnitTests.Shared\Microsoft.Omex.System.UnitTests.Shared.csproj" />
+  </ItemGroup>
+  
+</Project>

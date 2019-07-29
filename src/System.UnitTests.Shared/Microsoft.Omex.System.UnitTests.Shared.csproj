@@ -15,6 +15,6 @@
     <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersionCore)" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\System\Microsoft.Omex.System.csproj" />
+    <ProjectReference Include="..\..\src\System\Microsoft.Omex.System.csproj" />
   </ItemGroup>
 </Project>
