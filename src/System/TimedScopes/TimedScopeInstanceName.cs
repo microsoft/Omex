@@ -91,7 +91,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="classification">Failure classification</param>
 		public TimedScopeInstanceName(TimedScopeName scopeName, TimedScopeResult classification)
 		{
-			Code.ExpectsArgument(scopeName, nameof(scopeName), TaggingUtilities.ReserveTag(0x238505d9 /* tag_97qxz */));
+			Code.ExpectsArgument(scopeName, nameof(scopeName), TaggingUtilities.ReserveTag(0));
 
 			CompleteScopeName = scopeName;
 			Classification = classification;

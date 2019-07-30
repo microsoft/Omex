@@ -1,14 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using Directives
-
 using Microsoft.Omex.System.Context;
 using System;
 using Microsoft.Omex.System.Diagnostics;
-
-#endregion
-
 
 namespace Microsoft.Omex.System.TimedScopes
 {

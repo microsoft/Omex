@@ -1,12 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using Directives
-
 using System;
 using System.Runtime.Serialization;
-
-#endregion
 
 namespace Microsoft.Omex.System.TimedScopes
 {

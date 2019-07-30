@@ -19,10 +19,10 @@
     <MicrosoftIdentityClientVersion>2.1.0-preview</MicrosoftIdentityClientVersion>
     <MicrosoftIdentityModelClientsActiveDirectoryVersion>3.13.8</MicrosoftIdentityModelClientsActiveDirectoryVersion>
     <MicrosoftOfficeMSOTagUtilsVersion>16.0.7412.5176-preview</MicrosoftOfficeMSOTagUtilsVersion>
-    <MoqVersion>4.12.0</MoqVersion>
+    <MoqVersion>4.5.22</MoqVersion>
     <PollySignedVersion>4.3.0</PollySignedVersion>
     <StackExchangeRedisStrongNameVersion>1.2.6</StackExchangeRedisStrongNameVersion>
-    <SystemCollectionsImmutableVersion>1.5.0</SystemCollectionsImmutableVersion>
+    <SystemCollectionsImmutableVersion>1.2.0</SystemCollectionsImmutableVersion>
     <SystemConfigurationConfigurationManager>4.5.0</SystemConfigurationConfigurationManager>
     <XunitAssertVersion>2.4.1</XunitAssertVersion>
     <XunitCoreVersion>2.4.1</XunitCoreVersion>

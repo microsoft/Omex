@@ -59,7 +59,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="metaData">MetaData</param>
 		public TimedScopeName(string scope, string subType = null, string metaData = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(scope, nameof(scope), TaggingUtilities.ReserveTag(0x238505c9 /* tag_97qxj */));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(scope, nameof(scope), TaggingUtilities.ReserveTag(0));
 
 			Scope = scope;
 			SubType = subType;
@@ -73,7 +73,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="copyFrom">Object to copy values from</param>
 		public TimedScopeName(TimedScopeInstanceName copyFrom)
 		{
-			Code.ExpectsArgument(copyFrom, nameof(copyFrom), TaggingUtilities.ReserveTag(0x238505ca /* tag_97qxk */));
+			Code.ExpectsArgument(copyFrom, nameof(copyFrom), TaggingUtilities.ReserveTag(0));
 
 			Scope = copyFrom.Scope;
 			SubType = copyFrom.SubType;

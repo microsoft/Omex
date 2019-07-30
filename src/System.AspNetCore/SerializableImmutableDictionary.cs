@@ -44,7 +44,7 @@ namespace Microsoft.Omex.System.AspNetCore
 		/// <param name="store">Data store</param>
 		public SerializableImmutableDictionary(ImmutableDictionary<TKey, TValue> store)
 		{
-			Code.ExpectsArgument(store, nameof(store), TaggingUtilities.ReserveTag(0x238506ce /* tag_97q1o */));
+			Code.ExpectsArgument(store, nameof(store), TaggingUtilities.ReserveTag(0));
 
 			m_store = store;
 		}
@@ -67,7 +67,7 @@ namespace Microsoft.Omex.System.AspNetCore
 		/// <remarks>Stores serialization info in a field to allow deserialization callback to complete deserialization</remarks>
 		protected SerializableImmutableDictionary(SerializationInfo info, StreamingContext context)
 		{
-			Code.ExpectsArgument(info, nameof(info), TaggingUtilities.ReserveTag(0x238506cf /* tag_97q1p */));
+			Code.ExpectsArgument(info, nameof(info), TaggingUtilities.ReserveTag(0));
 
 			m_serializationInfo = info;
 		}
@@ -219,7 +219,7 @@ namespace Microsoft.Omex.System.AspNetCore
 		/// <param name="context">Serialization context - unused</param>
 		public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
-			Code.ExpectsArgument(info, nameof(info), TaggingUtilities.ReserveTag(0x238506d0 /* tag_97q1q */));
+			Code.ExpectsArgument(info, nameof(info), TaggingUtilities.ReserveTag(0));
 
 			info.AddValue(SerializedFieldName, m_store.ToArray(), typeof(KeyValuePair<TKey, TValue>[]));
 			info.AddValue(KeyComparerFieldName, m_store.KeyComparer, typeof(IEqualityComparer<TKey>));

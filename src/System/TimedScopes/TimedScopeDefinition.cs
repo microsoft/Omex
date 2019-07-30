@@ -54,7 +54,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="capturesUniqueUserHashes">Does the scope capture user hashes that are suitable for unique user-based alerting?</param>
 		public TimedScopeDefinition(string name, string description = null, string linkToOCEHandbook = null, bool onDemand = false, bool capturesUniqueUserHashes = false)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(name, nameof(name), TaggingUtilities.ReserveTag(0x2388a39a /* tag_98ko0 */));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(name, nameof(name), TaggingUtilities.ReserveTag(0));
 
 			Name = name;
 			Description = description ?? string.Empty;

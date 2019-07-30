@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using directives
-
 using Xunit;
 using Microsoft.Omex.System.Diagnostics;
 using Microsoft.Omex.System.TimedScopes;
@@ -12,8 +10,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Assert = Xunit.Assert;
 using Microsoft.Omex.System.Context;
 using System;
-
-#endregion
 
 namespace Microsoft.Omex.System.AspNetCore.UnitTests
 {

@@ -7,12 +7,10 @@
   <ItemGroup Condition="'$(TargetFramework)' != '$(NetCoreVersion)'">
     <Reference Include="System.Runtime" />
     <Reference Include="System.Threading.Tasks" />
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
-    <PackageReference Include="Moq" Version="$(MoqVersion)" />
+    <PackageReference Include="Moq" Version="$(MoqVersionCore)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == '$(NetCoreVersion)'">
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersionCore)" />
-    <PackageReference Include="Moq" Version="$(MoqVersion)" />
+    <PackageReference Include="Moq" Version="$(MoqVersionCore)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\System.UnitTests.Shared\Microsoft.Omex.System.UnitTests.Shared.csproj" />

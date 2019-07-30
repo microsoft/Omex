@@ -18,7 +18,7 @@ namespace Microsoft.Omex.System.AspNetCore
 		/// <param name="contextAccessor">Http context accessor</param>
 		public static void Configure(IHttpContextAccessor contextAccessor)
 		{
-			s_contextAccessor = Code.ExpectsArgument(contextAccessor, nameof(contextAccessor), TaggingUtilities.ReserveTag(0x23857153 /* tag_97xft */));
+			s_contextAccessor = Code.ExpectsArgument(contextAccessor, nameof(contextAccessor), TaggingUtilities.ReserveTag(0));
 		}
 
 

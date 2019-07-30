@@ -6,10 +6,6 @@ using Microsoft.Omex.System.TimedScopes;
 
 namespace Microsoft.Omex.System.UnitTests.Shared.TimedScopes
 {
-	/// <summary>
-	/// Timed scopes
-	/// </summary>
-	[GeneratedCode("perfcountergen", "16.0.0000.0000")]
 	internal static class UnitTestTimedScopes
 	{
 		/// <summary>

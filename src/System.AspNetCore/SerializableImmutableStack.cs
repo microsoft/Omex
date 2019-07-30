@@ -42,7 +42,7 @@ namespace Microsoft.Omex.System.AspNetCore
 		/// <param name="store">Data store</param>
 		public SerializableImmutableStack(IImmutableStack<TValue> store)
 		{
-			Code.ExpectsArgument(store, nameof(store), TaggingUtilities.ReserveTag(0x238506cb /* tag_97q1l */));
+			Code.ExpectsArgument(store, nameof(store), TaggingUtilities.ReserveTag(0));
 
 			m_store = store;
 		}
@@ -63,7 +63,7 @@ namespace Microsoft.Omex.System.AspNetCore
 		/// <remarks>Stores serialization info in a field to allow deserialization callback to complete deserialization</remarks>
 		protected SerializableImmutableStack(SerializationInfo info, StreamingContext context)
 		{
-			Code.ExpectsArgument(info, nameof(info), TaggingUtilities.ReserveTag(0x238506cc /* tag_97q1m */));
+			Code.ExpectsArgument(info, nameof(info), TaggingUtilities.ReserveTag(0));
 
 			m_serializationInfo = info;
 		}
@@ -128,7 +128,7 @@ namespace Microsoft.Omex.System.AspNetCore
 		/// <param name="context">Serialization context - unused</param>
 		public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
-			Code.ExpectsArgument(info, nameof(info), TaggingUtilities.ReserveTag(0x238506cd /* tag_97q1n */));
+			Code.ExpectsArgument(info, nameof(info), TaggingUtilities.ReserveTag(0));
 
 			info.AddValue(SerializedFieldName, new Stack<TValue>(m_store), typeof(Stack<TValue>));
 		}

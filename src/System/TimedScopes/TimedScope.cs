@@ -32,9 +32,9 @@ namespace Microsoft.Omex.System.TimedScopes
 		private TimedScope(TimedScopeDefinition scopeDefinition, CorrelationData correlationData, ITimedScopeLogger scopeLogger, 
 			IReplayEventConfigurator replayEventConfigurator, IMachineInformation machineInformation)
 		{
-			Code.ExpectsArgument(scopeDefinition, nameof(scopeDefinition), TaggingUtilities.ReserveTag(0x238505db /* tag_97qx1 */));
-			Code.ExpectsArgument(scopeLogger, nameof(scopeLogger), TaggingUtilities.ReserveTag(0x238505dc /* tag_97qx2 */));
-			Code.ExpectsArgument(replayEventConfigurator, nameof(replayEventConfigurator), TaggingUtilities.ReserveTag(0x238505dd /* tag_97qx3 */));
+			Code.ExpectsArgument(scopeDefinition, nameof(scopeDefinition), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(scopeLogger, nameof(scopeLogger), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(replayEventConfigurator, nameof(replayEventConfigurator), TaggingUtilities.ReserveTag(0));
 
 			ScopeDefinition = scopeDefinition;
 			ScopeLogger = scopeLogger;
@@ -489,7 +489,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="userHash">User hash</param>
 		public void OverrideUserHash(string userHash)
 		{
-			if (!Code.ValidateNotNullOrWhiteSpaceArgument(userHash, nameof(userHash), TaggingUtilities.ReserveTag(0x238505de /* tag_97qx4 */)))
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(userHash, nameof(userHash), TaggingUtilities.ReserveTag(0)))
 			{
 				return;
 			}
@@ -923,7 +923,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			/// <param name="parent">Parent of this stack</param>
 			private TimedScopeStack(TimedScope item, TimedScopeStack parent)
 			{
-				Code.ExpectsArgument(parent, nameof(parent), TaggingUtilities.ReserveTag(0x238505df /* tag_97qx5 */));
+				Code.ExpectsArgument(parent, nameof(parent), TaggingUtilities.ReserveTag(0));
 
 				Item = item;
 				Parent = parent;
