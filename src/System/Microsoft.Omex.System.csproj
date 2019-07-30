@@ -5,4 +5,19 @@
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersion)</TargetFrameworks>
     <Description>Contains common classes for Omex libraries.</Description>
   </PropertyGroup>
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.System</Title>
+    <DevelopmentDependency>True</DevelopmentDependency>
+    <Authors>Microsoft</Authors>
+    <Summary>Microsoft Omex System Library</Summary>
+    <Description>This library contains shared code for Omex libraries.</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/System</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <PackageTags>Microsoft;Omex;Gating</PackageTags>
+  </PropertyGroup> 
 </Project>
