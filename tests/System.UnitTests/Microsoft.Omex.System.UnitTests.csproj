@@ -7,7 +7,7 @@
   <ItemGroup Condition="'$(TargetFramework)' != '$(NetCoreVersion)'">
     <Reference Include="System.Runtime" />
     <Reference Include="System.Threading.Tasks" />
-    <PackageReference Include="Moq" Version="$(MoqVersionCore)" />
+    <PackageReference Include="Moq" Version="$(MoqVersion)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == '$(NetCoreVersion)'">
     <PackageReference Include="Moq" Version="$(MoqVersionCore)" />

@@ -272,12 +272,12 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <summary>
 		/// Timed Scope Definition
 		/// </summary>
-		public TimedScopeDefinition ScopeDefinition { get; private set; }
+		public TimedScopeDefinition ScopeDefinition { get; }
 
 		/// <summary>
 		/// Timed Scope Definition
 		/// </summary>
-		public IMachineInformation MachineInformation { get; private set; }
+		public IMachineInformation MachineInformation { get; }
 
 
 		/// <summary>
@@ -348,7 +348,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		private IReplayEventConfigurator ReplayEventConfigurator { get; }
 
 
-		public CorrelationData CorrelationData { get; private set; }
+		public CorrelationData CorrelationData { get; }
 
 
 		/// <summary>
@@ -673,7 +673,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		private CorrelationData ConstructCorrelationDataEntries(IMachineInformation machineInformation)
 		{
 
-			// TODO what is the difference between CrossCutting.Corelation.CurrentCorelation and TimedScopeData
 			CorrelationData correlationData = TimedScopeData;
 
 			CorrelationData scopeData = TimedScopeData.Clone();
@@ -695,7 +694,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			scopeData.AddData(TimedScopeDataKeys.InternalOnly.SequenceNumber, sequenceNumber.ToString(CultureInfo.InvariantCulture));
 			scopeData.AddData(TimedScopeDataKeys.InternalOnly.CallDepth, correlationData == null ? "0" : correlationData.CallDepth.ToString(CultureInfo.InvariantCulture));
 
-			// TODO aks
 			IMachineInformation machineInfo = machineInformation;
 
 			if (machineInfo != null)

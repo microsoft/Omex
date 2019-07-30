@@ -416,7 +416,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				return null;
 			}
 
-			// TODO(lukak): VSO 323303
 			CorrelationData newCorrelation = new CorrelationData(existingCorrelation.CachedUlsEventsReplayed);
 			newCorrelation.ShouldLogDirectly = existingCorrelation.ShouldLogDirectly;
 			newCorrelation.ShouldReplayUls = existingCorrelation.ShouldReplayUls;
