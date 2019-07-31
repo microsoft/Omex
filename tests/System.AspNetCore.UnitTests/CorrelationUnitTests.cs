@@ -163,6 +163,8 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 		{
 			try
 			{
+				FailOnErrors = false;
+
 				Correlation = new Correlation(new MemoryCorrelationHandler(), CallContextManagerInstance, MachineInformation);
 				Correlation.CorrelationStart(null);
 
@@ -183,6 +185,8 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 		{
 			try
 			{
+				FailOnErrors = false;
+
 				Correlation = new Correlation(new MemoryCorrelationHandler(), CallContextManagerInstance, MachineInformation);
 				Correlation.CorrelationStart(null);
 

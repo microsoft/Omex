@@ -355,6 +355,7 @@ namespace Microsoft.Omex.System.AspNetCore
 				{
 					return m_innerDictionary[key];
 				}
+
 				set
 				{
 					Add(key, value);

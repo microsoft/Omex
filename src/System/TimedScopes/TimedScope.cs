@@ -507,6 +507,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			{
 				return m_isScopeActive;
 			}
+
 			private set
 			{
 				if (value != m_isScopeActive)
@@ -794,6 +795,7 @@ namespace Microsoft.Omex.System.TimedScopes
 
 				return stack;
 			}
+
 			set
 			{
 				Context.ICallContext callContext = new ThreadCallContext().ExistingCallContext();

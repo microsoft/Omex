@@ -41,6 +41,7 @@ namespace Microsoft.Omex.System.AspNetCore
 							dataStack.Pop();
 							dataStack.Push(data);
 						}
+
 						return data;
 					}
 					else
@@ -124,6 +125,7 @@ namespace Microsoft.Omex.System.AspNetCore
 						ConcurrentDictionary<string, object> _;
 						s_sharedContextData.TryRemove(context, out _);
 					}
+
 					return;
 				}
 				else

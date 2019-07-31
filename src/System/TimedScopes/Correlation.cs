@@ -224,6 +224,9 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="value">value of the added correlation data</param>
 		public void CorrelationAdd(string key, string value)
 		{
+			Code.ExpectsNotNullOrWhiteSpaceArgument(key, nameof(key), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(value, nameof(value), TaggingUtilities.ReserveTag(0));
+
 			CorrelationData data = CurrentCorrelation;
 			if (data == null)
 			{

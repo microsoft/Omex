@@ -51,6 +51,9 @@ namespace Microsoft.Omex.System.TimedScopes
 		private bool m_ulsReplay;
 
 
+		/// <summary>
+		/// Information if previously cached ULS events for this correlation already been replayed
+		/// </summary>
 		private int m_cachedUlsEventsReplayed;
 
 
@@ -145,6 +148,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			{
 				return m_eventSequenceNumber;
 			}
+
 			set
 			{
 				m_eventSequenceNumber = value;
@@ -198,12 +202,14 @@ namespace Microsoft.Omex.System.TimedScopes
 			{
 				return m_parentCorrelation;
 			}
+
 			set
 			{
 				if (this.ParentCorrelation != null)
 				{
 					throw new InvalidOperationException("Parent correlation is already set.");
 				}
+
 				CorrelationData temp = value;
 				while (temp != null)
 				{
@@ -211,8 +217,10 @@ namespace Microsoft.Omex.System.TimedScopes
 					{
 						throw new InvalidOperationException("Cannot set the parent correlation as it will cause circular reference.");
 					}
+
 					temp = temp.ParentCorrelation;
 				}
+
 				m_parentCorrelation = value;
 			}
 		}
@@ -243,6 +251,7 @@ namespace Microsoft.Omex.System.TimedScopes
 				m_eventSequenceNumber = RootScopeBoundary;
 				return m_eventSequenceNumber;
 			}
+
 			return Interlocked.Increment(ref m_eventSequenceNumber);
 		}
 
@@ -256,6 +265,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			{
 				return m_shouldLogDirectly || (ParentCorrelation != null && ParentCorrelation.ShouldLogDirectly);
 			}
+
 			set
 			{
 				m_shouldLogDirectly = value;
@@ -274,6 +284,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			{
 				return m_ulsReplay;
 			}
+
 			set
 			{
 				// this flag is a one way switch
@@ -326,6 +337,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			{
 				return null;
 			}
+
 			return (string)m_additionalData[key];
 		}
 
@@ -345,10 +357,12 @@ namespace Microsoft.Omex.System.TimedScopes
 			{
 				throw new ArgumentNullException("key");
 			}
+
 			if (value == null)
 			{
 				throw new ArgumentNullException("value");
 			}
+
 			if (string.Equals(key, TransactionIdKey, StringComparison.OrdinalIgnoreCase))
 			{
 				// Caching the TransactionId specifically as it is likely to be queried for
@@ -363,6 +377,7 @@ namespace Microsoft.Omex.System.TimedScopes
 					TransactionId = 0;
 				}
 			}
+
 			if (m_additionalData == null)
 			{
 				m_additionalData = new ListDictionary(StringComparer.OrdinalIgnoreCase);
@@ -440,6 +455,7 @@ namespace Microsoft.Omex.System.TimedScopes
 							string keystring = (string)key;
 							newCorrelation.AddData(keystring, existingCorrelation.Data(keystring));
 						}
+
 						success = true;
 					}
 					catch (InvalidOperationException)

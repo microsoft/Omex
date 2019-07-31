@@ -20,6 +20,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			{
 				id = correlation.TransactionId;
 			}
+
 			return id;
 		}
 	}

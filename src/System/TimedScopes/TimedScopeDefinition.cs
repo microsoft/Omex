@@ -29,7 +29,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// Description
 		/// </summary>
 		/// <remarks>Could be null</remarks>
-		public string LinkToOCEHandbook { get; }
+		public string LinkToOnCallEngineerHandbook { get; }
 
 
 		/// <summary>
@@ -49,16 +49,16 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </summary>
 		/// <param name="name">Name</param>
 		/// <param name="description">Description</param>
-		/// <param name="linkToOCEHandbook">Link to OCE Handbook</param>
+		/// <param name="linkToOnCallEngineerHandbook">Link to On Call Engineer Handbook</param>
 		/// <param name="onDemand">Should the scope be logged only when explicitly demanded</param>
 		/// <param name="capturesUniqueUserHashes">Does the scope capture user hashes that are suitable for unique user-based alerting?</param>
-		public TimedScopeDefinition(string name, string description = null, string linkToOCEHandbook = null, bool onDemand = false, bool capturesUniqueUserHashes = false)
+		public TimedScopeDefinition(string name, string description = null, string linkToOnCallEngineerHandbook = null, bool onDemand = false, bool capturesUniqueUserHashes = false)
 		{
 			Code.ExpectsNotNullOrWhiteSpaceArgument(name, nameof(name), TaggingUtilities.ReserveTag(0));
 
 			Name = name;
 			Description = description ?? string.Empty;
-			LinkToOCEHandbook = linkToOCEHandbook;
+			LinkToOnCallEngineerHandbook = linkToOnCallEngineerHandbook;
 			OnDemand = onDemand;
 			CapturesUniqueUserHashes = capturesUniqueUserHashes;
 		}
@@ -118,7 +118,4 @@ namespace Microsoft.Omex.System.TimedScopes
 			ITimedScopeLogger customLogger = null, IReplayEventConfigurator replayEventConfigurator = null)
 			=> Create(correlationData, machineInformation, TimedScope.ConvertBoolResultToTimedScopeResult(initialResult), startScope, customLogger, replayEventConfigurator);
 	}
-
-
-
 }
