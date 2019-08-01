@@ -6,7 +6,6 @@
     <Description>Contains common classes for Omex libraries.</Description>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Readme.txt" PackagePath="%(Identity)" />
     <PackageReference Include="Bond.Core.CSharp" Version="$(BondCoreCSharpVersion)" />
     <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
   </ItemGroup>
