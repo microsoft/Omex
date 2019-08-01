@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using Directives
-
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -10,8 +8,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
-
-#endregion
 
 namespace Microsoft.Omex.System.Context
 {

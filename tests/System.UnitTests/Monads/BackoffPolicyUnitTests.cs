@@ -1,14 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using directives
-
 using System;
 using Microsoft.Omex.System.Monads;
 using Microsoft.Omex.System.UnitTests.Shared;
 using Xunit;
-
-#endregion
 
 namespace Microsoft.Omex.System.UnitTests.Monads
 {
