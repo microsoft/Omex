@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using Xunit;
+using System;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Omex.System.Context;
 using Microsoft.Omex.System.Diagnostics;
 using Microsoft.Omex.System.TimedScopes;
 using Microsoft.Omex.System.UnitTests.Shared.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Assert = Xunit.Assert;
-using Microsoft.Omex.System.Context;
-using System;
 
 namespace Microsoft.Omex.System.AspNetCore.UnitTests
 {

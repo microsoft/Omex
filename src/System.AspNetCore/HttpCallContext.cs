@@ -5,8 +5,8 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
-using Microsoft.Omex.System.Context;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Omex.System.Context;
 using Microsoft.Omex.System.Diagnostics;
 
 namespace Microsoft.Omex.System.AspNetCore

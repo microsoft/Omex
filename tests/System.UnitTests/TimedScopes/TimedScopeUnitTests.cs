@@ -1,19 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Moq;
-using Xunit;
+using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.TimedScopes;
 using Microsoft.Omex.System.TimedScopes.ReplayEventLogging;
 using Microsoft.Omex.System.UnitTests.Shared;
-using Microsoft.Omex.System.UnitTests.Shared.TimedScopes;
 using Microsoft.Omex.System.UnitTests.Shared.Diagnostics;
-using System;
-using Microsoft.Omex.System.Logging;
+using Microsoft.Omex.System.UnitTests.Shared.TimedScopes;
+using Moq;
+using Xunit;
 using Xunit.Sdk;
-using System.Collections.Generic;
 
 namespace Microsoft.Omex.System.UnitTests.TimedScopes
 {

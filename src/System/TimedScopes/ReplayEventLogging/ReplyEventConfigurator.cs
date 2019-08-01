@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using Microsoft.Omex.System.Validation;
 using Microsoft.Omex.System.Logging;
+using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.System.TimedScopes.ReplayEventLogging
 {

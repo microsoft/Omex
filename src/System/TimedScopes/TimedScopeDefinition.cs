@@ -3,8 +3,8 @@
 
 using Microsoft.Omex.System.Diagnostics;
 using Microsoft.Omex.System.Logging;
-using Microsoft.Omex.System.Validation;
 using Microsoft.Omex.System.TimedScopes.ReplayEventLogging;
+using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.System.TimedScopes
 {

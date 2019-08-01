@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using Microsoft.Omex.System.Context;
 using System;
+using Microsoft.Omex.System.Context;
 using Microsoft.Omex.System.Diagnostics;
 using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.Validation;

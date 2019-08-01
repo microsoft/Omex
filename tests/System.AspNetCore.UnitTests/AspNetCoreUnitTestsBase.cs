@@ -2,9 +2,9 @@
 // Licensed under the MIT license.
 
 using System;
-using Microsoft.Omex.System.UnitTests.Shared;
 using System.Threading;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Omex.System.UnitTests.Shared;
 
 namespace Microsoft.Omex.System.AspNetCore.UnitTests
 {

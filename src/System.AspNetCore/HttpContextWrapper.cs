@@ -2,8 +2,8 @@
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.Omex.System.Validation;
 using Microsoft.Omex.System.Logging;
+using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.System.AspNetCore
 {

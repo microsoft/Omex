@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System.Collections.Concurrent;
-using System.Collections.Immutable;
-using System.Threading;
-using Microsoft.Omex.System.Diagnostics;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
-using Microsoft.Omex.System.Logging;
+using System.Threading;
 using Microsoft.Omex.System.Context;
+using Microsoft.Omex.System.Diagnostics;
+using Microsoft.Omex.System.Logging;
 
 namespace Microsoft.Omex.System.AspNetCore
 {

@@ -4,8 +4,8 @@
 using System;
 using System.Threading;
 using Microsoft.Omex.System.Context;
-using Microsoft.Omex.System.TimedScopes;
 using Microsoft.Omex.System.Diagnostics;
+using Microsoft.Omex.System.TimedScopes;
 
 namespace Microsoft.Omex.System.AspNetCore
 {

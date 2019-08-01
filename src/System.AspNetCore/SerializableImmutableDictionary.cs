@@ -8,8 +8,8 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using Microsoft.Omex.System.Validation;
 using Microsoft.Omex.System.Logging;
+using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.System.AspNetCore
 {

@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using Bond.Tag;
-using Microsoft.Omex.System.Validation;
 using Microsoft.Omex.System.Logging;
+using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.System.TimedScopes
 {

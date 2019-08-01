@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using Microsoft.Omex.System.TimedScopes;
+using Microsoft.Omex.System.UnitTests.Shared;
 using Xunit;
 using Xunit.Abstractions;
-using Microsoft.Omex.System.UnitTests.Shared;
-using Microsoft.Omex.System.TimedScopes;
 
 namespace Microsoft.Omex.System.UnitTests.TimedScopes
 {
