@@ -17,7 +17,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 	/// <summary>
 	/// Unit tests for verifying functionality of ReplayEventConfigurator class
 	/// </summary>
-	[Trait("TestComponent", "SharedInfrastructure")]
 	[TestClass]
 	public class ReplayEventConfiguratorUnitTests : AspNetCoreUnitTestsBase
 	{

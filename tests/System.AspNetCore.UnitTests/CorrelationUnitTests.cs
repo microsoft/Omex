@@ -16,7 +16,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 	/// <summary>
 	/// Unit tests for Correlation
 	/// </summary>
-	[Trait("TestComponent", "SharedInfrastructure")]
 	[TestClass]
 	public class CorrelationUnitTests : AspNetCoreUnitTestsBase
 	{

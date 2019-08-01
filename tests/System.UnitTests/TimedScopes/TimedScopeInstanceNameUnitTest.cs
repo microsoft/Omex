@@ -11,7 +11,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 	/// <summary>
 	/// Unit tests for verifying functionality of TimedScopeInstanceName class
 	/// </summary>
-	[Trait("TestCategory", "SharedInfrastructure")]
 	public class TimedScopeInstanceNameUnitTests : UnitTestBase
 	{
 
