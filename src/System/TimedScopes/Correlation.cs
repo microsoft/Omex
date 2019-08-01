@@ -114,7 +114,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			get
 			{
 				CorrelationData correlation = CurrentCorrelation;
-				if (correlation != null && correlation.ShouldLogDirectly)
+				if (correlation?.ShouldLogDirectly == true)
 				{
 					return true;
 				}

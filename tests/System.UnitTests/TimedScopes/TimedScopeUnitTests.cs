@@ -387,7 +387,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 
 		/// <summary>
 		/// Trace errors
-		/// TODO: Currently LoggedEvents list is empty (to be fixed)
 		/// </summary>
 		private IEnumerable<LogEventArgs> TraceErrors
 		{
