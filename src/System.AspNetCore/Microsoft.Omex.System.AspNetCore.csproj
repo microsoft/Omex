@@ -5,7 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.ServiceModel" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="$(MicrosoftAspNetCoreHttpVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="$(MicrosoftAspNetCoreHttpVersionCore)" />
     <PackageReference Include="System.Threading.Tasks" Version="$(SystemThreadingTasks)"/>
     <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersionCore)" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="$(SystemServiceModelPrimitivesVersionCore)" />

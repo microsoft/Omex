@@ -146,13 +146,13 @@ namespace Microsoft.Omex.System.TimedScopes
 
 			if (!NativeMethods.GetThreadTimes(s_currentThreadHandle, out creationTime, out exitTime, out m_startKernel, out m_startUser))
 			{
-				ULSLogging.LogTraceTag(0x2388a54f /* tag_98kvp */, Categories.Infrastructure, Levels.Error, "GetThreadTimes system call failed.");
+				ULSLogging.LogTraceTag(0, Categories.Infrastructure, Levels.Error, "GetThreadTimes system call failed.");
 				return false;
 			}
 
 			if (!NativeMethods.QueryThreadCycleTime(s_currentThreadHandle, out m_startCycles))
 			{
-				ULSLogging.LogTraceTag(0x2388a550 /* tag_98kvq */, Categories.Infrastructure, Levels.Error, "QueryThreadCycleTime system call failed.");
+				ULSLogging.LogTraceTag(0, Categories.Infrastructure, Levels.Error, "QueryThreadCycleTime system call failed.");
 				return false;
 			}
 
@@ -185,7 +185,7 @@ namespace Microsoft.Omex.System.TimedScopes
 
 			if (!NativeMethods.GetThreadTimes(s_currentThreadHandle, out creationTime, out exitTime, out kernelModeTime, out userModeTime))
 			{
-				ULSLogging.LogTraceTag(0x2388a551 /* tag_98kvr */, Categories.Infrastructure, Levels.Error, "GetThreadTimes system call failed.");
+				ULSLogging.LogTraceTag(0, Categories.Infrastructure, Levels.Error, "GetThreadTimes system call failed.");
 				return false;
 			}
 
@@ -193,7 +193,7 @@ namespace Microsoft.Omex.System.TimedScopes
 
 			if (!NativeMethods.QueryThreadCycleTime(s_currentThreadHandle, out cycles))
 			{
-				ULSLogging.LogTraceTag(0x2388a552 /* tag_98kvs */, Categories.Infrastructure, Levels.Error, "QueryThreadCycleTime system call failed.");
+				ULSLogging.LogTraceTag(0, Categories.Infrastructure, Levels.Error, "QueryThreadCycleTime system call failed.");
 				return false;
 			}
 

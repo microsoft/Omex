@@ -273,7 +273,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			catch (Exception exception)
 			{
 				// The parsing shouldn't throw but we catch exceptions to be safe
-				ULSLogging.ReportExceptionTag(0x23850297 /* tag_97qkx */, Categories.Common, exception,
+				ULSLogging.ReportExceptionTag(0, Categories.Common, exception,
 					"An unexpected exception occured during TimedScopeInstanceName.TryParse. Returning false.");
 				return false;
 			}

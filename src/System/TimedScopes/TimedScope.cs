@@ -177,14 +177,14 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			if (IsDisposed)
 			{
-				ULSLogging.LogTraceTag(0x23850298 /* tag_97qky */, Categories.TimingGeneral, Levels.Error,
+				ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Error,
 					"Attempting to start scope '{0}' that has already been disposed.", Name);
 				return;
 			}
 
 			if (IsScopeActive)
 			{
-				ULSLogging.LogTraceTag(0x23850299 /* tag_97qkz */, Categories.TimingGeneral, Levels.Error,
+				ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Error,
 					"Attempting to start scope '{0}' that has already been started.", Name);
 				return;
 			}
@@ -248,7 +248,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			if (IsDisposed)
 			{
-				ULSLogging.LogTraceTag(0x2385029a /* tag_97qk0 */, Categories.TimingGeneral, Levels.Error,
+				ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Error,
 					"Attempting to end scope '{0}' that has already been disposed.", Name);
 				return;
 			}
@@ -550,7 +550,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			if (string.IsNullOrWhiteSpace(key))
 			{
-				ULSLogging.LogTraceTag(0x2385029b /* tag_97qk1 */, Categories.TimingGeneral, Levels.Error,
+				ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Error,
 					"Empty or null key detected when attempting to add an entry in the timed scope data dictionary. Key : '{0}'.",
 					key ?? "<NULL>");
 				return;
@@ -560,7 +560,7 @@ namespace Microsoft.Omex.System.TimedScopes
 
 			if (existingValue != null && !overrideValue)
 			{
-				ULSLogging.LogTraceTag(0x2385029c /* tag_97qk2 */, Categories.TimingGeneral, Levels.Warning,
+				ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Warning,
 					"Timed scope data dictionary already contains key '{0}' with value '{1}'.", key, existingValue);
 			}
 			else
@@ -623,7 +623,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			if (!IsSuccessful.HasValue)
 			{
-				ULSLogging.LogTraceTag(0x2385029d /* tag_97qk3 */, Categories.TimingGeneral, Levels.Warning,
+				ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Warning,
 					"Result not set for scope {0}. Considered as SystemError", Name);
 
 				Result = TimedScopeResult.SystemError;
@@ -708,7 +708,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			// if the user hash has been set, add it to the scope data
 			if (!string.IsNullOrWhiteSpace(m_userHashOverride))
 			{
-				ULSLogging.LogTraceTag(0x2385029e /* tag_97qk4 */, Categories.TimingGeneral, Levels.Verbose,
+				ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Verbose,
 					"Overriding user hash metadata in the Timed Scope '{0}' with value '{1}'", Name, m_userHashOverride);
 				scopeData.AddData(TimedScopeDataKeys.InternalOnly.UserHash, m_userHashOverride);
 			}

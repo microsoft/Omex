@@ -164,7 +164,7 @@ namespace Microsoft.Omex.System.AspNetCore
 			}
 			else if (!s_testEnvironment.Value)
 			{
-				ULSLogging.LogTraceTag(0x23847117 /* tag_97hex */, Categories.Infrastructure, Levels.Warning,
+				ULSLogging.LogTraceTag(0, Categories.Infrastructure, Levels.Warning,
 					"Attempting to end a LogicalCallContext that has not been started.");
 			}
 			else
