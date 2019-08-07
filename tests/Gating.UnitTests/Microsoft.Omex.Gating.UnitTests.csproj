@@ -24,7 +24,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersionCore)" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Moq" Version="$(MoqVersion)" />
+    <PackageReference Include="Moq" Version="$(MoqVersionCore)" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DefaultGates.xml" Link="DefaultGates.xml">

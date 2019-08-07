@@ -43,5 +43,8 @@
     <MicrosoftAspNetCoreHttpVersionCore>2.2.0</MicrosoftAspNetCoreHttpVersionCore>
     <MicrosoftAzureCosmosDBBulkExecutorVersionCore>2.2.0-preview2</MicrosoftAzureCosmosDBBulkExecutorVersionCore>
     <WindowsAzureStorageVersionCore>9.3.3</WindowsAzureStorageVersionCore>
+    <SystemThreadingTasks>4.0.11</SystemThreadingTasks>
+    <MSTestAdapterVersion>1.4.0</MSTestAdapterVersion>
+    <MSTestFrameworkVersion>1.4.0</MSTestFrameworkVersion>
   </PropertyGroup>
 </Project>

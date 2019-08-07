@@ -1,13 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using directives
-
 using System;
 using System.Collections.Generic;
 using Microsoft.Omex.System.Data;
-
-#endregion
 
 namespace Microsoft.Omex.System.Configuration.DataSets
 {
