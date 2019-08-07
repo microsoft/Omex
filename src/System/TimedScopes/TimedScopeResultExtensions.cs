@@ -30,7 +30,7 @@ namespace Microsoft.Omex.System.TimedScopes
 					return false;
 
 				default:
-					ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Error, "IsSuccessful status unknown for timed scope result {0}", result);
+					ULSLogging.LogTraceTag(0x23817701 /* tag_96x2b */, Categories.TimingGeneral, Levels.Error, "IsSuccessful status unknown for timed scope result {0}", result);
 					return false;
 			}
 		}

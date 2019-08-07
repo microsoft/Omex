@@ -91,7 +91,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="classification">Failure classification</param>
 		public TimedScopeInstanceName(TimedScopeName scopeName, TimedScopeResult classification)
 		{
-			Code.ExpectsArgument(scopeName, nameof(scopeName), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(scopeName, nameof(scopeName), TaggingUtilities.ReserveTag(0x23817705 /* tag_96x2f */));
 
 			CompleteScopeName = scopeName;
 			Classification = classification;
@@ -273,7 +273,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			catch (Exception exception)
 			{
 				// The parsing shouldn't throw but we catch exceptions to be safe
-				ULSLogging.ReportExceptionTag(0, Categories.Common, exception,
+				ULSLogging.ReportExceptionTag(0x23817706 /* tag_96x2g */, Categories.Common, exception,
 					"An unexpected exception occured during TimedScopeInstanceName.TryParse. Returning false.");
 				return false;
 			}
