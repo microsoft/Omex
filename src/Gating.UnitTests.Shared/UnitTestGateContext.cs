@@ -1,13 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using directives
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-#endregion
 
 namespace Microsoft.Omex.Gating.UnitTests.Shared
 {

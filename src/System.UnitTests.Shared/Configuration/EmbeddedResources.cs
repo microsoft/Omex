@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using directives
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,8 +9,6 @@ using Microsoft.Omex.System.Data;
 using Microsoft.Omex.System.Data.FileSystem;
 using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.UnitTests.Shared.Data.FileSystem;
-
-#endregion
 
 namespace Microsoft.Omex.System.UnitTests.Shared.Configuration
 {

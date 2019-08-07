@@ -5,6 +5,10 @@
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersion)</TargetFrameworks>
     <Description>Contains common classes for Omex libraries.</Description>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Bond.Core.CSharp" Version="$(BondCoreCSharpVersion)" />
+    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
+  </ItemGroup>
   <PropertyGroup Label="NuGet Properties">
     <Title>Microsoft.Omex.System</Title>
     <DevelopmentDependency>True</DevelopmentDependency>

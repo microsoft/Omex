@@ -1,14 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using directives
-
 using System;
 using System.Collections.Generic;
 using Microsoft.Omex.System.Data;
 using Microsoft.Omex.System.UnitTests.Shared.Configuration;
-
-#endregion
 
 namespace Microsoft.Omex.System.UnitTests.Shared.Data
 {
