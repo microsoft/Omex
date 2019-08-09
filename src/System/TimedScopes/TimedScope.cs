@@ -32,9 +32,9 @@ namespace Microsoft.Omex.System.TimedScopes
 		private TimedScope(TimedScopeDefinition scopeDefinition, CorrelationData correlationData, ITimedScopeLogger scopeLogger, 
 			IReplayEventConfigurator replayEventConfigurator, IMachineInformation machineInformation)
 		{
-			Code.ExpectsArgument(scopeDefinition, nameof(scopeDefinition), TaggingUtilities.ReserveTag(0));
-			Code.ExpectsArgument(scopeLogger, nameof(scopeLogger), TaggingUtilities.ReserveTag(0));
-			Code.ExpectsArgument(replayEventConfigurator, nameof(replayEventConfigurator), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(scopeDefinition, nameof(scopeDefinition), TaggingUtilities.ReserveTag(0x238174da /* tag_96xt0 */));
+			Code.ExpectsArgument(scopeLogger, nameof(scopeLogger), TaggingUtilities.ReserveTag(0x238174db /* tag_96xt1 */));
+			Code.ExpectsArgument(replayEventConfigurator, nameof(replayEventConfigurator), TaggingUtilities.ReserveTag(0x238174dc /* tag_96xt2 */));
 
 			ScopeDefinition = scopeDefinition;
 			ScopeLogger = scopeLogger;
@@ -177,14 +177,14 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			if (IsDisposed)
 			{
-				ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Error,
+				ULSLogging.LogTraceTag(0x238174dd /* tag_96xt3 */, Categories.TimingGeneral, Levels.Error,
 					"Attempting to start scope '{0}' that has already been disposed.", Name);
 				return;
 			}
 
 			if (IsScopeActive)
 			{
-				ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Error,
+				ULSLogging.LogTraceTag(0x238174de /* tag_96xt4 */, Categories.TimingGeneral, Levels.Error,
 					"Attempting to start scope '{0}' that has already been started.", Name);
 				return;
 			}
@@ -248,7 +248,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			if (IsDisposed)
 			{
-				ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Error,
+				ULSLogging.LogTraceTag(0x238174df /* tag_96xt5 */, Categories.TimingGeneral, Levels.Error,
 					"Attempting to end scope '{0}' that has already been disposed.", Name);
 				return;
 			}
@@ -489,7 +489,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="userHash">User hash</param>
 		public void OverrideUserHash(string userHash)
 		{
-			if (!Code.ValidateNotNullOrWhiteSpaceArgument(userHash, nameof(userHash), TaggingUtilities.ReserveTag(0)))
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(userHash, nameof(userHash), TaggingUtilities.ReserveTag(0x238174e0 /* tag_96xt6 */)))
 			{
 				return;
 			}
@@ -550,7 +550,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			if (string.IsNullOrWhiteSpace(key))
 			{
-				ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Error,
+				ULSLogging.LogTraceTag(0x238174e1 /* tag_96xt7 */, Categories.TimingGeneral, Levels.Error,
 					"Empty or null key detected when attempting to add an entry in the timed scope data dictionary. Key : '{0}'.",
 					key ?? "<NULL>");
 				return;
@@ -560,7 +560,7 @@ namespace Microsoft.Omex.System.TimedScopes
 
 			if (existingValue != null && !overrideValue)
 			{
-				ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Warning,
+				ULSLogging.LogTraceTag(0x238174e2 /* tag_96xt8 */, Categories.TimingGeneral, Levels.Warning,
 					"Timed scope data dictionary already contains key '{0}' with value '{1}'.", key, existingValue);
 			}
 			else
@@ -623,7 +623,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			if (!IsSuccessful.HasValue)
 			{
-				ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Warning,
+				ULSLogging.LogTraceTag(0x238174e3 /* tag_96xt9 */, Categories.TimingGeneral, Levels.Warning,
 					"Result not set for scope {0}. Considered as SystemError", Name);
 
 				Result = TimedScopeResult.SystemError;
@@ -708,7 +708,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			// if the user hash has been set, add it to the scope data
 			if (!string.IsNullOrWhiteSpace(m_userHashOverride))
 			{
-				ULSLogging.LogTraceTag(0, Categories.TimingGeneral, Levels.Verbose,
+				ULSLogging.LogTraceTag(0x23817500 /* tag_96xua */, Categories.TimingGeneral, Levels.Verbose,
 					"Overriding user hash metadata in the Timed Scope '{0}' with value '{1}'", Name, m_userHashOverride);
 				scopeData.AddData(TimedScopeDataKeys.InternalOnly.UserHash, m_userHashOverride);
 			}
@@ -923,7 +923,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			/// <param name="parent">Parent of this stack</param>
 			private TimedScopeStack(TimedScope item, TimedScopeStack parent)
 			{
-				Code.ExpectsArgument(parent, nameof(parent), TaggingUtilities.ReserveTag(0));
+				Code.ExpectsArgument(parent, nameof(parent), TaggingUtilities.ReserveTag(0x23817501 /* tag_96xub */));
 
 				Item = item;
 				Parent = parent;
