@@ -244,7 +244,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <summary>
 		/// End the timed scope
 		/// </summary>
-		public void End(IMachineInformation machineInformation)
+		public void End()
 		{
 			if (IsDisposed)
 			{
@@ -253,7 +253,7 @@ namespace Microsoft.Omex.System.TimedScopes
 				return;
 			}
 
-			EndScope(machineInformation);
+			EndScope(MachineInformation);
 		}
 
 
