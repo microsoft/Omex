@@ -32,6 +32,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		private TimedScope(TimedScopeDefinition scopeDefinition, CorrelationData correlationData, ITimedScopeLogger scopeLogger, 
 			IReplayEventConfigurator replayEventConfigurator, IMachineInformation machineInformation)
 		{
+
 			Code.ExpectsArgument(scopeDefinition, nameof(scopeDefinition), TaggingUtilities.ReserveTag(0x238174da /* tag_96xt0 */));
 			Code.ExpectsArgument(scopeLogger, nameof(scopeLogger), TaggingUtilities.ReserveTag(0x238174db /* tag_96xt1 */));
 			Code.ExpectsArgument(replayEventConfigurator, nameof(replayEventConfigurator), TaggingUtilities.ReserveTag(0x238174dc /* tag_96xt2 */));
@@ -178,7 +179,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			if (IsDisposed)
 			{
 				ULSLogging.LogTraceTag(0x238174dd /* tag_96xt3 */, Categories.TimingGeneral, Levels.Error,
-					"Attempting to start scope '{0}' that has already been disposed.", Name);          
+					"Attempting to start scope '{0}' that has already been disposed.", Name);
 				return;
 			}
 

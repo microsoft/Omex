@@ -56,7 +56,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		{
 			Cache = Code.ExpectsArgument(cache, nameof(cache), TaggingUtilities.ReserveTag(0x238208d9 /* tag_9669z */));
 			m_resourceMonitor = Code.ExpectsArgument(resourceMonitor, nameof(resourceMonitor), TaggingUtilities.ReserveTag(0x23821000 /* tag_967aa */));
-			DataSetFactory = Code.ExpectsArgument(dataSetFactory, nameof(dataSetFactory), TaggingUtilities.ReserveTag(0x2381871e /* tag_96y24 */));
+			DataSetFactory = Code.ExpectsArgument(dataSetFactory, nameof(dataSetFactory), TaggingUtilities.ReserveTag(0x238187d8 /* tag_96y5y */));
 
 			DataSetOverride = dataSetOverride;
 		}
@@ -305,7 +305,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			public CachedConfigurationDataSet(TDataSet dataSetDefault, IDataSetFactory<TDataSet> dataSetFactory)
 			{
 				m_dataSetDefault = dataSetDefault;
-				m_dataSetFactory = Code.ExpectsArgument(dataSetFactory, nameof(dataSetFactory), TaggingUtilities.ReserveTag(0x2381871f /* tag_96y25 */));
+				m_dataSetFactory = Code.ExpectsArgument(dataSetFactory, nameof(dataSetFactory), TaggingUtilities.ReserveTag(0x238187d9 /* tag_96y5z */));
 			}
 
 
@@ -370,7 +370,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 
 				if (dataSet == null)
 				{
-					ULSLogging.LogTraceTag(0x23818720 /* tag_96y26 */, Categories.ConfigurationDataSet, Levels.Error,
+					ULSLogging.LogTraceTag(0x238187da /* tag_96y50 */, Categories.ConfigurationDataSet, Levels.Error,
 						"Unable to create data set of type '{0}'", typeof(TDataSet).Name);
 
 					return null;
