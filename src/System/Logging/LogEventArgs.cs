@@ -19,6 +19,12 @@ namespace Microsoft.Omex.System.Logging
 	public class LogEventArgs : EventArgs
 	{
 		/// <summary>
+		/// Capacity of parameters
+		/// </summary>
+		private const int ParameterCapacity = 64;
+
+
+		/// <summary>
 		/// Tag id
 		/// </summary>
 		public uint TagId { get; }
@@ -107,7 +113,7 @@ namespace Microsoft.Omex.System.Logging
 				return string.Empty;
 			}
 
-			StringBuilder builder = new StringBuilder(64);
+			StringBuilder builder = new StringBuilder(ParameterCapacity);
 			foreach (object param in parameters)
 			{
 				builder.AppendFormat(CultureInfo.InvariantCulture, "{0}, ",
