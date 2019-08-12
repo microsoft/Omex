@@ -19,8 +19,8 @@ namespace Microsoft.Omex.Gating
 		/// <param name="testGroupsResourceName">The resource name for loading test groups</param>
 		public GateDataSetFactory(string gatesResourceName, string testGroupsResourceName)
 		{
-			GatesResourceName = Code.ExpectsNotNullOrWhiteSpaceArgument(gatesResourceName, nameof(gatesResourceName), TaggingUtilities.ReserveTag(0x238187db /* tag_96y51 */));
-			TestGroupsResourceName = Code.ExpectsNotNullOrWhiteSpaceArgument(testGroupsResourceName, nameof(testGroupsResourceName), TaggingUtilities.ReserveTag(0x238187dc /* tag_96y52 */));
+			GatesResourceName = Code.ExpectsNotNullOrWhiteSpaceArgument(gatesResourceName, nameof(gatesResourceName), TaggingUtilities.ReserveTag(0x23818721 /* tag_96y27 */));
+			TestGroupsResourceName = Code.ExpectsNotNullOrWhiteSpaceArgument(testGroupsResourceName, nameof(testGroupsResourceName), TaggingUtilities.ReserveTag(0x23818722 /* tag_96y28 */));
 		}
 
 
