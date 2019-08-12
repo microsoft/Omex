@@ -419,7 +419,7 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 				LogEventArgs eventArg = events.Single();
 				Assert.Equal(tagId, eventArg.TagId);
 				Assert.Equal(Levels.Error, eventArg.Level);
-				Assert.Equal(Categories.ArgumentValidation, eventArg.Category);
+				Assert.Equal(Categories.ArgumentValidation, eventArg.CategoryId);
 				Assert.Contains(ArgumentName, eventArg.FullMessage);
 			}
 		}

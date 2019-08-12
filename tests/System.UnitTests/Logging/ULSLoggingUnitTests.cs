@@ -46,7 +46,7 @@ namespace Microsoft.Omex.System.UnitTests.Logging
 			Assert.Equal(Levels.Error, exceptionEventArgs.Level);
 			Assert.NotNull(exceptionEventArgs.Exception);
 			Assert.Equal(typeof(ArgumentNullException), exceptionEventArgs.Exception.GetType());
-			Assert.Equal(Categories.ArgumentValidation, exceptionEventArgs.Category);
+			Assert.Equal(Categories.ArgumentValidation, exceptionEventArgs.CategoryId);
 		}
 
 
@@ -61,7 +61,7 @@ namespace Microsoft.Omex.System.UnitTests.Logging
 		[Fact]
 		public void RaiseLogEvent_WithEvent_Logs()
 		{
-			LogEventArgs eventArgs = new LogEventArgs(0, Categories.ArgumentValidation, Levels.Warning, "Message");
+			LogEventArgs eventArgs = new LogEventArgs(null, false, 0, Categories.ArgumentValidation, Levels.Warning, "Message", string.Empty);
 			UntaggedLogging.RaiseLogEvent(null, eventArgs);
 			Assert.Equal(1, LoggedEvents.Count);
 			Assert.Same(eventArgs, LoggedEvents[0]);
