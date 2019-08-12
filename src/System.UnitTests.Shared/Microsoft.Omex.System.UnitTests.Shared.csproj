@@ -8,14 +8,27 @@
   <ItemGroup Condition="'$(TargetFramework)' != '$(NetStandardVersion)'">
     <PackageReference Include="xunit.assert" Version="$(XunitAssertVersion)" />
     <PackageReference Include="xunit.core" Version="$(XunitCoreVersion)" />
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == '$(NetStandardVersion)'">
     <PackageReference Include="xunit.assert" Version="$(XunitAssertVersionCore)" />
     <PackageReference Include="xunit.core" Version="$(XunitCoreVersionCore)" />
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersionCore)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System\Microsoft.Omex.System.csproj" />
   </ItemGroup>
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.System.UnitTests.Shared</Title>
+    <DevelopmentDependency>True</DevelopmentDependency>
+    <Authors>Microsoft</Authors>
+    <Summary>Microsoft Omex System Unit Tests Shared Library</Summary>
+    <Description>This library contains shared unit tests for the Omex System library</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/System.UnitTests.Shared</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <PackageTags>Microsoft;Omex;Gating</PackageTags>
+  </PropertyGroup>
 </Project>

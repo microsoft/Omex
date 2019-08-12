@@ -1,13 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using Directives
-
 using System;
 using System.Runtime.Serialization;
 using Microsoft.Omex.System.Logging;
-
-#endregion
 
 namespace Microsoft.Omex.System.Model.Types
 {
