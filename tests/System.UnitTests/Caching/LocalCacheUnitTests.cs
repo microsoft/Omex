@@ -1,14 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using directives
-
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Omex.System.Caching;
 using Xunit;
-
-#endregion
 
 namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 {

@@ -1,12 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using directives
-
 using System.IO;
 using System.Text;
-
-#endregion
 
 namespace Microsoft.Omex.System.UnitTests.Shared.Data.FileSystem
 {

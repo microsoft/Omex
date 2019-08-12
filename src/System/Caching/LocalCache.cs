@@ -1,14 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using directives
-
 using System;
 using System.Collections.Concurrent;
 using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.Validation;
-
-#endregion
 
 namespace Microsoft.Omex.System.Caching
 {
