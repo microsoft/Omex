@@ -404,7 +404,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="cachedUlsEventsReplayed">Have previously cached ULS events for this correlation already been replayed?</param>
 		public CorrelationData(ILogEventCache logEventCache, bool cachedUlsEventsReplayed = false)
 		{
-			Code.ExpectsArgument(logEventCache, nameof(logEventCache), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(logEventCache, nameof(logEventCache), TaggingUtilities.ReserveTag(0x2381771a /* tag_96x20 */));
 			m_logEventCache = logEventCache;
 			m_cachedUlsEventsReplayed = cachedUlsEventsReplayed ? 1 : 0;
 		}

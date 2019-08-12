@@ -59,7 +59,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="metaData">MetaData</param>
 		public TimedScopeName(string scope, string subType = null, string metaData = null)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(scope, nameof(scope), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(scope, nameof(scope), TaggingUtilities.ReserveTag(0x23817702 /* tag_96x2c */));
 
 			Scope = scope;
 			SubType = subType;
@@ -73,7 +73,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="copyFrom">Object to copy values from</param>
 		public TimedScopeName(TimedScopeInstanceName copyFrom)
 		{
-			Code.ExpectsArgument(copyFrom, nameof(copyFrom), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(copyFrom, nameof(copyFrom), TaggingUtilities.ReserveTag(0x23817703 /* tag_96x2d */));
 
 			Scope = copyFrom.Scope;
 			SubType = copyFrom.SubType;
@@ -289,7 +289,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			catch (Exception exception)
 			{
 				// The parsing shouldn't throw but we catch exceptions to be safe
-				ULSLogging.ReportExceptionTag(0, Categories.Common, exception,
+				ULSLogging.ReportExceptionTag(0x23817704 /* tag_96x2e */, Categories.Common, exception,
 					"An unexpected exception occured during TimedScopeName.TryParse. Returning false.");
 				return false;
 			}
