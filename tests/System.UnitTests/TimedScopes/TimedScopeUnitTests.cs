@@ -35,7 +35,7 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			CorrelationData data = new CorrelationData();
 
 			using (scope = new TimedScopeDefinition("TestScope")
-				.Create(data, machineInformation, TimedScopeResult.SystemError, customLogger: timedScopeLoggerMock.Object, 
+				.Create(data, machineInformation, TimedScopeResult.SystemError, customLogger: timedScopeLoggerMock.Object,
 				replayEventConfigurator: replyEventConfiguratorMock.Object))
 			{
 				timedScopeLoggerMock.Verify(x => x.LogScopeStart(scope), Times.Once);
@@ -156,7 +156,7 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 				// There should be one 'Ending' transaction log call with formatted output
 				foreach (LogEventArgs args in LoggedEvents)
 				{
-					if (args.Category == Categories.TimingGeneral)
+					if (args.CategoryId == Categories.TimingGeneral)
 					{
 						if (args.FullMessage.Contains("Ending timed scope"))
 						{
@@ -395,7 +395,7 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 				return value != null;
 			}
 			catch (NotNullException)
-			{ 
+			{
 				Console.WriteLine(message, args);
 				throw;
 			}
