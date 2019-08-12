@@ -30,9 +30,9 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="machineInformation">machine information</param>
 		public Correlation(ICorrelationStorage correlationHandler, ICallContextManager callContextManager, IMachineInformation machineInformation)
 		{
-			Code.ExpectsArgument(correlationHandler, nameof(correlationHandler), TaggingUtilities.ReserveTag(0));
-			Code.ExpectsArgument(callContextManager, nameof(callContextManager), TaggingUtilities.ReserveTag(0));
-			Code.ExpectsArgument(machineInformation, nameof(machineInformation), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(correlationHandler, nameof(correlationHandler), TaggingUtilities.ReserveTag(0x2381771b /* tag_96x21 */));
+			Code.ExpectsArgument(callContextManager, nameof(callContextManager), TaggingUtilities.ReserveTag(0x2381771c /* tag_96x22 */));
+			Code.ExpectsArgument(machineInformation, nameof(machineInformation), TaggingUtilities.ReserveTag(0x2381771d /* tag_96x23 */));
 
 			CorrelationHandler = correlationHandler;
 			CallContextManager = callContextManager;
@@ -224,8 +224,8 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="value">value of the added correlation data</param>
 		public void CorrelationAdd(string key, string value)
 		{
-			Code.ExpectsNotNullOrWhiteSpaceArgument(key, nameof(key), TaggingUtilities.ReserveTag(0));
-			Code.ExpectsNotNullOrWhiteSpaceArgument(value, nameof(value), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(key, nameof(key), TaggingUtilities.ReserveTag(0x2381771e /* tag_96x24 */));
+			Code.ExpectsNotNullOrWhiteSpaceArgument(value, nameof(value), TaggingUtilities.ReserveTag(0x2381771f /* tag_96x25 */));
 
 			CorrelationData data = CurrentCorrelation;
 			if (data == null)
