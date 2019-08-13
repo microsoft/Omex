@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Gating
 		/// <param name="gates">The gates.</param>
 		/// <param name="testGroups">The test groups.</param>
 		public GateDataSetLoader(ICache cache, IResourceMonitor resourceMonitor, IResource gates, IResource testGroups)
-			: base(cache, resourceMonitor, new GateDataSetFactory(gates?.Name, testGroups?.Name))
+			: base(cache, resourceMonitor)
 		{
 			List<IResource> resources = new List<IResource>();
 			if (gates != null)

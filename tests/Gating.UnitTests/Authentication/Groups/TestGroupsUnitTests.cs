@@ -17,7 +17,6 @@ using Microsoft.Omex.System.UnitTests.Shared;
 using Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets;
 using Microsoft.Omex.System.UnitTests.Shared.Data;
 using Microsoft.Omex.System.UnitTests.Shared.Data.FileSystem;
-using Moq;
 using Xunit;
 
 #endregion
@@ -70,11 +69,8 @@ namespace Microsoft.Omex.Gating.UnitTests
 		{
 			FailOnErrors = false;
 
-			Mock<IDataSetFactory<TestGroupsDataSet>> mockFactory = new Mock<IDataSetFactory<TestGroupsDataSet>>();
-			mockFactory.Setup(i => i.Create()).Returns(new TestGroupsDataSet());
-
 			using (IConfigurationDataSetLoader<TestGroupsDataSet> loader =
-				new UnitTestDataSetLoader<TestGroupsDataSet>(new LocalCache(), new UnitTestResourceMonitor(), mockFactory.Object))
+				new UnitTestDataSetLoader<TestGroupsDataSet>(new LocalCache(), new UnitTestResourceMonitor()))
 			{
 				TestGroups testGroups = new TestGroups(loader);
 
@@ -130,11 +126,8 @@ namespace Microsoft.Omex.Gating.UnitTests
 		{
 			FailOnErrors = false;
 
-			Mock<IDataSetFactory<TestGroupsDataSet>> mockFactory = new Mock<IDataSetFactory<TestGroupsDataSet>>();
-			mockFactory.Setup(i => i.Create()).Returns(new TestGroupsDataSet());
-
 			using (IConfigurationDataSetLoader<TestGroupsDataSet> loader =
-				new UnitTestDataSetLoader<TestGroupsDataSet>(new LocalCache(), new UnitTestResourceMonitor(), mockFactory.Object))
+				new UnitTestDataSetLoader<TestGroupsDataSet>(new LocalCache(), new UnitTestResourceMonitor()))
 			{
 				TestGroups testGroups = new TestGroups(loader);
 
@@ -265,7 +258,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 			/// <param name="resourceMonitor">Resource monitor</param>
 			/// <param name="dataSet">data set</param>
 			public UnitTestTestGroupsDataSetLoader(IResourceMonitor resourceMonitor, TestGroupsDataSet dataSet = null)
-				: base(new LocalCache(), resourceMonitor, TestGateDataSetDefaultFactory, dataSet ?? new TestGroupsDataSet(ResourceNames.TestGroups))
+				: base(new LocalCache(), resourceMonitor, dataSet ?? new TestGroupsDataSet(ResourceNames.TestGroups))
 			{
 				Initialize(new List<IResource>
 								{
@@ -293,18 +286,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 				IList<ConfigurationDataSetLoadDetails> newFileDetails)
 			{
 			}
-
-
-			private static IDataSetFactory<TestGroupsDataSet> TestGateDataSetDefaultFactory
-			{
-				get
-				{
-					Mock<IDataSetFactory<TestGroupsDataSet>> mockFactory = new Mock<IDataSetFactory<TestGroupsDataSet>>();
-					mockFactory.Setup(i => i.Create()).Returns(new TestGroupsDataSet());
-					return mockFactory.Object;
-				}
-			}
-	}
+		}
 
 
 		/// <summary>
