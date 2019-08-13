@@ -45,13 +45,13 @@ namespace Microsoft.Omex.System.Logging
 		{
 			/// <summary> The Error log level </summary>
 			Error = 0,
-			/// <summary> The Warning log level </summary>
-			Info = 1,
 			/// <summary> The Info log level </summary>
+			Info = 1,
+			/// <summary> The Spam log level </summary>
 			Spam = 2,
 			/// <summary> The Verbose log level </summary>
 			Verbose = 3,
-			/// <summary> The Spam log level </summary>
+			/// <summary> The Warning log level </summary>
 			Warning = 4,
 		}
 
