@@ -9,14 +9,12 @@ using Microsoft.Omex.Gating.Data;
 using Microsoft.Omex.Gating.Experimentation;
 using Microsoft.Omex.Gating.UnitTests.Shared;
 using Microsoft.Omex.System.Caching;
-using Microsoft.Omex.System.Configuration.DataSets;
 using Microsoft.Omex.System.Data;
 using Microsoft.Omex.System.Diagnostics;
 using Microsoft.Omex.System.UnitTests.Shared;
 using Microsoft.Omex.System.UnitTests.Shared.Configuration;
 using Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets;
 using Microsoft.Omex.System.UnitTests.Shared.Data;
-using Moq;
 using Xunit;
 
 namespace Microsoft.Omex.Gating.UnitTests
@@ -31,10 +29,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 		/// </summary>
 		public GateExtensionsUnitTests()
 		{
-			Mock<IDataSetFactory<GateDataSet>> mockFactory = new Mock<IDataSetFactory<GateDataSet>>();
-			mockFactory.Setup(i => i.Create()).Returns(new GateDataSet());
-
-			UnitTestDataSetLoader<GateDataSet> loader = new UnitTestDataSetLoader<GateDataSet>(new LocalCache(), new UnitTestResourceMonitor(), mockFactory.Object);
+			UnitTestDataSetLoader<GateDataSet> loader = new UnitTestDataSetLoader<GateDataSet>(new LocalCache(), new UnitTestResourceMonitor());
 
 			UnitTestGateDataSet dataSetOverride = new UnitTestGateDataSet(ResourceNames.Gates, ResourceNames.TestGroups);
 			dataSetOverride.Load(new Dictionary<string, IResourceDetails>(2, StringComparer.OrdinalIgnoreCase)
