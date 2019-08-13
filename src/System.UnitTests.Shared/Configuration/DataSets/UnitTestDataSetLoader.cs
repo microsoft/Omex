@@ -13,7 +13,7 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 	/// Unit Test ConfigurationDataSetLoader
 	/// </summary>
 	/// <typeparam name="T">Configuration DataSet type</typeparam>
-	public class UnitTestDataSetLoader<T> : IConfigurationDataSetLoader<T> where T : class, IConfigurationDataSet
+	public class UnitTestDataSetLoader<T> : IConfigurationDataSetLoader<T> where T : class, IConfigurationDataSet, new()
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="UnitTestDataSetLoader{T}"/> class.
@@ -27,12 +27,11 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 		/// Constructor
 		/// </summary>
 		/// <param name="cache">The cache object.</param>
-		/// <param name="resourceMonitor">Resource Monitor instance.</param>
-		/// <param name="dataSetFactory">Data set factory.</param>
+		/// <param name="resourceMonitor">Resource Monitor instance</param>
 		/// <param name="dataSetOverride">The data set override.</param>
-		public UnitTestDataSetLoader(ICache cache, IResourceMonitor resourceMonitor, IDataSetFactory<T> dataSetFactory, T dataSetOverride = null)
+		public UnitTestDataSetLoader(ICache cache, IResourceMonitor resourceMonitor, T dataSetOverride = null)
 		{
-			UnitTestLoader = new UnitTestConfigurationDataSetLoader<T>(cache, resourceMonitor, dataSetFactory, dataSetOverride, UnitTestOnResourceUpdated);
+			UnitTestLoader = new UnitTestConfigurationDataSetLoader<T>(cache, resourceMonitor, dataSetOverride, UnitTestOnResourceUpdated);
 			UnitTestLoader.DataSetLoaded += OnDataSetLoadedByInternalLoader;
 		}
 
@@ -163,18 +162,17 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 		/// </summary>
 		/// <typeparam name="TConfigurationDataSet">Configuration DataSet type</typeparam>
 		protected class UnitTestConfigurationDataSetLoader<TConfigurationDataSet> : ConfigurationDataSetLoader<TConfigurationDataSet>
-			where TConfigurationDataSet : class, IConfigurationDataSet
+			where TConfigurationDataSet : class, IConfigurationDataSet, new()
 		{
 			/// <summary>
 			/// Constructor
 			/// </summary>
 			/// <param name="cache">The cache object.</param>
 			/// <param name="resourceMonitor">Resource Monitor instance</param>
-			/// <param name="dataSetFactory">Data set factory</param> 
 			/// <param name="dataSetOverride">The data set override.</param>
 			/// <param name="resourceUpdatedHandler">Handler to be called when the resource is updates</param>
-			public UnitTestConfigurationDataSetLoader(ICache cache, IResourceMonitor resourceMonitor, IDataSetFactory<TConfigurationDataSet> dataSetFactory, TConfigurationDataSet dataSetOverride = null, ResourceUpdatedHandler resourceUpdatedHandler = null)
-				: base(cache, resourceMonitor, dataSetFactory, dataSetOverride) => m_resourceUpdatedHandler = resourceUpdatedHandler;
+			public UnitTestConfigurationDataSetLoader(ICache cache, IResourceMonitor resourceMonitor, TConfigurationDataSet dataSetOverride = null, ResourceUpdatedHandler resourceUpdatedHandler = null)
+				: base(cache, resourceMonitor, dataSetOverride) => m_resourceUpdatedHandler = resourceUpdatedHandler;
 
 
 			/// <summary>
