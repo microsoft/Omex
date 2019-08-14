@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(NetStandardVersion)</TargetFrameworks>
+    <TargetFrameworks>$(NetFrameworkVersion);$(NetStandardVersion)</TargetFrameworks>
     <Description>Contains Omex Document Db code</Description>
     <RootNamespace>Microsoft.Omex.DocumentDb</RootNamespace>
     <AssemblyName>Microsoft.Omex.DocumentDb</AssemblyName>
@@ -21,7 +21,7 @@
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageTags>Microsoft;Omex;Gating</PackageTags>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == '$(NetStandardVersion)'">
+  <ItemGroup>
     <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="$(MicrosoftAzureDocumentDbVersionCore)" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="$(SystemConfigurationConfigurationManager)" />
   </ItemGroup>
