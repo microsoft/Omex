@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Specialized;
 using System.Threading;
 using Microsoft.Omex.System.Logging;
@@ -500,63 +499,5 @@ namespace Microsoft.Omex.System.TimedScopes
 				IsFallbackCall = correlationData.IsFallbackCall
 			};
 		}
-
-
-		/// <summary>
-		/// Clear the test type resolver
-		/// </summary>
-		/// <param name="correlationData">correlation data</param>
-		/// <returns>test type resolver in use</returns>
-		public static IStructuralTypeResolver ClearTestTypeResolver(this CorrelationData correlationData)
-		{
-			if (correlationData == null)
-			{
-				return null;
-			}
-
-			string uniqueId = correlationData.Data(TypeResolverKey);
-			if (!string.IsNullOrWhiteSpace(uniqueId))
-			{
-				IStructuralTypeResolver testResolver;
-				if (s_testResolvers.TryRemove(uniqueId, out testResolver))
-				{
-					return testResolver;
-				}
-			}
-
-			return null;
-		}
-
-
-		/// <summary>
-		/// Get the current test type resolver
-		/// </summary>
-		/// <param name="correlationData">correlation data</param>
-		/// <returns>test type resolver in use</returns>
-		public static IStructuralTypeResolver GetTestTypeResolver(this CorrelationData correlationData)
-		{
-			if (correlationData == null)
-			{
-				return null;
-			}
-
-			string uniqueId = correlationData.Data(TypeResolverKey);
-			if (!string.IsNullOrWhiteSpace(uniqueId))
-			{
-				IStructuralTypeResolver testResolver;
-				if (s_testResolvers.TryGetValue(uniqueId, out testResolver))
-				{
-					return testResolver;
-				}
-			}
-
-			return null;
-		}
-
-
-		private const string TypeResolverKey = "Test.TypeResolver";
-
-
-		private static readonly ConcurrentDictionary<string, IStructuralTypeResolver> s_testResolvers = new ConcurrentDictionary<string, IStructuralTypeResolver>();
 	}
 }
