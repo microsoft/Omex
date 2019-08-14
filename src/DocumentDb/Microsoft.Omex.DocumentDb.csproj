@@ -21,7 +21,7 @@
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageTags>Microsoft;Omex;Gating</PackageTags>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == '$(NetStandardVersion)'">
+  <ItemGroup>
     <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="$(MicrosoftAzureDocumentDbVersionCore)" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="$(SystemConfigurationConfigurationManager)" />
   </ItemGroup>
