@@ -29,14 +29,17 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 		{
 			Mock<ITimedScopeLogger> timedScopeLoggerMock = new Mock<ITimedScopeLogger>();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
+
 			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
 
 			TimedScope scope;
 			CorrelationData data = new CorrelationData();
 
 			using (scope = new TimedScopeDefinition("TestScope")
 				.Create(data, machineInformation, TimedScopeResult.SystemError, customLogger: timedScopeLoggerMock.Object,
-				replayEventConfigurator: replyEventConfiguratorMock.Object))
+				replayEventConfigurator: replyEventConfiguratorMock.Object, timedScopeStackManager: timedScopeStackManager))
 			{
 				timedScopeLoggerMock.Verify(x => x.LogScopeStart(scope), Times.Once);
 				timedScopeLoggerMock.Verify(x => x.LogScopeEnd(scope, It.IsAny<CorrelationData>()), Times.Never);
@@ -51,9 +54,13 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 		{
 			Mock<ITimedScopeLogger> timedScopeLoggerMock = new Mock<ITimedScopeLogger>();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
-			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
 
-			using (TimedScope scope = TestHooks.CreateTestCountersUnitTestTimedScope(false, true, machineInformation, timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object))
+			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
+
+			using (TimedScope scope = TestHooks.CreateTestCountersUnitTestTimedScope(false, true, machineInformation, timedScopeLoggerMock.Object,
+				replyEventConfiguratorMock.Object, timedScopeStackManager))
 			{
 				Assert.True(scope.IsScopeActive, "Starting a scope should start the timer.");
 
@@ -68,9 +75,13 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 		{
 			Mock<ITimedScopeLogger> timedScopeLoggerMock = new Mock<ITimedScopeLogger>();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
-			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
 
-			using (TimedScope scope = TestHooks.CreateTestCountersUnitTestTimedScope(true, false, machineInformation, timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object))
+			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
+
+			using (TimedScope scope = TestHooks.CreateTestCountersUnitTestTimedScope(true, false, machineInformation, timedScopeLoggerMock.Object,
+				replyEventConfiguratorMock.Object, timedScopeStackManager))
 			{
 				Assert.False(scope.IsScopeActive, "Creating a scope should not start the timer.");
 
@@ -85,9 +96,13 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 		{
 			Mock<ITimedScopeLogger> timedScopeLoggerMock = new Mock<ITimedScopeLogger>();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
-			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
 
-			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation: machineInformation))
+			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
+
+			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation: machineInformation, 
+				timedScopeStackManager: timedScopeStackManager))
 			{
 				Assert.True(scope.IsScopeActive, "Default scope should have timer active.");
 
@@ -102,9 +117,13 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 		{
 			Mock<ITimedScopeLogger> timedScopeLoggerMock = new Mock<ITimedScopeLogger>();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
-			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
 
-			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation: machineInformation))
+			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
+
+			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation: machineInformation, 
+				timedScopeStackManager: timedScopeStackManager))
 			{
 				Assert.True(scope.IsScopeActive, "Default scope should have timer active.");
 
@@ -121,10 +140,13 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 		{
 			Mock<ITimedScopeLogger> timedScopeLoggerMock = new Mock<ITimedScopeLogger>();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
-			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
 
-			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(scopeLogger: timedScopeLoggerMock.Object,
-				replayEventConfigurator: replyEventConfiguratorMock.Object, machineInformation: machineInformation, startScope: false))
+			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
+
+			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(scopeLogger: timedScopeLoggerMock.Object, replayEventConfigurator: replyEventConfiguratorMock.Object,
+				machineInformation: machineInformation, timedScopeStackManager: timedScopeStackManager, startScope: false))
 			{
 				Assert.False(scope.IsScopeActive, "Default scope started without an active scope should have timer active.");
 
@@ -145,10 +167,13 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 		{
 			Mock<ITimedScopeLogger> timedScopeLoggerMock = new Mock<ITimedScopeLogger>();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
+
 			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
 
 			using (TimedScope scope = TestHooks.CreateTestCountersUnitTestTimedScope(machineInformation: machineInformation, scopeLogger: timedScopeLoggerMock.Object,
-				replayEventConfigurator: replyEventConfiguratorMock.Object))
+				replayEventConfigurator: replyEventConfiguratorMock.Object, timedScopeStackManager: timedScopeStackManager))
 			{
 				scope.AddLoggingValue(TimedScopeDataKeys.Category, "MyCategory");
 				scope.End();
@@ -175,10 +200,13 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 
 			UnitTestTimedScopeLogger unitTestTimedScopeLogger = new UnitTestTimedScopeLogger();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
+
 			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
 
 			using (TimedScope scope = TestHooks.CreateTestCountersUnitTestTimedScope(machineInformation: machineInformation, scopeLogger: unitTestTimedScopeLogger,
-				replayEventConfigurator: replyEventConfiguratorMock.Object))
+				replayEventConfigurator: replyEventConfiguratorMock.Object, timedScopeStackManager: timedScopeStackManager))
 			{
 				scope.Result = TimedScopeResult.ExpectedError;
 				scope.FailureDescription = UnitTestFailureDescription.ExampleDescription;
@@ -200,10 +228,13 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 
 			UnitTestTimedScopeLogger unitTestTimedScopeLogger = new UnitTestTimedScopeLogger();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
+
 			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
 
 			using (TimedScope scope = TestHooks.CreateTestCountersUnitTestTimedScope(machineInformation: machineInformation, scopeLogger: unitTestTimedScopeLogger,
-				replayEventConfigurator: replyEventConfiguratorMock.Object))
+				replayEventConfigurator: replyEventConfiguratorMock.Object, timedScopeStackManager: timedScopeStackManager))
 			{
 				scope.Result = TimedScopeResult.Success;
 			}
@@ -224,9 +255,12 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 
 			Mock<ITimedScopeLogger> timedScopeLoggerMock = new Mock<ITimedScopeLogger>();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
-			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
 
-			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation))
+			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
+
+			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation, timedScopeStackManager))
 			{
 				scope.AddLoggingValue(null, "My Application.");
 
@@ -243,9 +277,12 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 
 			Mock<ITimedScopeLogger> timedScopeLoggerMock = new Mock<ITimedScopeLogger>();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
-			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
 
-			TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation);
+			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
+
+			TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation, timedScopeStackManager);
 			scope.Dispose();
 
 			scope.Start();
@@ -262,9 +299,12 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 
 			Mock<ITimedScopeLogger> timedScopeLoggerMock = new Mock<ITimedScopeLogger>();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
-			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
 
-			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation))
+			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
+
+			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation, timedScopeStackManager))
 			{
 				Assert.True(scope.IsScopeActive, "Timer should be active.");
 
@@ -283,9 +323,12 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 
 			Mock<ITimedScopeLogger> timedScopeLoggerMock = new Mock<ITimedScopeLogger>();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
-			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
 
-			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation))
+			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
+
+			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation, timedScopeStackManager))
 			{
 				Assert.True(scope.IsScopeActive, "Timer should be active.");
 
@@ -315,9 +358,12 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 
 			UnitTestTimedScopeLogger unitTestTimedScopeLogger = new UnitTestTimedScopeLogger();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
-			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
 
-			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(unitTestTimedScopeLogger, replyEventConfiguratorMock.Object, machineInformation))
+			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
+
+			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(unitTestTimedScopeLogger, replyEventConfiguratorMock.Object, machineInformation, timedScopeStackManager))
 			{
 			}
 
@@ -352,10 +398,13 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 
 			UnitTestTimedScopeLogger unitTestTimedScopeLogger = new UnitTestTimedScopeLogger();
 			Mock<IReplayEventConfigurator> replyEventConfiguratorMock = new Mock<IReplayEventConfigurator>();
+			Mock<ICallContextManager> callContextManagerMock = new Mock<ICallContextManager>();
+
 			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
 
 			using (TimedScope.Create(data, machineInformation, TestHooks.DefaultTimedScopeName, "description", default(TimedScopeResult),
-				unitTestTimedScopeLogger, replyEventConfiguratorMock.Object))
+				unitTestTimedScopeLogger, replyEventConfiguratorMock.Object, timedScopeStackManager))
 			{
 			}
 
