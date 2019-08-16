@@ -36,7 +36,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			Code.ExpectsArgument(scopeDefinition, nameof(scopeDefinition), TaggingUtilities.ReserveTag(0x238174da /* tag_96xt0 */));
 			Code.ExpectsArgument(scopeLogger, nameof(scopeLogger), TaggingUtilities.ReserveTag(0x238174db /* tag_96xt1 */));
 			Code.ExpectsArgument(replayEventConfigurator, nameof(replayEventConfigurator), TaggingUtilities.ReserveTag(0x238174dc /* tag_96xt2 */));
-			Code.ExpectsArgument(timedScopeStackManager, nameof(timedScopeStackManager), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(timedScopeStackManager, nameof(timedScopeStackManager), TaggingUtilities.ReserveTag(0x23817062 /* tag_96xb8 */));
 
 			ScopeDefinition = scopeDefinition;
 			ScopeLogger = scopeLogger;
