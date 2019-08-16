@@ -13,4 +13,19 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\System\Microsoft.Omex.System.csproj" />
   </ItemGroup>
+	<PropertyGroup Label="NuGet Properties">
+		<Title>Microsoft.Omex.System.AspNetCore</Title>
+		<DevelopmentDependency>True</DevelopmentDependency>
+		<Authors>Microsoft</Authors>
+		<Summary>Microsoft Omex System AspNetCore Library</Summary>
+		<Description>This library contains shared AspNetCore code for Omex libraries.</Description>
+		<ReleaseNotes>Initial release.</ReleaseNotes>
+		<PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/System.AspNetCore</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
+		<Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+		<PackageTags>Microsoft;Omex;System;AspNetCore</PackageTags>
+	</PropertyGroup>
 </Project>
