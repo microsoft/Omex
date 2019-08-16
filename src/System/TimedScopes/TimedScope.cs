@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Net;
 using System.Threading;
-using Microsoft.Omex.System.Context;
 using Microsoft.Omex.System.Diagnostics;
 using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.TimedScopes.ReplayEventLogging;
@@ -28,20 +27,23 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="scopeLogger">Scope metrics logger</param>
 		/// <param name="replayEventConfigurator">Replay event configurator</param>
 		/// <param name="machineInformation">Machine Information</param>
+		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <param name="correlationData">Correlation data</param>
-		private TimedScope(TimedScopeDefinition scopeDefinition, CorrelationData correlationData, ITimedScopeLogger scopeLogger, 
-			IReplayEventConfigurator replayEventConfigurator, IMachineInformation machineInformation)
+		private TimedScope(TimedScopeDefinition scopeDefinition, CorrelationData correlationData, ITimedScopeLogger scopeLogger, IReplayEventConfigurator replayEventConfigurator,
+			IMachineInformation machineInformation, ITimedScopeStackManager timedScopeStackManager)
 		{
 
 			Code.ExpectsArgument(scopeDefinition, nameof(scopeDefinition), TaggingUtilities.ReserveTag(0x238174da /* tag_96xt0 */));
 			Code.ExpectsArgument(scopeLogger, nameof(scopeLogger), TaggingUtilities.ReserveTag(0x238174db /* tag_96xt1 */));
 			Code.ExpectsArgument(replayEventConfigurator, nameof(replayEventConfigurator), TaggingUtilities.ReserveTag(0x238174dc /* tag_96xt2 */));
+			Code.ExpectsArgument(timedScopeStackManager, nameof(timedScopeStackManager), TaggingUtilities.ReserveTag(0));
 
 			ScopeDefinition = scopeDefinition;
 			ScopeLogger = scopeLogger;
 			ReplayEventConfigurator = replayEventConfigurator;
 			CorrelationData = correlationData;
 			MachineInformation = machineInformation;
+			TimedScopeStackManager = timedScopeStackManager;
 		}
 
 
@@ -52,13 +54,15 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="initialResult">The default result for the scope</param>
 		/// <param name="customLogger">Use a custom logger for the timed scope</param>
 		/// <param name="replayEventConfigurator">Replay event configurator</param>
+		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <param name="correlationData">Correlation data</param>
 		/// <param name="machineInformation">Machine Information</param>
 		/// <returns>Newly created scope</returns>
 		public static TimedScope Create(TimedScopeDefinition scopeDefinition, CorrelationData correlationData, IMachineInformation machineInformation,
-			TimedScopeResult initialResult = default(TimedScopeResult), ITimedScopeLogger customLogger = null, IReplayEventConfigurator replayEventConfigurator = null)
+			ITimedScopeLogger customLogger, IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, 
+			TimedScopeResult initialResult = default(TimedScopeResult))
 		{
-			return new TimedScope(scopeDefinition, correlationData, customLogger, replayEventConfigurator, machineInformation)
+			return new TimedScope(scopeDefinition, correlationData, customLogger, replayEventConfigurator, machineInformation, timedScopeStackManager)
 			{
 				TimedScopeData = correlationData,
 				RunningTransaction = TransactionMonitor.RunningTransaction(correlationData),
@@ -77,10 +81,11 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="initialResult">The default result for the scope</param>
 		/// <param name="customLogger">Use a custom logger for the timed scope</param>
 		/// <param name="replayEventConfigurator">Replay event configurator</param>
+		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <returns>Newly created scope</returns>
-		public static TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, TimedScopeResult initialResult = default(TimedScopeResult),
-			ITimedScopeLogger customLogger = null, IReplayEventConfigurator replayEventConfigurator = null)
-				=> new TimedScopeDefinition(scopeName).Start(correlationData, machineInformation, initialResult, customLogger, replayEventConfigurator);
+		public static TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, ITimedScopeLogger customLogger, 
+			IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, TimedScopeResult initialResult = default(TimedScopeResult))
+				=> new TimedScopeDefinition(scopeName).Start(correlationData, machineInformation, customLogger, replayEventConfigurator, timedScopeStackManager, initialResult);
 
 
 		/// <summary>
@@ -90,10 +95,15 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="correlationData">Correlation data</param>
 		/// <param name="machineInformation">Machine Information</param>
 		/// <param name="scopeName">The name of the timed scope</param>
+		/// <param name="customLogger">Use a custom logger for the timed scope</param>
+		/// <param name="replayEventConfigurator">Replay event configurator</param>
+		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <param name="initialResult">The default result for the scope</param>
 		/// <returns>Newly created scope</returns>
-		public static TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, bool? initialResult)
-			=> new TimedScopeDefinition(scopeName).Start(correlationData, machineInformation, ConvertBoolResultToTimedScopeResult(initialResult));
+		public static TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, ITimedScopeLogger customLogger,
+			IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, bool? initialResult)
+			=> new TimedScopeDefinition(scopeName).Start(correlationData, machineInformation, customLogger, replayEventConfigurator,
+				timedScopeStackManager, ConvertBoolResultToTimedScopeResult(initialResult));
 
 
 		/// <summary>
@@ -107,10 +117,13 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="initialResult">The default result for the scope</param>
 		/// <param name="customLogger">Use a custom logger for the timed scope</param>
 		/// <param name="replayEventConfigurator">Replay event configurator</param>
+		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <returns>Newly created scope</returns>
 		public static TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, string description,
-			TimedScopeResult initialResult = default(TimedScopeResult), ITimedScopeLogger customLogger = null, IReplayEventConfigurator replayEventConfigurator = null)
-				=> new TimedScopeDefinition(scopeName, description).Start(correlationData, machineInformation, initialResult, customLogger, replayEventConfigurator);
+			ITimedScopeLogger customLogger, IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager,
+			TimedScopeResult initialResult = default(TimedScopeResult))
+				=> new TimedScopeDefinition(scopeName, description).Start(correlationData, machineInformation, customLogger, replayEventConfigurator,
+					timedScopeStackManager, initialResult);
 
 
 		/// <summary>
@@ -121,10 +134,33 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="machineInformation">Machine Information</param>
 		/// <param name="scopeName">The name of the timed scope</param>
 		/// <param name="description">The description of the timed scope</param>
+		/// <param name="customLogger">Use a custom logger for the timed scope</param>
+		/// <param name="replayEventConfigurator">Replay event configurator</param>
+		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <param name="initialResult">The default result for the scope</param>
 		/// <returns>Newly created scope</returns>
-		public static TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, string description, bool? initialResult)
-			=> new TimedScopeDefinition(scopeName, description).Start(correlationData, machineInformation, ConvertBoolResultToTimedScopeResult(initialResult));
+		public static TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, string description,
+			ITimedScopeLogger customLogger, IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, bool? initialResult)
+			=> new TimedScopeDefinition(scopeName, description).Start(correlationData, machineInformation, customLogger, replayEventConfigurator,
+					timedScopeStackManager, ConvertBoolResultToTimedScopeResult(initialResult));
+
+
+		/// <summary>
+		/// Deprecated - Create a timed scope
+		/// </summary>
+		/// <remarks>Please use TimedScopeDefinition for creating timed scopes</remarks>
+		/// <param name="correlationData">Correlation data</param>
+		/// <param name="machineInformation">Machine Information</param>
+		/// <param name="scopeName">The name of the timed scope</param>
+		/// <param name="initialResult">The default result for the scope</param>
+		/// <param name="customLogger">Use a custom logger for the timed scope</param>
+		/// <param name="replayEventConfigurator">Replay event configurator</param>
+		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
+		/// <returns>newly created scope</returns>
+		public static TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, ITimedScopeLogger customLogger, 
+			IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, bool? initialResult = null)
+			=> new TimedScopeDefinition(scopeName).Create(correlationData, machineInformation, customLogger, replayEventConfigurator, timedScopeStackManager, 
+				initialResult: initialResult, startScope: false);
 
 
 		/// <summary>
@@ -138,11 +174,13 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="initialResult">The default result for the scope</param>
 		/// <param name="customLogger">Use a custom logger for the timed scope</param>
 		/// <param name="replayEventConfigurator">Replay event configurator</param>
+		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <returns>newly created scope</returns>
 		public static TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, string description,
-			TimedScopeResult initialResult = default(TimedScopeResult), ITimedScopeLogger customLogger = null, IReplayEventConfigurator replayEventConfigurator = null)
-			=> new TimedScopeDefinition(scopeName, description).Create(correlationData, machineInformation, initialResult, startScope: false, customLogger: customLogger,
-				replayEventConfigurator: replayEventConfigurator);
+			ITimedScopeLogger customLogger, IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager,
+			TimedScopeResult initialResult = default(TimedScopeResult))
+			=> new TimedScopeDefinition(scopeName, description).Create(correlationData, machineInformation, customLogger, replayEventConfigurator, 
+				timedScopeStackManager, initialResult: initialResult, startScope: false);
 
 
 		/// <summary>
@@ -153,16 +191,15 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="machineInformation">Machine Information</param>
 		/// <param name="scopeName">The name of the timed scope</param>
 		/// <param name="description">The description of the timed scope</param>
+		/// <param name="customLogger">Use a custom logger for the timed scope</param>
+		/// <param name="replayEventConfigurator">Replay event configurator</param>
+		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <param name="initialResult">The default result for the scope</param>
 		/// <returns>Newly created scope</returns>
-		public static TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, string description, bool? initialResult)
-			=> new TimedScopeDefinition(scopeName, description).Create(correlationData, machineInformation, ConvertBoolResultToTimedScopeResult(initialResult), startScope: false);
-
-
-		/// <summary>
-		/// Gets the current active timed scope, or null if there are none active
-		/// </summary>
-		public static TimedScope Current => Scopes?.Peek();
+		public static TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, string description,
+			ITimedScopeLogger customLogger, IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, bool? initialResult)
+			=> new TimedScopeDefinition(scopeName, description).Create(correlationData, machineInformation, customLogger, replayEventConfigurator, 
+				timedScopeStackManager, initialResult: ConvertBoolResultToTimedScopeResult(initialResult), startScope: false);
 
 
 		/// <summary>
@@ -231,7 +268,7 @@ namespace Microsoft.Omex.System.TimedScopes
 				}
 			}
 
-			Parent = TimedScope.Current;
+			Parent = TimedScopeStackManager.Scopes?.Peek();
 			IsRoot = Parent == null && TimedScopeData.CallDepth == 0;
 			StartTick = Stopwatch.GetTimestamp();
 			IsScopeActive = true;
@@ -279,6 +316,12 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// Timed Scope Definition
 		/// </summary>
 		public IMachineInformation MachineInformation { get; }
+
+
+		/// <summary>
+		/// Timed Scope Stack Manager
+		/// </summary>
+		public ITimedScopeStackManager TimedScopeStackManager { get; }
 
 
 		/// <summary>
@@ -349,6 +392,9 @@ namespace Microsoft.Omex.System.TimedScopes
 		private IReplayEventConfigurator ReplayEventConfigurator { get; }
 
 
+		/// <summary>
+		/// Correlation Data
+		/// </summary>
 		public CorrelationData CorrelationData { get; }
 
 
@@ -738,84 +784,12 @@ namespace Microsoft.Omex.System.TimedScopes
 
 
 		/// <summary>
-		/// Retrieve or create a guid which identifies set of all active timedscopes for this flow
-		/// </summary>
-		private static Guid? AllScopesGuid
-		{
-			get
-			{
-				Context.ICallContext callContext = new ThreadCallContext().ExistingCallContext();
-
-				if (callContext != null)
-				{
-					Guid scopesId;
-					object scopesIdObject;
-					if (callContext.SharedData.TryGetValue(AllActiveScopesDataKey, out scopesIdObject))
-					{
-						scopesId = (Guid)scopesIdObject;
-					}
-					else
-					{
-						scopesId = Guid.NewGuid();
-						callContext.SharedData[AllActiveScopesDataKey] = scopesId;
-					}
-
-					return scopesId;
-				}
-
-				return null;
-			}
-		}
-
-
-		/// <summary>
-		/// Get a stack of active scopes, creating a new stack if one does not exist
-		/// </summary>
-		/// <returns>stack of scopes</returns>
-		private static TimedScopeStack Scopes
-		{
-			get
-			{
-				Context.ICallContext callContext = new ThreadCallContext().ExistingCallContext();
-
-				TimedScopeStack stack = null;
-				if (callContext != null)
-				{
-					object stackObject = null;
-					if (callContext.Data.TryGetValue(ActiveScopesDataKey, out stackObject))
-					{
-						stack = stackObject as TimedScopeStack;
-					}
-
-					if (stack == null)
-					{
-						stack = TimedScopeStack.Root;
-						callContext.Data[ActiveScopesDataKey] = stack;
-					}
-				}
-
-				return stack;
-			}
-
-			set
-			{
-				Context.ICallContext callContext = new ThreadCallContext().ExistingCallContext();
-
-				if (callContext != null)
-				{
-					callContext.Data[ActiveScopesDataKey] = value;
-				}
-			}
-		}
-
-
-		/// <summary>
 		/// Modify the set of active scopes
 		/// </summary>
 		/// <param name="addScope">should the scope be added or removed</param>
 		private void ModifyActiveScopes(bool addScope)
 		{
-			TimedScopeStack scopes = Scopes;
+			TimedScopeStack scopes = TimedScopeStackManager.Scopes;
 			if (scopes == null)
 			{
 				return;
@@ -846,7 +820,7 @@ namespace Microsoft.Omex.System.TimedScopes
 				}
 			}
 
-			Scopes = scopes;
+			TimedScopeStackManager.Scopes = scopes;
 		}
 
 
@@ -873,93 +847,6 @@ namespace Microsoft.Omex.System.TimedScopes
 
 
 		/// <summary>
-		/// LinkedStack
-		/// </summary>
-		[Serializable]
-		private class TimedScopeStack
-		{
-			/// <summary>
-			/// Root item for all stacks
-			/// </summary>
-			public static TimedScopeStack Root { get; } = new TimedScopeStack();
-
-
-			/// <summary>
-			/// Root node
-			/// </summary>
-			public bool IsRoot => ReferenceEquals(this, Parent);
-
-
-			/// <summary>
-			/// Adds a new item to the stack
-			/// </summary>
-			/// <param name="item">Data item to store</param>
-			/// <returns>Stack with the new item on it</returns>
-			public TimedScopeStack Push(TimedScope item) => new TimedScopeStack(item, this);
-
-
-			/// <summary>
-			/// Remove item from the stack and return the new stack
-			/// </summary>
-			/// <param name="scope">TimedScope stored at the top od the stack</param>
-			/// <returns>New stack with the top item removed</returns>
-			public TimedScopeStack Pop(out TimedScope scope)
-			{
-				scope = Item;
-				return Parent;
-			}
-
-
-			/// <summary>
-			/// Retrieve item from the top of the stack
-			/// </summary>
-			/// <returns></returns>
-			public TimedScope Peek() => Item;
-
-
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			/// <param name="item">Item stored in the stack</param>
-			/// <param name="parent">Parent of this stack</param>
-			private TimedScopeStack(TimedScope item, TimedScopeStack parent)
-			{
-				Code.ExpectsArgument(parent, nameof(parent), TaggingUtilities.ReserveTag(0x23817501 /* tag_96xub */));
-
-				Item = item;
-				Parent = parent;
-			}
-
-
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			private TimedScopeStack()
-			{
-				Parent = this;
-			}
-
-
-			/// <summary>
-			/// Parent of this node
-			/// </summary>
-			private TimedScopeStack Parent { get; }
-
-
-			/// <summary>
-			/// Data item stored in this node
-			/// </summary>
-			private TimedScope Item { get; }
-		}
-
-
-		/// <summary>
-		/// Data key used to store the active time scopes on the call context
-		/// </summary>
-		private const string ActiveScopesDataKey = "TimedScope.ActiveScopes";
-
-
-		/// <summary>
 		/// Data key used to store set of all active time scopes on the call context
 		/// </summary>
 		private const string AllActiveScopesDataKey = "TimedScope.AllActiveScopes";
@@ -975,6 +862,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			/// </summary>
 			UnknownResultAsSystemError,
 		}
+
 
 		/// <summary>
 		/// Running transaction Id, or Transactions.None
