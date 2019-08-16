@@ -44,41 +44,39 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// Get a stack of active scopes, creating a new stack if one does not exist
 		/// </summary>
 		/// <returns>stack of scopes</returns>
-		public TimedScopeStack GetTimedScopeStack()
+		public TimedScopeStack Scopes
 		{
-			ICallContext callContext = CallContextManager.CallContextHandler(MachineInformation);
-
-			TimedScopeStack stack = null;
-			if (callContext != null)
+			get
 			{
-				object stackObject = null;
-				if (callContext.Data.TryGetValue(ActiveScopesDataKey, out stackObject))
+				ICallContext callContext = CallContextManager.CallContextHandler(MachineInformation);
+
+				TimedScopeStack stack = null;
+				if (callContext != null)
 				{
-					stack = stackObject as TimedScopeStack;
+					object stackObject = null;
+					if (callContext.Data.TryGetValue(ActiveScopesDataKey, out stackObject))
+					{
+						stack = stackObject as TimedScopeStack;
+					}
+
+					if (stack == null)
+					{
+						stack = TimedScopeStack.Root;
+						callContext.Data[ActiveScopesDataKey] = stack;
+					}
 				}
 
-				if (stack == null)
-				{
-					stack = TimedScopeStack.Root;
-					callContext.Data[ActiveScopesDataKey] = stack;
-				}
+				return stack;
 			}
 
-			return stack;
-		}
-
-
-		/// <summary>
-		/// Set stack of active scopes
-		/// </summary>
-		/// <param name="timedScopeStack">Timed scope stack</param>
-		public void SetTimedScopeStack(TimedScopeStack timedScopeStack)
-		{
-			ICallContext callContext = CallContextManager.CallContextHandler(MachineInformation);
-
-			if (callContext != null)
+			set
 			{
-				callContext.Data[ActiveScopesDataKey] = timedScopeStack;
+				ICallContext callContext = CallContextManager.CallContextHandler(MachineInformation);
+
+				if (callContext != null)
+				{
+					callContext.Data[ActiveScopesDataKey] = value;
+				}
 			}
 		}
 

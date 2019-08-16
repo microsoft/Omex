@@ -74,10 +74,9 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="replayEventConfigurator">Optional replay event configurator</param>
 		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <returns>A timed scope</returns>
-		public TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, TimedScopeResult initialResult = default(TimedScopeResult), 
-			ITimedScopeLogger customLogger = null, IReplayEventConfigurator replayEventConfigurator = null, ITimedScopeStackManager timedScopeStackManager = null)
-			=> Create(correlationData, machineInformation, initialResult: initialResult, startScope: true, customLogger: customLogger, 
-				replayEventConfigurator: replayEventConfigurator, timedScopeStackManager: timedScopeStackManager);
+		public TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, ITimedScopeLogger customLogger, 
+			IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, TimedScopeResult initialResult = default(TimedScopeResult))
+			=> Create(correlationData, machineInformation, customLogger, replayEventConfigurator, timedScopeStackManager, initialResult: initialResult, startScope: true);
 
 
 		/// <summary>
@@ -91,10 +90,10 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="replayEventConfigurator">Optional replay event configurator</param>
 		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <returns>A timed scope</returns>
-		public TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, TimedScopeResult initialResult = default(TimedScopeResult),
-			bool startScope = true, ITimedScopeLogger customLogger = null, IReplayEventConfigurator replayEventConfigurator = null, ITimedScopeStackManager timedScopeStackManager = null)
+		public TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, ITimedScopeLogger customLogger,  IReplayEventConfigurator replayEventConfigurator, 
+			ITimedScopeStackManager timedScopeStackManager, TimedScopeResult initialResult = default(TimedScopeResult), bool startScope = true)
 		{
-			TimedScope scope = TimedScope.Create(this, correlationData, machineInformation, initialResult, customLogger, replayEventConfigurator, timedScopeStackManager);
+			TimedScope scope = TimedScope.Create(this, correlationData, machineInformation, customLogger, replayEventConfigurator, timedScopeStackManager, initialResult);
 
 			if (startScope)
 			{
@@ -117,9 +116,9 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="replayEventConfigurator">Optional replay event configurator</param>
 		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <returns>A timed scope</returns>
-		public TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, bool? initialResult, bool startScope = true,
-			ITimedScopeLogger customLogger = null, IReplayEventConfigurator replayEventConfigurator = null, ITimedScopeStackManager timedScopeStackManager = null)
-			=> Create(correlationData, machineInformation, TimedScope.ConvertBoolResultToTimedScopeResult(initialResult), startScope, customLogger,
-				replayEventConfigurator, timedScopeStackManager);
+		public TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, ITimedScopeLogger customLogger, 
+			IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, bool? initialResult, bool startScope = true)
+			=> Create(correlationData, machineInformation, customLogger, replayEventConfigurator, timedScopeStackManager,
+				TimedScope.ConvertBoolResultToTimedScopeResult(initialResult), startScope);
 	}
 }

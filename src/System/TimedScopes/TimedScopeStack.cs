@@ -8,7 +8,7 @@ using Microsoft.Omex.System.Validation;
 namespace Microsoft.Omex.System.TimedScopes
 {
 	/// <summary>
-	/// LinkedStack
+	/// Linked stack of active timed scopes
 	/// </summary>
 	[Serializable]
 	public class TimedScopeStack
@@ -20,7 +20,7 @@ namespace Microsoft.Omex.System.TimedScopes
 
 
 		/// <summary>
-		/// Root node
+		/// Checks if node is root
 		/// </summary>
 		public bool IsRoot => ReferenceEquals(this, Parent);
 

@@ -38,7 +38,7 @@ namespace Microsoft.Omex.System.UnitTests.Shared.TimedScopes
 		{
 			CorrelationData data = new CorrelationData();
 
-			return UnitTestTimedScopes.DefaultScope.Create(data, machineInformation, initialResult, startScope, scopeLogger, replayEventConfigurator, timedScopeStackManager);
+			return UnitTestTimedScopes.DefaultScope.Create(data, machineInformation, scopeLogger, replayEventConfigurator, timedScopeStackManager, initialResult, startScope);
 		}
 
 
@@ -63,7 +63,7 @@ namespace Microsoft.Omex.System.UnitTests.Shared.TimedScopes
 
 			CorrelationData data = new CorrelationData();
 
-			return UnitTestTimedScopes.TestCounters.UnitTest.Create(data, machineInformation, initialResult, startScope, scopeLogger, replayEventConfigurator, timedScopeStackManager);
+			return UnitTestTimedScopes.TestCounters.UnitTest.Create(data, machineInformation, scopeLogger, replayEventConfigurator, timedScopeStackManager, initialResult, startScope);
 		}
 	}
 }

@@ -38,8 +38,8 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			CorrelationData data = new CorrelationData();
 
 			using (scope = new TimedScopeDefinition("TestScope")
-				.Create(data, machineInformation, TimedScopeResult.SystemError, customLogger: timedScopeLoggerMock.Object,
-				replayEventConfigurator: replyEventConfiguratorMock.Object, timedScopeStackManager: timedScopeStackManager))
+				.Create(data, machineInformation, customLogger: timedScopeLoggerMock.Object, replayEventConfigurator: replyEventConfiguratorMock.Object,
+				timedScopeStackManager: timedScopeStackManager, initialResult: TimedScopeResult.SystemError))
 			{
 				timedScopeLoggerMock.Verify(x => x.LogScopeStart(scope), Times.Once);
 				timedScopeLoggerMock.Verify(x => x.LogScopeEnd(scope, It.IsAny<CorrelationData>()), Times.Never);
@@ -403,8 +403,8 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			IMachineInformation machineInformation = new UnitTestMachineInformation();
 			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
 
-			using (TimedScope.Create(data, machineInformation, TestHooks.DefaultTimedScopeName, "description", default(TimedScopeResult),
-				unitTestTimedScopeLogger, replyEventConfiguratorMock.Object, timedScopeStackManager))
+			using (TimedScope.Create(data, machineInformation, TestHooks.DefaultTimedScopeName, "description", unitTestTimedScopeLogger, 
+				replyEventConfiguratorMock.Object, timedScopeStackManager, default(TimedScopeResult)))
 			{
 			}
 

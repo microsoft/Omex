@@ -9,16 +9,9 @@ namespace Microsoft.Omex.System.TimedScopes
 	public interface ITimedScopeStackManager
 	{
 		/// <summary>
-		/// Get a stack of active scopes, creating a new stack if one does not exist
+		/// Get a stack of active scopes, create a new stack if one does not exist
 		/// </summary>
 		/// <returns>stack of scopes</returns>
-		TimedScopeStack GetTimedScopeStack();
-
-
-		/// <summary>
-		/// Set stack of active scopes
-		/// </summary>
-		/// <param name="timedScopeStack">Timed scope stack</param>
-		void SetTimedScopeStack(TimedScopeStack timedScopeStack);
+		TimedScopeStack Scopes {get; set;}
 	}
 }

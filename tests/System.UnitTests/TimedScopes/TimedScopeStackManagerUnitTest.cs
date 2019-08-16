@@ -60,7 +60,7 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 
 			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManager.Object, machineInformation);
 
-			Assert.NotNull(timedScopeStackManager.GetTimedScopeStack());
+			Assert.NotNull(timedScopeStackManager.Scopes);
 
 			callContextManager.Verify(x => x.CallContextHandler(machineInformation), Times.Once);
 			callContext.Verify(x => x.Data, Times.AtLeastOnce);
@@ -78,9 +78,31 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 
 			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManager.Object, machineInformation);
 
-			Assert.Null(timedScopeStackManager.GetTimedScopeStack());
+			Assert.Null(timedScopeStackManager.Scopes);
 
 			callContextManager.Verify(x => x.CallContextHandler(machineInformation), Times.Once);
+		}
+
+
+		[Fact]
+		public void SetTimedScopeStack_ShouldReturnValue()
+		{
+			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			Mock<ICallContextManager> callContextManager = new Mock<ICallContextManager>();
+			Mock<ICallContext> callContext = new Mock<ICallContext>();
+
+			callContext.Setup(mock => mock.Data).Returns(new ConcurrentDictionary<string, object>(StringComparer.Ordinal));
+			callContextManager.SetupGet(mock => mock.CallContextOverride).Returns(callContext.Object);
+			callContextManager.Setup(mock => mock.CallContextHandler(It.IsAny<IMachineInformation>())).Returns(callContext.Object);
+
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManager.Object, machineInformation);
+
+			timedScopeStackManager.Scopes = TimedScopeStack.Root;
+
+			callContextManager.Verify(x => x.CallContextHandler(machineInformation), Times.Once);
+
+			Assert.NotNull(timedScopeStackManager.Scopes);
+
 		}
 	}
 }
