@@ -56,12 +56,14 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			Correlation = new Correlation(new MemoryCorrelationHandler(), CallContextManagerInstance, MachineInformation);
 			Correlation.CorrelationStart(new CorrelationData());
 
+			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(CallContextManagerInstance, machineInformation);
 			CorrelationData currentCorrelation = Correlation.CurrentCorrelation;
 
 			Assert.False(currentCorrelation.ShouldReplayUls);
 
-			using (TimedScope scope = TimedScope.Start(currentCorrelation, MachineInformation, "TestScope",
-				customLogger: timedScopeLoggerMock.Object, replayEventConfigurator: replyEventConfiguratorMock.Object))
+			using (TimedScope scope = TimedScope.Start(currentCorrelation, MachineInformation, "TestScope", customLogger: timedScopeLoggerMock.Object,
+				replayEventConfigurator: replyEventConfiguratorMock.Object, timedScopeStackManager: timedScopeStackManager))
 			{
 				scope.Result = TimedScopeResult.Success;
 
@@ -87,12 +89,14 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			Correlation = new Correlation(new MemoryCorrelationHandler(), CallContextManagerInstance, MachineInformation);
 			Correlation.CorrelationStart(new CorrelationData(mockCache.Object));
 
+			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(CallContextManagerInstance, machineInformation);
 			CorrelationData currentCorrelation = Correlation.CurrentCorrelation;
 
 			Assert.False(currentCorrelation.ShouldReplayUls, "Logs shouldn't be replayed");
 
-			using (TimedScope scope = TimedScope.Start(currentCorrelation, MachineInformation, "TestScope",
-				customLogger: timedScopeLoggerMock.Object, replayEventConfigurator: replyEventConfiguratorMock.Object))
+			using (TimedScope scope = TimedScope.Start(currentCorrelation, MachineInformation, "TestScope", customLogger: timedScopeLoggerMock.Object, 
+				replayEventConfigurator: replyEventConfiguratorMock.Object, timedScopeStackManager: timedScopeStackManager))
 			{
 				scope.Result = TimedScopeResult.SystemError;
 
@@ -116,12 +120,14 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			Correlation = new Correlation(new MemoryCorrelationHandler(), CallContextManagerInstance, MachineInformation);
 			Correlation.CorrelationStart(new CorrelationData());
 
+			IMachineInformation machineInformation = new UnitTestMachineInformation();
+			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(CallContextManagerInstance, machineInformation);
 			CorrelationData currentCorrelation = Correlation.CurrentCorrelation;
 
 			Assert.False(currentCorrelation.ShouldReplayUls, "Logs shouldn't be replayed");
 
-			using (TimedScope scope = TimedScope.Start(currentCorrelation, MachineInformation, "TestScope",
-				customLogger: timedScopeLoggerMock.Object, replayEventConfigurator: replyEventConfiguratorMock.Object))
+			using (TimedScope scope = TimedScope.Start(currentCorrelation, MachineInformation, "TestScope", customLogger: timedScopeLoggerMock.Object, 
+				replayEventConfigurator: replyEventConfiguratorMock.Object, timedScopeStackManager: timedScopeStackManager))
 			{
 				scope.Result = TimedScopeResult.SystemError;
 
