@@ -61,11 +61,17 @@ namespace Microsoft.Omex.Gating
 
 
 		/// <summary>
+		/// Audience Group of client
+		/// </summary>
+		public string AudienceGroup { get; set; }
+
+
+		/// <summary>
 		/// Add version range to range set
 		/// </summary>
 		public bool AddVersionRange(ProductVersionRange range)
 		{
-			if (!Code.ValidateArgument(range, nameof(range), TaggingUtilities.ReserveTag(0x238505e3 /* tag_97qx9 */)))
+			if (!Code.ValidateArgument(range, nameof(range), TaggingUtilities.ReserveTag(0x23821042 /* tag_967bc */)))
 			{
 				return false;
 			}
@@ -85,7 +91,7 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		public bool AddOverride(RequiredApplication app)
 		{
-			if (!Code.ValidateArgument(app, nameof(app), TaggingUtilities.ReserveTag(0x23850600 /* tag_97qya */)))
+			if (!Code.ValidateArgument(app, nameof(app), TaggingUtilities.ReserveTag(0x23821043 /* tag_967bd */)))
 			{
 				return false;
 			}

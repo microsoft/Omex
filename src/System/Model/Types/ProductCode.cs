@@ -1,13 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using Directives
-
 using System;
 using System.Runtime.Serialization;
 using Microsoft.Omex.System.Logging;
-
-#endregion
 
 namespace Microsoft.Omex.System.Model.Types
 {
@@ -148,7 +144,7 @@ namespace Microsoft.Omex.System.Model.Types
 		{
 			if (code == null)
 			{
-				ULSLogging.LogTraceTag(0x23850284 /* tag_97qke */, Categories.Common, Levels.Verbose, "Cannot convert null product code to string.");
+				ULSLogging.LogTraceTag(0x23820885 /* tag_9668f */, Categories.Common, Levels.Verbose, "Cannot convert null product code to string.");
 				return null;
 			}
 

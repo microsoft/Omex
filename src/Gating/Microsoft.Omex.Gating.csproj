@@ -1,13 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(TargetFrameworks);net45;$(NetStandardVersion)</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks);$(NetStandardVersion)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersion)</TargetFrameworks>
     <Description>Contains Omex Gating code</Description>
     <RootNamespace>Microsoft.Omex.Gating</RootNamespace>
     <AssemblyName>Microsoft.Omex.Gating</AssemblyName>
   </PropertyGroup>
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.Gating</Title>
+    <DevelopmentDependency>True</DevelopmentDependency>
+    <Authors>Microsoft</Authors>
+    <Summary>Microsoft Omex Gating Library</Summary>
+    <Description>This library provides a gating mechanism that can be used to switch application features or code paths on/off depending on user request details</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/Gating</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <PackageTags>Microsoft;Omex;Gating</PackageTags>
+  </PropertyGroup>
   <ItemGroup>
-    <Content Include="Readme.txt" PackagePath="%(Identity)" />
     <EmbeddedResource Include="Authentication\Groups\TestGroupsConfiguration.xsd">
       <Link>TestGroupsConfiguration.xsd</Link>
       <LogicalName>TestGroupsConfiguration.xsd</LogicalName>

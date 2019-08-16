@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(NetFrameworkVersion);$(NetStandardVersion)</TargetFrameworks>
+    <Description>Contains common classes for Omex libraries in AspNetCore.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.ServiceModel" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="$(MicrosoftAspNetCoreHttpVersionCore)" />
+    <PackageReference Include="System.Threading.Tasks" Version="$(SystemThreadingTasks)"/>
+    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersionCore)" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="$(SystemServiceModelPrimitivesVersionCore)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\System\Microsoft.Omex.System.csproj" />
+  </ItemGroup>
+</Project>

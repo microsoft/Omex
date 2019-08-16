@@ -155,7 +155,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 		public void IsGateApplicable_GateWithNoBlockedQueryParameterConstraints_ReturnsApplicable()
 		{
 			UnitTestGatedRequest request = new UnitTestGatedRequest();
-			request.QueryParameters = new Dictionary<string, HashSet<string>>() {{ "name1", new HashSet<string>(){"value1"} }, { "name2", new HashSet<string>() { "value2" } }};
+			request.QueryParameters = new Dictionary<string, HashSet<string>>() { { "name1", new HashSet<string>() { "value1" } }, { "name2", new HashSet<string>() { "value2" } } };
 
 			GateContext context = new GateContext(request, new UnitTestMachineInformation(), new DefaultExperimentContext());
 
@@ -396,7 +396,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"MyProduct.Test.LiveIdUser",
 			};
 
-			IGatedRequest gateRequest = SetupGatedRequest("ClientOne", "16.3.0.0", "en-us", null, 0, requestedGates);
+			IGatedRequest gateRequest = SetupGatedRequest("ClientOne", "16.3.0.0", "en-us", null, 0, null, requestedGates);
 			GateContext context = new GateContext(gateRequest, new UnitTestMachineInformation(), new DefaultExperimentContext());
 
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.NoUsers")), "Gate disabled for all users should not be applicable");
@@ -420,7 +420,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"MyProduct.Test.OrgIdUser"
 			};
 
-			IGatedRequest gateRequest = SetupGatedRequest("ClientOne", "16.3.0.0", "en-us", null, 0, requestedGates, blockedGates);
+			IGatedRequest gateRequest = SetupGatedRequest("ClientOne", "16.3.0.0", "en-us", null, 0, null, requestedGates, blockedGates);
 			GateContext context = new GateContext(gateRequest, new UnitTestMachineInformation(), new DefaultExperimentContext());
 
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.OrgIdUser")), "Gate enabled for OrgId users should not be applicable");
@@ -578,6 +578,65 @@ namespace Microsoft.Omex.Gating.UnitTests
 		}
 
 
+		[Fact]
+		public void IsGateApplicable_GateWithClientAudienceGroup_ReturnsApplicable()
+		{
+			HashSet<string> audienceGroups = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+			{
+				"ClientLoop"
+			};
+
+			IGatedRequest gateRequest = SetupGatedRequest("ClientOne", "16.0.0.0", "en-us", null, 0, audienceGroups);
+			GateContext context = new GateContext(gateRequest, new UnitTestMachineInformation(), new DefaultExperimentContext());
+
+			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.NoEnvironment")), "Gate should not be applicable");
+			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.LoopUser")), "Gate should be applicable for audience group.");
+		}
+
+
+		[Fact]
+		public void IsGateApplicable_GateWithAppAudienceGroup_ReturnsApplicable()
+		{
+			HashSet<string> audienceGroups = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+			{
+				"AppLoop"
+			};
+
+			IGatedRequest gateRequest = SetupGatedRequest("ClientOne", "16.0.0.0", "en-us", null, 8, audienceGroups);
+			GateContext context = new GateContext(gateRequest, new UnitTestMachineInformation(), new DefaultExperimentContext());
+
+			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.NoEnvironment")), "Gate should not be applicable");
+			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.LoopUser")), "Gate should be applicable for audience group.");
+		}
+
+
+		[Fact]
+		public void IsGateApplicable_GateWithAppAudienceGroup_ReturnsNotApplicable()
+		{
+			HashSet<string> audienceGroups = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+			{
+				"AppLoop"
+			};
+
+			IGatedRequest gateRequest = SetupGatedRequest("ClientOne", "16.0.0.0", "en-us", null, 0, audienceGroups);
+			GateContext context = new GateContext(gateRequest, new UnitTestMachineInformation(), new DefaultExperimentContext());
+
+			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.NoEnvironment")), "Gate should not be applicable");
+			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.LoopUser")), "Gate should not be applicable for audience group.");
+		}
+
+
+		[Fact]
+		public void RequestWithCloudContext_Specified()
+		{
+			IGatedRequest gatedRequest = SetupGatedRequest("ClientOne", "16.3.0.0", "en-us", "PreProduction", 8, cloudContext: new HashSet<string> { "Public" });
+			GateContext context = new GateContext(gatedRequest, new UnitTestMachineInformation(), new DefaultExperimentContext());
+
+			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.CloudContextPublic")), "Gate with cloud context restrictions should be applicable");
+			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.CloudContextSovereign")), "Gate with different cloud context restrictions should not be applicable");
+			Assert.True(context.IsGateApplicable(m_dataset.GetGate("DogfoodApps")), "Gate without a cloud context should be applicable");
+		}
+
 		#region Load Gate Xml
 		/// <summary>
 		/// Loads GateDataSet with required contents
@@ -685,6 +744,13 @@ namespace Microsoft.Omex.Gating.UnitTests
 				<ClientVersions>
 					<ClientVersion Name=""ClientOne"" MinVersion=""16.1.0.0"" MaxVersion=""16.3.1.2"">
 						<ApplicationOverride AppCode=""8"" MinVersion=""16.2.0.0"" MaxVersion=""16.3.3.3""/>
+					</ClientVersion>
+				</ClientVersions>
+			</Gate>
+			<Gate Name=""MyProduct.Test.LoopUser"">
+				<ClientVersions>
+					<ClientVersion Name=""ClientOne"" AudienceGroup=""ClientLoop"">
+						<ApplicationOverride AppCode=""8"" AudienceGroup=""AppLoop""/>
 					</ClientVersion>
 				</ClientVersions>
 			</Gate>
@@ -864,6 +930,16 @@ namespace Microsoft.Omex.Gating.UnitTests
 				<Services>
 				</Services>
 			</Gate>
+			<Gate Name=""MyProduct.Test.CloudContextPublic"">
+				<CloudContexts>
+					<CloudContext Name=""Public"" />
+				</CloudContexts>
+			</Gate>
+			<Gate Name=""MyProduct.Test.CloudContextSovereign"">
+				<CloudContexts>
+					<CloudContext Name=""Sovereign"" />
+				</CloudContexts>
+			</Gate>
 		</Gates>";
 
 
@@ -882,11 +958,12 @@ namespace Microsoft.Omex.Gating.UnitTests
 		/// <param name="market">The market.</param>
 		/// <param name="environment">The environment.</param>
 		/// <param name="app">AppCode.</param>
+		/// <param name="audienceGroup">Audience Group.</param>
 		/// <param name="requestedGates">The requested gates.</param>
 		/// <param name="blockedGates">The blocked gates.</param>
 		/// <returns>Gated Request</returns>
 		private static IGatedRequest SetupGatedRequest(string product, string productVersion, string market, string environment,
-			int app, HashSet<string> requestedGates = null, HashSet<string> blockedGates = null)
+			int app, HashSet<string> audienceGroups = null, HashSet<string> requestedGates = null, HashSet<string> blockedGates = null, HashSet<string> cloudContext = null)
 		{
 			IGatedRequest gatedRequest = new UnitTestGatedRequest()
 			{
@@ -895,13 +972,15 @@ namespace Microsoft.Omex.Gating.UnitTests
 					Name = product,
 					ProductCode = new ProductCode(product),
 					Version = ProductVersion.Parse(productVersion),
-					AppCode = app.ToString()
+					AppCode = app.ToString(),
+					AudienceGroups = audienceGroups
 				},
 				Environment = environment,
 				Market = market,
 				Users = null,
 				RequestedGateIds = requestedGates,
-				BlockedGateIds = blockedGates
+				BlockedGateIds = blockedGates,
+				CloudContexts = cloudContext
 			};
 
 			return gatedRequest;

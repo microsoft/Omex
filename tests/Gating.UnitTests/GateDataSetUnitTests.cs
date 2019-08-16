@@ -588,6 +588,23 @@ namespace Microsoft.Omex.Gating.UnitTests
 
 
 		[Fact]
+		public void Load_GateSimpleAudienceGroup_ShouldLoadCorrectly()
+		{
+			GateDataSet dataSet = LoadGateDataSet(ValidSimpleWithAudienceGroup);
+
+			IGate gate = dataSet.GetGate("MyProduct.Test");
+
+			Assert.NotNull(gate);
+			Assert.NotNull(gate.ClientVersions);
+
+			RequiredClient client = gate.ClientVersions.Values.Single();
+			Assert.NotNull(client);
+			Assert.Equal(client.Name, "ClientOne");
+			Assert.Equal(client.AudienceGroup, "ClientLoop");
+		}
+
+
+		[Fact]
 		public void Load_GateSimpleAppOverride_ShouldLoadCorrectly()
 		{
 			GateDataSet dataSet = LoadGateDataSet(ValidSimpleWithApplicationOverride);
@@ -607,6 +624,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(app.Name, "8");
 			Assert.Equal(app.MinVersion, ProductVersion.Parse("16.8"));
 			Assert.Equal(app.MaxVersion, ProductVersion.Parse("16.9"));
+			Assert.Equal(app.AudienceGroup, "AppLoop");
 		}
 
 
@@ -666,6 +684,36 @@ namespace Microsoft.Omex.Gating.UnitTests
 
 			Assert.True(gate.Services.TryGetValue("ServiceSeven", out serviceFlags));
 			Assert.Equal(serviceFlags.ToString(), GatedServiceTypes.None.ToString());
+		}
+
+
+		[Fact]
+		public void Load_GateOneCloudContext_ShouldLoadCorrectly()
+		{
+			GateDataSet dataSet = LoadGateDataSet(OneCloudContext);
+
+			IGate gate = dataSet.GetGate("MyProduct.Test");
+
+			Assert.NotNull(gate);
+			Assert.NotNull(gate.CloudContexts);
+			Assert.Equal(gate.CloudContexts.Count(), 1);
+			Assert.Equal(gate.CloudContexts.Single(), "Public");
+		}
+
+
+		[Fact]
+		public void Load_GateThreeCloudContexts_ShouldLoadCorrectly()
+		{
+			GateDataSet dataSet = LoadGateDataSet(ThreeCloudContext);
+
+			IGate gate = dataSet.GetGate("MyProduct.Test");
+
+			Assert.NotNull(gate);
+			Assert.NotNull(gate.CloudContexts);
+			Assert.Equal(gate.CloudContexts.Count(), 3);
+			Assert.True(gate.CloudContexts.Contains("Public"));
+			Assert.True(gate.CloudContexts.Contains("Sovereign"));
+			Assert.True(gate.CloudContexts.Contains("Local"));
 		}
 
 
@@ -1748,6 +1796,20 @@ namespace Microsoft.Omex.Gating.UnitTests
 
 
 		/// <summary>
+		/// Gating file with audience group
+		/// </summary>
+		private const string ValidSimpleWithAudienceGroup =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Gates>
+	<Gate Name=""MyProduct.Test"">
+		<ClientVersions>
+			<ClientVersion Name=""ClientOne"" MinVersion=""16.1"" MaxVersion=""16.2"" AudienceGroup=""ClientLoop""/>
+		</ClientVersions>
+	</Gate>
+</Gates>";
+
+
+		/// <summary>
 		/// Gating file with application override
 		/// </summary>
 		private const string ValidSimpleWithApplicationOverride =
@@ -1755,10 +1817,40 @@ namespace Microsoft.Omex.Gating.UnitTests
 <Gates>
 	<Gate Name=""MyProduct.Test"">
 		<ClientVersions>
-			<ClientVersion Name=""ClientOne"" MinVersion=""16.1"" MaxVersion=""16.2"">
-				<ApplicationOverride AppCode=""8"" MinVersion=""16.8"" MaxVersion=""16.9""/>
+			<ClientVersion Name=""ClientOne"" MinVersion=""16.1"" MaxVersion=""16.2"" AudienceGroup=""ClientLoop"">
+				<ApplicationOverride AppCode=""8"" MinVersion=""16.8"" MaxVersion=""16.9"" AudienceGroup=""AppLoop""/>
 			</ClientVersion>
 		</ClientVersions>
+	</Gate>
+</Gates>";
+
+
+		/// <summary>
+		/// Gating file with a sigle cloud context
+		/// </summary>
+		private const string OneCloudContext =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Gates>
+	<Gate Name=""MyProduct.Test"">
+		<CloudContexts>
+			<CloudContext Name=""Public"" />
+		</CloudContexts>
+	</Gate>
+</Gates>";
+
+
+		/// <summary>
+		/// Gating file with multiple cloud context
+		/// </summary>
+		private const string ThreeCloudContext =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Gates>
+	<Gate Name=""MyProduct.Test"">
+		<CloudContexts>
+			<CloudContext Name=""Public"" />
+			<CloudContext Name=""Sovereign"" />
+			<CloudContext Name=""Local"" />
+		</CloudContexts>
 	</Gate>
 </Gates>";
 	}

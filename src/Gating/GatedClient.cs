@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.Model.Types;
@@ -38,6 +39,11 @@ namespace Microsoft.Omex.Gating
 
 
 		/// <summary>
+		/// Audience Group of the client
+		/// </summary>
+		public HashSet<string> AudienceGroups { get; set; }
+
+		/// <summary>
 		/// Merge two gated clients
 		/// </summary>
 		/// <param name="client1">first client</param>
@@ -61,7 +67,7 @@ namespace Microsoft.Omex.Gating
 
 			if (!string.Equals(client1.Name, client2.Name, StringComparison.OrdinalIgnoreCase))
 			{
-				ULSLogging.LogTraceTag(0x238502a1 /* tag_97qk7 */, Categories.GateSelection, Levels.Error,
+				ULSLogging.LogTraceTag(0x23821047 /* tag_967bh */, Categories.GateSelection, Levels.Error,
 					"The name of the clients must be the same. Client1 '{0}', Client2 '{1}'.",
 					client1.Name, client2.Name);
 				return null;
@@ -77,24 +83,28 @@ namespace Microsoft.Omex.Gating
 				mergedClient.Version = client2.Version;
 				mergedClient.ProductCode = client2.ProductCode ?? client1.ProductCode;
 				mergedClient.AppCode = client2.AppCode;
+				mergedClient.AudienceGroups = client2.AudienceGroups;
 			}
 			else if (client2.Version == null)
 			{
 				mergedClient.Version = client1.Version;
 				mergedClient.ProductCode = client1.ProductCode ?? client2.ProductCode;
 				mergedClient.AppCode = client1.AppCode;
+				mergedClient.AudienceGroups = client1.AudienceGroups;
 			}
 			else if (client1.Version > client2.Version)
 			{
 				mergedClient.Version = client1.Version;
 				mergedClient.ProductCode = client1.ProductCode ?? client2.ProductCode;
 				mergedClient.AppCode = client1.AppCode;
+				mergedClient.AudienceGroups = client1.AudienceGroups;
 			}
 			else
 			{
 				mergedClient.Version = client2.Version;
 				mergedClient.ProductCode = client2.ProductCode ?? client1.ProductCode;
 				mergedClient.AppCode = client2.AppCode;
+				mergedClient.AudienceGroups = client2.AudienceGroups;
 			}
 
 			return mergedClient;

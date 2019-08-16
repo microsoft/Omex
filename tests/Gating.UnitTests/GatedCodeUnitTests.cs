@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using Directives
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +10,6 @@ using Microsoft.Omex.System.Data;
 using Microsoft.Omex.System.UnitTests.Shared;
 using Microsoft.Omex.System.UnitTests.Shared.Configuration;
 using Xunit;
-
-#endregion
 
 namespace Microsoft.Omex.Gating.UnitTests
 {

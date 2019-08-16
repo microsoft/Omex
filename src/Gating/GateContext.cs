@@ -101,8 +101,8 @@ namespace Microsoft.Omex.Gating
 		/// <returns>true if applicable, false otherwise</returns>
 		public bool IsGateApplicable(IGate gate)
 		{
-			if (!Code.ValidateArgument(gate, nameof(gate), TaggingUtilities.ReserveTag(0x23850606 /* tag_97qyg */)) ||
-				!Code.ValidateNotNullOrWhiteSpaceArgument(gate.Name, nameof(gate.Name), TaggingUtilities.ReserveTag(0x2385030b /* tag_97qml */)))
+			if (!Code.ValidateArgument(gate, nameof(gate), TaggingUtilities.ReserveTag(0x2382104a /* tag_967bk */)) ||
+				!Code.ValidateNotNullOrWhiteSpaceArgument(gate.Name, nameof(gate.Name), TaggingUtilities.ReserveTag(0x2382104b /* tag_967bl */)))
 			{
 				return false;
 			}
@@ -153,7 +153,7 @@ namespace Microsoft.Omex.Gating
 
 			if (KnownApplicableGates.ContainsKey(gateName))
 			{
-				ULSLogging.LogTraceTag(0x2385030c /* tag_97qmm */, Categories.GateSelection, Levels.Verbose,
+				ULSLogging.LogTraceTag(0x2382104c /* tag_967bm */, Categories.GateSelection, Levels.Verbose,
 					"Allowing access to gate '{0}' as it has been previously allowed.", gateName);
 				return true;
 			}
@@ -184,7 +184,7 @@ namespace Microsoft.Omex.Gating
 
 			if (KnownBlockedGates.ContainsKey(gateName))
 			{
-				ULSLogging.LogTraceTag(0x2385030d /* tag_97qmn */, Categories.GateSelection, Levels.Verbose,
+				ULSLogging.LogTraceTag(0x2382104d /* tag_967bn */, Categories.GateSelection, Levels.Verbose,
 					"Blocking access to gate '{0}' as it has been previously blocked.", gateName);
 				return true;
 			}
@@ -225,7 +225,7 @@ namespace Microsoft.Omex.Gating
 			if (m_settings?.GatesToggleEnabled?.Contains(gate.Name) ?? false)
 			{
 				grantAccess = true;
-				ULSLogging.LogTraceTag(0x2385030e /* tag_97qmo */, Categories.GateSelection, Levels.Verbose, "Enabling gate '{0}' through BRS that was disabled using gate toggle setting",
+				ULSLogging.LogTraceTag(0x2382104e /* tag_967bo */, Categories.GateSelection, Levels.Verbose, "Enabling gate '{0}' through BRS that was disabled using gate toggle setting",
 					gate.Name);
 			}
 
@@ -239,6 +239,7 @@ namespace Microsoft.Omex.Gating
 			grantAccess = grantAccess && DoesUserHaveAccess(gate);
 			grantAccess = grantAccess && IsCurrentDateEnabled(gate);
 			grantAccess = grantAccess && DoQueryParametersHaveAccess(gate);
+			grantAccess = grantAccess && DoesCloudContextHaveAccess(gate);
 
 			if (gate.ExperimentInfo != null)
 			{
@@ -255,7 +256,7 @@ namespace Microsoft.Omex.Gating
 		/// <param name="gate">the gate to enter scope for</param>
 		public void EnterScope(IGate gate)
 		{
-			if (!Code.ValidateNotNullOrWhiteSpaceArgument(gate.Name, nameof(gate.Name), TaggingUtilities.ReserveTag(0x23850607 /* tag_97qyh */)))
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(gate.Name, nameof(gate.Name), TaggingUtilities.ReserveTag(0x2382104f /* tag_967bp */)))
 			{
 				return;
 			}
@@ -272,7 +273,7 @@ namespace Microsoft.Omex.Gating
 		/// <param name="gate">the gate to enter scope for</param>
 		public void ExitScope(IGate gate)
 		{
-			if (!Code.ValidateNotNullOrWhiteSpaceArgument(gate.Name, nameof(gate.Name), TaggingUtilities.ReserveTag(0x23850608 /* tag_97qyi */)))
+			if (!Code.ValidateNotNullOrWhiteSpaceArgument(gate.Name, nameof(gate.Name), TaggingUtilities.ReserveTag(0x23821050 /* tag_967bq */)))
 			{
 				return;
 			}
@@ -283,13 +284,13 @@ namespace Microsoft.Omex.Gating
 				int activeScopes = count.Decrement();
 				if (activeScopes < 0)
 				{
-					ULSLogging.LogTraceTag(0x2385030f /* tag_97qmp */, Categories.GateSelection,
+					ULSLogging.LogTraceTag(0x23821051 /* tag_967br */, Categories.GateSelection,
 						Levels.Error, "Unbalanced scope for gate '{0}', attempting to exit scope that has already been exited.", gate.Name);
 				}
 			}
 			else
 			{
-				ULSLogging.LogTraceTag(0x23850310 /* tag_97qmq */, Categories.GateSelection,
+				ULSLogging.LogTraceTag(0x23821052 /* tag_967bs */, Categories.GateSelection,
 					Levels.Error, "Unbalanced scope for gate '{0}', attempting to exit scope that has not been entered.", gate.Name);
 			}
 		}
@@ -339,7 +340,7 @@ namespace Microsoft.Omex.Gating
 				//if no params exist on the request, then we grant access by default.
 				if (requestsQueryParameters == null || requestsQueryParameters.Count == 0)
 				{
-					ULSLogging.LogTraceTag(0x23849818 /* tag_97j6y */, Categories.GateSelection, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x23821053 /* tag_967bt */, Categories.GateSelection, Levels.Verbose,
 						"Allowing access to gate '{0}' as the GatedRequest has no query parameters.",
 						gate.Name ?? "<NULL>");
 					return grantAccess;
@@ -355,7 +356,7 @@ namespace Microsoft.Omex.Gating
 						{
 							grantAccess = false;
 
-							ULSLogging.LogTraceTag(0x2384970f /* tag_97j2p */, Categories.GateSelection, Levels.Verbose,
+							ULSLogging.LogTraceTag(0x23821054 /* tag_967bu */, Categories.GateSelection, Levels.Verbose,
 								"Not allowing access to gate '{0}' with the query parameter(s) '{1}'='{2}' as all parameters with name '{3}' are blocked by the wildcard '*'.",
 								gate.Name ?? "<NULL>",
 								requestParameterName,
@@ -373,7 +374,7 @@ namespace Microsoft.Omex.Gating
 						{
 							grantAccess = false;
 
-							ULSLogging.LogTraceTag(0x23849819 /* tag_97j6z */, Categories.GateSelection, Levels.Verbose,
+							ULSLogging.LogTraceTag(0x23821055 /* tag_967bv */, Categories.GateSelection, Levels.Verbose,
 								"Not allowing access to gate '{0}' as the query parameter(s) '{1}'='{2}' is in the set of blocked query parameters '{3}'.",
 								gate.Name ?? "<NULL>",
 								requestParameterName,
@@ -406,7 +407,7 @@ namespace Microsoft.Omex.Gating
 
 				if (!grantAccess)
 				{
-					ULSLogging.LogTraceTag(0x23850311 /* tag_97qmr */, Categories.GateSelection, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x23821056 /* tag_967bw */, Categories.GateSelection, Levels.Verbose,
 						"Not allowing access to gate '{0}' as the host environment '{1}' is not in the set of active host environments '{2}'.",
 						gate.Name ?? "<NULL>", environmentName ?? "<NULL>", string.Join(", ", hostEnvironments));
 				}
@@ -462,6 +463,13 @@ namespace Microsoft.Omex.Gating
 					// deny access in all cases.
 					grantAccess = false;
 				}
+
+				if (!grantAccess)
+				{
+					ULSLogging.LogTraceTag(0x23821057 /* tag_967bx */, Categories.GateSelection, Levels.Verbose,
+						"Not allowing access to gate '{0}' as '{1}' did not match the required criteria.",
+						gate.Name ?? "<NULL>", serviceName ?? "<NULL>");
+				}
 			}
 
 			return grantAccess;
@@ -492,7 +500,7 @@ namespace Microsoft.Omex.Gating
 
 				if (!grantAccess)
 				{
-					ULSLogging.LogTraceTag(0x23850312 /* tag_97qms */, Categories.GateSelection, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x23821058 /* tag_967by */, Categories.GateSelection, Levels.Verbose,
 						"Not allowing access to gate '{0}' as the ip address of the request is not in the set of allowed known ip ranges '{1}'.",
 						gate.Name ?? "<NULL>", string.Join(", ", ipRanges));
 				}
@@ -518,7 +526,7 @@ namespace Microsoft.Omex.Gating
 				{
 					grantAccess = false;
 
-					ULSLogging.LogTraceTag(0x23850313 /* tag_97qmt */, Categories.GateSelection, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x23821059 /* tag_967bz */, Categories.GateSelection, Levels.Verbose,
 						"Not allowing access to gate '{0}' as the market of the request '{1}' is not in the set of allowed markets '{2}'.",
 						gate.Name ?? "<NULL>", requestMarket ?? "<NULL>", string.Join(", ", markets));
 				}
@@ -544,7 +552,7 @@ namespace Microsoft.Omex.Gating
 				{
 					grantAccess = false;
 
-					ULSLogging.LogTraceTag(0x23850314 /* tag_97qmu */, Categories.GateSelection, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x2382105a /* tag_967b0 */, Categories.GateSelection, Levels.Verbose,
 						"Not allowing access to gate '{0}' as the environment of the request '{1}' is not in the set of allowed environments '{2}'.",
 						gate.Name ?? "<NULL>", requestEnvironment ?? "<NULL>", string.Join(", ", environments));
 				}
@@ -569,11 +577,12 @@ namespace Microsoft.Omex.Gating
 				RequiredClient requiredClient;
 				if (client == null ||
 					!allowedClients.TryGetValue(client.Name, out requiredClient) ||
-					!IsVersionInRange(client, requiredClient))
+					!IsVersionInRange(client, requiredClient) ||
+					!IsInAudienceGroup(client, requiredClient))
 				{
 					grantAccess = false;
 
-					ULSLogging.LogTraceTag(0x23850315 /* tag_97qmv */, Categories.GateSelection, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x2382105b /* tag_967b1 */, Categories.GateSelection, Levels.Verbose,
 						"Not allowing access to gate '{0}' as the calling client '{1}' is not one of the allowed clients '{2}'.",
 						gate.Name ?? "<NULL>", GatedClientAsString(client), AllowedClientsAsString(allowedClients));
 				}
@@ -653,6 +662,52 @@ namespace Microsoft.Omex.Gating
 
 
 		/// <summary>
+		/// Is the requesting in the audience group?
+		/// </summary>
+		/// <param name="callingClient">GatedClient</param>
+		/// <param name="requiredClient">RequiredClient</param>
+		/// <returns>true if the calling client is in required client audience group, false otherwise</returns>
+		private static bool IsInAudienceGroup(GatedClient callingClient, RequiredClient requiredClient)
+		{
+			if (string.IsNullOrWhiteSpace(requiredClient.AudienceGroup))
+			{
+				// Return true because AudienceGroup check is not needed
+				return true;
+			}
+
+			if (callingClient.AudienceGroups.Count == 0)
+			{
+				return false;
+			}
+
+			RequiredApplication requiredApplication;
+
+			if (callingClient.AppCode != null &&
+				requiredClient.Overrides.TryGetValue(callingClient.AppCode, out requiredApplication) &&
+				!string.IsNullOrWhiteSpace(requiredApplication.AudienceGroup))
+			{
+				// App Override
+				if (callingClient.AudienceGroups.Contains(requiredApplication.AudienceGroup, StringComparer.OrdinalIgnoreCase))
+				{
+					return true;
+				}
+
+				return false;
+			}
+			else
+			{
+				// ClientVersion
+				if (callingClient.AudienceGroups.Contains(requiredClient.AudienceGroup, StringComparer.OrdinalIgnoreCase))
+				{
+					return true;
+				}
+
+				return false;
+			}
+		}
+
+
+		/// <summary>
 		/// Does the browser have access.
 		/// </summary>
 		/// <param name="gate">The gate.</param>
@@ -676,6 +731,27 @@ namespace Microsoft.Omex.Gating
 		}
 
 
+		private bool DoesCloudContextHaveAccess(IGate gate)
+		{
+			bool grantAccess = true;
+			HashSet<string> contexts = gate.CloudContexts;
+			if (contexts != null)
+			{
+				HashSet<string> requestContexts = Request?.CloudContexts;
+				if (requestContexts == null || gate.CloudContexts.Intersect(Request.CloudContexts).Count() == 0)
+				{
+					grantAccess = false;
+
+					ULSLogging.LogTraceTag(0x23818881 /* tag_96y8b */, Categories.GateSelection, Levels.Verbose,
+						"Not allowing access to gate '{0}' as the cloud contexts of the request '{1}' are not in the set of allowed cloud contexts '{2}'.",
+						gate.Name ?? "<NULL>", requestContexts == null ? "<NULL>" : string.Join(", ", requestContexts), string.Join(", ", contexts));
+				}
+			}
+
+			return grantAccess;
+		}
+
+
 		/// <summary>
 		/// Checks the gate's applicability based on the user agent browser. This is a common method which checks gate's applicability for
 		/// both allowed browsers and blocked browsers.
@@ -687,7 +763,7 @@ namespace Microsoft.Omex.Gating
 			Tuple<string, int> browser = Request?.GetUserAgentBrowser();
 			if (browser == null)
 			{
-				ULSLogging.LogTraceTag(0x23850316 /* tag_97qmw */, Categories.GateSelection, Levels.Verbose,
+				ULSLogging.LogTraceTag(0x2382105c /* tag_967b2 */, Categories.GateSelection, Levels.Verbose,
 					"HttpRequest object doesn't have any browser, which means request not made from a browser.");
 
 				// Request not made from a browser.
@@ -696,7 +772,7 @@ namespace Microsoft.Omex.Gating
 
 			if (!browsers.TryGetValue(browser.Item1, out HashSet<int> browserVersion))
 			{
-				ULSLogging.LogTraceTag(0x23850317 /* tag_97qmx */, Categories.GateSelection, Levels.Verbose,
+				ULSLogging.LogTraceTag(0x2382105d /* tag_967b3 */, Categories.GateSelection, Levels.Verbose,
 					"Gate expects a different browser than the one from which the request was made.");
 
 				// Gate expects different browser, hence return false.
@@ -705,7 +781,7 @@ namespace Microsoft.Omex.Gating
 
 			if (browserVersion == null)
 			{
-				ULSLogging.LogTraceTag(0x23850318 /* tag_97qmy */, Categories.GateSelection, Levels.Verbose,
+				ULSLogging.LogTraceTag(0x2382105e /* tag_967b4 */, Categories.GateSelection, Levels.Verbose,
 					"Gate doesn't contain any browser version, which means all the versions apply.");
 
 				// No constraint set on the browser's version, hence return true.
@@ -714,7 +790,7 @@ namespace Microsoft.Omex.Gating
 
 			if (browserVersion.Count == 0)
 			{
-				ULSLogging.LogTraceTag(0x23850319 /* tag_97qmz */, Categories.GateSelection, Levels.Verbose,
+				ULSLogging.LogTraceTag(0x2382105f /* tag_967b5 */, Categories.GateSelection, Levels.Verbose,
 					"Gate doesn't contain any browser version, which means all the versions apply.");
 
 				// No constraint set on the browser's version, hence return true.
@@ -723,7 +799,7 @@ namespace Microsoft.Omex.Gating
 
 			if (!browserVersion.Contains(browser.Item2))
 			{
-				ULSLogging.LogTraceTag(0x2385031a /* tag_97qm0 */, Categories.GateSelection, Levels.Verbose,
+				ULSLogging.LogTraceTag(0x23821060 /* tag_967b6 */, Categories.GateSelection, Levels.Verbose,
 					"Gate expects a different browser version than the one from which the request was made.");
 
 				// Browser versions not compatible, return false.
@@ -828,10 +904,16 @@ namespace Microsoft.Omex.Gating
 
 				if (!grantAccess)
 				{
-					ULSLogging.LogTraceTag(0x2385031c /* tag_97qm2 */, Categories.GateSelection, Levels.Verbose,
+					ULSLogging.LogTraceTag(0x23821061 /* tag_967b7 */, Categories.GateSelection, Levels.Verbose,
 						"Not allowing access to gate '{0}' as user is not part of the set of users that have access.",
 						gate.Name);
 				}
+			}
+			else if (!grantAccess)
+			{
+				ULSLogging.LogTraceTag(0x23821062 /* tag_967b8 */, Categories.GateSelection, Levels.Verbose,
+					"Not allowing access to gate '{0}' as user is not of the accepted user type '{1}'.",
+					gate.Name, userType);
 			}
 
 			if (!grantAccess)
@@ -868,7 +950,7 @@ namespace Microsoft.Omex.Gating
 		{
 			if (gate.StartDate.HasValue && gate.StartDate.Value > DateTime.UtcNow)
 			{
-				ULSLogging.LogTraceTag(0x2385031d /* tag_97qm3 */, Categories.GateSelection, Levels.Verbose,
+				ULSLogging.LogTraceTag(0x23821063 /* tag_967b9 */, Categories.GateSelection, Levels.Verbose,
 					"Not allowing access to gate '{0}' as the current date is before the start date '{1}'.",
 					gate.Name ?? "<NULL>", gate.StartDate.Value);
 				return false;
@@ -876,7 +958,7 @@ namespace Microsoft.Omex.Gating
 
 			if (gate.EndDate.HasValue && gate.EndDate.Value < DateTime.UtcNow)
 			{
-				ULSLogging.LogTraceTag(0x2385031e /* tag_97qm4 */, Categories.GateSelection, Levels.Verbose,
+				ULSLogging.LogTraceTag(0x23821080 /* tag_967ca */, Categories.GateSelection, Levels.Verbose,
 					"Not allowing access to gate '{0}' as the current date is after the end date '{1}'.",
 					gate.Name ?? "<NULL>", gate.EndDate.Value);
 				return false;
@@ -940,7 +1022,7 @@ namespace Microsoft.Omex.Gating
 			/// <param name="gate">The gate.</param>
 			public InstanceCount(IGate gate)
 			{
-				Gate = Code.ExpectsArgument(gate, nameof(gate), TaggingUtilities.ReserveTag(0x23850609 /* tag_97qyj */));
+				Gate = Code.ExpectsArgument(gate, nameof(gate), TaggingUtilities.ReserveTag(0x23821081 /* tag_967cb */));
 			}
 		}
 		#endregion

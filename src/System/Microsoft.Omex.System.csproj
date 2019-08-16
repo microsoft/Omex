@@ -1,10 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(TargetFrameworks);net45;$(NetStandardVersion)</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks);$(NetStandardVersion)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersion)</TargetFrameworks>
     <Description>Contains common classes for Omex libraries.</Description>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Readme.txt" PackagePath="%(Identity)" />
+    <PackageReference Include="Bond.Core.CSharp" Version="$(BondCoreCSharpVersion)" />
+    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
   </ItemGroup>
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.System</Title>
+    <DevelopmentDependency>True</DevelopmentDependency>
+    <Authors>Microsoft</Authors>
+    <Summary>Microsoft Omex System Library</Summary>
+    <Description>This library contains shared code for Omex libraries.</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/System</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <PackageTags>Microsoft;Omex;Gating</PackageTags>
+  </PropertyGroup> 
 </Project>

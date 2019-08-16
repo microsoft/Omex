@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- none
+- master
 
 pool:
   vmImage: vs2017-win2016
@@ -22,16 +22,24 @@ steps:
   displayName: 'NuGet restore'
   enabled: true
 
-- task: VSBuild@1
-  displayName: 'Build solution **\*.sln'
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
   inputs:
-    msbuildArgs: '/p:Deterministic=true'
-    clean: true
-    maximumCpuCount: true
-    msbuildArchitecture: x64
-  enabled: true
+    projects: '**\*.sln'
+    arguments: '-c Release  -p:Platform=x64 --no-restore'
 
-- task: VSTest@2
-  displayName: 'Run Unit Tests'
-  enabled: true
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test'
+  inputs:
+    command: test
+    projects: '**\*.sln'
+    arguments: '-c Release  -p:Platform=x64  --no-build --no-restore'
 
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet pack'
+  inputs:
+    command: pack
+    packagesToPack: '**/*.sln'
+    configuration: Release
+    nobuild: true
+    buildProperties: 'IsReleaseBuild=false'

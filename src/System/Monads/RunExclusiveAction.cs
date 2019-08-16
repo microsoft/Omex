@@ -1,14 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using directives
-
 using System;
 using System.Threading;
 using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.Validation;
-
-#endregion
 
 namespace Microsoft.Omex.System.Monads
 {
@@ -82,7 +78,7 @@ namespace Microsoft.Omex.System.Monads
 		/// <param name="action">The m_action to run.</param>
 		public virtual void Do(Action action)
 		{
-			if (!Code.ValidateArgument(action, nameof(action), TaggingUtilities.ReserveTag(0x23850749 /* tag_97q3j */)))
+			if (!Code.ValidateArgument(action, nameof(action), TaggingUtilities.ReserveTag(0x2382084f /* tag_9667p */)))
 			{
 				return;
 			}

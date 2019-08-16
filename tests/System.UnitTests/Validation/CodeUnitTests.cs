@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using directives
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +8,6 @@ using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.UnitTests.Shared;
 using Microsoft.Omex.System.Validation;
 using Xunit;
-
-#endregion
 
 namespace Microsoft.Omex.System.UnitTests.Validation
 {
@@ -423,7 +419,7 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 				LogEventArgs eventArg = events.Single();
 				Assert.Equal(tagId, eventArg.TagId);
 				Assert.Equal(Levels.Error, eventArg.Level);
-				Assert.Equal(Categories.ArgumentValidation, eventArg.Category);
+				Assert.Equal(Categories.ArgumentValidation, eventArg.CategoryId);
 				Assert.Contains(ArgumentName, eventArg.FullMessage);
 			}
 		}

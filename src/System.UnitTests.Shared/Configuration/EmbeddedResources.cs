@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#region Using directives
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,8 +9,6 @@ using Microsoft.Omex.System.Data;
 using Microsoft.Omex.System.Data.FileSystem;
 using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.UnitTests.Shared.Data.FileSystem;
-
-#endregion
 
 namespace Microsoft.Omex.System.UnitTests.Shared.Configuration
 {
@@ -45,7 +41,7 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration
 			{
 				if (stream == null)
 				{
-					ULSLogging.LogTraceTag(0x23850259 /* tag_97qjz */, Categories.Infrastructure,
+					ULSLogging.LogTraceTag(0x23821040 /* tag_967ba */, Categories.Infrastructure,
 						Levels.Error, "Cannot find embedded resource '{0}' in assembly '{1}'.",
 						resourceName, type.Assembly);
 					return null;
@@ -72,7 +68,7 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration
 			{
 				if (stream == null)
 				{
-					ULSLogging.LogTraceTag(0x2385025a /* tag_97qj0 */, Categories.Infrastructure,
+					ULSLogging.LogTraceTag(0x23821041 /* tag_967bb */, Categories.Infrastructure,
 						Levels.Error, "Cannot find embedded resource '{0}' in type '{1}' parent assembly '{2}'.",
 						resourceName, type, type.Assembly);
 					return null;

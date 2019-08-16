@@ -43,16 +43,16 @@ namespace Microsoft.Omex.System.Logging
 		/// </summary>
 		public enum LogLevel
 		{
-            /// <summary> The Error log level </summary>
-            Error,
-            /// <summary> The Warning log level </summary>
-            Warning,
-            /// <summary> The Info log level </summary>
-            Info,
-            /// <summary> The Verbose log level </summary>
-            Verbose,
-            /// <summary> The Spam log level </summary>
-            Spam,
+			/// <summary> The Error log level </summary>
+			Error = 0,
+			/// <summary> The Info log level </summary>
+			Info = 1,
+			/// <summary> The Spam log level </summary>
+			Spam = 2,
+			/// <summary> The Verbose log level </summary>
+			Verbose = 3,
+			/// <summary> The Warning log level </summary>
+			Warning = 4,
 		}
 
 

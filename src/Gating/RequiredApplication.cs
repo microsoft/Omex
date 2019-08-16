@@ -50,11 +50,17 @@ namespace Microsoft.Omex.Gating
 
 
 		/// <summary>
+		/// Value of Audience Group
+		/// </summary>
+		public string AudienceGroup { get; set; }
+
+
+		/// <summary>
 		/// Add version range to range set
 		/// </summary>
 		public bool AddVersionRange(ProductVersionRange range)
 		{
-			if (!Code.ValidateArgument(range, nameof(range), TaggingUtilities.ReserveTag(0x23850601 /* tag_97qyb */)))
+			if (!Code.ValidateArgument(range, nameof(range), TaggingUtilities.ReserveTag(0x23821044 /* tag_967be */)))
 			{
 				return false;
 			}
