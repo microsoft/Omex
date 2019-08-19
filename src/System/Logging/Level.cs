@@ -22,7 +22,7 @@ namespace Microsoft.Omex.System.Logging
 		/// <summary>
 		/// Level value
 		/// </summary>
-		internal Levels.LogLevel LogLevel { get; }
+		public Levels.LogLevel LogLevel { get; }
 
 
 		/// <summary>
