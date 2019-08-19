@@ -59,7 +59,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="parent">Parent of this stack</param>
 		private TimedScopeStack(TimedScope item, TimedScopeStack parent)
 		{
-			Code.ExpectsArgument(parent, nameof(parent), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(parent, nameof(parent), TaggingUtilities.ReserveTag(0x23817061 /* tag_96xb7 */));
 
 			Item = item;
 			Parent = parent;

@@ -20,8 +20,8 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="machineInformation">Machine information</param>
 		public TimedScopeStackManager(ICallContextManager callContextManager, IMachineInformation machineInformation)
 		{
-			Code.ExpectsArgument(callContextManager, nameof(callContextManager), TaggingUtilities.ReserveTag(0));
-			Code.ExpectsArgument(machineInformation, nameof(machineInformation), TaggingUtilities.ReserveTag(0));
+			Code.ExpectsArgument(callContextManager, nameof(callContextManager), TaggingUtilities.ReserveTag(0x2381705f /* tag_96xb5 */));
+			Code.ExpectsArgument(machineInformation, nameof(machineInformation), TaggingUtilities.ReserveTag(0x23817060 /* tag_96xb6 */));
 
 			CallContextManager = callContextManager;
 			MachineInformation = machineInformation;
