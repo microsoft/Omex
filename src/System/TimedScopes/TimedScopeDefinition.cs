@@ -72,11 +72,11 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="initialResult">Initial result to use</param>
 		/// <param name="customLogger">Optional custom timed scope logger</param>
 		/// <param name="replayEventConfigurator">Optional replay event configurator</param>
+		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <returns>A timed scope</returns>
-		public TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, TimedScopeResult initialResult = default(TimedScopeResult),
-			ITimedScopeLogger customLogger = null, IReplayEventConfigurator replayEventConfigurator = null)
-			=> Create(correlationData, machineInformation, initialResult: initialResult, startScope: true, customLogger: customLogger,
-				replayEventConfigurator: replayEventConfigurator);
+		public TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, ITimedScopeLogger customLogger, 
+			IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, TimedScopeResult initialResult = default(TimedScopeResult))
+			=> Create(correlationData, machineInformation, customLogger, replayEventConfigurator, timedScopeStackManager, initialResult: initialResult, startScope: true);
 
 
 		/// <summary>
@@ -88,11 +88,12 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="startScope">Should the scope be automatically started (for use in e.g. 'using' statement)</param>
 		/// <param name="customLogger">Optional custom timed scope logger</param>
 		/// <param name="replayEventConfigurator">Optional replay event configurator</param>
+		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <returns>A timed scope</returns>
-		public TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, TimedScopeResult initialResult = default(TimedScopeResult),
-			bool startScope = true, ITimedScopeLogger customLogger = null, IReplayEventConfigurator replayEventConfigurator = null)
+		public TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, ITimedScopeLogger customLogger,  IReplayEventConfigurator replayEventConfigurator, 
+			ITimedScopeStackManager timedScopeStackManager, TimedScopeResult initialResult = default(TimedScopeResult), bool startScope = true)
 		{
-			TimedScope scope = TimedScope.Create(this, correlationData, machineInformation, initialResult, customLogger, replayEventConfigurator);
+			TimedScope scope = TimedScope.Create(this, correlationData, machineInformation, customLogger, replayEventConfigurator, timedScopeStackManager, initialResult);
 
 			if (startScope)
 			{
@@ -113,9 +114,11 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="startScope">Should the scope be automatically started (for use in e.g. 'using' statement)</param>
 		/// <param name="customLogger">Optional custom timed scope logger</param>
 		/// <param name="replayEventConfigurator">Optional replay event configurator</param>
+		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <returns>A timed scope</returns>
-		public TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, bool? initialResult, bool startScope = true,
-			ITimedScopeLogger customLogger = null, IReplayEventConfigurator replayEventConfigurator = null)
-			=> Create(correlationData, machineInformation, TimedScope.ConvertBoolResultToTimedScopeResult(initialResult), startScope, customLogger, replayEventConfigurator);
+		public TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, ITimedScopeLogger customLogger, 
+			IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, bool? initialResult, bool startScope = true)
+			=> Create(correlationData, machineInformation, customLogger, replayEventConfigurator, timedScopeStackManager,
+				TimedScope.ConvertBoolResultToTimedScopeResult(initialResult), startScope);
 	}
 }
