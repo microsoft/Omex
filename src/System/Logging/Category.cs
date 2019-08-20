@@ -52,7 +52,7 @@ namespace Microsoft.Omex.System.Logging
 		/// Determines whether the specified <see cref="object" />, is equal to this instance
 		/// </summary>
 		/// <param name="obj">The <see cref="object" /> to compare with this instance</param>
-		public override bool Equals(object obj) => ReferenceEquals(this, obj) || obj is Category other && Equals(other);
+		public override bool Equals(object obj) => ReferenceEquals(this, obj) || (obj is Category other && Equals(other));
 
 
 		/// <summary>
