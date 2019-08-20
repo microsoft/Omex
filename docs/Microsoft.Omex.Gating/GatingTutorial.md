@@ -17,14 +17,16 @@ Usually it will look like this:
 
 _From the [Gating.Example](https://github.com/microsoft/Omex/tree/master/src/Gating.Example):_
 
-    Gates gates = new Gates(GateDataSetLoader);
+```cs
+Gates gates = new Gates(GateDataSetLoader);
 
-    IGatedRequest gatedRequest = new SampleGatedRequest();
-    IGateContext gateContext = new GateContext(gatedRequest, machineInformation, null);
-    gateContext.PerformAction(
-        new GatedAction(
-            gates.GetGate("sample_allowed_gate"),
-            () => Console.WriteLine("SampleAction has been called")));
+IGatedRequest gatedRequest = new SampleGatedRequest();
+IGateContext gateContext = new GateContext(gatedRequest, machineInformation, null);
+gateContext.PerformAction(
+    new GatedAction(
+        gates.GetGate("sample_allowed_gate"),
+        () => Console.WriteLine("SampleAction has been called")));
+```
 
 ## Usage scenarios
 
@@ -36,50 +38,54 @@ Then you can use `GateExtensions.PerformAction(gate, Action)` on the context lik
 `PerformAction` will perform at most one action - the first one whose gate is applicable.
 By adding a `GatedAction` without a gate, you create a _default_ action, like an Else branch.
 
-    public class PointsAdder
-    {
-        private readonly IGateContext m_gateContext;
-        private readonly User m_user;
-        
-        public PointsAdder(IGateContext gateContext, User user)
-        {
-            m_gateContext = gateContext;
-            m_user = user;
-        }
+```cs
+public class PointsAdder
+{
+    private readonly IGateContext m_gateContext;
+    private readonly User m_user;
 
-        public void AddPoints()
-        {
-            // If (user is SuperUser)
-            //    add them 10 points
-            // else
-            //    add them 5 points
-            m_gateContext.PerformAction(
-                new GatedAction(
-                    Gates.SuperUser,
-                    () => m_user.Points += 10
-                ),
-                new GatedAction(
-                    () => m_user.Points += 5
-                )
-            );
-        }
+    public PointsAdder(IGateContext gateContext, User user)
+    {
+        m_gateContext = gateContext;
+        m_user = user;
     }
 
-Another approach is to use the `PerformEachAction` method which will invoke code for every applicable `GateAction`, not just the first.
-
-    public List<Item> GetItems()
+    public void AddPoints()
     {
-        var items = new List<Item>();
-        m_gateContext.PerformEachAction(
+        // If (user is SuperUser)
+        //    add them 10 points
+        // else
+        //    add them 5 points
+        m_gateContext.PerformAction(
             new GatedAction(
-                Gates.Admininstrators,
-                () => AddAdminItems(items)
+                Gates.SuperUser,
+                () => m_user.Points += 10
             ),
             new GatedAction(
-                () => AddGeneralItems(items)
+                () => m_user.Points += 5
             )
         );
     }
+}
+```
+
+Another approach is to use the `PerformEachAction` method which will invoke code for every applicable `GateAction`, not just the first.
+
+```cs
+public List<Item> GetItems()
+{
+    var items = new List<Item>();
+    m_gateContext.PerformEachAction(
+        new GatedAction(
+            Gates.Admininstrators,
+            () => AddAdminItems(items)
+        ),
+        new GatedAction(
+            () => AddGeneralItems(items)
+        )
+    );
+}
+```
 
 Very similar will be the use of `PerformFunction` and `GatedFunc`, but with a return value.
 
