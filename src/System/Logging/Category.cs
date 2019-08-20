@@ -56,7 +56,7 @@ namespace Microsoft.Omex.System.Logging
 
 
 		/// <summary>
-		/// Returns a hash code for this instance.
+		/// Returns a hash code for this instance
 		/// </summary>
 		public override int GetHashCode() => Name != null ? StringComparer.InvariantCulture.GetHashCode(Name) : 0;
 
