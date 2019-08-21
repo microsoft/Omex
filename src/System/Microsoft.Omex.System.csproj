@@ -22,6 +22,6 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
-    <PackageTags>Microsoft;Omex;Gating</PackageTags>
+    <PackageTags>Microsoft;Omex;System</PackageTags>
   </PropertyGroup> 
 </Project>
