@@ -23,7 +23,7 @@
   <PropertyGroup>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <!-- The release version should get updated on every new release -->
-    <Version>20.0.2</Version>
+    <Version>20.0.3</Version>
     <PreReleaseSuffix Condition="'$(PreReleaseSuffix)' == ''">local</PreReleaseSuffix>
     <PackageVersion Condition="'$(IsReleaseBuild)' == 'true'">$(Version)</PackageVersion>
     <!-- Continuous integration version, which is updated on every build of the dev branch -->
