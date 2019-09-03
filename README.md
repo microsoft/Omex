@@ -8,6 +8,12 @@ The pre-release NuGet packages are available to download from the MyGet feed
 
     https://www.myget.org/F/omex/api/v3/index.json
 
+
+The release NuGet packages are available for download from Nuget.org
+
+    https://www.nuget.org/packages?q=omex
+
+
 ### Projects in this repository
 
 * [__Gating__](https://github.com/microsoft/Omex/tree/master/src/Gating) - This library provides an implementation of a flighting mechanism for new features.
@@ -83,6 +89,8 @@ The pre-release NuGet packages which are built from the master branch are availa
     https://www.myget.org/F/omex/api/v3/index.json
 
 
-Soon, the release packages will be available for download from NuGet.org.
+The release packages are available for download from NuGet.org
+
+    https://www.nuget.org/packages?q=omex
 
 
