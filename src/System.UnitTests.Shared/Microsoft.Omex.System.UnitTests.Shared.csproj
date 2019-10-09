@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(TargetFrameworks);$(NetStandardVersion)</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersion)</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks);$(NetStandardVersions)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersions)</TargetFrameworks>
     <IsTestProject>false</IsTestProject>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != '$(NetStandardVersion)'">
+  <ItemGroup Condition="!$(IsNetStandard)">
     <PackageReference Include="xunit.assert" Version="$(XunitAssertVersion)" />
     <PackageReference Include="xunit.core" Version="$(XunitCoreVersion)" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == '$(NetStandardVersion)'">
+  <ItemGroup Condition="$(IsNetStandard)">
     <PackageReference Include="xunit.assert" Version="$(XunitAssertVersionCore)" />
     <PackageReference Include="xunit.core" Version="$(XunitCoreVersionCore)" />
   </ItemGroup>
