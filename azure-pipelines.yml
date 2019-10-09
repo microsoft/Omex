@@ -10,6 +10,8 @@ pool:
   vmImage: vs2017-win2016
   demands: DotNetFramework
 
+
+steps:
 - task: UseDotNet@2
   displayName: 'Use .NET Core sdk 2.2.104'
   inputs:
