@@ -12,10 +12,15 @@ pool:
 
 
 steps:
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.7.1'
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 3.0.100'
   inputs:
-    versionSpec: 4.7.1
+    version: 3.0.100
+
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 5.2.0'
+  inputs:
+    versionSpec: 5.2.0
   enabled: true
 
 - task: NuGetCommand@2
