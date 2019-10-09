@@ -17,21 +17,11 @@ steps:
   inputs:
     version: 3.0.100
 
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 5.2.0'
-  inputs:
-    versionSpec: 5.2.0
-  enabled: true
-
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
-  enabled: true
-
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
   inputs:
     projects: '**\*.sln'
-    arguments: '-c Release  -p:Platform=x64 --no-restore'
+    arguments: '-c Release  -p:Platform=x64'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test'
