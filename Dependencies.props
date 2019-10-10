@@ -1,50 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Package Versions">
-    <MicrosoftNetTestSdkVersion>15.9.0</MicrosoftNetTestSdkVersion>
-    <MicrosoftOfficeMarketplaceTimedScopeGenVersion>1.0.589</MicrosoftOfficeMarketplaceTimedScopeGenVersion>
+    <MicrosoftNetTestSdkVersion>16.3.0</MicrosoftNetTestSdkVersion>
     <XunitRunnerVisualStudioVersion>2.4.1</XunitRunnerVisualStudioVersion>
-    <MicrosoftSourceLinkVstsGitVersion>1.0.0-beta-63127-02</MicrosoftSourceLinkVstsGitVersion>
-    <MicrosoftSourceLinkGitHubVersion>1.0.0-beta2-18618-05</MicrosoftSourceLinkGitHubVersion>
+    <MicrosoftSourceLinkVstsGitVersion>1.0.0-beta2-19367-01</MicrosoftSourceLinkVstsGitVersion>
+    <MicrosoftSourceLinkGitHubVersion>1.0.0-beta2-19367-01</MicrosoftSourceLinkGitHubVersion>
   </PropertyGroup>
   <PropertyGroup Label="Package Versions: Pinned">
     <BondCoreCSharpVersion>6.0.0</BondCoreCSharpVersion>
-    <MicrosoftAspNetMvcVersion>5.2.3</MicrosoftAspNetMvcVersion>
-    <MicrosoftAspNetWebApiCoreVersion>5.2.3</MicrosoftAspNetWebApiCoreVersion>
-    <MicrosoftAspNetWebApiCorsVersion>5.2.3</MicrosoftAspNetWebApiCorsVersion>
-    <MicrosoftAspNetWebApiWebHostVersion>5.2.3</MicrosoftAspNetWebApiWebHostVersion>
-    <MicrosoftAzureDataLakeStoreVersion>1.1.3</MicrosoftAzureDataLakeStoreVersion>
     <MicrosoftAzureDocumentDbVersion>2.5.1</MicrosoftAzureDocumentDbVersion>
-    <MicrosoftGraphVersion>1.15.0</MicrosoftGraphVersion>
-    <MicrosoftIdentityClientVersion>2.1.0-preview</MicrosoftIdentityClientVersion>
-    <MicrosoftIdentityModelClientsActiveDirectoryVersion>3.13.8</MicrosoftIdentityModelClientsActiveDirectoryVersion>
-    <MicrosoftOfficeMSOTagUtilsVersion>16.0.7412.5176-preview</MicrosoftOfficeMSOTagUtilsVersion>
     <MoqVersion>4.5.22</MoqVersion>
-    <PollySignedVersion>4.3.0</PollySignedVersion>
-    <StackExchangeRedisStrongNameVersion>1.2.6</StackExchangeRedisStrongNameVersion>
     <SystemCollectionsImmutableVersion>1.2.0</SystemCollectionsImmutableVersion>
     <SystemConfigurationConfigurationManager>4.5.0</SystemConfigurationConfigurationManager>
     <XunitAssertVersion>2.4.1</XunitAssertVersion>
     <XunitCoreVersion>2.4.1</XunitCoreVersion>
   </PropertyGroup>
   <PropertyGroup Label="Package Versions Core">
-    <MoqVersionCore>4.10.1</MoqVersionCore>
-    <SystemServiceModelPrimitivesVersionCore>4.5.3</SystemServiceModelPrimitivesVersionCore>
-    <SystemServiceModelHttpVersionCore>4.5.3</SystemServiceModelHttpVersionCore>
-    <SystemServiceModelNetTcpVersionCore>4.5.3</SystemServiceModelNetTcpVersionCore>
-    <SystemCollectionsImmutableVersionCore>1.5.0</SystemCollectionsImmutableVersionCore>
-    <MicrosoftAspNetCoreMvcAbstractionsVersionCore>2.2.0</MicrosoftAspNetCoreMvcAbstractionsVersionCore>
+    <MoqVersionCore>4.13.0</MoqVersionCore>
+    <SystemServiceModelPrimitivesVersionCore>4.6.0</SystemServiceModelPrimitivesVersionCore>
+    <SystemCollectionsImmutableVersionCore>1.6.0</SystemCollectionsImmutableVersionCore>
     <MicrosoftAspNetCoreHttpAbstractionsVersionCore>2.2.0</MicrosoftAspNetCoreHttpAbstractionsVersionCore>
-    <MicrosoftAzureDocumentDbVersionCore>2.5.1</MicrosoftAzureDocumentDbVersionCore>
+    <MicrosoftAzureDocumentDbVersionCore>2.8.0</MicrosoftAzureDocumentDbVersionCore>
     <NewtonsoftJsonVersionCore>12.0.2</NewtonsoftJsonVersionCore>
     <XunitAssertVersionCore>2.4.1</XunitAssertVersionCore>
     <XunitCoreVersionCore>2.4.1</XunitCoreVersionCore>
-    <MicrosoftNetHttpHeadersVersionCore>2.2.0</MicrosoftNetHttpHeadersVersionCore>
-    <MicrosoftAspNetCoreHttpVersionCore>2.2.0</MicrosoftAspNetCoreHttpVersionCore>
-    <MicrosoftAzureCosmosDBBulkExecutorVersionCore>2.2.0-preview2</MicrosoftAzureCosmosDBBulkExecutorVersionCore>
-    <WindowsAzureStorageVersionCore>9.3.3</WindowsAzureStorageVersionCore>
-    <SystemThreadingTasks>4.0.11</SystemThreadingTasks>
-    <MSTestAdapterVersion>1.4.0</MSTestAdapterVersion>
-    <MSTestFrameworkVersion>1.4.0</MSTestFrameworkVersion>
+    <MicrosoftAspNetCoreHttpVersionCore>2.2.2</MicrosoftAspNetCoreHttpVersionCore>
+    <SystemThreadingTasks>4.3.0</SystemThreadingTasks>
+    <MSTestAdapterVersion>2.0.0</MSTestAdapterVersion>
+    <MSTestFrameworkVersion>2.0.0</MSTestFrameworkVersion>
   </PropertyGroup>
 </Project>
