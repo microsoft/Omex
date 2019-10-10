@@ -1,15 +1,21 @@
 ﻿<Project>
   <Import Project="$(MSBuildThisFileDirectory)\Dependencies.props" />
   <PropertyGroup>
-    <NetCoreVersion>netcoreapp2.1</NetCoreVersion>
-    <NetStandardVersion>netstandard2.0</NetStandardVersion>
+    <NetCoreVersions>netcoreapp2.1;netcoreapp3.0</NetCoreVersions>
+    <NetStandardVersions>netstandard2.0;netstandard2.1</NetStandardVersions>
     <NetFrameworkVersion>net461</NetFrameworkVersion> <!-- Framework version that should be targeted alongside with .net standard -->
     <LegacyTargetFrameworks>net452;net45</LegacyTargetFrameworks> <!-- Legacy version, required by internal consumers of packages -->
     <TargetFrameworks>$(LegacyTargetFrameworks)</TargetFrameworks>
     <Platforms>AnyCPU</Platforms>
     <TargetPlatform>AnyCPU</TargetPlatform>
     <PackageOutputPath>$(MSBuildThisFileDirectory)\nuget</PackageOutputPath>
-    <DocumentationFileValue>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFileValue>
+    <DocumentationFileValue>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFileValue>    
+  </PropertyGroup>
+  <PropertyGroup>
+    <IsNetStandard>false</IsNetStandard>
+    <IsNetStandard Condition="$(NetStandardVersions.Contains('$(TargetFramework)'))">true</IsNetStandard>
+    <IsNetCore>false</IsNetCore>
+    <IsNetCore Condition="$(NetCoreVersions.Contains('$(TargetFramework)'))">true</IsNetCore>
   </PropertyGroup>
   <PropertyGroup Condition="'$(SignAssemblies)' == 'true'">
     <SignAssembly>true</SignAssembly>

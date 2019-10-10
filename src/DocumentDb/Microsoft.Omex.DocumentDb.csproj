@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(NetFrameworkVersion);$(NetStandardVersion)</TargetFrameworks>
+    <TargetFrameworks>$(NetFrameworkVersion);$(NetStandardVersions)</TargetFrameworks>
     <Description>Contains Omex Document Db code</Description>
     <RootNamespace>Microsoft.Omex.DocumentDb</RootNamespace>
     <AssemblyName>Microsoft.Omex.DocumentDb</AssemblyName>

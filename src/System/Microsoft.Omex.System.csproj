@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(TargetFrameworks);$(NetStandardVersion)</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersion)</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks);$(NetStandardVersions)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersions)</TargetFrameworks>
     <Description>Contains common classes for Omex libraries.</Description>
   </PropertyGroup>
   <ItemGroup>
