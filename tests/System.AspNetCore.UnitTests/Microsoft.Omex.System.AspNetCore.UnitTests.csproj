@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(NetFrameworkVersion);$(NetCoreVersion)</TargetFrameworks>
+    <TargetFrameworks>$(NetFrameworkVersion);$(NetCoreVersions)</TargetFrameworks>
     <Description>Contains unit tests for Omex libraries in AspNetCore.</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Moq" Version="$(MoqVersionCore)" />
     <PackageReference Include="MSTest.TestAdapter" Version="$(MSTestAdapterVersion)" />
-    <PackageReference Include="MSTest.TestFramework" Version="$(MSTestAdapterVersion)" />
+    <PackageReference Include="MSTest.TestFramework" Version="$(MSTestFrameworkVersion)" />
   </ItemGroup>
 
   <ItemGroup>
