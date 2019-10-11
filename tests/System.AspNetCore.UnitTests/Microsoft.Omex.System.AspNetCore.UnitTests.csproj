@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Moq" Version="$(MoqVersionCore)" />
     <PackageReference Include="MSTest.TestAdapter" Version="$(MSTestAdapterVersion)" />
-    <PackageReference Include="MSTest.TestFramework" Version="$(MSTestAdapterVersion)" />
+    <PackageReference Include="MSTest.TestFramework" Version="$(MSTestFrameworkVersion)" />
   </ItemGroup>
 
   <ItemGroup>
