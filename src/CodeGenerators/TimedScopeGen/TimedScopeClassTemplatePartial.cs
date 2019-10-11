@@ -1,55 +1,43 @@
-﻿/***************************************************************************
-	TimedScopeClassTemplatePartial.cs
-
-	Owner: matoma
-	Copyright (c) Microsoft Corporation
-
-	Partial definitions for TimedScopeClassTemplate genarated generator
-***************************************************************************/
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Microsoft.Office.Web.OfficeMarketplace.TimedScopeGen
+namespace Microsoft.Omex.CodeGenerators.TimedScopeGen
 {
 	/// <summary>
 	/// Partial definitions for TimedScopeClassTemplate genarated generator
 	/// </summary>
-	/// <owner alias="matoma"/>
 	public partial class TimedScopeClassTemplate
 	{
 		/// <summary>
 		/// Collection of timed scopes to be generated to the C# class
 		/// </summary>
-		/// <owner alias="matoma"/>
 		private TimedScopeCollection ScopeCollection { get; }
 
 
 		/// <summary>
 		/// Are we rendering shared timed scopes?
 		/// </summary>
-		/// <owner alias="matoma"/>
 		private bool IsSharedTimedScopes { get; }
 
 
 		/// <summary>
 		/// Name of the generated class
 		/// </summary>
-		/// <owner alias="matoma"/>
 		private string TimedScopeClassName => IsSharedTimedScopes ? "SharedTimedScopes" : "TimedScopes";
 
 
 		/// <summary>
 		/// Assembly name
 		/// </summary>
-		/// <owner alias="matoma"/>
 		private string AssemblyName => Assembly.GetExecutingAssembly().GetName().Name;
 
 
 		/// <summary>
 		/// Assembly version
 		/// </summary>
-		/// <owner alias="matoma"/>
 		private string AssemblyVersion
 		{
 			get
@@ -65,7 +53,6 @@ namespace Microsoft.Office.Web.OfficeMarketplace.TimedScopeGen
 		/// </summary>
 		/// <param name="scopeCollection">Scope collection</param>
 		/// <param name="isSharedTimedScopes">Are we rendering shared timed scopes?</param>
-		/// <owner alias="matoma"/>
 		public TimedScopeClassTemplate(TimedScopeCollection scopeCollection, bool isSharedTimedScopes)
 		{
 			ScopeCollection = scopeCollection;

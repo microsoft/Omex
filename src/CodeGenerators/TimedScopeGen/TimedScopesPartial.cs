@@ -1,25 +1,17 @@
-﻿/***************************************************************************
-	TimedScopesPartial.cs
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
-	Owner: matoma
-	Copyright (c) Microsoft Corporation
-
-	Partial definitions added to the generated TimedScopes.cs file
-***************************************************************************/
-
-namespace Microsoft.Office.Web.OfficeMarketplace.TimedScopeGen
+namespace Microsoft.Omex.CodeGenerators.TimedScopeGen
 {
 	/// <summary>
-	/// Partal definitions for the TimedScope class
+	/// Partial definitions for the TimedScope class
 	/// </summary>
-	/// <owner alias="matoma"/>
 	public partial class TimedScope
 	{
 		/// <summary>
 		/// Gets the description
 		/// </summary>
 		/// <returns>Description</returns>
-		/// <owner alias="matoma"/>
 		public string GetDescription() => Description ?? string.Join(string.Empty, Text);
 	}
 }

@@ -1,21 +1,14 @@
-﻿/*****************************************************************************
-	TimedScopesDefinitionExtensions.cs
-
-	Owner: matoma
-	Copyright (c) Microsoft Corporation.
-
-	Contains extension methods for timed scope definitions
-******************************************************************************/
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
 using System;
 using System.Text;
 
-namespace Microsoft.Office.Web.OfficeMarketplace.TimedScopeGen
+namespace Microsoft.Omex.CodeGenerators.TimedScopeGen
 {
 	/// <summary>
 	/// Contains extension methods for converting timed scope definitions to perf counters
 	/// </summary>
-	/// <owner alias="matoma"/>
 	public static class TimedScopesDefinitionExtensions
 	{
 		/// <summary>
@@ -23,7 +16,6 @@ namespace Microsoft.Office.Web.OfficeMarketplace.TimedScopeGen
 		/// </summary>
 		/// <param name="timedScopeArea"></param>
 		/// <returns>Striped name</returns>
-		/// <owner alias="matoma"/>
 		public static string StrippedName(this TimedScopeArea timedScopeArea)
 		{
 			if (timedScopeArea.name.StartsWith(Program.ProductOmex, StringComparison.OrdinalIgnoreCase))
@@ -42,10 +34,9 @@ namespace Microsoft.Office.Web.OfficeMarketplace.TimedScopeGen
 		/// <param name="maxCharactersPerLine">the maximal number of characters allowed per line</param>
 		/// <param name="indentationLevel">the indentation level used for new lines</param>
 		/// <returns>Description text devided into several lines</returns>
-		/// <owner alias="hubgezi">Hubert Gezikiewicz</owner>
 		public static string FormatDescription(this TimedScope scope, int maxCharactersPerLine = 140, int indentationLevel = 5)
 		{
-			string description = scope.GetDescription() ?? "MissingDescription";
+            string description = scope.GetDescription() ?? "MissingDescription";
 			StringBuilder result = new StringBuilder(description.Length + 50);
 			int startIndex = 0;
 

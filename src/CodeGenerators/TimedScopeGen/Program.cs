@@ -1,11 +1,5 @@
-﻿/****************************************************************************
-	Program.cs
-
-	Owner: andremcq
-	Copyright (c) Microsoft Corporation
-
-	Main entry point.
-****************************************************************************/
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
 using System;
 using System.Diagnostics;
@@ -14,18 +8,16 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Microsoft.Office.Web.OfficeMarketplace.TimedScopeGen
+namespace Microsoft.Omex.CodeGenerators.TimedScopeGen
 {
 	/// <summary>
 	/// Main entry point
 	/// </summary>
-	/// <owner alias="andremcq">Andre McQuaid</owner>
 	internal class Program
 	{
 		/// <summary>
 		/// Omex product name
 		/// </summary>
-		/// <owner alias="andremcq">Andre McQuaid</owner>
 		public const string ProductOmex = "Omex";
 
 
@@ -33,15 +25,14 @@ namespace Microsoft.Office.Web.OfficeMarketplace.TimedScopeGen
 		/// Main entry point from command line.
 		/// </summary>
 		/// <param name="arguments">Command line arguments</param>
-		/// <returns>0 if successfull; 1 otherwise</returns>
-		/// <owner alias="andremcq">Andre McQuaid</owner>
+		/// <returns>0 if successfull; 1 otherwise</returns>>
 		private static int Main(string[] arguments)
 		{
 			if (arguments.Length < 2)
 			{
 				FileVersionInfo version = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
-				Console.WriteLine("Office Marketplace timed scope generator, version {0}", version.FileVersion);
-				Console.WriteLine("Usage: countergen.exe [TimedScopes.xml] [OutputFile.cs]");
+				Console.WriteLine("Timed scope generator, version {0}", version.FileVersion);
+				Console.WriteLine("Usage: Microsoft.Omex.CodeGenerators.TimedScopeGen.exe [TimedScopes.xml] [OutputFile.cs]");
 				return 1;
 			}
 
@@ -76,7 +67,6 @@ namespace Microsoft.Office.Web.OfficeMarketplace.TimedScopeGen
 		/// <param name="timedScopesDefinitionFile">Timed scopes definition file</param>
 		/// <param name="timedScopesFile">File to generate C# static class</param>
 		/// <param name="isSharedTimedScope">Is the TimedScope class to be generated a Shared one.</param>
-		/// <owner alias="matoma" />
 		public static void GenerateTimedScopesClass(FileInfo timedScopesDefinitionFile, FileInfo timedScopesFile, bool isSharedTimedScope = false)
 		{
 			TimedScopeCollection timedScopeCollection = ReadFromFile<TimedScopeCollection>(timedScopesDefinitionFile);
@@ -96,7 +86,6 @@ namespace Microsoft.Office.Web.OfficeMarketplace.TimedScopeGen
 		/// <typeparam name="T">Type of object to read</typeparam>
 		/// <param name="file">File from which the object should be read</param>
 		/// <returns>Deserialized object</returns>
-		/// <owner alias="matoma"/>
 		public static T ReadFromFile<T>(FileInfo file)
 		{
 			using (FileStream stream = file.OpenRead())
