@@ -125,13 +125,9 @@ namespace Microsoft.Omex.System.TimedScopes
 
 		/// <summary>
 		/// Gets or sets the user hash for the current correlation.  Only call the setter directly
-		/// if you already have a hashed value, use ComputeUserHash to compute the hash
+		/// if you already have a hashed value, use a hashing function to compute the hash
 		/// of a user string and set it.
-		/// This is set by:
-		///		1. External web service calls where we have direct access to information
-		///		such as user PUID (e.g. POSA provisioning calls)
-		///		2. Microsoft.Office.Web.OfficeMarketplace.WebSite.RequestProcessHandler.StartRequest.
-		///		3. Microsoft.Office.Web.OfficeMarketplace.WebService.RequestProcessHandler.StartRequest.
+		/// This can be set by web service calls where there is user information available.
 		/// Its value is read and logged by <see cref="TimedScope.EndScope"/>.
 		/// </summary>
 		/// <remarks>Used to count timed scope hits by user.</remarks>
