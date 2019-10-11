@@ -5,7 +5,7 @@
 			<xs:sequence>
 				<xs:element name="TestGroup" maxOccurs="unbounded">
 					<xs:annotation>
-						<xs:documentation>Test groups are used to filter user access to marketplace features and apps</xs:documentation>
+						<xs:documentation>Test groups are used to filter user access to gated features and apps</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
 						<xs:sequence>
