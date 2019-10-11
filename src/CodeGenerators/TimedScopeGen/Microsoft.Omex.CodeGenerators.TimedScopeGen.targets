@@ -4,13 +4,13 @@
 		Usage :
 		<ItemGroup>
 			<TimedScope Include="timedscope_xml_path">
-			  <Name>timedscope_name</Name>
+			  <Name>timedscope_file_prefix</Name>
 			</TimedScope>
 		</ItemGroup>
 	-->
 
 	<PropertyGroup>
-		<TimedScopeGenExecutable>$(MSBuildThisFileDirectory)..\lib\$(TargetFramework)\Microsoft.Omex.CodeGenerators.TimedScopeGen.exe</TimedScopeGenExecutable>
+		<TimedScopeGenExecutable>$(MSBuildThisFileDirectory)..\lib\net45\Microsoft.Omex.CodeGenerators.TimedScopeGen.exe</TimedScopeGenExecutable>
 	</PropertyGroup>
 
 	<ItemGroup>

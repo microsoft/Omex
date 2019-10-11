@@ -44,7 +44,7 @@ namespace Microsoft.Omex.CodeGenerators.TimedScopeGen
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using Microsoft.Office.Web.OfficeMarketplace.Shared.Logging;
+using Microsoft.Omex.System.TimedScopes;
 
 namespace ");
             
