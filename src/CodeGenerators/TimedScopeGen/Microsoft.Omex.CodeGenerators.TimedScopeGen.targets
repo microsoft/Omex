@@ -1,0 +1,39 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!--
+		Generate strongly typed timedscopes from timedscope xmls
+		Usage :
+		<ItemGroup>
+			<TimedScope Include="timedscope_xml_path">
+			  <Name>timedscope_file_prefix</Name>
+			</TimedScope>
+		</ItemGroup>
+	-->
+
+	<PropertyGroup>
+		<TimedScopeGenExecutable>$(MSBuildThisFileDirectory)..\lib\net45\Microsoft.Omex.CodeGenerators.TimedScopeGen.exe</TimedScopeGenExecutable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<CustomTargetInputs Include="@(TimedScope -> '%(Identity)')" />
+		<QCustomInput Include="@(CustomTargetInputs)" />
+	</ItemGroup>
+
+	<Target Name="TimedscopeGen" BeforeTargets="CoreCompile">
+		<Message Text="Running TimedScopeGen Target" />
+
+		<Error Text="No TimedScopes have been defined."
+			Condition="'(TimedScope)' == ''" />
+		<Error Text="The attribute 'Name' was not specified for %(TimedScope.Name) TimeScope."
+			Condition="'%(TimedScope.Name)' == ''" />
+
+		<!-- Generate TimedScopes.cs classes
+		To support multiple timedscopes, the cs classes will be named "<timedscope_name>TimedScopes.cs" -->
+		<Exec Command="$(TimedScopeGenExecutable) %(TimedScope.Identity) $(IntermediateOutputPath)%(TimedScope.Name)TimeScopes.cs true" Condition="'%(TimedScope.Name)' == 'shared'" />
+		<Exec Command="$(TimedScopeGenExecutable) %(TimedScope.Identity) $(IntermediateOutputPath)%(TimedScope.Name)TimeScopes.cs false" Condition="'%(TimedScope.Name)' != 'shared'" />
+
+		<!-- Include TimedScopes in the build process -->
+		<CreateItem Include="@(TimedScope -> '$(IntermediateOutputPath)%(Name)TimeScopes.cs')">
+		  <Output TaskParameter="Include" ItemName="Compile"/>
+		</CreateItem>
+	</Target>
+</Project>
