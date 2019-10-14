@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Omex.System.Logging;
@@ -56,20 +57,19 @@ namespace Microsoft.Omex.System.Validation
 
 
 		/// <summary>
-		/// Checks the enumeable argument and throws an exception if it is null, contains no values, or contains any null values
+		/// Checks the collection and throws an exception if it is null, contains no values, or contains any null values
 		/// </summary>
-		/// <remarks>Be careful to not pass enumerables that can be enumerated only once</remarks>
-		/// <typeparam name="T">Type of the enumerable</typeparam>
+		/// <typeparam name="T">Type of the collection</typeparam>
 		/// <param name="argumentValue">The argument value.</param>
 		/// <param name="argumentName">Name of the argument.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed.</param>
-		/// <exception cref="ArgumentException">Thrown if any argument  <paramref name="argumentValue"/> element is null.</exception>
+		/// <exception cref="ArgumentException">Thrown if <paramref name="argumentValue"/> is empty or if any element is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
-		public static IEnumerable<T> ExpectsAnyAndAllNotNull<T>([ValidatedNotNull] IEnumerable<T> argumentValue, string argumentName, uint? tagId) where T : class
+		public static IEnumerable<T> ExpectsNotEmptyAndAllNotNull<T>([ValidatedNotNull] ICollection<T> argumentValue, string argumentName, uint? tagId) where T : class
 		{
 			argumentValue = ExpectsArgument(argumentValue, argumentName, tagId);
 
-			if (!ValidateAnyAndAllNotNull(argumentValue, argumentName, tagId))
+			if (!ValidateNotEmptyAndAllNotNull(argumentValue, argumentName, tagId))
 			{
 				ReportArgumentError(argumentName, HasAnyErrorMessage);
 			}
@@ -222,15 +222,14 @@ namespace Microsoft.Omex.System.Validation
 
 
 		/// <summary>
-		/// Checks that the enumerable argument is not null, is not empty, and does not contain nulls
+		/// Checks that the collection is not null, is not empty, and does not contain nulls
 		/// </summary>
-		/// <remarks>Be careful to not pass enumerables that can be enumerated only once</remarks>
-		/// <typeparam name="T">The type of the enumerable</typeparam>
+		/// <typeparam name="T">The type of the collection</typeparam>
 		/// <param name="argumentValue">The argument value.</param>
 		/// <param name="argumentName">Name of the argument.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null, is not empty, and does not contain nulls; false otherwise.</returns>
-		public static bool ValidateAnyAndAllNotNull<T>(IEnumerable<T> argumentValue, string argumentName, uint? tagId) 
+		public static bool ValidateNotEmptyAndAllNotNull<T>(ICollection<T> argumentValue, string argumentName, uint? tagId) 
 			where T : class
 		{
 			if (!ValidateArgument(argumentValue, argumentName, tagId))
@@ -238,7 +237,7 @@ namespace Microsoft.Omex.System.Validation
 				return false;
 			}
 
-			if (!argumentValue.Any() || argumentValue.Any(x => x == null))
+			if (!argumentValue.Any()|| argumentValue.Any(x => x == null))
 			{
 				if (tagId != null)
 				{
