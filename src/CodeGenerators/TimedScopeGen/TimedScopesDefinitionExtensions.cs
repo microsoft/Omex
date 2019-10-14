@@ -36,7 +36,7 @@ namespace Microsoft.Omex.CodeGenerators.TimedScopeGen
 		/// <returns>Description text devided into several lines</returns>
 		public static string FormatDescription(this TimedScope scope, int maxCharactersPerLine = 140, int indentationLevel = 5)
 		{
-            string description = scope.GetDescription() ?? "MissingDescription";
+			string description = scope.GetDescription() ?? "MissingDescription";
 			StringBuilder result = new StringBuilder(description.Length + 50);
 			int startIndex = 0;
 
