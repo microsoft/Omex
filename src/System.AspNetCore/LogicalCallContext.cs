@@ -27,6 +27,7 @@ namespace Microsoft.Omex.System.AspNetCore
 
 		private static readonly AsyncLocal<IImmutableStack<IImmutableDictionary<string, object>>> s_stackAsyncLocal = new AsyncLocal<IImmutableStack<IImmutableDictionary<string, object>>>();
 
+
 		/// <summary> Context data stored on LogicalCallContext </summary>
 		public LogicalCallContext(IMachineInformation machineInformation)
 		{
@@ -172,6 +173,7 @@ namespace Microsoft.Omex.System.AspNetCore
 				throw new InvalidOperationException("Attempting to end a LogicalCallContext that has not been started.");
 			}
 		}
+
 
 		/// <summary>
 		/// Machine information
