@@ -23,16 +23,16 @@
 
 		<Error Text="No TimedScopes have been defined."
 			Condition="'(TimedScope)' == ''" />
-		<Error Text="The attribute 'Name' was not specified for %(TimedScope.Name) TimeScope."
+		<Error Text="The child element 'Name' was not specified for the TimedScope element."
 			Condition="'%(TimedScope.Name)' == ''" />
 
 		<!-- Generate TimedScopes.cs classes
-		To support multiple timedscopes, the cs classes will be named "<timedscope_name>TimedScopes.cs" -->
-		<Exec Command="$(TimedScopeGenExecutable) %(TimedScope.Identity) $(IntermediateOutputPath)%(TimedScope.Name)TimeScopes.cs true" Condition="'%(TimedScope.Name)' == 'shared'" />
-		<Exec Command="$(TimedScopeGenExecutable) %(TimedScope.Identity) $(IntermediateOutputPath)%(TimedScope.Name)TimeScopes.cs false" Condition="'%(TimedScope.Name)' != 'shared'" />
+		To support multiple timedscopes, the cs classes will be named "<timedscope_file_prefix>TimedScopes.cs" -->
+		<Exec Command="$(TimedScopeGenExecutable) %(TimedScope.Identity) $(IntermediateOutputPath)%(TimedScope.Name)TimedScopes.cs true" Condition="'%(TimedScope.Name)' == 'shared'" />
+		<Exec Command="$(TimedScopeGenExecutable) %(TimedScope.Identity) $(IntermediateOutputPath)%(TimedScope.Name)TimedScopes.cs false" Condition="'%(TimedScope.Name)' != 'shared'" />
 
 		<!-- Include TimedScopes in the build process -->
-		<CreateItem Include="@(TimedScope -> '$(IntermediateOutputPath)%(Name)TimeScopes.cs')">
+		<CreateItem Include="@(TimedScope -> '$(IntermediateOutputPath)%(Name)TimedScopes.cs')">
 		  <Output TaskParameter="Include" ItemName="Compile"/>
 		</CreateItem>
 	</Target>
