@@ -63,8 +63,4 @@
     <!-- Optional: Include the PDB in the built .nupkg -->
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
-  <!-- Bad properties from old projects to make them work -->
-  <PropertyGroup>
-    <NoWarn>1591;NU5104</NoWarn>
-  </PropertyGroup>
 </Project>

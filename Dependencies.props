@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup Label="Package Versions">
-    <MicrosoftNetTestSdkVersion>16.3.0</MicrosoftNetTestSdkVersion>
-    <XunitRunnerVisualStudioVersion>2.4.1</XunitRunnerVisualStudioVersion>
-    <MicrosoftSourceLinkVstsGitVersion>1.0.0-beta2-19367-01</MicrosoftSourceLinkVstsGitVersion>
-    <MicrosoftSourceLinkGitHubVersion>1.0.0-beta2-19367-01</MicrosoftSourceLinkGitHubVersion>
+  <PropertyGroup Label="Package Versions. AutoUpdate">
+    <Microsoft_Azure_DocumentDB_Version>2.8.0</Microsoft_Azure_DocumentDB_Version>
+    <System_ServiceModel_Primitives_Version>4.6.0</System_ServiceModel_Primitives_Version>
+    <Microsoft_AspNetCore_Http_Version>2.2.2</Microsoft_AspNetCore_Http_Version>
+    <Microsoft_AspNetCore_Http_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Http_Abstractions_Version>
+    <System_Threading_Tasks_Version>4.3.0</System_Threading_Tasks_Version>
+    <MSTest_TestAdapter_Version>2.0.0</MSTest_TestAdapter_Version>
+    <MSTest_TestFramework_Version>2.0.0</MSTest_TestFramework_Version>
+    <Microsoft_Net_Test_Sdk_Version>16.3.0</Microsoft_Net_Test_Sdk_Version>
+    <Xunit_Runner_VisualStudio_Version>2.4.1</Xunit_Runner_VisualStudio_Version>
+    <Microsoft_SourceLink_Vsts_Git_Version>1.0.0-beta2-19367-01</Microsoft_SourceLink_Vsts_Git_Version>
+    <Microsoft_SourceLink_GitHub_Version>1.0.0-beta2-19367-01</Microsoft_SourceLink_GitHub_Version>
   </PropertyGroup>
-  <PropertyGroup Label="Package Versions: Pinned">
-    <BondCoreCSharpVersion>6.0.0</BondCoreCSharpVersion>
-    <MicrosoftAzureDocumentDbVersion>2.5.1</MicrosoftAzureDocumentDbVersion>
-    <MoqVersion>4.5.22</MoqVersion>
-    <SystemCollectionsImmutableVersion>1.2.0</SystemCollectionsImmutableVersion>
-    <SystemConfigurationConfigurationManager>4.5.0</SystemConfigurationConfigurationManager>
-    <XunitAssertVersion>2.4.1</XunitAssertVersion>
-    <XunitCoreVersion>2.4.1</XunitCoreVersion>
+  <PropertyGroup Label="Package Versions Core. AutoUpdate">
+    <Moq_Version_Core>4.13.0</Moq_Version_Core>
+    <System_Collections_Immutable_Version_Core>1.6.0</System_Collections_Immutable_Version_Core>
   </PropertyGroup>
-  <PropertyGroup Label="Package Versions Core">
-    <MoqVersionCore>4.13.0</MoqVersionCore>
-    <SystemServiceModelPrimitivesVersionCore>4.6.0</SystemServiceModelPrimitivesVersionCore>
-    <SystemCollectionsImmutableVersionCore>1.6.0</SystemCollectionsImmutableVersionCore>
-    <MicrosoftAspNetCoreHttpAbstractionsVersionCore>2.2.0</MicrosoftAspNetCoreHttpAbstractionsVersionCore>
-    <MicrosoftAzureDocumentDbVersionCore>2.8.0</MicrosoftAzureDocumentDbVersionCore>
-    <NewtonsoftJsonVersionCore>12.0.2</NewtonsoftJsonVersionCore>
-    <XunitAssertVersionCore>2.4.1</XunitAssertVersionCore>
-    <XunitCoreVersionCore>2.4.1</XunitCoreVersionCore>
-    <MicrosoftAspNetCoreHttpVersionCore>2.2.2</MicrosoftAspNetCoreHttpVersionCore>
-    <SystemThreadingTasks>4.3.0</SystemThreadingTasks>
-    <MSTestAdapterVersion>2.0.0</MSTestAdapterVersion>
-    <MSTestFrameworkVersion>2.0.0</MSTestFrameworkVersion>
+  <PropertyGroup Label="Package Versions. Pinned">
+    <Bond_Core_CSharp_Version>6.0.0</Bond_Core_CSharp_Version>
+    <Microsoft_Azure_DocumentDb_Version>2.5.1</Microsoft_Azure_DocumentDb_Version>
+    <Moq_Version>4.5.22</Moq_Version>
+    <System_Collections_Immutable_Version>1.2.0</System_Collections_Immutable_Version>
+    <System_Configuration_ConfigurationManager_Version>4.5.0</System_Configuration_ConfigurationManager_Version>
+    <Xunit_Assert_Version>2.4.1</Xunit_Assert_Version>
+    <Xunit_Core_Version>2.4.1</Xunit_Core_Version>
   </PropertyGroup>
 </Project>

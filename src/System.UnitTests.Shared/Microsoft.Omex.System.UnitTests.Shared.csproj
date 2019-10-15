@@ -5,13 +5,9 @@
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersions)</TargetFrameworks>
     <IsTestProject>false</IsTestProject>
   </PropertyGroup>
-  <ItemGroup Condition="!$(IsNetStandard)">
-    <PackageReference Include="xunit.assert" Version="$(XunitAssertVersion)" />
-    <PackageReference Include="xunit.core" Version="$(XunitCoreVersion)" />
-  </ItemGroup>
-  <ItemGroup Condition="$(IsNetStandard)">
-    <PackageReference Include="xunit.assert" Version="$(XunitAssertVersionCore)" />
-    <PackageReference Include="xunit.core" Version="$(XunitCoreVersionCore)" />
+  <ItemGroup>
+    <PackageReference Include="xunit.assert" Version="$(Xunit_Assert_Version)" />
+    <PackageReference Include="xunit.core" Version="$(Xunit_Core_Version)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System\Microsoft.Omex.System.csproj" />
