@@ -1,11 +1,13 @@
 ﻿<Project>
   <Import Project="$(MSBuildThisFileDirectory)\Dependencies.props" />
-  <PropertyGroup>
+  <PropertyGroup Label="Target Platforms" >
     <NetCoreVersions>netcoreapp2.1;netcoreapp3.0</NetCoreVersions>
     <NetStandardVersions>netstandard2.0;netstandard2.1</NetStandardVersions>
     <NetFrameworkVersion>net461</NetFrameworkVersion> <!-- Framework version that should be targeted alongside with .net standard -->
     <LegacyTargetFrameworks>net452;net45</LegacyTargetFrameworks> <!-- Legacy version, required by internal consumers of packages -->
     <TargetFrameworks>$(LegacyTargetFrameworks)</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup Label="Project Settings" >
     <Platforms>AnyCPU</Platforms>
     <TargetPlatform>AnyCPU</TargetPlatform>
     <ErrorReport>prompt</ErrorReport>
@@ -14,7 +16,7 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup>
+  <PropertyGroup Label="Condition Variables" >
     <IsNetStandard>false</IsNetStandard>
     <IsNetStandard Condition="$(NetStandardVersions.Contains('$(TargetFramework)'))">true</IsNetStandard>
     <IsNetCore>false</IsNetCore>
