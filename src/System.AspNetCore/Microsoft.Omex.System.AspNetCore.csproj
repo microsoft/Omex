@@ -5,10 +5,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.ServiceModel" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="$(MicrosoftAspNetCoreHttpVersionCore)" />
-    <PackageReference Include="System.Threading.Tasks" Version="$(SystemThreadingTasks)"/>
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersionCore)" />
-    <PackageReference Include="System.ServiceModel.Primitives" Version="$(SystemServiceModelPrimitivesVersionCore)" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="$(Microsoft_AspNetCore_Http_Version)" />
+    <PackageReference Include="System.Threading.Tasks" Version="$(System_Threading_Tasks_Version)"/>
+    <PackageReference Include="System.Collections.Immutable" Version="$(System_Collections_Immutable_Version_Core)" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="$(System_ServiceModel_Primitives_Version)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\System\Microsoft.Omex.System.csproj" />
