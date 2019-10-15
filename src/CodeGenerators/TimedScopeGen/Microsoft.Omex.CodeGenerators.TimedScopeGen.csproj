@@ -19,7 +19,7 @@
     <Description>Generates strongly typed timed scopes from a timedscope xml.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
     <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/CodeGenerators/TimedScopeGen</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/microsoft/Omex/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
