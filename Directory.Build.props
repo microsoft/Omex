@@ -8,8 +8,11 @@
     <TargetFrameworks>$(LegacyTargetFrameworks)</TargetFrameworks>
     <Platforms>AnyCPU</Platforms>
     <TargetPlatform>AnyCPU</TargetPlatform>
-    <PackageOutputPath>$(MSBuildThisFileDirectory)\nuget</PackageOutputPath>
-    <DocumentationFileValue>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFileValue>    
+    <ErrorReport>prompt</ErrorReport>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <IsNetStandard>false</IsNetStandard>
@@ -17,16 +20,18 @@
     <IsNetCore>false</IsNetCore>
     <IsNetCore Condition="$(NetCoreVersions.Contains('$(TargetFramework)'))">true</IsNetCore>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(SignAssemblies)' == 'true'">
+  <PropertyGroup Label="Signing" Condition="'$(SignAssemblies)' == 'true'">
     <SignAssembly>true</SignAssembly>
     <DelaySign>true</DelaySign>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\ship.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup>
+  <PropertyGroup Label="Build Output" >
     <BaseOutputPath>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)</BaseOutputPath>
     <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)\nuget</PackageOutputPath>
+    <DocumentationFileValue>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFileValue>
   </PropertyGroup>
-  <PropertyGroup>
+  <PropertyGroup Label="Versioning">
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <!-- The release version should get updated on every new release -->
     <Version>20.0.3</Version>
@@ -34,19 +39,19 @@
     <PackageVersion Condition="'$(IsReleaseBuild)' == 'true'">$(Version)</PackageVersion>
     <!-- Continuous integration version, which is updated on every build of the dev branch -->
     <PackageVersion Condition="'$(IsReleaseBuild)' != 'true'">$(Version)-CI-$(PreReleaseSuffix)</PackageVersion>
-    <Authors>Microsoft Omex</Authors>
-    <Owners>Microsoft Omex</Owners>
+  </PropertyGroup>
+  <PropertyGroup Label="NuGet Properties">
+    <Authors>Microsoft</Authors>
     <Company>Microsoft</Company>
-    <Copyright>Copyright © Microsoft</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <Tags>Omex</Tags>
     <Description>$(MSBuildProjectName)</Description>
   </PropertyGroup>
-  <PropertyGroup>
-    <ErrorReport>prompt</ErrorReport>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  <PropertyGroup Label="Debug Information" >
     <!-- Don't need them due to source linking -->
     <IncludeSource>false</IncludeSource>
     <IncludeSymbols>true</IncludeSymbols>

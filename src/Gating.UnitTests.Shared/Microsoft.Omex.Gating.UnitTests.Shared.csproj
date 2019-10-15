@@ -7,17 +7,10 @@
   </PropertyGroup>
   <PropertyGroup Label="NuGet Properties">
     <Title>Microsoft.Omex.UnitTests.Shared</Title>
-    <DevelopmentDependency>True</DevelopmentDependency>
-    <Authors>Microsoft</Authors>
     <Summary>Microsoft Omex Gating Shared Unit Tests</Summary>
     <Description>Shared unit tests for the Omex Gating library</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
     <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/Gating.UnitTests.Shared</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
-    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageTags>Microsoft;Omex;Gating</PackageTags>
   </PropertyGroup>
   <ItemGroup Condition="!$(IsNetStandard)">

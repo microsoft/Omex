@@ -7,23 +7,15 @@
     <AssemblyName>Microsoft.Omex.CodeGenerators.TimedScopeGen</AssemblyName>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
-    <StartupObject></StartupObject>
-    <Win32Resource />
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Label="NuGet Properties">
     <Title>Microsoft.Omex.CodeGenerators.TimedScopeGen</Title>
     <DevelopmentDependency>True</DevelopmentDependency>
-    <Authors>Microsoft</Authors>
     <Summary>Microsoft Omex TimedScopeGen</Summary>
     <Description>Generates strongly typed timed scopes from a timedscope xml.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
     <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/CodeGenerators/TimedScopeGen</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
-    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageTags>Microsoft;Omex;Logging;Metrics</PackageTags>
   </PropertyGroup>
   <ItemGroup>
