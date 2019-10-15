@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Moq" Version="$(MoqVersionCore)" />
-    <PackageReference Include="MSTest.TestAdapter" Version="$(MSTestAdapterVersion)" />
-    <PackageReference Include="MSTest.TestFramework" Version="$(MSTestFrameworkVersion)" />
+    <PackageReference Include="Moq" Version="$(Moq_Version_Core)" />
+    <PackageReference Include="MSTest.TestAdapter" Version="$(MSTest_TestAdapter_Version)" />
+    <PackageReference Include="MSTest.TestFramework" Version="$(MSTest_TestFramework_Version)" />
   </ItemGroup>
 
   <ItemGroup>
