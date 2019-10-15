@@ -16,12 +16,11 @@
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
+    <PackageReference Include="System.Collections.Immutable" Version="$(System_Collections_Immutable_Version)" />
   </ItemGroup>
   <ItemGroup Condition="$(IsNetCore)">
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersionCore)" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(MicrosoftAspNetCoreHttpAbstractionsVersionCore)" />
-    <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersionCore)" />
+    <PackageReference Include="System.Collections.Immutable" Version="$(System_Collections_Immutable_Version_Core)" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(Microsoft_AspNetCore_Http_Abstractions_Version)" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DefaultGates.xml" Link="DefaultGates.xml">
