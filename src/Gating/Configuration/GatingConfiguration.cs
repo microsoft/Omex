@@ -259,6 +259,7 @@ namespace Gating.Configuration
 
         private bool enabledField;
 
+        /// <remarks/>
         public BaseGateType()
         {
             this.secureField = false;
@@ -908,6 +909,7 @@ namespace Gating.Configuration
 
         private string activeForField;
 
+        /// <remarks/>
         public BaseGateTypeService()
         {
             this.activeForField = "All";

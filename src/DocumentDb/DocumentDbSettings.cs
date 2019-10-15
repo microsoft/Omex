@@ -12,6 +12,9 @@ namespace Microsoft.Omex.DocumentDb
 	/// </summary>
 	public class DocumentDbSettings
 	{
+		/// <summary> 
+		/// Document db settings class.
+		/// </summary>
 		protected DocumentDbSettings(string endpoint, DocumentDbSettingsConfig config = null)
 		{
 			Code.ExpectsNotNullOrWhiteSpaceArgument(endpoint, nameof(endpoint), TaggingUtilities.ReserveTag(0x2381b146 /* tag_961fg */));
