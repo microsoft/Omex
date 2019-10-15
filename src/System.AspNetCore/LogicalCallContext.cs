@@ -27,7 +27,7 @@ namespace Microsoft.Omex.System.AspNetCore
 
 		private static readonly AsyncLocal<IImmutableStack<IImmutableDictionary<string, object>>> s_stackAsyncLocal = new AsyncLocal<IImmutableStack<IImmutableDictionary<string, object>>>();
 
-
+		/// <summary> Context data stored on LogicalCallContext </summary>
 		public LogicalCallContext(IMachineInformation machineInformation)
 		{
 			MachineInformation = machineInformation;
@@ -173,7 +173,9 @@ namespace Microsoft.Omex.System.AspNetCore
 			}
 		}
 
-
+		/// <summary>
+		/// Machine information
+		/// </summary>
 		public static IMachineInformation MachineInformation { get; set; }
 
 

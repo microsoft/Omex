@@ -23,11 +23,11 @@
     <PackageTags>Microsoft;Omex;Gating</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Authentication\Groups\TestGroupsConfiguration.xsd">
+    <EmbeddedResource Update="Authentication\Groups\TestGroupsConfiguration.xsd">
       <Link>TestGroupsConfiguration.xsd</Link>
       <LogicalName>TestGroupsConfiguration.xsd</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="Configuration\GatingConfiguration.xsd">
+    <EmbeddedResource Update="Configuration\GatingConfiguration.xsd">
       <Link>GatingConfiguration.xsd</Link>
       <LogicalName>GatingConfiguration.xsd</LogicalName>
     </EmbeddedResource>
