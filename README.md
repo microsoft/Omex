@@ -1,6 +1,6 @@
 # Microsoft Omex
 
-This repository contains source code for shared components used by the Omex team at Microsoft to build scalable and highly available distributed systems.
+This repository contains source code for shared components used by the Omex team, which is part of the Office organization, at Microsoft to build scalable and highly available distributed systems.
 
 The code is released under the [MIT license](https://github.com/microsoft/Omex/blob/master/LICENSE).
 
