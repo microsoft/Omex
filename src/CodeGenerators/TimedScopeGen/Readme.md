@@ -1,16 +1,16 @@
 # Microsoft Omex TimedScopes C# file code generator.
 (c) Microsoft Corporation.
 
-This tool generates a C# code file for timed scopes, based on input timedscope xml file.
+This tool generates a C# code file for timed scopes, based on input timedscope xml file. You can use timed scopes to handle logging or error and success conditions for a block of code and for measuring runtime performance of the given block.
 
-This package should be used from another project that uses timedscopes. After being added to the project it will automatically run an initial build step that will generate the `TimedScope.cs` file allowing the project files to reference strongly typed timedscopes in code.
+This package should be used from another project that uses timedscopes. After being added to the project it will automatically run an initial build step that will generate the `TimedScopes.cs` file allowing the project files to reference strongly typed timedscopes in code.
 
 The project needs to define the following content in the csproj file:
 
 ```xml
 <ItemGroup>
     <TimedScope Include="timedscope xml path">
-      <Name>timedscope filename prefix</Name>
+      <Name><timedscope_file_prefix></Name>
     </TimedScope>
 </ItemGroup>
 ```
@@ -45,3 +45,5 @@ Then you can build and then use the strongly typed timedscope in your code like 
         scope.Result = TimedScopeResult.Success;
     }
 ```
+
+Building the project will generate a file named `<timedscope_file_prefix>TimedScopes.cs` that allows you to use the timedscope type as shown in the C# code above. The namespace in the generated file is the one defined in the timedscope xml file (in the example it would be `namespace Microsoft.Omex.CodeGenerators.TimedScopeGen.UnitTests`).
