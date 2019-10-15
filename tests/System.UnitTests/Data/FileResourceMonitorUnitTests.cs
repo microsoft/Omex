@@ -10,7 +10,7 @@ using Microsoft.Omex.System.UnitTests.Shared;
 using Microsoft.Omex.System.UnitTests.Shared.Data.FileSystem;
 using Xunit;
 
-namespace MS.Internal.Motif.Office.Web.OfficeMarketplace.Shared.Data
+namespace Microsoft.Omex.System.UnitTests.Data
 {
 	/// <summary>
 	/// Unit tests for the FileResourceMonitor.

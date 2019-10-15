@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(TargetFrameworks);$(NetCoreVersion)</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersion)</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks);$(NetCoreVersions)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions)</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != '$(NetCoreVersion)'">
+  <ItemGroup Condition="!$(IsNetCore)">
     <Reference Include="System.Runtime" />
     <Reference Include="System.Threading.Tasks" />
     <PackageReference Include="Moq" Version="$(MoqVersion)" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == '$(NetCoreVersion)'">
+  <ItemGroup Condition="$(IsNetCore)">
     <PackageReference Include="Moq" Version="$(MoqVersionCore)" />
   </ItemGroup>
   <ItemGroup>
