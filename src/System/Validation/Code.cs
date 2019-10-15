@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Omex.System.Logging;
@@ -49,6 +50,28 @@ namespace Microsoft.Omex.System.Validation
 			if (!ValidateAllNotNull(argumentValue, argumentName, tagId))
 			{
 				ReportArgumentError(argumentName, AllErrorMessage);
+			}
+
+			return argumentValue;
+		}
+
+
+		/// <summary>
+		/// Checks the collection and throws an exception if it is null, contains no values, or contains any null values
+		/// </summary>
+		/// <typeparam name="T">Type of the collection</typeparam>
+		/// <param name="argumentValue">The argument value.</param>
+		/// <param name="argumentName">Name of the argument.</param>
+		/// <param name="tagId">Tag Id to log, leave null if no logging is needed.</param>
+		/// <exception cref="ArgumentException">Thrown if <paramref name="argumentValue"/> is empty or if any element is null.</exception>
+		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
+		public static IEnumerable<T> ExpectsNotEmptyAndAllNotNull<T>([ValidatedNotNull] ICollection<T> argumentValue, string argumentName, uint? tagId) where T : class
+		{
+			argumentValue = ExpectsArgument(argumentValue, argumentName, tagId);
+
+			if (!ValidateNotEmptyAndAllNotNull(argumentValue, argumentName, tagId))
+			{
+				ReportArgumentError(argumentName, HasAnyErrorMessage);
 			}
 
 			return argumentValue;
@@ -195,6 +218,37 @@ namespace Microsoft.Omex.System.Validation
 			}
 
 			return state;
+		}
+
+
+		/// <summary>
+		/// Checks that the collection is not null, is not empty, and does not contain nulls
+		/// </summary>
+		/// <typeparam name="T">The type of the collection</typeparam>
+		/// <param name="argumentValue">The argument value.</param>
+		/// <param name="argumentName">Name of the argument.</param>
+		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
+		/// <returns>True if the argument <paramref name="argumentValue"/> is not null, is not empty, and does not contain nulls; false otherwise.</returns>
+		public static bool ValidateNotEmptyAndAllNotNull<T>(ICollection<T> argumentValue, string argumentName, uint? tagId) 
+			where T : class
+		{
+			if (!ValidateArgument(argumentValue, argumentName, tagId))
+			{
+				return false;
+			}
+
+			if (!argumentValue.Any()|| argumentValue.Any(x => x == null))
+			{
+				if (tagId != null)
+				{
+					UntaggedLogging.LogTraceTag(tagId.Value, Categories.ArgumentValidation, Levels.Error,
+						ValidationFailed, AllErrorMessage, argumentName);
+				}
+
+				return false;
+			}
+
+			return true;
 		}
 
 

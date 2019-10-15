@@ -45,6 +45,49 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 
 		[Theory]
+		[InlineData("")]
+		[InlineData("", "")]
+		public void ExpectsNotEmptyAndAllNotNull_CorrectArgument_DoesNotLogOrThrowException(params string[] argumentValues)
+		{
+			FailOnErrors = true;
+
+			uint? tagId = 1234;
+
+			Code.ExpectsNotEmptyAndAllNotNull(argumentValues, ArgumentName, tagId);
+
+			CheckLogCount(tagId, false);
+		}
+
+
+		[Theory]
+		[InlineData(null, true)]
+		[InlineData(null, false)]
+		[InlineData(new string[0], true)]
+		[InlineData(new string[0], false)]
+		[InlineData(new string[] { null }, true)]
+		[InlineData(new string[] { null }, false)]
+		[InlineData(new string[] { "", null }, true)]
+		[InlineData(new string[] { "", null }, false)]
+		public void ExpectsNotEmptyAndAllNotNull_IncorrectArgument_LogsAndThrowsException(string[] argumentValues, bool log)
+		{
+			FailOnErrors = !log;
+
+			uint? tagId = 1234;
+
+			if (argumentValues is null)
+			{
+				Assert.Throws<ArgumentNullException>(() => Code.ExpectsNotEmptyAndAllNotNull(argumentValues, ArgumentName, log ? tagId : null));
+			}
+			else
+			{
+				Assert.Throws<ArgumentException>(() => Code.ExpectsNotEmptyAndAllNotNull(argumentValues, ArgumentName, log ? tagId : null));
+			}
+
+			CheckLogCount(tagId, log);
+		}
+
+
+		[Theory]
 		[InlineData(0)]
 		[InlineData(1)]
 		[InlineData(2)]
@@ -312,6 +355,62 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 
 		[Theory]
+		[InlineData(new string[0], true)]
+		[InlineData(new string[0], false)]
+		[InlineData(new string[] { null }, true)]
+		[InlineData(new string[] { null }, false)]
+		[InlineData(new string[] { "", null }, true)]
+		[InlineData(new string[] { "", null }, false)]
+		[InlineData(null, true)]
+		[InlineData(null, false)]
+		public void ValidateNotEmptyAndAllNotNull_IncorrectArgument_LogsAndReturnsFalse(string[] argumentValue, bool log)
+		{
+			FailOnErrors = !log;
+
+			uint? tagId = 1234;
+
+			Assert.False(Code.ValidateNotEmptyAndAllNotNull(argumentValue, ArgumentName, log ? tagId : null));
+
+			CheckLogCount(tagId, log);
+		}
+
+
+		[Fact]
+		public void ValidateNotEmptyAndAllNotNull_CorrectArgument_DoesNotLogAndReturnsTrue()
+		{
+			FailOnErrors = true;
+
+			uint? tagId = 1234;
+
+			Assert.True(Code.ValidateNotEmptyAndAllNotNull(new[] { "" }, ArgumentName, tagId));
+
+			CheckLogCount(tagId, false);
+		}
+
+
+		[Theory]
+		[InlineData(0)]
+		[InlineData(1)]
+		[InlineData(2)]
+		public void ValidateAllNotNull_CorrectArgument_DoesNotLogOrThrowException(int count)
+		{
+			FailOnErrors = true;
+
+			uint? tagId = 1234;
+
+			string[] argumentValues = new string[count];
+			for (int i = 0; i < count; i++)
+			{
+				argumentValues[i] = "";
+			}
+
+			Assert.True(Code.ValidateAllNotNull(argumentValues, ArgumentName, tagId));
+
+			CheckLogCount(tagId, false);
+		}
+
+
+		[Theory]
 		[InlineData(0, true)]
 		[InlineData(0, false)]
 		[InlineData(1, true)]
@@ -337,16 +436,24 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 				}
 			}
 
-			if (count == 0)
-			{
-				Assert.False(Code.ValidateAllNotNull(argumentValues, ArgumentName, log ? tagId : null));
-			}
-			else
-			{
-				Assert.False(Code.ValidateAllNotNull(argumentValues, ArgumentName, log ? tagId : null));
-			}
+			Assert.False(Code.ValidateAllNotNull(argumentValues, ArgumentName, log ? tagId : null));
 
 			CheckLogCount(tagId, log);
+		}
+
+
+		[Theory]
+		[InlineData("")]
+		[InlineData("", null)]
+		public void ValidateAny_CorrectArgument_DoesNotLogAndReturnsTrue(params string[] argumentValue)
+		{
+			FailOnErrors = true;
+
+			uint? tagId = 1234;
+
+			Assert.True(Code.ValidateAny(argumentValue, ArgumentName, tagId));
+
+			CheckLogCount(tagId, false);
 		}
 
 
