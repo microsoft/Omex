@@ -20,19 +20,19 @@
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageTags>Microsoft;Omex;Gating</PackageTags>
   </PropertyGroup>
-  <ItemGroup Condition="!$(IsNetStandard)">
-    <PackageReference Include="xunit.assert" Version="$(XunitAssertVersion)" />
-    <PackageReference Include="xunit.core" Version="$(XunitCoreVersion)" />
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
-  </ItemGroup>
-  <ItemGroup Condition="$(IsNetStandard)">
-    <PackageReference Include="xunit.assert" Version="$(XunitAssertVersionCore)" />
-    <PackageReference Include="xunit.core" Version="$(XunitCoreVersionCore)" />
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersionCore)" />
+  <ItemGroup>
+    <PackageReference Include="xunit.assert" Version="$(Xunit_Assert_Version)" />
+    <PackageReference Include="xunit.core" Version="$(Xunit_Core_Version)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Gating\Microsoft.Omex.Gating.csproj" />
     <ProjectReference Include="..\System.UnitTests.Shared\Microsoft.Omex.System.UnitTests.Shared.csproj" />
     <ProjectReference Include="..\System\Microsoft.Omex.System.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="!$(IsNetStandard)">
+    <PackageReference Include="System.Collections.Immutable" Version="$(System_Collections_Immutable_Version)" />
+  </ItemGroup>
+  <ItemGroup Condition="$(IsNetStandard)">
+    <PackageReference Include="System.Collections.Immutable" Version="$(System_Collections_Immutable_Version_Core)" />
   </ItemGroup>
 </Project>
