@@ -14,16 +14,10 @@
   <PropertyGroup Label="NuGet Properties">
     <Title>Microsoft.Omex.CodeGenerators.GateGen</Title>
     <DevelopmentDependency>True</DevelopmentDependency>
-    <Authors>Microsoft</Authors>
     <Summary>Microsoft Omex GateGen</Summary>
     <Description>Generates strongly typed gates from a gates xml.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
     <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/CodeGenerators/GateGen</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
-    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageTags>Microsoft;Omex;Gating</PackageTags>
   </PropertyGroup>
   <ItemGroup>
