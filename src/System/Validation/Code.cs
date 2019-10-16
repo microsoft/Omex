@@ -4,10 +4,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Omex.System.Logging;
 using UntaggedLogging = Microsoft.Omex.System.Logging.ULSLogging;
 
+#nullable enable
 namespace Microsoft.Omex.System.Validation
 {
 	/// <summary>
@@ -42,7 +44,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <exception cref="ArgumentException">Thrown if any argument  <paramref name="argumentValue"/> element is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
-		public static IEnumerable<T> ExpectsAllNotNull<T>([ValidatedNotNull] IEnumerable<T> argumentValue, string argumentName, uint? tagId)
+		public static IEnumerable<T> ExpectsAllNotNull<T>([ValidatedNotNull] IEnumerable<T>? argumentValue, string argumentName, uint? tagId)
 			where T : class
 		{
 			argumentValue = ExpectsArgument(argumentValue, argumentName, tagId);
@@ -65,7 +67,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed.</param>
 		/// <exception cref="ArgumentException">Thrown if <paramref name="argumentValue"/> is empty or if any element is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
-		public static IEnumerable<T> ExpectsNotEmptyAndAllNotNull<T>([ValidatedNotNull] ICollection<T> argumentValue, string argumentName, uint? tagId) where T : class
+		public static IEnumerable<T> ExpectsNotEmptyAndAllNotNull<T>([ValidatedNotNull] ICollection<T>? argumentValue, string argumentName, uint? tagId) where T : class
 		{
 			argumentValue = ExpectsArgument(argumentValue, argumentName, tagId);
 
@@ -86,7 +88,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <exception cref="ArgumentException">Thrown if the argument <paramref name="argumentValue"/> is empty.</exception>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
-		public static IEnumerable<T> ExpectsAny<T>([ValidatedNotNull] IEnumerable<T> argumentValue, string argumentName, uint? tagId)
+		public static IEnumerable<T> ExpectsAny<T>([ValidatedNotNull] IEnumerable<T>? argumentValue, string argumentName, uint? tagId)
 		{
 			argumentValue = ExpectsArgument(argumentValue, argumentName, tagId);
 
@@ -107,11 +109,12 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <typeparam name="T">Type of argument to validate</typeparam>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
-		public static T ExpectsArgument<T>([ValidatedNotNull] T argumentValue, string argumentName, uint? tagId)
+		public static T ExpectsArgument<T>([ValidatedNotNull] T? argumentValue, string argumentName, uint? tagId) 
+            where T:class
 		{
 			if (!ValidateArgument(argumentValue, argumentName, tagId))
 			{
-				ReportArgumentNull(argumentName);
+				return ReportArgumentNull<T>(argumentName);
 			}
 
 			return argumentValue;
@@ -129,7 +132,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <typeparam name="T">Type of argument to validate</typeparam>
 		/// <exception cref="ArgumentException">Thrown if the supplied argument <paramref name="argumentValue"/> does not meet the predicate <paramref name="predicate"/>.</exception>
 		public static T ExpectsArgument<T>(T argumentValue, string argumentName, Func<T, bool> predicate, string errorMessage, uint? tagId)
-		{
+        {
 			if (!ValidateArgument(argumentValue, argumentName, predicate, errorMessage, tagId))
 			{
 				ReportArgumentError(argumentName, errorMessage);
@@ -147,7 +150,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <exception cref="ArgumentException">Thrown if the argument <paramref name="argumentValue"/> is empty or contains only whitespace.</exception>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
-		public static string ExpectsNotNullOrWhiteSpaceArgument([ValidatedNotNull] string argumentValue, string argumentName, uint? tagId)
+		public static string ExpectsNotNullOrWhiteSpaceArgument([ValidatedNotNull] string? argumentValue, string argumentName, uint? tagId)
 		{
 			argumentValue = ExpectsArgument(argumentValue, argumentName, tagId);
 
@@ -172,7 +175,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="tagId">Tag identifier to log; leave null if no logging is required.</param>
 		/// <returns>Returns the argument value as is if validation succeeds, otherwise an exception is thrown.</returns>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
-		public static T ExpectsObject<T>([ValidatedNotNull] T argumentValue, string argumentName, uint? tagId) where T : class
+		public static T ExpectsObject<T>([ValidatedNotNull] T? argumentValue, string argumentName, uint? tagId) where T : class
 		{
 			return ExpectsArgument<T>(argumentValue, argumentName, tagId);
 		}
@@ -229,7 +232,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="argumentName">Name of the argument.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null, is not empty, and does not contain nulls; false otherwise.</returns>
-		public static bool ValidateNotEmptyAndAllNotNull<T>(ICollection<T> argumentValue, string argumentName, uint? tagId) 
+		public static bool ValidateNotEmptyAndAllNotNull<T>([NotNullWhen(true)]ICollection<T>? argumentValue, string argumentName, uint? tagId) 
 			where T : class
 		{
 			if (!ValidateArgument(argumentValue, argumentName, tagId))
@@ -237,7 +240,7 @@ namespace Microsoft.Omex.System.Validation
 				return false;
 			}
 
-			if (!argumentValue.Any()|| argumentValue.Any(x => x == null))
+			if (!argumentValue.Any() || argumentValue.Any(x => x == null))
 			{
 				if (tagId != null)
 				{
@@ -261,7 +264,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="argumentName">Name of the argument.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null and contains only non-null elements; false otherwise.</returns>
-		public static bool ValidateAllNotNull<T>(IEnumerable<T> argumentValue, string argumentName, uint? tagId)
+		public static bool ValidateAllNotNull<T>([NotNullWhen(true)]IEnumerable<T>? argumentValue, string argumentName, uint? tagId)
 			where T : class
 		{
 			if (!ValidateArgument(argumentValue, argumentName, tagId))
@@ -292,7 +295,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null and contains at least one element; false otherwise.</returns>
 		/// <typeparam name="T">The element type.</typeparam>
-		public static bool ValidateAny<T>(IEnumerable<T> argumentValue, string argumentName, uint? tagId)
+		public static bool ValidateAny<T>([NotNullWhen(true)]IEnumerable<T>? argumentValue, string argumentName, uint? tagId)
 		{
 			if (!ValidateArgument(argumentValue, argumentName, tagId))
 			{
@@ -321,7 +324,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="argumentName">Name of the argument.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null; false otherwise.</returns>
-		public static bool ValidateArgument(object argumentValue, string argumentName, uint? tagId)
+		public static bool ValidateArgument([NotNullWhen(true)]object? argumentValue, string argumentName, uint? tagId)
 		{
 			if (argumentValue == null)
 			{
@@ -396,7 +399,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="argumentName">The argument name.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null, empty or only whitespace; false otherwise.</returns>
-		public static bool ValidateNotNullOrWhiteSpaceArgument(string argumentValue, string argumentName, uint? tagId = null)
+		public static bool ValidateNotNullOrWhiteSpaceArgument([NotNullWhen(true)]string? argumentValue, string argumentName, uint? tagId = null)
 		{
 			if (string.IsNullOrWhiteSpace(argumentValue))
 			{
@@ -418,11 +421,12 @@ namespace Microsoft.Omex.System.Validation
 		}
 
 
-		/// <summary>
-		/// Report a null argument
-		/// </summary>
-		/// <param name="argumentName">Argument name</param>
-		private static void ReportArgumentNull(string argumentName)
+        /// <summary>
+        /// Report a null argument
+        /// </summary>
+        /// <param name="argumentName">Argument name</param>
+        /// <returns>The function has a return type in order to be used in the return statement, to explain compiler that it will end method execution</returns>
+        private static T ReportArgumentNull<T>(string argumentName)
 		{
 			throw new ArgumentNullException(argumentName);
 		}
