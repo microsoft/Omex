@@ -109,8 +109,8 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <typeparam name="T">Type of argument to validate</typeparam>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
-		public static T ExpectsArgument<T>([ValidatedNotNull] T? argumentValue, string argumentName, uint? tagId) 
-            where T:class
+		public static T ExpectsArgument<T>([ValidatedNotNull] T? argumentValue, string argumentName, uint? tagId)
+			where T:class
 		{
 			if (!ValidateArgument(argumentValue, argumentName, tagId))
 			{
@@ -132,7 +132,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <typeparam name="T">Type of argument to validate</typeparam>
 		/// <exception cref="ArgumentException">Thrown if the supplied argument <paramref name="argumentValue"/> does not meet the predicate <paramref name="predicate"/>.</exception>
 		public static T ExpectsArgument<T>(T argumentValue, string argumentName, Func<T, bool> predicate, string errorMessage, uint? tagId)
-        {
+		{
 			if (!ValidateArgument(argumentValue, argumentName, predicate, errorMessage, tagId))
 			{
 				ReportArgumentError(argumentName, errorMessage);
@@ -421,12 +421,12 @@ namespace Microsoft.Omex.System.Validation
 		}
 
 
-        /// <summary>
-        /// Report a null argument
-        /// </summary>
-        /// <param name="argumentName">Argument name</param>
-        /// <returns>The function has a return type in order to be used in the return statement, to explain compiler that it will end method execution</returns>
-        private static T ReportArgumentNull<T>(string argumentName)
+		/// <summary>
+		/// Report a null argument
+		/// </summary>
+		/// <param name="argumentName">Argument name</param>
+		/// <returns>The function has a return type in order to be used in the return statement, to explain compiler that it will end method execution</returns>
+		private static T ReportArgumentNull<T>(string argumentName)
 		{
 			throw new ArgumentNullException(argumentName);
 		}

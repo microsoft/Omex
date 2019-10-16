@@ -395,7 +395,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>Replaced document.</returns>
 		public async Task<ResourceResponse<Document>> ReplaceDocumentAsync<T>(
 			string dbId, string collectionId, string docId, T entity, RequestOptions requestOptions = null)
-            where T:class
+			where T:class
 		{
 			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0x2381b19a /* tag_961g0 */));
 			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0x2381b19b /* tag_961g1 */));
@@ -422,7 +422,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>Upserted document.</returns>
 		public async Task<ResourceResponse<Document>> UpsertDocumentAsync<T>(
 			string dbId, string collectionId, T entity, RequestOptions requestOptions = null, bool disableIdGeneration = true)
-            where T:class
+			where T:class
 		{
 			Code.ExpectsNotNullOrWhiteSpaceArgument(dbId, nameof(dbId), TaggingUtilities.ReserveTag(0x2381b19f /* tag_961g5 */));
 			Code.ExpectsNotNullOrWhiteSpaceArgument(collectionId, nameof(collectionId), TaggingUtilities.ReserveTag(0x2381b1a0 /* tag_961g6 */));

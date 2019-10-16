@@ -346,7 +346,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>Replaced document.</returns>
 		Task<ResourceResponse<Document>> ReplaceDocumentAsync<T>(
 			string dbId, string collectionId, string docId, T entity, RequestOptions requestOptions = null)
-            where T:class;
+			where T:class;
 
 
 		/// <summary>
@@ -360,7 +360,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>Upserted document.</returns>
 		Task<ResourceResponse<Document>> UpsertDocumentAsync<T>(
 			string dbId, string collectionId, T entity, RequestOptions requestOptions = null, bool disableIdGeneration = true)
-            where T:class;
+			where T:class;
 
 
 		/// <summary>
