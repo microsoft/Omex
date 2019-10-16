@@ -5,27 +5,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.ServiceModel" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="$(MicrosoftAspNetCoreHttpVersionCore)" />
-    <PackageReference Include="System.Threading.Tasks" Version="$(SystemThreadingTasks)"/>
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersionCore)" />
-    <PackageReference Include="System.ServiceModel.Primitives" Version="$(SystemServiceModelPrimitivesVersionCore)" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="$(Microsoft_AspNetCore_Http_Version)" />
+    <PackageReference Include="System.Threading.Tasks" Version="$(System_Threading_Tasks_Version)"/>
+    <PackageReference Include="System.Collections.Immutable" Version="$(System_Collections_Immutable_Version_Core)" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="$(System_ServiceModel_Primitives_Version)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\System\Microsoft.Omex.System.csproj" />
   </ItemGroup>
   <PropertyGroup Label="NuGet Properties">
     <Title>Microsoft.Omex.System.AspNetCore</Title>
-    <DevelopmentDependency>True</DevelopmentDependency>
     <Authors>Microsoft</Authors>
     <Summary>Microsoft Omex System AspNetCore Library</Summary>
     <Description>This library contains shared AspNetCore code for Omex libraries.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
     <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/System.AspNetCore</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
-    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageTags>Microsoft;Omex;System;AspNetCore</PackageTags>
   </PropertyGroup>
 </Project>
