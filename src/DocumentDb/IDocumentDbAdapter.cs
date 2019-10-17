@@ -345,8 +345,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="requestOptions">Request options</param>
 		/// <returns>Replaced document.</returns>
 		Task<ResourceResponse<Document>> ReplaceDocumentAsync<T>(
-			string dbId, string collectionId, string docId, T entity, RequestOptions requestOptions = null)
-			where T:class;
+			string dbId, string collectionId, string docId, T entity, RequestOptions requestOptions = null);
 
 
 		/// <summary>
@@ -359,8 +358,7 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="disableIdGeneration">Disables automatic id generation</param>
 		/// <returns>Upserted document.</returns>
 		Task<ResourceResponse<Document>> UpsertDocumentAsync<T>(
-			string dbId, string collectionId, T entity, RequestOptions requestOptions = null, bool disableIdGeneration = true)
-			where T:class;
+			string dbId, string collectionId, T entity, RequestOptions requestOptions = null, bool disableIdGeneration = true);
 
 
 		/// <summary>
