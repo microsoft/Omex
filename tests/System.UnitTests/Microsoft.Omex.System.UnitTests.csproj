@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(TargetFrameworks);$(NetCoreVersion)</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersion)</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks);$(NetCoreVersions)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions)</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != '$(NetCoreVersion)'">
+  <ItemGroup Condition="!$(IsNetCore)">
     <Reference Include="System.Runtime" />
     <Reference Include="System.Threading.Tasks" />
-    <PackageReference Include="Moq" Version="$(MoqVersion)" />
+    <PackageReference Include="Moq" Version="$(Moq_Version)" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == '$(NetCoreVersion)'">
-    <PackageReference Include="Moq" Version="$(MoqVersionCore)" />
+  <ItemGroup Condition="$(IsNetCore)">
+    <PackageReference Include="Moq" Version="$(Moq_Version_Core)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\System.UnitTests.Shared\Microsoft.Omex.System.UnitTests.Shared.csproj" />

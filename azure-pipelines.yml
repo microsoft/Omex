@@ -1,7 +1,5 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# Pull request validation pipeline
+# More information on available tasks: https://aka.ms/yaml
 
 trigger:
 - master
@@ -12,21 +10,21 @@ pool:
 
 
 steps:
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.7.1'
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 2.2'
   inputs:
-    versionSpec: 4.7.1
-  enabled: true
+    version: 2.2.x
 
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
-  enabled: true
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 3.0'
+  inputs:
+    version: 3.0.x
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
   inputs:
     projects: '**\*.sln'
-    arguments: '-c Release  -p:Platform=x64 --no-restore'
+    arguments: '-c Release  -p:Platform=x64'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test'
