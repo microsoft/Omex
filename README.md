@@ -34,8 +34,8 @@ Please contribute to this repository via [pull requests](https://github.com/Micr
 
 To build the solution you will need
 
-* .NET Core 2.1 SDK
-* Visual Studio 2017 or newer (optional)
+* .NET Core 3.0 SDK or newer
+* Visual Studio 2019 (16.3) or newer
 
 Building in Visual Studio is straightforward. If you use .NET Core CLI then invoke
 
