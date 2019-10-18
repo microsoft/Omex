@@ -15,7 +15,7 @@ The project needs to define the following content in the csproj file:
 </ItemGroup>
 ```
 
-And include the corresponding timedscope xml file with at that path, similar to this:
+and include the corresponding timedscope xml file in the specified path, similar to this:
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>

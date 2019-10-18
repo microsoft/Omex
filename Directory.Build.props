@@ -15,6 +15,7 @@
     <WarningsAsErrors />
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Label="Condition Variables" >
     <IsNetStandard>false</IsNetStandard>
