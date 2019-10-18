@@ -15,6 +15,13 @@ root = true
 end_of_line = CRLF
 trim_trailing_whitespace = true
 
+# Typescript and javascript files
+[*.{ts,js}]
+#indent_size = 4
+indent_style = space
+insert_final_newline = true
+charset = utf-8-bom
+
 # Code files
 [*.{cs,csx,vb,vbx}]
 #indent_size = 4
