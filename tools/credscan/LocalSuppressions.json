@@ -1,0 +1,9 @@
+{
+	"tool": "Credential Scanner",
+	"suppressions": [
+		{
+			"file": "OmexSystemUnsecureKeys.cs",
+			"_justification": "Class for storing keys that don't require security."
+		}
+	]
+}
