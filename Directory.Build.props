@@ -48,13 +48,15 @@
     <Company>Microsoft</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
-    <Tags>Omex</Tags>
     <Description>$(MSBuildProjectName)</Description>
+    <Tags>Omex</Tags>
   </PropertyGroup>
   <PropertyGroup Label="Debug Information" >
+    <EnableSourceControlManagerQueries Condition="'$(CommitSha)' != ''">false</EnableSourceControlManagerQueries>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
+    <RevisionId>$(CommitSha)</RevisionId>
     <!-- Don't need them due to source linking -->
     <IncludeSource>false</IncludeSource>
     <IncludeSymbols>true</IncludeSymbols>
@@ -65,5 +67,6 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <!-- Optional: Include the PDB in the built .nupkg -->
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <SourceRootLocation>$(MSBuildThisFileDirectory)</SourceRootLocation>
   </PropertyGroup>
 </Project>
