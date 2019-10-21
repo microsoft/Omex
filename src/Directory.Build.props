@@ -10,4 +10,7 @@
   <ItemGroup Condition="'$(UseVstsSourceLink)' == ''">
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="$(Microsoft_SourceLink_GitHub_Version)" PrivateAssets="All"/>
   </ItemGroup>
+  <ItemGroup Condition="'$(CommitSha)' != ''">
+    <SourceRoot Include="$(SourceRootLocation)" RepositoryUrl="$(RepositoryUrl)" SourceControl="git" RevisionId="$(CommitSha)" />
+  </ItemGroup>
 </Project>
