@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <param name="testGroupsLoader">TestGroups DataSet loader</param>
 		public TestGroups(IConfigurationDataSetLoader<ITestGroupsDataSet> testGroupsLoader)
 		{
-			m_testGroupsDataSetLoader = Code.ExpectsArgument(testGroupsLoader, nameof(testGroupsLoader), TaggingUtilities.ReserveTag(0x2382109b /* tag_967c1 */));
+			m_testGroupsDataSetLoader = Code.ExpectsArgument(testGroupsLoader, nameof(testGroupsLoader), TaggingUtilities.ReserveTag(0));
 		}
 
 
