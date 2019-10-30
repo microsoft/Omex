@@ -40,16 +40,7 @@ namespace Microsoft.Omex.System.Model.Types
 		{
 			m_code = code ?? string.Empty;
 
-			if (!string.IsNullOrWhiteSpace(code))
-			{
-				string[] parts = code.Split(new char[] { '_' });
-
-				if (parts.Length == 2)
-				{
-					Platform = parts[0];
-					Application = parts[1];
-				}
-			}
+			InitProductCodeParts();
 		}
 
 
@@ -136,7 +127,7 @@ namespace Microsoft.Omex.System.Model.Types
 
 
 		/// <summary>
-		/// An implicit convertion from ProductCode to string.
+		/// An implicit conversion from ProductCode to string.
 		/// </summary>
 		/// <param name="code">the ProductCode to convert</param>
 		/// <returns>the product code from the object being converted</returns>
@@ -149,6 +140,32 @@ namespace Microsoft.Omex.System.Model.Types
 			}
 
 			return code.ToString();
+		}
+
+
+		[OnDeserialized]
+		private void SetValuesOnDeserialized(StreamingContext context) => InitProductCodeParts();
+
+
+		/// <summary>
+		/// Initializes <see cref="Application"/> and <see cref="Platform"/> based on passed product code.
+		/// </summary>
+		private void InitProductCodeParts()
+		{
+			if (string.IsNullOrWhiteSpace(m_code))
+			{
+				return;
+			}
+
+			string[] parts = m_code.Split(new[] { '_' });
+
+			if (parts.Length != 2)
+			{
+				return;
+			}
+
+			Platform = parts[0];
+			Application = parts[1];
 		}
 	}
 }
