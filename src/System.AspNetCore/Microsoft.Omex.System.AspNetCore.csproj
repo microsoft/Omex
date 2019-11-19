@@ -4,11 +4,13 @@
     <Description>Contains common classes for Omex libraries in AspNetCore.</Description>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.ServiceModel" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="$(Microsoft_AspNetCore_Http_Version)" />
     <PackageReference Include="System.Threading.Tasks" Version="$(System_Threading_Tasks_Version)"/>
     <PackageReference Include="System.Collections.Immutable" Version="$(System_Collections_Immutable_Version_Core)" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="$(System_ServiceModel_Primitives_Version)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(IsNetStandard)' == 'false'">
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\System\Microsoft.Omex.System.csproj" />
