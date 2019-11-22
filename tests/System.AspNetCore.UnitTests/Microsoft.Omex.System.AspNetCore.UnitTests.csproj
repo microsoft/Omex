@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(NetFrameworkVersion);$(NetCoreVersions)</TargetFrameworks>
+    <TargetFrameworks>$(NetFrameworkVersions);$(NetCoreVersions)</TargetFrameworks>
     <Description>Contains unit tests for Omex libraries in AspNetCore.</Description>
   </PropertyGroup>
 
