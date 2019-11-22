@@ -18,7 +18,6 @@
     <Bond_Core_CSharp_Version_Core>8.2.0</Bond_Core_CSharp_Version_Core>
     <Moq_Version_Core>4.13.1</Moq_Version_Core>
     <System_Collections_Immutable_Version_Core>1.6.0</System_Collections_Immutable_Version_Core>
-    <System_Configuration_ConfigurationManager_Version_Core>4.6.0</System_Configuration_ConfigurationManager_Version_Core>
   </PropertyGroup>
   <PropertyGroup Label="Package Versions. Pinned">
     <Bond_Core_CSharp_Version>6.0.0</Bond_Core_CSharp_Version>
