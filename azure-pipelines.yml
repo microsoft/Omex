@@ -5,7 +5,7 @@ trigger:
 - master
 
 pool:
-  vmImage: win1803
+  vmImage: 	windows-latest
   demands: DotNetFramework
 
 
