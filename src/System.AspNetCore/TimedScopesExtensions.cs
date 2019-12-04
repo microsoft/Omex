@@ -23,13 +23,14 @@ namespace Microsoft.Omex.System.AspNetCore
 		{
 			app.ConfigureServices(
 				service => service
-					.AddSingleton<CorrelationData>()
 					.AddSingleton<IMachineInformation, BasicMachineInformation>()
+					.AddSingleton<ICorrelationStorage, MemoryCorrelationHandler>()
+					.AddSingleton<Correlation>()
 					.AddSingleton<ITimedScopeLogger, TimedScopeLogger>()
 					.AddSingleton<IReplayEventConfigurator, ReplayEventConfigurator>()
 					.AddSingleton<ICallContextManager, CallContextManager>()
 					.AddSingleton<ITimedScopeStackManager, TimedScopeStackManager>()
-					.AddSingleton<TimedScopeDefinition>()
+					.AddSingleton<ITimedScopeProvider, TimedScopeProvider>()
 			);
 
 			return app;
