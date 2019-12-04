@@ -11,7 +11,7 @@ namespace Microsoft.Omex.System.TimedScopes
 	/// <summary>
 	/// Correlation Data
 	/// </summary>
-	public class TimedScopeFactory
+	public class TimedScopeProvider : ITimedScopeProvider
 	{
 		/// <summary>
 		/// Create a timed scope
@@ -21,7 +21,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <param name="correlation">Correlation data</param>
 		/// <param name="machineInformation">Machine Information</param>
-		public TimedScopeFactory(
+		public TimedScopeProvider(
 			Correlation correlation,
 			IMachineInformation machineInformation,
 			ITimedScopeLogger customLogger,
@@ -45,7 +45,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		public TimedScope Create(TimedScopeDefinition definition, TimedScopeResult initialResult, bool startScope = true)
 		{
 			TimedScope scope = definition.Create(m_correlation.CurrentCorrelation, m_machineInformation, m_scopeLogger, m_replayEventConfigurator, m_timedScopeStackManager, initialResult, startScope);
-			if (startScope == true)
+			if (startScope)
 			{
 				scope.Start();
 			}
