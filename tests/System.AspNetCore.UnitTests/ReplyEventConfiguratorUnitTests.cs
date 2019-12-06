@@ -7,6 +7,7 @@ using Microsoft.Omex.System.Diagnostics;
 using Microsoft.Omex.System.TimedScopes;
 using Microsoft.Omex.System.TimedScopes.ReplayEventLogging;
 using Microsoft.Omex.System.UnitTests.Shared.Diagnostics;
+using Microsoft.Omex.System.UnitTests.Shared.TimedScopes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Assert = Xunit.Assert;
@@ -37,7 +38,7 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 
 
 		[TestCleanup]
-		public void end()
+		public void TestCleanup()
 		{
 			ICallContext context = CallContextManagerInstance.CallContextOverride;
 
@@ -62,8 +63,12 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 
 			Assert.False(currentCorrelation.ShouldReplayUls);
 
-			using (TimedScope scope = TimedScope.Start(currentCorrelation, MachineInformation, "TestScope", customLogger: timedScopeLoggerMock.Object,
-				replayEventConfigurator: replyEventConfiguratorMock.Object, timedScopeStackManager: timedScopeStackManager))
+			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(
+				timedScopeLoggerMock.Object,
+				replyEventConfiguratorMock.Object,
+				machineInformation,
+				timedScopeStackManager,
+				startScope: true))
 			{
 				scope.Result = TimedScopeResult.Success;
 
@@ -95,8 +100,12 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 
 			Assert.False(currentCorrelation.ShouldReplayUls, "Logs shouldn't be replayed");
 
-			using (TimedScope scope = TimedScope.Start(currentCorrelation, MachineInformation, "TestScope", customLogger: timedScopeLoggerMock.Object, 
-				replayEventConfigurator: replyEventConfiguratorMock.Object, timedScopeStackManager: timedScopeStackManager))
+			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(
+				timedScopeLoggerMock.Object,
+				replyEventConfiguratorMock.Object,
+				machineInformation,
+				timedScopeStackManager,
+				startScope: true))
 			{
 				scope.Result = TimedScopeResult.SystemError;
 
@@ -126,8 +135,12 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 
 			Assert.False(currentCorrelation.ShouldReplayUls, "Logs shouldn't be replayed");
 
-			using (TimedScope scope = TimedScope.Start(currentCorrelation, MachineInformation, "TestScope", customLogger: timedScopeLoggerMock.Object, 
-				replayEventConfigurator: replyEventConfiguratorMock.Object, timedScopeStackManager: timedScopeStackManager))
+			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(
+				timedScopeLoggerMock.Object,
+				replyEventConfiguratorMock.Object,
+				machineInformation,
+				timedScopeStackManager,
+				startScope: true))
 			{
 				scope.Result = TimedScopeResult.SystemError;
 

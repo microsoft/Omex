@@ -25,8 +25,8 @@ namespace Microsoft.Omex.System.AspNetCore
 				service => service
 					.AddSingleton<IMachineInformation, BasicMachineInformation>()
 					.AddSingleton<ICorrelationStorage, MemoryCorrelationHandler>()
-					.AddSingleton<Correlation>()
-					.AddSingleton<ITimedScopeLogger, TimedScopeLogger>()
+					.AddSingleton<ICorrelationDataProvider, Correlation>()
+					//.AddSingleton<ITimedScopeLogger, TimedScopeLogger>()
 					.AddSingleton<IReplayEventConfigurator, ReplayEventConfigurator>()
 					.AddSingleton<ICallContextManager, CallContextManager>()
 					.AddSingleton<ITimedScopeStackManager, TimedScopeStackManager>()
