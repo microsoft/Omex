@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using Microsoft.Omex.System.Logging;
+
 namespace Microsoft.Omex.System.TimedScopes
 {
 	/// <summary>

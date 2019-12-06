@@ -22,7 +22,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="correlation">Correlation data</param>
 		/// <param name="machineInformation">Machine Information</param>
 		public TimedScopeProvider(
-			Correlation correlation,
+			ICorrelationDataProvider correlation,
 			IMachineInformation machineInformation,
 			ITimedScopeLogger customLogger,
 			IReplayEventConfigurator replayEventConfigurator,
@@ -54,7 +54,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		}
 
 
-		private readonly Correlation m_correlation;
+		private readonly ICorrelationDataProvider m_correlation;
 		private readonly IMachineInformation m_machineInformation;
 		private readonly ITimedScopeLogger m_scopeLogger;
 		private readonly IReplayEventConfigurator m_replayEventConfigurator;
