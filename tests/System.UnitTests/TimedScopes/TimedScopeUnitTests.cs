@@ -416,7 +416,7 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
 
 			using (TestHooks.CreateTimedScopeProvider(machineInformation, unitTestTimedScopeLogger, replyEventConfiguratorMock.Object, timedScopeStackManager)
-				.Create(new TimedScopeDefinition("TestScope", "description"), TimedScopeResult.SystemError))
+				.Create(new TimedScopeDefinition(TestHooks.DefaultTimedScopeName, "description"), TimedScopeResult.SystemError))
 			{
 			}
 

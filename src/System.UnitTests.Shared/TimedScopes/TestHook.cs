@@ -38,7 +38,7 @@ namespace Microsoft.Omex.System.UnitTests.Shared.TimedScopes
 			bool startScope = true)
 		{
 			return CreateTimedScopeProvider(machineInformation, scopeLogger, replayEventConfigurator, timedScopeStackManager)
-				.Create(UnitTestTimedScopes.DefaultScope, TimedScopeResult.SystemError, startScope);
+				.Create(UnitTestTimedScopes.DefaultScope, TimedScope.ConvertBoolResultToTimedScopeResult(initialResult), startScope);
 		}
 
 		/// <summary>

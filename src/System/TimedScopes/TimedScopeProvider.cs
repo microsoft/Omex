@@ -43,15 +43,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="initialResult">Initial result to use</param>
 		/// <param name="startScope">Should the scope be automatically started (for use in e.g. 'using' statement)</param>
 		public TimedScope Create(TimedScopeDefinition definition, TimedScopeResult initialResult, bool startScope = true)
-		{
-			TimedScope scope = definition.Create(m_correlation.CurrentCorrelation, m_machineInformation, m_scopeLogger, m_replayEventConfigurator, m_timedScopeStackManager, initialResult, startScope);
-			if (startScope)
-			{
-				scope.Start();
-			}
-
-			return scope;
-		}
+			=> definition.Create(m_correlation.CurrentCorrelation, m_machineInformation, m_scopeLogger, m_replayEventConfigurator, m_timedScopeStackManager, initialResult, startScope);
 
 
 		private readonly ICorrelationDataProvider m_correlation;
