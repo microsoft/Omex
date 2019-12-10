@@ -37,8 +37,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			TimedScope scope;
 			CorrelationData data = new CorrelationData();
 
-			
-
 			using (scope = TestHooks.CreateTimedScopeProvider(machineInformation, timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, timedScopeStackManager)
 				.Create(new TimedScopeDefinition("TestScope"), TimedScopeResult.SystemError))
 			{
@@ -60,7 +58,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			IMachineInformation machineInformation = new UnitTestMachineInformation();
 			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
 
-			
 			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(
 				timedScopeLoggerMock.Object,
 				replyEventConfiguratorMock.Object,

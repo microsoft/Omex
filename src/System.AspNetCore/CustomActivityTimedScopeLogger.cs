@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System.Globalization;
 using Microsoft.Omex.System.Diagnostics;
 using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.TimedScopes;
@@ -55,7 +56,7 @@ namespace Microsoft.Omex.System.AspNetCore
 					metadata: scope.MetaData ?? NullPlaceholder,
 					serviceName: ServiceName ?? NullPlaceholder,
 					result: scope.Result,
-					correlationId: data.VisibleId.ToString("D"),
+					correlationId: data.VisibleId.ToString("D", CultureInfo.InvariantCulture),
 					durationMs: scope.DurationInMilliseconds);
 			}
 			else
@@ -67,7 +68,7 @@ namespace Microsoft.Omex.System.AspNetCore
 					serviceName: ServiceName ?? NullPlaceholder,
 					userHash: data.Data(TimedScopeDataKeys.InternalOnly.UserHash) ?? data.UserHash ?? NullPlaceholder,
 					result: scope.Result,
-					correlationId: data.VisibleId.ToString("D"),
+					correlationId: data.VisibleId.ToString("D", CultureInfo.InvariantCulture),
 					durationMs: scope.DurationInMilliseconds);
 			}
 		}
