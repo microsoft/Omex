@@ -99,7 +99,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				metaDataAsString,
 				userHashAsString,
 				serviceNameAsString,
-
 				logCategory.Name,
 				result.ToString(),
 				correlationIdAsString,
@@ -140,7 +139,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				subTypeAsString,
 				metaDataAsString,
 				serviceNameAsString,
-
 				logCategory.Name,
 				result.ToString(),
 				correlationIdAsString,
