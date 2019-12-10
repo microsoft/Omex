@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.TimedScopes;
 
-namespace Microsoft.Omex.System.AspNetCore
+namespace Microsoft.Omex.System.TimedScopes
 {
 	/// <summary>
 	/// Timed scopes event source
@@ -229,23 +229,5 @@ namespace Microsoft.Omex.System.AspNetCore
 		}
 
 		#endregion
-
-
-		/// <summary>
-		/// Event ids enum
-		/// </summary>
-		public enum EventIds : ushort
-		{
-			/// <summary>
-			/// Event Id for logging timed scopes
-			/// </summary>
-			LogTimedScopeEventId = 6,
-
-
-			/// <summary>
-			/// Event Id for logging timed scopes traces
-			/// </summary>
-			LogTimedScopeTrxEventId = 7
-		}
 	}
 }
