@@ -20,15 +20,15 @@ namespace Microsoft.Omex.System.AspNetCore
 		public static IServiceCollection AddTimedScopes(this IServiceCollection serviceCollection)
 		{
 			return serviceCollection
-					.AddSingleton<IMachineInformation, BasicMachineInformation>()
-					.AddSingleton<ICorrelationStorage, MemoryCorrelationHandler>()
-					.AddSingleton<ICorrelationDataProvider, Correlation>()
-					.AddSingleton<TimedScopeEventSource>()
-					.AddSingleton<ITimedScopeLogger, CustomActivityTimedScopeLogger>()
-					.AddSingleton<IReplayEventConfigurator, ReplayEventConfigurator>()
-					.AddSingleton<ICallContextManager, CallContextManager>()
-					.AddSingleton<ITimedScopeStackManager, TimedScopeStackManager>()
-					.AddSingleton<ITimedScopeProvider, TimedScopeProvider>();
+				.AddSingleton<IMachineInformation, BasicMachineInformation>()
+				.AddSingleton<ICorrelationStorage, MemoryCorrelationHandler>()
+				.AddSingleton<ICorrelationDataProvider, Correlation>()
+				.AddSingleton<TimedScopeEventSource>()
+				.AddSingleton<ITimedScopeLogger, CustomActivityTimedScopeLogger>()
+				.AddSingleton<IReplayEventConfigurator, ReplayEventConfigurator>()
+				.AddSingleton<ICallContextManager, CallContextManager>()
+				.AddSingleton<ITimedScopeStackManager, TimedScopeStackManager>()
+				.AddSingleton<ITimedScopeProvider, TimedScopeProvider>();
 		}
 	}
 }
