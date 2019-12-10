@@ -14,7 +14,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="definition">Timed scope definition</param>
 		/// <param name="initialResult">Intial result of timed scope</param>
 		/// <param name="startScope">Should create timed scope be started after creation</param>
-		/// <returns></returns>
+		/// <returns>TimedScope instance</returns>
 		TimedScope Create(TimedScopeDefinition definition, TimedScopeResult initialResult, bool startScope = true);
 	}
 }

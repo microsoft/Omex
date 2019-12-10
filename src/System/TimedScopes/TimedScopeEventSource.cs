@@ -8,10 +8,10 @@
 
 using System;
 using System.Diagnostics.Tracing;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Omex.System.Logging;
-using Microsoft.Omex.System.TimedScopes;
 
 namespace Microsoft.Omex.System.TimedScopes
 {
@@ -82,7 +82,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				string metadata,
 				string userHash,
 				string serviceName,
-
 				TimedScopeResult result,
 				string correlationId,
 				double durationMs
@@ -105,7 +104,7 @@ namespace Microsoft.Omex.System.TimedScopes
 				logCategory.Name,
 				result.ToString(),
 				correlationIdAsString,
-				Convert.ToInt64(durationMs));
+				Convert.ToInt64(durationMs, CultureInfo.InvariantCulture));
 		}
 
 
@@ -128,7 +127,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			string subtype,
 			string metadata,
 			string serviceName,
-
 			TimedScopeResult result,
 			string correlationId,
 			double durationMs
@@ -149,7 +147,7 @@ namespace Microsoft.Omex.System.TimedScopes
 				logCategory.Name,
 				result.ToString(),
 				correlationIdAsString,
-				Convert.ToInt64(durationMs));
+				Convert.ToInt64(durationMs, CultureInfo.InvariantCulture));
 		}
 
 

@@ -16,11 +16,11 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <summary>
 		/// Create a timed scope
 		/// </summary>
+		/// <param name="correlation">Correlation data</param>
+		/// <param name="machineInformation">Machine Information</param>
 		/// <param name="customLogger">Use a custom logger for the timed scope</param>
 		/// <param name="replayEventConfigurator">Replay event configurator</param>
 		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
-		/// <param name="correlation">Correlation data</param>
-		/// <param name="machineInformation">Machine Information</param>
 		public TimedScopeProvider(
 			ICorrelationDataProvider correlation,
 			IMachineInformation machineInformation,
