@@ -84,8 +84,7 @@ namespace Microsoft.Omex.System.TimedScopes
 				string serviceName,
 				TimedScopeResult result,
 				string correlationId,
-				double durationMs
-			)
+				double durationMs)
 		{
 			string nameAsString = SanitizeMdmString(name, nameof(name), name, logCategory);
 			string subTypeAsString = SanitizeMdmString(subtype, nameof(subtype), name, logCategory);
@@ -108,7 +107,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		}
 
 
-
 		/// <summary>
 		/// Logs the occurrence of an activity
 		/// </summary>
@@ -129,8 +127,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			string serviceName,
 			TimedScopeResult result,
 			string correlationId,
-			double durationMs
-		)
+			double durationMs)
 		{
 			string nameAsString = SanitizeMdmString(name, nameof(name), name, logCategory);
 			string subTypeAsString = SanitizeMdmString(subtype, nameof(subtype), name, logCategory);
@@ -153,7 +150,7 @@ namespace Microsoft.Omex.System.TimedScopes
 
 		private static string SanitizeMdmString(string mdmString, string name, string activityName, Category logCategory)
 		{
-			string validatedString = Convert.ToString(mdmString) ?? string.Empty;
+			string validatedString = Convert.ToString(mdmString, CultureInfo.InvariantCulture) ?? string.Empty;
 
 			if (validatedString.Length > 1024)
 			{
