@@ -15,14 +15,11 @@ namespace Microsoft.Omex.System.AspNetCore
 	public static class TimedScopesExtensions
 	{
 		/// <summary>
-		/// Configures TimedScopes
+		/// Register types required for timedscopes
 		/// </summary>
-		/// <param name="app">Application builder</param>
-		/// <returns>Application builder</returns>
-		public static IWebHostBuilder UseTimedScopes(this IWebHostBuilder app)
+		public static IServiceCollection AddTimedScopes(this IServiceCollection serviceCollection)
 		{
-			app.ConfigureServices(
-				service => service
+			return serviceCollection
 					.AddSingleton<IMachineInformation, BasicMachineInformation>()
 					.AddSingleton<ICorrelationStorage, MemoryCorrelationHandler>()
 					.AddSingleton<ICorrelationDataProvider, Correlation>()
@@ -31,10 +28,7 @@ namespace Microsoft.Omex.System.AspNetCore
 					.AddSingleton<IReplayEventConfigurator, ReplayEventConfigurator>()
 					.AddSingleton<ICallContextManager, CallContextManager>()
 					.AddSingleton<ITimedScopeStackManager, TimedScopeStackManager>()
-					.AddSingleton<ITimedScopeProvider, TimedScopeProvider>()
-			);
-
-			return app;
+					.AddSingleton<ITimedScopeProvider, TimedScopeProvider>();
 		}
 	}
 }
