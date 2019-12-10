@@ -20,7 +20,7 @@ namespace Microsoft.Omex.System.AspNetCore
 		public static IServiceCollection AddTimedScopes(this IServiceCollection serviceCollection)
 		{
 			return serviceCollection
-			    .AddSingleton<ICallContextManager, CallContextManager>()
+				.AddSingleton<ICallContextManager, CallContextManager>()
 				.AddSingleton<ICorrelationDataProvider, Correlation>()
 				.AddSingleton<ICorrelationStorage, MemoryCorrelationHandler>()
 				.AddSingleton<IMachineInformation, BasicMachineInformation>()
