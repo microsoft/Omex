@@ -18,11 +18,12 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// </summary>
 		/// <param name="builder">The extension method argument.</param>
 		/// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
-		public static ILoggingBuilder AddEventLog(this ILoggingBuilder builder)
+		public static ILoggingBuilder AddEventLog<TServiceContext>(this ILoggingBuilder builder)
+			where TServiceContext : class, IServiceContext
 		{
-			builder.Services.TryAddTransient<IServiceContext, IServiceContext>();
-			builder.Services.TryAddTransient<IMachineInformation, IMachineInformation>();
-			builder.Services.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
+			builder.Services.TryAddSingleton<IServiceContext, TServiceContext>();
+			builder.Services.TryAddSingleton<IMachineInformation, BasicMachineInformation>();
+			builder.Services.TryAddSingleton<IExternalScopeProvider, LoggerExternalScopeProvider>();
 			builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
 			return builder;
 		}

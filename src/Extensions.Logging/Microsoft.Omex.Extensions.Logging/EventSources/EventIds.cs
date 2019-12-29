@@ -6,7 +6,7 @@ namespace Microsoft.Omex.Extensions.Logging
 	/// <summary>
 	/// Event ids enum.
 	/// </summary>
-	internal enum EventIds : ushort
+	public enum EventIds : ushort
 	{
 		/// <summary>
 		/// Event Id for logging general info message.
