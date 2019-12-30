@@ -14,6 +14,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		/// <summary>Add IServiceContext to ServiceCollection</summary>
 		public static IServiceCollection AddTimedScopes(this IServiceCollection serviceCollection)
 		{
+			serviceCollection.AddMachineInformation();
 			serviceCollection.TryAddSingleton<TimedScopeEventSource>();
 			serviceCollection.TryAddSingleton<ITimedScopeProvider,TimedScopeProvider>();
 			return serviceCollection;

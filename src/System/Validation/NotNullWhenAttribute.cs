@@ -15,7 +15,7 @@ namespace System.Diagnostics.CodeAnalysis
 		/// </param>
 		public NotNullWhenAttribute(bool returnValue)
 		{
-			this.ReturnValue = returnValue;
+			ReturnValue = returnValue;
 		}
 
 		/// <summary>Gets the return value condition.</summary>

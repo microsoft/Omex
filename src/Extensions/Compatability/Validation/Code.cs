@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.System.Validation;
 
-namespace Microsoft.Omex.System.Validation
+namespace Microsoft.Omex.Extensions.Compatability.Validation
 {
 	/// <summary>
 	/// Code validation
@@ -189,7 +190,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
 		public static T ExpectsObject<T>([ValidatedNotNull] T? argumentValue, string argumentName, EventId? tagId) where T : class
 		{
-			return ExpectsArgumentNotNull<T>(argumentValue, argumentName, tagId);
+			return ExpectsArgumentNotNull(argumentValue, argumentName, tagId);
 		}
 
 
@@ -238,7 +239,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="argumentName">Name of the argument.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null, is not empty, and does not contain nulls; false otherwise.</returns>
-		public static bool ValidateNotEmptyAndAllNotNull<T>([NotNullWhen(true)]ICollection<T>? argumentValue, string argumentName, EventId? tagId = null) 
+		public static bool ValidateNotEmptyAndAllNotNull<T>([NotNullWhen(true)]ICollection<T>? argumentValue, string argumentName, EventId? tagId = null)
 			where T : class
 		{
 			if (!ValidateArgument(argumentValue, argumentName, tagId))
@@ -300,7 +301,7 @@ namespace Microsoft.Omex.System.Validation
 
 			if (!argumentValue.Any())
 			{
-				LogError(tagId,	ValidationFailed, HasAnyErrorMessage, argumentName);
+				LogError(tagId, ValidationFailed, HasAnyErrorMessage, argumentName);
 				return false;
 			}
 
@@ -319,7 +320,7 @@ namespace Microsoft.Omex.System.Validation
 		{
 			if (argumentValue == null)
 			{
-				LogError(tagId,	ValidationFailed, ArgumentIsNull, argumentName);
+				LogError(tagId, ValidationFailed, ArgumentIsNull, argumentName);
 				return false;
 			}
 
@@ -360,7 +361,7 @@ namespace Microsoft.Omex.System.Validation
 		{
 			if (argumentValue.Equals(Guid.Empty))
 			{
-				LogError(tagId,	ValidationFailed, ArgumentIsEmptyGuid, argumentName);
+				LogError(tagId, ValidationFailed, ArgumentIsEmptyGuid, argumentName);
 				return false;
 			}
 
@@ -394,18 +395,21 @@ namespace Microsoft.Omex.System.Validation
 			return true;
 		}
 
-		/// <summary> Logger instance to report validation errors </summary>
-		public static ILogger? Logger { get; set; }
+
+		internal static void Initialize(ILoggerFactory loggerFactory) => s_logger = loggerFactory.CreateLogger("ArgumentValidation");
+
+
+		private static ILogger? s_logger;
 
 
 		private static void LogError(EventId? eventId, string message, params object[] args)
 		{
-			if (Logger == null || !eventId.HasValue)
+			if (s_logger == null || !eventId.HasValue)
 			{
 				return;
 			}
 
-			Logger.LogError(eventId.Value, message, args);
+			s_logger.LogError(eventId.Value, message, args);
 		}
 
 

@@ -4,7 +4,7 @@
 using Microsoft.Extensions.Logging;
 using System.Runtime.CompilerServices;
 
-namespace Microsoft.Omex.Extensions.Logging
+namespace Microsoft.Omex.Extensions.Abstractions
 {
 	/// <summary>
 	/// Tagging utitilty class

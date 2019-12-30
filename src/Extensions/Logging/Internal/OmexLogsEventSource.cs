@@ -42,8 +42,8 @@ namespace Microsoft.Omex.Extensions.Logging
 		private Guid PartitionId => m_serviceContext?.PartitionId ?? Guid.Empty;
 		private long ReplicaId => m_serviceContext?.ReplicaOrInstanceId ?? 0;
 
-		private Guid CorrelationId => Activity.Current?.VisibleId ?? Guid.Empty;
-		private uint TransactionId => Activity.Current?.TransactionId ?? 0u;
+		private string CorrelationId => Activity.Current?.Id ?? string.Empty; //Breaking Change: Type Changed from Guid ?? Guid.Empty
+		private string TransactionId => (Activity.Current?.TraceId ?? default).ToHexString(); //Breaking Change: Type Changed from uint ?? 0u
 
 
 		[NonEvent]

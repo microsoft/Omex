@@ -8,6 +8,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
-    <ProjectReference Include="..\Logging\Microsoft.Omex.Extensions.Logging.csproj" />
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using Microsoft.Omex.Extensions.Compatability.Validation;
 
 namespace Microsoft.Omex.System.Validation
 {

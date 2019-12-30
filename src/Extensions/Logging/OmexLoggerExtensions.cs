@@ -14,10 +14,10 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <summary>Adds Omex event logger to the factory</summary>
 		/// <param name="builder">The extension method argument</param>
 		/// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained</returns>
-		public static ILoggingBuilder AddEventLog<TServiceContext>(this ILoggingBuilder builder)
+		public static ILoggingBuilder AddOmexLogging<TServiceContext>(this ILoggingBuilder builder)
 			where TServiceContext : class, IServiceContext
 		{
-			builder.Services.AddEventLog<TServiceContext>();
+			builder.Services.AddOmexLogging<TServiceContext>();
 			return builder;
 		}
 
@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <summary>Adds Omex event logger to the factory</summary>
 		/// <param name="serviceCollection">The extension method argument</param>
 		/// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained</returns>
-		public static IServiceCollection AddEventLog<TServiceContext>(this IServiceCollection serviceCollection)
+		public static IServiceCollection AddOmexLogging<TServiceContext>(this IServiceCollection serviceCollection)
 			where TServiceContext : class, IServiceContext
 		{
 			serviceCollection

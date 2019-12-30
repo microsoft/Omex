@@ -80,11 +80,12 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 				name: m_activity.OperationName,
 				subtype: SubType,
 				metadata: MetaData,
-				userHash: ,
+				userHash: string.Empty, //Breaking Change: feild not set
+				serviceName: m_serviceName,
 				result: Result,
 				correlationId: m_activity.Id,
 				durationMs: m_activity.Duration.TotalMilliseconds,
-				isTransaction: );
+				isTransaction: false); //Breaking Change: feild not set
 		}
 
 
