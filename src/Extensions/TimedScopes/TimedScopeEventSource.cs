@@ -4,19 +4,14 @@
 using System;
 using System.Diagnostics.Tracing;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Logging.TimedScopes;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
-	/// <summary>
-	/// Timed scopes event source
-	/// </summary>
 	[EventSource(Name = "Microsoft-OMEX-TimedScopes")]
 	internal sealed class TimedScopeEventSource : EventSource
 	{
-		/// <summary>
-		/// Create TimedScopeEventSource
-		/// </summary>
 		public TimedScopeEventSource(ILogger<TimedScopeEventSource> logger)
 		{
 			m_logger = logger;
@@ -24,18 +19,6 @@ namespace Microsoft.Omex.Extensions.Logging
 		}
 
 
-		/// <summary>
-		/// Logs the occurrence of an activity
-		/// </summary>
-		/// <param name="name">TimedScope name</param>
-		/// <param name="subtype">TimedScope subtype</param>
-		/// <param name="metadata">TimedScope metadata</param>
-		/// <param name="userHash">User hash</param>
-		/// <param name="serviceName">Service name</param>
-		/// <param name="result">TimedScope result</param>
-		/// <param name="correlationId">Correlation Id</param>
-		/// <param name="durationMs">TimedScope duration in milliseconds</param>
-		/// <param name="isTransaction">Is it transaction event or not</param>
 		[NonEvent]
 		public void LogEvent(
 				string name,

@@ -2,19 +2,20 @@
 // Licensed under the MIT license.
 
 using System.Diagnostics.Tracing;
+using Microsoft.Omex.Extensions.Abstractions;
 
-namespace Microsoft.Omex.Extensions.Logging
+namespace Microsoft.Omex.Extensions.ServiceFabric
 {
 	/// <summary>
 	/// Service Fabric event source
 	/// </summary>
 	[EventSource(Name = "Microsoft-OMEX-Logs")]
-	public sealed class ServiceFabricEventSource : EventSource
+	internal sealed class ServiceFabricEventSource : EventSource
 	{
 		/// <summary>
 		/// Instance of service fabric event source
 		/// </summary>
-		public ServiceFabricEventSource Instance { get; } = new ServiceFabricEventSource();
+		public static ServiceFabricEventSource Instance { get; } = new ServiceFabricEventSource();
 
 
 		/// <summary>

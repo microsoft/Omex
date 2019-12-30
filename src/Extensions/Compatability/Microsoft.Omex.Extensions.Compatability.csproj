@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(NetFameworkVersion)</TargetFrameworks>
+  </PropertyGroup>
+</Project>

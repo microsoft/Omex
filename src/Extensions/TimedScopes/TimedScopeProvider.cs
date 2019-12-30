@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using Microsoft.Omex.Extensions.Logging.Diagnostics;
+using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 {
@@ -24,15 +24,27 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 		private readonly string m_serviceName;
 	}
 
+
+	/// <summary>Interface to create TimedScope</summary>
 	public interface ITimedScopeProvider
 	{
+		/// <summary>Create and start TimedScope</summary>
 		TimedScope Start(string name, TimedScopeResult result = TimedScopeResult.SystemError);
 	}
 
+
+	/// <summary>Class to log duration of activity</summary>
 	public class TimedScope : IDisposable
 	{
+		/// <summary>TimedScope result</summary>
 		public TimedScopeResult Result { get; set; }
+
+
+		/// <summary>TimedScope sub tipe</summary>
 		public string SubType { get; set; }
+
+
+		/// <summary>TimedScope meta data</summary>
 		public string MetaData { get; set; }
 
 		private readonly Activity m_activity;
@@ -41,7 +53,7 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 		private const string NullPlaceholder = "null";
 
 
-		public TimedScope(TimedScopeEventSource eventSource, string serviceName, string name, TimedScopeResult result)
+		internal TimedScope(TimedScopeEventSource eventSource, string serviceName, string name, TimedScopeResult result)
 		{
 			m_eventSource = eventSource;
 			m_serviceName = serviceName;
@@ -52,6 +64,7 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 		}
 
 
+		/// <summary>Start TimedScope</summary>
 		public TimedScope Start()
 		{
 			m_activity.Start();
@@ -59,6 +72,7 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 		}
 
 
+		/// <summary>Stop TimedScope and log informations about it</summary>
 		public void Stop()
 		{
 			m_activity.Stop();
@@ -74,6 +88,6 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 		}
 
 
-		public void Dispose() => Stop();
+		void IDisposable.Dispose() => Stop();
 	}
 }

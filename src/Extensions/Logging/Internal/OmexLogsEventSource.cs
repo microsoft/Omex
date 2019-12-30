@@ -7,13 +7,10 @@ using System.Diagnostics.Tracing;
 using System.Globalization;
 using System.Text;
 using Microsoft.Extensions.Logging;
-using Microsoft.Omex.Extensions.Logging.Diagnostics;
+using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
-	/// <summary>
-	/// Service Fabric event source
-	/// </summary>
 	[EventSource(Name = "Microsoft-OMEX-Logs")]
 	internal sealed class OmexLogsEventSource : EventSource
 	{
@@ -49,14 +46,6 @@ namespace Microsoft.Omex.Extensions.Logging
 		private uint TransactionId => Activity.Current?.TransactionId ?? 0u;
 
 
-		/// <summary>
-		/// Creates a service message event
-		/// </summary>
-		/// <param name="message">Message</param>
-		/// <param name="level">Level</param>
-		/// <param name="category">Category</param>
-		/// <param name="eventId">Tag id</param>
-		/// <param name="threadId">Thread id</param>
 		[NonEvent]
 		public void ServiceMessage(string message, LogLevel level, string category, EventId eventId, int threadId)
 		{
@@ -96,13 +85,6 @@ namespace Microsoft.Omex.Extensions.Logging
 		}
 
 
-		/// <summary>
-		/// Writes an ETW event with Level=Informational.
-		/// </summary>
-		/// <param name="category">Category</param>
-		/// <param name="tagId">Tag id</param>
-		/// <param name="threadId">Thread id</param>
-		/// <param name="message">Message</param>
 		[Event((int)EventIds.LogInfoEventId, Level = EventLevel.Informational, Message = "{13}", Version = 6)]
 		private void LogInfoServiceMessage(
 			string category,
@@ -112,13 +94,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			WriteEvent((int)EventIds.LogInfoEventId, ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Info", category, tagId, threadId, message);
 
 
-		/// <summary>
-		/// Writes an ETW event with Level=Informational.
-		/// </summary>
-		/// <param name="category">Category</param>
-		/// <param name="tagId">Tag id</param>
-		/// <param name="threadId">Thread id</param>
-		/// <param name="message">Message</param>
 		[Event((int)EventIds.LogErrorEventId, Level = EventLevel.Error, Message = "{13}", Version = 6)]
 		private void LogErrorServiceMessage(
 			string category,
@@ -128,13 +103,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			WriteEvent((int)EventIds.LogErrorEventId, ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Error", category, tagId, threadId, message);
 
 
-		/// <summary>
-		/// Writes an ETW event with Level=Warning.
-		/// </summary>
-		/// <param name="category">Category</param>
-		/// <param name="tagId">Tag id</param>
-		/// <param name="threadId">Thread id</param>
-		/// <param name="message">Message</param>
 		[Event((int)EventIds.LogWarningEventId, Level = EventLevel.Warning, Message = "{13}", Version = 6)]
 		private void LogWarningServiceMessage(
 			string category,
@@ -144,13 +112,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			WriteEvent((int)EventIds.LogWarningEventId, ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Warning", category, tagId, threadId, message);
 
 
-		/// <summary>
-		/// Writes an ETW event with Level=Verbose.
-		/// </summary>
-		/// <param name="category">Category</param>
-		/// <param name="tagId">Tag id</param>
-		/// <param name="threadId">Thread id</param>
-		/// <param name="message">Message</param>
 		[Event((int)EventIds.LogVerboseEventId, Level = EventLevel.Verbose, Message = "{13}", Version = 6)]
 		private void LogVerboseServiceMessage(
 			string category,
@@ -160,13 +121,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			WriteEvent((int)EventIds.LogVerboseEventId, ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Verbose", category, tagId, threadId, message);
 
 
-		/// <summary>
-		/// Writes an ETW event with Level=LogAlways.
-		/// </summary>
-		/// <param name="category">Category</param>
-		/// <param name="tagId">Tag id</param>
-		/// <param name="threadId">Thread id</param>
-		/// <param name="message">Message</param>
 		[Event((int)EventIds.LogSpamEventId, Level = EventLevel.LogAlways, Message = "{13}", Version = 6)]
 		private void LogSpamServiceMessage(
 			string category,

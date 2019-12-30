@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#if NETFRAMEWORK || NETSTANDARD2_0
-
 namespace System.Diagnostics.CodeAnalysis
 {
 	/// <summary>Specifies that when a method returns <see cref="ReturnValue"/>, the parameter will not be null even if the corresponding type allows it.</summary>
@@ -15,11 +13,10 @@ namespace System.Diagnostics.CodeAnalysis
 		/// </param>
 		public NotNullWhenAttribute(bool returnValue)
 		{
-			this.ReturnValue = returnValue;
+			ReturnValue = returnValue;
 		}
 
 		/// <summary>Gets the return value condition.</summary>
 		public bool ReturnValue { get; }
 	}
 }
-#endif

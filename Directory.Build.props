@@ -22,6 +22,8 @@
     <IsNetStandard Condition="$(NetStandardVersions.Contains('$(TargetFramework)'))">true</IsNetStandard>
     <IsNetCore>false</IsNetCore>
     <IsNetCore Condition="$(NetCoreVersions.Contains('$(TargetFramework)'))">true</IsNetCore>
+    <IsNetFramework>false</IsNetFramework>
+    <IsNetFramework Condition="$(NetFrameworkVersions.Contains('$(TargetFramework)'))">true</IsNetFramework>
   </PropertyGroup>
   <PropertyGroup Label="Signing" Condition="'$(SignAssemblies)' == 'true'">
     <SignAssembly>true</SignAssembly>
