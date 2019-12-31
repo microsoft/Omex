@@ -18,6 +18,14 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		}
 
 
+		/// <summary>Add Null implementation of IServiceContext to ServiceCollection</summary>
+		public static IServiceCollection AddNullServiceContext(this IServiceCollection serviceCollection)
+		{
+			serviceCollection.TryAddSingleton<IServiceContext, NullServiceContext>();
+			return serviceCollection;
+		}
+
+
 		/// <summary>Add IMachineInformation to ServiceCollection</summary>
 		public static IServiceCollection AddMachineInformation(this IServiceCollection serviceCollection)
 		{

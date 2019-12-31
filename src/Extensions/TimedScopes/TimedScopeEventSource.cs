@@ -21,15 +21,15 @@ namespace Microsoft.Omex.Extensions.Logging
 
 		[NonEvent]
 		public void LogEvent(
-				string name,
-				string subtype,
-				string metadata,
-				string userHash,
-				string serviceName,
-				TimedScopeResult result,
-				string correlationId,
-				double durationMs,
-				bool isTransaction)
+			string name,
+			string subtype,
+			string metadata,
+			string userHash,
+			string serviceName,
+			TimedScopeResult result,
+			string correlationId,
+			double durationMs,
+			bool isTransaction)
 		{
 			if (!IsEnabled())
 			{
