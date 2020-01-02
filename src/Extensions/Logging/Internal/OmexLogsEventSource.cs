@@ -42,8 +42,8 @@ namespace Microsoft.Omex.Extensions.Logging
 		private Guid PartitionId => m_serviceContext.PartitionId;
 		private long ReplicaId => m_serviceContext.ReplicaOrInstanceId;
 
-		private string CorrelationId => Activity.Current?.Id ?? string.Empty; //Breaking Change: Type Changed from Guid ?? Guid.Empty
-		private string TransactionId => (Activity.Current?.TraceId ?? default).ToHexString(); //Breaking Change: Type Changed from uint ?? 0u
+		private string CorrelationId => Activity.Current?.Id ?? string.Empty;
+		private string TransactionId => (Activity.Current?.TraceId ?? default).ToHexString();
 
 
 		[NonEvent]
@@ -54,28 +54,31 @@ namespace Microsoft.Omex.Extensions.Logging
 				return;
 			}
 
-			// Both converts should be done more efficient
-			// Event ID description also should be logged
-			string tagId = TagIdAsString(eventId.Id); 
-			string threadIdAsString = threadId.ToString(); 
+			string tagName = eventId.Name;
+			string tagId = TagIdAsString(eventId.Id);
 
+			//Event methods should have all information as parameters so we are passing them each time
+			// Posible Breaking changes:
+			// 1. CorrelationId type changed from Guid ?? Guid.Empty
+			// 2. TransactionId type Changed from uint ?? 0u
+			// 3. ThreadId type Changed from string
 			switch (level)
 			{
 				case LogLevel.Trace:
-					LogSpamServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Spam", category, tagId, threadIdAsString, message);
+					LogSpamServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Spam", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Debug:
-					LogVerboseServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Verbose", category, tagId, threadIdAsString, message);
+					LogVerboseServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Verbose", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Information:
-					LogInfoServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Info", category, tagId, threadIdAsString, message);
+					LogInfoServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Info", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Warning:
-					LogWarningServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Warning", category, tagId, threadIdAsString, message);
+					LogWarningServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Warning", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Error:
 				case LogLevel.Critical:
-					LogErrorServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Error", category, tagId, threadIdAsString, message);
+					LogErrorServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Error", category, tagId, eventId.Name, threadId, message);
 					break;
 				case LogLevel.None:
 					break;
@@ -99,9 +102,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string level,
 			string category,
 			string tagId,
-			string threadId,
+			string tagName,
+			int threadId,
 			string message) =>
-			WriteEvent((int)EventIds.LogErrorEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, threadId, message);
+			WriteEvent((int)EventIds.LogErrorEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
 		[Event((int)EventIds.LogWarningEventId, Level = EventLevel.Warning, Message = "{13}", Version = 6)]
@@ -118,9 +122,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string level,
 			string category,
 			string tagId,
-			string threadId,
+			string tagName,
+			int threadId,
 			string message) =>
-			WriteEvent((int)EventIds.LogWarningEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, threadId, message);
+			WriteEvent((int)EventIds.LogWarningEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
 		[Event((int)EventIds.LogInfoEventId, Level = EventLevel.Informational, Message = "{13}", Version = 6)]
@@ -137,9 +142,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string level,
 			string category,
 			string tagId,
-			string threadId,
+			string tagName,
+			int threadId,
 			string message) =>
-			WriteEvent((int)EventIds.LogInfoEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, threadId, message);
+			WriteEvent((int)EventIds.LogInfoEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
 		[Event((int)EventIds.LogVerboseEventId, Level = EventLevel.Verbose, Message = "{13}", Version = 6)]
@@ -156,9 +162,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string level,
 			string category,
 			string tagId,
-			string threadId,
+			string tagName,
+			int threadId,
 			string message) =>
-			WriteEvent((int)EventIds.LogVerboseEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, threadId, message);
+			WriteEvent((int)EventIds.LogVerboseEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
 		[Event((int)EventIds.LogSpamEventId, Level = EventLevel.LogAlways, Message = "{13}", Version = 6)]
@@ -175,9 +182,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string level,
 			string category,
 			string tagId,
-			string threadId,
+			string tagName,
+			int threadId,
 			string message) =>
-			WriteEvent((int)EventIds.LogSpamEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, threadId, message);
+			WriteEvent((int)EventIds.LogSpamEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
 		/// <summary>
@@ -196,7 +204,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// eg. 0x000101D0 = 00 000000 000000 010000 000111 010000 2 = aaqhq
 		/// (from http://office/15/howto/reliability/Wiki/Assert%20and%20ULS%20Tagging.aspx)
 		/// </remarks>
-		public static string TagIdAsString(int tagId)
+		public static string TagIdAsString(int tagId) // Convert should be done more efficient
 		{
 			if (tagId <= 0xFFFF)
 			{
