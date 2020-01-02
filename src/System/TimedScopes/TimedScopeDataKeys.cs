@@ -167,8 +167,6 @@ namespace Microsoft.Omex.System.TimedScopes
 
 		/// <summary>
 		/// Key that can be used to store additional meta data about the scope.
-		/// This is the third dimension surfaced in MDM after scope name and subtype.
-		/// Do not use this field for highly granular, user- or request-specific data!
 		/// </summary>
 		public const string ObjectMetaData = "ObjectMetaData";
 
