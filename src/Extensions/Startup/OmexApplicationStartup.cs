@@ -20,12 +20,15 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 		where TContext : class, IServiceContext
 	{
 		/// <summary>Create an instance of OmexApplicationStartup</summary>
-		/// <param name="serviceTypeName">Name of the service used for logging</param>
-		public OmexApplicationStartup(string? serviceTypeName = null) =>
-			ServiceTypeName = serviceTypeName ?? GetDefaultName();
+		/// <param name="applicationName">Name of the service used for logging</param>
+		public OmexApplicationStartup(string? applicationName = null) =>
+			ServiceTypeName = applicationName ?? GetDefaultName();
 
 
-		/// <summary>Run function to execute</summary>
+		/// <summary>
+		/// Run function to execute
+		/// This method should be used as an entry point of the application
+		/// </summary>
 		/// <param name="function">Function to execute</param>
 		/// <param name="typeRegestration">Action to register types in DI</param>
 		/// <param name="typeResolution">Action to resolve types from DI</param>
@@ -54,10 +57,10 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 		/// <summary>Register dependencies in DI</summary>
 		protected virtual IServiceCollection Register(IServiceCollection collection)
 		{
+			m_typeRegestration?.Invoke(collection);
 			collection
 				.AddOmexLogging<TContext>()
 				.AddTimedScopes();
-			m_typeRegestration?.Invoke(collection);
 			return collection;
 		}
 
@@ -71,10 +74,12 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 		}
 
 
-		/// <summary></summary>
+		/// <summary>
+		/// Method will create DI container register types and resolve spesified type from it
+		/// </summary>
 		/// <typeparam name="T">Type of startup objest </typeparam>
 		/// <param name="objctsToRegister"></param>
-		/// <returns></returns>
+		/// <returns>Instance of the object returned from DI</returns>
 		protected T GetStartupObject<T>(params object[] objctsToRegister)
 			where T : class
 		{
@@ -120,13 +125,6 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 		private Action<IServiceProvider>? m_typeResolution;
 
 
-		private string GetDefaultName()
-		{
-			Assembly? assembly = Assembly.GetEntryAssembly() 
-				?? Assembly.GetCallingAssembly()
-				?? Assembly.GetExecutingAssembly();
-
-			return assembly.GetName().Name ?? GetType().Name;
-		}
+		private string GetDefaultName() => Assembly.GetEntryAssembly().GetName().Name ?? GetType().Name;
 	}
 }
