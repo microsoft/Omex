@@ -135,7 +135,6 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// </summary>
 		/// <param name="tagId">tag id</param>
 		/// <returns>the tag as string</returns>
-		/// <owner alias="davidah"/>
 		/// <remarks>
 		/// In terms of the conversion from integer tag value to equivalent string reprsentation, the following scheme is used:
 		/// 1. If the integer tag &lt;= 0x0000FFFF, treat the tag as special tag called numeric only tag.
