@@ -55,7 +55,8 @@ namespace Microsoft.Omex.Extensions.Logging
 			}
 
 			// Both converts should be done more efficient
-			string tagId = TagIdAsString(eventId.Id);
+			// Event ID description also should be logged
+			string tagId = TagIdAsString(eventId.Id); 
 			string threadIdAsString = threadId.ToString(); 
 
 			switch (level)
