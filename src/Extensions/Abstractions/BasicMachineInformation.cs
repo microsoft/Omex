@@ -94,7 +94,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 			{
 				return Environment.MachineName;
 			}
-			catch (Exception)
+			catch (InvalidOperationException)
 			{
 				return DefaultEmptyValue;
 			}

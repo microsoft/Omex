@@ -47,7 +47,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			if (isTransaction)
 			{
-				WriteTimedScopeTrxEvent(
+				WriteTimedScopeTestEvent(
 					nameAsString,
 					subTypeAsString,
 					metaDataAsString,
@@ -104,7 +104,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 
 		[Event((int)EventIds.LogTimedScopeTestContextEventId , Level = EventLevel.Informational, Version = 3)]
-		private void WriteTimedScopeTrxEvent(
+		private void WriteTimedScopeTestEvent(
 			string name,
 			string subType,
 			string metadata,

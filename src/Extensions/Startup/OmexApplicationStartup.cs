@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 		where TContext : class, IServiceContext
 	{
 		/// <summary>Create an instance of OmexApplicationStartup</summary>
-		/// <param name="applicationName">Name of the service used for logging</param>
+		/// <param name="applicationName">Name of the application used for logging</param>
 		public OmexApplicationStartup(string? applicationName = null) =>
 			ServiceTypeName = applicationName ?? GetDefaultName();
 

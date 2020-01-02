@@ -47,6 +47,7 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 		/// <summary>TimedScope meta data</summary>
 		public string MetaData { get; set; }
 
+
 		private readonly Activity m_activity;
 		private readonly TimedScopeEventSource m_eventSource;
 		private readonly string m_serviceName;
@@ -80,12 +81,12 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 				name: m_activity.OperationName,
 				subtype: SubType,
 				metadata: MetaData,
-				userHash: string.Empty, //Breaking Change: feild not set
+				userHash: m_activity.GetUserHash(), //Breaking Change: feild not set
 				serviceName: m_serviceName,
 				result: Result,
 				correlationId: m_activity.Id,
 				durationMs: m_activity.Duration.TotalMilliseconds,
-				isTransaction: false); //Breaking Change: feild not set
+				isTransaction: m_activity.IsTransaction()); //Breaking Change: feild not set
 		}
 
 

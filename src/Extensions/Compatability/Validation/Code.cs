@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.Extensions.Compatability.Validation
 {
