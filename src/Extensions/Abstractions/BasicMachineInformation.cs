@@ -12,6 +12,9 @@ namespace Microsoft.Omex.Extensions.Abstractions
 {
 	internal class BasicMachineInformation : IMachineInformation
 	{
+		public virtual string AgentName => DefaultEmptyValue;
+
+
 		public virtual string BuildVersion => s_buildVersionString.Value;
 
 
@@ -91,7 +94,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 			{
 				return Environment.MachineName;
 			}
-			catch (ApplicationException)
+			catch (Exception)
 			{
 				return DefaultEmptyValue;
 			}

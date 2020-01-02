@@ -62,6 +62,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			// 1. CorrelationId type changed from Guid ?? Guid.Empty
 			// 2. TransactionId type Changed from uint ?? 0u
 			// 3. ThreadId type Changed from string
+			// 4. TagName to events so it should be also send
 			switch (level)
 			{
 				case LogLevel.Trace:
