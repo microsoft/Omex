@@ -103,7 +103,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			WriteEvent((int)EventIds.LogTimedScopeEventId, name, subType, metadata, userHash, serviceName, m_logCategory, result, correlationId, durationMs);
 
 
-		[Event((int)EventIds.LogTimedScopeTrxEventId, Level = EventLevel.Informational, Version = 3)]
+		[Event((int)EventIds.LogTimedScopeTestContextEventId , Level = EventLevel.Informational, Version = 3)]
 		private void WriteTimedScopeTrxEvent(
 			string name,
 			string subType,
@@ -112,7 +112,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			string result,
 			string correlationId,
 			long durationMs) =>
-			WriteEvent((int)EventIds.LogTimedScopeTrxEventId, name, subType, metadata, serviceName, m_logCategory, result, correlationId, durationMs);
+			WriteEvent((int)EventIds.LogTimedScopeTestContextEventId , name, subType, metadata, serviceName, m_logCategory, result, correlationId, durationMs);
 
 
 		private readonly ILogger<TimedScopeEventSource> m_logger;

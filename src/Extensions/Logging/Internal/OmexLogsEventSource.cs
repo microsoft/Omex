@@ -36,11 +36,11 @@ namespace Microsoft.Omex.Extensions.Logging
 
 		private string ApplicationName => m_machineInformation.MachineRole;
 		private string ServiceName => m_machineInformation.ServiceName;
-		private string AgentName => m_machineInformation.AgentName;
 		private string BuildVersion => m_machineInformation.BuildVersion;
+		private string AgentName => string.Empty;
 
-		private Guid PartitionId => m_serviceContext?.PartitionId ?? Guid.Empty;
-		private long ReplicaId => m_serviceContext?.ReplicaOrInstanceId ?? 0;
+		private Guid PartitionId => m_serviceContext.PartitionId;
+		private long ReplicaId => m_serviceContext.ReplicaOrInstanceId;
 
 		private string CorrelationId => Activity.Current?.Id ?? string.Empty; //Breaking Change: Type Changed from Guid ?? Guid.Empty
 		private string TransactionId => (Activity.Current?.TraceId ?? default).ToHexString(); //Breaking Change: Type Changed from uint ?? 0u
@@ -62,21 +62,20 @@ namespace Microsoft.Omex.Extensions.Logging
 			switch (level)
 			{
 				case LogLevel.Trace:
+					LogSpamServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Spam", category, tagId, threadIdAsString, message);
+					break;
 				case LogLevel.Debug:
-					LogVerboseServiceMessage(message, category, tagId, threadIdAsString);
+					LogVerboseServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Verbose", category, tagId, threadIdAsString, message);
 					break;
 				case LogLevel.Information:
-					LogInfoServiceMessage(message, category, tagId, threadIdAsString);
+					LogInfoServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Info", category, tagId, threadIdAsString, message);
 					break;
 				case LogLevel.Warning:
-					LogWarningServiceMessage(message, category, tagId, threadIdAsString);
+					LogWarningServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Warning", category, tagId, threadIdAsString, message);
 					break;
 				case LogLevel.Error:
-					LogErrorServiceMessage(message, category, tagId, threadIdAsString);
-					break;
 				case LogLevel.Critical:
-					// here spam correspondes to EWT LogAlways that's highest level
-					LogSpamServiceMessage(message, category, tagId, threadIdAsString);
+					LogErrorServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Error", category, tagId, threadIdAsString, message);
 					break;
 				case LogLevel.None:
 					break;
@@ -86,49 +85,99 @@ namespace Microsoft.Omex.Extensions.Logging
 		}
 
 
-		[Event((int)EventIds.LogInfoEventId, Level = EventLevel.Informational, Message = "{13}", Version = 6)]
-		private void LogInfoServiceMessage(
-			string category,
-			string tagId,
-			string threadId,
-			string message) =>
-			WriteEvent((int)EventIds.LogInfoEventId, ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Info", category, tagId, threadId, message);
-
-
 		[Event((int)EventIds.LogErrorEventId, Level = EventLevel.Error, Message = "{13}", Version = 6)]
 		private void LogErrorServiceMessage(
+			string applicationName,
+			string serviceName,
+			string agentName,
+			string buildVersion,
+			string processName,
+			Guid partitionId,
+			long replicaId,
+			string correlationId,
+			string transactionId,
+			string level,
 			string category,
 			string tagId,
 			string threadId,
 			string message) =>
-			WriteEvent((int)EventIds.LogErrorEventId, ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Error", category, tagId, threadId, message);
+			WriteEvent((int)EventIds.LogErrorEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, threadId, message);
 
 
 		[Event((int)EventIds.LogWarningEventId, Level = EventLevel.Warning, Message = "{13}", Version = 6)]
 		private void LogWarningServiceMessage(
+			string applicationName,
+			string serviceName,
+			string agentName,
+			string buildVersion,
+			string processName,
+			Guid partitionId,
+			long replicaId,
+			string correlationId,
+			string transactionId,
+			string level,
 			string category,
 			string tagId,
 			string threadId,
 			string message) =>
-			WriteEvent((int)EventIds.LogWarningEventId, ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Warning", category, tagId, threadId, message);
+			WriteEvent((int)EventIds.LogWarningEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, threadId, message);
+
+
+		[Event((int)EventIds.LogInfoEventId, Level = EventLevel.Informational, Message = "{13}", Version = 6)]
+		private void LogInfoServiceMessage(
+			string applicationName,
+			string serviceName,
+			string agentName,
+			string buildVersion,
+			string processName,
+			Guid partitionId,
+			long replicaId,
+			string correlationId,
+			string transactionId,
+			string level,
+			string category,
+			string tagId,
+			string threadId,
+			string message) =>
+			WriteEvent((int)EventIds.LogInfoEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, threadId, message);
 
 
 		[Event((int)EventIds.LogVerboseEventId, Level = EventLevel.Verbose, Message = "{13}", Version = 6)]
 		private void LogVerboseServiceMessage(
+			string applicationName,
+			string serviceName,
+			string agentName,
+			string buildVersion,
+			string processName,
+			Guid partitionId,
+			long replicaId,
+			string correlationId,
+			string transactionId,
+			string level,
 			string category,
 			string tagId,
 			string threadId,
 			string message) =>
-			WriteEvent((int)EventIds.LogVerboseEventId, ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Verbose", category, tagId, threadId, message);
+			WriteEvent((int)EventIds.LogVerboseEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, threadId, message);
 
 
 		[Event((int)EventIds.LogSpamEventId, Level = EventLevel.LogAlways, Message = "{13}", Version = 6)]
 		private void LogSpamServiceMessage(
+			string applicationName,
+			string serviceName,
+			string agentName,
+			string buildVersion,
+			string processName,
+			Guid partitionId,
+			long replicaId,
+			string correlationId,
+			string transactionId,
+			string level,
 			string category,
 			string tagId,
 			string threadId,
 			string message) =>
-			WriteEvent((int)EventIds.LogSpamEventId, ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Spam", category, tagId, threadId, message);
+			WriteEvent((int)EventIds.LogSpamEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, threadId, message);
 
 
 		/// <summary>

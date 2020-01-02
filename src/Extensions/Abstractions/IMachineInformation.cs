@@ -8,10 +8,6 @@ namespace Microsoft.Omex.Extensions.Abstractions
 	/// <summary>Machine information interface</summary>
 	public interface IMachineInformation
 	{
-		/// <summary>Agent name</summary>
-		string AgentName { get; }
-
-		
 		/// <summary>Build version string</summary>
 		string BuildVersion { get; }
 
@@ -26,10 +22,6 @@ namespace Microsoft.Omex.Extensions.Abstractions
 
 		/// <summary>Is Canary environment</summary>
 		bool IsCanary { get; }
-
-
-		/// <summary>Is Dev Fabric environment</summary>
-		bool IsDevFabric { get; }
 
 
 		/// <summary>Is the deployment a private deployment</summary>

@@ -12,9 +12,6 @@ namespace Microsoft.Omex.Extensions.Abstractions
 {
 	internal class BasicMachineInformation : IMachineInformation
 	{
-		public virtual string AgentName => DefaultEmptyValue;
-
-
 		public virtual string BuildVersion => s_buildVersionString.Value;
 
 
@@ -25,9 +22,6 @@ namespace Microsoft.Omex.Extensions.Abstractions
 
 
 		public virtual bool IsCanary => false;
-
-
-		public virtual bool IsDevFabric => false;
 
 
 		public virtual bool IsPrivateDeployment => true;
@@ -97,7 +91,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 			{
 				return Environment.MachineName;
 			}
-			catch (Exception)
+			catch (ApplicationException)
 			{
 				return DefaultEmptyValue;
 			}

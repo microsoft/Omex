@@ -9,7 +9,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabric.Services
 	/// <summary>
 	/// Service Fabric event source
 	/// </summary>
-	[EventSource(Name = "Microsoft-OMEX-Logs-SfServicesInit")] //Breaking Change: Name Changed from "Microsoft-OMEX-Logs"
+	[EventSource(Name = "Microsoft-OMEX-Logs")] //Breaking Change: duplicated name, might need to be renamed
 	internal sealed class ServiceFabricServicesEventSource : EventSource
 	{
 		/// <summary>

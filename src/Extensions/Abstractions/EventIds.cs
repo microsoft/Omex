@@ -31,7 +31,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 
 
 		/// <summary>Event Id for logging timed scopes traces</summary>
-		LogTimedScopeTrxEventId = 7,
+		LogTimedScopeTestContextEventId = 7,
 
 
 		/// <summary>Event Id for service type registered</summary>
