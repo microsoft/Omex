@@ -11,31 +11,31 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// <summary>
 		/// Error level
 		/// </summary>
-		public static readonly Level Error = new Level(LogLevel.Error);
+		public static Level Error { get; } = new Level(LogLevel.Error);
 
 
 		/// <summary>
 		/// Info level
 		/// </summary>
-		public static readonly Level Info = new Level(LogLevel.Info);
+		public static Level Info { get; } = new Level(LogLevel.Info);
 
 
 		/// <summary>
 		/// Spam level
 		/// </summary>
-		public static readonly Level Spam = new Level(LogLevel.Spam);
+		public static Level Spam { get; } = new Level(LogLevel.Spam);
 
 
 		/// <summary>
 		/// Verbose level
 		/// </summary>
-		public static readonly Level Verbose = new Level(LogLevel.Verbose);
+		public static Level Verbose { get; } = new Level(LogLevel.Verbose);
 
 
 		/// <summary>
 		/// Warning level
 		/// </summary>
-		public static readonly Level Warning = new Level(LogLevel.Warning);
+		public static Level Warning { get; } = new Level(LogLevel.Warning);
 
 
 		/// <summary>

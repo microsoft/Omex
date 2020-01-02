@@ -4,7 +4,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Omex.Extensions.Startup;
+using Microsoft.Omex.Extensions.ServiceFabric.Abstractions;
 using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace Microsoft.Omex.Extensions.ServiceFabric.Services

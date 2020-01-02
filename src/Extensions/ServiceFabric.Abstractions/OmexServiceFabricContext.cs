@@ -4,7 +4,7 @@
 using System.Fabric;
 using Microsoft.Omex.Extensions.Abstractions;
 
-namespace Microsoft.Omex.Extensions.Startup
+namespace Microsoft.Omex.Extensions.ServiceFabric.Abstractions
 {
 	/// <summary>Create wrapper from Service Fabric context to provide log information</summary>
 	public class OmexServiceFabricContext : OmexServiceContext

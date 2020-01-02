@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// <summary>
 		/// Argument validation category
 		/// </summary>
-		public static readonly Category ArgumentValidation = new Category("ArgumentValidation");
+		public static Category ArgumentValidation { get; } = new Category("ArgumentValidation");
 
 		/// <summary>
 		/// Omex Common

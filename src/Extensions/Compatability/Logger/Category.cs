@@ -9,7 +9,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 	/// <summary>
 	/// Logging category
 	/// </summary>
-	public class Category : IEquatable<Category>
+	public struct Category : IEquatable<Category>
 	{
 		/// <summary>
 		/// Category

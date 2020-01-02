@@ -3,13 +3,14 @@
     <TargetFrameworks>$(TargetFrameworksValue)</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.0" />
     <PackageReference Include="Microsoft.ServiceFabric.Actors" Version="4.0.457" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
     <ProjectReference Include="..\Logging\Microsoft.Omex.Extensions.Logging.csproj" />
+    <ProjectReference Include="..\ServiceFabric.Abstractions\Microsoft.Omex.Extensions.ServiceFabric.Abstractions.csproj" />
     <ProjectReference Include="..\Startup\Microsoft.Omex.Extensions.Startup.csproj" />
     <ProjectReference Include="..\TimedScopes\Microsoft.Omex.Extensions.TimedScopes.csproj" />
     <ProjectReference Include="..\Compatability\Microsoft.Omex.Extensions.Compatability.csproj" />
