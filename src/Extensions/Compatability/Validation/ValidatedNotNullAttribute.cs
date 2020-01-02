@@ -2,9 +2,8 @@
 // Licensed under the MIT license.
 
 using System;
-using Microsoft.Omex.Extensions.Compatability.Validation;
 
-namespace Microsoft.Omex.System.Validation
+namespace Microsoft.Omex.Extensions.Compatability.Validation
 {
 	/// <summary>
 	/// Indicates to code analysis tools that a method validates a particular parameter to not be null.

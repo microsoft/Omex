@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using Microsoft.Omex.Extensions.Compatability.Validation;
 
 namespace Microsoft.Omex.Extensions.Compatability.Logger
 {
@@ -14,12 +13,8 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// <summary>
 		/// Category
 		/// </summary>
-		/// <param name="name">name</param>
-		/// <exception cref="ArgumentNullException"><paramref name="name"/> is null or white space</exception>
-		public Category(string name)
-		{
-			Name = Code.ExpectsNotNullOrWhiteSpaceArgument(name, nameof(name), null);
-		}
+		/// <param name="name">Category name</param>
+		public Category(string name) => Name = name;
 
 
 		/// <summary>
@@ -32,27 +27,14 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// Indicates whether the current object is equal to another object of the same type
 		/// </summary>
 		/// <param name="other">An object to compare with this object</param>
-		public bool Equals(Category other)
-		{
-			if (ReferenceEquals(null, other))
-			{
-				return false;
-			}
-
-			if (ReferenceEquals(this, other))
-			{
-				return true;
-			}
-
-			return string.Equals(Name, other.Name, StringComparison.InvariantCulture);
-		}
+		public bool Equals(Category other) => string.Equals(Name, other.Name, StringComparison.InvariantCulture);
 
 
 		/// <summary>
 		/// Determines whether the specified <see cref="object" />, is equal to this instance
 		/// </summary>
 		/// <param name="obj">The <see cref="object" /> to compare with this instance</param>
-		public override bool Equals(object? obj) => ReferenceEquals(this, obj) || obj is Category other && Equals(other);
+		public override bool Equals(object? obj) => obj is Category other && Equals(other);
 
 
 		/// <summary>

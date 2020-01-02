@@ -11,6 +11,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 	/// Unified logging, allows registering for logging events sent by
 	/// code implementations and to raise logging events
 	/// </summary>
+	[Obsolete("Please consider using ILogger instead", false)]
 	public static class ULSLogging
 	{
 

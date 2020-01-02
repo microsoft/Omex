@@ -46,10 +46,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// Get hash code
 		/// </summary>
 		/// <returns>hash code</returns>
-		public override int GetHashCode()
-		{
-			return LogLevel.GetHashCode();
-		}
+		public override int GetHashCode() => LogLevel.GetHashCode();
 
 
 		/// <summary>
@@ -58,10 +55,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// <param name="l1">first level</param>
 		/// <param name="l2">second level</param>
 		/// <returns>true if equal, false otherwise</returns>
-		public static bool operator ==(Level l1, Level l2)
-		{
-			return l1.Equals(l2);
-		}
+		public static bool operator ==(Level l1, Level l2) => l1.Equals(l2);
 
 
 		/// <summary>
@@ -70,19 +64,13 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// <param name="l1">first level</param>
 		/// <param name="l2">second level</param>
 		/// <returns>false if equal, true otherwise</returns>
-		public static bool operator !=(Level l1, Level l2)
-		{
-			return !l1.Equals(l2);
-		}
+		public static bool operator !=(Level l1, Level l2) => !l1.Equals(l2);
 
 
 		/// <summary>
 		/// String representaion of the level
 		/// </summary>
 		/// <returns>string representation</returns>
-		public override string ToString()
-		{
-			return LogLevel.ToString();
-		}
+		public override string ToString() => LogLevel.ToString();
 	}
 }

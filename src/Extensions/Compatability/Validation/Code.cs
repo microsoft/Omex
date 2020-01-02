@@ -13,6 +13,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 	/// <summary>
 	/// Code validation
 	/// </summary>
+	[Obsolete("Please consider using non-nullable reference types instead", false)]
 	public static class Code
 	{
 		/// <summary>
