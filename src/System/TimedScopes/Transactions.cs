@@ -31,23 +31,11 @@ namespace Microsoft.Omex.System.TimedScopes
 
 
 		/// <summary>
-		/// Transaction Id specified by AppSure Validation Probes
-		/// </summary>
-		public const uint AppSureValidationProbe = 9997;
-
-
-		/// <summary>
 		/// Transaction Id specified by when monitoring by watchdogs/observers/CVTs to
 		/// mark that a test transaction is ongoing.
 		/// </summary>
 		/// <remarks>If a specific behaviour is required for the transaction, use one
 		/// of the transaction id's above instead</remarks>
 		public const uint MonitorEndpoint = 9998;
-
-
-		/// <summary>
-		/// Transaction Id specified by OMEX Test Probes
-		/// </summary>
-		public const uint TestProbe = 9999;
 	}
 }
