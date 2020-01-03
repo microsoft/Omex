@@ -32,7 +32,9 @@ namespace Microsoft.Omex.Extensions.Logging
 				.AddMachineInformation()
 				.AddServiceContext<TServiceContext>();
 
-			serviceCollection.TryAddSingleton<IExternalScopeProvider, LoggerExternalScopeProvider>();
+			serviceCollection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
+			serviceCollection.TryAddTransient<IOmexEventSource, OmexLogsEventSource>();
+			serviceCollection.TryAddTransient<OmexLogsEventSource, OmexLogsEventSource>();
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
 			return serviceCollection;
 		}

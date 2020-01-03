@@ -2,9 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Logging.TimedScopes
@@ -15,21 +13,17 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 		{
 			m_serviceName = machineInformation.ServiceName;
 			m_eventSource = eventSource;
+			ReplayEventsInCaseOfError = true;
 		}
 
-		public TimedScope Start(string name, TimedScopeResult result) =>
-			new TimedScope(m_eventSource, m_serviceName, name, result);
 
+		public TimedScope Start(string name, TimedScopeResult result) =>
+			new TimedScope(m_eventSource, ReplayEventsInCaseOfError, m_serviceName, name, result);
+
+
+		public bool ReplayEventsInCaseOfError { get; set; }
 		private readonly TimedScopeEventSource m_eventSource;
 		private readonly string m_serviceName;
-	}
-
-
-	/// <summary>Interface to create TimedScope</summary>
-	public interface ITimedScopeProvider
-	{
-		/// <summary>Create and start TimedScope</summary>
-		TimedScope Start(string name, TimedScopeResult result = TimedScopeResult.SystemError);
 	}
 
 
@@ -54,11 +48,11 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 		private const string NullPlaceholder = "null";
 
 
-		internal TimedScope(TimedScopeEventSource eventSource, string serviceName, string name, TimedScopeResult result)
+		internal TimedScope(TimedScopeEventSource eventSource, bool replyEvents, string serviceName, string name, TimedScopeResult result)
 		{
 			m_eventSource = eventSource;
 			m_serviceName = serviceName;
-			m_activity = new Activity(name);
+			m_activity = replyEvents ? new ReplayibleActivity(name) : new Activity(name);
 			Result = result;
 			SubType = NullPlaceholder;
 			MetaData = NullPlaceholder;
@@ -87,9 +81,22 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 				correlationId: m_activity.Id,
 				durationMs: m_activity.Duration.TotalMilliseconds,
 				isTransaction: m_activity.IsTransaction()); //Breaking Change: feild not set
+
+			if (ShouldReplayEvents && m_activity is ReplayibleActivity repayibleActivity)
+			{
+				m_eventSource.ReplayEvents(repayibleActivity);
+			}
 		}
 
 
 		void IDisposable.Dispose() => Stop();
+
+
+		private bool ShouldReplayEvents =>
+			Result switch
+			{
+				TimedScopeResult.SystemError => true,
+				_ => false,
+			};
 	}
 }

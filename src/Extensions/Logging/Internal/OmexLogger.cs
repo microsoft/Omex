@@ -2,8 +2,10 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
@@ -20,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		public IDisposable BeginScope<TState>(TState state) => m_externalScopeProvider.Push(state);
 
 
-		public bool IsEnabled(LogLevel logLevel) => m_logsEventSource.IsEnabled();
+		public bool IsEnabled(LogLevel logLevel) => m_logsEventSource.IsEnabled(logLevel);
 
 
 		public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
@@ -30,16 +32,23 @@ namespace Microsoft.Omex.Extensions.Logging
 				return;
 			}
 
-			m_logsEventSource.ServiceMessage(formatter(state, exception), logLevel, m_categoryName, eventId, Thread.CurrentThread.ManagedThreadId);
+			string message = formatter(state, exception);
+			int threadId = Thread.CurrentThread.ManagedThreadId;
+			Activity activity = Activity.Current;
+			string activityId = activity?.Id ?? string.Empty;
+			string traceId = (activity?.TraceId ?? default).ToHexString();
+
+			m_logsEventSource.ServiceMessage(activityId, traceId, m_categoryName, logLevel, eventId, threadId, message);
+
+			if (m_logsEventSource.IsReplayableMessage(logLevel) && activity is IReplayableLogScope logReplyScope)
+			{
+				logReplyScope.AddLogEvent(new LogMessageInformation(m_categoryName, traceId, eventId, threadId, message));
+			}
 		}
 
 
 		private readonly IExternalScopeProvider m_externalScopeProvider;
-
-
 		private readonly OmexLogsEventSource m_logsEventSource;
-
-
 		private readonly string m_categoryName;
 	}
 }

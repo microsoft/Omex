@@ -11,17 +11,15 @@ using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
+
 	[EventSource(Name = "Microsoft-OMEX-Logs")]
-	internal sealed class OmexLogsEventSource : EventSource
+	internal sealed class OmexLogsEventSource : EventSource, IOmexEventSource
 	{
 		static OmexLogsEventSource()
 		{
 			Process process = Process.GetCurrentProcess();
 			ProcessName = string.Format("{0} (0x{1:X4})", process.ProcessName, process.Id);
 		}
-
-
-		private static string ProcessName { get; }
 
 
 		public OmexLogsEventSource(IMachineInformation machineInformation, IServiceContext context)
@@ -31,25 +29,10 @@ namespace Microsoft.Omex.Extensions.Logging
 		}
 
 
-		private readonly IMachineInformation m_machineInformation;
-		private readonly IServiceContext m_serviceContext;
-
-		private string ApplicationName => m_machineInformation.MachineRole;
-		private string ServiceName => m_machineInformation.ServiceName;
-		private string BuildVersion => m_machineInformation.BuildVersion;
-		private string AgentName => string.Empty;
-
-		private Guid PartitionId => m_serviceContext.PartitionId;
-		private long ReplicaId => m_serviceContext.ReplicaOrInstanceId;
-
-		private string CorrelationId => Activity.Current?.Id ?? string.Empty;
-		private string TransactionId => (Activity.Current?.TraceId ?? default).ToHexString();
-
-
 		[NonEvent]
-		public void ServiceMessage(string message, LogLevel level, string category, EventId eventId, int threadId)
+		public void ServiceMessage(string activityId, string traceId, string category, LogLevel level, EventId eventId, int threadId, string message)
 		{
-			if (!IsEnabled())
+			if (!IsEnabled(level))
 			{
 				return;
 			}
@@ -65,28 +48,61 @@ namespace Microsoft.Omex.Extensions.Logging
 			// 4. TagName to events so it should be also send
 			switch (level)
 			{
+				case LogLevel.None:
+					break;
 				case LogLevel.Trace:
-					LogSpamServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Spam", category, tagId, tagName, threadId, message);
+					LogSpamServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, activityId, traceId, "Spam", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Debug:
-					LogVerboseServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Verbose", category, tagId, tagName, threadId, message);
+					LogVerboseServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, activityId, traceId, "Verbose", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Information:
-					LogInfoServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Info", category, tagId, tagName, threadId, message);
+					LogInfoServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, activityId, traceId, "Info", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Warning:
-					LogWarningServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Warning", category, tagId, tagName, threadId, message);
+					LogWarningServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, activityId, traceId, "Warning", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Error:
 				case LogLevel.Critical:
-					LogErrorServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, CorrelationId, TransactionId, "Error", category, tagId, eventId.Name, threadId, message);
-					break;
-				case LogLevel.None:
+					LogErrorServiceMessage(ApplicationName, ServiceName, AgentName, BuildVersion, ProcessName, PartitionId, ReplicaId, activityId, traceId, "Error", category, tagId, eventId.Name, threadId, message);
 					break;
 				default:
 					throw new ArgumentException("Unknown EventLevel: " + level);
 			}
 		}
+
+		[NonEvent]
+		public void ReplayEvent(string activityId, LogMessageInformation log)
+			=> ServiceMessage(activityId, log.TraceId, log.Category, ReplayLogLevel, log.EventId, log.ThreadId, log.Message);
+
+
+		public bool IsEnabled(LogLevel level) =>
+			level switch
+			{
+				LogLevel.None => false,
+				_ => IsEnabled()
+			};
+
+
+		public bool IsReplayableMessage(LogLevel logLevel) =>
+			logLevel switch
+			{
+				LogLevel.Trace => true,
+				LogLevel.Debug => true,
+				_ => false
+			};
+
+
+		private static string ProcessName { get; }
+		private readonly IMachineInformation m_machineInformation;
+		private readonly IServiceContext m_serviceContext;
+		private string ApplicationName => m_machineInformation.MachineRole;
+		private string ServiceName => m_machineInformation.ServiceName;
+		private string BuildVersion => m_machineInformation.BuildVersion;
+		private string AgentName => string.Empty;
+		private Guid PartitionId => m_serviceContext.PartitionId;
+		private long ReplicaId => m_serviceContext.ReplicaOrInstanceId;
+		private LogLevel ReplayLogLevel => LogLevel.Information;
 
 
 		[Event((int)EventIds.LogErrorEventId, Level = EventLevel.Error, Message = "{13}", Version = 6)]
@@ -205,7 +221,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// eg. 0x000101D0 = 00 000000 000000 010000 000111 010000 2 = aaqhq
 		/// (from http://office/15/howto/reliability/Wiki/Assert%20and%20ULS%20Tagging.aspx)
 		/// </remarks>
-		public static string TagIdAsString(int tagId) // Convert should be done more efficient
+		private static string TagIdAsString(int tagId) // Convert should be done more efficient
 		{
 			if (tagId <= 0xFFFF)
 			{

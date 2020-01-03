@@ -12,10 +12,21 @@ namespace Microsoft.Omex.Extensions.Logging
 	[EventSource(Name = "Microsoft-OMEX-TimedScopes")]
 	internal sealed class TimedScopeEventSource : EventSource
 	{
-		public TimedScopeEventSource(ILogger<TimedScopeEventSource> logger)
+		public TimedScopeEventSource(ILogger<TimedScopeEventSource> logger, IOmexEventSource omexEventSource)
 		{
 			m_logger = logger;
-			m_logCategory = typeof(TimedScopeEventSource).FullName!;
+			m_logCategory = typeof(TimedScopeEventSource).FullName ?? nameof(TimedScopeEventSource);
+			m_omexEventSource = omexEventSource;
+		}
+
+
+		[NonEvent]
+		public void ReplayEvents(ReplayibleActivity scope)
+		{
+			foreach (LogMessageInformation log in scope.GetLogEvents())
+			{
+				m_omexEventSource.ReplayEvent(scope.Id, log);
+			}
 		}
 
 
@@ -116,8 +127,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 
 		private readonly ILogger<TimedScopeEventSource> m_logger;
-
-
 		private readonly string m_logCategory;
+		private readonly IOmexEventSource m_omexEventSource;
 	}
 }
