@@ -86,12 +86,12 @@ namespace Microsoft.Omex.System.TimedScopes
 				string correlationId,
 				double durationMs)
 		{
-			string nameAsString = SanitizeMdmString(name, nameof(name), name, logCategory);
-			string subTypeAsString = SanitizeMdmString(subtype, nameof(subtype), name, logCategory);
-			string metaDataAsString = SanitizeMdmString(metadata, nameof(metadata), name, logCategory);
-			string userHashAsString = SanitizeMdmString(userHash, nameof(userHash), name, logCategory);
-			string serviceNameAsString = SanitizeMdmString(serviceName, nameof(serviceName), name, logCategory);
-			string correlationIdAsString = SanitizeMdmString(correlationId, nameof(correlationId), name, logCategory);
+			string nameAsString = SanitizeString(name, nameof(name), name, logCategory);
+			string subTypeAsString = SanitizeString(subtype, nameof(subtype), name, logCategory);
+			string metaDataAsString = SanitizeString(metadata, nameof(metadata), name, logCategory);
+			string userHashAsString = SanitizeString(userHash, nameof(userHash), name, logCategory);
+			string serviceNameAsString = SanitizeString(serviceName, nameof(serviceName), name, logCategory);
+			string correlationIdAsString = SanitizeString(correlationId, nameof(correlationId), name, logCategory);
 
 			WriteTimedScopeEvent(
 				nameAsString,
@@ -128,13 +128,13 @@ namespace Microsoft.Omex.System.TimedScopes
 			string correlationId,
 			double durationMs)
 		{
-			string nameAsString = SanitizeMdmString(name, nameof(name), name, logCategory);
-			string subTypeAsString = SanitizeMdmString(subtype, nameof(subtype), name, logCategory);
-			string metaDataAsString = SanitizeMdmString(metadata, nameof(metadata), name, logCategory);
-			string serviceNameAsString = SanitizeMdmString(serviceName, nameof(serviceName), name, logCategory);
-			string correlationIdAsString = SanitizeMdmString(correlationId, nameof(correlationId), name, logCategory);
+			string nameAsString = SanitizeString(name, nameof(name), name, logCategory);
+			string subTypeAsString = SanitizeString(subtype, nameof(subtype), name, logCategory);
+			string metaDataAsString = SanitizeString(metadata, nameof(metadata), name, logCategory);
+			string serviceNameAsString = SanitizeString(serviceName, nameof(serviceName), name, logCategory);
+			string correlationIdAsString = SanitizeString(correlationId, nameof(correlationId), name, logCategory);
 
-			WriteTimedScopeTrxEvent(
+			WriteTimedScopeTestContextEvent(
 				nameAsString,
 				subTypeAsString,
 				metaDataAsString,
@@ -146,13 +146,13 @@ namespace Microsoft.Omex.System.TimedScopes
 		}
 
 
-		private static string SanitizeMdmString(string mdmString, string name, string activityName, Category logCategory)
+		private static string SanitizeString(string mdmString, string name, string activityName, Category logCategory)
 		{
 			string validatedString = Convert.ToString(mdmString, CultureInfo.InvariantCulture) ?? string.Empty;
 
 			if (validatedString.Length > 1024)
 			{
-				ULSLogging.LogTraceTag(0x23857681 /* tag_97x0b */, logCategory, Levels.Warning, MdmStringLimitMessage, 1024, name, activityName, validatedString.Length);
+				ULSLogging.LogTraceTag(0x23857681 /* tag_97x0b */, logCategory, Levels.Warning, StringLimitMessage, 1024, name, activityName, validatedString.Length);
 				validatedString = validatedString.Substring(0, 1024);
 			}
 
@@ -160,8 +160,8 @@ namespace Microsoft.Omex.System.TimedScopes
 		}
 
 
-		private const string MdmStringLimitMessage =
-			"MDM enforces a string length limit of {0} characters per dimension. Truncating length of dimension {1} on activity {2} from {3} chars in order to allow upload of the metric";
+		private const string StringLimitMessage =
+			"Our logging enforces a string length limit of {0} characters per dimension. Truncating length of dimension {1} on activity {2} from {3} chars in order to allow upload of the metric";
 
 		#endregion
 
@@ -207,8 +207,8 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="result">Result</param>
 		/// <param name="correlationId">Correlation Id</param>
 		/// <param name="durationMs">Duration in ms</param>
-		[Event((int)EventIds.LogTimedScopeTrxEventId, Level = EventLevel.Informational, Version = 3)]
-		private void WriteTimedScopeTrxEvent(
+		[Event((int)EventIds.LogTimedScopeTestContextEventId, Level = EventLevel.Informational, Version = 3)]
+		private void WriteTimedScopeTestContextEvent(
 			string name,
 			string subType,
 			string metadata,
@@ -218,7 +218,7 @@ namespace Microsoft.Omex.System.TimedScopes
 			string correlationId,
 			long durationMs)
 		{
-			WriteEvent((int)EventIds.LogTimedScopeTrxEventId, name ?? string.Empty, subType ?? string.Empty, metadata ?? string.Empty, serviceName ?? string.Empty, logCategory, result, correlationId, durationMs);
+			WriteEvent((int)EventIds.LogTimedScopeTestContextEventId, name ?? string.Empty, subType ?? string.Empty, metadata ?? string.Empty, serviceName ?? string.Empty, logCategory, result, correlationId, durationMs);
 		}
 
 		#endregion

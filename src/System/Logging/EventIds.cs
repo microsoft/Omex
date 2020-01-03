@@ -45,9 +45,9 @@ namespace Microsoft.Omex.System.Logging
 
 
 		/// <summary>
-		/// Event Id for logging timed scopes traces.
+		/// Event Id for test context timed scopes; ex: health checks, observers
 		/// </summary>
-		LogTimedScopeTrxEventId = 7,
+		LogTimedScopeTestContextEventId = 7,
 
 
 		/// <summary>
