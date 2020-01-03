@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Fabric;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Omex.Extensions.ServiceFabric.Abstractions;
