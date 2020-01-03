@@ -9,7 +9,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 	/// <summary>
 	/// Tagging utitilty class
 	/// </summary>
-	public static class TaggingUtilities
+	public static class Tag
 	{
 		/// <summary>
 		/// Create a EventId using a tag using GitTagger

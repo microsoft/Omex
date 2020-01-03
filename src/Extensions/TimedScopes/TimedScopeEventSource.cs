@@ -89,7 +89,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			const int stringLimit = 1024;
 			if (validatedString.Length > stringLimit)
 			{
-				m_logger.LogWarning(TaggingUtilities.ReserveTag(0), StringLimitMessage, stringLimit, name, activityName, validatedString.Length);
+				m_logger.LogWarning(Tag.ReserveTag(0), StringLimitMessage, stringLimit, name, activityName, validatedString.Length);
 				validatedString = validatedString.Substring(0, stringLimit);
 			}
 
