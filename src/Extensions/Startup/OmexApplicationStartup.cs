@@ -125,6 +125,6 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 		private Action<IServiceProvider>? m_typeResolution;
 
 
-		private string GetDefaultName() => Assembly.GetEntryAssembly().GetName().Name ?? GetType().Name;
+		private string GetDefaultName() => Assembly.GetEntryAssembly()?.GetName().Name ?? GetType().Name;
 	}
 }
