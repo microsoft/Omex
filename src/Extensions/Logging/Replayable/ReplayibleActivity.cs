@@ -4,13 +4,12 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.Omex.Extensions.Abstractions;
 
-namespace Microsoft.Omex.Extensions.Logging.TimedScopes
+namespace Microsoft.Omex.Extensions.Logging.Replayable
 {
-	internal class ReplayibleActivity : Activity, IReplayableLogScope
+	internal class ReplayableActivity : Activity
 	{
-		public ReplayibleActivity(string operationName) : base(operationName) =>
+		public ReplayableActivity(string operationName) : base(operationName) =>
 			m_logEvents = new ConcurrentBag<LogMessageInformation>();
 
 

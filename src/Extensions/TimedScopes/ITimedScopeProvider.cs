@@ -9,7 +9,7 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 		/// <summary>Create and start TimedScope</summary>
 		TimedScope Start(string name, TimedScopeResult result = TimedScopeResult.SystemError);
 
-		/// <summary> Replay events in case of the error </summary>
+		/// <summary> Replay events in case of the error</summary>
 		bool ReplayEventsInCaseOfError { get; set; }
 	}
 }

@@ -17,7 +17,8 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 			serviceCollection.AddMachineInformation();
-			serviceCollection.TryAddTransient<TimedScopeEventSource>();
+			serviceCollection.TryAddTransient<IActivityProvider, SimpleActivityProvider>();
+			serviceCollection.TryAddTransient<TimedScopeEventSource, TimedScopeEventSource>();
 			serviceCollection.TryAddTransient<ITimedScopeProvider,TimedScopeProvider>();
 			return serviceCollection;
 		}

@@ -16,32 +16,24 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 	[DataContract]
 	public enum TimedScopeResult : int
 	{
-		/// <summary>
-		/// Result is unknown (default)
-		/// </summary>
+		/// <summary>Result is unknown (default)</summary>
 		/// <remarks>Result should always be set to one of the other values explicitly. Unknown causes an error to be logged, and the scope is assumed failed.</remarks>
 		[EnumMember]
 		[Obsolete("Default value, not to be used explicitly", error: true)]
 		Unknown = 0,
 
 
-		/// <summary>
-		/// Success
-		/// </summary>
+		/// <summary>Success</summary>
 		[EnumMember]
 		Success = 1,
 
 
-		/// <summary>
-		/// System Error
-		/// </summary>
+		/// <summary>System Error</summary>
 		[EnumMember]
 		SystemError = 2,
 
 
-		/// <summary>
-		/// Expected Error (consolidating old UserError and PayloadError)
-		/// </summary>
+		/// <summary>Expected Error (consolidating old UserError and PayloadError)</summary>
 		[EnumMember]
 		ExpectedError = 6
 	}

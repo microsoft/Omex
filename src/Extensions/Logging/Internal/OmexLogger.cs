@@ -5,7 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using Microsoft.Extensions.Logging;
-using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Logging.Replayable;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
@@ -36,13 +36,13 @@ namespace Microsoft.Omex.Extensions.Logging
 			int threadId = Thread.CurrentThread.ManagedThreadId;
 			Activity activity = Activity.Current;
 			string activityId = activity?.Id ?? string.Empty;
-			string traceId = (activity?.TraceId ?? default).ToHexString();
+			ActivityTraceId traceId = activity?.TraceId ?? default;
 
 			m_logsEventSource.ServiceMessage(activityId, traceId, m_categoryName, logLevel, eventId, threadId, message);
 
-			if (m_logsEventSource.IsReplayableMessage(logLevel) && activity is IReplayableLogScope logReplyScope)
+			if (m_logsEventSource.IsReplayableMessage(logLevel) && activity is ReplayableActivity replayableyScope)
 			{
-				logReplyScope.AddLogEvent(new LogMessageInformation(m_categoryName, traceId, eventId, threadId, message));
+				replayableyScope.AddLogEvent(new LogMessageInformation(m_categoryName, eventId, threadId, message));
 			}
 		}
 

@@ -24,11 +24,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 
 		private IExternalScopeProvider? m_externalScopeProvider;
-
-
 		private IExternalScopeProvider m_defaultExternalScopeProvider;
-
-
 		private readonly OmexLogsEventSource m_logsEventSource;
 	}
 }

@@ -7,27 +7,7 @@ using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 {
-	internal class TimedScopeProvider : ITimedScopeProvider
-	{
-		public TimedScopeProvider(IMachineInformation machineInformation, TimedScopeEventSource eventSource)
-		{
-			m_serviceName = machineInformation.ServiceName;
-			m_eventSource = eventSource;
-			ReplayEventsInCaseOfError = true;
-		}
-
-
-		public TimedScope Start(string name, TimedScopeResult result) =>
-			new TimedScope(m_eventSource, ReplayEventsInCaseOfError, m_serviceName, name, result);
-
-
-		public bool ReplayEventsInCaseOfError { get; set; }
-		private readonly TimedScopeEventSource m_eventSource;
-		private readonly string m_serviceName;
-	}
-
-
-	/// <summary>Class to log duration of activity</summary>
+	/// <summary>Logs duration of activity</summary>
 	public class TimedScope : IDisposable
 	{
 		/// <summary>TimedScope result</summary>
@@ -42,17 +22,12 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 		public string MetaData { get; set; }
 
 
-		private readonly Activity m_activity;
-		private readonly TimedScopeEventSource m_eventSource;
-		private readonly string m_serviceName;
-		private const string NullPlaceholder = "null";
-
-
-		internal TimedScope(TimedScopeEventSource eventSource, bool replyEvents, string serviceName, string name, TimedScopeResult result)
+		internal TimedScope(TimedScopeEventSource eventSource, Activity activity, string serviceName, TimedScopeResult result, ILogReplayer? logReplayer)
 		{
 			m_eventSource = eventSource;
+			m_logReplayer = logReplayer;
 			m_serviceName = serviceName;
-			m_activity = replyEvents ? new ReplayibleActivity(name) : new Activity(name);
+			m_activity = activity;
 			Result = result;
 			SubType = NullPlaceholder;
 			MetaData = NullPlaceholder;
@@ -82,9 +57,9 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 				durationMs: m_activity.Duration.TotalMilliseconds,
 				isTransaction: m_activity.IsTransaction()); //Breaking Change: feild not set
 
-			if (ShouldReplayEvents && m_activity is ReplayibleActivity repayibleActivity)
+			if (m_logReplayer != null && ShouldReplayEvents)
 			{
-				m_eventSource.ReplayEvents(repayibleActivity);
+				m_logReplayer.ReplayLogs(m_activity);
 			}
 		}
 
@@ -98,5 +73,12 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 				TimedScopeResult.SystemError => true,
 				_ => false,
 			};
+
+
+		private readonly Activity m_activity;
+		private readonly TimedScopeEventSource m_eventSource;
+		private readonly ILogReplayer? m_logReplayer;
+		private readonly string m_serviceName;
+		private const string NullPlaceholder = "null";
 	}
 }
