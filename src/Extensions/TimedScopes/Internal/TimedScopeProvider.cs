@@ -13,15 +13,15 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 			m_activityProvider = activityProvider;
 			m_eventSource = eventSource;
 			m_logReplayer = logReplayer;
-			ReplayEventsInCaseOfError = logReplayer != null;
+			m_replayEventsInCaseOfError = logReplayer != null;
 		}
 
 
 		public TimedScope Start(string name, TimedScopeResult result) =>
-			new TimedScope(m_eventSource, m_activityProvider.Create(name, ReplayEventsInCaseOfError), m_serviceName, result, m_logReplayer);
+			new TimedScope(m_eventSource, m_activityProvider.Create(name, m_replayEventsInCaseOfError), m_serviceName, result, m_logReplayer);
 
 
-		public bool ReplayEventsInCaseOfError { get; set; }
+		private bool m_replayEventsInCaseOfError;
 		private readonly TimedScopeEventSource m_eventSource;
 		private readonly IActivityProvider m_activityProvider;
 		private readonly string m_serviceName;

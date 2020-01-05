@@ -4,7 +4,7 @@
 namespace Microsoft.Omex.Extensions.Abstractions
 {
 	/// <summary>Event ids enum</summary>
-	public enum EventIds : ushort
+	public enum EventSourcesEventIds : ushort
 	{
 		/// <summary>Event Id for logging general info message</summary>
 		LogInfoEventId = 1,

@@ -90,7 +90,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			"Log aggregator enforces a string length limit of {0} characters per dimension. Truncating length of dimension {1} on activity {2} from {3} chars in order to allow upload of the metric";
 
 
-		[Event((int)EventIds.LogTimedScopeEventId, Level = EventLevel.Informational, Version = 3)]
+		[Event((int)EventSourcesEventIds.LogTimedScopeEventId, Level = EventLevel.Informational, Version = 3)]
 		private void WriteTimedScopeEvent(
 			string name,
 			string subType,
@@ -100,10 +100,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string result,
 			string correlationId,
 			long durationMs) =>
-			WriteEvent((int)EventIds.LogTimedScopeEventId, name, subType, metadata, userHash, serviceName, m_logCategory, result, correlationId, durationMs);
+			WriteEvent((int)EventSourcesEventIds.LogTimedScopeEventId, name, subType, metadata, userHash, serviceName, m_logCategory, result, correlationId, durationMs);
 
 
-		[Event((int)EventIds.LogTimedScopeTestContextEventId , Level = EventLevel.Informational, Version = 3)]
+		[Event((int)EventSourcesEventIds.LogTimedScopeTestContextEventId , Level = EventLevel.Informational, Version = 3)]
 		private void WriteTimedScopeTestEvent(
 			string name,
 			string subType,
@@ -112,7 +112,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			string result,
 			string correlationId,
 			long durationMs) =>
-			WriteEvent((int)EventIds.LogTimedScopeTestContextEventId , name, subType, metadata, serviceName, m_logCategory, result, correlationId, durationMs);
+			WriteEvent((int)EventSourcesEventIds.LogTimedScopeTestContextEventId , name, subType, metadata, serviceName, m_logCategory, result, correlationId, durationMs);
 
 
 		private readonly ILogger<TimedScopeEventSource> m_logger;

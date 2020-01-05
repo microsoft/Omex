@@ -54,13 +54,13 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 		private ServiceFabricAgentsEventSource() { }
 
 
-		[Event((int)EventIds.ActorTypeRegisteredEventId, Level = EventLevel.Informational, Message = "{2}", Version = 1)]
+		[Event((int)EventSourcesEventIds.ActorTypeRegisteredEventId, Level = EventLevel.Informational, Message = "{2}", Version = 1)]
 		private void LogActorTypeRegistered(int hostProcessId, string actorType, string message) =>
-			WriteEvent((int)EventIds.ActorTypeRegisteredEventId, hostProcessId, actorType, message);
+			WriteEvent((int)EventSourcesEventIds.ActorTypeRegisteredEventId, hostProcessId, actorType, message);
 
 
-		[Event((int)EventIds.ActorHostInitializationFailedEventId, Level = EventLevel.Error, Message = "{1}", Version = 1)]
+		[Event((int)EventSourcesEventIds.ActorHostInitializationFailedEventId, Level = EventLevel.Error, Message = "{1}", Version = 1)]
 		private void LogActorHostInitializationFailed(string exception, string message) =>
-			WriteEvent((int)EventIds.ActorHostInitializationFailedEventId, exception, message);
+			WriteEvent((int)EventSourcesEventIds.ActorHostInitializationFailedEventId, exception, message);
 	}
 }
