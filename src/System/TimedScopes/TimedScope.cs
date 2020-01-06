@@ -58,9 +58,9 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="correlationData">Correlation data</param>
 		/// <param name="machineInformation">Machine Information</param>
 		/// <returns>Newly created scope</returns>
-		public static TimedScope Create(TimedScopeDefinition scopeDefinition, CorrelationData correlationData, IMachineInformation machineInformation,
+		internal static TimedScope Create(TimedScopeDefinition scopeDefinition, CorrelationData correlationData, IMachineInformation machineInformation,
 			ITimedScopeLogger customLogger, IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, 
-			TimedScopeResult initialResult = default(TimedScopeResult))
+			TimedScopeResult initialResult)
 		{
 			return new TimedScope(scopeDefinition, correlationData, customLogger, replayEventConfigurator, machineInformation, timedScopeStackManager)
 			{
@@ -69,137 +69,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				Result = initialResult,
 			};
 		}
-
-
-		/// <summary>
-		/// Deprecated - Start a timed scope
-		/// </summary>
-		/// <remarks>Please use TimedScopeDefinition for creating timed scopes</remarks>
-		/// <param name="correlationData">Correlation data</param>
-		/// <param name="machineInformation">Machine Information</param>
-		/// <param name="scopeName">The name of the timed scope</param>
-		/// <param name="initialResult">The default result for the scope</param>
-		/// <param name="customLogger">Use a custom logger for the timed scope</param>
-		/// <param name="replayEventConfigurator">Replay event configurator</param>
-		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
-		/// <returns>Newly created scope</returns>
-		public static TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, ITimedScopeLogger customLogger, 
-			IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, TimedScopeResult initialResult = default(TimedScopeResult))
-				=> new TimedScopeDefinition(scopeName).Start(correlationData, machineInformation, customLogger, replayEventConfigurator, timedScopeStackManager, initialResult);
-
-
-		/// <summary>
-		/// Deprecated - Start a timed scope
-		/// </summary>
-		/// <remarks>Please use TimedScopeDefinition for creating timed scopes</remarks>
-		/// <param name="correlationData">Correlation data</param>
-		/// <param name="machineInformation">Machine Information</param>
-		/// <param name="scopeName">The name of the timed scope</param>
-		/// <param name="customLogger">Use a custom logger for the timed scope</param>
-		/// <param name="replayEventConfigurator">Replay event configurator</param>
-		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
-		/// <param name="initialResult">The default result for the scope</param>
-		/// <returns>Newly created scope</returns>
-		public static TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, ITimedScopeLogger customLogger,
-			IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, bool? initialResult)
-			=> new TimedScopeDefinition(scopeName).Start(correlationData, machineInformation, customLogger, replayEventConfigurator,
-				timedScopeStackManager, ConvertBoolResultToTimedScopeResult(initialResult));
-
-
-		/// <summary>
-		/// Deprecated - Start a timed scope
-		/// </summary>
-		/// <remarks>Please use TimedScopeDefinition for creating timed scopes</remarks>
-		/// <param name="correlationData">Correlation Data</param>
-		/// <param name="machineInformation">Machine Information</param>
-		/// <param name="scopeName">The name of the timed scope</param>
-		/// <param name="description">The description of the timed scope</param>
-		/// <param name="initialResult">The default result for the scope</param>
-		/// <param name="customLogger">Use a custom logger for the timed scope</param>
-		/// <param name="replayEventConfigurator">Replay event configurator</param>
-		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
-		/// <returns>Newly created scope</returns>
-		public static TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, string description,
-			ITimedScopeLogger customLogger, IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager,
-			TimedScopeResult initialResult = default(TimedScopeResult))
-				=> new TimedScopeDefinition(scopeName, description).Start(correlationData, machineInformation, customLogger, replayEventConfigurator,
-					timedScopeStackManager, initialResult);
-
-
-		/// <summary>
-		/// Deprecated - Start a timed scope
-		/// </summary>
-		/// <remarks>Please use TimedScopeDefinition for creating timed scopes</remarks>
-		/// <param name="correlationData">Correlation Data</param>
-		/// <param name="machineInformation">Machine Information</param>
-		/// <param name="scopeName">The name of the timed scope</param>
-		/// <param name="description">The description of the timed scope</param>
-		/// <param name="customLogger">Use a custom logger for the timed scope</param>
-		/// <param name="replayEventConfigurator">Replay event configurator</param>
-		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
-		/// <param name="initialResult">The default result for the scope</param>
-		/// <returns>Newly created scope</returns>
-		public static TimedScope Start(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, string description,
-			ITimedScopeLogger customLogger, IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, bool? initialResult)
-			=> new TimedScopeDefinition(scopeName, description).Start(correlationData, machineInformation, customLogger, replayEventConfigurator,
-					timedScopeStackManager, ConvertBoolResultToTimedScopeResult(initialResult));
-
-
-		/// <summary>
-		/// Deprecated - Create a timed scope
-		/// </summary>
-		/// <remarks>Please use TimedScopeDefinition for creating timed scopes</remarks>
-		/// <param name="correlationData">Correlation data</param>
-		/// <param name="machineInformation">Machine Information</param>
-		/// <param name="scopeName">The name of the timed scope</param>
-		/// <param name="initialResult">The default result for the scope</param>
-		/// <param name="customLogger">Use a custom logger for the timed scope</param>
-		/// <param name="replayEventConfigurator">Replay event configurator</param>
-		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
-		/// <returns>newly created scope</returns>
-		public static TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, ITimedScopeLogger customLogger, 
-			IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, bool? initialResult = null)
-			=> new TimedScopeDefinition(scopeName).Create(correlationData, machineInformation, customLogger, replayEventConfigurator, timedScopeStackManager, 
-				initialResult: initialResult, startScope: false);
-
-
-		/// <summary>
-		/// Deprecated - Create a timed scope
-		/// </summary>
-		/// <remarks>Please use TimedScopeDefinition for creating timed scopes</remarks>
-		/// <param name="correlationData">Correlation data</param>
-		/// <param name="machineInformation">Machine Information</param>
-		/// <param name="scopeName">The name of the timed scope</param>
-		/// <param name="description">The description of the timed scope</param>
-		/// <param name="initialResult">The default result for the scope</param>
-		/// <param name="customLogger">Use a custom logger for the timed scope</param>
-		/// <param name="replayEventConfigurator">Replay event configurator</param>
-		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
-		/// <returns>newly created scope</returns>
-		public static TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, string description,
-			ITimedScopeLogger customLogger, IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager,
-			TimedScopeResult initialResult = default(TimedScopeResult))
-			=> new TimedScopeDefinition(scopeName, description).Create(correlationData, machineInformation, customLogger, replayEventConfigurator, 
-				timedScopeStackManager, initialResult: initialResult, startScope: false);
-
-
-		/// <summary>
-		/// Deprecated - Create a timed scope
-		/// </summary>
-		/// <remarks>Please use TimedScopeDefinition for creating timed scopes</remarks>
-		/// <param name="correlationData">Correlation data</param>
-		/// <param name="machineInformation">Machine Information</param>
-		/// <param name="scopeName">The name of the timed scope</param>
-		/// <param name="description">The description of the timed scope</param>
-		/// <param name="customLogger">Use a custom logger for the timed scope</param>
-		/// <param name="replayEventConfigurator">Replay event configurator</param>
-		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
-		/// <param name="initialResult">The default result for the scope</param>
-		/// <returns>Newly created scope</returns>
-		public static TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, string scopeName, string description,
-			ITimedScopeLogger customLogger, IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, bool? initialResult)
-			=> new TimedScopeDefinition(scopeName, description).Create(correlationData, machineInformation, customLogger, replayEventConfigurator, 
-				timedScopeStackManager, initialResult: ConvertBoolResultToTimedScopeResult(initialResult), startScope: false);
 
 
 		/// <summary>
