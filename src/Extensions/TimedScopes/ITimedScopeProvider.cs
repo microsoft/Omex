@@ -7,6 +7,6 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 	public interface ITimedScopeProvider
 	{
 		/// <summary>Create and start TimedScope</summary>
-		TimedScope Start(string name, TimedScopeResult result = TimedScopeResult.SystemError);
+		TimedScope Start(string name, TimedScopeResult result);
 	}
 }
