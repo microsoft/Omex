@@ -20,7 +20,7 @@ namespace Microsoft.Omex.System.TimedScopes
 	/// CorrelationStart with cloned CorrelationData, the correlation can be transferred to the new
 	/// thread.
 	/// </remarks>
-	public sealed class Correlation
+	public sealed class Correlation : ICorrelationDataProvider
 	{
 		/// <summary>
 		/// Constructor

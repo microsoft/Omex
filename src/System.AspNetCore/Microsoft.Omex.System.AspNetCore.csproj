@@ -4,8 +4,9 @@
     <Description>Contains common classes for Omex libraries in AspNetCore.</Description>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="$(Microsoft_AspNetCore_Hosting_Abstractions_Version)" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="$(Microsoft_AspNetCore_Http_Version)" />
-    <PackageReference Include="System.Threading.Tasks" Version="$(System_Threading_Tasks_Version)"/>
+    <PackageReference Include="System.Threading.Tasks" Version="$(System_Threading_Tasks_Version)" />
     <PackageReference Include="System.Collections.Immutable" Version="$(System_Collections_Immutable_Version_Core)" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="$(System_ServiceModel_Primitives_Version)" />
   </ItemGroup>
