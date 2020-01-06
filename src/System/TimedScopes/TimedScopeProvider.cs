@@ -28,11 +28,11 @@ namespace Microsoft.Omex.System.TimedScopes
 			IReplayEventConfigurator replayEventConfigurator,
 			ITimedScopeStackManager timedScopeStackManager)
 		{
-			m_correlation = Code.ExpectsArgument(correlation, nameof(correlation), TaggingUtilities.ReserveTag(0));
-			m_machineInformation = Code.ExpectsArgument(machineInformation, nameof(machineInformation), TaggingUtilities.ReserveTag(0));
-			m_scopeLogger = Code.ExpectsArgument(customLogger, nameof(customLogger), TaggingUtilities.ReserveTag(0));
-			m_replayEventConfigurator = Code.ExpectsArgument(replayEventConfigurator, nameof(replayEventConfigurator), TaggingUtilities.ReserveTag(0));
-			m_timedScopeStackManager = Code.ExpectsArgument(timedScopeStackManager, nameof(timedScopeStackManager), TaggingUtilities.ReserveTag(0));
+			m_correlation = Code.ExpectsArgument(correlation, nameof(correlation), TaggingUtilities.ReserveTag(0x2375d3d1 /* tag_933pr */));
+			m_machineInformation = Code.ExpectsArgument(machineInformation, nameof(machineInformation), TaggingUtilities.ReserveTag(0x2375d3d2 /* tag_933ps */));
+			m_scopeLogger = Code.ExpectsArgument(customLogger, nameof(customLogger), TaggingUtilities.ReserveTag(0x2375d3d3 /* tag_933pt */));
+			m_replayEventConfigurator = Code.ExpectsArgument(replayEventConfigurator, nameof(replayEventConfigurator), TaggingUtilities.ReserveTag(0x2375d3d4 /* tag_933pu */));
+			m_timedScopeStackManager = Code.ExpectsArgument(timedScopeStackManager, nameof(timedScopeStackManager), TaggingUtilities.ReserveTag(0x2375d3d5 /* tag_933pv */));
 		}
 
 
