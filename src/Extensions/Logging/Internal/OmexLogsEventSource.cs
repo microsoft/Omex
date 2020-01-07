@@ -27,9 +27,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			m_applicationName = machineInformation.MachineRole;
 			m_serviceName = machineInformation.ServiceName;
 			m_buildVersion = machineInformation.BuildVersion;
+			m_machineId = machineInformation.MachineId;
+
 			m_partitionId = context.PartitionId;
 			m_replicaId = context.ReplicaOrInstanceId;
-			m_agentName = string.Empty;
 		}
 
 
@@ -56,20 +57,20 @@ namespace Microsoft.Omex.Extensions.Logging
 				case LogLevel.None:
 					break;
 				case LogLevel.Trace:
-					LogSpamServiceMessage(m_applicationName, m_serviceName, m_agentName, m_buildVersion, s_processName, m_partitionId, m_replicaId, activityId, traceIdAsString, "Spam", category, tagId, tagName, threadId, message);
+					LogSpamServiceMessage(m_applicationName, m_serviceName, m_machineId, m_buildVersion, s_processName, m_partitionId, m_replicaId, activityId, traceIdAsString, "Spam", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Debug:
-					LogVerboseServiceMessage(m_applicationName, m_serviceName, m_agentName, m_buildVersion, s_processName, m_partitionId, m_replicaId, activityId, traceIdAsString, "Verbose", category, tagId, tagName, threadId, message);
+					LogVerboseServiceMessage(m_applicationName, m_serviceName, m_machineId, m_buildVersion, s_processName, m_partitionId, m_replicaId, activityId, traceIdAsString, "Verbose", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Information:
-					LogInfoServiceMessage(m_applicationName, m_serviceName, m_agentName, m_buildVersion, s_processName, m_partitionId, m_replicaId, activityId, traceIdAsString, "Info", category, tagId, tagName, threadId, message);
+					LogInfoServiceMessage(m_applicationName, m_serviceName, m_machineId, m_buildVersion, s_processName, m_partitionId, m_replicaId, activityId, traceIdAsString, "Info", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Warning:
-					LogWarningServiceMessage(m_applicationName, m_serviceName, m_agentName, m_buildVersion, s_processName, m_partitionId, m_replicaId, activityId, traceIdAsString, "Warning", category, tagId, tagName, threadId, message);
+					LogWarningServiceMessage(m_applicationName, m_serviceName, m_machineId, m_buildVersion, s_processName, m_partitionId, m_replicaId, activityId, traceIdAsString, "Warning", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Error:
 				case LogLevel.Critical:
-					LogErrorServiceMessage(m_applicationName, m_serviceName, m_agentName, m_buildVersion, s_processName, m_partitionId, m_replicaId, activityId, traceIdAsString, "Error", category, tagId, eventId.Name, threadId, message);
+					LogErrorServiceMessage(m_applicationName, m_serviceName, m_machineId, m_buildVersion, s_processName, m_partitionId, m_replicaId, activityId, traceIdAsString, "Error", category, tagId, eventId.Name, threadId, message);
 					break;
 				default:
 					throw new ArgumentException("Unknown EventLevel: " + level);
@@ -105,7 +106,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		private readonly string m_applicationName;
 		private readonly string m_serviceName;
 		private readonly string m_buildVersion;
-		private readonly string m_agentName;
+		private readonly string m_machineId;
 		private readonly Guid m_partitionId;
 		private readonly long m_replicaId;
 

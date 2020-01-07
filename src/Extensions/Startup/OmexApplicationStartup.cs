@@ -55,22 +55,32 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 
 
 		/// <summary>Register dependencies in DI</summary>
-		protected virtual IServiceCollection Register(IServiceCollection collection)
-		{
-			m_typeRegestration?.Invoke(collection);
-			collection
-				.AddOmexLogging<TContext>()
-				.AddTimedScopes();
-			return collection;
-		}
+		protected virtual void Register(IServiceCollection collection) { }
 
 
 		/// <summary>Resolve dependencies from DI</summary>
-		protected virtual IServiceProvider Resolve(IServiceProvider provider)
+		protected virtual void Resolve(IServiceProvider provider) { }
+
+
+		private void AggregatedRegister(IServiceCollection collection)
 		{
+			m_typeRegestration?.Invoke(collection);
+
+			Register(collection);
+
+			collection
+				.AddOmexLogging<TContext>()
+				.AddTimedScopes();
+		}
+
+
+		private void AggregatedResolve(IServiceProvider provider)
+		{
+			Resolve(provider);
+
 			provider.InitializeOmexCompatabilityClasses();
+
 			m_typeResolution?.Invoke(provider);
-			return provider;
 		}
 
 
@@ -85,14 +95,14 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 		{
 			IServiceCollection collection = new ServiceCollection();
 
-			collection.AddSingleton<T>();
+			collection.AddTransient<T>();
 
 			foreach (object obj in objctsToRegister)
 			{
 				collection.AddSingleton(obj.GetType(), obj);
 			}
 
-			Register(collection);
+			AggregatedRegister(collection);
 
 			IServiceProvider provider = collection
 				.BuildServiceProvider(new ServiceProviderOptions
@@ -101,7 +111,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 					ValidateScopes = true
 				});
 
-			Resolve(provider);
+			AggregatedResolve(provider);
 
 			return provider.GetService<T>();
 		}

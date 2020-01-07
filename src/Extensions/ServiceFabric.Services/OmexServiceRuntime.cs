@@ -4,13 +4,14 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.ServiceFabric.Abstractions;
 using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace Microsoft.Omex.Extensions.ServiceFabric.Services
 {
 	/// <summary> Static class that provides methods to register reliable services with </summary>
-	public class OmexServiceRuntime : OmexApplicationStartup<OmexServiceFabricContext>
+	public class OmexServiceRuntime : OmexServiceFabricApplicationStartup<OmexServiceFabricContext>
 	{
 		/// <inheritdoc/>
 		public OmexServiceRuntime(string? serviceTypeName = null) : base(serviceTypeName) { }

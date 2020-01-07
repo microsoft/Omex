@@ -4,6 +4,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.ServiceFabric.Abstractions;
 using Microsoft.ServiceFabric.Actors.Runtime;
 
@@ -16,7 +17,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabric.Actors
 	/// actor and the actor service. See https://docs.microsoft.com/azure/service-fabric/service-fabric-reliable-actors-lifecycle
 	/// for more information on the lifecycle of an actor.
 	/// </summary>
-	public class OmexActorRuntime : OmexApplicationStartup<OmexServiceFabricContext>
+	public class OmexActorRuntime : OmexServiceFabricApplicationStartup<OmexServiceFabricContext>
 	{
 		/// <inheritdoc/>
 		public OmexActorRuntime(string? serviceTypeName = null) : base(serviceTypeName) { }
