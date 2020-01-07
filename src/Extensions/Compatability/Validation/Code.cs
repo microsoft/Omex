@@ -12,7 +12,6 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 	/// <summary>
 	/// Code validation
 	/// </summary>
-	[Obsolete("Please consider using non-nullable reference types instead", false)]
 	public static class Code
 	{
 		/// <summary>
@@ -22,6 +21,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="state">Object's state</param>
 		/// <param name="errorMessage">Error message</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static void Expects<TException>(bool state, string errorMessage, EventId? tagId)
 			where TException : Exception
 		{
@@ -42,6 +42,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <exception cref="ArgumentException">Thrown if any argument  <paramref name="argumentValue"/> element is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static IEnumerable<T> ExpectsAllNotNull<T>([ValidatedNotNull] IEnumerable<T>? argumentValue, string argumentName, EventId? tagId)
 			where T : class
 		{
@@ -65,6 +66,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed.</param>
 		/// <exception cref="ArgumentException">Thrown if <paramref name="argumentValue"/> is empty or if any element is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static IEnumerable<T> ExpectsNotEmptyAndAllNotNull<T>([ValidatedNotNull] ICollection<T>? argumentValue, string argumentName, EventId? tagId) where T : class
 		{
 			argumentValue = ExpectsArgumentNotNull(argumentValue, argumentName, tagId);
@@ -86,6 +88,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <exception cref="ArgumentException">Thrown if the argument <paramref name="argumentValue"/> is empty.</exception>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static IEnumerable<T> ExpectsAny<T>([ValidatedNotNull] IEnumerable<T>? argumentValue, string argumentName, EventId? tagId)
 		{
 			argumentValue = ExpectsArgumentNotNull(argumentValue, argumentName, tagId);
@@ -107,6 +110,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <typeparam name="T">Type of argument to validate</typeparam>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static T ExpectsArgument<T>([ValidatedNotNull] T argumentValue, string argumentName, EventId? tagId)
 		{
 			return (T)ExpectsArgumentNotNull((object?)argumentValue, argumentName, tagId);
@@ -122,6 +126,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <typeparam name="T">Type of argument to validate</typeparam>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static T ExpectsArgumentNotNull<T>([ValidatedNotNull] T? argumentValue, string argumentName, EventId? tagId)
 			where T : class
 		{
@@ -144,6 +149,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <typeparam name="T">Type of argument to validate</typeparam>
 		/// <exception cref="ArgumentException">Thrown if the supplied argument <paramref name="argumentValue"/> does not meet the predicate <paramref name="predicate"/>.</exception>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static T ExpectsArgument<T>(T argumentValue, string argumentName, Func<T, bool> predicate, string errorMessage, EventId? tagId)
 		{
 			if (!ValidateArgument(argumentValue, argumentName, predicate, errorMessage, tagId))
@@ -163,6 +169,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <exception cref="ArgumentException">Thrown if the argument <paramref name="argumentValue"/> is empty or contains only whitespace.</exception>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static string ExpectsNotNullOrWhiteSpaceArgument([ValidatedNotNull] string? argumentValue, string argumentName, EventId? tagId)
 		{
 			argumentValue = ExpectsArgumentNotNull(argumentValue, argumentName, tagId);
@@ -188,6 +195,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="tagId">Tag identifier to log; leave null if no logging is required.</param>
 		/// <returns>Returns the argument value as is if validation succeeds, otherwise an exception is thrown.</returns>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static T ExpectsObject<T>([ValidatedNotNull] T? argumentValue, string argumentName, EventId? tagId) where T : class
 		{
 			return ExpectsArgumentNotNull(argumentValue, argumentName, tagId);
@@ -201,6 +209,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="errorMessage">Error message</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if state evaluates to true; false otherwise</returns>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static bool Validate(bool state, string errorMessage, EventId? tagId)
 		{
 			if (!state)
@@ -220,6 +229,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <param name="parameters">logging parameters</param>
 		/// <returns>True if state evaluates to true; false otherwise</returns>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static bool Validate(bool state, EventId? tagId, string errorMessage, params object[] parameters)
 		{
 			if (!state)
@@ -239,6 +249,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="argumentName">Name of the argument.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null, is not empty, and does not contain nulls; false otherwise.</returns>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static bool ValidateNotEmptyAndAllNotNull<T>([NotNullWhen(true)]ICollection<T>? argumentValue, string argumentName, EventId? tagId = null)
 			where T : class
 		{
@@ -266,6 +277,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="argumentName">Name of the argument.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null and contains only non-null elements; false otherwise.</returns>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static bool ValidateAllNotNull<T>([NotNullWhen(true)]IEnumerable<T>? argumentValue, string argumentName, EventId? tagId = null)
 			where T : class
 		{
@@ -292,6 +304,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null and contains at least one element; false otherwise.</returns>
 		/// <typeparam name="T">The element type.</typeparam>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static bool ValidateAny<T>([NotNullWhen(true)]IEnumerable<T>? argumentValue, string argumentName, EventId? tagId = null)
 		{
 			if (!ValidateArgument(argumentValue, argumentName, tagId))
@@ -316,6 +329,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="argumentName">Name of the argument.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null; false otherwise.</returns>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static bool ValidateArgument([NotNullWhen(true)]object? argumentValue, string argumentName, EventId? tagId = null)
 		{
 			if (argumentValue == null)
@@ -338,6 +352,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <typeparam name="T">Type of argument to validate</typeparam>
 		/// <returns>True if the argument <paramref name="argumentValue"/> passes predicate <paramref name="predicate"/>; false otherwise.</returns>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static bool ValidateArgument<T>(T argumentValue, string argumentName, Func<T, bool> predicate, string errorMessage, EventId? tagId = null)
 		{
 			if (!predicate(argumentValue))
@@ -357,6 +372,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="argumentName">The argument name.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not an empty guid; false otherwise.</returns>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static bool ValidateArgument(Guid argumentValue, string argumentName, EventId? tagId = null)
 		{
 			if (argumentValue.Equals(Guid.Empty))
@@ -376,6 +392,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// <param name="argumentName">The argument name.</param>
 		/// <param name="eventId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null, empty or only whitespace; false otherwise.</returns>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static bool ValidateNotNullOrWhiteSpaceArgument([NotNullWhen(true)]string? argumentValue, string argumentName, EventId? eventId = null)
 		{
 			if (string.IsNullOrWhiteSpace(argumentValue))
@@ -485,5 +502,9 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// </summary>
 		/// <remarks>The '{0}' placeholder is replaced with one of the messages above. The '{1}' is replaced with the argument name.</remarks>
 		private const string ValidationFailed = "Code validation failed, {0}: {1}";
+
+
+		private const string ObsoleteMessage = "Please consider using non-nullable reference types instead";
+		private const bool IsObsoleteError = false;
 	}
 }

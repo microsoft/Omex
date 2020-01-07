@@ -15,10 +15,8 @@ namespace Microsoft.Omex.Extensions.Compatability
 		public static IServiceProvider InitializeOmexCompatabilityClasses(this IServiceProvider serviceProvider)
 		{
 			ILoggerFactory factory = (ILoggerFactory)serviceProvider.GetService(typeof(ILoggerFactory));
-#pragma warning disable CS0618 // Supress warning since classes should be initialized for proper usage
 			Code.Initialize(factory);
 			ULSLogging.Initialize(factory);
-#pragma warning restore CS0618
 			return serviceProvider;
 		}
 	}

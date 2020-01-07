@@ -62,28 +62,6 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 		protected virtual void Resolve(IServiceProvider provider) { }
 
 
-		private void AggregatedRegister(IServiceCollection collection)
-		{
-			m_typeRegestration?.Invoke(collection);
-
-			Register(collection);
-
-			collection
-				.AddOmexLogging<TContext>()
-				.AddTimedScopes();
-		}
-
-
-		private void AggregatedResolve(IServiceProvider provider)
-		{
-			Resolve(provider);
-
-			provider.InitializeOmexCompatabilityClasses();
-
-			m_typeResolution?.Invoke(provider);
-		}
-
-
 		/// <summary>
 		/// Method will create DI container register types and resolve spesified type from it
 		/// </summary>
@@ -127,6 +105,28 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 
 		/// <summary>Name of the service used for logging</summary>
 		protected string ServiceTypeName { get; }
+
+
+		private void AggregatedRegister(IServiceCollection collection)
+		{
+			m_typeRegestration?.Invoke(collection);
+
+			Register(collection);
+
+			collection
+				.AddOmexLogging<TContext>()
+				.AddTimedScopes();
+		}
+
+
+		private void AggregatedResolve(IServiceProvider provider)
+		{
+			provider.InitializeOmexCompatabilityClasses();
+
+			Resolve(provider);
+
+			m_typeResolution?.Invoke(provider);
+		}
 
 
 		private Action<IServiceCollection>? m_typeRegestration;

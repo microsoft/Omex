@@ -11,7 +11,6 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 	/// Unified logging, allows registering for logging events sent by
 	/// code implementations and to raise logging events
 	/// </summary>
-	[Obsolete("Please consider using ILogger instead", false)]
 	public static class ULSLogging
 	{
 
@@ -23,6 +22,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// <param name="level">logging level</param>
 		/// <param name="message">message to log</param>
 		/// <param name="parameters">additional parameters</param>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static void LogTraceTag(EventId eventId, Category category, Level level, string message, params object[] parameters) =>
 			GetLogger(category)?.Log(ConvertLevel(level), eventId, message, parameters);
 
@@ -35,6 +35,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// <param name="exception">exception</param>
 		/// <param name="message">message</param>
 		/// <param name="parameters">message format parameters</param>
+		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static void ReportExceptionTag(EventId eventId, Category category, Exception exception, string message, params object[] parameters) =>
 			GetLogger(category)?.LogError(eventId, exception, message, parameters);
 
@@ -68,5 +69,9 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 				Levels.LogLevel.Warning => LogLevel.Warning,
 				_ => LogLevel.None
 			};
+
+
+		private const string ObsoleteMessage = "Please consider using ILogger instead";
+		private const bool IsObsoleteError = false;
 	}
 }
