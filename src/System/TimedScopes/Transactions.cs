@@ -13,7 +13,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </summary>
 		public const uint None = 0;
 
-
 		/// <summary>
 		/// A transaction to exercise the pipeline is running
 		/// </summary>
@@ -22,16 +21,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// each request processor.
 		/// </remarks>
 		public const uint ExercisePipeline = 1;
-
-
-		/// <summary>
-		/// A transaction to build dependency graphs
-		/// </summary>
-		/// <remarks>
-		/// Builds up dependency graphs rather than processing the request
-		/// </remarks>
-		public const uint BuildDependencyGraph = 2;
-
 
 		/// <summary>
 		/// Transaction Id specified by when monitoring by watchdogs/observers/CVTs to
