@@ -18,7 +18,5 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
     <Copyright>Copyright © $(CurrentYear)</Copyright>
-    <Tags>Omex</Tags>
-    <Description>$(MSBuildProjectName)</Description>
   </PropertyGroup>
 </Project>
