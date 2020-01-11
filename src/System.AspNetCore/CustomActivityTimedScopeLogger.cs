@@ -21,8 +21,8 @@ namespace Microsoft.Omex.System.AspNetCore
 		/// <param name="machineInformation">Machine information</param>
 		public CustomActivityTimedScopeLogger(TimedScopeEventSource eventSource, IMachineInformation machineInformation)
 		{
-			m_eventSource = Code.ExpectsArgument(eventSource, nameof(eventSource), TaggingUtilities.ReserveTag(0));
-			m_machineInformation = Code.ExpectsArgument(machineInformation, nameof(machineInformation), TaggingUtilities.ReserveTag(0));
+			m_eventSource = Code.ExpectsArgument(eventSource, nameof(eventSource), TaggingUtilities.ReserveTag(0x2375d3d6 /* tag_933pw */));
+			m_machineInformation = Code.ExpectsArgument(machineInformation, nameof(machineInformation), TaggingUtilities.ReserveTag(0x2375d3d7 /* tag_933px */));
 		}
 
 
@@ -42,8 +42,8 @@ namespace Microsoft.Omex.System.AspNetCore
 		/// <param name="data">Correlation data</param>
 		public void LogScopeEnd(TimedScope scope, CorrelationData data)
 		{
-			if (!Code.ValidateArgument(scope, nameof(scope), TaggingUtilities.ReserveTag(0)) ||
-				!Code.ValidateArgument(data, nameof(data), TaggingUtilities.ReserveTag(0)))
+			if (!Code.ValidateArgument(scope, nameof(scope), TaggingUtilities.ReserveTag(0x2375d3d8 /* tag_933py */)) ||
+				!Code.ValidateArgument(data, nameof(data), TaggingUtilities.ReserveTag(0x2375d3d9 /* tag_933pz */)))
 			{
 				return;
 			}
