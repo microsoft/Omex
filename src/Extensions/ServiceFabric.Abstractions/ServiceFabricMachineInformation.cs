@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabric.Abstractions
 			BuildVersion = activationContext.CodePackageVersion;
 
 			NodeContext nodeContext = context.NodeContext ?? FabricRuntime.GetNodeContext();
-			MachineId = $"{MachineName}_{nodeContext.NodeName}";
+			MachineId = FormattableString.Invariant($"{MachineName}_{nodeContext.NodeName}");
 			MachineClusterIpAddress = IPAddress.TryParse(nodeContext.IPAddressOrFQDN, out IPAddress ipAddress)
 				? ipAddress
 				: GetIpAddress(MachineName);

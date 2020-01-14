@@ -3,9 +3,10 @@
 
 using System;
 using System.Diagnostics;
+using System.Threading;
 using Microsoft.Omex.Extensions.Abstractions;
 
-namespace Microsoft.Omex.Extensions.Logging.TimedScopes
+namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	/// <summary>Logs duration of activity</summary>
 	public class TimedScope : IDisposable
@@ -21,6 +22,9 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 		/// <summary>TimedScope meta data</summary>
 		public string MetaData { get; set; }
 
+		/// <summary>Indicates if activty was </summary>
+		public bool IsFinished { get; private set; }
+
 
 		internal TimedScope(TimedScopeEventSource eventSource, Activity activity, string serviceName, TimedScopeResult result, ILogReplayer? logReplayer)
 		{
@@ -31,6 +35,7 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 			Result = result;
 			SubType = NullPlaceholder;
 			MetaData = NullPlaceholder;
+			IsFinished = false;
 		}
 
 
@@ -45,6 +50,12 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 		/// <summary>Stop TimedScope and log informations about it</summary>
 		public void Stop()
 		{
+			if (IsFinished)
+			{
+				return;
+			}
+
+			IsFinished = true;
 			m_activity.Stop();
 			m_eventSource.LogEvent(
 				name: m_activity.OperationName,

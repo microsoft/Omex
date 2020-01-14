@@ -13,7 +13,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		/// </summary>
 		/// <param name="operationName">The name of the operation</param>
 		/// <param name="replayLogsInCaseOfError">Should activity collect log events to replay them in case of an error</param>
-		/// <returns></returns>
+		/// <returns>New started activity</returns>
 		Activity Create(string operationName, bool replayLogsInCaseOfError = true);
 	}
 }

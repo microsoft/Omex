@@ -9,6 +9,8 @@ namespace Microsoft.Omex.Extensions.Abstractions
 	public abstract class OmexServiceContext : IServiceContext
 	{
 		/// <summary>Creates an instance of OmexServiceContext</summary>
+		/// <param name="partitionId">Partition Id</param>
+		/// <param name="replicaOrInstanceId">Replica or InstanceId</param>
 		protected OmexServiceContext(Guid partitionId, long replicaOrInstanceId)
 		{
 			PartitionId = partitionId;

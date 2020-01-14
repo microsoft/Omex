@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Compatability;
 using Microsoft.Omex.Extensions.Logging;
+using Microsoft.Omex.Extensions.TimedScopes;
 
 namespace Microsoft.Omex.Extensions.ServiceFabric
 {
@@ -30,17 +31,17 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 		/// This method should be used as an entry point of the application
 		/// </summary>
 		/// <param name="function">Function to execute</param>
-		/// <param name="typeRegestration">Action to register types in DI</param>
+		/// <param name="typeRegistration">Action to register types in DI</param>
 		/// <param name="typeResolution">Action to resolve types from DI</param>
 		/// <returns></returns>
 		protected async Task RunAsync(
 			Func<Task> function,
-			Action<IServiceCollection>? typeRegestration = null,
+			Action<IServiceCollection>? typeRegistration = null,
 			Action<IServiceProvider>? typeResolution = null)
 		{
 			try
 			{
-				m_typeRegestration = typeRegestration;
+				m_typeRegistration = typeRegistration;
 				m_typeResolution = typeResolution;
 				Task task = function();
 				LogSuccess(Process.GetCurrentProcess().Id, ServiceTypeName);
@@ -109,7 +110,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 
 		private void AggregatedRegister(IServiceCollection collection)
 		{
-			m_typeRegestration?.Invoke(collection);
+			m_typeRegistration?.Invoke(collection);
 
 			Register(collection);
 
@@ -129,7 +130,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 		}
 
 
-		private Action<IServiceCollection>? m_typeRegestration;
+		private Action<IServiceCollection>? m_typeRegistration;
 
 
 		private Action<IServiceProvider>? m_typeResolution;

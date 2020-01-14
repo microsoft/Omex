@@ -4,7 +4,7 @@
 using System.Diagnostics;
 using Microsoft.Omex.Extensions.Abstractions;
 
-namespace Microsoft.Omex.Extensions.Logging.TimedScopes
+namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	internal class SimpleActivityProvider : IActivityProvider
 	{

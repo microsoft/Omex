@@ -37,38 +37,50 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		/// <inheritdoc/>
 		public string MachineId { get; protected set; }
 
+
 		/// <inheritdoc/>
 		public string MachineName { get; protected set; }
+
 
 		/// <inheritdoc/>
 		public string MachineRole { get; protected set; }
 
+
 		/// <inheritdoc/>
 		public IPAddress MachineClusterIpAddress { get; protected set; }
+
 
 		/// <inheritdoc/>
 		public int MachineCount { get; protected set; }
 
+
 		/// <inheritdoc/>
 		public string MachineCluster { get; protected set; }
+
 
 		/// <inheritdoc/>
 		public string EnvironmentName { get; protected set; }
 
+
 		/// <inheritdoc/>
 		public string DeploymentSlice { get; protected set; }
+
 
 		/// <inheritdoc/>
 		public string RegionName { get; protected set; }
 
+
 		/// <inheritdoc/>
 		public string ServiceName { get; protected set; }
+
 
 		/// <inheritdoc/>
 		public string BuildVersion { get; protected set; }
 
+
 		/// <inheritdoc/>
 		public bool IsCanary { get; protected set; }
+
 
 		/// <inheritdoc/>
 		public bool IsPrivateDeployment { get; protected set; }
@@ -89,7 +101,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		{
 			FileVersionInfo buildVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
 			return buildVersion != null
-				? buildVersion.FileBuildPart + "." + buildVersion.FilePrivatePart
+				? string.Concat(buildVersion.FileBuildPart, ".", buildVersion.FilePrivatePart)
 				: string.Empty;
 		}
 

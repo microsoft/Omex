@@ -10,7 +10,7 @@ using Microsoft.Omex.Extensions.Logging.Replayable;
 namespace Microsoft.Omex.Extensions.Logging
 {
 	/// <summary>Extension methods for the <see cref="ILoggerFactory"/> class</summary>
-	public static class OmexLoggerExtensions
+	public static class ServiceCollectionExtensions
 	{
 		/// <summary>Adds Omex event logger to the factory</summary>
 		/// <param name="builder">The extension method argument</param>
@@ -30,12 +30,12 @@ namespace Microsoft.Omex.Extensions.Logging
 			where TServiceContext : class, IServiceContext
 		{
 			serviceCollection
-				.AddMachineInformation()
-				.AddServiceContext<TServiceContext>();
+				.AddOmexMachineInformation()
+				.AddOmexServiceContext<TServiceContext>();
 
+			serviceCollection.TryAddTransient<IActivityProvider, ReplayibleActivityProvider>();
 			serviceCollection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
 			serviceCollection.TryAddTransient<ILogReplayer, LogRepayer>();
-			serviceCollection.TryAddTransient<IActivityProvider, ReplayibleActivityProvider>();
 			serviceCollection.TryAddTransient<OmexLogsEventSource, OmexLogsEventSource>();
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
 			return serviceCollection;

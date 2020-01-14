@@ -4,7 +4,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Microsoft.Omex.Extensions.Logging.TimedScopes
+namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	/// <summary>
 	/// Defines the possible scope results

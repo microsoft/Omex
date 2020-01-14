@@ -3,11 +3,11 @@
 
 using System;
 using System.Diagnostics.Tracing;
+using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.Logging.TimedScopes;
 
-namespace Microsoft.Omex.Extensions.Logging
+namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	[EventSource(Name = "Microsoft-OMEX-TimedScopes")]
 	internal sealed class TimedScopeEventSource : EventSource
@@ -43,7 +43,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			string serviceNameAsString = SanitizeString(serviceName, nameof(serviceName), name);
 			string correlationIdAsString = SanitizeString(correlationId, nameof(correlationId), name);
 			string resultAsString = result.ToString();
-			long durationMsAsLong = Convert.ToInt64(durationMs);
+			long durationMsAsLong = Convert.ToInt64(durationMs, CultureInfo.InvariantCulture);
 
 			if (isTransaction)
 			{
@@ -71,18 +71,16 @@ namespace Microsoft.Omex.Extensions.Logging
 		}
 
 
-		private string SanitizeString(string mdmString, string name, string activityName)
+		private string SanitizeString(string value, string name, string activityName)
 		{
-			string validatedString = Convert.ToString(mdmString) ?? string.Empty;
-
 			const int stringLimit = 1024;
-			if (validatedString.Length > stringLimit)
+			if (value.Length > stringLimit)
 			{
-				m_logger.LogWarning(Tag.ReserveTag(0), StringLimitMessage, stringLimit, name, activityName, validatedString.Length);
-				validatedString = validatedString.Substring(0, stringLimit);
+				m_logger.LogWarning(Tag.ReserveTag(0), StringLimitMessage, stringLimit, name, activityName, value.Length);
+				value = value.Substring(0, stringLimit);
 			}
 
-			return validatedString;
+			return value;
 		}
 
 

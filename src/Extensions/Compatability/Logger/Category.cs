@@ -27,7 +27,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// Indicates whether the current object is equal to another object of the same type
 		/// </summary>
 		/// <param name="other">An object to compare with this object</param>
-		public bool Equals(Category other) => string.Equals(Name, other.Name, StringComparison.InvariantCulture);
+		public bool Equals(Category other) => string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase);
 
 
 		/// <summary>
@@ -40,7 +40,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// <summary>
 		/// Returns a hash code for this instance
 		/// </summary>
-		public override int GetHashCode() => Name != null ? StringComparer.InvariantCulture.GetHashCode(Name) : 0;
+		public override int GetHashCode() => Name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(Name) : 0;
 
 
 		/// <summary>

@@ -16,7 +16,5 @@
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-    <Copyright>Copyright © $(CurrentYear)</Copyright>
   </PropertyGroup>
 </Project>

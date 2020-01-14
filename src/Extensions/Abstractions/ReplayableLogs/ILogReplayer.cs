@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		/// <summary>
 		/// Replays activity logs if activity supports it
 		/// </summary>
-		/// <param name="activity"></param>
+		/// <param name="activity">Activity that should contain logs to replay</param>
 		void ReplayLogs(Activity activity);
 	}
 }

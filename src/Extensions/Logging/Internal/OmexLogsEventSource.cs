@@ -28,7 +28,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			m_serviceName = machineInformation.ServiceName;
 			m_buildVersion = machineInformation.BuildVersion;
 			m_machineId = machineInformation.MachineId;
-
 			m_partitionId = context.PartitionId;
 			m_replicaId = context.ReplicaOrInstanceId;
 		}

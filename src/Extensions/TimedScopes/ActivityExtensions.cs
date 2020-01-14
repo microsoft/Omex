@@ -3,7 +3,7 @@
 
 using System.Diagnostics;
 
-namespace Microsoft.Omex.Extensions.Logging.TimedScopes
+namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	/// <summary>
 	/// Extensions for Activity
