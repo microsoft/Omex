@@ -14,7 +14,7 @@ namespace Microsoft.Omex.System.TimedScopes.ReplayEventLogging
 		private IReplayEventDisabledTimedScopes DisabledTimedScopes { get; }
 
 
-		private Correlation Correlation { get; }
+		private ICorrelationDataProvider Correlation { get; }
 
 
 		/// <summary>
@@ -22,7 +22,7 @@ namespace Microsoft.Omex.System.TimedScopes.ReplayEventLogging
 		/// </summary>
 		/// <param name="disabledTimedScopes">Disabled timed scopes</param>
 		/// <param name="correlation">Correlation</param>
-		public ReplayEventConfigurator(IReplayEventDisabledTimedScopes disabledTimedScopes, Correlation correlation)
+		public ReplayEventConfigurator(IReplayEventDisabledTimedScopes disabledTimedScopes, ICorrelationDataProvider correlation)
 		{
 			Code.ExpectsArgument(disabledTimedScopes, nameof(disabledTimedScopes), TaggingUtilities.ReserveTag(0x23817714 /* tag_96x2u */));
 			Code.ExpectsArgument(correlation, nameof(correlation), TaggingUtilities.ReserveTag(0x23817715 /* tag_96x2v */));
