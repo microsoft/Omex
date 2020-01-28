@@ -42,9 +42,9 @@ namespace Microsoft.Omex.System.TimedScopes
 
 
 		/// <summary>
-		/// Private constructor to enforce singleton semantics needed for the Event Source to work properly
+		/// Constructor to enforce singleton semantics needed for the Event Source to work properly
 		/// </summary>
-		private TimedScopeEventSource()
+		public TimedScopeEventSource()
 			: base()
 		{
 		}
