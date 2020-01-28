@@ -149,9 +149,9 @@ namespace Microsoft.Omex.System.Diagnostics
 		}, LazyThreadSafetyMode.PublicationOnly);
 
 
-        /// <summary>
-        /// The default empty value
-        /// </summary>
-        protected const string DefaultEmptyValue = "None";
+		/// <summary>
+		/// The default empty value
+		/// </summary>
+		protected const string DefaultEmptyValue = "None";
 	}
 }
