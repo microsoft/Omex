@@ -10,7 +10,7 @@
 	-->
 
 	<PropertyGroup>
-		<TimedScopeGenExecutable>$(MSBuildThisFileDirectory)..\lib\net45\Microsoft.Omex.CodeGenerators.TimedScopeGen.exe</TimedScopeGenExecutable>
+		<TimedScopeGenExecutable>$(MSBuildThisFileDirectory)..\lib\net472\Microsoft.Omex.CodeGenerators.TimedScopeGen.exe</TimedScopeGenExecutable>
 	</PropertyGroup>
 
 	<ItemGroup>
