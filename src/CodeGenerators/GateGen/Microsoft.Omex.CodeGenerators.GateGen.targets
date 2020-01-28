@@ -26,7 +26,7 @@
 		<Error Text="The TipXml property is not defined." Condition="'$(TipXml)' == ''" />
 		<Error Text="The GeneratedGates property is not defined." Condition="'$(GeneratedGates)' == ''" />
 
-		<Exec Command="$(MSBuildThisFileDirectory)..\lib\net45\Microsoft.Omex.CodeGenerators.GateGen.exe $(GatesXml) $(TipXml) $(GeneratedGates) $(OmexGatesNamespace)" />
+		<Exec Command="$(MSBuildThisFileDirectory)..\lib\net472\Microsoft.Omex.CodeGenerators.GateGen.exe $(GatesXml) $(TipXml) $(GeneratedGates) $(OmexGatesNamespace)" />
 		
 		<CreateItem Include="$(GeneratedGates)">
 			<Output TaskParameter="Include" ItemName="Compile"/>

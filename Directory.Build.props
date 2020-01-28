@@ -1,10 +1,10 @@
 ﻿<Project>
   <Import Project="$(MSBuildThisFileDirectory)\Dependencies.props" />
   <PropertyGroup Label="Target Platforms" >
-    <NetCoreVersions>netcoreapp2.1;netcoreapp3.0</NetCoreVersions>
+    <NetCoreVersions>netcoreapp3.1</NetCoreVersions>
     <NetStandardVersions>netstandard2.0;netstandard2.1</NetStandardVersions>
-    <NetFrameworkVersions>net461;net472</NetFrameworkVersions> <!-- Framework version that should be targeted alongside with .net standard -->
-    <LegacyTargetFrameworks>net452;net45</LegacyTargetFrameworks> <!-- Legacy version, required by internal consumers of packages -->
+    <NetFrameworkVersions>net472</NetFrameworkVersions> <!-- Framework version that should be targeted alongside with .net standard -->
+    <LegacyTargetFrameworks>net461</LegacyTargetFrameworks> <!-- Legacy version, required by internal consumers of packages -->
     <TargetFrameworks>$(LegacyTargetFrameworks);$(NetFrameworkVersions)</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="Project Settings" >
