@@ -1,0 +1,30 @@
+name: .NET Core
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.x
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+    - name: Run Unit Tests
+      run: dotnet test --no-build
+    - name: Create NuGet packages
+      run: dotnet pack --no-build
