@@ -14,7 +14,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [windows-latest] # [ubuntu-latest, windows-latest, macOS-latest]
+        configuration: [Release, Debug]
 
     steps:
     - uses: actions/checkout@v2
@@ -23,7 +24,7 @@ jobs:
       with:
         dotnet-version: '3.1.100'
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run: dotnet build --configuration ${{ matrix.configuration }}
     - name: Run Unit Tests
       run: dotnet test --no-build
     - name: Create NuGet packages
