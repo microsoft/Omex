@@ -59,7 +59,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.TimedScopes", "src\Extensions\TimedScopes\Microsoft.Omex.Extensions.TimedScopes.csproj", "{DE788C3D-0A35-4744-AC7E-E1AC5CDE0B5E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.ServiceFabric.Services", "src\Extensions\ServiceFabric.Services\Microsoft.Omex.Extensions.ServiceFabric.Services.csproj", "{BA452FDC-1C9B-45EE-BC75-8493FF618437}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Hosting.Services.Web", "src\Extensions\ServiceFabric.Services\Microsoft.Omex.Extensions.Hosting.Services.Web.csproj", "{BA452FDC-1C9B-45EE-BC75-8493FF618437}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{366F11E6-7175-4E87-AFD4-D4860F03EE1E}"
 	ProjectSection(SolutionItems) = preProject
@@ -68,11 +68,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Compatability", "src\Extensions\Compatability\Microsoft.Omex.Extensions.Compatability.csproj", "{61191795-F683-4A3A-AD61-E9C3E8C5930A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.ServiceFabric.Actors", "src\Extensions\ServiceFabric.Actors\Microsoft.Omex.Extensions.ServiceFabric.Actors.csproj", "{394BF017-F2F5-46A0-96DC-B9C29A3005CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Hosting", "src\Extensions\Hosting\Microsoft.Omex.Extensions.Hosting.csproj", "{66A0783A-0D5A-4EA5-A91C-DCAA8EB6D819}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Startup", "src\Extensions\Startup\Microsoft.Omex.Extensions.Startup.csproj", "{66A0783A-0D5A-4EA5-A91C-DCAA8EB6D819}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Omex.Extensions.ServiceFabric.Abstractions", "src\Extensions\ServiceFabric.Abstractions\Microsoft.Omex.Extensions.ServiceFabric.Abstractions.csproj", "{6AB76625-BB07-4181-B8DC-AB8259E5E9B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Hosting.Services", "src\Extensions\ServiceFabric.Abstractions\Microsoft.Omex.Extensions.Hosting.Services.csproj", "{6AB76625-BB07-4181-B8DC-AB8259E5E9B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -218,14 +216,6 @@ Global
 		{61191795-F683-4A3A-AD61-E9C3E8C5930A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{61191795-F683-4A3A-AD61-E9C3E8C5930A}.Release|x64.ActiveCfg = Release|Any CPU
 		{61191795-F683-4A3A-AD61-E9C3E8C5930A}.Release|x64.Build.0 = Release|Any CPU
-		{394BF017-F2F5-46A0-96DC-B9C29A3005CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{394BF017-F2F5-46A0-96DC-B9C29A3005CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{394BF017-F2F5-46A0-96DC-B9C29A3005CC}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{394BF017-F2F5-46A0-96DC-B9C29A3005CC}.Debug|x64.Build.0 = Debug|Any CPU
-		{394BF017-F2F5-46A0-96DC-B9C29A3005CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{394BF017-F2F5-46A0-96DC-B9C29A3005CC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{394BF017-F2F5-46A0-96DC-B9C29A3005CC}.Release|x64.ActiveCfg = Release|Any CPU
-		{394BF017-F2F5-46A0-96DC-B9C29A3005CC}.Release|x64.Build.0 = Release|Any CPU
 		{66A0783A-0D5A-4EA5-A91C-DCAA8EB6D819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{66A0783A-0D5A-4EA5-A91C-DCAA8EB6D819}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66A0783A-0D5A-4EA5-A91C-DCAA8EB6D819}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -266,7 +256,6 @@ Global
 		{BA452FDC-1C9B-45EE-BC75-8493FF618437} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 		{366F11E6-7175-4E87-AFD4-D4860F03EE1E} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
 		{61191795-F683-4A3A-AD61-E9C3E8C5930A} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
-		{394BF017-F2F5-46A0-96DC-B9C29A3005CC} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 		{66A0783A-0D5A-4EA5-A91C-DCAA8EB6D819} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 		{6AB76625-BB07-4181-B8DC-AB8259E5E9B6} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 	EndGlobalSection

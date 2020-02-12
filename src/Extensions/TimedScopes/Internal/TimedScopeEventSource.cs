@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
@@ -9,32 +10,37 @@ using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
+
+
 	[EventSource(Name = "Microsoft-OMEX-TimedScopes")]
-	internal sealed class TimedScopeEventSource : EventSource
+	internal sealed class TimedScopeEventSource : EventSource, ITimedScopeEventSource
 	{
-		public TimedScopeEventSource(ILogger<TimedScopeEventSource> logger)
+		public TimedScopeEventSource(IMachineInformation machineInformation, ILogger<TimedScopeEventSource> logger)
 		{
+			m_serviceName = machineInformation.ServiceName;
 			m_logger = logger;
 			m_logCategory = typeof(TimedScopeEventSource).FullName ?? nameof(TimedScopeEventSource);
 		}
 
 
 		[NonEvent]
-		public void LogEvent(
-			string name,
-			string subtype,
-			string metadata,
-			string userHash,
-			string serviceName,
-			TimedScopeResult result,
-			string correlationId,
-			double durationMs,
-			bool isTransaction)
+		public void LogTimedScopeEndEvent(TimedScope scope)
 		{
 			if (!IsEnabled())
 			{
 				return;
 			}
+
+			string serviceName = m_serviceName;
+			string subtype = scope.SubType;
+			string metadata = scope.MetaData;
+			TimedScopeResult result = scope.Result;
+			Activity activity = scope.Activity;
+			string name = activity.OperationName;
+			string correlationId = activity.Id;
+			double durationMs = activity.Duration.TotalMilliseconds;
+			string userHash = activity.GetUserHash(); //Breaking Change: feild not set
+			bool isTransaction = activity.IsTransaction(); //Breaking Change: feild not set
 
 			string nameAsString = SanitizeString(name, nameof(name), name);
 			string subTypeAsString = SanitizeString(subtype, nameof(subtype), name);
@@ -113,7 +119,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			WriteEvent((int)EventSourcesEventIds.LogTimedScopeTestContextEventId , name, subType, metadata, serviceName, m_logCategory, result, correlationId, durationMs);
 
 
-		private readonly ILogger<TimedScopeEventSource> m_logger;
+		private readonly string m_serviceName;
 		private readonly string m_logCategory;
+		private readonly ILogger<TimedScopeEventSource> m_logger;
 	}
 }

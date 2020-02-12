@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>$(TargetFrameworksValue)</TargetFrameworks>
   </PropertyGroup>
@@ -7,6 +7,6 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="$(Microsoft_Extensions_Option_Version)" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Startup\Microsoft.Omex.Extensions.Startup.csproj" />
+    <ProjectReference Include="..\Hosting\Microsoft.Omex.Extensions.Hosting.csproj" />
   </ItemGroup>
 </Project>

@@ -5,9 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Omex.Extensions.Abstractions;
 
-namespace Microsoft.Omex.Extensions.ServiceFabric.Abstractions
+namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal static class OmexServiceFabricExtentions
+	internal static class ServiceCollectionExtensions
 	{
 		public static IServiceCollection AddServiceFabricDependencies(this IServiceCollection serviceCollection)
 		{

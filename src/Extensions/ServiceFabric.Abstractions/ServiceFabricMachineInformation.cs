@@ -7,7 +7,7 @@ using System.Net;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
 
-namespace Microsoft.Omex.Extensions.ServiceFabric.Abstractions
+namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	internal class ServiceFabricMachineInformation : EmptyMachineInformation
 	{

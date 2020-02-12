@@ -8,9 +8,8 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 {
 	internal class TimedScopeProvider : ITimedScopeProvider
 	{
-		public TimedScopeProvider(IMachineInformation machineInformation, TimedScopeEventSource eventSource, IActivityProvider activityProvider, ILogReplayer? logReplayer = null)
+		public TimedScopeProvider(ITimedScopeEventSource eventSource, IActivityProvider activityProvider, ILogReplayer? logReplayer = null)
 		{
-			m_serviceName = machineInformation.ServiceName;
 			m_activityProvider = activityProvider;
 			m_eventSource = eventSource;
 			m_logReplayer = logReplayer;
@@ -19,13 +18,12 @@ namespace Microsoft.Omex.Extensions.Logging.TimedScopes
 
 
 		public TimedScope Start(string name, TimedScopeResult result) =>
-			new TimedScope(m_eventSource, m_activityProvider.Create(name, m_replayEventsInCaseOfError), m_serviceName, result, m_logReplayer);
+			new TimedScope(m_eventSource, m_activityProvider.Create(name, m_replayEventsInCaseOfError), result, m_logReplayer);
 
 
 		private bool m_replayEventsInCaseOfError;
-		private readonly TimedScopeEventSource m_eventSource;
+		private readonly ITimedScopeEventSource m_eventSource;
 		private readonly IActivityProvider m_activityProvider;
-		private readonly string m_serviceName;
 		private readonly ILogReplayer? m_logReplayer;
 	}
 }

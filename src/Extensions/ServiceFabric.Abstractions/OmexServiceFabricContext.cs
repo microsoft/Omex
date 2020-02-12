@@ -4,10 +4,10 @@
 using System.Fabric;
 using Microsoft.Omex.Extensions.Abstractions;
 
-namespace Microsoft.Omex.Extensions.ServiceFabric.Abstractions
+namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	/// <summary>Create wrapper from Service Fabric context to provide log information</summary>
-	public class OmexServiceFabricContext : OmexServiceContext
+	internal class OmexServiceFabricContext : OmexServiceContext
 	{
 		/// <summary> Create OmexServiceFabricContext from StatelessServiceContext</summary>
 		public OmexServiceFabricContext(StatelessServiceContext context)

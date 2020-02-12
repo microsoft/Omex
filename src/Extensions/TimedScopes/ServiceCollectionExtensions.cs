@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			serviceCollection.AddOmexMachineInformation();
 			serviceCollection.TryAddTransient<IActivityProvider, SimpleActivityProvider>();
 			serviceCollection.TryAddTransient<ITimedScopeProvider,TimedScopeProvider>();
-			serviceCollection.TryAddTransient<TimedScopeEventSource, TimedScopeEventSource>();
+			serviceCollection.TryAddTransient<ITimedScopeEventSource, TimedScopeEventSource>();
 			return serviceCollection;
 		}
 	}
