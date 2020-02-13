@@ -4,6 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ServiceFabric" Version="$(Microsoft_ServiceFabric_Version)" />
+    <PackageReference Include="Microsoft.ServiceFabric.Services" Version="$(Microsoft_ServiceFabric_Services_Version)" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="$(Microsoft_Extensions_Option_Version)" />
   </ItemGroup>
   <ItemGroup>

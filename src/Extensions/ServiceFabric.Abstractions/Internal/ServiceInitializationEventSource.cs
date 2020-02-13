@@ -4,18 +4,18 @@
 using System.Diagnostics.Tracing;
 using Microsoft.Omex.Extensions.Abstractions;
 
-namespace Microsoft.Omex.Extensions.ServiceFabric.Services
+namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	/// <summary>
 	/// Service Fabric event source
 	/// </summary>
 	[EventSource(Name = "Microsoft-OMEX-Logs")] //Breaking Change: duplicated name, might need to be renamed
-	internal sealed class ServiceFabricServicesEventSource : EventSource
+	internal sealed class ServiceInitializationEventSource : EventSource
 	{
 		/// <summary>
 		/// Instance of service fabric event source
 		/// </summary>
-		public static ServiceFabricServicesEventSource Instance { get; } = new ServiceFabricServicesEventSource();
+		public static ServiceInitializationEventSource Instance { get; } = new ServiceInitializationEventSource();
 
 
 		/// <summary>
@@ -51,7 +51,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabric.Services
 		}
 
 
-		private ServiceFabricServicesEventSource() { }
+		private ServiceInitializationEventSource() { }
 
 
 		[Event((int)EventSourcesEventIds.ServiceTypeRegisteredEventId, Level = EventLevel.Informational, Message = "{2}", Version = 1)]

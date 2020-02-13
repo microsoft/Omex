@@ -11,6 +11,5 @@
     <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
     <ProjectReference Include="..\Logging\Microsoft.Omex.Extensions.Logging.csproj" />
     <ProjectReference Include="..\TimedScopes\Microsoft.Omex.Extensions.TimedScopes.csproj" />
-    <ProjectReference Include="..\Compatability\Microsoft.Omex.Extensions.Compatability.csproj" />
   </ItemGroup>
 </Project>

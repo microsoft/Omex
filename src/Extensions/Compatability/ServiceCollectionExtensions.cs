@@ -10,7 +10,10 @@ namespace Microsoft.Omex.Extensions.Compatability
 	public static class ServiceCollectionExtensions
 	{
 		/// <summary>Initialize depriacated static classes like Code and ULSLogger</summary>
-		public static IServiceCollection AddOmexCompatability(this IServiceCollection serviceCollection) =>
-			serviceCollection.AddTransient<IHostedService, OmexCompatabilityIntializer>();
+		public static IHostBuilder AddOmexCompatabilityServices(this IHostBuilder builder) =>
+			builder.ConfigureServices((context, collection) =>
+			{
+				collection.AddTransient<IHostedService, OmexCompatabilityIntializer>();
+			});
 	}
 }

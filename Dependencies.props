@@ -37,8 +37,8 @@
     <Microsoft_Extensions_DependencyInjection_Version>3.1.1</Microsoft_Extensions_DependencyInjection_Version>
     <Microsoft_Extensions_Option_Version>3.1.1</Microsoft_Extensions_Option_Version>
     <System_Diagnostics_DiagnosticSource_Version>4.7.0</System_Diagnostics_DiagnosticSource_Version>
-    <Microsoft_ServiceFabric_Version>7.0.457</Microsoft_ServiceFabric_Version>
-    <Microsoft_ServiceFabric_Actors_Version>4.0.457</Microsoft_ServiceFabric_Actors_Version>
-    <Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>4.0.457</Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>
+    <Microsoft_ServiceFabric_Version>7.0.466</Microsoft_ServiceFabric_Version>
+    <Microsoft_ServiceFabric_Services_Version>3.4.677</Microsoft_ServiceFabric_Services_Version>
+    <Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>3.4.677</Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>
   </PropertyGroup>
 </Project>

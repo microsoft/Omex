@@ -15,15 +15,15 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 	public static class HostBuilderExtensions
 	{
 		/// <summary>Add required Omex dependencies</summary>
-		public static IHostBuilder ConfigureOmexService(this IHostBuilder builder)
+		public static IHostBuilder AddOmexServices(this IHostBuilder builder)
 		{
-			return builder.ConfigureServices(collection =>
-			{
-				collection
-					.AddOmexLogging<NullServiceContext>()
-					.AddTimedScopes()
-					.AddOmexCompatability();
-			});
+			return builder
+				.ConfigureServices(collection =>
+				{
+					collection
+						.AddOmexLogging<NullServiceContext>()
+						.AddTimedScopes();
+				})
 		}
 	}
 }

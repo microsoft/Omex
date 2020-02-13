@@ -13,15 +13,15 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		public static IServiceCollection AddOmexServiceContext<TServiceContext>(this IServiceCollection serviceCollection)
 			where TServiceContext : class, IServiceContext
 		{
-			serviceCollection.TryAddSingleton<IServiceContext, TServiceContext>();
+			serviceCollection.TryAddTransient<IServiceContext, TServiceContext>();
 			return serviceCollection;
 		}
 
 
-		/// <summary>Add Null implementation of IServiceContext to ServiceCollection</summary>
-		public static IServiceCollection AddOmexNullServiceContext(this IServiceCollection serviceCollection)
+		/// <summary>Add IServiceContext without any information to ServiceCollection</summary>
+		public static IServiceCollection AddEmptyOmexServiceContext(this IServiceCollection serviceCollection)
 		{
-			serviceCollection.TryAddSingleton<IServiceContext, NullServiceContext>();
+			serviceCollection.TryAddTransient<IServiceContext, EmptyServiceContext>();
 			return serviceCollection;
 		}
 
@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		/// <summary>Add IMachineInformation to ServiceCollection</summary>
 		public static IServiceCollection AddOmexMachineInformation(this IServiceCollection serviceCollection)
 		{
-			serviceCollection.TryAddSingleton<IMachineInformation, BasicMachineInformation>();
+			serviceCollection.TryAddTransient<IMachineInformation, BasicMachineInformation>();
 			return serviceCollection;
 		}
 	}
