@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Globalization;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 
@@ -15,9 +16,9 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 	[EventSource(Name = "Microsoft-OMEX-TimedScopes")]
 	internal sealed class TimedScopeEventSource : EventSource, ITimedScopeEventSource
 	{
-		public TimedScopeEventSource(IMachineInformation machineInformation, ILogger<TimedScopeEventSource> logger)
+		public TimedScopeEventSource(IHostEnvironment hostEnvironment, ILogger<TimedScopeEventSource> logger)
 		{
-			m_serviceName = machineInformation.ServiceName;
+			m_serviceName = hostEnvironment.ApplicationName;
 			m_logger = logger;
 			m_logCategory = typeof(TimedScopeEventSource).FullName ?? nameof(TimedScopeEventSource);
 		}

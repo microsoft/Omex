@@ -50,8 +50,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 					.ConfigureServices(collection =>
 					{
 						collection
-							.AddTransient<IOmexServiceRunner, OmexServiceRunner>()
-							.AddTransient<IHostedService, OmexHostedService>();
+							.AddTransient<IHostedService, OmexHostedService>()
+							.AddSingleton<OmexServiceRunner, OmexServiceRunner>()
+							.AddSingleton<IOmexServiceRunner>(p => p.GetService<OmexServiceRunner>())
+							.AddSingleton<IStatelessServiceContextAccessor>(p => p.GetService<OmexServiceRunner>());
 					}).Build();
 
 				string m_applicationName = Assembly.GetExecutingAssembly().FullName;
@@ -65,6 +67,20 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				throw;
 			}
 		}
+
+
+		/// <summary>Add actions that will be executed inside service RunAsync method</summary>
+		public static IHost AddServiceAction(this IHostBuilder builder)
+		{
+			throw new NotImplementedException();
+		}
+
+
+		/// <summary>Add service listener to SF listener</summary>
+		public static IHost AddServiceListener(this IHostBuilder builder)
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	internal interface IOmexServiceRunner
@@ -72,25 +88,32 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		Task RunServiceAsync(CancellationToken cancellationToken);
 	}
 
+	internal interface IStatelessServiceContextAccessor
+	{
+		StatelessServiceContext? ServiceContext { get; }
+	}
+
 	internal interface IServiceAction
 	{
-		Task RunAsync(CancellationToken cancellationToken);
+		Task RunAsync(StatelessService service, CancellationToken cancellationToken);
 	}
 
 	internal interface IListenerBuilder
 	{
-		ServiceInstanceListener Build();
+		string Name { get; }
+
+		ICommunicationListener Build(StatelessServiceContext context);
 	}
 
 	/// <summary>
 	/// Handless service startup
 	/// </summary>
-	internal class OmexServiceRunner : IOmexServiceRunner
+	internal class OmexServiceRunner : IOmexServiceRunner, IStatelessServiceContextAccessor
 	{
 		private readonly string m_applicationName;
 		private IEnumerable<IListenerBuilder> ListenerBuilders { get; }
 		private IEnumerable<IServiceAction> ServiceActions { get; }
-
+		public StatelessServiceContext? ServiceContext { get; private set; }
 
 		public OmexServiceRunner(
 			IHostEnvironment environment,
@@ -103,10 +126,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 
-		public Task RunServiceAsync(CancellationToken cancellationToken)
+		public Task RunServiceAsync(CancellationToken cancellationToken) =>
+			ServiceRuntime.RegisterServiceAsync(m_applicationName, ServiceFactory, cancellationToken: cancellationToken);
+
+
+		private StatelessService ServiceFactory(StatelessServiceContext context)
 		{
-			return ServiceRuntime.RegisterServiceAsync(m_applicationName,
-				context => new OmexStatelessService(this, context));
+			ServiceContext = context;
+			return new OmexStatelessService(this, context);
 		}
 
 
@@ -124,11 +151,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 
 			protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners() =>
-				m_serviceParameters.ListenerBuilders.Select(b => b.Build());
+				m_serviceParameters.ListenerBuilders.Select(b => new ServiceInstanceListener(b.Build, b.Name));
 
 
 			protected override Task RunAsync(CancellationToken cancellationToken) =>
-				Task.WhenAll(m_serviceParameters.ServiceActions.Select(r => r.RunAsync(cancellationToken)));
+				Task.WhenAll(m_serviceParameters.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
 		}
 	}
 }

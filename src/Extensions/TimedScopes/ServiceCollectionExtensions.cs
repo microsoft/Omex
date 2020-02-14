@@ -16,7 +16,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		public static IServiceCollection AddTimedScopes(this IServiceCollection serviceCollection)
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
-			serviceCollection.AddOmexMachineInformation();
 			serviceCollection.TryAddTransient<IActivityProvider, SimpleActivityProvider>();
 			serviceCollection.TryAddTransient<ITimedScopeProvider,TimedScopeProvider>();
 			serviceCollection.TryAddTransient<ITimedScopeEventSource, TimedScopeEventSource>();
