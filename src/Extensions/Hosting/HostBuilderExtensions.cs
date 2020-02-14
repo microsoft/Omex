@@ -2,8 +2,6 @@
 // Licensed under the MIT license.
 
 using Microsoft.Extensions.Hosting;
-using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.Compatability;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.Omex.Extensions.TimedScopes;
 
@@ -21,9 +19,9 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 				.ConfigureServices(collection =>
 				{
 					collection
-						.AddOmexLogging<NullServiceContext>()
+						.AddOmexLogging()
 						.AddTimedScopes();
-				})
+				});
 		}
 	}
 }

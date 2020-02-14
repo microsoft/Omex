@@ -56,7 +56,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 							.AddSingleton<IStatelessServiceContextAccessor>(p => p.GetService<OmexServiceRunner>());
 					}).Build();
 
-				string m_applicationName = Assembly.GetExecutingAssembly().FullName;
+				string m_applicationName = Assembly.GetExecutingAssembly().GetName().FullName;
 				ServiceInitializationEventSource.Instance.LogServiceTypeRegistered(Process.GetCurrentProcess().Id, m_applicationName);
 
 				return host;

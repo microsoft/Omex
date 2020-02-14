@@ -38,11 +38,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 
-		private string GetRegionName() =>
+		private string? GetRegionName() =>
 			Environment.GetEnvironmentVariable("REGION_NAME"); // should be defined by Azure
 
 
-		private string GetClusterName() =>
+		private string? GetClusterName() =>
 			Environment.GetEnvironmentVariable("CLUSTER_NAME"); // We should define it
 
 

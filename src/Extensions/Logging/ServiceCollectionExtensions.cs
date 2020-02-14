@@ -12,6 +12,15 @@ namespace Microsoft.Omex.Extensions.Logging
 	/// <summary>Extension methods for the <see cref="ILoggerFactory"/> class</summary>
 	public static class ServiceCollectionExtensions
 	{
+		/// <summary>Add IServiceContext to ServiceCollection</summary>
+		public static IServiceCollection AddOmexServiceContext<TServiceContext>(this IServiceCollection serviceCollection)
+			where TServiceContext : class, IServiceContext
+		{
+			serviceCollection.TryAddTransient<IServiceContext, TServiceContext>();
+			return serviceCollection;
+		}
+
+
 		/// <summary>Adds Omex event logger to the factory</summary>
 		/// <param name="builder">The extension method argument</param>
 		public static ILoggingBuilder AddOmexLogging(this ILoggingBuilder builder)
@@ -26,10 +35,8 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained</returns>
 		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection)
 		{
-			serviceCollection
-				.AddOmexMachineInformation()
-				.AddEmptyOmexServiceContext();
-
+			serviceCollection.TryAddTransient<IServiceContext, EmptyServiceContext>();
+			serviceCollection.TryAddTransient<IMachineInformation, BasicMachineInformation>();
 			serviceCollection.TryAddTransient<IActivityProvider, ReplayibleActivityProvider>();
 			serviceCollection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
 			serviceCollection.TryAddTransient<ILogReplayer, LogRepayer>();
