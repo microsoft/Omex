@@ -9,9 +9,9 @@ namespace Microsoft.Omex.Extensions.Abstractions
 	public interface IServiceContext
 	{
 		/// <summary> Partition Id </summary>
-		Guid PartitionId { get; }
+		Guid GetPartitionId();
 
 		/// <summary> Replica Id or Instance Id </summary>
-		long ReplicaOrInstanceId { get; }
+		long GetReplicaOrInstanceId();
 	}
 }

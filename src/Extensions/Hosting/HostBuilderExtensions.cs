@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabric
 		public static IHostBuilder AddOmexServices(this IHostBuilder builder)
 		{
 			return builder
-				.ConfigureServices(collection =>
+				.ConfigureServices((context, collection) =>
 				{
 					collection
 						.AddOmexLogging()

@@ -6,11 +6,10 @@ using System;
 namespace Microsoft.Omex.Extensions.Abstractions
 {
 	/// <summary>IServiceContext without any information</summary>
-	internal class EmptyServiceContext : OmexServiceContext
+	internal class EmptyServiceContext : IServiceContext
 	{
-		/// <summary>Creates an instance of NullServiceContext</summary>
-		public EmptyServiceContext() : base(Guid.Empty, 0L)
-		{
-		}
+		public Guid GetPartitionId() => Guid.Empty;
+
+		public long GetReplicaOrInstanceId() => 0;
 	}
 }

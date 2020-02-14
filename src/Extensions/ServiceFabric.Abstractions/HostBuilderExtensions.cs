@@ -26,16 +26,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	public static class HostBuilderExtensions
 	{
 		/// <summary>Add required Omex dependencies</summary>
-		public static IHostBuilder AddOmexServices(this IHostBuilder builder)
+		public static IHostBuilder AddOmexServiceFabricServices(this IHostBuilder builder)
 		{
 			return builder
-				.ConfigureServices(collection =>
+				.ConfigureServices((context, collection) =>
 				{
-					collection
-						.AddServiceFabricDependencies()
-						.AddOmexLogging()
-						.AddTimedScopes();
-				});
+					collection.AddServiceFabricDependencies();
+				})
+				.AddOmexServices();
 		}
 
 		/// <summary>
@@ -46,15 +44,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			try
 			{
 				IHost host = builder
-					.AddOmexServices()
-					.ConfigureServices(collection =>
+					.AddOmexServiceFabricServices()
+					.ConfigureServices((context, collection) =>
 					{
 						collection
 							.AddTransient<IHostedService, OmexHostedService>()
 							.AddSingleton<OmexServiceRunner, OmexServiceRunner>()
 							.AddSingleton<IOmexServiceRunner>(p => p.GetService<OmexServiceRunner>())
 							.AddSingleton<IStatelessServiceContextAccessor>(p => p.GetService<OmexServiceRunner>());
-					}).Build();
+					})
+					.Build();
 
 				string m_applicationName = Assembly.GetExecutingAssembly().GetName().FullName;
 				ServiceInitializationEventSource.Instance.LogServiceTypeRegistered(Process.GetCurrentProcess().Id, m_applicationName);
