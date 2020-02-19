@@ -4,20 +4,12 @@ using System.Diagnostics;
 using System.Fabric;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.Logging;
 using Microsoft.Omex.Extensions.ServiceFabric;
-using Microsoft.Omex.Extensions.TimedScopes;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
-using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
@@ -41,8 +33,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>Add actions that will be executed inside service RunAsync method</summary>
 		public static IHostBuilder AddServiceAction(
 			this IHostBuilder builder,
-			Func<StatelessService, CancellationToken, Task> action) =>
-			builder.ConfigureServices((config, collection) => collection.AddSingleton(new ServiceAction(action)));
+			Func<StatelessServiceContext, CancellationToken, Task> action) =>
+			builder.AddServiceAction(new ServiceAction<StatelessServiceContext>(action));
+
+
+		/// <summary>Add actions that will be executed inside service RunAsync method</summary>
+		public static IHostBuilder AddServiceAction(
+			this IHostBuilder builder,
+			IServiceAction<StatelessServiceContext> action) =>
+			builder.ConfigureServices((config, collection) => collection.AddSingleton(action));
 
 
 		/// <summary>Add service listener to SF listener</summary>
@@ -50,7 +49,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			this IHostBuilder builder,
 			string name,
 			Func<StatelessServiceContext, ICommunicationListener> createListener) =>
-			builder.ConfigureServices((config, collection) => collection.AddSingleton(new ListenerBuilder(name, createListener)));
+			builder.AddServiceListener(new ListenerBuilder<StatelessServiceContext>(name, createListener));
+
+
+		/// <summary>Add service listener to SF listener</summary>
+		public static IHostBuilder AddServiceListener(
+			this IHostBuilder builder,
+			IListenerBuilder<StatelessServiceContext> listenerBuilder) =>
+			builder.ConfigureServices((config, collection) => collection.AddSingleton(listenerBuilder));
 
 
 		/// <summary>

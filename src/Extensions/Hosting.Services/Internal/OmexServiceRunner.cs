@@ -15,14 +15,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	internal class OmexServiceRunner : IOmexServiceRunner, IStatelessServiceContextAccessor
 	{
 		private readonly string m_applicationName;
-		private IEnumerable<ListenerBuilder> ListenerBuilders { get; }
-		private IEnumerable<ServiceAction> ServiceActions { get; }
+		private IEnumerable<IListenerBuilder<StatelessServiceContext>> ListenerBuilders { get; }
+		private IEnumerable<IServiceAction<StatelessServiceContext>> ServiceActions { get; }
 		public StatelessServiceContext? ServiceContext { get; private set; }
 
 		public OmexServiceRunner(
 			IHostEnvironment environment,
-			IEnumerable<ListenerBuilder> listenerBuilders,
-			IEnumerable<ServiceAction> serviceActions)
+			IEnumerable<IListenerBuilder<StatelessServiceContext>> listenerBuilders,
+			IEnumerable<IServiceAction<StatelessServiceContext>> serviceActions)
 		{
 			m_applicationName = environment.ApplicationName;
 			ListenerBuilders = listenerBuilders;
@@ -59,7 +59,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 
 			protected override Task RunAsync(CancellationToken cancellationToken) =>
-				Task.WhenAll(m_serviceParameters.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
+				Task.WhenAll(m_serviceParameters.ServiceActions.Select(r => r.RunAsync(Context, cancellationToken)));
 		}
 	}
 }

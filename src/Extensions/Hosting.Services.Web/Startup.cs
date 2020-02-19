@@ -1,49 +1,78 @@
-﻿//// Copyright (c) Microsoft Corporation. All rights reserved.
-//// Licensed under the MIT license.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
-//using Microsoft.AspNetCore.Builder;
-//using Microsoft.AspNetCore.Hosting;
-//using Microsoft.Extensions.Configuration;
-//using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Fabric;
+using System.Fabric.Description;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
+using Microsoft.ServiceFabric.Services.Communication.Runtime;
+using Microsoft.ServiceFabric.Services.Runtime;
 
-//namespace Microsoft.Omex.Extensions.ServiceFabric.Services
-//{
-//	internal class Startup
-//	{
-//		public Startup(IConfiguration configuration) => Configuration = configuration;
+namespace Microsoft.Omex.Extensions.ServiceFabric.Services
+{
+	/// <summary>
+	/// Startup class for ASP.NET Core service
+	/// </summary>
+	internal class OmexStartup
+	{
+		/// <summary>
+		/// Constructor for Startup
+		/// </summary>
+		/// <param name="configuration">Configuration is passed by ASP.NET Core runtime</param>
+		public OmexStartup(IConfiguration configuration) => Configuration = configuration;
 
 
-//		public IConfiguration Configuration { get; }
+		/// <summary>
+		/// Key-value configuration properties
+		/// </summary>
+		public IConfiguration Configuration { get; }
 
 
-//		public void ConfigureServices(IServiceCollection services)
-//		{
-//		}
+		/// <summary>
+		/// This method gets called by the runtime. Use this method to add services to the container.
+		/// </summary>
+		/// <param name="services">Services collection, DI container</param>
+		public void ConfigureServices(IServiceCollection services)
+		{
+		}
 
 
-//		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-//		{
-//			if (env.IsDevelopment())
-//			{
-//				app.UseDeveloperExceptionPage();
-//			}
+		/// <summary>
+		/// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		/// </summary>
+		/// <param name="app">Middleware application builder, passed by ASP.NET Core runtime</param>
+		/// <param name="env">Hosting environment</param>
+		public void Configure(IApplicationBuilder app, IHostEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
 
-//			app.UseHttpContextWrapper();
-//			app.UseStartEndRequest();
-//			app.AddUlsLogging();
-//			app.UseMiddleware<ExceptionHandler>();
-//			app.UseMiddleware<PerformanceOptimization>();
+			app.UseHttpContextWrapper();
+			app.UseStartEndRequest();
+			app.AddUlsLogging();
 
-//			app.UseRouting();
+			app.UseDefaultExceptionHandler();
 
-//			app.UseAuthentication();
-//			app.UseAuthorization();
+			app.UseRouting();
 
-//			app.UseEndpoints(endpoints =>
-//			{
-//				endpoints.MapHealthChecks("/healthz");
-//				endpoints.MapControllers();
-//			});
-//		}
-//	}
-//}
+			app.UseAuthorization();
+
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapControllers();
+				endpoints.MapHealthChecks("/healthz");
+			});
+		}
+	}
+}

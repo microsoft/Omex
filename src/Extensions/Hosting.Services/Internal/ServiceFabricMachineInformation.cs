@@ -35,7 +35,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				: GetIpAddress(MachineName);
 
 			EnvironmentName = hostEnvironment.EnvironmentName ?? DefaultEmptyValue;
-			IsPrivateDeployment = string.Equals(EnvironmentName, Enviroments.Development, StringComparison.OrdinalIgnoreCase);
+			IsPrivateDeployment = hostEnvironment.IsDevelopment();
 			RegionName = GetRegionName() ?? DefaultEmptyValue;
 			MachineCluster = GetClusterName()
 				?? nodeContext.IPAddressOrFQDN

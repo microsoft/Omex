@@ -4,21 +4,22 @@ using Microsoft.ServiceFabric.Services.Communication.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal class ListenerBuilder
+	internal class ListenerBuilder<TServiceContext> : IListenerBuilder<TServiceContext>
+		 where TServiceContext : ServiceContext
 	{
 		public ListenerBuilder(
 			string name,
-			Func<StatelessServiceContext, ICommunicationListener> createListener) =>
+			Func<TServiceContext, ICommunicationListener> createListener) =>
 			(Name, m_createListener) = (name, createListener);
 
 
 		public string Name { get; }
 
 
-		public ICommunicationListener Build(StatelessServiceContext context) =>
+		public ICommunicationListener Build(TServiceContext context) =>
 			m_createListener(context);
 
 
-		private readonly Func<StatelessServiceContext, ICommunicationListener> m_createListener;
+		private readonly Func<TServiceContext, ICommunicationListener> m_createListener;
 	}
 }
