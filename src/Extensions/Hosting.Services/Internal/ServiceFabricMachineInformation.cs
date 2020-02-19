@@ -11,7 +11,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	internal class ServiceFabricMachineInformation : EmptyMachineInformation
 	{
-		public ServiceFabricMachineInformation(IHostEnvironment hostEnvironment)
+
+		public ServiceFabricMachineInformation(IHostEnvironment hostEnvironment, IStatelessServiceContextAccessor accessor)
+			: this(hostEnvironment, GetActivationContext(accessor), GetNodeContext(accessor))
+		{
+		}
+
+
+		private ServiceFabricMachineInformation(IHostEnvironment hostEnvironment, ICodePackageActivationContext activationContext, NodeContext nodeContext)
 		{
 			MachineName = GetMachineName();
 			DeploymentSlice = DefaultEmptyValue;
@@ -19,18 +26,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			MachineCount = 1;
 
 			ServiceName = hostEnvironment.ApplicationName;
-			ICodePackageActivationContext activationContext = FabricRuntime.GetActivationContext();
 			MachineRole = activationContext.ApplicationName ?? DefaultEmptyValue;
 			BuildVersion = activationContext.CodePackageVersion;
 
-			NodeContext nodeContext = FabricRuntime.GetNodeContext();
 			MachineId = FormattableString.Invariant($"{MachineName}_{nodeContext.NodeName}");
 			MachineClusterIpAddress = IPAddress.TryParse(nodeContext.IPAddressOrFQDN, out IPAddress ipAddress)
 				? ipAddress
 				: GetIpAddress(MachineName);
 
 			EnvironmentName = hostEnvironment.EnvironmentName ?? DefaultEmptyValue;
-			IsPrivateDeployment = string.Equals(EnvironmentName, PrEnvironmentName, StringComparison.OrdinalIgnoreCase);
+			IsPrivateDeployment = string.Equals(EnvironmentName, Enviroments.Development, StringComparison.OrdinalIgnoreCase);
 			RegionName = GetRegionName() ?? DefaultEmptyValue;
 			MachineCluster = GetClusterName()
 				?? nodeContext.IPAddressOrFQDN
@@ -46,47 +51,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			Environment.GetEnvironmentVariable("CLUSTER_NAME"); // We should define it
 
 
-		protected readonly string PrEnvironmentName = "Pr";
+		private static ICodePackageActivationContext GetActivationContext(IStatelessServiceContextAccessor accessor) =>
+			accessor.ServiceContext?.CodePackageActivationContext ?? FabricRuntime.GetActivationContext();
+
+
+		private static NodeContext GetNodeContext(IStatelessServiceContextAccessor accessor) =>
+			accessor.ServiceContext?.NodeContext ?? FabricRuntime.GetNodeContext();
 	}
-
-
-	//internal class OldServiceFabricMachineInformation : EmptyMachineInformation
-	//{
-	//	public OldServiceFabricMachineInformation(ServiceContext context, IOptions<MachineInformationSettings> settings)
-	//	{
-	//		MachineName = GetMachineName();
-	//		DeploymentSlice = DefaultEmptyValue;
-	//		IsCanary = false;
-	//		MachineCount = 1;
-
-	//		ServiceName = context.ServiceName.ToString();
-	//		ICodePackageActivationContext activationContext = context.CodePackageActivationContext ?? FabricRuntime.GetActivationContext();
-	//		MachineRole = activationContext.ApplicationName ?? DefaultEmptyValue;
-	//		BuildVersion = activationContext.CodePackageVersion;
-
-	//		NodeContext nodeContext = context.NodeContext ?? FabricRuntime.GetNodeContext();
-	//		MachineId = FormattableString.Invariant($"{MachineName}_{nodeContext.NodeName}");
-	//		MachineClusterIpAddress = IPAddress.TryParse(nodeContext.IPAddressOrFQDN, out IPAddress ipAddress)
-	//			? ipAddress
-	//			: GetIpAddress(MachineName);
-
-	//		MachineInformationSettings settingsValue = settings.Value;
-	//		EnvironmentName = settingsValue.Environment ?? DefaultEmptyValue;
-	//		IsPrivateDeployment = string.Equals(EnvironmentName, PrEnvironmentName, StringComparison.OrdinalIgnoreCase);
-	//		RegionName = settingsValue.Region ?? DefaultEmptyValue;
-	//		MachineCluster = settingsValue.ClusterName
-	//			?? nodeContext.IPAddressOrFQDN
-	//			?? MachineId;
-	//	}
-
-
-	//	protected readonly string PrEnvironmentName = "Pr";
-	//}
-
-	//internal class MachineInformationSettings
-	//{
-	//	public string? Environment { get; set; }
-	//	public string? Region { get; set; }
-	//	public string? ClusterName { get; set; }
-	//}
 }
