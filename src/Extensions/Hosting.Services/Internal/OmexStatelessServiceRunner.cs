@@ -10,16 +10,16 @@ using Microsoft.ServiceFabric.Services.Runtime;
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	/// <summary>
-	/// Class to manage service startup
+	/// Class to manage stateless service fabric service startup
 	/// </summary>
-	internal class OmexServiceRunner : IOmexServiceRunner, IServiceContextAccessor<StatelessServiceContext>
+	internal class OmexStatelessServiceRunner : IOmexServiceRunner, IServiceContextAccessor<StatelessServiceContext>
 	{
 		private readonly string m_applicationName;
 		private IEnumerable<IListenerBuilder<StatelessServiceContext>> ListenerBuilders { get; }
 		private IEnumerable<IServiceAction<StatelessServiceContext>> ServiceActions { get; }
 		public StatelessServiceContext? ServiceContext { get; private set; }
 
-		public OmexServiceRunner(
+		public OmexStatelessServiceRunner(
 			IHostEnvironment environment,
 			IEnumerable<IListenerBuilder<StatelessServiceContext>> listenerBuilders,
 			IEnumerable<IServiceAction<StatelessServiceContext>> serviceActions)
@@ -43,10 +43,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 		private class OmexStatelessService : StatelessService
 		{
-			private readonly OmexServiceRunner m_serviceParameters;
+			private readonly OmexStatelessServiceRunner m_serviceParameters;
 
 			public OmexStatelessService(
-				OmexServiceRunner serviceRunner,
+				OmexStatelessServiceRunner serviceRunner,
 				StatelessServiceContext serviceContext)
 					: base(serviceContext)
 			{
