@@ -7,7 +7,7 @@ namespace Microsoft.Omex.Extensions.Logging
 {
 	internal class OmexLoggerProvider : ILoggerProvider, ISupportExternalScope
 	{
-		public OmexLoggerProvider(OmexLogsEventSource logsEventSource, IExternalScopeProvider defaultExternalScopeProvider)
+		public OmexLoggerProvider(ILogsEventSource logsEventSource, IExternalScopeProvider defaultExternalScopeProvider)
 		{
 			m_logsEventSource = logsEventSource;
 			m_defaultExternalScopeProvider = defaultExternalScopeProvider;
@@ -25,6 +25,6 @@ namespace Microsoft.Omex.Extensions.Logging
 
 		private IExternalScopeProvider? m_externalScopeProvider;
 		private readonly IExternalScopeProvider m_defaultExternalScopeProvider;
-		private readonly OmexLogsEventSource m_logsEventSource;
+		private readonly ILogsEventSource m_logsEventSource;
 	}
 }

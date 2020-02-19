@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,7 +13,7 @@ namespace Abstractions.UnitTests
 		public void CreatedTagHasProperValue()
 		{
 			EventId tag1 = Tag.Create();
-			// empty line to check that Tag.Create() use line number for Id value
+			// empty line to check that Tag.Create() use line number for Id value and not just incriment
 			EventId tag2 = Tag.Create();
 
 			Assert.AreEqual(tag1.Id + 2, tag2.Id, "EventId Id should correspond to line number");
@@ -23,6 +24,7 @@ namespace Abstractions.UnitTests
 			StringAssert.EndsWith(tag1.Name, relativePath, "tag1 Name should point to current file");
 			StringAssert.EndsWith(tag2.Name, relativePath, "tag2 Name should point to current file");
 		}
+
 
 		[DataTestMethod]
 		[DataRow(0)]

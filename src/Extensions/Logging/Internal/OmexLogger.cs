@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Logging
 {
 	internal class OmexLogger : ILogger
 	{
-		public OmexLogger(OmexLogsEventSource logsEventSource, IExternalScopeProvider externalScopeProvider, string categoryName)
+		public OmexLogger(ILogsEventSource logsEventSource, IExternalScopeProvider externalScopeProvider, string categoryName)
 		{
 			m_logsEventSource = logsEventSource;
 			m_externalScopeProvider = externalScopeProvider;
@@ -38,7 +38,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			string activityId = activity?.Id ?? string.Empty;
 			ActivityTraceId traceId = activity?.TraceId ?? default;
 
-			m_logsEventSource.ServiceMessage(activityId, traceId, m_categoryName, logLevel, eventId, threadId, message);
+			m_logsEventSource.LogMessage(activityId, traceId, m_categoryName, logLevel, eventId, threadId, message);
 
 			if (m_logsEventSource.IsReplayableMessage(logLevel) && activity is ReplayableActivity replayableyScope)
 			{
@@ -48,7 +48,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 
 		private readonly IExternalScopeProvider m_externalScopeProvider;
-		private readonly OmexLogsEventSource m_logsEventSource;
+		private readonly ILogsEventSource m_logsEventSource;
 		private readonly string m_categoryName;
 	}
 }

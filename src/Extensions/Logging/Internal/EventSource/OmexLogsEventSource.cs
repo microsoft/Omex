@@ -13,7 +13,7 @@ using Microsoft.Omex.Extensions.Logging.Replayable;
 namespace Microsoft.Omex.Extensions.Logging
 {
 	[EventSource(Name = "Microsoft-OMEX-Logs")]
-	internal sealed class OmexLogsEventSource : EventSource
+	internal sealed class OmexLogsEventSource : EventSource, ILogsEventSource, ILogReplayer
 	{
 		static OmexLogsEventSource()
 		{
@@ -33,7 +33,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 
 		[NonEvent]
-		public void ServiceMessage(string activityId, ActivityTraceId traceId, string category, LogLevel level, EventId eventId, int threadId, string message)
+		public void LogMessage(string activityId, ActivityTraceId traceId, string category, LogLevel level, EventId eventId, int threadId, string message)
 		{
 			if (!IsEnabled(level))
 			{
@@ -78,19 +78,13 @@ namespace Microsoft.Omex.Extensions.Logging
 			}
 		}
 
-
-		[NonEvent]
-		public void ReplayEvent(Activity activity, LogMessageInformation log)
-			=> ServiceMessage(activity.Id, activity.TraceId, log.Category, LogLevel.Information, log.EventId, log.ThreadId, log.Message);
-
-
 		[NonEvent]
 		public bool IsEnabled(LogLevel level) =>
-			level switch
-			{
-				LogLevel.None => false,
-				_ => IsEnabled()
-			};
+		level switch
+		{
+			LogLevel.None => false,
+			_ => IsEnabled()
+		};
 
 
 		[NonEvent]
@@ -101,6 +95,19 @@ namespace Microsoft.Omex.Extensions.Logging
 				LogLevel.Debug => true,
 				_ => false
 			};
+
+
+		[NonEvent]
+		public void ReplayLogs(Activity activity)
+		{
+			if (activity is ReplayableActivity replayableActivity)
+			{
+				foreach (LogMessageInformation log in replayableActivity.GetLogEvents())
+				{
+					LogMessage(activity.Id, activity.TraceId, log.Category, LogLevel.Information, log.EventId, log.ThreadId, log.Message);
+				}
+			}
+		}
 
 
 		private readonly IServiceContext m_serviceContext;
