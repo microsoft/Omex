@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public static IServiceCollection AddServiceFabricDependencies(this IServiceCollection serviceCollection)
 		{
 			serviceCollection.TryAddTransient<IServiceContext, OmexServiceFabricContext>();
-			serviceCollection.TryAddTransient<IMachineInformation, ServiceFabricMachineInformation>();
+			serviceCollection.TryAddSingleton<IMachineInformation, ServiceFabricMachineInformation>();
 			return serviceCollection;
 		}
 	}
