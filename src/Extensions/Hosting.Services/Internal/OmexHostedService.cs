@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Omex.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {

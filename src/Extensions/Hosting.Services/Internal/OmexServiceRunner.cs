@@ -12,7 +12,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// <summary>
 	/// Class to manage service startup
 	/// </summary>
-	internal class OmexServiceRunner : IOmexServiceRunner, IStatelessServiceContextAccessor
+	internal class OmexServiceRunner : IOmexServiceRunner, IServiceContextAccessor<StatelessServiceContext>
 	{
 		private readonly string m_applicationName;
 		private IEnumerable<IListenerBuilder<StatelessServiceContext>> ListenerBuilders { get; }

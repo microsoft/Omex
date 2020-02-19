@@ -83,7 +83,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			const int stringLimit = 1024;
 			if (value.Length > stringLimit)
 			{
-				m_logger.LogWarning(Tag.ReserveTag(0), StringLimitMessage, stringLimit, name, activityName, value.Length);
+				m_logger.LogWarning(Tag.Create(), StringLimitMessage, stringLimit, name, activityName, value.Length);
 				value = value.Substring(0, stringLimit);
 			}
 

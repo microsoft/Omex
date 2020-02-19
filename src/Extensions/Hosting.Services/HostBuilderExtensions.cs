@@ -5,7 +5,9 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
@@ -71,7 +73,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 							.AddTransient<IHostedService, OmexHostedService>()
 							.AddSingleton<OmexServiceRunner, OmexServiceRunner>()
 							.AddSingleton<IOmexServiceRunner>(p => p.GetService<OmexServiceRunner>())
-							.AddSingleton<IStatelessServiceContextAccessor>(p => p.GetService<OmexServiceRunner>());
+							.AddSingleton<IServiceContextAccessor<StatelessServiceContext>>(p => p.GetService<OmexServiceRunner>());
 					})
 					.Build();
 
@@ -85,6 +87,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				ServiceInitializationEventSource.Instance.LogServiceHostInitializationFailed(e.ToString());
 				throw;
 			}
+		}
+
+
+		/// <summary> Registerin DI classes that will provide Serfice Fabric specific information for logging </summary>
+		public static IServiceCollection AddServiceFabricDependencies(this IServiceCollection serviceCollection)
+		{
+			serviceCollection.TryAddTransient<IServiceContext, OmexServiceFabricContext>();
+			serviceCollection.TryAddSingleton<IMachineInformation, ServiceFabricMachineInformation>();
+			return serviceCollection;
 		}
 	}
 }

@@ -31,7 +31,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			Type startupType,
 			string name,
 			ServiceFabricIntegrationOptions options,
-			Action<IWebHostBuilder>? builderExtension)
+			Action<IWebHostBuilder> builderExtension)
 		{
 			Name = name;
 			m_startupType = startupType;
@@ -42,13 +42,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 
 		private readonly Type m_startupType;
 		private readonly ServiceFabricIntegrationOptions m_options;
-		private readonly Action<IWebHostBuilder>? m_builderExtension;
+		private readonly Action<IWebHostBuilder> m_builderExtension;
 
 
-		private void ConfigureServices(TServiceContext collection, IServiceCollection services)
+		private void ConfigureServices(TServiceContext context, IServiceCollection services)
 		{
-			services.AddSingleton<ServiceContext>(collection);
-			services.AddSingleton(collection);
+			services.AddSingleton<IServiceContextAccessor<TServiceContext>>(new ServiceContextAccessor(context));
+			services.AddSingleton<ServiceContext>(context);
+			services.AddSingleton(context);
 		}
 
 
@@ -70,9 +71,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 					config.ValidateScopes = true;
 				});
 
-			m_builderExtension?.Invoke(hostBuilder);
+			m_builderExtension(hostBuilder);
 
 			return hostBuilder.Build();
+		}
+
+		private class ServiceContextAccessor : IServiceContextAccessor<TServiceContext>
+		{
+			public TServiceContext? ServiceContext { get; }
+
+			public ServiceContextAccessor(TServiceContext serviceContext) => ServiceContext = serviceContext;
 		}
 	}
 }

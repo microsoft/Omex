@@ -2,6 +2,7 @@
 using System.Fabric;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Hosting;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web
@@ -17,6 +18,17 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			string name,
 			ServiceFabricIntegrationOptions options,
 			Action<IWebHostBuilder>? builderExtension = null) =>
-			builder.AddServiceListener(new KestrelListenerBuilder<StatelessServiceContext>(typeof(TStartup), name, options, builderExtension));
+			builder.AddServiceListener(new KestrelListenerBuilder<StatelessServiceContext>(
+				typeof(TStartup),
+				name,
+				options,
+				builder => BuilderExtension(builder, builderExtension)));
+
+
+		private static void BuilderExtension(IWebHostBuilder builder, Action<IWebHostBuilder>? builderExtension)
+		{
+			builderExtension?.Invoke(builder);
+			builder.ConfigureServices((context, collection) => collection.AddOmexServices());
+		}
 	}
 }

@@ -11,8 +11,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	internal class ServiceFabricMachineInformation : EmptyMachineInformation
 	{
+		public ServiceFabricMachineInformation(IHostEnvironment hostEnvironment, IServiceContextAccessor<StatelessServiceContext> accessor)
+			: this(hostEnvironment, GetActivationContext(accessor), GetNodeContext(accessor))
+		{
+		}
 
-		public ServiceFabricMachineInformation(IHostEnvironment hostEnvironment, IStatelessServiceContextAccessor accessor)
+
+		public ServiceFabricMachineInformation(IHostEnvironment hostEnvironment, IServiceContextAccessor<StatefulServiceContext> accessor)
 			: this(hostEnvironment, GetActivationContext(accessor), GetNodeContext(accessor))
 		{
 		}
@@ -51,11 +56,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			Environment.GetEnvironmentVariable("CLUSTER_NAME"); // We should define it
 
 
-		private static ICodePackageActivationContext GetActivationContext(IStatelessServiceContextAccessor accessor) =>
+		private static ICodePackageActivationContext GetActivationContext(IServiceContextAccessor<ServiceContext> accessor) =>
 			accessor.ServiceContext?.CodePackageActivationContext ?? FabricRuntime.GetActivationContext();
 
 
-		private static NodeContext GetNodeContext(IStatelessServiceContextAccessor accessor) =>
+		private static NodeContext GetNodeContext(IServiceContextAccessor<ServiceContext> accessor) =>
 			accessor.ServiceContext?.NodeContext ?? FabricRuntime.GetNodeContext();
 	}
 }

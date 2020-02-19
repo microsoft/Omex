@@ -11,7 +11,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	internal class OmexServiceFabricContext : IServiceContext
 	{
 		/// <summary> Create OmexServiceFabricContext from StatelessServiceContextAccessor</summary>
-		public OmexServiceFabricContext(IStatelessServiceContextAccessor accessor)
+		public OmexServiceFabricContext(IServiceContextAccessor<StatelessServiceContext> accessor)
+			=> m_accessor = accessor;
+
+
+		/// <summary> Create OmexServiceFabricContext from StatefulServiceContext</summary>
+		public OmexServiceFabricContext(IServiceContextAccessor<StatefulServiceContext> accessor)
 			=> m_accessor = accessor;
 
 
@@ -36,14 +41,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 
-		private readonly IStatelessServiceContextAccessor m_accessor;
+		private readonly IServiceContextAccessor<ServiceContext> m_accessor;
 		private Guid? m_partitionId;
 		private long? m_replicaOrInstanceId;
 
-		private static Func<IStatelessServiceContextAccessor, Guid?> s_partitionIdProvider =>
+		private static Func<IServiceContextAccessor<ServiceContext>, Guid?> s_partitionIdProvider =>
 			a => a.ServiceContext?.PartitionId;
 
-		private static Func<IStatelessServiceContextAccessor, long?> s_replicaProvider =>
+		private static Func<IServiceContextAccessor<ServiceContext>, long?> s_replicaProvider =>
 			a => a.ServiceContext?.ReplicaOrInstanceId;
 	}
 }
