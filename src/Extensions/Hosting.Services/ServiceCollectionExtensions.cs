@@ -7,8 +7,10 @@ using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal static class ServiceCollectionExtensions
+	/// <summary> Extension methods for the <see cref="IServiceCollection"/> class</summary>
+	public static class ServiceCollectionExtensions
 	{
+		/// <summary> Registerin DI classes that will provide Serfice Fabric specific information for logging </summary>
 		public static IServiceCollection AddServiceFabricDependencies(this IServiceCollection serviceCollection)
 		{
 			serviceCollection.TryAddTransient<IServiceContext, OmexServiceFabricContext>();
