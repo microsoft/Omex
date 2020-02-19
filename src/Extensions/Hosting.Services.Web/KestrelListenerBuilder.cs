@@ -55,9 +55,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 
 		private IWebHost BuildWebHost(TServiceContext context, string url, AspNetCoreCommunicationListener listener)
 		{
-			EndpointResourceDescription endpointConfig = context.CodePackageActivationContext.GetEndpoint(Name);
-			url += endpointConfig.PathSuffix;
-
 			IWebHostBuilder hostBuilder = new WebHostBuilder()
 				.UseKestrel()
 				.ConfigureServices(collection => ConfigureServices(context, collection))

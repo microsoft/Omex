@@ -2,7 +2,6 @@
 using System.Fabric;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Omex.Extensions.Hosting;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web
@@ -12,12 +11,29 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 	/// </summary>
 	public static class HostBuilderExtensions
 	{
-		/// <summary>Add Kestrel service listener to SF service</summary>
-		public static IHostBuilder AddKestrelServiceListener<TStartup>(
+		/// <summary>Add Kestrel service listener to SF stateless service</summary>
+		public static IHostBuilder AddKestrelStatelessListener<TStartup>(
 			this IHostBuilder builder,
 			string name,
 			ServiceFabricIntegrationOptions options,
 			Action<IWebHostBuilder>? builderExtension = null) =>
+			builder.AddKestrelServiceListener<TStartup, StatelessServiceContext>(name, options, builderExtension);
+
+
+		/// <summary>Add Kestrel service listener to SF stateful service</summary>
+		public static IHostBuilder AddKestrelStatefulListener<TStartup>(
+			this IHostBuilder builder,
+			string name,
+			ServiceFabricIntegrationOptions options,
+			Action<IWebHostBuilder>? builderExtension = null) =>
+			builder.AddKestrelServiceListener<TStartup, StatefulServiceContext>(name, options, builderExtension);
+
+
+		private static IHostBuilder AddKestrelServiceListener<TStartup, TServiceContext>(
+			this IHostBuilder builder,
+			string name,
+			ServiceFabricIntegrationOptions options,
+			Action<IWebHostBuilder>? builderExtension = null) where TServiceContext : ServiceContext =>
 			builder.AddServiceListener(new KestrelListenerBuilder<StatelessServiceContext>(
 				typeof(TStartup),
 				name,
