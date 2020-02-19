@@ -4,7 +4,7 @@
     <NetFameworkVersion>net472</NetFameworkVersion>
     <NetCoreVersion>netcoreapp3.1</NetCoreVersion>
     <TargetFrameworksValue>$(NetFameworkVersion);$(NetCoreVersion)</TargetFrameworksValue>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 </Project>

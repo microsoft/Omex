@@ -40,5 +40,7 @@
     <Microsoft_ServiceFabric_Version>7.0.466</Microsoft_ServiceFabric_Version>
     <Microsoft_ServiceFabric_Services_Version>4.0.466</Microsoft_ServiceFabric_Services_Version>
     <Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>4.0.466</Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>
+    <MSTest_TestFramework_Version>2.1.0</MSTest_TestFramework_Version>
+    <MSTest_TestAdapter_Version>2.1.0</MSTest_TestAdapter_Version>
   </PropertyGroup>
 </Project>
