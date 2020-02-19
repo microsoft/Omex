@@ -4,7 +4,7 @@
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.TimedScopes;
 
-namespace Microsoft.Omex.Extensions.Logging.TimedScopes
+namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	internal class TimedScopeProvider : ITimedScopeProvider
 	{

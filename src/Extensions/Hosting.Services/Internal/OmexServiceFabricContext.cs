@@ -3,7 +3,7 @@
 
 using System;
 using System.Fabric;
-using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Logging;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {

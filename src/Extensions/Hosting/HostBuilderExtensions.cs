@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.Omex.Extensions.TimedScopes;
 
-namespace Microsoft.Omex.Extensions.ServiceFabric
+namespace Microsoft.Omex.Extensions.Hosting
 {
 	/// <summary>
 	/// Extension to add Omex dependencies to HostBuilder

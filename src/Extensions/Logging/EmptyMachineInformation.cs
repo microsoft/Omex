@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 
-namespace Microsoft.Omex.Extensions.Abstractions
+namespace Microsoft.Omex.Extensions.Logging
 {
 	/// <summary>Base class for machine information</summary>
 	public class EmptyMachineInformation : IMachineInformation

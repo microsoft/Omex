@@ -7,11 +7,10 @@ using System.Fabric.Description;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 
-namespace Microsoft.Omex.Extensions.ServiceFabric.Services
+namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 {
 	/// <summary>
 	/// Creates ServiceInstanceListener with all of Omex dependencies inicialized

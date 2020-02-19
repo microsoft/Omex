@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.Omex.Extensions.Abstractions
+namespace Microsoft.Omex.Extensions.Logging
 {
 	/// <summary> Interface with service context inforormation </summary>
 	public interface IServiceContext

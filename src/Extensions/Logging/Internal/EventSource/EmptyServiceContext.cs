@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.Omex.Extensions.Abstractions
+namespace Microsoft.Omex.Extensions.Logging
 {
 	/// <summary>IServiceContext without any information</summary>
 	internal class EmptyServiceContext : IServiceContext
