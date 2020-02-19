@@ -23,8 +23,8 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// <param name="message">message to log</param>
 		/// <param name="parameters">additional parameters</param>
 		[Obsolete(ObsoleteMessage, IsObsoleteError)]
-		public static void LogTraceTag(EventId eventId, Category category, Level level, string message, params object[] parameters) =>
-			GetLogger(category)?.Log(ConvertLevel(level), eventId, message, parameters);
+		public static void LogTraceTag(EventId eventId, Category category, LogLevel level, string message, params object[] parameters) =>
+			GetLogger(category)?.Log(level, eventId, message, parameters);
 
 
 		/// <summary>
@@ -57,18 +57,6 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 
 
 		private static ConcurrentDictionary<string, ILogger>? s_loggersDictionary;
-
-
-		private static LogLevel ConvertLevel(Level level) =>
-			level.LogLevel switch
-			{
-				Levels.LogLevel.Error => LogLevel.Error,
-				Levels.LogLevel.Info => LogLevel.Information,
-				Levels.LogLevel.Spam => LogLevel.Critical,
-				Levels.LogLevel.Verbose => LogLevel.Trace,
-				Levels.LogLevel.Warning => LogLevel.Warning,
-				_ => LogLevel.None
-			};
 
 
 		private const string ObsoleteMessage = "Please consider using ILogger instead";
