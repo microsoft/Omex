@@ -23,9 +23,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			return builder
 				.ConfigureServices((context, collection) =>
 				{
-					collection.AddServiceFabricDependencies();
-				})
-				.AddOmexServices();
+					collection
+						.AddOmexServiceFabricDependencies();
+				});
 		}
 
 
@@ -66,7 +66,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			try
 			{
 				IHost host = builder
-					.AddOmexServiceFabricServices()
 					.ConfigureServices((context, collection) =>
 					{
 						collection
@@ -75,6 +74,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 							.AddSingleton<IOmexServiceRunner>(p => p.GetService<OmexServiceRunner>())
 							.AddSingleton<IServiceContextAccessor<StatelessServiceContext>>(p => p.GetService<OmexServiceRunner>());
 					})
+					.AddOmexServiceFabricServices()
 					.Build();
 
 				string m_applicationName = Assembly.GetExecutingAssembly().GetName().FullName;
@@ -91,11 +91,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 
 		/// <summary> Registerin DI classes that will provide Serfice Fabric specific information for logging </summary>
-		public static IServiceCollection AddServiceFabricDependencies(this IServiceCollection serviceCollection)
+		public static IServiceCollection AddOmexServiceFabricDependencies(this IServiceCollection serviceCollection)
 		{
 			serviceCollection.TryAddTransient<IServiceContext, OmexServiceFabricContext>();
 			serviceCollection.TryAddSingleton<IMachineInformation, ServiceFabricMachineInformation>();
-			return serviceCollection;
+			return serviceCollection.AddOmexServices();
 		}
 	}
 }

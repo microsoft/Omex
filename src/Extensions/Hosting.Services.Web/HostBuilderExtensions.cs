@@ -13,7 +13,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 	public static class HostBuilderExtensions
 	{
 		/// <summary>Add Kestrel service listener to SF service</summary>
-		public static IHostBuilder AddKestrelListener<TStartup>(
+		public static IHostBuilder AddKestrelServiceListener<TStartup>(
 			this IHostBuilder builder,
 			string name,
 			ServiceFabricIntegrationOptions options,
