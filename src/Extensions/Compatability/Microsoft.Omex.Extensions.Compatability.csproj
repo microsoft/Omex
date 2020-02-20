@@ -8,4 +8,9 @@
   <ItemGroup Condition="$(IsNetFramework)">
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.0" />
   </ItemGroup>
+  <ItemGroup Condition="$(IsNetFramework)">
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Microsoft.Omex.Extensions.Compatability.UnitTests$(StrongNameSuffix)</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>

@@ -27,8 +27,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 
 			Assert.IsNotNull(collectionObj, $"Type {type} was not resolved after AddOmexServices to ServiceCollection");
 
-			object hostObj = Host
-				.CreateDefaultBuilder()
+			object hostObj = new HostBuilder()
 				.AddOmexServices()
 				.UseDefaultServiceProvider(options =>
 				{
