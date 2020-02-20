@@ -133,6 +133,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 						collection.AddTransient<IHostedService, OmexHostedService>();
 					})
 					.AddOmexServiceFabricServices()
+					.UseDefaultServiceProvider(options =>
+					{
+						options.ValidateOnBuild = true;
+						options.ValidateScopes = true;
+					})
 					.Build();
 
 				string m_applicationName = Assembly.GetExecutingAssembly().GetName().FullName;

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -27,6 +25,7 @@ namespace Abstractions.UnitTests
 
 
 		[DataTestMethod]
+		[DataRow(-19)]
 		[DataRow(0)]
 		[DataRow(13)]
 		[DataRow(int.MaxValue)]
