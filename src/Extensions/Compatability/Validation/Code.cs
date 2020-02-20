@@ -504,7 +504,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		private const string ValidationFailed = "Code validation failed, {0}: {1}";
 
 
-		private const string ObsoleteMessage = "Please consider using non-nullable reference types instead";
+		private const string ObsoleteMessage = "Please consider using non-nullable reference types instead or regular null check";
 		private const bool IsObsoleteError = false;
 	}
 }
