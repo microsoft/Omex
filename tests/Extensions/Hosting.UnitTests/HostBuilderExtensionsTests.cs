@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.TimedScopes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,11 +12,12 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 	public class HostBuilderExtensionsTests
 	{
 		[DataTestMethod]
-		[DataRow(typeof(ILoggerProvider))]
+		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>))]
 		[DataRow(typeof(ITimedScopeProvider))]
 		public void CheckThatRequiredTypesRegistred(Type type)
 		{
 			object collectionObj = new ServiceCollection()
+				.AddSingleton<IHostEnvironment>(new HostingEnvironment())
 				.AddOmexServices()
 				.BuildServiceProvider(new ServiceProviderOptions
 				{

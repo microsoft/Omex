@@ -35,7 +35,7 @@
     <Microsoft_Extensions_DependencyInjection_Abstractions_Version>3.1.2</Microsoft_Extensions_DependencyInjection_Abstractions_Version>
     <Microsoft_Extensions_Logging_Version>3.1.2</Microsoft_Extensions_Logging_Version>
     <Microsoft_Extensions_DependencyInjection_Version>3.1.2</Microsoft_Extensions_DependencyInjection_Version>
-    <Microsoft_Extensions_Option_Version>3.1.2</Microsoft_Extensions_Option_Version>
+    <Microsoft_Extensions_Options_Version>3.1.2</Microsoft_Extensions_Options_Version>
     <System_Diagnostics_DiagnosticSource_Version>4.7.0</System_Diagnostics_DiagnosticSource_Version>
     <Microsoft_ServiceFabric_Version>7.0.466</Microsoft_ServiceFabric_Version>
     <Microsoft_ServiceFabric_Services_Version>4.0.466</Microsoft_ServiceFabric_Services_Version>

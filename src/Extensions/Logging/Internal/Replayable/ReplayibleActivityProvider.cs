@@ -2,13 +2,22 @@
 // Licensed under the MIT license.
 
 using System.Diagnostics;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.TimedScopes;
 
 namespace Microsoft.Omex.Extensions.Logging.Replayable
 {
 	internal class ReplayibleActivityProvider : IActivityProvider
 	{
-		public Activity Create(string operationName, bool replayLogsInCaseOfError) =>
-			replayLogsInCaseOfError ? new ReplayableActivity(operationName) : new Activity(operationName);
+		public ReplayibleActivityProvider(IOptions<OmexLoggingOptions> options) =>
+			m_replayLogsInCaseOfError = options.Value.ReplayLogsInCaseOfError;
+
+
+		public Activity Create(string operationName) =>
+			m_replayLogsInCaseOfError ? new ReplayableActivity(operationName) : new Activity(operationName);
+
+
+		private readonly bool m_replayLogsInCaseOfError;
 	}
 }

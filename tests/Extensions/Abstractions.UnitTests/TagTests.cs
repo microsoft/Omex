@@ -2,7 +2,7 @@
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Abstractions.UnitTests
+namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 {
 	[TestClass]
 	public class TagTests

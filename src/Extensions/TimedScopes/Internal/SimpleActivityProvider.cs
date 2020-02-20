@@ -8,7 +8,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	internal class SimpleActivityProvider : IActivityProvider
 	{
-		public Activity Create(string operationName, bool replayLogsInCaseOfError) =>
-			new Activity(operationName);
+		public Activity Create(string operationName) => new Activity(operationName);
 	}
 }
