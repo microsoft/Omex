@@ -3,7 +3,6 @@
 
 using System;
 using System.Fabric;
-using System.Fabric.Description;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;

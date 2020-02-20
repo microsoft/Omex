@@ -44,7 +44,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		private static void BuilderExtension(IWebHostBuilder builder, Action<IWebHostBuilder>? builderExtension)
 		{
 			builderExtension?.Invoke(builder);
-			builder.ConfigureServices((context, collection) => collection.AddOmexServices());
+			builder.ConfigureServices((context, collection) => collection.AddOmexServiceFabricDependencies());
 		}
 	}
 }
