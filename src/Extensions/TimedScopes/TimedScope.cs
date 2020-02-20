@@ -30,7 +30,12 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		public Activity Activity { get; private set; }
 
 
-		internal TimedScope(ITimedScopeEventSource eventSource, Activity activity, TimedScopeResult result, ILogReplayer? logReplayer)
+		/// <summary>Creates TimedScope instance</summary>
+		/// <param name="eventSource">event source to write timedscope end information</param>
+		/// <param name="activity">activity connected to this timedscope</param>
+		/// <param name="result">TimedScope initial result</param>
+		/// <param name="logReplayer">Log replayer that might be used to replay logs in case of error</param>
+		protected internal TimedScope(ITimedScopeEventSource eventSource, Activity activity, TimedScopeResult result, ILogReplayer? logReplayer = null)
 		{
 			m_eventSource = eventSource;
 			m_logReplayer = logReplayer;

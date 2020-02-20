@@ -10,7 +10,7 @@ using Microsoft.Omex.Extensions.Compatability.Validation;
 
 namespace Microsoft.Omex.Extensions.Compatability
 {
-	internal class OmexCompatabilityIntializer : IHostedService
+	internal sealed class OmexCompatabilityIntializer : IHostedService
 	{
 		private readonly ILoggerFactory m_loggerFactory;
 

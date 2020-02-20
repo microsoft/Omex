@@ -12,4 +12,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Hosting.Services\Microsoft.Omex.Extensions.Hosting.Services.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests$(StrongNameSuffix)</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>

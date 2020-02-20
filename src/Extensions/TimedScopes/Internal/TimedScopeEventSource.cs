@@ -11,8 +11,6 @@ using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
-
-
 	[EventSource(Name = "Microsoft-OMEX-TimedScopes")]
 	internal sealed class TimedScopeEventSource : EventSource, ITimedScopeEventSource
 	{

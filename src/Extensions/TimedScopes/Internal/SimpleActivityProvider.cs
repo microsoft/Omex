@@ -6,7 +6,7 @@ using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
-	internal class SimpleActivityProvider : IActivityProvider
+	internal sealed class SimpleActivityProvider : IActivityProvider
 	{
 		public Activity Create(string operationName) => new Activity(operationName);
 	}

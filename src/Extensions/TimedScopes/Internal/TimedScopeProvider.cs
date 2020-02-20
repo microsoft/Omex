@@ -5,7 +5,7 @@ using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
-	internal class TimedScopeProvider : ITimedScopeProvider
+	internal sealed class TimedScopeProvider : ITimedScopeProvider
 	{
 		public TimedScopeProvider(ITimedScopeEventSource eventSource, IActivityProvider activityProvider, ILogReplayer? logReplayer = null)
 		{

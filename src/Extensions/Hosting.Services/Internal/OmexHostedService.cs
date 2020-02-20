@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// <summary>
 	/// Wraps service run into HostedService
 	/// </summary>
-	internal class OmexHostedService : IHostedService
+	internal sealed class OmexHostedService : IHostedService
 	{
 		private readonly IHostApplicationLifetime m_lifetime;
 		private readonly IOmexServiceRunner m_runner;

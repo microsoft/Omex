@@ -9,7 +9,7 @@ using Microsoft.Omex.Extensions.Logging;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal class ServiceFabricMachineInformation : EmptyMachineInformation
+	internal sealed class ServiceFabricMachineInformation : EmptyMachineInformation
 	{
 		public ServiceFabricMachineInformation(IHostEnvironment hostEnvironment, IServiceContextAccessor<StatelessServiceContext> accessor)
 			: this(hostEnvironment, GetActivationContext(accessor), GetNodeContext(accessor))

@@ -4,7 +4,7 @@ using Microsoft.ServiceFabric.Services.Communication.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal class ListenerBuilder<TServiceContext> : IListenerBuilder<TServiceContext>
+	internal sealed class ListenerBuilder<TServiceContext> : IListenerBuilder<TServiceContext>
 		 where TServiceContext : ServiceContext
 	{
 		public ListenerBuilder(

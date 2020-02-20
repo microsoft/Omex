@@ -8,7 +8,7 @@ using Microsoft.Omex.Extensions.Logging;
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	/// <summary>Create wrapper from Service Fabric context to provide log information</summary>
-	internal class OmexServiceFabricContext : IServiceContext
+	internal sealed class OmexServiceFabricContext : IServiceContext
 	{
 		/// <summary> Create OmexServiceFabricContext from StatelessServiceContextAccessor</summary>
 		public OmexServiceFabricContext(IServiceContextAccessor<StatelessServiceContext> accessor)

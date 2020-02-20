@@ -12,7 +12,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// <summary>
 	/// Class to manage stateless service fabric service startup
 	/// </summary>
-	internal class OmexStatelessServiceRunner : IOmexServiceRunner, IServiceContextAccessor<StatelessServiceContext>
+	internal sealed class OmexStatelessServiceRunner : IOmexServiceRunner, IServiceContextAccessor<StatelessServiceContext>
 	{
 		private readonly string m_applicationName;
 		private IEnumerable<IListenerBuilder<StatelessServiceContext>> ListenerBuilders { get; }

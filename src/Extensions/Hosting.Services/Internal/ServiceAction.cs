@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal class ServiceAction<TServiceContext> : IServiceAction<TServiceContext>
+	internal sealed class ServiceAction<TServiceContext> : IServiceAction<TServiceContext>
 		where TServiceContext : ServiceContext
 	{
 		public ServiceAction(Func<TServiceContext, CancellationToken, Task> action) =>

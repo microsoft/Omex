@@ -25,20 +25,22 @@ namespace Microsoft.Omex.Extensions.Compatability.UnitTests
 				.Build()
 				.Start();
 
-			EventId logEventId = new EventId(1);
+			EventId eventId = new EventId(1);
 			Category category = new Category("Test");
-			const LogLevel logLevel = LogLevel.Error;
-			const string logMessage = "TestLogMessage";
+			LogLevel logLevel = LogLevel.Error;
+			string logMessage = "TestLogMessage";
+			Exception exception = new Exception();
 
 			mockLogger.Invocations.Clear();
-			ULSLogging.LogTraceTag(logEventId, category, logLevel, logMessage);
-			Assert.AreEqual(1, mockLogger.Invocations.Count, "ULSLogging not calling ILogger");
-
-			EventId validationEventId = new EventId(2);
-			string validationMessage = "TestValidationMessage";
+			ULSLogging.LogTraceTag(eventId, category, logLevel, logMessage);
+			Assert.AreEqual(1, mockLogger.Invocations.Count, "ULSLogging.LogTraceTag not calling ILogger");
 
 			mockLogger.Invocations.Clear();
-			Code.Validate(false, validationMessage, validationEventId);
+			ULSLogging.ReportExceptionTag(eventId, category, exception, logMessage);
+			Assert.AreEqual(1, mockLogger.Invocations.Count, "ULSLogging.ReportExceptionTag not calling ILogger");
+
+			mockLogger.Invocations.Clear();
+			Code.Validate(false, logMessage, eventId);
 			Assert.AreEqual(1, mockLogger.Invocations.Count, "Code.Validate not calling ILogger");
 		}
 	}
