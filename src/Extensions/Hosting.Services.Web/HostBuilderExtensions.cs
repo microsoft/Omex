@@ -11,34 +11,34 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 	/// </summary>
 	public static class HostBuilderExtensions
 	{
-		/// <summary>Add Kestrel service listener to SF stateless service</summary>
-		public static IHostBuilder AddKestrelStatelessListener<TStartup>(
-			this IHostBuilder builder,
+		/// <summary>Add Kestrel service listener to stateless service</summary>
+		public static ServiceFabricHostBuilder<StatelessServiceContext> AddKestrelListener<TStartup>(
+			this ServiceFabricHostBuilder<StatelessServiceContext> builder,
 			string name,
 			ServiceFabricIntegrationOptions options,
 			Action<IWebHostBuilder>? builderExtension = null)
 				where TStartup : class =>
-			builder.AddKestrelServiceListener<TStartup, StatelessServiceContext>(name, options, builderExtension);
+			builder.AddKestrelListener<TStartup, StatelessServiceContext>(name, options, builderExtension);
 
 
-		/// <summary>Add Kestrel service listener to SF stateful service</summary>
-		public static IHostBuilder AddKestrelStatefulListener<TStartup>(
-			this IHostBuilder builder,
+		/// <summary>Add Kestrel service listener to stateful service</summary>
+		public static ServiceFabricHostBuilder<StatefulServiceContext> AddKestrelListener<TStartup>(
+			this ServiceFabricHostBuilder<StatefulServiceContext> builder,
 			string name,
 			ServiceFabricIntegrationOptions options,
 			Action<IWebHostBuilder>? builderExtension = null)
 				where TStartup : class =>
-			builder.AddKestrelServiceListener<TStartup, StatefulServiceContext>(name, options, builderExtension);
+			builder.AddKestrelListener<TStartup, StatefulServiceContext>(name, options, builderExtension);
 
 
-		private static IHostBuilder AddKestrelServiceListener<TStartup, TServiceContext>(
-			this IHostBuilder builder,
+		private static ServiceFabricHostBuilder<TServiceContext> AddKestrelListener<TStartup, TServiceContext>(
+			this ServiceFabricHostBuilder<TServiceContext> builder,
 			string name,
 			ServiceFabricIntegrationOptions options,
 			Action<IWebHostBuilder>? builderExtension = null)
 				where TStartup : class
 				where TServiceContext : ServiceContext =>
-			builder.AddServiceListener(new KestrelListenerBuilder<TStartup, StatelessServiceContext>(
+			builder.AddServiceListener(new KestrelListenerBuilder<TStartup, TServiceContext>(
 				name,
 				options,
 				builder => BuilderExtension(builder, builderExtension)));
