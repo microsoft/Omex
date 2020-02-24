@@ -8,4 +8,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Microsoft.Omex.Extensions.TimedScopes.UnitTests$(StrongNameSuffix)</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>
