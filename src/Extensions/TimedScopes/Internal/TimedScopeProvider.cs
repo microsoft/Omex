@@ -16,7 +16,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 
 		public TimedScope Start(string name, TimedScopeResult result) =>
-			new TimedScope(m_eventSource, m_activityProvider.Create(name), result, m_logReplayer);
+			new TimedScope(m_eventSource, m_activityProvider.Create(name), result, m_logReplayer)
+			.Start();
 
 
 		private readonly ITimedScopeEventSource m_eventSource;

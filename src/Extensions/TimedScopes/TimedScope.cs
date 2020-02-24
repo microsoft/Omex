@@ -22,12 +22,12 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		public string MetaData { get; set; }
 
 
+		/// <summary>Activity connected with this TimedScope</summary>
+		public Activity Activity { get; }
+
+
 		/// <summary>Indicates if activty was finished</summary>
 		public bool IsFinished { get; private set; }
-
-
-		/// <summary>Activity connected with this TimedScope</summary>
-		public Activity Activity { get; private set; }
 
 
 		/// <summary>Creates TimedScope instance</summary>
