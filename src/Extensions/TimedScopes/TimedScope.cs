@@ -47,8 +47,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		}
 
 
-		/// <summary>Start TimedScope</summary>
-		public TimedScope Start()
+		/// <summary>Starts TimedScope activity</summary>
+		internal TimedScope Start()
 		{
 			Activity.Start();
 			return this;
