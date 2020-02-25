@@ -73,18 +73,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 
-		///// <summary>Add required Omex dependencies</summary>
-		//public static IHostBuilder AddOmexServiceFabricServices(this IHostBuilder builder)
-		//{
-		//	return builder
-		//		.ConfigureServices((context, collection) =>
-		//		{
-		//			collection
-		//				.AddOmexServiceFabricDependencies();
-		//		});
-		//}
-
-
 		private static IHost BuildServiceFabricService<TRunner,TContext>(
 			this IHostBuilder builder,
 			Action<ServiceFabricHostBuilder<TContext>> builderAction)
