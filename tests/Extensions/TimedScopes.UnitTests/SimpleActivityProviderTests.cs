@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
@@ -11,10 +9,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 	public class SimpleActivityProviderTests
 	{
 		[DataTestMethod]
-		[DataRow(null)]
-		[DataRow("")]
 		[DataRow("TestName")]
-		public void CheckNameOfCreatedActivuty(string expectedName)
+		public void CheckActivityCreation(string expectedName)
 		{
 			Activity activity = new SimpleActivityProvider().Create(expectedName);
 
@@ -24,23 +20,14 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			Assert.ReferenceEquals(expectedName, actualName);
 		}
-	}
 
 
-	[TestClass]
-	public class TimedScopeTests
-	{
-		[TestMethod]
-		public void A()
+		[DataTestMethod]
+		[DataRow(null)]
+		[DataRow("")]
+		public void CheckActivityParamitersValidation(string expectedName)
 		{
-			Mock<ITimedScopeEventSource> eventSource = new Mock<ITimedScopeEventSource>();
-			Activity activity = new Activity("TestName");
-			TimedScopeResult result = TimedScopeResult.SystemError;
-
-			TimedScope scope = new TimedScope(eventSource.Object, activity, result);
-
-			Assert.ReferenceEquals(activity, scope.Activity);
-			Assert.AreEqual(result, scope.Result);
+			Assert.ThrowsException<ArgumentNullException>(() => new SimpleActivityProvider().Create(expectedName));
 		}
 	}
 }
