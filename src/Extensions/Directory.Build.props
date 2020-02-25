@@ -7,4 +7,9 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup Label="Make internals visible for the corresponding unit test assemblies">
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(AssemblyName).UnitTests$(StrongNameSuffix)</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>
