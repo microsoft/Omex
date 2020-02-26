@@ -17,14 +17,14 @@ namespace Hosting.Services.Web.UnitTests
 		public void CheckTypeRegistrationForStateless() =>
 			CheckTypeRegistration(
 				MockStatelessServiceContextFactory.Default,
-				(v, h) => h.BuildStelessService(b => b.AddKestrelListener<ListenerValidator.Startup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
+				(v, h) => h.BuildStatelessService(b => b.AddKestrelListener<ListenerValidator.Startup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
 
 
 		[TestMethod]
 		public void CheckTypeRegistrationForStateful() =>
 			CheckTypeRegistration(
 				MockStatefulServiceContextFactory.Default,
-				(v, h) => h.BuildStelessService(b => b.AddKestrelListener<ListenerValidator.Startup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
+				(v, h) => h.BuildStatelessService(b => b.AddKestrelListener<ListenerValidator.Startup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
 
 
 		private void CheckTypeRegistration<TContext>(
