@@ -86,9 +86,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Compatability.UnitTests", "tests\Extensions\Compatability.UnitTests\Microsoft.Omex.Extensions.Compatability.UnitTests.csproj", "{54F6D9DC-D2CE-484E-BF1F-8DF54BA5D198}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Omex.Extensions.Hosting.Services.UnitTests", "tests\Extensions\Hosting.Services.UnitTests\Microsoft.Omex.Extensions.Hosting.Services.UnitTests.csproj", "{92DC3A06-6BDE-4213-9D29-7C1C10A9D325}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Hosting.Services.UnitTests", "tests\Extensions\Hosting.Services.UnitTests\Microsoft.Omex.Extensions.Hosting.Services.UnitTests.csproj", "{92DC3A06-6BDE-4213-9D29-7C1C10A9D325}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests", "tests\Extensions\Hosting.Services.Web.UnitTests\Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.csproj", "{2D51316B-9B0D-4B54-B5E5-FB0CEDD8E791}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests", "tests\Extensions\Hosting.Services.Web.UnitTests\Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.csproj", "{2D51316B-9B0D-4B54-B5E5-FB0CEDD8E791}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
