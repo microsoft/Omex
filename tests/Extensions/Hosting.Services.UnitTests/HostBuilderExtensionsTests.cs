@@ -147,5 +147,12 @@ namespace Hosting.Services.UnitTests
 				Assert.IsInstanceOfType(obj, expectedImplementationType);
 			}
 		}
+
+
+		[TestMethod]
+		public void TestExceptionHandling()
+		{
+			Assert.Fail();
+		}
 	}
 }
