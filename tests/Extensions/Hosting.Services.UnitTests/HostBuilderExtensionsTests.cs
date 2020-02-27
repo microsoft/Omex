@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Fabric;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -150,9 +153,43 @@ namespace Hosting.Services.UnitTests
 
 
 		[TestMethod]
-		public void TestExceptionHandling()
+		public void TestExceptionHandlingAndReporting()
 		{
-			Assert.Fail();
+			CustomEventListener listener = new CustomEventListener();
+			listener.EnableEvents(ServiceInitializationEventSource.Instance, EventLevel.Error);
+
+			Assert.ThrowsException<Exception>(() =>  new HostBuilder()
+				.ConfigureServices(c => c.AddTransient<TypeThatShouldNotBeResolvable>())
+				.BuildStatelessService(c => { }),
+				"BuildStatelessService should fail in case of unresolvable dependencies");
+
+
+			Assert.AreEqual(1, listener.EventsInformation.Count(), "BuildStatelessService error should be logged");
+			listener.EventsInformation.Clear();
+
+			Assert.ThrowsException<Exception>(() => new HostBuilder()
+				.ConfigureServices(c => c.AddTransient<TypeThatShouldNotBeResolvable>())
+				.BuildStatefullService(c => { }),
+				"BuildStatefullService should fail in case of unresolvable dependencies");
+
+			Assert.AreEqual(1, listener.EventsInformation.Count(), "BuildStatefullService error should be logged");
+			listener.EventsInformation.Clear();
+		}
+
+
+		public class TypeThatShouldNotBeResolvable
+		{
+			public TypeThatShouldNotBeResolvable(TypeThatIsNotRegistred value) { }
+
+			public class TypeThatIsNotRegistred { }
+		}
+
+
+		private class CustomEventListener : EventListener
+		{
+			public List<EventWrittenEventArgs> EventsInformation { get; } = new List<EventWrittenEventArgs>();
+
+			protected override void OnEventWritten(EventWrittenEventArgs eventData) => EventsInformation.Add(eventData);
 		}
 	}
 }
