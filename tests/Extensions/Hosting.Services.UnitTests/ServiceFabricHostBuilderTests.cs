@@ -29,22 +29,6 @@ namespace Hosting.Services.UnitTests
 		}
 
 
-		private class TestTypeToResolve
-		{
-		}
-	}
-
-
-	[TestClass]
-	public class ServiceFabricMachineInformationTests
-	{
-		[TestMethod]
-		public void MachineInformationInitialization()
-		{
-			Mock<IHostEnvironment> enviromentMock = new Mock<IHostEnvironment>();
-			Mock<IServiceContextAccessor<StatelessServiceContext>> contextMock = new Mock<IServiceContextAccessor<StatelessServiceContext>>();
-			IMachineInformation info = new ServiceFabricMachineInformation(enviromentMock.Object, contextMock.Object);
-			Assert.Fail();
-		}
+		private class TestTypeToResolve { }
 	}
 }
