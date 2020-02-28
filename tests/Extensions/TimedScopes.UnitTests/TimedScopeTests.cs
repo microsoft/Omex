@@ -135,9 +135,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 
 		[DataTestMethod]
-#pragma warning disable 619
-		[DataRow(TimedScopeResult.Unknown)]
-#pragma warning restore 619
 		[DataRow(TimedScopeResult.ExpectedError)]
 		[DataRow(TimedScopeResult.Success)]
 		public void StopNotCallsLogReplayerInCaseOfSucces(TimedScopeResult result)

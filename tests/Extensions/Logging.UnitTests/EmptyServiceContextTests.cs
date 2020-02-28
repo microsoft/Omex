@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.Logging.UnitTests

@@ -1,6 +1,8 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+using System;
 using System.Linq;
-using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.Abstractions.UnitTests

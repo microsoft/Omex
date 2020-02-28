@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+using System;
 using System.Fabric;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Hosting.Services;
@@ -33,13 +36,5 @@ namespace Hosting.Services.UnitTests
 			Assert.ReferenceEquals(regionName, info.RegionName);
 			Assert.ReferenceEquals(clusterName, info.MachineCluster);
 		}
-	}
-
-	[TestClass]
-	public class ServiceFabricMachineInformationTests
-	{
-		[TestMethod]
-		public void TestMachineInformationInitialization()
-		{ }
 	}
 }
