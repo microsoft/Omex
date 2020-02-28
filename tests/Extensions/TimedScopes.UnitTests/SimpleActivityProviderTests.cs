@@ -3,8 +3,6 @@
 
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
@@ -13,6 +11,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 	{
 		[DataTestMethod]
 		[DataRow("TestName")]
+		[DataRow("")]
 		public void CheckActivityCreation(string expectedName)
 		{
 			Activity activity = new SimpleActivityProvider().Create(expectedName);
@@ -22,15 +21,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			string actualName = activity.OperationName;
 
 			Assert.ReferenceEquals(expectedName, actualName);
-		}
-
-
-		[DataTestMethod]
-		[DataRow(null)]
-		[DataRow("")]
-		public void CheckActivityParamitersValidation(string expectedName)
-		{
-			Assert.ThrowsException<ArgumentNullException>(() => new SimpleActivityProvider().Create(expectedName));
 		}
 	}
 }

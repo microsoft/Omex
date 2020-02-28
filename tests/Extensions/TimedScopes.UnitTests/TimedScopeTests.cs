@@ -39,23 +39,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 
 		[TestMethod]
-		public void CallStartOnStartedActivityResultsInException()
-		{
-			(TimedScope scope, _) = CreateTimedScope(null);
-			scope.Start();
-			Assert.ThrowsException<InvalidOperationException>(() => scope.Start());
-		}
-
-
-		[TestMethod]
-		public void CallStopOnNotStaetedExceptionResultsInException()
-		{
-			(TimedScope scope, _) = CreateTimedScope(null);
-			Assert.ThrowsException<InvalidOperationException>(() => scope.Stop());
-		}
-
-
-		[TestMethod]
 		public void MultipleCallsOfStopIgnored()
 		{
 			(TimedScope scope, _) = CreateTimedScope(null);
@@ -92,6 +75,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			scope.Stop();
 			source.Verify(s => s.LogTimedScopeEndEvent(scope), Times.Once);
+			source.Invocations.Clear();
 
 			scope.Stop();
 			source.Verify(s => s.LogTimedScopeEndEvent(It.IsAny<TimedScope>()), Times.Never);
@@ -128,6 +112,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			scope.Stop();
 			replayer.Verify(r => r.ReplayLogs(scope.Activity), Times.Once);
+			replayer.Invocations.Clear();
 
 			scope.Stop();
 			replayer.Verify(s => s.ReplayLogs(It.IsAny<Activity>()), Times.Never);
