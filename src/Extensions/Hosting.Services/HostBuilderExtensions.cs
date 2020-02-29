@@ -68,11 +68,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 
 		/// <summary> Registerin DI classes that will provide Serfice Fabric specific information for logging </summary>
-		public static IServiceCollection AddOmexServiceFabricDependencies(this IServiceCollection serviceCollection)
+		public static IServiceCollection AddOmexServiceFabricDependencies<TContext>(this IServiceCollection collection)
+			where TContext : ServiceContext
 		{
-			serviceCollection.TryAddTransient<IServiceContext, OmexServiceFabricContext>();
-			serviceCollection.TryAddSingleton<IMachineInformation, ServiceFabricMachineInformation>();
-			return serviceCollection.AddOmexServices();
+			collection.TryAddSingleton<ServiceContextAccessor<TContext>, ServiceContextAccessor<TContext>>();
+			collection.TryAddSingleton<IServiceContextAccessor<TContext>>(p => p.GetService<ServiceContextAccessor<TContext>>());
+			collection.TryAddSingleton<IServiceContextAccessor<ServiceContext>>(p => p.GetService<ServiceContextAccessor<TContext>>());
+			collection.TryAddSingleton<IServiceContext, OmexServiceFabricContext>();
+			collection.TryAddSingleton<IMachineInformation, ServiceFabricMachineInformation>();
+			return collection.AddOmexServices();
 		}
 
 
@@ -80,7 +84,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			this IHostBuilder builder,
 			Action<ServiceFabricHostBuilder<TContext>> builderAction)
 				where TContext : ServiceContext
-				where TRunner : class, IOmexServiceRunner, IServiceContextAccessor<TContext>
+				where TRunner : class, IOmexServiceRunner
 		{
 			try
 			{
@@ -90,11 +94,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 					.ConfigureServices((context, collection) =>
 					{
 						collection
-							.AddOmexServiceFabricDependencies()
+							.AddOmexServiceFabricDependencies<TContext>()
 							.AddTransient<IHostedService, OmexHostedService>()
-							.AddSingleton<TRunner, TRunner>()
-							.AddSingleton<IOmexServiceRunner>(p => p.GetService<TRunner>())
-							.AddSingleton<IServiceContextAccessor<TContext>>(p => p.GetService<TRunner>());
+							.AddSingleton<IOmexServiceRunner, TRunner>();
 					})
 					.UseDefaultServiceProvider(options =>
 					{

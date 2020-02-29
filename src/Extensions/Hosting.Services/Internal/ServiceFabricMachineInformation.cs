@@ -11,40 +11,23 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	internal sealed class ServiceFabricMachineInformation : EmptyMachineInformation
 	{
-		public ServiceFabricMachineInformation(IHostEnvironment hostEnvironment, IServiceContextAccessor<StatelessServiceContext> accessor)
-			: this(hostEnvironment, GetActivationContext(accessor), GetNodeContext(accessor))
-		{
-		}
-
-
-		public ServiceFabricMachineInformation(IHostEnvironment hostEnvironment, IServiceContextAccessor<StatefulServiceContext> accessor)
-			: this(hostEnvironment, GetActivationContext(accessor), GetNodeContext(accessor))
-		{
-		}
-
-
-		private ServiceFabricMachineInformation(IHostEnvironment hostEnvironment, ICodePackageActivationContext activationContext, NodeContext nodeContext)
+		public ServiceFabricMachineInformation(IHostEnvironment hostEnvironment, IServiceContextAccessor<ServiceContext> accessor)
 		{
 			MachineName = GetMachineName();
 			DeploymentSlice = DefaultEmptyValue;
 			IsCanary = false;
 			MachineCount = 1;
-
 			ServiceName = hostEnvironment.ApplicationName;
-			MachineRole = activationContext.ApplicationName ?? DefaultEmptyValue;
-			BuildVersion = activationContext.CodePackageVersion;
-
-			MachineId = FormattableString.Invariant($"{MachineName}_{nodeContext.NodeName}");
-			MachineClusterIpAddress = IPAddress.TryParse(nodeContext.IPAddressOrFQDN, out IPAddress ipAddress)
-				? ipAddress
-				: GetIpAddress(MachineName);
-
+			MachineRole = DefaultEmptyValue;
+			BuildVersion = DefaultEmptyValue;
+			MachineId = DefaultEmptyValue;
+			MachineClusterIpAddress = IPAddress.None;
 			EnvironmentName = hostEnvironment.EnvironmentName ?? DefaultEmptyValue;
 			IsPrivateDeployment = hostEnvironment.IsDevelopment();
 			RegionName = GetRegionName() ?? DefaultEmptyValue;
-			MachineCluster = GetClusterName()
-				?? nodeContext.IPAddressOrFQDN
-				?? MachineId;
+			MachineCluster = DefaultEmptyValue;
+
+			accessor.OnContextAvailable(UpdateState);
 		}
 
 
@@ -56,11 +39,21 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			Environment.GetEnvironmentVariable("CLUSTER_NAME"); // We should define it
 
 
-		private static ICodePackageActivationContext GetActivationContext(IServiceContextAccessor<ServiceContext> accessor) =>
-			accessor.ServiceContext?.CodePackageActivationContext ?? FabricRuntime.GetActivationContext();
+		private void UpdateState(ServiceContext context)
+		{
+			ICodePackageActivationContext activationContext = context.CodePackageActivationContext;
+			MachineRole = activationContext.ApplicationName ?? DefaultEmptyValue;
+			BuildVersion = activationContext.CodePackageVersion;
 
+			NodeContext nodeContext = context.NodeContext;
+			MachineId = FormattableString.Invariant($"{MachineName}_{nodeContext.NodeName}");
+			MachineClusterIpAddress = IPAddress.TryParse(nodeContext.IPAddressOrFQDN, out IPAddress ipAddress)
+				? ipAddress
+				: GetIpAddress(MachineName);
 
-		private static NodeContext GetNodeContext(IServiceContextAccessor<ServiceContext> accessor) =>
-			accessor.ServiceContext?.NodeContext ?? FabricRuntime.GetNodeContext();
+			MachineCluster = GetClusterName()
+				?? nodeContext.IPAddressOrFQDN
+				?? MachineId;
+		}
 	}
 }

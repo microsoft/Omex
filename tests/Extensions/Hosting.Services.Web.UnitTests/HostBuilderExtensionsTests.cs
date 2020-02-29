@@ -27,7 +27,7 @@ namespace Hosting.Services.Web.UnitTests
 		public void CheckTypeRegistrationForStateful() =>
 			CheckTypeRegistration(
 				MockStatefulServiceContextFactory.Default,
-				(v, h) => h.BuildStatelessService(b => b.AddKestrelListener<ListenerValidator.Startup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
+				(v, h) => h.BuildStatefullService(b => b.AddKestrelListener<ListenerValidator.Startup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
 
 
 		private void CheckTypeRegistration<TContext>(
@@ -44,13 +44,16 @@ namespace Hosting.Services.Web.UnitTests
 					options.ValidateScopes = true;
 				});
 
-			IListenerBuilder<TContext> builder = buildAction(validator, hostBuilder).Services.GetService<IListenerBuilder<TContext>>();
+			IHost host = buildAction(validator, hostBuilder);
+			IListenerBuilder<TContext> builder = host.Services.GetService<IListenerBuilder<TContext>>();
+
+			Assert.IsNotNull(builder);
 
 			KestrelListenerBuilder<ListenerValidator.Startup, TContext> kestrelBuilder
 				= (KestrelListenerBuilder<ListenerValidator.Startup, TContext>)builder;
 
-			IWebHost host = validator.ValidateListenerBuilder(context, kestrelBuilder);
-			validator.ValidateOmexTypesRegistred(host);
+			IWebHost webHost = validator.ValidateListenerBuilder(context, kestrelBuilder);
+			validator.ValidateOmexTypesRegistred(webHost);
 			validator.ValidateBuildFunction(context, kestrelBuilder);
 		}
 	}

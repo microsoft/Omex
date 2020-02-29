@@ -68,10 +68,10 @@ namespace Hosting.Services.Web.UnitTests
 		public void ValidateOmexTypesRegistred(IWebHost host)
 		{
 			ResolveType<ITimedScopeProvider>(host);
-			ILogger logger = ResolveType<ILogger>(host);
+			ILogger logger = ResolveType<ILogger<ListenerValidator>>(host);
 			m_logsEventSourcMock.Invocations.Clear();
 			logger.LogError("TestMessage");
-			Assert.AreEqual(1, m_logsEventSourcMock.Invocations.Count, "Omex logger should be registred in WebHost");
+			Assert.AreNotEqual(0, m_logsEventSourcMock.Invocations.Count, "Omex logger should be registred in WebHost");
 		}
 
 

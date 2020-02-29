@@ -9,9 +9,9 @@ namespace Microsoft.Omex.Extensions.Logging
 	public interface IServiceContext
 	{
 		/// <summary> Partition Id </summary>
-		Guid GetPartitionId();
+		Guid PartitionId { get; }
 
 		/// <summary> Replica Id or Instance Id </summary>
-		long GetReplicaOrInstanceId();
+		long ReplicaOrInstanceId { get; }
 	}
 }

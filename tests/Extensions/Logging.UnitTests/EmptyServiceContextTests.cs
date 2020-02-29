@@ -13,8 +13,8 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		public void EmptyServiceContextSetsDefaultValues()
 		{
 			EmptyServiceContext emptyContext = new EmptyServiceContext();
-			Assert.AreEqual(Guid.Empty, emptyContext.GetPartitionId());
-			Assert.AreEqual(0, emptyContext.GetReplicaOrInstanceId());
+			Assert.AreEqual(Guid.Empty, emptyContext.PartitionId);
+			Assert.AreEqual(0, emptyContext.ReplicaOrInstanceId);
 		}
 	}
 }

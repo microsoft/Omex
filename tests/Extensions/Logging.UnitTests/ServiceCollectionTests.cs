@@ -75,9 +75,9 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 		private class MockServiceContext : IServiceContext
 		{
-			public Guid GetPartitionId() => Guid.Empty;
+			public Guid PartitionId => Guid.Empty;
 
-			public long GetReplicaOrInstanceId() => 0;
+			public long ReplicaOrInstanceId => 0;
 		}
 	}
 }

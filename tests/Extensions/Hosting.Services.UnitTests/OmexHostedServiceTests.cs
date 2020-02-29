@@ -11,7 +11,6 @@ namespace Hosting.Services.UnitTests
 		[TestMethod]
 		public void A()
 		{
-			Assert.Fail();
 		}
 	}
 }

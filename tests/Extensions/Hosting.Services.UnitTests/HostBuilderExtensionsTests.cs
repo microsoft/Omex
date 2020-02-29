@@ -28,20 +28,27 @@ namespace Hosting.Services.UnitTests
 		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
 		[DataRow(typeof(IMachineInformation), typeof(ServiceFabricMachineInformation))]
 		[DataRow(typeof(ITimedScopeProvider), null)]
-		[DataRow(typeof(ILogger), null)]
+		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		public void TestOmexTypeRegistration(Type typeToResolver, Type? expectedImplementationType)
 		{
-			object obj = new ServiceCollection()
-				.AddOmexServiceFabricDependencies()
-				.BuildServiceProvider()
-				.GetServices(typeToResolver);
-
-			Assert.IsNotNull(obj);
-
-			if (expectedImplementationType != null)
+			void CheckTypeRegistration<TContext>() where TContext : ServiceContext
 			{
-				Assert.IsInstanceOfType(obj, expectedImplementationType);
+				object obj = new ServiceCollection()
+					.AddOmexServiceFabricDependencies<StatelessServiceContext>()
+					.AddSingleton(new Mock<IHostEnvironment>().Object)
+					.BuildServiceProvider()
+					.GetService(typeToResolver);
+
+				Assert.IsNotNull(obj, "Failed to resolve for {0}", typeof(TContext));
+
+				if (expectedImplementationType != null)
+				{
+					Assert.IsInstanceOfType(obj, expectedImplementationType, "Wrong implementation type for {0}", typeof(TContext));
+				}
 			}
+
+			CheckTypeRegistration<StatelessServiceContext>();
+			CheckTypeRegistration<StatefulServiceContext>();
 		}
 
 
@@ -111,10 +118,11 @@ namespace Hosting.Services.UnitTests
 		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
 		[DataRow(typeof(IMachineInformation), typeof(ServiceFabricMachineInformation))]
 		[DataRow(typeof(ITimedScopeProvider), null)]
-		[DataRow(typeof(ILogger), null)]
+		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		[DataRow(typeof(IHostedService), typeof(OmexHostedService))]
 		[DataRow(typeof(IOmexServiceRunner), typeof(OmexStatelessServiceRunner))]
-		[DataRow(typeof(IServiceContextAccessor<StatelessServiceContext>), typeof(OmexStatelessServiceRunner))]
+		[DataRow(typeof(IServiceContextAccessor<StatelessServiceContext>), typeof(ServiceContextAccessor<StatelessServiceContext>))]
+		[DataRow(typeof(IServiceContextAccessor<ServiceContext>), typeof(ServiceContextAccessor<StatelessServiceContext>))]
 		public void CheckBuildeStatelessService(Type type, Type? expectedImplementationType)
 		{
 			object obj = new HostBuilder()
@@ -135,10 +143,11 @@ namespace Hosting.Services.UnitTests
 		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
 		[DataRow(typeof(IMachineInformation), typeof(ServiceFabricMachineInformation))]
 		[DataRow(typeof(ITimedScopeProvider), null)]
-		[DataRow(typeof(ILogger), null)]
+		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		[DataRow(typeof(IHostedService), typeof(OmexHostedService))]
 		[DataRow(typeof(IOmexServiceRunner), typeof(OmexStatefulServiceRunner))]
-		[DataRow(typeof(IServiceContextAccessor<StatefulServiceContext>), typeof(OmexStatefulServiceRunner))]
+		[DataRow(typeof(IServiceContextAccessor<StatefulServiceContext>), typeof(ServiceContextAccessor<StatefulServiceContext>))]
+		[DataRow(typeof(IServiceContextAccessor<ServiceContext>), typeof(ServiceContextAccessor<StatefulServiceContext>))]
 		public void CheckBuildeStatefulService(Type type, Type? expectedImplementationType)
 		{
 			object obj = new HostBuilder()
@@ -161,7 +170,7 @@ namespace Hosting.Services.UnitTests
 			CustomEventListener listener = new CustomEventListener();
 			listener.EnableEvents(ServiceInitializationEventSource.Instance, EventLevel.Error);
 
-			Assert.ThrowsException<Exception>(() =>  new HostBuilder()
+			Assert.ThrowsException<AggregateException>(() =>  new HostBuilder()
 				.ConfigureServices(c => c.AddTransient<TypeThatShouldNotBeResolvable>())
 				.BuildStatelessService(c => { }),
 				"BuildStatelessService should fail in case of unresolvable dependencies");
@@ -170,7 +179,7 @@ namespace Hosting.Services.UnitTests
 			Assert.AreEqual(1, listener.EventsInformation.Count(), "BuildStatelessService error should be logged");
 			listener.EventsInformation.Clear();
 
-			Assert.ThrowsException<Exception>(() => new HostBuilder()
+			Assert.ThrowsException<AggregateException>(() => new HostBuilder()
 				.ConfigureServices(c => c.AddTransient<TypeThatShouldNotBeResolvable>())
 				.BuildStatefullService(c => { }),
 				"BuildStatefullService should fail in case of unresolvable dependencies");

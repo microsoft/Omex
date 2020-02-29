@@ -33,23 +33,24 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			builder.AddKestrelListener<TStartup, StatefulServiceContext>(name, options, builderExtension);
 
 
-		private static ServiceFabricHostBuilder<TServiceContext> AddKestrelListener<TStartup, TServiceContext>(
-			this ServiceFabricHostBuilder<TServiceContext> builder,
+		private static ServiceFabricHostBuilder<TContext> AddKestrelListener<TStartup, TContext>(
+			this ServiceFabricHostBuilder<TContext> builder,
 			string name,
 			ServiceFabricIntegrationOptions options,
 			Action<IWebHostBuilder>? builderExtension = null)
 				where TStartup : class
-				where TServiceContext : ServiceContext =>
-			builder.AddServiceListener(new KestrelListenerBuilder<TStartup, TServiceContext>(
+				where TContext : ServiceContext =>
+			builder.AddServiceListener(new KestrelListenerBuilder<TStartup, TContext>(
 				name,
 				options,
-				builder => BuilderExtension(builder, builderExtension)));
+				builder => BuilderExtension<TContext>(builder, builderExtension)));
 
 
-		private static void BuilderExtension(IWebHostBuilder builder, Action<IWebHostBuilder>? builderExtension)
+		private static void BuilderExtension<TContext>(IWebHostBuilder builder, Action<IWebHostBuilder>? builderExtension)
+			where TContext : ServiceContext
 		{
 			builderExtension?.Invoke(builder);
-			builder.ConfigureServices((context, collection) => collection.AddOmexServiceFabricDependencies());
+			builder.ConfigureServices((context, collection) => collection.AddOmexServiceFabricDependencies<TContext>());
 		}
 	}
 }

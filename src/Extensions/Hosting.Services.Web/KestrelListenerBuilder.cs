@@ -41,7 +41,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 
 		private void ConfigureServices(TServiceContext context, IServiceCollection services)
 		{
-			services.AddSingleton<IServiceContextAccessor<TServiceContext>>(new ServiceContextAccessor(context));
+			IServiceContextAccessor<TServiceContext> accessor = new SimpleServiceContextAccessor(context);
+			services.AddSingleton<IServiceContextAccessor<TServiceContext>>(accessor);
+			services.AddSingleton<IServiceContextAccessor<ServiceContext>>(accessor);
 			services.AddSingleton<ServiceContext>(context);
 			services.AddSingleton(context);
 		}
@@ -68,11 +70,18 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			return hostBuilder.Build();
 		}
 
-		private class ServiceContextAccessor : IServiceContextAccessor<TServiceContext>
+		private class SimpleServiceContextAccessor : IServiceContextAccessor<TServiceContext>
 		{
-			public TServiceContext? ServiceContext { get; }
+			public TServiceContext? ServiceContext => m_context;
 
-			public ServiceContextAccessor(TServiceContext serviceContext) => ServiceContext = serviceContext;
+			public SimpleServiceContextAccessor(TServiceContext serviceContext) => m_context = serviceContext;
+
+			public void OnContextAvailable(Action<TServiceContext> action)
+			{
+				action(m_context);
+			}
+
+			private readonly TServiceContext m_context;
 		}
 	}
 }

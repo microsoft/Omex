@@ -24,10 +24,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 		public OmexLogsEventSource(IMachineInformation machineInformation, IServiceContext context)
 		{
-			m_applicationName = machineInformation.MachineRole;
-			m_serviceName = machineInformation.ServiceName;
-			m_buildVersion = machineInformation.BuildVersion;
-			m_machineId = machineInformation.MachineId;
+			m_machineInformation = machineInformation;
 			m_serviceContext = context;
 		}
 
@@ -40,8 +37,12 @@ namespace Microsoft.Omex.Extensions.Logging
 				return;
 			}
 
-			Guid partitionId = m_serviceContext.GetPartitionId();
-			long replicaId = m_serviceContext.GetReplicaOrInstanceId();
+			Guid partitionId = m_serviceContext.PartitionId;
+			long replicaId = m_serviceContext.ReplicaOrInstanceId;
+			string applicationName = m_machineInformation.MachineRole;
+			string serviceName = m_machineInformation.ServiceName;
+			string buildVersion = m_machineInformation.BuildVersion;
+			string machineId = m_machineInformation.MachineId;
 
 			string tagName = eventId.Name;
 			string tagId = TagIdAsString(eventId.Id);
@@ -58,20 +59,20 @@ namespace Microsoft.Omex.Extensions.Logging
 				case LogLevel.None:
 					break;
 				case LogLevel.Trace:
-					LogSpamServiceMessage(m_applicationName, m_serviceName, m_machineId, m_buildVersion, s_processName, partitionId, replicaId, activityId, traceIdAsString, "Spam", category, tagId, tagName, threadId, message);
+					LogSpamServiceMessage(applicationName, serviceName, machineId, buildVersion, s_processName, partitionId, replicaId, activityId, traceIdAsString, "Spam", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Debug:
-					LogVerboseServiceMessage(m_applicationName, m_serviceName, m_machineId, m_buildVersion, s_processName, partitionId, replicaId, activityId, traceIdAsString, "Verbose", category, tagId, tagName, threadId, message);
+					LogVerboseServiceMessage(applicationName, serviceName, machineId, buildVersion, s_processName, partitionId, replicaId, activityId, traceIdAsString, "Verbose", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Information:
-					LogInfoServiceMessage(m_applicationName, m_serviceName, m_machineId, m_buildVersion, s_processName, partitionId, replicaId, activityId, traceIdAsString, "Info", category, tagId, tagName, threadId, message);
+					LogInfoServiceMessage(applicationName, serviceName, machineId, buildVersion, s_processName, partitionId, replicaId, activityId, traceIdAsString, "Info", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Warning:
-					LogWarningServiceMessage(m_applicationName, m_serviceName, m_machineId, m_buildVersion, s_processName, partitionId, replicaId, activityId, traceIdAsString, "Warning", category, tagId, tagName, threadId, message);
+					LogWarningServiceMessage(applicationName, serviceName, machineId, buildVersion, s_processName, partitionId, replicaId, activityId, traceIdAsString, "Warning", category, tagId, tagName, threadId, message);
 					break;
 				case LogLevel.Error:
 				case LogLevel.Critical:
-					LogErrorServiceMessage(m_applicationName, m_serviceName, m_machineId, m_buildVersion, s_processName, partitionId, replicaId, activityId, traceIdAsString, "Error", category, tagId, eventId.Name, threadId, message);
+					LogErrorServiceMessage(applicationName, serviceName, machineId, buildVersion, s_processName, partitionId, replicaId, activityId, traceIdAsString, "Error", category, tagId, eventId.Name, threadId, message);
 					break;
 				default:
 					throw new ArgumentException("Unknown EventLevel: " + level);
@@ -111,11 +112,8 @@ namespace Microsoft.Omex.Extensions.Logging
 
 
 		private readonly IServiceContext m_serviceContext;
+		private readonly IMachineInformation m_machineInformation;
 		private static readonly string s_processName;
-		private readonly string m_applicationName;
-		private readonly string m_serviceName;
-		private readonly string m_buildVersion;
-		private readonly string m_machineId;
 
 
 		[Event((int)EventSourcesEventIds.LogErrorEventId, Level = EventLevel.Error, Message = "{13}", Version = 6)]

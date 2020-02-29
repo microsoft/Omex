@@ -8,8 +8,8 @@ namespace Microsoft.Omex.Extensions.Logging
 	/// <summary>IServiceContext without any information</summary>
 	internal class EmptyServiceContext : IServiceContext
 	{
-		public Guid GetPartitionId() => Guid.Empty;
+		public Guid PartitionId => Guid.Empty;
 
-		public long GetReplicaOrInstanceId() => 0;
+		public long ReplicaOrInstanceId => 0;
 	}
 }

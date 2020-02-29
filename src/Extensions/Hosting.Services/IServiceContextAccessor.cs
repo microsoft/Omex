@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Fabric;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
@@ -12,8 +13,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		where TServiceContext : ServiceContext
 	{
 		/// <summary>
-		/// Service fabric service context
+		/// Get service context if it's available
 		/// </summary>
 		TServiceContext? ServiceContext { get; }
+
+		/// <summary>
+		/// Execute function when context value is available
+		/// </summary>
+		void OnContextAvailable(Action<TServiceContext> function);
 	}
 }
