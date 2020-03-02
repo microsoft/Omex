@@ -36,35 +36,42 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[TestMethod]
 		public void IsReplayableMessageUsed()
 		{
+			string suffix = nameof(IsReplayableMessageUsed);
 			Mock<ILogsEventSource> eventSourceMock = CreateEventSourceMock(isReplayable: false);
 
-			ReplayableActivity activity = new ReplayableActivity(nameof(IsReplayableMessageUsed));
+			ReplayableActivity activity = CreateActivity(suffix);
 			activity.Start();
 			LogMessage(nameof(IsReplayableMessageUsed), eventSourceMock);
 			activity.Stop();
 
 			eventSourceMock.Verify(m_logExpression, Times.Once);
-			Assert.AreEqual(0, activity.GetLogEvents().Count(), "Log should not be stored for replay");
+			Assert.IsFalse(activity.GetLogEvents().Any(), "Log should not be stored for replay");
 		}
 
 
 		[TestMethod]
 		public void ReplayedMessageSaved()
 		{
+			string suffix = nameof(ReplayedMessageSaved);
 			Mock<ILogsEventSource> eventSourceMock = CreateEventSourceMock(isReplayable: true);
 
-			ReplayableActivity activity = new ReplayableActivity(nameof(ReplayedMessageSaved));
+			EventId eventId = CreateEventId(7, suffix);
+			ReplayableActivity activity = CreateActivity(suffix);
 			activity.Start();
 			LogMessage(nameof(ReplayedMessageSaved), eventSourceMock);
 			activity.Stop();
 
 			eventSourceMock.Verify(m_logExpression, Times.Once);
-			Assert.AreEqual(1, activity.GetLogEvents().Count(), "Log should be stored for replay");
+			LogMessageInformation info = activity.GetLogEvents().Single();
+
+			Assert.AreEqual(GetLogCategory(suffix), info.Category);
+			Assert.AreEqual(GetLogMessage(suffix), info.Message);
+			Assert.AreEqual(eventId, info.EventId);
 		}
 
 
 		[TestMethod]
-		public void ScopeTest()
+		public void ScopeProperlyCreated()
 		{
 			(ILogger logger, Mock<IExternalScopeProvider> scopeProvicedMock) = LogMessage(nameof(ReplayedMessageSaved), CreateEventSourceMock());
 
@@ -91,10 +98,22 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		private (ILogger, Mock<IExternalScopeProvider>) LogMessage(string suffix, Mock<ILogsEventSource> eventSourceMock)
 		{
 			Mock<IExternalScopeProvider> scopeProvicedMock = new Mock<IExternalScopeProvider>();
-			ILogger logger = new OmexLogger(eventSourceMock.Object, scopeProvicedMock.Object, $"Category-{suffix}");
-			logger.LogError($"Message-{suffix}");
+			ILogger logger = new OmexLogger(eventSourceMock.Object, scopeProvicedMock.Object, GetLogCategory(suffix));
+			logger.LogError(GetLogMessage(suffix));
 			return (logger, scopeProvicedMock);
 		}
+
+
+		private string GetLogMessage(string suffix) => $"Message-{suffix}";
+
+
+		private string GetLogCategory(string suffix) => $"Category-{suffix}";
+
+
+		private EventId CreateEventId(int id, string suffix) => new EventId(id, $"EventId-{suffix}");
+
+
+		private ReplayableActivity CreateActivity(string suffix) => new ReplayableActivity($"Activity-{suffix}");
 
 
 		private readonly Expression<Action<ILogsEventSource>> m_logExpression = e =>
