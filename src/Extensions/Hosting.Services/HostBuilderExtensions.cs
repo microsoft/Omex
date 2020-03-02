@@ -2,11 +2,14 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Fabric;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -56,15 +59,17 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>Configures host to run service fabric stateless service with initializded Omex dependencies</summary>
 		public static IHost BuildStatelessService(
 			this IHostBuilder builder,
+			string serviceName,
 			Action<ServiceFabricHostBuilder<StatelessServiceContext>> builderAction) =>
-			builder.BuildServiceFabricService<OmexStatelessServiceRunner, StatelessServiceContext>(builderAction);
+			builder.BuildServiceFabricService<OmexStatelessServiceRunner, StatelessServiceContext>(serviceName, builderAction);
 
 
 		/// <summary>Configures host to run service fabric statefull service with initializded Omex dependencies</summary>
 		public static IHost BuildStatefullService(
 			this IHostBuilder builder,
+			string serviceName,
 			Action<ServiceFabricHostBuilder<StatefulServiceContext>> builderAction) =>
-			builder.BuildServiceFabricService<OmexStatefulServiceRunner, StatefulServiceContext>(builderAction);
+			builder.BuildServiceFabricService<OmexStatefulServiceRunner, StatefulServiceContext>(serviceName, builderAction);
 
 
 		/// <summary> Registerin DI classes that will provide Serfice Fabric specific information for logging </summary>
@@ -82,6 +87,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 		private static IHost BuildServiceFabricService<TRunner,TContext>(
 			this IHostBuilder builder,
+			string serviceName,
 			Action<ServiceFabricHostBuilder<TContext>> builderAction)
 				where TContext : ServiceContext
 				where TRunner : class, IOmexServiceRunner
@@ -89,6 +95,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			try
 			{
 				builderAction(new ServiceFabricHostBuilder<TContext>(builder));
+
+				if (string.IsNullOrWhiteSpace(serviceName))
+				{
+					serviceName = Assembly.GetExecutingAssembly().GetName().FullName;
+				}
+				else
+				{
+					builder.UseApplicationName(serviceName);
+				}
 
 				IHost host = builder
 					.ConfigureServices((context, collection) =>
@@ -105,16 +120,27 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 					})
 					.Build();
 
-				string m_applicationName = Assembly.GetExecutingAssembly().GetName().FullName;
-				ServiceInitializationEventSource.Instance.LogServiceTypeRegistered(Process.GetCurrentProcess().Id, m_applicationName);
+				ServiceInitializationEventSource.Instance.LogServiceTypeRegistered(Process.GetCurrentProcess().Id, serviceName);
 
 				return host;
 			}
 			catch (Exception e)
 			{
-				ServiceInitializationEventSource.Instance.LogServiceHostInitializationFailed(e.ToString());
+				ServiceInitializationEventSource.Instance.LogServiceHostInitializationFailed(e.ToString(), serviceName);
 				throw;
 			}
 		}
+
+
+		private static IHostBuilder UseApplicationName(this IHostBuilder builder, string applicationName) =>
+			builder.ConfigureAppConfiguration(configuration =>
+			{
+				configuration.AddInMemoryCollection(new[]
+				{
+					new KeyValuePair<string, string>(
+						HostDefaults.ApplicationKey,
+						applicationName ?? throw new ArgumentNullException(nameof(applicationName)))
+				});
+			});
 	}
 }

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.Omex.Extensions.TimedScopes;
@@ -126,7 +127,7 @@ namespace Hosting.Services.UnitTests
 		public void CheckBuildeStatelessService(Type type, Type? expectedImplementationType)
 		{
 			object obj = new HostBuilder()
-				.BuildStatelessService(c => { })
+				.BuildStatelessService("TestStatelessService", c => { })
 				.Services
 				.GetService(type);
 
@@ -151,7 +152,7 @@ namespace Hosting.Services.UnitTests
 		public void CheckBuildeStatefulService(Type type, Type? expectedImplementationType)
 		{
 			object obj = new HostBuilder()
-				.BuildStatefullService(c => { })
+				.BuildStatefullService("TestStatefullService", c => { })
 				.Services
 				.GetService(type);
 
@@ -165,27 +166,42 @@ namespace Hosting.Services.UnitTests
 
 
 		[TestMethod]
-		public void TestExceptionHandlingAndReporting()
+		public void TestExceptionHandlingAndReportingFroBuildStatelessService()
 		{
+			string serviceType = "StatelessFailedServiceName";
 			CustomEventListener listener = new CustomEventListener();
 			listener.EnableEvents(ServiceInitializationEventSource.Instance, EventLevel.Error);
 
 			Assert.ThrowsException<AggregateException>(() =>  new HostBuilder()
 				.ConfigureServices(c => c.AddTransient<TypeThatShouldNotBeResolvable>())
-				.BuildStatelessService(c => { }),
+				.BuildStatelessService(serviceType, c => { }),
 				"BuildStatelessService should fail in case of unresolvable dependencies");
 
+			bool hasErrorEvent = listener.EventsInformation.Any(e =>
+				serviceType == GetPayloadValue<string>(e, ServiceTypePayloadName)
+				&& e.EventId == (int)EventSourcesEventIds.ServiceHostInitializationFailedEventId);
 
-			Assert.AreEqual(1, listener.EventsInformation.Count(), "BuildStatelessService error should be logged");
-			listener.EventsInformation.Clear();
+			Assert.IsTrue(hasErrorEvent, "BuildStatelessService error should be logged");
+		}
+
+
+		[TestMethod]
+		public void TestExceptionHandlingAndReportingForBuildStatefullService()
+		{
+			string serviceType = "StatefullFailedServiceName";
+			CustomEventListener listener = new CustomEventListener();
+			listener.EnableEvents(ServiceInitializationEventSource.Instance, EventLevel.Error);
 
 			Assert.ThrowsException<AggregateException>(() => new HostBuilder()
 				.ConfigureServices(c => c.AddTransient<TypeThatShouldNotBeResolvable>())
-				.BuildStatefullService(c => { }),
+				.BuildStatefullService(serviceType, c => { }),
 				"BuildStatefullService should fail in case of unresolvable dependencies");
 
-			Assert.AreEqual(1, listener.EventsInformation.Count(), "BuildStatefullService error should be logged");
-			listener.EventsInformation.Clear();
+			bool hasErrorEvent = listener.EventsInformation.Any(e =>
+				serviceType == GetPayloadValue<string>(e, ServiceTypePayloadName)
+				&& e.EventId == (int)EventSourcesEventIds.ServiceHostInitializationFailedEventId);
+
+			Assert.IsTrue(hasErrorEvent, "BuildStatefullService error should be logged");
 		}
 
 
@@ -201,7 +217,26 @@ namespace Hosting.Services.UnitTests
 		{
 			public List<EventWrittenEventArgs> EventsInformation { get; } = new List<EventWrittenEventArgs>();
 
+
+			protected override void OnEventSourceCreated(EventSource eventSource)
+			{
+				base.OnEventSourceCreated(eventSource);
+			}
+
+
 			protected override void OnEventWritten(EventWrittenEventArgs eventData) => EventsInformation.Add(eventData);
 		}
+
+
+		private static T? GetPayloadValue<T>(EventWrittenEventArgs info, string name)
+			where T : class
+		{
+			int index = info.PayloadNames?.IndexOf(name) ?? -1;
+
+			return (T?)(index < 0 ? null : info.Payload?[index]);
+		}
+
+
+		private const string ServiceTypePayloadName = "serviceType";
 	}
 }
