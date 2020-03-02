@@ -152,7 +152,7 @@ namespace Hosting.Services.UnitTests
 		public void CheckBuildeStatefulService(Type type, Type? expectedImplementationType)
 		{
 			object obj = new HostBuilder()
-				.BuildStatefullService("TestStatefullService", c => { })
+				.BuildStatefulService("TestStatefulService", c => { })
 				.Services
 				.GetService(type);
 
@@ -186,22 +186,22 @@ namespace Hosting.Services.UnitTests
 
 
 		[TestMethod]
-		public void TestExceptionHandlingAndReportingForBuildStatefullService()
+		public void TestExceptionHandlingAndReportingForBuildStatefulService()
 		{
-			string serviceType = "StatefullFailedServiceName";
+			string serviceType = "StatefulFailedServiceName";
 			CustomEventListener listener = new CustomEventListener();
 			listener.EnableEvents(ServiceInitializationEventSource.Instance, EventLevel.Error);
 
 			Assert.ThrowsException<AggregateException>(() => new HostBuilder()
 				.ConfigureServices(c => c.AddTransient<TypeThatShouldNotBeResolvable>())
-				.BuildStatefullService(serviceType, c => { }),
-				"BuildStatefullService should fail in case of unresolvable dependencies");
+				.BuildStatefulService(serviceType, c => { }),
+				"BuildStatefulService should fail in case of unresolvable dependencies");
 
 			bool hasErrorEvent = listener.EventsInformation.Any(e =>
 				serviceType == GetPayloadValue<string>(e, ServiceTypePayloadName)
 				&& e.EventId == (int)EventSourcesEventIds.ServiceHostInitializationFailedEventId);
 
-			Assert.IsTrue(hasErrorEvent, "BuildStatefullService error should be logged");
+			Assert.IsTrue(hasErrorEvent, "BuildStatefulService error should be logged");
 		}
 
 
@@ -232,7 +232,6 @@ namespace Hosting.Services.UnitTests
 			where T : class
 		{
 			int index = info.PayloadNames?.IndexOf(name) ?? -1;
-
 			return (T?)(index < 0 ? null : info.Payload?[index]);
 		}
 

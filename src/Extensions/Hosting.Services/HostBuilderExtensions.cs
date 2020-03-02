@@ -64,8 +64,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			builder.BuildServiceFabricService<OmexStatelessServiceRunner, StatelessServiceContext>(serviceName, builderAction);
 
 
-		/// <summary>Configures host to run service fabric statefull service with initializded Omex dependencies</summary>
-		public static IHost BuildStatefullService(
+		/// <summary>Configures host to run service fabric stateful service with initializded Omex dependencies</summary>
+		public static IHost BuildStatefulService(
 			this IHostBuilder builder,
 			string serviceName,
 			Action<ServiceFabricHostBuilder<StatefulServiceContext>> builderAction) =>

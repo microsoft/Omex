@@ -29,8 +29,8 @@ namespace Hosting.Services.Web.UnitTests
 		public void CheckTypeRegistrationForStateful() =>
 			CheckTypeRegistration(
 				MockStatefulServiceContextFactory.Default,
-				(v, h) => h.BuildStatefullService(
-					"StatefullServiceName",
+				(v, h) => h.BuildStatefulService(
+					"StatefulServiceName",
 					b => b.AddKestrelListener<ListenerValidator.Startup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
 
 
