@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.Logging.UnitTests
@@ -13,20 +14,20 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 	public class OmexLogsEventSourceTests
 	{
 		[DataTestMethod]
-		[DataRow(EventLevel.Error, LogLevel.Error)]
-		[DataRow(EventLevel.Warning, LogLevel.Warning)]
-		[DataRow(EventLevel.Informational, LogLevel.Information)]
-		public void EventSourceLogsMessage(EventLevel eventLevel, LogLevel logLevel)
+		[DataRow(EventLevel.Error, LogLevel.Error, EventSourcesEventIds.LogErrorEventId)]
+		[DataRow(EventLevel.Warning, LogLevel.Warning, EventSourcesEventIds.LogWarningEventId)]
+		[DataRow(EventLevel.Informational, LogLevel.Information, EventSourcesEventIds.LogInfoEventId)]
+		public void EventSourceLogsMessage(EventLevel eventLevel, LogLevel logLevel, EventSourcesEventIds eventId)
 		{
-			OmexLogsEventSource logEvent = new OmexLogsEventSource(new BasicMachineInformation(), new EmptyServiceContext());
+			
 
 			CustomEventListener listener = new CustomEventListener();
-			listener.EnableEvents(logEvent, eventLevel);
+			listener.EnableEvents(s_logEvent, eventLevel);
 
-			int eventId = 0x4FFFFFFF;
-			logEvent.LogMessage("0", default, "0", logLevel, eventId, 0, "My message ");
+			int tagId = 0x4FFFFFFF;
+			s_logEvent.LogMessage("0", default, "0", logLevel, tagId, 0, "My message ");
 
-			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single();
+			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
 			//TODO check that event agrs are correct
 		}
 
@@ -37,5 +38,8 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			protected override void OnEventWritten(EventWrittenEventArgs eventData) => EventsInformation.Add(eventData);
 		}
+
+
+		private static readonly OmexLogsEventSource s_logEvent = new OmexLogsEventSource(new BasicMachineInformation(), new EmptyServiceContext());
 	}
 }

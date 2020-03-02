@@ -48,9 +48,11 @@ namespace Microsoft.Omex.Extensions.Logging
 			serviceCollection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
 
 			serviceCollection.TryAddTransient<IActivityProvider, ReplayibleActivityProvider>();
-			serviceCollection.TryAddTransient<ILogReplayer, OmexLogsEventSource>();
 
-			serviceCollection.TryAddTransient<ILogsEventSource, OmexLogsEventSource>();
+			serviceCollection.TryAddSingleton<OmexLogsEventSource>(); // only one object of event source should exist
+			serviceCollection.TryAddTransient<ILogReplayer>(p => p.GetService<OmexLogsEventSource>());
+			serviceCollection.TryAddTransient<ILogsEventSource>(p => p.GetService<OmexLogsEventSource>());
+
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
 			return serviceCollection;
 		}

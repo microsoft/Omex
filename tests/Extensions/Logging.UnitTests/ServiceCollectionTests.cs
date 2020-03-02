@@ -30,7 +30,9 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			IServiceContext context = ValidateTypeRegistration<IServiceContext>(collection);
 
-			Assert.IsInstanceOfType(context, typeof(MockServiceContext), "Call of AddOmexServiceContext before AddOmexLogging should override IServiceCollection implementation");
+			Assert.IsInstanceOfType(context,
+				typeof(MockServiceContext),
+				"Call of AddOmexServiceContext before AddOmexLogging should override IServiceCollection implementation");
 		}
 
 
