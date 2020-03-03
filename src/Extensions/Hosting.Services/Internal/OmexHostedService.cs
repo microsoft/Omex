@@ -59,7 +59,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 
-		public async Task RunServiceAsync()
+		private async Task RunServiceAsync()
 		{
 			try
 			{
