@@ -35,13 +35,15 @@ namespace Hosting.Services.UnitTests
 
 			Assert.IsTrue(runnerMock.IsStarted, "RunServiceAsync should not be called after StartAsync");
 
-			Assert.IsFalse(runnerMock.Task!.IsCanceled, "Task should not be canceled");
+			Task task = runnerMock.Task!;
+
+			Assert.IsFalse(task.IsCanceled, "Task should not be canceled");
 			Assert.IsFalse(runnerMock.Token.IsCancellationRequested, "CancelationToken should not be canceled");
 
 			lifetimeMock.ApplicationStoppingSource.Cancel();
 
 			Assert.IsTrue(runnerMock.Token.IsCancellationRequested, "Task should be canceled");
-			Assert.IsTrue(runnerMock.Task!.IsCanceled, "CancelationToken should be canceled");
+			Assert.IsTrue(task.IsCanceled, "CancelationToken should be canceled");
 		}
 
 
@@ -67,7 +69,7 @@ namespace Hosting.Services.UnitTests
 
 			Assert.IsFalse(runnerMock.Token.IsCancellationRequested, "CancelationToken should not be canceled");
 
-			await Task.Yield();
+			await lifetimeMock.CompletionTask;
 
 			Assert.IsTrue(runnerMock.Task!.IsFaulted, "Task should be faulted");
 
@@ -111,6 +113,7 @@ namespace Hosting.Services.UnitTests
 				ApplicationStartedSource = new CancellationTokenSource();
 				ApplicationStoppingSource = new CancellationTokenSource();
 				ApplicationStoppedSource = new CancellationTokenSource();
+				m_completionSource = new TaskCompletionSource<bool>();
 			}
 
 
@@ -123,6 +126,9 @@ namespace Hosting.Services.UnitTests
 			public CancellationTokenSource ApplicationStoppedSource { get; }
 
 
+			public Task CompletionTask => m_completionSource.Task;
+
+
 			public CancellationToken ApplicationStarted => ApplicationStartedSource.Token;
 
 
@@ -132,10 +138,10 @@ namespace Hosting.Services.UnitTests
 			public CancellationToken ApplicationStopped => ApplicationStoppedSource.Token;
 
 
-			public void StopApplication()
-			{
+			public void StopApplication() => m_completionSource.SetResult(true);
 
-			}
+
+			private readonly TaskCompletionSource<bool> m_completionSource;
 		}
 	}
 }
