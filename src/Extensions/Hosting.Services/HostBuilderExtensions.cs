@@ -71,7 +71,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			builder.BuildServiceFabricService<OmexStatefulServiceRunner, StatefulServiceContext>(serviceName, builderAction);
 
 
-		/// <summary> Registerin DI classes that will provide Serfice Fabric specific information for logging </summary>
+		/// <summary> Registerin Dependenci Injection classes that will provide Serfice Fabric specific information for logging </summary>
 		public static IServiceCollection AddOmexServiceFabricDependencies<TContext>(this IServiceCollection collection)
 			where TContext : ServiceContext
 		{
