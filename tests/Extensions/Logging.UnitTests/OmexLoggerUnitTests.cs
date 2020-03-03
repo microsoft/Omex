@@ -53,12 +53,12 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		public void ReplayedMessageSaved()
 		{
 			string suffix = nameof(ReplayedMessageSaved);
+			int eventId = 7;
 			Mock<ILogsEventSource> eventSourceMock = CreateEventSourceMock(isReplayable: true);
 
-			EventId eventId = CreateEventId(7, suffix);
 			ReplayableActivity activity = CreateActivity(suffix);
 			activity.Start();
-			LogMessage(nameof(ReplayedMessageSaved), eventSourceMock);
+			LogMessage(nameof(ReplayedMessageSaved), eventSourceMock, eventId);
 			activity.Stop();
 
 			eventSourceMock.Verify(m_logExpression, Times.Once);
@@ -66,7 +66,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			Assert.AreEqual(GetLogCategory(suffix), info.Category);
 			Assert.AreEqual(GetLogMessage(suffix), info.Message);
-			Assert.AreEqual(eventId, info.EventId);
+			Assert.AreEqual(CreateEventId(eventId, suffix), info.EventId);
 		}
 
 
@@ -95,11 +95,13 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		}
 
 
-		private (ILogger, Mock<IExternalScopeProvider>) LogMessage(string suffix, Mock<ILogsEventSource> eventSourceMock)
+		private (ILogger, Mock<IExternalScopeProvider>) LogMessage(string suffix, Mock<ILogsEventSource> eventSourceMock, int eventId = 0)
 		{
 			Mock<IExternalScopeProvider> scopeProvicedMock = new Mock<IExternalScopeProvider>();
 			ILogger logger = new OmexLogger(eventSourceMock.Object, scopeProvicedMock.Object, GetLogCategory(suffix));
-			logger.LogError(GetLogMessage(suffix));
+
+			logger.LogError(CreateEventId(eventId, suffix), GetLogMessage(suffix));
+
 			return (logger, scopeProvicedMock);
 		}
 
