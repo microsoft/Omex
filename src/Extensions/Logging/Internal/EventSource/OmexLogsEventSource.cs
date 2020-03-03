@@ -197,7 +197,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			WriteEvent((int)EventSourcesEventIds.LogVerboseEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
-		[Event((int)EventSourcesEventIds.LogSpamEventId, Level = EventLevel.LogAlways, Message = "{13}", Version = 6)]
+		[Event((int)EventSourcesEventIds.LogSpamEventId, Level = EventLevel.Verbose, Message = "{13}", Version = 6)]
 		private void LogSpamServiceMessage(
 			string applicationName,
 			string serviceName,

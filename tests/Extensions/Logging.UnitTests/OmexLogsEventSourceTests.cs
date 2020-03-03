@@ -3,18 +3,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
-using System.Linq.Expressions;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.Logging.Replayable;
-using Microsoft.Omex.Extensions.TimedScopes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Microsoft.Omex.Extensions.Logging.UnitTests
 {
@@ -22,9 +15,12 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 	public class OmexLogsEventSourceTests
 	{
 		[DataTestMethod]
+		[DataRow(EventLevel.Error, LogLevel.Critical, EventSourcesEventIds.LogErrorEventId)]
 		[DataRow(EventLevel.Error, LogLevel.Error, EventSourcesEventIds.LogErrorEventId)]
 		[DataRow(EventLevel.Warning, LogLevel.Warning, EventSourcesEventIds.LogWarningEventId)]
 		[DataRow(EventLevel.Informational, LogLevel.Information, EventSourcesEventIds.LogInfoEventId)]
+		[DataRow(EventLevel.Verbose, LogLevel.Debug, EventSourcesEventIds.LogVerboseEventId)]
+		[DataRow(EventLevel.Verbose, LogLevel.Trace, EventSourcesEventIds.LogSpamEventId)]
 		public void EventSourceLogsMessage(EventLevel eventLevel, LogLevel logLevel, EventSourcesEventIds eventId)
 		{
 			CustomEventListener listener = new CustomEventListener();
