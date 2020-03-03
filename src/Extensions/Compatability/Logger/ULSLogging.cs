@@ -13,7 +13,6 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 	/// </summary>
 	public static class ULSLogging
 	{
-
 		/// <summary>
 		/// Log a trace
 		/// </summary>
@@ -54,11 +53,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 
 
 		private static ILoggerFactory? s_factory;
-
-
 		private static ConcurrentDictionary<string, ILogger>? s_loggersDictionary;
-
-
 		private const string ObsoleteMessage = "Please consider using ILogger instead";
 		private const bool IsObsoleteError = false;
 	}
