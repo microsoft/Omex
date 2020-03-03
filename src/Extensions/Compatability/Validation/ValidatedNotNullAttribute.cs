@@ -7,10 +7,10 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 {
 	/// <summary>
 	/// Indicates to code analysis tools that a method validates a particular parameter to not be null.
-	/// 
+	///
 	/// This can for instance be used to suppress VS design warning CA1062 (validate public method parameters before use) by applying to
 	/// external validation libraries, such as the <see cref="Code" /> class in this project.
-	/// 
+	///
 	/// If an attribute with the name ValidatedNotNull is present on the parameter of the validation method it tells the analyzer that the 
 	/// parameter will never be null in the code path following the execution of that method.
 	/// </summary>

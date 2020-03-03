@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		static OmexLogEventSender()
 		{
 			Process process = Process.GetCurrentProcess();
-			s_processName = string.Format("{0} (0x{1:X4})", process.ProcessName, process.Id);
+			s_processName = string.Format(CultureInfo.InvariantCulture, "{0} (0x{1:X4})", process.ProcessName, process.Id);
 		}
 
 
@@ -44,7 +44,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			string tagName = eventId.Name;
 			// In case if tag created using Tag.Create (line number and file in description) it's better to display decimal number 
-			string tagId = string.IsNullOrEmpty(eventId.Name) ? TagIdAsString(eventId.Id) : eventId.Id.ToString();
+			string tagId = string.IsNullOrEmpty(eventId.Name) ? TagIdAsString(eventId.Id) : eventId.Id.ToString(CultureInfo.InvariantCulture);
 			string traceIdAsString = traceId.ToHexString();
 
 			//Event methods should have all information as parameters so we are passing them each time
@@ -128,7 +128,6 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// 2.2 five letter tags are converted by transforming lower 30 bits of the integer value into the symbol space a-z,0-9.
 		/// The conversion is done by treating each group of 6 bits as an index into the symbol space a,b,c,d, ... z, 0, 1, 2, ....9
 		/// eg. 0x000101D0 = 00 000000 000000 010000 000111 010000 2 = aaqhq
-		/// (from http://office/15/howto/reliability/Wiki/Assert%20and%20ULS%20Tagging.aspx)
 		/// </remarks>
 		private static string TagIdAsString(int tagId) // Convert should be done more efficient
 		{
@@ -162,6 +161,7 @@ namespace Microsoft.Omex.Extensions.Logging
 						chars[i] = (char)(charVal + 97);
 					}
 				}
+
 				return new string(chars);
 			}
 			else
@@ -169,12 +169,13 @@ namespace Microsoft.Omex.Extensions.Logging
 				// Each byte represented as ASCII (reverse order)
 				byte[] bytes = BitConverter.GetBytes(tagId);
 				char[] characters = Encoding.ASCII.GetChars(bytes);
-				if (characters != null && characters.Length > 0)
+				if (characters.Length > 0)
 				{
 					Array.Reverse(characters);
 					return new string(characters);
 				}
 			}
+
 			return "0000";
 		}
 	}
