@@ -23,6 +23,7 @@ namespace Microsoft.Omex.Extensions.Compatability
 		{
 			Code.Initialize(m_loggerFactory);
 			ULSLogging.Initialize(m_loggerFactory);
+
 			return Task.CompletedTask;
 		}
 
