@@ -15,6 +15,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// </summary>
 		Guid PartitionId { get; }
 
+
 		/// <summary>
 		/// Replica Id or Instance Id
 		/// </summary>
