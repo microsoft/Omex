@@ -42,7 +42,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		internal static void Initialize(ILoggerFactory loggerFactory)
 		{
 			s_factory = loggerFactory;
-			s_loggersDictionary = new ConcurrentDictionary<string, ILogger>();
+			s_loggersDictionary = new ConcurrentDictionary<string, ILogger>(StringComparer.OrdinalIgnoreCase);
 		}
 
 

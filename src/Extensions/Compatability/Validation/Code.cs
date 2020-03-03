@@ -36,15 +36,15 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// Checks that the enumerable argument is not null and doesn't contain any nulls
 		/// </summary>
 		/// <remarks>Be careful to not pass enumerables that can be enumerated only once</remarks>
-		/// <typeparam name="T">Type of the enumerable</typeparam>
+		/// <typeparam name="TEnumerable">Type of the enumerable</typeparam>
 		/// <param name="argumentValue">The argument value.</param>
 		/// <param name="argumentName">Name of the argument.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <exception cref="ArgumentException">Thrown if any argument  <paramref name="argumentValue"/> element is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown if the supplied argument <paramref name="argumentValue"/> is null.</exception>
 		[Obsolete(ObsoleteMessage, IsObsoleteError)]
-		public static IEnumerable<T> ExpectsAllNotNull<T>([ValidatedNotNull] IEnumerable<T>? argumentValue, string argumentName, EventId? tagId)
-			where T : class
+		public static IEnumerable<TEnumerable> ExpectsAllNotNull<TEnumerable>([ValidatedNotNull] IEnumerable<TEnumerable>? argumentValue, string argumentName, EventId? tagId)
+			where TEnumerable : class
 		{
 			argumentValue = ExpectsArgumentNotNull(argumentValue, argumentName, tagId);
 
@@ -272,14 +272,14 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 		/// Checks that the enumerable argument is not null and doesn't contain any nulls
 		/// </summary>
 		/// <remarks>Be careful to not pass enumerables that can be enumerated only once</remarks>
-		/// <typeparam name="T">Type of the enumerable</typeparam>
+		/// <typeparam name="TEnumerable">Type of the enumerable</typeparam>
 		/// <param name="argumentValue">The argument value.</param>
 		/// <param name="argumentName">Name of the argument.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null and contains only non-null elements; false otherwise.</returns>
 		[Obsolete(ObsoleteMessage, IsObsoleteError)]
-		public static bool ValidateAllNotNull<T>([NotNullWhen(true)]IEnumerable<T>? argumentValue, string argumentName, EventId? tagId = null)
-			where T : class
+		public static bool ValidateAllNotNull<TEnumerable>([NotNullWhen(true)]IEnumerable<TEnumerable>? argumentValue, string argumentName, EventId? tagId = null)
+			where TEnumerable : class
 		{
 			if (!ValidateArgument(argumentValue, argumentName, tagId))
 			{
