@@ -5,7 +5,6 @@
 # Core EditorConfig Options   #
 ###############################
 # Nice examples for each setting could be found here https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference?view=vs-2017
-# OMEX code standart https://www.owiki.ms/wiki/OMEX/Coding_Guidelines/CSharp
 
 root = true
 
