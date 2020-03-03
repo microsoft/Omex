@@ -17,7 +17,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 			serviceCollection.TryAddTransient<IActivityProvider, SimpleActivityProvider>();
 			serviceCollection.TryAddTransient<ITimedScopeProvider,TimedScopeProvider>();
-			serviceCollection.TryAddSingleton<ITimedScopeEventSource, TimedScopeEventSource>(); // only one object of event source should exist
+			serviceCollection.TryAddTransient<ITimedScopeEventSender, TimedScopeEventSender>();
+			serviceCollection.TryAddSingleton(p => TimedScopeEventSource.Instance);
 			return serviceCollection;
 		}
 	}

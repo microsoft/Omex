@@ -23,7 +23,7 @@ namespace Hosting.Services.Web.UnitTests
 	{
 		public ListenerValidator()
 		{
-			m_logsEventSourcMock = new Mock<ILogsEventSource>();
+			m_logsEventSourcMock = new Mock<ILogEventSender>();
 			ListenerName = "TestListener";
 			IntegrationOptions = ServiceFabricIntegrationOptions.None;
 			BuilderAction = builder =>
@@ -84,7 +84,7 @@ namespace Hosting.Services.Web.UnitTests
 		}
 
 
-		private Mock<ILogsEventSource> m_logsEventSourcMock;
+		private Mock<ILogEventSender> m_logsEventSourcMock;
 
 
 		private T ResolveType<T>(IWebHost host) where T : class

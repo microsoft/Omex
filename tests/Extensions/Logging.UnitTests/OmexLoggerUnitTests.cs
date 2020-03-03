@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[TestMethod]
 		public void MessagePropagatedToEventSource()
 		{
-			Mock<ILogsEventSource> eventSourceMock = CreateEventSourceMock(isEnabled: true);
+			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock(isEnabled: true);
 			LogMessage(nameof(MessagePropagatedToEventSource), eventSourceMock);
 			eventSourceMock.Verify(m_logExpression, Times.Once);
 		}
@@ -27,7 +27,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[TestMethod]
 		public void IsEnabledUsed()
 		{
-			Mock<ILogsEventSource> eventSourceMock = CreateEventSourceMock(isEnabled: false);
+			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock(isEnabled: false);
 			LogMessage(nameof(IsEnabledUsed), eventSourceMock);
 			eventSourceMock.Verify(m_logExpression, Times.Never);
 		}
@@ -37,7 +37,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		public void IsReplayableMessageUsed()
 		{
 			string suffix = nameof(IsReplayableMessageUsed);
-			Mock<ILogsEventSource> eventSourceMock = CreateEventSourceMock(isReplayable: false);
+			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock(isReplayable: false);
 
 			ReplayableActivity activity = CreateActivity(suffix);
 			activity.Start();
@@ -54,7 +54,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		{
 			string suffix = nameof(ReplayedMessageSaved);
 			int eventId = 7;
-			Mock<ILogsEventSource> eventSourceMock = CreateEventSourceMock(isReplayable: true);
+			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock(isReplayable: true);
 
 			ReplayableActivity activity = CreateActivity(suffix);
 			activity.Start();
@@ -86,16 +86,16 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		}
 
 
-		private Mock<ILogsEventSource> CreateEventSourceMock(bool isEnabled = true, bool isReplayable = true)
+		private Mock<ILogEventSender> CreateEventSourceMock(bool isEnabled = true, bool isReplayable = true)
 		{
-			Mock<ILogsEventSource> eventSourceMock = new Mock<ILogsEventSource>();
+			Mock<ILogEventSender> eventSourceMock = new Mock<ILogEventSender>();
 			eventSourceMock.Setup(e => e.IsEnabled(It.IsAny<LogLevel>())).Returns(isEnabled);
 			eventSourceMock.Setup(e => e.IsReplayableMessage(It.IsAny<LogLevel>())).Returns(isReplayable);
 			return eventSourceMock;
 		}
 
 
-		private (ILogger, Mock<IExternalScopeProvider>) LogMessage(string suffix, Mock<ILogsEventSource> eventSourceMock, int eventId = 0)
+		private (ILogger, Mock<IExternalScopeProvider>) LogMessage(string suffix, Mock<ILogEventSender> eventSourceMock, int eventId = 0)
 		{
 			Mock<IExternalScopeProvider> scopeProvicedMock = new Mock<IExternalScopeProvider>();
 			ILogger logger = new OmexLogger(eventSourceMock.Object, scopeProvicedMock.Object, GetLogCategory(suffix));
@@ -118,7 +118,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		private ReplayableActivity CreateActivity(string suffix) => new ReplayableActivity($"Activity-{suffix}");
 
 
-		private readonly Expression<Action<ILogsEventSource>> m_logExpression = e =>
+		private readonly Expression<Action<ILogEventSender>> m_logExpression = e =>
 			e.LogMessage(
 				It.IsAny<string>(),
 				It.IsAny<ActivityTraceId>(),

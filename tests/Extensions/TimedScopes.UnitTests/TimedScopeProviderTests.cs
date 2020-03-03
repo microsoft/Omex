@@ -15,7 +15,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		[TestMethod]
 		public void CheckThatTimedScopeProvicerCreatesActivity()
 		{
-			CreateAndValidateActivity("testNameWithReplay", new Mock<ILogReplayer>().Object);
+			CreateAndValidateActivity("testNameWithReplay", new Mock<ILogEventReplayer>().Object);
 		}
 
 
@@ -26,11 +26,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		}
 
 
-		private void CreateAndValidateActivity(string activityName, ILogReplayer? replayer)
+		private void CreateAndValidateActivity(string activityName, ILogEventReplayer? replayer)
 		{
 			TimedScopeResult result = TimedScopeResult.ExpectedError;
 
-			Mock<ITimedScopeEventSource> eventSourceMock = new Mock<ITimedScopeEventSource>();
+			Mock<ITimedScopeEventSender> eventSourceMock = new Mock<ITimedScopeEventSender>();
 			Mock<IActivityProvider> activityProviderMock = new Mock<IActivityProvider>();
 			Mock<Activity> activityMock = new Mock<Activity>(activityName);
 			activityProviderMock.Setup(p => p.Create(activityName)).Returns(activityMock.Object);
@@ -54,7 +54,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		{
 			TimedScopeResult result = TimedScopeResult.ExpectedError;
 
-			Mock<ITimedScopeEventSource> eventSourceMock = new Mock<ITimedScopeEventSource>();
+			Mock<ITimedScopeEventSender> eventSourceMock = new Mock<ITimedScopeEventSender>();
 			Mock<IActivityProvider> activityProviderMock = new Mock<IActivityProvider>();
 			Mock<Activity> activityMock = new Mock<Activity>(activityName);
 

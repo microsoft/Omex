@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		public void OmexLoggerProvider()
 		{
 			string testCategory = "SomeCategoryName";
-			ILogsEventSource mockEventSource = new Mock<ILogsEventSource>().Object;
+			ILogEventSender mockEventSource = new Mock<ILogEventSender>().Object;
 			IExternalScopeProvider mockExternalScopeProvider = new Mock<IExternalScopeProvider>().Object;
 
 			ILoggerProvider loggerProvider = new OmexLoggerProvider(mockEventSource, mockExternalScopeProvider);

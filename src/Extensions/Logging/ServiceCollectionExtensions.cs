@@ -49,9 +49,9 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			serviceCollection.TryAddTransient<IActivityProvider, ReplayibleActivityProvider>();
 
-			serviceCollection.TryAddSingleton<OmexLogsEventSource>(); // only one object of event source should exist
-			serviceCollection.TryAddTransient<ILogReplayer>(p => p.GetService<OmexLogsEventSource>());
-			serviceCollection.TryAddTransient<ILogsEventSource>(p => p.GetService<OmexLogsEventSource>());
+			serviceCollection.TryAddSingleton(p => OmexLogEventSource.Instance);
+			serviceCollection.TryAddTransient<ILogEventReplayer, OmexLogEventSender>();
+			serviceCollection.TryAddTransient<ILogEventSender, OmexLogEventSender>();
 
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
 			return serviceCollection;

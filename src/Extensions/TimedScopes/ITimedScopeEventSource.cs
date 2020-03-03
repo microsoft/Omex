@@ -4,7 +4,7 @@
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	/// <summary>Timed scope event source</summary>
-	public interface ITimedScopeEventSource
+	public interface ITimedScopeEventSender
 	{
 		/// <summary>Log timed scope end information</summary>
 		/// <param name="scope">Ended timed scope</param>

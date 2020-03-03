@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace Microsoft.Omex.Extensions.Abstractions
 {
 	/// <summary>Replays activity logs if activity collects them</summary>
-	public interface ILogReplayer
+	public interface ILogEventReplayer
 	{
 		/// <summary>
 		/// Replays activity logs if activity supports it

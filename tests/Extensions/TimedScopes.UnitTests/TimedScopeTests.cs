@@ -21,7 +21,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		[TestMethod]
 		public void CreateWithReplayer()
 		{
-			CreateTimedScope(new Mock<ILogReplayer>().Object);
+			CreateTimedScope(new Mock<ILogEventReplayer>().Object);
 		}
 
 
@@ -69,7 +69,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		[TestMethod]
 		public void StopCallsEventSource()
 		{
-			(TimedScope scope, Mock<ITimedScopeEventSource> source) = CreateTimedScope(null);
+			(TimedScope scope, Mock<ITimedScopeEventSender> source) = CreateTimedScope(null);
 
 			scope.Start();
 
@@ -86,8 +86,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		[DynamicData(nameof(AllResults), DynamicDataSourceType.Method)]
 		public void StopNotCallsLogReplayerIfItNotExist(TimedScopeResult result)
 		{
-			Mock<ILogReplayer> replayer = new Mock<ILogReplayer>();
-			(TimedScope scope, Mock<ITimedScopeEventSource> source) = CreateTimedScope(null);
+			Mock<ILogEventReplayer> replayer = new Mock<ILogEventReplayer>();
+			(TimedScope scope, Mock<ITimedScopeEventSender> source) = CreateTimedScope(null);
 			scope.Result = result;
 
 			scope.Start();
@@ -104,8 +104,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		[DataRow(TimedScopeResult.SystemError)]
 		public void StopCallsLogReplayerInCaseOfError(TimedScopeResult result)
 		{
-			Mock<ILogReplayer> replayer = new Mock<ILogReplayer>();
-			(TimedScope scope, Mock<ITimedScopeEventSource> source) = CreateTimedScope(replayer.Object);
+			Mock<ILogEventReplayer> replayer = new Mock<ILogEventReplayer>();
+			(TimedScope scope, Mock<ITimedScopeEventSender> source) = CreateTimedScope(replayer.Object);
 			scope.Result = result;
 
 			scope.Start();
@@ -124,8 +124,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		[DataRow(TimedScopeResult.Success)]
 		public void StopNotCallsLogReplayerInCaseOfSucces(TimedScopeResult result)
 		{
-			Mock<ILogReplayer> replayer = new Mock<ILogReplayer>();
-			(TimedScope scope, Mock<ITimedScopeEventSource> source) = CreateTimedScope(replayer.Object);
+			Mock<ILogEventReplayer> replayer = new Mock<ILogEventReplayer>();
+			(TimedScope scope, Mock<ITimedScopeEventSender> source) = CreateTimedScope(replayer.Object);
 			scope.Result = result;
 
 			scope.Start();
@@ -135,12 +135,12 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		}
 
 
-		private (TimedScope, Mock<ITimedScopeEventSource>) CreateTimedScope(ILogReplayer? replayer)
+		private (TimedScope, Mock<ITimedScopeEventSender>) CreateTimedScope(ILogEventReplayer? replayer)
 		{
 			Activity activity = new Activity("TestName");
 			TimedScopeResult result = TimedScopeResult.Success;
 
-			Mock<ITimedScopeEventSource> eventSource = new Mock<ITimedScopeEventSource>();
+			Mock<ITimedScopeEventSender> eventSource = new Mock<ITimedScopeEventSender>();
 
 			TimedScope scope = new TimedScope(eventSource.Object, activity, result, replayer);
 

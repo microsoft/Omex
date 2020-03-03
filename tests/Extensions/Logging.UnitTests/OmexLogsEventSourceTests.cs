@@ -24,13 +24,19 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		public void EventSourceLogsMessage(EventLevel eventLevel, LogLevel logLevel, EventSourcesEventIds eventId)
 		{
 			CustomEventListener listener = new CustomEventListener();
-			listener.EnableEvents(s_logEvent, eventLevel);
+			listener.EnableEvents(OmexLogEventSource.Instance, eventLevel);
 
 			string message = "Test message";
 			string category = "Test category";
 			string activityId = "Test activity";
 			int tagId = 0xFFF9;
-			s_logEvent.LogMessage(activityId, default, category, logLevel, tagId, 0, message);
+
+			OmexLogEventSender logsSender = new OmexLogEventSender(
+				OmexLogEventSource.Instance,
+				new EmptyMachineInformation(),
+				new EmptyServiceContext());
+
+			logsSender.LogMessage(activityId, default, category, logLevel, tagId, 0, message);
 
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
 
@@ -58,8 +64,5 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			protected override void OnEventWritten(EventWrittenEventArgs eventData) => EventsInformation.Add(eventData);
 		}
-
-
-		private static readonly OmexLogsEventSource s_logEvent = new OmexLogsEventSource(new BasicMachineInformation(), new EmptyServiceContext());
 	}
 }

@@ -9,7 +9,7 @@ namespace Microsoft.Omex.Extensions.Logging
 	/// <summary>
 	/// Event source to send log messages
 	/// </summary>
-	public interface ILogsEventSource
+	public interface ILogEventSender
 	{
 		/// <summary>Is logging enabled for specified log level</summary>
 		bool IsEnabled(LogLevel level);
