@@ -5,7 +5,9 @@ using System.Diagnostics;
 
 namespace Microsoft.Omex.Extensions.Abstractions
 {
-	/// <summary>Provides activities</summary>
+	/// <summary>
+	/// Provides activities
+	/// </summary>
 	public interface IActivityProvider
 	{
 		/// <summary>

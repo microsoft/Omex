@@ -11,11 +11,15 @@ namespace Microsoft.Omex.Extensions.Logging
 	/// </summary>
 	public interface ILogEventSender
 	{
-		/// <summary>Is logging enabled for specified log level</summary>
+		/// <summary>
+		/// Is logging enabled for specified log level
+		/// </summary>
 		bool IsEnabled(LogLevel level);
 
 
-		/// <summary>Should this message be replayed in case of failure</summary>
+		/// <summary>
+		/// Should this message be replayed in case of failure
+		/// </summary>
 		bool IsReplayableMessage(LogLevel logLevel);
 
 

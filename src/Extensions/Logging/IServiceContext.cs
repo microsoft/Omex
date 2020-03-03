@@ -5,13 +5,19 @@ using System;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
-	/// <summary> Interface with service context inforormation </summary>
+	/// <summary>
+	/// Interface with service context inforormation
+	/// </summary>
 	public interface IServiceContext
 	{
-		/// <summary> Partition Id </summary>
+		/// <summary>
+		/// Partition Id
+		/// </summary>
 		Guid PartitionId { get; }
 
-		/// <summary> Replica Id or Instance Id </summary>
+		/// <summary>
+		/// Replica Id or Instance Id
+		/// </summary>
 		long ReplicaOrInstanceId { get; }
 	}
 }

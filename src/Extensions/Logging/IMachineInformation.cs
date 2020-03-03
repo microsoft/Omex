@@ -5,54 +5,80 @@ using System.Net;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
-	/// <summary>Machine information interface</summary>
+	/// <summary>
+	/// Machine information interface
+	/// </summary>
 	public interface IMachineInformation
 	{
-		/// <summary>Build version string</summary>
+		/// <summary>
+		/// Build version string
+		/// </summary>
 		string BuildVersion { get; }
 
 
-		/// <summary>The deployment slice</summary>
+		/// <summary>
+		/// The deployment slice
+		/// </summary>
 		string DeploymentSlice { get; }
 
 
-		/// <summary>The environment name</summary>
+		/// <summary>
+		/// The environment name
+		/// </summary>
 		string EnvironmentName { get; }
 
 
-		/// <summary>Is Canary environment</summary>
+		/// <summary>
+		/// Is Canary environment
+		/// </summary>
 		bool IsCanary { get; }
 
 
-		/// <summary>Is the deployment a private deployment</summary>
+		/// <summary>
+		/// Is the deployment a private deployment
+		/// </summary>
 		bool IsPrivateDeployment { get; }
 
 
-		/// <summary>The name of the deployment cluster to which this machine belongs</summary>
+		/// <summary>
+		/// The name of the deployment cluster to which this machine belongs
+		/// </summary>
 		string MachineCluster { get; }
 
 
-		/// <summary>The ip adress of the deployment cluster to which this machine belongs</summary>
+		/// <summary>
+		/// The ip adress of the deployment cluster to which this machine belongs
+		/// </summary>
 		IPAddress MachineClusterIpAddress { get; }
 
 
-		/// <summary>The number of machines in the service pool</summary>
+		/// <summary>
+		/// The number of machines in the service pool
+		/// </summary>
 		int MachineCount { get; }
 
 
-		/// <summary>The reporting identifier for the current machine</summary>
+		/// <summary>
+		/// The reporting identifier for the current machine
+		/// </summary>
 		string MachineId { get; }
 
 
-		/// <summary>The role of the host machine</summary>
+		/// <summary>
+		/// The role of the host machine
+		/// </summary>
 		string MachineRole { get; }
 
 
-		/// <summary>The region</summary>
+		/// <summary>
+		/// The region
+		/// </summary>
 		string RegionName { get; }
 
 
-		/// <summary>The service name</summary>
+		/// <summary>
+		/// The service name
+		/// </summary>
 		string ServiceName { get; }
 	}
 }

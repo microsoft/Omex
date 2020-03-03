@@ -9,10 +9,14 @@ using System.Reflection;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
-	/// <summary>Base class for machine information</summary>
+	/// <summary>
+	/// Base class for machine information
+	/// </summary>
 	public class EmptyMachineInformation : IMachineInformation
 	{
-		/// <summary>Create instance of machine information</summary>
+		/// <summary>
+		/// Create instance of machine information
+		/// </summary>
 		public EmptyMachineInformation()
 		{
 			MachineName = DefaultEmptyValue;

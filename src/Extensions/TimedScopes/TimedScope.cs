@@ -7,30 +7,44 @@ using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
-	/// <summary>Logs duration of activity</summary>
+	/// <summary>
+	/// Logs duration of activity
+	/// </summary>
 	public class TimedScope : IDisposable
 	{
-		/// <summary>TimedScope result</summary>
+		/// <summary>
+		/// TimedScope result
+		/// </summary>
 		public TimedScopeResult Result { get; set; }
 
 
-		/// <summary>TimedScope sub tipe</summary>
+		/// <summary>
+		/// TimedScope sub tipe
+		/// </summary>
 		public string SubType { get; set; }
 
 
-		/// <summary>TimedScope meta data</summary>
+		/// <summary>
+		/// TimedScope meta data
+		/// </summary>
 		public string MetaData { get; set; }
 
 
-		/// <summary>Activity connected with this TimedScope</summary>
+		/// <summary>
+		/// Activity connected with this TimedScope
+		/// </summary>
 		public Activity Activity { get; }
 
 
-		/// <summary>Indicates if activty was finished</summary>
+		/// <summary>
+		/// Indicates if activty was finished
+		/// </summary>
 		public bool IsFinished { get; private set; }
 
 
-		/// <summary>Creates TimedScope instance</summary>
+		/// <summary>
+		/// Creates TimedScope instance
+		/// </summary>
 		/// <param name="eventSource">event source to write timedscope end information</param>
 		/// <param name="activity">activity connected to this timedscope</param>
 		/// <param name="result">TimedScope initial result</param>
@@ -47,7 +61,9 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		}
 
 
-		/// <summary>Starts TimedScope activity</summary>
+		/// <summary>
+		/// Starts TimedScope activity
+		/// </summary>
 		internal TimedScope Start()
 		{
 			Activity.Start();
@@ -55,7 +71,9 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		}
 
 
-		/// <summary>Stop TimedScope and log informations about it</summary>
+		/// <summary>
+		/// Stop TimedScope and log informations about it
+		/// </summary>
 		public void Stop()
 		{
 			if (IsFinished)

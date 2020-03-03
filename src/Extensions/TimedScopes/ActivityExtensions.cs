@@ -15,22 +15,30 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		private const string TransactionMarkerValue = "true";
 
 
-		/// <summary>Get user hash from activity</summary>
+		/// <summary>
+		/// Get user hash from activity
+		/// </summary>
 		public static string GetUserHash(this Activity activity) =>
 			activity.GetBaggageItem(UserHashKey);
 
 
-		/// <summary>Returns true if activity is transaction</summary>
+		/// <summary>
+		/// Returns true if activity is transaction
+		/// </summary>
 		public static bool IsTransaction(this Activity activity) =>
 			activity.GetBaggageItem(TransactionMarkerKey) == TransactionMarkerValue;
 
 
-		/// <summary>Set user hash from activity</summary>
+		/// <summary>
+		/// Set user hash from activity
+		/// </summary>
 		public static void SetUserHash(this Activity activity, string userHash) =>
 			activity.AddBaggage(UserHashKey, userHash);
 
 
-		/// <summary>Mark activity as transaction</summary>
+		/// <summary>
+		/// Mark activity as transaction
+		/// </summary>
 		public static void MarkAsTransaction(this Activity activity) =>
 			activity.AddBaggage(TransactionMarkerKey, TransactionMarkerValue);
 	}

@@ -3,10 +3,14 @@
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
-	/// <summary>Interface to create TimedScope</summary>
+	/// <summary>
+	/// Interface to create TimedScope
+	/// </summary>
 	public interface ITimedScopeProvider
 	{
-		/// <summary>Create and start TimedScope</summary>
+		/// <summary>
+		/// Create and start TimedScope
+		/// </summary>
 		TimedScope Start(string name, TimedScopeResult result);
 	}
 }

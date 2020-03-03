@@ -3,10 +3,14 @@
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
-	/// <summary>Timed scope event source</summary>
+	/// <summary>
+	/// Timed scope event source
+	/// </summary>
 	public interface ITimedScopeEventSender
 	{
-		/// <summary>Log timed scope end information</summary>
+		/// <summary>
+		/// Log timed scope end information
+		/// </summary>
 		/// <param name="scope">Ended timed scope</param>
 		void LogTimedScopeEndEvent(TimedScope scope);
 	}

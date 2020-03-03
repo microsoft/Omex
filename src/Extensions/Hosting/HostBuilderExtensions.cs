@@ -13,13 +13,17 @@ namespace Microsoft.Omex.Extensions.Hosting
 	/// </summary>
 	public static class HostBuilderExtensions
 	{
-		/// <summary>Add Omex Logging and TimedScopes dependencies</summary>
+		/// <summary>
+		/// Add Omex Logging and TimedScopes dependencies
+		/// </summary>
 		public static IHostBuilder AddOmexServices(this IHostBuilder builder) =>
 			builder
 				.ConfigureServices((context, collection) => collection.AddOmexServices());
 
 
-		/// <summary>Add Omex Logging and TimedScopes dependencies</summary>
+		/// <summary>
+		/// Add Omex Logging and TimedScopes dependencies
+		/// </summary>
 		public static IServiceCollection AddOmexServices(this IServiceCollection collection) =>
 			collection
 				.AddOmexLogging()

@@ -8,10 +8,14 @@ using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
-	/// <summary> Extension methods for the <see cref="IServiceCollection"/> class</summary>
+	/// <summary>
+	/// Extension methods for the <see cref="IServiceCollection"/> class
+	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
-		/// <summary>Add IServiceContext to ServiceCollection</summary>
+		/// <summary>
+		/// Add IServiceContext to ServiceCollection
+		/// </summary>
 		public static IServiceCollection AddTimedScopes(this IServiceCollection serviceCollection)
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
