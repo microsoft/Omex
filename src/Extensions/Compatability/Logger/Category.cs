@@ -40,7 +40,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// <summary>
 		/// Returns a hash code for this instance
 		/// </summary>
-		public override int GetHashCode() => StringComparer.OrdinalIgnoreCase.GetHashCode(Name) : 0;
+		public override int GetHashCode() => StringComparer.OrdinalIgnoreCase.GetHashCode(Name);
 
 
 		/// <summary>
