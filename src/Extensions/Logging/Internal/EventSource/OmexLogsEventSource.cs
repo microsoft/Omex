@@ -45,7 +45,8 @@ namespace Microsoft.Omex.Extensions.Logging
 			string machineId = m_machineInformation.MachineId;
 
 			string tagName = eventId.Name;
-			string tagId = TagIdAsString(eventId.Id);
+			// In case if tag created using Tag.Create (line number and file in description) it's better to display decimal number 
+			string tagId = string.IsNullOrEmpty(eventId.Name) ? TagIdAsString(eventId.Id) : eventId.Id.ToString();
 			string traceIdAsString = traceId.ToHexString();
 
 			//Event methods should have all information as parameters so we are passing them each time
