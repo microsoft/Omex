@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.Omex.Extensions.Logging.UnitTests
 {
 	[TestClass]
-	public class OmexLogsEventSourceTests
+	public class OmexLogEventSenderTests
 	{
 		[DataTestMethod]
 		[DataRow(EventLevel.Error, LogLevel.Critical, EventSourcesEventIds.LogErrorEventId)]
