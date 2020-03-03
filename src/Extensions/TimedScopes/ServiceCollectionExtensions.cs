@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 	public static class ServiceCollectionExtensions
 	{
 		/// <summary>
-		/// Add IServiceContext to ServiceCollection
+		/// Add TimedScoped to ServiceCollection
 		/// </summary>
 		public static IServiceCollection AddTimedScopes(this IServiceCollection serviceCollection)
 		{

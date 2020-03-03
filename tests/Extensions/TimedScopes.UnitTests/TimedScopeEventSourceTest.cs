@@ -32,7 +32,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			using (TimedScope scope = new TimedScope(s_logEventSource, activity, TimedScopeResult.Success, null).Start())
 			{
 				scope.SubType = subType;
-				scope.MetaData = metaData;
+				scope.Metadata = metaData;
 				activity.SetUserHash("TestUserHash");
 				if (isTransaction)
 				{

@@ -29,14 +29,14 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 			string serviceName = m_serviceName;
 			string subtype = scope.SubType;
-			string metadata = scope.MetaData;
+			string metadata = scope.Metadata;
 			TimedScopeResult result = scope.Result;
 			Activity activity = scope.Activity;
 			string name = activity.OperationName;
 			string correlationId = activity.Id;
 			double durationMs = activity.Duration.TotalMilliseconds;
-			string userHash = activity.GetUserHash(); //Breaking Change: feild not set
-			bool isTransaction = activity.IsTransaction(); //Breaking Change: feild not set
+			string userHash = activity.GetUserHash(); //Breaking Change: field not set
+			bool isTransaction = activity.IsTransaction(); //Breaking Change: field not set
 
 			string nameAsString = SanitizeString(name, nameof(name), name);
 			string subTypeAsString = SanitizeString(subtype, nameof(subtype), name);

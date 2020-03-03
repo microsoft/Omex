@@ -27,7 +27,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// <summary>
 		/// TimedScope meta data
 		/// </summary>
-		public string MetaData { get; set; }
+		public string Metadata { get; set; }
 
 
 		/// <summary>
@@ -56,7 +56,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			Activity = activity;
 			Result = result;
 			SubType = NullPlaceholder;
-			MetaData = NullPlaceholder;
+			Metadata = NullPlaceholder;
 			IsFinished = false;
 		}
 

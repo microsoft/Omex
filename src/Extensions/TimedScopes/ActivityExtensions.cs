@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Diagnostics;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
@@ -26,7 +27,10 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// Returns true if activity is transaction
 		/// </summary>
 		public static bool IsTransaction(this Activity activity) =>
-			activity.GetBaggageItem(TransactionMarkerKey) == TransactionMarkerValue;
+			string.Equals(
+				activity.GetBaggageItem(TransactionMarkerKey),
+				TransactionMarkerValue,
+				StringComparison.OrdinalIgnoreCase);
 
 
 		/// <summary>

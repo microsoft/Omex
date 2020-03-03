@@ -147,7 +147,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			Assert.ReferenceEquals(activity, scope.Activity);
 			Assert.AreEqual(result, scope.Result);
 			Assert.IsNotNull(scope.SubType);
-			Assert.IsNotNull(scope.MetaData);
+			Assert.IsNotNull(scope.Metadata);
 			Assert.IsFalse(scope.IsFinished);
 
 			return (scope, eventSource);

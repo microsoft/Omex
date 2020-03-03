@@ -71,7 +71,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 
 		/// <summary>
-		/// The region
+		/// Azure region name
 		/// </summary>
 		string RegionName { get; }
 

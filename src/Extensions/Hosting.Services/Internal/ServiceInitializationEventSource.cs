@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Diagnostics.Tracing;
 using Microsoft.Omex.Extensions.Abstractions;
 
@@ -31,7 +32,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				return;
 			}
 
-			LogServiceTypeRegistered(hostProcessId, serviceType, $"Service host process {hostProcessId} registered service type {serviceType}");
+			LogServiceTypeRegistered(
+				hostProcessId,
+				serviceType,
+				FormattableString.Invariant($"Service host process {hostProcessId} registered service type {serviceType}"));
 		}
 
 
@@ -48,7 +52,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				return;
 			}
 
-			LogServiceHostInitializationFailed(exception, serviceType, "Service host initialization failed");
+			LogServiceHostInitializationFailed(
+				exception,
+				serviceType,
+				FormattableString.Invariant($"Service host initialization failed for {serviceType} with exception {exception}"));
 		}
 
 
