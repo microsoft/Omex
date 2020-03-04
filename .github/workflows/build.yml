@@ -30,5 +30,5 @@ jobs:
     - name: Create NuGet packages
       run: dotnet pack --no-build --configuration ${{ matrix.configuration }}
     - name: Publish NuGet packages
-      run: dotnet nuget push "nuget/*.nupkg" --source "github"
+      run: dotnet nuget push nupkg\*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/Microsoft/Omex/index.json
       if: github.event == 'push' && github.ref == 'master' && ${{ matrix.configuration }} == 'Release'
