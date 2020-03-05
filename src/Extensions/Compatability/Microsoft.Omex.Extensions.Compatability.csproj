@@ -8,4 +8,7 @@
   <ItemGroup Condition="$(IsNetFramework)">
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TimedScopes\Microsoft.Omex.Extensions.TimedScopes.csproj" />
+  </ItemGroup>
 </Project>

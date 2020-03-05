@@ -43,6 +43,12 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 
 		/// <summary>
+		/// Indicates if activty was started
+		/// </summary>
+		public bool IsStarted { get; private set; }
+
+
+		/// <summary>
 		/// Creates TimedScope instance
 		/// </summary>
 		/// <param name="eventSource">event source to write timedscope end information</param>
@@ -57,6 +63,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			Result = result;
 			SubType = NullPlaceholder;
 			Metadata = NullPlaceholder;
+			IsStarted = false;
 			IsFinished = false;
 		}
 
@@ -66,12 +73,13 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// </summary>
 		public TimedScope Start()
 		{
-			if (Activity.Id != null || Activity.SpanId != null)
+			if (IsStarted)
 			{
 				throw new InvalidOperationException("Activity already started");
 			}
 
 			Activity.Start();
+			IsStarted = true;
 			return this;
 		}
 

@@ -8,5 +8,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Extensions\Compatability\Microsoft.Omex.Extensions.Compatability.csproj" />
+    <ProjectReference Include="..\..\..\src\Extensions\TimedScopes\Microsoft.Omex.Extensions.TimedScopes.csproj" />
   </ItemGroup>
 </Project>
