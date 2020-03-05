@@ -37,7 +37,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			new ValueTask<T>(task).WithTimedScope(provider, name);
 
 
-
 		/// <summary>
 		/// Starts TimedScopes before task execution and finish after it's completion
 		/// </summary>

@@ -55,7 +55,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 		private void TestExecution(
 			string scopeName,
-			Action<Task<bool>, ITimedScopeProvider, string, ValueTask<bool>> createTask,
+			Action<Task<bool>, ITimedScopeProvider, string> createTask,
 			Action<TaskCompletionSource<bool>> finishTask,
 			TimedScopeResult expectedResult)
 		{
@@ -80,16 +80,12 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		}
 
 
-		private static Func<Task<bool>, ITimedScopeProvider, string, ValueTask<bool>> s_wrapTaskOfTAction =
+		private static Action<Task<bool>, ITimedScopeProvider, string> s_wrapTaskOfTAction =
 			(task, provider, name) => task.WithTimedScope(provider, name);
 
 
-		private static Action<Task<bool>, ITimedScopeProvider, string, ValueTask<bool>> s_wrapTaskAction =
-			async (task, provider, name) =>
-			{
-				await ((Task)task).WithTimedScope(provider, name);
-				return true;
-			}
+		private static Action<Task<bool>, ITimedScopeProvider, string> s_wrapTaskAction =
+			(task, provider, name) => ((Task)task).WithTimedScope(provider, name);
 
 
 		private static Action<Task<bool>, ITimedScopeProvider, string> s_wrapValueTaskOfTAction =
