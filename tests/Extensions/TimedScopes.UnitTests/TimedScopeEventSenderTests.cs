@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
 	[TestClass]
-	public class TimedScopeEventSourceTest
+	public class TimedScopeEventSenderTests
 	{
 		[DataTestMethod]
 		[DataRow(EventSourcesEventIds.LogTimedScopeTestContextEventId, true)]

@@ -11,11 +11,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 	/// </summary>
 	public static class ActivityExtensions
 	{
-		private const string UserHashKey = "UserHash";
-		private const string TransactionMarkerKey = "TransactionMarkerKey";
-		private const string TransactionMarkerValue = "true";
-
-
 		/// <summary>
 		/// Get user hash from activity
 		/// </summary>
@@ -45,5 +40,10 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// </summary>
 		public static void MarkAsTransaction(this Activity activity) =>
 			activity.AddBaggage(TransactionMarkerKey, TransactionMarkerValue);
+
+
+		private const string UserHashKey = "UserHash";
+		private const string TransactionMarkerKey = "TransactionMarkerKey";
+		private const string TransactionMarkerValue = "true";
 	}
 }
