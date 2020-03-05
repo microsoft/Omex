@@ -421,9 +421,14 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 
 		private static void LogError(EventId? eventId, string message, params object[] args)
 		{
-			if (s_logger == null || !eventId.HasValue)
+			if (!eventId.HasValue)
 			{
 				return;
+			}
+
+			if (s_logger == null)
+			{
+				throw new OmexCompatabilityInitializationException();
 			}
 
 			s_logger.LogError(eventId.Value, message, args);

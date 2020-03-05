@@ -12,5 +12,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// Create and start TimedScope
 		/// </summary>
 		TimedScope Start(string name, TimedScopeResult result);
+
+
+		/// <summary>
+		/// Create TimedScope
+		/// </summary>
+		TimedScope Create(string name, TimedScopeResult result);
 	}
 }

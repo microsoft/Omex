@@ -64,8 +64,13 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// <summary>
 		/// Starts TimedScope activity
 		/// </summary>
-		protected internal TimedScope Start()
+		public TimedScope Start()
 		{
+			if (Activity.Id != null || Activity.SpanId != null)
+			{
+				throw new InvalidOperationException("Activity already started");
+			}
+
 			Activity.Start();
 			return this;
 		}

@@ -49,7 +49,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		private static ILogger? GetLogger(Category category) =>
 			s_loggersDictionary != null && s_factory != null
 			? s_loggersDictionary.GetOrAdd(category.Name, s_factory.CreateLogger)
-			: null;
+			: throw new OmexCompatabilityInitializationException();
 
 
 		private static ILoggerFactory? s_factory;

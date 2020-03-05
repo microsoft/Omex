@@ -19,14 +19,17 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		}
 
 
-		public TimedScope Start(string name, TimedScopeResult result)
+		public TimedScope Start(string name, TimedScopeResult result) => Create(name, result).Start();
+
+
+		public TimedScope Create(string name, TimedScopeResult result)
 		{
 			// Activity won't be stated in case of an empty string
-			if (string.IsNullOrEmpty(name))
+			if (string.IsNullOrWhiteSpace(name))
 			{
 				throw new ArgumentException("TimedScope name should not be empty or null");
 			}
-			return new TimedScope(m_eventSource, m_activityProvider.Create(name), result, m_logReplayer).Start();
+			return new TimedScope(m_eventSource, m_activityProvider.Create(name), result, m_logReplayer);
 		}
 
 
