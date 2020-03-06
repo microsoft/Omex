@@ -12,7 +12,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 	public static class Tag
 	{
 		/// <summary>
-		/// Create a EventId using a tag using GitTagger
+		/// Create an EventId using a tag using GitTagger
 		/// </summary>
 		public static EventId ReserveTag(int tagId) => new EventId(tagId);
 
