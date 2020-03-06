@@ -431,7 +431,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 				throw new OmexCompatabilityInitializationException();
 			}
 
-			s_logger.Log(eventId.Value, LogLevel.Information, message, args);
+			s_logger.LogError(eventId.Value, message, args);
 		}
 
 
