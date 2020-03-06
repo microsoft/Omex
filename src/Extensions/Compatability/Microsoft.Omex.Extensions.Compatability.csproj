@@ -6,7 +6,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(Microsoft_Extensions_Hosting_Abstractions_Version)" />
   </ItemGroup>
   <ItemGroup Condition="$(IsNetFramework)">
-    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.0" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="$(System_Diagnostics_DiagnosticSource_Version)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TimedScopes\Microsoft.Omex.Extensions.TimedScopes.csproj" />

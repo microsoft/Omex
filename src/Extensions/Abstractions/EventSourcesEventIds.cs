@@ -11,72 +11,72 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		/// <summary>
 		/// Event Id for logging general info message
 		/// </summary>
-		LogInfoEventId = 1,
+		LogInfo = 1,
 
 
 		/// <summary>
 		/// Event Id for logging error message
 		/// </summary>
-		LogErrorEventId = 2,
+		LogError = 2,
 
 
 		/// <summary>
 		/// Event Id for logging warning message
 		/// </summary>
-		LogWarningEventId = 3,
+		LogWarning = 3,
 
 
 		/// <summary>
 		/// Event Id for logging verbose message
 		/// </summary>
-		LogVerboseEventId = 4,
+		LogVerbose = 4,
 
 
 		/// <summary>
 		/// Event Id for logging spam message
 		/// </summary>
-		LogSpamEventId = 5,
+		LogSpam = 5,
 
 
 		/// <summary>
 		/// Event Id for logging timed scopes
 		/// </summary>
-		LogTimedScopeEventId = 6,
+		LogTimedScope = 6,
 
 
 		/// <summary>
 		/// Event Id for logging timed scopes traces
 		/// </summary>
-		LogTimedScopeTestContextEventId = 7,
+		LogTimedScopeTestContext = 7,
 
 
 		/// <summary>
 		/// Event Id for service type registered
 		/// </summary>
-		ServiceTypeRegisteredEventId = 11,
+		ServiceTypeRegistered = 11,
 
 
 		/// <summary>
 		/// Event Id for service host initialization failed
 		/// </summary>
-		ServiceHostInitializationFailedEventId = 12,
+		ServiceHostInitializationFailed = 12,
 
 
 		/// <summary>
 		/// Event Id for actor type registered
 		/// </summary>
-		ActorTypeRegisteredEventId = 13,
+		ActorTypeRegistered = 13,
 
 
 		/// <summary>
 		/// Event Id for actor host initialization failed
 		/// </summary>
-		ActorHostInitializationFailedEventId = 14,
+		ActorHostInitializationFailed = 14,
 
 
 		/// <summary>
 		/// Event Id for logging Analytics information
 		/// </summary>
-		LogAnalyticsEvent = 15,
+		LogAnalytics = 15,
 	}
 }

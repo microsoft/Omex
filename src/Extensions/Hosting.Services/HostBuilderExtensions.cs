@@ -152,7 +152,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				{
 					new KeyValuePair<string, string>(
 						HostDefaults.ApplicationKey,
-						applicationName ?? throw new ArgumentNullException(nameof(applicationName)))
+						string.IsNullOrWhiteSpace(applicationName)
+							? throw new ArgumentNullException(nameof(applicationName))
+							: applicationName)
 				});
 			});
 	}

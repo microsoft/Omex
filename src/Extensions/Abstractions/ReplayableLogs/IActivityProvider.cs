@@ -11,10 +11,10 @@ namespace Microsoft.Omex.Extensions.Abstractions
 	public interface IActivityProvider
 	{
 		/// <summary>
-		/// Create activity instance
+		/// Creates activity instance
 		/// </summary>
 		/// <param name="operationName">The name of the operation</param>
-		/// <returns>New started activity</returns>
+		/// <returns>Newly created activity</returns>
 		Activity Create(string operationName);
 	}
 }

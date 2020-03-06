@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 	public static class ULSLogging
 	{
 		/// <summary>
-		/// Log a trace
+		/// Logs a trace
 		/// </summary>
 		/// <param name="eventId">A unique tag id for the trace</param>
 		/// <param name="category">logging category</param>

@@ -7,7 +7,7 @@ using System.Fabric;
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	/// <summary>
-	/// Provides access to service fabric service contest
+	/// Provides access to service fabric service context
 	/// </summary>
 	public interface IServiceContextAccessor<out TServiceContext>
 		where TServiceContext : ServiceContext

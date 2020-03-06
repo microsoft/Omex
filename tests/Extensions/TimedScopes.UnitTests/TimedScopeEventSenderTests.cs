@@ -17,8 +17,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 	public class TimedScopeEventSenderTests
 	{
 		[DataTestMethod]
-		[DataRow(EventSourcesEventIds.LogTimedScopeTestContextEventId, true)]
-		[DataRow(EventSourcesEventIds.LogTimedScopeEventId, false)]
+		[DataRow(EventSourcesEventIds.LogTimedScopeTestContext, true)]
+		[DataRow(EventSourcesEventIds.LogTimedScope, false)]
 		public void LogTimedScopeEndEvent(EventSourcesEventIds eventId, bool isTransaction)
 		{
 			CustomEventListener listener = new CustomEventListener();

@@ -62,14 +62,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		private ServiceInitializationEventSource() { }
 
 
-		[Event((int)EventSourcesEventIds.ServiceTypeRegisteredEventId, Level = EventLevel.Informational, Message = "{2}", Version = 1)]
+		[Event((int)EventSourcesEventIds.ServiceTypeRegistered, Level = EventLevel.Informational, Message = "{2}", Version = 1)]
 		private void LogServiceTypeRegistered(int hostProcessId, string serviceType, string message) =>
-			WriteEvent((int)EventSourcesEventIds.ServiceTypeRegisteredEventId, hostProcessId, serviceType, message);
+			WriteEvent((int)EventSourcesEventIds.ServiceTypeRegistered, hostProcessId, serviceType, message);
 
 
 		//Breaking Change: serviceType paramiter added
-		[Event((int)EventSourcesEventIds.ServiceHostInitializationFailedEventId, Level = EventLevel.Error, Message = "{1}", Version = 1)]
+		[Event((int)EventSourcesEventIds.ServiceHostInitializationFailed, Level = EventLevel.Error, Message = "{1}", Version = 1)]
 		private void LogServiceHostInitializationFailed(string exception, string serviceType, string message) =>
-			WriteEvent((int)EventSourcesEventIds.ServiceHostInitializationFailedEventId, exception, serviceType, message);
+			WriteEvent((int)EventSourcesEventIds.ServiceHostInitializationFailed, exception, serviceType, message);
 	}
 }

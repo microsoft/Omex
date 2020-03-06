@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		public static OmexLogEventSource Instance { get; } = new OmexLogEventSource();
 
 
-		[Event((int)EventSourcesEventIds.LogErrorEventId, Level = EventLevel.Error, Message = "{13}", Version = 6)]
+		[Event((int)EventSourcesEventIds.LogError, Level = EventLevel.Error, Message = "{13}", Version = 6)]
 		public void LogErrorServiceMessage(
 			string applicationName,
 			string serviceName,
@@ -31,10 +31,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string tagName,
 			int threadId,
 			string message) =>
-			WriteEvent((int)EventSourcesEventIds.LogErrorEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+			WriteEvent((int)EventSourcesEventIds.LogError, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
-		[Event((int)EventSourcesEventIds.LogWarningEventId, Level = EventLevel.Warning, Message = "{13}", Version = 6)]
+		[Event((int)EventSourcesEventIds.LogWarning, Level = EventLevel.Warning, Message = "{13}", Version = 6)]
 		public void LogWarningServiceMessage(
 			string applicationName,
 			string serviceName,
@@ -51,10 +51,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string tagName,
 			int threadId,
 			string message) =>
-			WriteEvent((int)EventSourcesEventIds.LogWarningEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+			WriteEvent((int)EventSourcesEventIds.LogWarning, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
-		[Event((int)EventSourcesEventIds.LogInfoEventId, Level = EventLevel.Informational, Message = "{13}", Version = 6)]
+		[Event((int)EventSourcesEventIds.LogInfo, Level = EventLevel.Informational, Message = "{13}", Version = 6)]
 		public void LogInfoServiceMessage(
 			string applicationName,
 			string serviceName,
@@ -71,10 +71,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string tagName,
 			int threadId,
 			string message) =>
-			WriteEvent((int)EventSourcesEventIds.LogInfoEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+			WriteEvent((int)EventSourcesEventIds.LogInfo, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
-		[Event((int)EventSourcesEventIds.LogVerboseEventId, Level = EventLevel.Verbose, Message = "{13}", Version = 6)]
+		[Event((int)EventSourcesEventIds.LogVerbose, Level = EventLevel.Verbose, Message = "{13}", Version = 6)]
 		public void LogVerboseServiceMessage(
 			string applicationName,
 			string serviceName,
@@ -91,10 +91,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string tagName,
 			int threadId,
 			string message) =>
-			WriteEvent((int)EventSourcesEventIds.LogVerboseEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+			WriteEvent((int)EventSourcesEventIds.LogVerbose, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
-		[Event((int)EventSourcesEventIds.LogSpamEventId, Level = EventLevel.Verbose, Message = "{13}", Version = 6)]
+		[Event((int)EventSourcesEventIds.LogSpam, Level = EventLevel.Verbose, Message = "{13}", Version = 6)]
 		public void LogSpamServiceMessage(
 			string applicationName,
 			string serviceName,
@@ -111,7 +111,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			string tagName,
 			int threadId,
 			string message) =>
-			WriteEvent((int)EventSourcesEventIds.LogSpamEventId, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+			WriteEvent((int)EventSourcesEventIds.LogSpam, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
 		private OmexLogEventSource() { }

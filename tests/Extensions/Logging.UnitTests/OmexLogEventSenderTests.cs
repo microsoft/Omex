@@ -15,12 +15,12 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 	public class OmexLogEventSenderTests
 	{
 		[DataTestMethod]
-		[DataRow(EventLevel.Error, LogLevel.Critical, EventSourcesEventIds.LogErrorEventId)]
-		[DataRow(EventLevel.Error, LogLevel.Error, EventSourcesEventIds.LogErrorEventId)]
-		[DataRow(EventLevel.Warning, LogLevel.Warning, EventSourcesEventIds.LogWarningEventId)]
-		[DataRow(EventLevel.Informational, LogLevel.Information, EventSourcesEventIds.LogInfoEventId)]
-		[DataRow(EventLevel.Verbose, LogLevel.Debug, EventSourcesEventIds.LogVerboseEventId)]
-		[DataRow(EventLevel.Verbose, LogLevel.Trace, EventSourcesEventIds.LogSpamEventId)]
+		[DataRow(EventLevel.Error, LogLevel.Critical, EventSourcesEventIds.LogError)]
+		[DataRow(EventLevel.Error, LogLevel.Error, EventSourcesEventIds.LogError)]
+		[DataRow(EventLevel.Warning, LogLevel.Warning, EventSourcesEventIds.LogWarning)]
+		[DataRow(EventLevel.Informational, LogLevel.Information, EventSourcesEventIds.LogInfo)]
+		[DataRow(EventLevel.Verbose, LogLevel.Debug, EventSourcesEventIds.LogVerbose)]
+		[DataRow(EventLevel.Verbose, LogLevel.Trace, EventSourcesEventIds.LogSpam)]
 		public void EventSourceLogsMessage(EventLevel eventLevel, LogLevel logLevel, EventSourcesEventIds eventId)
 		{
 			CustomEventListener listener = new CustomEventListener();

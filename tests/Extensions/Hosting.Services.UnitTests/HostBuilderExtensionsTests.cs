@@ -179,7 +179,7 @@ namespace Hosting.Services.UnitTests
 
 			bool hasErrorEvent = listener.EventsInformation.Any(e =>
 				serviceType == GetPayloadValue<string>(e, ServiceTypePayloadName)
-				&& e.EventId == (int)EventSourcesEventIds.ServiceHostInitializationFailedEventId);
+				&& e.EventId == (int)EventSourcesEventIds.ServiceHostInitializationFailed);
 
 			Assert.IsTrue(hasErrorEvent, "BuildStatelessService error should be logged");
 		}
@@ -199,7 +199,7 @@ namespace Hosting.Services.UnitTests
 
 			bool hasErrorEvent = listener.EventsInformation.Any(e =>
 				serviceType == GetPayloadValue<string>(e, ServiceTypePayloadName)
-				&& e.EventId == (int)EventSourcesEventIds.ServiceHostInitializationFailedEventId);
+				&& e.EventId == (int)EventSourcesEventIds.ServiceHostInitializationFailed);
 
 			Assert.IsTrue(hasErrorEvent, "BuildStatefulService error should be logged");
 		}
