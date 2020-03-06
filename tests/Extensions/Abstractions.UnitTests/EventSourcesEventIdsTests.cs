@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
@@ -13,8 +12,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 		[TestMethod]
 		public void EventIdsUnique()
 		{
-			int[] values = Enum.GetValues(typeof(EventSourcesEventIds)).Cast<int>().ToArray();
-			CollectionAssert.AllItemsAreUnique(values, "All Event Ids should have unique int values");
+			CollectionAssert.AllItemsAreUnique(
+				Enum.GetValues(typeof(EventSourcesEventIds)),
+				"All Event Ids should have unique int values");
 		}
 	}
 }

@@ -18,12 +18,9 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Label="Condition Variables" >
-    <IsNetStandard>false</IsNetStandard>
-    <IsNetStandard Condition="$(NetStandardVersions.Contains('$(TargetFramework)'))">true</IsNetStandard>
-    <IsNetCore>false</IsNetCore>
-    <IsNetCore Condition="$(NetCoreVersions.Contains('$(TargetFramework)'))">true</IsNetCore>
-    <IsNetFramework>false</IsNetFramework>
-    <IsNetFramework Condition="$(NetFrameworkVersions.Contains('$(TargetFramework)'))">true</IsNetFramework>
+    <IsNetStandard>$(NetStandardVersions.Contains('$(TargetFramework)'))</IsNetStandard>
+    <IsNetCore>$(NetCoreVersions.Contains('$(TargetFramework)'))</IsNetCore>
+    <IsNetFramework>$(NetFrameworkVersions.Contains('$(TargetFramework)'))</IsNetFramework>
   </PropertyGroup>
   <PropertyGroup Label="Signing" Condition="'$(SignAssemblies)' == 'true'">
     <SignAssembly>true</SignAssembly>
