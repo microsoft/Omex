@@ -9,14 +9,16 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 	public interface ITimedScopeProvider
 	{
 		/// <summary>
-		/// Create and start TimedScope
+		/// Creates and start TimedScope
 		/// </summary>
+		/// <exception cref="System.ArgumentException">Thrown when name null or empty</exception>
 		TimedScope Start(string name, TimedScopeResult result);
 
 
 		/// <summary>
-		/// Create TimedScope
+		/// Creates TimedScope
 		/// </summary>
+		/// <exception cref="System.ArgumentException">Thrown when name null or empty</exception>
 		TimedScope Create(string name, TimedScopeResult result);
 	}
 }

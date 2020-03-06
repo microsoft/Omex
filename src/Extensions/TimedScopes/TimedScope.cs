@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 
 		/// <summary>
-		/// TimedScope sub tipe
+		/// TimedScope sub type
 		/// </summary>
 		public string SubType { get; set; }
 

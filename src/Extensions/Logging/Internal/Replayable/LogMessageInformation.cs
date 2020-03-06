@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Omex.Extensions.Logging.Replayable
 {
-	internal struct LogMessageInformation
+	internal readonly struct LogMessageInformation
 	{
 		public string Category { get; }
 		public EventId EventId { get; }
