@@ -8,13 +8,16 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 	/// <summary>
 	/// Logging category
 	/// </summary>
-	public struct Category : IEquatable<Category>
+	public readonly struct Category : IEquatable<Category>
 	{
 		/// <summary>
 		/// Category
 		/// </summary>
 		/// <param name="name">Category name</param>
-		public Category(string name) => Name = name;
+		public Category(string name) =>
+			Name = string.IsNullOrWhiteSpace(name)
+				? throw new ArgumentException("Cathegory name should not null or empty", nameof(name))
+				: name;
 
 
 		/// <summary>

@@ -13,30 +13,30 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// <summary>
 		/// Error level
 		/// </summary>
-		public static LogLevel Error { get; } = LogLevel.Error;
+		public static LogLevel Error => LogLevel.Error;
 
 
 		/// <summary>
 		/// Info level
 		/// </summary>
-		public static LogLevel Info { get; } = LogLevel.Information;
+		public static LogLevel Info => LogLevel.Information;
 
 
 		/// <summary>
 		/// Spam level
 		/// </summary>
-		public static LogLevel Spam { get; } = LogLevel.Trace;
+		public static LogLevel Spam => LogLevel.Trace;
 
 
 		/// <summary>
 		/// Verbose level
 		/// </summary>
-		public static LogLevel Verbose { get; } = LogLevel.Debug;
+		public static LogLevel Verbose => LogLevel.Debug;
 
 
 		/// <summary>
 		/// Warning level
 		/// </summary>
-		public static LogLevel Warning { get; } = LogLevel.Warning;
+		public static LogLevel Warning => LogLevel.Warning;
 	}
 }
