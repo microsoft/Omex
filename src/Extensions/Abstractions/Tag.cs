@@ -23,6 +23,6 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		public static EventId Create(
 			[CallerFilePath] string sourceFilePath = "",
 			[CallerLineNumber] int sourceLineNumber = 0) =>
-			new EventId(sourceLineNumber, sourceFilePath);
+				new EventId(sourceLineNumber, sourceFilePath);
 	}
 }
