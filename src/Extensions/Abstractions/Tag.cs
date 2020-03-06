@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 
 
 		/// <summary>
-		/// Create a EventId tag using CallerFilePath and CallerLineNumber
+		/// Create an EventId tag using CallerFilePath and CallerLineNumber
 		/// </summary>
 		public static EventId Create(
 			[CallerFilePath] string sourceFilePath = "",
