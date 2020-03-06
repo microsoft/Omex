@@ -12,7 +12,7 @@ namespace Microsoft.Omex.Extensions.Compatability
 	public static class ServiceCollectionExtensions
 	{
 		/// <summary>
-		/// Initialize depriacated static classes like Code and ULSLogger
+		/// Initialize deprecated static classes like Code and ULSLogger
 		/// </summary>
 		public static IHostBuilder AddOmexCompatabilityServices(this IHostBuilder builder) =>
 			builder.ConfigureServices((context, collection) =>
