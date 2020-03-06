@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// <summary>
 		/// Log a trace
 		/// </summary>
-		/// <param name="eventId">tagid (uniqueid) of the trace</param>
+		/// <param name="eventId">A unique tag id for the trace</param>
 		/// <param name="category">logging category</param>
 		/// <param name="level">logging level</param>
 		/// <param name="message">message to log</param>
