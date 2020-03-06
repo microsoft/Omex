@@ -19,13 +19,13 @@ namespace Microsoft.Omex.Extensions.Hosting
 		/// <summary>
 		/// Int environment
 		/// </summary>
-		public static string Int { get; } = "Int"; //TODO: Consider Removing
+		public static string Int { get; } = "Int"; //TODO: Consider Removing PBI - ADO Office/OC 4005211
 
 
 		/// <summary>
 		/// Pre production environment
 		/// </summary>
-		public static string EDog { get; } = "EDog"; //TODO: Consider replacing with Environments.Staging
+		public static string EDog { get; } = "EDog"; //TODO: Consider replacing with Environments.Staging PBI - ADO Office/OC 4005211
 
 
 		/// <summary>
