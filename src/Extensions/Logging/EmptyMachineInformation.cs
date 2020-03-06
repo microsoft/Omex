@@ -15,7 +15,7 @@ namespace Microsoft.Omex.Extensions.Logging
 	public class EmptyMachineInformation : IMachineInformation
 	{
 		/// <summary>
-		/// Create instance of machine information
+		/// Create instance of machine information, please keep this initialization as lightweight as possible
 		/// </summary>
 		public EmptyMachineInformation()
 		{

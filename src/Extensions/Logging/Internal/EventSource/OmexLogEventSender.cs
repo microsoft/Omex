@@ -80,11 +80,11 @@ namespace Microsoft.Omex.Extensions.Logging
 
 
 		public bool IsEnabled(LogLevel level) =>
-		level switch
-		{
-			LogLevel.None => false,
-			_ => m_eventSource.IsEnabled()
-		};
+			level switch
+			{
+				LogLevel.None => false,
+				_ => m_eventSource.IsEnabled()
+			};
 
 
 		public bool IsReplayableMessage(LogLevel logLevel) =>
