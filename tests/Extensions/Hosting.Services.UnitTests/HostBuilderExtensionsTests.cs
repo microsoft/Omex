@@ -228,11 +228,11 @@ namespace Hosting.Services.UnitTests
 		}
 
 
-		private static T? GetPayloadValue<T>(EventWrittenEventArgs info, string name)
-			where T : class
+		private static TPayloadType? GetPayloadValue<TPayloadType>(EventWrittenEventArgs info, string name)
+			where TPayloadType : class
 		{
 			int index = info.PayloadNames?.IndexOf(name) ?? -1;
-			return (T?)(index < 0 ? null : info.Payload?[index]);
+			return (TPayloadType?)(index < 0 ? null : info.Payload?[index]);
 		}
 
 
