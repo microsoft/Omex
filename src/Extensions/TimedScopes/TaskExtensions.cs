@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System.Drawing.Drawing2D;
 using System.Threading.Tasks;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
