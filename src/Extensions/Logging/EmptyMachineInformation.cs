@@ -23,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			MachineId = DefaultEmptyValue;
 			MachineRole = DefaultEmptyValue;
 			MachineClusterIpAddress = IPAddress.None;
-			MachineCount = 1;
+			MachineCount = 0;
 			MachineCluster = MachineId;
 
 			EnvironmentName = DefaultEmptyValue;
