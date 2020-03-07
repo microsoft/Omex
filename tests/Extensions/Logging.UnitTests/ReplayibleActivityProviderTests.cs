@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		private Activity CreateActivity(bool replayEvents)
 		{
 			IOptions<OmexLoggingOptions> options = Options.Create(new OmexLoggingOptions { ReplayLogsInCaseOfError = replayEvents });
-			ReplayibleActivityProvider provider = new ReplayibleActivityProvider(options);
+			ReplayableActivityProvider provider = new ReplayableActivityProvider(options);
 			return provider.Create("TestName");
 		}
 	}

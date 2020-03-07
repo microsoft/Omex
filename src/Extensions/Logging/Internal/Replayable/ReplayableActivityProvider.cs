@@ -8,9 +8,9 @@ using Microsoft.Omex.Extensions.TimedScopes;
 
 namespace Microsoft.Omex.Extensions.Logging.Replayable
 {
-	internal class ReplayibleActivityProvider : IActivityProvider
+	internal class ReplayableActivityProvider : IActivityProvider
 	{
-		public ReplayibleActivityProvider(IOptions<OmexLoggingOptions> options) =>
+		public ReplayableActivityProvider(IOptions<OmexLoggingOptions> options) =>
 			m_replayLogsInCaseOfError = options.Value.ReplayLogsInCaseOfError;
 
 
