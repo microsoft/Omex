@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Omex.Extensions.Hosting.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using System;
+using Microsoft.Omex.Extensions.Hosting.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Hosting.Services.UnitTests
 {
