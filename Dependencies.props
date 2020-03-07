@@ -37,11 +37,13 @@
     <Microsoft_Extensions_DependencyInjection_Version>3.1.2</Microsoft_Extensions_DependencyInjection_Version>
     <Microsoft_Extensions_Options_Version>3.1.2</Microsoft_Extensions_Options_Version>
     <System_Diagnostics_DiagnosticSource_Version>4.7.0</System_Diagnostics_DiagnosticSource_Version>
-    <Microsoft_ServiceFabric_Version>7.0.466</Microsoft_ServiceFabric_Version>
-    <Microsoft_ServiceFabric_Services_Version>4.0.466</Microsoft_ServiceFabric_Services_Version>
-    <Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>4.0.466</Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>
     <MSTest_TestFramework_Version>2.1.0</MSTest_TestFramework_Version>
     <MSTest_TestAdapter_Version>2.1.0</MSTest_TestAdapter_Version>
     <ServiceFabric_Mocks_Version>4.1.1</ServiceFabric_Mocks_Version>
+  </PropertyGroup>
+  <PropertyGroup Label="ServiceFabric packages for Omex Extensions">
+    <Microsoft_ServiceFabric_Version>7.0.466</Microsoft_ServiceFabric_Version>
+    <Microsoft_ServiceFabric_Services_Version>4.0.466</Microsoft_ServiceFabric_Services_Version>
+    <Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>4.0.466</Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>
   </PropertyGroup>
 </Project>
