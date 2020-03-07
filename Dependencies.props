@@ -7,7 +7,7 @@
     <Microsoft_Azure_DocumentDB_Version>2.10.0</Microsoft_Azure_DocumentDB_Version>
     <Microsoft_Net_Test_Sdk_Version>16.5.0</Microsoft_Net_Test_Sdk_Version>
     <Microsoft_SourceLink_GitHub_Version>1.0.0</Microsoft_SourceLink_GitHub_Version>
-    <Microsoft_SourceLink_Vsts_Git_Version>1.0.0-beta2-19367-01</Microsoft_SourceLink_Vsts_Git_Version>
+    <Microsoft_SourceLink_AzureRepos_Git_Version>1.0.0</Microsoft_SourceLink_AzureRepos_Git_Version>
     <MSTest_TestAdapter_Version>2.1.0</MSTest_TestAdapter_Version>
     <MSTest_TestFramework_Version>2.1.0</MSTest_TestFramework_Version>
     <System_Configuration_ConfigurationManager_Version>4.7.0</System_Configuration_ConfigurationManager_Version>
