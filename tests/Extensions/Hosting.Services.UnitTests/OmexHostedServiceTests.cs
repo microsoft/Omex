@@ -46,7 +46,6 @@ namespace Hosting.Services.UnitTests
 		}
 
 
-
 		[TestMethod]
 		public async Task CheckHostStartAndFailure()
 		{
@@ -76,7 +75,6 @@ namespace Hosting.Services.UnitTests
 
 			Assert.IsTrue(runnerMock.Token.IsCancellationRequested, "Task should be canceled");
 		}
-
 
 
 		private class MockRunner : IOmexServiceRunner
