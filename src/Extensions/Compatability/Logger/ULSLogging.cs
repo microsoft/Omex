@@ -16,11 +16,11 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// <summary>
 		/// Logs a trace
 		/// </summary>
-		/// <param name="eventId">A unique tag id for the trace</param>
-		/// <param name="category">logging category</param>
-		/// <param name="level">logging level</param>
-		/// <param name="message">message to log</param>
-		/// <param name="parameters">additional parameters</param>
+		/// <param name="eventId">Unique tag id for the trace</param>
+		/// <param name="category">Logging category</param>
+		/// <param name="level">Logging level</param>
+		/// <param name="message">The message, or message format string, to log</param>
+		/// <param name="parameters">Message format parameters</param>
 		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static void LogTraceTag(EventId eventId, Category category, LogLevel level, string message, params object[] parameters) =>
 			GetLogger(category).Log(level, eventId, message, parameters);
@@ -29,11 +29,11 @@ namespace Microsoft.Omex.Extensions.Compatability.Logger
 		/// <summary>
 		/// Report an exception
 		/// </summary>
-		/// <param name="eventId">tag</param>
-		/// <param name="category">category</param>
-		/// <param name="exception">exception</param>
-		/// <param name="message">message</param>
-		/// <param name="parameters">message format parameters</param>
+		/// <param name="eventId">Unique tag id for the trace</param>
+		/// <param name="category">Logging category</param>
+		/// <param name="exception">Exception to log</param>
+		/// <param name="message">The message, or message format string, to log</param>
+		/// <param name="parameters">Message format parameters</param>
 		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static void ReportExceptionTag(EventId eventId, Category category, Exception exception, string message, params object[] parameters) =>
 			GetLogger(category).LogError(eventId, exception, message, parameters);
