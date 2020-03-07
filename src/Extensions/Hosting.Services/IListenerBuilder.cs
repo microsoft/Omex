@@ -7,7 +7,7 @@ using Microsoft.ServiceFabric.Services.Communication.Runtime;
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	/// <summary>Creates comunication listener for SF service</summary>
-	public interface IListenerBuilder<in T> where T : ServiceContext
+	public interface IListenerBuilder<in TServiceContext> where TServiceContext : ServiceContext
 	{
 		/// <summary>
 		/// Listener name
@@ -18,6 +18,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>
 		/// Creates comunication listener for SF service 
 		/// </summary>
-		ICommunicationListener Build(T context);
+		ICommunicationListener Build(TServiceContext context);
 	}
 }
