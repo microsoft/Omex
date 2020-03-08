@@ -8,7 +8,7 @@ namespace Microsoft.Omex.Extensions.Hosting
 	/// <summary>
 	/// Provides variables with commonly used environments
 	/// </summary>
-	public static class OmexEnviroments
+	public static class OmexEnvironments
 	{
 		/// <summary>
 		/// Development environment, previously called Pr
