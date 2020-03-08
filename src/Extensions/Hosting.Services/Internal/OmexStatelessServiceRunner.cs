@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System;
 using System.Collections.Generic;
 using System.Fabric;
 using System.Linq;
@@ -13,8 +12,6 @@ using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-
-
 	/// <summary>
 	/// Class to manage stateless service fabric service startup
 	/// </summary>
@@ -24,6 +21,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		private readonly ServiceContextAccessor<StatelessServiceContext> m_contextAccessor;
 		private IEnumerable<IListenerBuilder<StatelessServiceContext>> ListenerBuilders { get; }
 		private IEnumerable<IServiceAction<StatelessServiceContext>> ServiceActions { get; }
+
 
 		public OmexStatelessServiceRunner(
 			IHostEnvironment environment,

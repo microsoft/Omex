@@ -22,6 +22,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		private IEnumerable<IListenerBuilder<StatefulServiceContext>> ListenerBuilders { get; }
 		private IEnumerable<IServiceAction<StatefulServiceContext>> ServiceActions { get; }
 
+
 		public OmexStatefulServiceRunner(
 			IHostEnvironment environment,
 			ServiceContextAccessor<StatefulServiceContext> contextAccessor,
