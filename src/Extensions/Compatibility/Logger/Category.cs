@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.Omex.Extensions.Compatability.Logger
+namespace Microsoft.Omex.Extensions.Compatibility.Logger
 {
 	/// <summary>
 	/// Logging category

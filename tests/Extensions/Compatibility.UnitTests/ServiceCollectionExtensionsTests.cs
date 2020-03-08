@@ -5,14 +5,14 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Omex.Extensions.Compatability.Logger;
-using Microsoft.Omex.Extensions.Compatability.TimedScopes;
-using Microsoft.Omex.Extensions.Compatability.Validation;
+using Microsoft.Omex.Extensions.Compatibility.Logger;
+using Microsoft.Omex.Extensions.Compatibility.TimedScopes;
+using Microsoft.Omex.Extensions.Compatibility.Validation;
 using Microsoft.Omex.Extensions.TimedScopes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Microsoft.Omex.Extensions.Compatability.UnitTests
+namespace Microsoft.Omex.Extensions.Compatibility.UnitTests
 {
 	[TestClass]
 	public class ServiceCollectionExtensionsTests
@@ -31,7 +31,7 @@ namespace Microsoft.Omex.Extensions.Compatability.UnitTests
 						.AddTimedScopes()
 						.AddSingleton(mockFactory.Object);
 				})
-				.AddOmexCompatabilityServices()
+				.AddOmexCompatibilityServices()
 				.Build()
 				.Start();
 

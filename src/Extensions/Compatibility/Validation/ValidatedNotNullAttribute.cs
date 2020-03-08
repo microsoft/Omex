@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.Omex.Extensions.Compatability.Validation
+namespace Microsoft.Omex.Extensions.Compatibility.Validation
 {
 	/// <summary>
 	/// Indicates to code analysis tools that a method validates a particular parameter to not be null.

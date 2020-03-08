@@ -4,7 +4,7 @@
 using System;
 
 //Old namespace used to be compatible with TimedScopeGen
-namespace Microsoft.Omex.Extensions.Compatability.TimedScopes
+namespace Microsoft.Omex.Extensions.Compatibility.TimedScopes
 {
 	/// <summary>
 	/// Store Timed Scope name and its description

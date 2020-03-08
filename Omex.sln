@@ -65,7 +65,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", 
 		src\Extensions\Directory.Build.props = src\Extensions\Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Compatability", "src\Extensions\Compatability\Microsoft.Omex.Extensions.Compatability.csproj", "{61191795-F683-4A3A-AD61-E9C3E8C5930A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Compatibility", "src\Extensions\Compatibility\Microsoft.Omex.Extensions.Compatibility.csproj", "{61191795-F683-4A3A-AD61-E9C3E8C5930A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Hosting", "src\Extensions\Hosting\Microsoft.Omex.Extensions.Hosting.csproj", "{66A0783A-0D5A-4EA5-A91C-DCAA8EB6D819}"
 EndProject
@@ -84,7 +84,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.H
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.TimedScopes.UnitTests", "tests\Extensions\TimedScopes.UnitTests\Microsoft.Omex.Extensions.TimedScopes.UnitTests.csproj", "{2B473773-37B1-4D12-87F3-F352A97509EE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Compatability.UnitTests", "tests\Extensions\Compatability.UnitTests\Microsoft.Omex.Extensions.Compatability.UnitTests.csproj", "{54F6D9DC-D2CE-484E-BF1F-8DF54BA5D198}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Compatibility.UnitTests", "tests\Extensions\Compatibility.UnitTests\Microsoft.Omex.Extensions.Compatibility.UnitTests.csproj", "{54F6D9DC-D2CE-484E-BF1F-8DF54BA5D198}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Hosting.Services.UnitTests", "tests\Extensions\Hosting.Services.UnitTests\Microsoft.Omex.Extensions.Hosting.Services.UnitTests.csproj", "{92DC3A06-6BDE-4213-9D29-7C1C10A9D325}"
 EndProject

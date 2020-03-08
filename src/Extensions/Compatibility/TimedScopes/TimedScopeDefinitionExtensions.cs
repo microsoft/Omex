@@ -4,7 +4,7 @@
 using System;
 using Microsoft.Omex.Extensions.TimedScopes;
 
-namespace Microsoft.Omex.Extensions.Compatability.TimedScopes
+namespace Microsoft.Omex.Extensions.Compatibility.TimedScopes
 {
 	/// <summary>
 	/// Extension for TimedScopeDefinition
@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Compatability.TimedScopes
 		{
 			if (s_timedScopeProvider == null)
 			{
-				throw new OmexCompatabilityInitializationException();
+				throw new OmexCompatibilityInitializationException();
 			}
 
 			TimedScope scope = s_timedScopeProvider.Create(timedScopeDefinition.Name, initialResult);

@@ -5,16 +5,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Omex.Extensions.Compatability.Logger;
-using Microsoft.Omex.Extensions.Compatability.TimedScopes;
-using Microsoft.Omex.Extensions.Compatability.Validation;
+using Microsoft.Omex.Extensions.Compatibility.Logger;
+using Microsoft.Omex.Extensions.Compatibility.TimedScopes;
+using Microsoft.Omex.Extensions.Compatibility.Validation;
 using Microsoft.Omex.Extensions.TimedScopes;
 
-namespace Microsoft.Omex.Extensions.Compatability
+namespace Microsoft.Omex.Extensions.Compatibility
 {
-	internal sealed class OmexCompatabilityIntializer : IHostedService
+	internal sealed class OmexCompatibilityIntializer : IHostedService
 	{
-		public OmexCompatabilityIntializer(ITimedScopeProvider timedScopeProvider, ILoggerFactory loggerFactory) =>
+		public OmexCompatibilityIntializer(ITimedScopeProvider timedScopeProvider, ILoggerFactory loggerFactory) =>
 			(m_timedScopeProvider, m_loggerFactory) = (timedScopeProvider, loggerFactory);
 
 

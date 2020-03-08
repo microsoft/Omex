@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 
-namespace Microsoft.Omex.Extensions.Compatability.Validation
+namespace Microsoft.Omex.Extensions.Compatibility.Validation
 {
 	/// <summary>
 	/// Code validation
@@ -428,7 +428,7 @@ namespace Microsoft.Omex.Extensions.Compatability.Validation
 
 			if (s_logger == null)
 			{
-				throw new OmexCompatabilityInitializationException();
+				throw new OmexCompatibilityInitializationException();
 			}
 
 			s_logger.LogError(eventId.Value, message, args);

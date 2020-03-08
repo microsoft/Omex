@@ -7,7 +7,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="$(Microsoft_Extensions_Hosting_Abstractions_Version)" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Extensions\Compatability\Microsoft.Omex.Extensions.Compatability.csproj" />
+    <ProjectReference Include="..\..\..\src\Extensions\Compatibility\Microsoft.Omex.Extensions.Compatibility.csproj" />
     <ProjectReference Include="..\..\..\src\Extensions\TimedScopes\Microsoft.Omex.Extensions.TimedScopes.csproj" />
   </ItemGroup>
 </Project>

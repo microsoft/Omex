@@ -3,7 +3,7 @@
 
 using Microsoft.Extensions.Logging;
 
-namespace Microsoft.Omex.Extensions.Compatability.Logger
+namespace Microsoft.Omex.Extensions.Compatibility.Logger
 {
 	/// <summary>
 	/// List of all available levels for logging
