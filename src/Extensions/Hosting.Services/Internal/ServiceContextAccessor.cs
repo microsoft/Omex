@@ -13,7 +13,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public ServiceContextAccessor(TContext? context = null)
 		{
 			m_serviceContext = context;
-			m_actions = new LinkedList<Action<TContext>>();
+			m_actions = new LinkedList<WeakReference<Action<TContext>>>();
 		}
 
 
@@ -21,9 +21,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		{
 			m_serviceContext = context;
 
-			foreach (Action<TContext> action in m_actions)
+			foreach (WeakReference<Action<TContext>> actionReference in m_actions)
 			{
-				action(context);
+				if (actionReference.TryGetTarget(out Action<TContext>? action) && action != null)
+				{
+					action(context);
+				}
 			}
 
 			m_actions.Clear();
@@ -38,7 +41,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			}
 			else
 			{
-				m_actions.AddLast(action);
+				m_actions.AddLast(new WeakReference<Action<TContext>>(action));
 			}
 		}
 
@@ -46,7 +49,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		TContext? IServiceContextAccessor<TContext>.ServiceContext => m_serviceContext;
 
 
-		private readonly LinkedList<Action<TContext>> m_actions;
+		private readonly LinkedList<WeakReference<Action<TContext>>> m_actions;
 		private TContext? m_serviceContext;
 	}
 }
