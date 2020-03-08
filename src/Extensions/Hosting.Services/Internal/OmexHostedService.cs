@@ -71,7 +71,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			}
 			catch (Exception e)
 			{
-				m_logger.LogCritical(Tag.Create(), e, "Exception during ServiceFabricHost initialization");
+				m_logger.LogCritical(Tag.Create(), e, "Exception during ServiceFabricHost execution");
+				throw;
 			}
 		}
 
