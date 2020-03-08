@@ -63,12 +63,12 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		}
 
 
-		private void AssertPayload<T>(EventWrittenEventArgs info, string name, T expected)
-			where T : class
+		private void AssertPayload<TPayloadType>(EventWrittenEventArgs info, string name, TPayloadType expected)
+			where TPayloadType : class
 		{
 			int index = info.PayloadNames?.IndexOf(name) ?? -1;
 
-			T? value = (T?)(index < 0 ? null : info.Payload?[index]);
+			TPayloadType? value = (TPayloadType?)(index < 0 ? null : info.Payload?[index]);
 
 			Assert.AreEqual(expected, value, $"Wrong value for {name}");
 		}

@@ -22,10 +22,10 @@ namespace Hosting.Services.Web.UnitTests
 		private void CheckTypeRegistration<TContext>(TContext context)
 			where TContext : ServiceContext
 		{
-			ListenerValidator validator = new ListenerValidator();
+			ListenerValidator<TContext> validator = new ListenerValidator<TContext>();
 
-			KestrelListenerBuilder<ListenerValidator.Startup, TContext> builder =
-				new KestrelListenerBuilder<ListenerValidator.Startup, TContext>(
+			KestrelListenerBuilder<MockStartup, TContext> builder =
+				new KestrelListenerBuilder<MockStartup, TContext>(
 					validator.ListenerName,
 					validator.IntegrationOptions,
 					validator.BuilderAction);

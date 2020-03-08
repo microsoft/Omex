@@ -6,7 +6,6 @@ using System.Fabric;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
@@ -19,7 +18,8 @@ using Moq;
 
 namespace Hosting.Services.Web.UnitTests
 {
-	internal class ListenerValidator
+	internal class ListenerValidator<TContext>
+		where TContext : ServiceContext
 	{
 		public ListenerValidator()
 		{
@@ -31,6 +31,7 @@ namespace Hosting.Services.Web.UnitTests
 				builder.ConfigureServices(collection =>
 				{
 					collection
+						.AddOmexServiceFabricDependencies<TContext>()
 						.AddTransient<TypeRegistredInListenerExtension>()
 						.AddSingleton(m_logsEventSourcMock.Object);
 				});
@@ -39,12 +40,15 @@ namespace Hosting.Services.Web.UnitTests
 
 
 		public string ListenerName { get; }
+
+
 		public ServiceFabricIntegrationOptions IntegrationOptions { get; }
+
+
 		public Action<IWebHostBuilder> BuilderAction { get; }
 
 
-		public IWebHost ValidateListenerBuilder<TContext>(TContext context, KestrelListenerBuilder<Startup, TContext> builder)
-			where TContext : ServiceContext
+		public IWebHost ValidateListenerBuilder(TContext context, KestrelListenerBuilder<MockStartup, TContext> builder)
 		{
 			Assert.AreEqual(ListenerName, builder.Name);
 
@@ -57,9 +61,8 @@ namespace Hosting.Services.Web.UnitTests
 			Assert.ReferenceEquals(context, ResolveType<TContext>(host));
 			Assert.ReferenceEquals(context, ResolveType<IServiceContextAccessor<TContext>>(host).ServiceContext);
 
-
 			ResolveType<TypeRegistredInListenerExtension>(host);
-			ResolveType<TypeRegistredInStartup>(host);
+			ResolveType<MockStartup.TypeRegistredInStartup>(host);
 
 			return host;
 		}
@@ -68,15 +71,14 @@ namespace Hosting.Services.Web.UnitTests
 		public void ValidateOmexTypesRegistred(IWebHost host)
 		{
 			ResolveType<ITimedScopeProvider>(host);
-			ILogger logger = ResolveType<ILogger<ListenerValidator>>(host);
+			ILogger logger = ResolveType<ILogger<ListenerValidator<TContext>>>(host);
 			m_logsEventSourcMock.Invocations.Clear();
 			logger.LogError("TestMessage");
 			Assert.AreNotEqual(0, m_logsEventSourcMock.Invocations.Count, "Omex logger should be registred in WebHost");
 		}
 
 
-		public ICommunicationListener ValidateBuildFunction<TContext>(TContext context, KestrelListenerBuilder<Startup, TContext> builder)
-			where TContext : ServiceContext
+		public ICommunicationListener ValidateBuildFunction(TContext context, KestrelListenerBuilder<MockStartup, TContext> builder)
 		{
 			ICommunicationListener listener = builder.Build(context);
 			Assert.IsNotNull(listener, "Listener should not be null");
@@ -93,23 +95,6 @@ namespace Hosting.Services.Web.UnitTests
 			Assert.IsNotNull(obj, "Failed to resolve {0}", typeof(T));
 			return obj;
 		}
-
-
-		internal class Startup
-		{
-			public Startup() { }
-
-
-			public void ConfigureServices(IServiceCollection services) => services.AddTransient<TypeRegistredInStartup>();
-
-
-			public void Configure(IApplicationBuilder app, IHostEnvironment env)
-			{
-			}
-		}
-
-
-		private class TypeRegistredInStartup { }
 
 
 		private class TypeRegistredInListenerExtension { }
