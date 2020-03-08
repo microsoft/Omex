@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 
 		/// <summary>
-		/// Set user hash from activity
+		/// Set user hash for the activity
 		/// </summary>
 		public static void SetUserHash(this Activity activity, string userHash) =>
 			activity.AddBaggage(UserHashKey, userHash);
