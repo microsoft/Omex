@@ -89,7 +89,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			}
 			else
 			{
-				m_logger.LogInformation(Tag.Create(), "Service stoped");
+				m_logger.LogInformation(Tag.Create(), "Service stopped");
 			}
 
 			m_lifetime.StopApplication();
