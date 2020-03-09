@@ -40,9 +40,9 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			m_logsEventSource.LogMessage(activityId, traceId, m_categoryName, logLevel, eventId, threadId, message);
 
-			if (m_logsEventSource.IsReplayableMessage(logLevel) && activity is ReplayableActivity replayableyScope)
+			if (m_logsEventSource.IsReplayableMessage(logLevel) && activity is ReplayableActivity replayableScope)
 			{
-				replayableyScope.AddLogEvent(new LogMessageInformation(m_categoryName, eventId, threadId, message));
+				replayableScope.AddLogEvent(new LogMessageInformation(m_categoryName, eventId, threadId, message));
 			}
 		}
 
