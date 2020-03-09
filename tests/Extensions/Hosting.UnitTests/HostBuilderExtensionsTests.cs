@@ -28,7 +28,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 					ValidateScopes = true
 				}).GetService(type);
 
-			Assert.IsNotNull(collectionObj, $"Type {type} was not resolved after AddOmexServices to ServiceCollection");
+			Assert.IsNotNull(collectionObj, FormattableString.Invariant($"Type {type} was not resolved after AddOmexServices to ServiceCollection"));
 
 			object hostObj = new HostBuilder()
 				.AddOmexServices()
@@ -39,7 +39,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 				})
 				.Build().Services.GetService(type);
 
-			Assert.IsNotNull(hostObj, $"Type {type} was not resolved after AddOmexServices to HostBuilder");
+			Assert.IsNotNull(hostObj, FormattableString.Invariant($"Type {type} was not resolved after AddOmexServices to HostBuilder"));
 		}
 	}
 }

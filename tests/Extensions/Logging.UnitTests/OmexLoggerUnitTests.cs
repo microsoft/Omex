@@ -106,16 +106,16 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		}
 
 
-		private string GetLogMessage(string suffix) => $"Message-{suffix}";
+		private string GetLogMessage(string suffix) => FormattableString.Invariant($"Message-{suffix}");
 
 
-		private string GetLogCategory(string suffix) => $"Category-{suffix}";
+		private string GetLogCategory(string suffix) => FormattableString.Invariant($"Category-{suffix}");
 
 
-		private EventId CreateEventId(int id, string suffix) => new EventId(id, $"EventId-{suffix}");
+		private EventId CreateEventId(int id, string suffix) => new EventId(id, FormattableString.Invariant($"EventId-{suffix}"));
 
 
-		private ReplayableActivity CreateActivity(string suffix) => new ReplayableActivity($"Activity-{suffix}");
+		private ReplayableActivity CreateActivity(string suffix) => new ReplayableActivity(FormattableString.Invariant($"Activity-{suffix}"));
 
 
 		private readonly Expression<Action<ILogEventSender>> m_logExpression = e =>
