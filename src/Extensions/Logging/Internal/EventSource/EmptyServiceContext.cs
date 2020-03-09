@@ -5,7 +5,9 @@ using System;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
-	/// <summary>IServiceContext without any information</summary>
+	/// <summary>
+	/// IServiceContext without any information
+	/// </summary>
 	internal class EmptyServiceContext : IServiceContext
 	{
 		public Guid PartitionId => Guid.Empty;
