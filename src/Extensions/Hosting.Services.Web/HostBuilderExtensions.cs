@@ -16,6 +16,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		/// <summary>
 		/// Add Kestrel service listener to stateless service
 		/// </summary>
+		/// <typeparam name="TStartup">The type containing the startup methods for the web listener</typeparam>
 		public static ServiceFabricHostBuilder<StatelessServiceContext> AddKestrelListener<TStartup>(
 			this ServiceFabricHostBuilder<StatelessServiceContext> builder,
 			string name,
@@ -28,6 +29,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		/// <summary>
 		/// Add Kestrel service listener to stateful service
 		/// </summary>
+		/// <typeparam name="TStartup">The type containing the startup methods for the web listener</typeparam>
 		public static ServiceFabricHostBuilder<StatefulServiceContext> AddKestrelListener<TStartup>(
 			this ServiceFabricHostBuilder<StatefulServiceContext> builder,
 			string name,
