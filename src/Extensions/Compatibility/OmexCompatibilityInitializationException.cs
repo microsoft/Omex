@@ -8,7 +8,7 @@ namespace Microsoft.Omex.Extensions.Compatibility
 	internal class OmexCompatibilityInitializationException : Exception
 	{
 		internal OmexCompatibilityInitializationException()
-			: base($"Compatibility classes were not initialized. Please call AddOmexCompatibilityServices() on HostBuilder")
+			: base("Compatibility classes were not initialized. Please call AddOmexCompatibilityServices() on HostBuilder")
 		{ }
 	}
 }
