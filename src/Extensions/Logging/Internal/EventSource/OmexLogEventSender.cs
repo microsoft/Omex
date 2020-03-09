@@ -100,6 +100,12 @@ namespace Microsoft.Omex.Extensions.Logging
 
 		public void ReplayLogs(Activity activity)
 		{
+			// Replay parent activity
+			if (activity.Parent != null)
+			{
+				ReplayLogs(activity.Parent);
+			}
+
 			if (activity is ReplayableActivity replayableActivity)
 			{
 				foreach (LogMessageInformation log in replayableActivity.GetLogEvents())
