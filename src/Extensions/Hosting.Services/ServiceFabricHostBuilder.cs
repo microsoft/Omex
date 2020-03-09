@@ -15,7 +15,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	{
 		/// <summary>
 		/// Method should be called only by extensions of this class
-		/// If you are creating a service please register dependencies before calling BuildService
+		/// If you are creating a service please register dependencies before calling BuildService method and using this class
 		/// </summary>
 		internal ServiceFabricHostBuilder<TContext> ConfigureServices(Action<HostBuilderContext, IServiceCollection> action)
 		{

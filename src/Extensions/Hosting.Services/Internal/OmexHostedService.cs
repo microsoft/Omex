@@ -21,6 +21,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		private readonly ILogger<OmexHostedService> m_logger;
 		private readonly CancellationTokenSource m_tokenSource;
 
+
 		public OmexHostedService(IOmexServiceRunner runner, IHostApplicationLifetime lifetime, ILogger<OmexHostedService> logger)
 		{
 			m_runner = runner;
@@ -28,6 +29,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			m_logger = logger;
 			m_tokenSource = new CancellationTokenSource();
 		}
+
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
