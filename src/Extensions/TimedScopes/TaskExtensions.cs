@@ -14,10 +14,10 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// <summary>
 		/// Starts TimedScopes before task execution and finish after it's completion
 		/// </summary>
-		public static async ValueTask<T> WithTimedScope<T>(this ValueTask<T> task, ITimedScopeProvider provider, TimedScopeDefinition definition)
+		public static async ValueTask<TResult> WithTimedScope<TResult>(this ValueTask<TResult> task, ITimedScopeProvider provider, TimedScopeDefinition definition)
 		{
 			using TimedScope timedScope = provider.Start(definition, TimedScopeResult.SystemError);
-			T result = await task.ConfigureAwait(false);
+			TResult result = await task.ConfigureAwait(false);
 			timedScope.Result = TimedScopeResult.Success;
 			return result;
 		}
@@ -33,8 +33,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// <summary>
 		/// Starts TimedScopes before task execution and finish after it's completion
 		/// </summary>
-		public static ValueTask<T> WithTimedScope<T>(this Task<T> task, ITimedScopeProvider provider, TimedScopeDefinition definition) =>
-			new ValueTask<T>(task).WithTimedScope(provider, definition);
+		public static ValueTask<TResult> WithTimedScope<TResult>(this Task<TResult> task, ITimedScopeProvider provider, TimedScopeDefinition definition) =>
+			new ValueTask<TResult>(task).WithTimedScope(provider, definition);
 
 
 		/// <summary>

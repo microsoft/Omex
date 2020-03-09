@@ -18,13 +18,12 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		}
 
 
-		public TimedScope Start(TimedScopeDefinition name, TimedScopeResult result) => Create(name, result).Start();
+		public TimedScope Start(TimedScopeDefinition name, TimedScopeResult result) =>
+			Create(name, result).Start();
 
 
-		public TimedScope Create(TimedScopeDefinition name, TimedScopeResult result)
-		{
-			return new TimedScope(m_eventSource, m_activityProvider.Create(name), result, m_logReplayer);
-		}
+		public TimedScope Create(TimedScopeDefinition name, TimedScopeResult result) =>
+			new TimedScope(m_eventSource, m_activityProvider.Create(name), result, m_logReplayer);
 
 
 		private readonly ITimedScopeEventSender m_eventSource;
