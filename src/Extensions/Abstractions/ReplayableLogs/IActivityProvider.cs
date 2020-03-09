@@ -13,8 +13,8 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		/// <summary>
 		/// Creates activity instance
 		/// </summary>
-		/// <param name="operationName">The name of the operation</param>
+		/// <param name="definition">Timed scope definition</param>
 		/// <returns>Newly created activity</returns>
-		Activity Create(string operationName);
+		Activity Create(TimedScopeDefinition definition);
 	}
 }

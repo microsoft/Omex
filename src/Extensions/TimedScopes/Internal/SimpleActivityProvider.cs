@@ -8,6 +8,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	internal sealed class SimpleActivityProvider : IActivityProvider
 	{
-		public Activity Create(string operationName) => new Activity(operationName);
+		public Activity Create(TimedScopeDefinition definition) => new Activity(definition.Name);
 	}
 }

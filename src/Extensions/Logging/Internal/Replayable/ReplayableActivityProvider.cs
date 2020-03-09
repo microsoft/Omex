@@ -14,8 +14,8 @@ namespace Microsoft.Omex.Extensions.Logging.Replayable
 			m_replayLogsInCaseOfError = options.Value.ReplayLogsInCaseOfError;
 
 
-		public Activity Create(string operationName) =>
-			m_replayLogsInCaseOfError ? new ReplayableActivity(operationName) : new Activity(operationName);
+		public Activity Create(TimedScopeDefinition definition) =>
+			m_replayLogsInCaseOfError ? new ReplayableActivity(definition.Name) : new Activity(definition.Name);
 
 
 		private readonly bool m_replayLogsInCaseOfError;

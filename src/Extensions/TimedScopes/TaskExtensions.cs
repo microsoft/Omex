@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System.Threading.Tasks;
+using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
@@ -13,9 +14,9 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// <summary>
 		/// Starts TimedScopes before task execution and finish after it's completion
 		/// </summary>
-		public static async ValueTask<T> WithTimedScope<T>(this ValueTask<T> task, ITimedScopeProvider provider, string name)
+		public static async ValueTask<T> WithTimedScope<T>(this ValueTask<T> task, ITimedScopeProvider provider, TimedScopeDefinition definition)
 		{
-			using TimedScope timedScope = provider.Start(name, TimedScopeResult.SystemError);
+			using TimedScope timedScope = provider.Start(definition, TimedScopeResult.SystemError);
 			T result = await task.ConfigureAwait(false);
 			timedScope.Result = TimedScopeResult.Success;
 			return result;
@@ -25,25 +26,25 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// <summary>
 		/// Starts TimedScopes before task execution and finish after it's completion
 		/// </summary>
-		public static async ValueTask WithTimedScope(this ValueTask task, ITimedScopeProvider provider, string name) =>
-			await ConvetrToTaskWithResultValue(task).WithTimedScope(provider, name).ConfigureAwait(false);
+		public static async ValueTask WithTimedScope(this ValueTask task, ITimedScopeProvider provider, TimedScopeDefinition definition) =>
+			await ConvertToTaskWithResultValue(task).WithTimedScope(provider, definition).ConfigureAwait(false);
 
 
 		/// <summary>
 		/// Starts TimedScopes before task execution and finish after it's completion
 		/// </summary>
-		public static ValueTask<T> WithTimedScope<T>(this Task<T> task, ITimedScopeProvider provider, string name) =>
-			new ValueTask<T>(task).WithTimedScope(provider, name);
+		public static ValueTask<T> WithTimedScope<T>(this Task<T> task, ITimedScopeProvider provider, TimedScopeDefinition definition) =>
+			new ValueTask<T>(task).WithTimedScope(provider, definition);
 
 
 		/// <summary>
 		/// Starts TimedScopes before task execution and finish after it's completion
 		/// </summary>
-		public static ValueTask WithTimedScope(this Task task, ITimedScopeProvider provider, string name) =>
-			new ValueTask(task).WithTimedScope(provider, name);
+		public static ValueTask WithTimedScope(this Task task, ITimedScopeProvider provider, TimedScopeDefinition definition) =>
+			new ValueTask(task).WithTimedScope(provider, definition);
 
 
-		private static async ValueTask<bool> ConvetrToTaskWithResultValue(ValueTask task)
+		private static async ValueTask<bool> ConvertToTaskWithResultValue(ValueTask task)
 		{
 			await task.ConfigureAwait(false);
 			return true;

@@ -3,6 +3,7 @@
 
 using System.Diagnostics;
 using Microsoft.Extensions.Options;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Logging.Replayable;
 using Microsoft.Omex.Extensions.TimedScopes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,7 +31,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		{
 			IOptions<OmexLoggingOptions> options = Options.Create(new OmexLoggingOptions { ReplayLogsInCaseOfError = replayEvents });
 			ReplayableActivityProvider provider = new ReplayableActivityProvider(options);
-			return provider.Create("TestName");
+			return provider.Create(new TimedScopeDefinition("TestName"));
 		}
 	}
 }

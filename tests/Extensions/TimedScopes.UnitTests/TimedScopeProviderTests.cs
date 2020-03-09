@@ -33,41 +33,19 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			Mock<ITimedScopeEventSender> eventSourceMock = new Mock<ITimedScopeEventSender>();
 			Mock<IActivityProvider> activityProviderMock = new Mock<IActivityProvider>();
 			Mock<Activity> activityMock = new Mock<Activity>(activityName);
-			activityProviderMock.Setup(p => p.Create(activityName)).Returns(activityMock.Object);
+			TimedScopeDefinition definition = new TimedScopeDefinition(activityName);
+
+			activityProviderMock.Setup(p => p.Create(definition)).Returns(activityMock.Object);
 
 			TimedScopeProvider provider = new TimedScopeProvider(
 				eventSourceMock.Object,
 				activityProviderMock.Object,
 				replayer);
 
-			TimedScope scope = provider.Start(activityName, result);
+			TimedScope scope = provider.Start(definition, result);
 
 			Assert.AreEqual(result, scope.Result);
 			Assert.ReferenceEquals(activityMock.Object, scope.Activity);
-		}
-
-
-		[DataTestMethod]
-		[DataRow(null)]
-		[DataRow("")]
-		public void CheckCreationWithWrongName(string activityName)
-		{
-			TimedScopeResult result = TimedScopeResult.ExpectedError;
-
-			Mock<ITimedScopeEventSender> eventSourceMock = new Mock<ITimedScopeEventSender>();
-			Mock<IActivityProvider> activityProviderMock = new Mock<IActivityProvider>();
-			Mock<Activity> activityMock = new Mock<Activity>(activityName);
-
-			activityProviderMock
-				.Setup(p => p.Create(It.Is<string>(n => !string.IsNullOrEmpty(n))))
-				.Returns(activityMock.Object);
-
-			TimedScopeProvider provider = new TimedScopeProvider(
-				eventSourceMock.Object,
-				activityProviderMock.Object,
-				null);
-
-			Assert.ThrowsException<ArgumentException>(() => provider.Start(activityName, result));
 		}
 	}
 }

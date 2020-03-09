@@ -5,6 +5,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Compatibility.Logger;
 using Microsoft.Omex.Extensions.Compatibility.TimedScopes;
 using Microsoft.Omex.Extensions.Compatibility.Validation;

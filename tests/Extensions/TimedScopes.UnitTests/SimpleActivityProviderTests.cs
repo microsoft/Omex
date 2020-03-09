@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System.Diagnostics;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
@@ -11,10 +12,10 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 	{
 		[DataTestMethod]
 		[DataRow("TestName")]
-		[DataRow("")]
+		[DataRow("123")]
 		public void CheckActivityCreation(string expectedName)
 		{
-			Activity activity = new SimpleActivityProvider().Create(expectedName);
+			Activity activity = new SimpleActivityProvider().Create(new TimedScopeDefinition(expectedName));
 
 			Assert.IsNotNull(activity);
 

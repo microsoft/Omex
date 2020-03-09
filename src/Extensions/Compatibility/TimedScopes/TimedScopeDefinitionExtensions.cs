@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.TimedScopes;
 
 namespace Microsoft.Omex.Extensions.Compatibility.TimedScopes
@@ -25,7 +26,7 @@ namespace Microsoft.Omex.Extensions.Compatibility.TimedScopes
 				throw new OmexCompatibilityInitializationException();
 			}
 
-			TimedScope scope = s_timedScopeProvider.Create(timedScopeDefinition.Name, initialResult);
+			TimedScope scope = s_timedScopeProvider.Create(timedScopeDefinition, initialResult);
 
 			if (startScope)
 			{

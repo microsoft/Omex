@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using Microsoft.Omex.Extensions.Abstractions;
+
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	/// <summary>
@@ -11,14 +13,12 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// <summary>
 		/// Creates and start TimedScope
 		/// </summary>
-		/// <exception cref="System.ArgumentException">Thrown when name null or empty</exception>
-		TimedScope Start(string name, TimedScopeResult result);
+		TimedScope Start(TimedScopeDefinition name, TimedScopeResult result);
 
 
 		/// <summary>
 		/// Creates TimedScope
 		/// </summary>
-		/// <exception cref="System.ArgumentException">Thrown when name null or empty</exception>
-		TimedScope Create(string name, TimedScopeResult result);
+		TimedScope Create(TimedScopeDefinition name, TimedScopeResult result);
 	}
 }
