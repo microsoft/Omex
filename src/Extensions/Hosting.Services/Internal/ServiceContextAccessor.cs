@@ -10,6 +10,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	internal class ServiceContextAccessor<TContext> : IServiceContextAccessor<TContext>
 		where TContext : ServiceContext
 	{
+		/// <summary>
+		/// Creates Service context acceessor
+		/// </summary>
+		/// <param name="context">ServiceContext if it's immediately available from dependency injection</param>
 		public ServiceContextAccessor(TContext? context = null)
 		{
 			m_serviceContext = context;
@@ -17,6 +21,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 
+		/// <summary>
+		/// Set ServiceContext when it's available
+		/// </summary>
+		/// <remarks>
+		/// Beside saving context it will also execute saved activities that require context,
+		/// after execution activity list will be cleared
+		/// </remarks>
 		internal void SetContext(TContext context)
 		{
 			m_serviceContext = context;
@@ -33,6 +44,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 
+		/// <inheritdoc />
 		void IServiceContextAccessor<TContext>.OnContextAvailable(Action<TContext> action)
 		{
 			if (m_serviceContext != null)
@@ -46,6 +58,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 
+		/// <inheritdoc />
 		TContext? IServiceContextAccessor<TContext>.ServiceContext => m_serviceContext;
 
 
