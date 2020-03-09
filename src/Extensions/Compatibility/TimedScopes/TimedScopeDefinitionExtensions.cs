@@ -40,8 +40,8 @@ namespace Microsoft.Omex.Extensions.Compatibility.TimedScopes
 		internal static void Initialize(ITimedScopeProvider provider) => s_timedScopeProvider = provider;
 
 
-		internal const string ObsoleteMessage = "Please consider using ITimedScopeProvider directly by injecting it";
-		internal const bool IsObsoleteError = false;
 		private static ITimedScopeProvider? s_timedScopeProvider;
+		private const string ObsoleteMessage = "Please consider using ITimedScopeProvider directly by injecting it";
+		private const bool IsObsoleteError = false;
 	}
 }
