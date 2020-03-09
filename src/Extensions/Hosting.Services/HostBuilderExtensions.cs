@@ -84,7 +84,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 
 		/// <summary>
-		/// Registerin Dependenci Injection classes that will provide Serfice Fabric specific information for logging
+		/// Registering Dependency Injection classes that will provide Service Fabric specific information for logging
 		/// </summary>
 		public static IServiceCollection AddOmexServiceFabricDependencies<TContext>(this IServiceCollection collection)
 			where TContext : ServiceContext
