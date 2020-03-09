@@ -9,9 +9,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 	[EventSource(Name = "Microsoft-OMEX-TimedScopes")]
 	internal sealed class TimedScopeEventSource : EventSource
 	{
-		public static TimedScopeEventSource Instance { get; } = new TimedScopeEventSource();
-
-
 		[Event((int)EventSourcesEventIds.LogTimedScope, Level = EventLevel.Informational, Version = 3)]
 		public void WriteTimedScopeEvent(
 			string name,
@@ -35,6 +32,9 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			string correlationId,
 			long durationMs) =>
 			WriteEvent((int)EventSourcesEventIds.LogTimedScopeTestContext, name, subType, metadata, serviceName, m_logCategory, result, correlationId, durationMs);
+
+
+		public static TimedScopeEventSource Instance { get; } = new TimedScopeEventSource();
 
 
 		private TimedScopeEventSource() =>

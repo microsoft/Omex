@@ -10,10 +10,6 @@ namespace Microsoft.Omex.Extensions.Logging
 	[EventSource(Name = "Microsoft-OMEX-Logs")]
 	internal sealed class OmexLogEventSource : EventSource
 	{
-
-		public static OmexLogEventSource Instance { get; } = new OmexLogEventSource();
-
-
 		[Event((int)EventSourcesEventIds.LogError, Level = EventLevel.Error, Message = "{13}", Version = 6)]
 		public void LogErrorServiceMessage(
 			string applicationName,
@@ -112,6 +108,9 @@ namespace Microsoft.Omex.Extensions.Logging
 			int threadId,
 			string message) =>
 			WriteEvent((int)EventSourcesEventIds.LogSpam, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+
+
+		public static OmexLogEventSource Instance { get; } = new OmexLogEventSource();
 
 
 		private OmexLogEventSource() { }
