@@ -58,9 +58,9 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		protected internal TimedScope(ITimedScopeEventSender eventSource, Activity activity, TimedScopeResult result, ILogEventReplayer? logReplayer = null)
 		{
 			m_eventSource = eventSource;
-			m_logReplayer = logReplayer;
 			Activity = activity;
 			Result = result;
+			m_logReplayer = logReplayer;
 			SubType = NullPlaceholder;
 			Metadata = NullPlaceholder;
 			IsStarted = false;
