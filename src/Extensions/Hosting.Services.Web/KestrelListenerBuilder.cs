@@ -18,6 +18,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		where TStartup : class
 		where TServiceContext : ServiceContext
 	{
+		/// <inheritdoc />
 		public string Name { get; }
 
 
