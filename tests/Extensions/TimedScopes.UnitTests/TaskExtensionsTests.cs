@@ -66,13 +66,13 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			Activity activity = new Activity(scopeName);
 
 			TimedScope scope = new TimedScope(mockSender.Object, activity, TimedScopeResult.SystemError, null);
-			providerMock.Setup(p => p.Start(timedScopeDefinition, TimedScopeResult.SystemError)).Returns(scope);
+			providerMock.Setup(p => p.CreateAndStart(timedScopeDefinition, TimedScopeResult.SystemError)).Returns(scope);
 
 			TaskCompletionSource<bool> taskCompletionSource = new TaskCompletionSource<bool>();
 
 			createTask(taskCompletionSource.Task, providerMock.Object, timedScopeDefinition);
 
-			providerMock.Verify(p => p.Start(timedScopeDefinition, TimedScopeResult.SystemError), Times.Once);
+			providerMock.Verify(p => p.CreateAndStart(timedScopeDefinition, TimedScopeResult.SystemError), Times.Once);
 			Assert.AreEqual(scope.Result, TimedScopeResult.SystemError);
 
 			finishTask(taskCompletionSource);

@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// </summary>
 		public static async ValueTask<TResult> WithTimedScope<TResult>(this ValueTask<TResult> task, ITimedScopeProvider provider, TimedScopeDefinition definition)
 		{
-			using TimedScope timedScope = provider.Start(definition, TimedScopeResult.SystemError);
+			using TimedScope timedScope = provider.CreateAndStart(definition, TimedScopeResult.SystemError);
 			TResult result = await task.ConfigureAwait(false);
 			timedScope.Result = TimedScopeResult.Success;
 			return result;

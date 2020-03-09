@@ -42,7 +42,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 				activityProviderMock.Object,
 				replayer);
 
-			TimedScope scope = provider.Start(definition, result);
+			TimedScope scope = provider.CreateAndStart(definition, result);
 
 			Assert.AreEqual(result, scope.Result);
 			Assert.ReferenceEquals(activityMock.Object, scope.Activity);

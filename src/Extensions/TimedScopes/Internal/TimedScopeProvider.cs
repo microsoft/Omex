@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		}
 
 
-		public TimedScope Start(TimedScopeDefinition name, TimedScopeResult result) =>
+		public TimedScope CreateAndStart(TimedScopeDefinition name, TimedScopeResult result) =>
 			Create(name, result).Start();
 
 
