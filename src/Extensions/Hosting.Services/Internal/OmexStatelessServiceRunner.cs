@@ -54,10 +54,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			public OmexStatelessService(
 				OmexStatelessServiceRunner serviceRunner,
 				StatelessServiceContext serviceContext)
-					: base(serviceContext)
-			{
-				m_serviceParameters = serviceRunner;
-			}
+					: base(serviceContext) =>
+						m_serviceParameters = serviceRunner;
 
 
 			protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners() =>
