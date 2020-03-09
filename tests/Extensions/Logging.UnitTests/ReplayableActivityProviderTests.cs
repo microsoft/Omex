@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.Omex.Extensions.Logging.UnitTests
 {
 	[TestClass]
-	public class ReplayibleActivityProviderTests
+	public class ReplayableActivityProviderTests
 	{
 		[TestMethod]
 		public void CreatesReplayibleActivity()
