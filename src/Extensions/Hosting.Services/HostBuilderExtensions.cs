@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			this ServiceFabricHostBuilder<TContext> builder,
 			Func<TContext, CancellationToken, Task> action)
 				where TContext : ServiceContext =>
-			builder.AddServiceAction(new ServiceAction<TContext>(action));
+					builder.AddServiceAction(new ServiceAction<TContext>(action));
 
 
 		/// <summary>
@@ -39,7 +39,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			this ServiceFabricHostBuilder<TContext> builder,
 			IServiceAction<TContext> action)
 				where TContext : ServiceContext =>
-			builder.ConfigureServices((config, collection) => collection.AddSingleton(action));
+					builder.ConfigureServices((config, collection) => collection.AddSingleton(action));
 
 
 		/// <summary>
@@ -50,7 +50,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			string name,
 			Func<TContext, ICommunicationListener> createListener)
 				where TContext : ServiceContext =>
-			builder.AddServiceListener(new ListenerBuilder<TContext>(name, createListener));
+					builder.AddServiceListener(new ListenerBuilder<TContext>(name, createListener));
 
 
 		/// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			this ServiceFabricHostBuilder<TContext> builder,
 			IListenerBuilder<TContext> listenerBuilder)
 				where TContext : ServiceContext =>
-			builder.ConfigureServices((config, collection) => collection.AddSingleton(listenerBuilder));
+					builder.ConfigureServices((config, collection) => collection.AddSingleton(listenerBuilder));
 
 
 		/// <summary>
@@ -70,7 +70,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			this IHostBuilder builder,
 			string serviceName,
 			Action<ServiceFabricHostBuilder<StatelessServiceContext>> builderAction) =>
-			builder.BuildServiceFabricService<OmexStatelessServiceRunner, StatelessServiceContext>(serviceName, builderAction);
+				builder.BuildServiceFabricService<OmexStatelessServiceRunner, StatelessServiceContext>(serviceName, builderAction);
 
 
 		/// <summary>
@@ -80,7 +80,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			this IHostBuilder builder,
 			string serviceName,
 			Action<ServiceFabricHostBuilder<StatefulServiceContext>> builderAction) =>
-			builder.BuildServiceFabricService<OmexStatefulServiceRunner, StatefulServiceContext>(serviceName, builderAction);
+				builder.BuildServiceFabricService<OmexStatefulServiceRunner, StatefulServiceContext>(serviceName, builderAction);
 
 
 		/// <summary>

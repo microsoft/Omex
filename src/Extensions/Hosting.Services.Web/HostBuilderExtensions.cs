@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			ServiceFabricIntegrationOptions options,
 			Action<IWebHostBuilder>? builderExtension = null)
 				where TStartup : class =>
-			builder.AddKestrelListener<TStartup, StatelessServiceContext>(name, options, builderExtension);
+					builder.AddKestrelListener<TStartup, StatelessServiceContext>(name, options, builderExtension);
 
 
 		/// <summary>
@@ -34,7 +34,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			ServiceFabricIntegrationOptions options,
 			Action<IWebHostBuilder>? builderExtension = null)
 				where TStartup : class =>
-			builder.AddKestrelListener<TStartup, StatefulServiceContext>(name, options, builderExtension);
+					builder.AddKestrelListener<TStartup, StatefulServiceContext>(name, options, builderExtension);
 
 
 		private static ServiceFabricHostBuilder<TContext> AddKestrelListener<TStartup, TContext>(
@@ -44,10 +44,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			Action<IWebHostBuilder>? builderExtension = null)
 				where TStartup : class
 				where TContext : ServiceContext =>
-			builder.AddServiceListener(new KestrelListenerBuilder<TStartup, TContext>(
-				name,
-				options,
-				builder => BuilderExtension<TContext>(builder, builderExtension)));
+					builder.AddServiceListener(new KestrelListenerBuilder<TStartup, TContext>(
+						name,
+						options,
+						builder => BuilderExtension<TContext>(builder, builderExtension)));
 
 
 		private static void BuilderExtension<TContext>(IWebHostBuilder builder, Action<IWebHostBuilder>? builderExtension)
