@@ -18,10 +18,10 @@ namespace Hosting.Services.UnitTests
 			HostBuilder hostBuilder = new HostBuilder();
 
 			new ServiceFabricHostBuilder<ServiceContext>(hostBuilder)
-			.ConfigureServices((context, collection) =>
-			{
-				collection.AddTransient<TestTypeToResolve>();
-			});
+				.ConfigureServices((context, collection) =>
+				{
+					collection.AddTransient<TestTypeToResolve>();
+				});
 
 			TestTypeToResolve obj = hostBuilder.Build().Services.GetService<TestTypeToResolve>();
 
