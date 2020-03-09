@@ -76,7 +76,7 @@ namespace Microsoft.Omex.Extensions.Logging
 					m_eventSource.LogErrorServiceMessage(applicationName, serviceName, machineId, buildVersion, s_processName, partitionId, replicaId, activityId, traceIdAsString, "Error", category, tagId, eventId.Name, threadId, message);
 					break;
 				default:
-					throw new ArgumentException("Unknown EventLevel: " + level);
+					throw new ArgumentException(FormattableString.Invariant($"Unknown EventLevel: {level}"));
 			}
 		}
 
