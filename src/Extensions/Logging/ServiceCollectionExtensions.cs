@@ -11,7 +11,7 @@ using Microsoft.Omex.Extensions.TimedScopes;
 namespace Microsoft.Omex.Extensions.Logging
 {
 	/// <summary>
-	/// Extension methods for the <see cref="ILoggerFactory"/> class
+	/// Extension methods for the <see cref="IServiceCollection"/> class
 	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
