@@ -21,6 +21,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		public string Name { get; }
 
 
+		/// <inheritdoc />
 		public ICommunicationListener Build(TServiceContext context) =>
 			new KestrelCommunicationListener(context, Name, (url, listener) => BuildWebHost(context, url, listener));
 
@@ -35,18 +36,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			m_builderExtension = builderExtension;
 		}
 
-		private readonly ServiceFabricIntegrationOptions m_options;
-		private readonly Action<IWebHostBuilder> m_builderExtension;
 
-
-		private void ConfigureServices(TServiceContext context, IServiceCollection services)
-		{
-			services.AddSingleton<ServiceContext>(context);
-			services.AddSingleton(context);
-		}
-
-
-		// Method made internal instead of private to check type registration in service collection
+		// Method made internal instead of private to check test registration in service collection from unit tests
 		internal IWebHost BuildWebHost(TServiceContext context, string url, AspNetCoreCommunicationListener listener)
 		{
 			IWebHostBuilder hostBuilder = new WebHostBuilder()
@@ -66,5 +57,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 
 			return hostBuilder.Build();
 		}
+
+
+		private void ConfigureServices(TServiceContext context, IServiceCollection services)
+		{
+			services.AddSingleton<ServiceContext>(context);
+			services.AddSingleton(context);
+		}
+
+
+		private readonly ServiceFabricIntegrationOptions m_options;
+		private readonly Action<IWebHostBuilder> m_builderExtension;
 	}
 }
