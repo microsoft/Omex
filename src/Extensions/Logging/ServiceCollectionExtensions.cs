@@ -4,6 +4,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Logging.Replayable;
 using Microsoft.Omex.Extensions.TimedScopes;
@@ -45,11 +46,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection)
 		{
 			serviceCollection
-				.AddLogging()
-				.Configure<OmexLoggingOptions>(options =>
-				{
-					options.ReplayLogsInCaseOfError = false;
-				});
+				.AddLogging();
 
 			serviceCollection.TryAddTransient<IServiceContext, EmptyServiceContext>();
 			serviceCollection.TryAddTransient<IMachineInformation, BasicMachineInformation>();
