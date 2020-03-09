@@ -54,11 +54,9 @@ namespace Microsoft.Omex.Extensions.Compatibility.UnitTests
 			Code.Validate(false, logMessage, eventId);
 			Assert.AreEqual(1, mockLogger.Invocations.Count, "Code.Validate not calling ILogger");
 
-
 			TimedScope startedTimedScope = new TimedScopeDefinition("TestStartedTimedScope").Create(TimedScopeResult.SystemError);
 			Assert.IsTrue(startedTimedScope.IsStarted);
 			Assert.AreEqual(TimedScopeResult.SystemError, startedTimedScope.Result);
-
 
 			TimedScope notStartedTimedScope = new TimedScopeDefinition("TestNotStartedTimedScope").Create(TimedScopeResult.ExpectedError, false);
 			Assert.IsFalse(notStartedTimedScope.IsStarted);
