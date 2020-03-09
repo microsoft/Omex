@@ -14,14 +14,19 @@ namespace Microsoft.Omex.Extensions.Logging.Replayable
 	/// </summary>
 	internal class ReplayableActivityProvider : IActivityProvider
 	{
-		public ReplayableActivityProvider(IOptions<OmexLoggingOptions> options) =>
+		public ReplayableActivityProvider(IOptions<OmexLoggingOptions> options)
+		{
 			m_replayLogsInCaseOfError = options.Value.ReplayLogsInCaseOfError;
-
+			m_maxReplayedEventsPerActivity = options.Value.MaxReplayedEventsPerActivity;
+		}
 
 		public Activity Create(TimedScopeDefinition definition) =>
-			m_replayLogsInCaseOfError ? new ReplayableActivity(definition.Name) : new Activity(definition.Name);
+			m_replayLogsInCaseOfError
+			? new ReplayableActivity(definition.Name, m_maxReplayedEventsPerActivity)
+			: new Activity(definition.Name);
 
 
 		private readonly bool m_replayLogsInCaseOfError;
+		private readonly uint m_maxReplayedEventsPerActivity;
 	}
 }

@@ -13,5 +13,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// Setting this to true will impact the performance of logging
 		/// </summary>
 		public bool ReplayLogsInCaseOfError { get; set; } = false;
+
+
+		/// <summary>
+		/// Maximum number of events that activity can store for replay
+		/// </summary>
+		public uint MaxReplayedEventsPerActivity { get; set; } = 1000;
 	}
 }

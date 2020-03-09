@@ -51,13 +51,13 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// <summary>
 		/// Creates TimedScope instance
 		/// </summary>
-		/// <param name="eventSource">event source to write timedscope end information</param>
+		/// <param name="eventSender">event sender to write timedscope end information</param>
 		/// <param name="activity">activity connected to this timedscope</param>
 		/// <param name="result">TimedScope initial result</param>
 		/// <param name="logReplayer">Log replayer that might be used to replay logs in case of error</param>
-		protected internal TimedScope(ITimedScopeEventSender eventSource, Activity activity, TimedScopeResult result, ILogEventReplayer? logReplayer = null)
+		protected internal TimedScope(ITimedScopeEventSender eventSender, Activity activity, TimedScopeResult result, ILogEventReplayer? logReplayer = null)
 		{
-			m_eventSource = eventSource;
+			m_eventSender = eventSender;
 			Activity = activity;
 			Result = result;
 			m_logReplayer = logReplayer;
@@ -98,7 +98,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 			Activity.Stop();
 
-			m_eventSource.LogTimedScopeEndEvent(this);
+			m_eventSender.LogTimedScopeEndEvent(this);
 
 			if (m_logReplayer != null && ShouldReplayEvents)
 			{
@@ -118,7 +118,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			};
 
 
-		private readonly ITimedScopeEventSender m_eventSource;
+		private readonly ITimedScopeEventSender m_eventSender;
 		private const string NullPlaceholder = "null";
 		private readonly ILogEventReplayer? m_logReplayer;
 	}

@@ -13,7 +13,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			ILogEventReplayer? logReplayer = null)
 		{
 			m_activityProvider = activityProvider;
-			m_eventSource = eventSource;
+			m_eventSender = eventSource;
 			m_logReplayer = logReplayer;
 		}
 
@@ -23,10 +23,10 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 
 		public TimedScope Create(TimedScopeDefinition name, TimedScopeResult result) =>
-			new TimedScope(m_eventSource, m_activityProvider.Create(name), result, m_logReplayer);
+			new TimedScope(m_eventSender, m_activityProvider.Create(name), result, m_logReplayer);
 
 
-		private readonly ITimedScopeEventSender m_eventSource;
+		private readonly ITimedScopeEventSender m_eventSender;
 		private readonly IActivityProvider m_activityProvider;
 		private readonly ILogEventReplayer? m_logReplayer;
 	}

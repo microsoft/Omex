@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
@@ -71,6 +72,32 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 
 		[TestMethod]
+		public void ReplayedMessageSavedUnitilTheLimit()
+		{
+			string replayMessage1 = "ReplayMessage1";
+			string replayMessage2 = "ReplayMessage2";
+
+			string suffix = nameof(ReplayedMessageSaved);
+			int eventId = 7;
+			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock(isReplayable: true);
+
+			ReplayableActivity activity = CreateActivity(suffix);
+			activity.Start();
+			(ILogger logger, _) = LogMessage(nameof(ReplayedMessageSaved), eventSourceMock, eventId);
+			logger.LogDebug(replayMessage1);
+			logger.LogDebug(replayMessage2);
+			activity.Stop();
+
+			eventSourceMock.Verify(m_logExpression, Times.Exactly(3));
+			List<LogMessageInformation> info = activity.GetLogEvents().ToList();
+
+			Assert.AreEqual(2, info.Count);
+			Assert.AreEqual(replayMessage1, info[0].Message);
+			Assert.AreEqual(replayMessage2, info[1].Message);
+		}
+
+
+		[TestMethod]
 		public void ScopeProperlyCreated()
 		{
 			(ILogger logger, Mock<IExternalScopeProvider> scopeProvicedMock) = LogMessage(nameof(ReplayedMessageSaved), CreateEventSourceMock());
@@ -115,14 +142,14 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		private EventId CreateEventId(int id, string suffix) => new EventId(id, FormattableString.Invariant($"EventId-{suffix}"));
 
 
-		private ReplayableActivity CreateActivity(string suffix) => new ReplayableActivity(FormattableString.Invariant($"Activity-{suffix}"));
+		private ReplayableActivity CreateActivity(string suffix) => new ReplayableActivity(FormattableString.Invariant($"Activity-{suffix}"), 2);
 
 
 		private readonly Expression<Action<ILogEventSender>> m_logExpression = e =>
 			e.LogMessage(
 				It.IsAny<Activity>(),
 				It.IsAny<string>(),
-				LogLevel.Error,
+				It.IsAny<LogLevel>(),
 				It.IsAny<EventId>(),
 				It.IsAny<int>(),
 				It.IsAny<string>());
