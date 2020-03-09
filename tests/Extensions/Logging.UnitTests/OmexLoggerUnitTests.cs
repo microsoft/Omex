@@ -120,8 +120,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 		private readonly Expression<Action<ILogEventSender>> m_logExpression = e =>
 			e.LogMessage(
-				It.IsAny<string>(),
-				It.IsAny<ActivityTraceId>(),
+				It.IsAny<Activity>(),
 				It.IsAny<string>(),
 				LogLevel.Error,
 				It.IsAny<EventId>(),

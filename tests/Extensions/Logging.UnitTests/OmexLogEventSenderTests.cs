@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using Microsoft.Extensions.Logging;
@@ -28,21 +29,22 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			string message = "Test message";
 			string category = "Test category";
-			string activityId = "Test activity";
 			int tagId = 0xFFF9;
+			Activity activity = new Activity("Test activity");
+			activity.Start().Stop(); // start and stop activity to get correlation id
 
 			OmexLogEventSender logsSender = new OmexLogEventSender(
 				OmexLogEventSource.Instance,
 				new EmptyMachineInformation(),
 				new EmptyServiceContext());
 
-			logsSender.LogMessage(activityId, default, category, logLevel, tagId, 0, message);
+			logsSender.LogMessage(activity, category, logLevel, tagId, 0, message);
 
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
 
 			AssertPayload(eventInfo, "message", message);
 			AssertPayload(eventInfo, "category", category);
-			AssertPayload(eventInfo, "correlationId", activityId);
+			AssertPayload(eventInfo, "correlationId", activity.Id);
 			AssertPayload(eventInfo, "tagId", "fff9");
 		}
 

@@ -28,13 +28,15 @@ namespace Microsoft.Omex.Extensions.Logging
 		}
 
 
-		public void LogMessage(string activityId, ActivityTraceId traceId, string category, LogLevel level, EventId eventId, int threadId, string message)
+		public void LogMessage(Activity activity, string category, LogLevel level, EventId eventId, int threadId, string message)
 		{
 			if (!IsEnabled(level))
 			{
 				return;
 			}
 
+			string activityId = activity?.Id ?? string.Empty;
+			ActivityTraceId traceId = activity?.TraceId ?? default;
 			Guid partitionId = m_serviceContext.PartitionId;
 			long replicaId = m_serviceContext.ReplicaOrInstanceId;
 			string applicationName = m_machineInformation.MachineRole;
@@ -102,7 +104,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			{
 				foreach (LogMessageInformation log in replayableActivity.GetLogEvents())
 				{
-					LogMessage(activity.Id, activity.TraceId, log.Category, LogLevel.Information, log.EventId, log.ThreadId, log.Message);
+					LogMessage(activity, log.Category, LogLevel.Information, log.EventId, log.ThreadId, log.Message);
 				}
 			}
 		}

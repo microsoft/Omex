@@ -24,13 +24,12 @@ namespace Microsoft.Omex.Extensions.Logging
 
 
 		/// <summary>Log message</summary>
-		/// <param name="activityId">Activity Id</param>
-		/// <param name="traceId">Trace id</param>
+		/// <param name="activity">Activity for this log event</param>
 		/// <param name="category">Log category</param>
 		/// <param name="level">Log level</param>
 		/// <param name="eventId">event Id</param>
 		/// <param name="threadId">Id of the thread</param>
 		/// <param name="message">Log message</param>
-		void LogMessage(string activityId, ActivityTraceId traceId, string category, LogLevel level, EventId eventId, int threadId, string message);
+		void LogMessage(Activity activity, string category, LogLevel level, EventId eventId, int threadId, string message);
 	}
 }

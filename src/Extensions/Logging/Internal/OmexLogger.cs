@@ -35,10 +35,8 @@ namespace Microsoft.Omex.Extensions.Logging
 			string message = formatter(state, exception);
 			int threadId = Thread.CurrentThread.ManagedThreadId;
 			Activity activity = Activity.Current;
-			string activityId = activity?.Id ?? string.Empty;
-			ActivityTraceId traceId = activity?.TraceId ?? default;
 
-			m_logsEventSource.LogMessage(activityId, traceId, m_categoryName, logLevel, eventId, threadId, message);
+			m_logsEventSource.LogMessage(activity, m_categoryName, logLevel, eventId, threadId, message);
 
 			if (m_logsEventSource.IsReplayableMessage(logLevel) && activity is ReplayableActivity replayableScope)
 			{
