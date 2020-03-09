@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		where TContext : ServiceContext
 	{
 		/// <summary>
-		/// Creates Service context acceessor
+		/// Creates Service context acceessor for dependency injection, because it could be not available during container creation
 		/// </summary>
 		/// <param name="context">ServiceContext if it's immediately available from dependency injection</param>
 		public ServiceContextAccessor(TContext? context = null)

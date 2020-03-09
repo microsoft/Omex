@@ -7,7 +7,8 @@ using System.Fabric;
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	/// <summary>
-	/// Provides access to service fabric service context
+	/// Provides access to service fabric service context from dependency injection,
+	/// because it could be not available during container creation
 	/// </summary>
 	public interface IServiceContextAccessor<out TServiceContext>
 		where TServiceContext : ServiceContext
