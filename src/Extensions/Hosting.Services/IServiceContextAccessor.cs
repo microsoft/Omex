@@ -18,6 +18,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// </summary>
 		TServiceContext? ServiceContext { get; }
 
+
 		/// <summary>
 		/// Execute function when context value is available
 		/// </summary>
