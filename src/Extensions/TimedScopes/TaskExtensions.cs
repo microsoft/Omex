@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		{
 			using TimedScope timedScope = provider.CreateAndStart(definition, TimedScopeResult.SystemError);
 			TResult result = await task.ConfigureAwait(false);
-			timedScope.Result = TimedScopeResult.Success;
+			timedScope.Result = TimedScopeResult.Success; // set TimedScope result to success in case if task completed properly (without exception)
 			return result;
 		}
 
