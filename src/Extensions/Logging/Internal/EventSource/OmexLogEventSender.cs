@@ -46,7 +46,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			string tagName = eventId.Name;
 			// In case if tag created using Tag.Create (line number and file in description) it's better to display decimal number 
-			string tagId = string.IsNullOrEmpty(eventId.Name) ? TagIdAsString(eventId.Id) : eventId.Id.ToString(CultureInfo.InvariantCulture);
+			string tagId = string.IsNullOrWhiteSpace(eventId.Name) ? TagIdAsString(eventId.Id) : eventId.Id.ToString(CultureInfo.InvariantCulture);
 			string traceIdAsString = traceId.ToHexString();
 
 			//Event methods should have all information as parameters so we are passing them each time
@@ -137,7 +137,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// The conversion is done by treating each group of 6 bits as an index into the symbol space a,b,c,d, ... z, 0, 1, 2, ....9
 		/// eg. 0x000101D0 = 00 000000 000000 010000 000111 010000 2 = aaqhq
 		/// </remarks>
-		private static string TagIdAsString(int tagId) // Convert should be done more efficient
+		private static string TagIdAsString(int tagId)
 		{
 			if (tagId <= 0xFFFF)
 			{
