@@ -166,7 +166,7 @@ namespace Microsoft.Omex.Extensions.Logging
 					}
 					else
 					{
-						chars[i] = (char)(charVal + 97);
+						chars[i] = (char)(charVal + 'a');
 					}
 				}
 
