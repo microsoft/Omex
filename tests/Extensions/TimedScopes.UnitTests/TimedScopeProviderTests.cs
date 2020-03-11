@@ -13,14 +13,14 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 	public class TimedScopeProviderTests
 	{
 		[TestMethod]
-		public void CheckThatTimedScopeProvicerCreatesActivity()
+		public void CreateAndStart_ActivityCreatedWithReplay()
 		{
 			CreateAndValidateActivity("testNameWithReplay", new Mock<ILogEventReplayer>().Object);
 		}
 
 
 		[TestMethod]
-		public void CheckThatTimedScopeProvicerCreatesActivityWithoutReplayer()
+		public void CreateAndStart_ActivityCreatedWithoutReplay()
 		{
 			CreateAndValidateActivity("testNameWithoutReplay", null);
 		}

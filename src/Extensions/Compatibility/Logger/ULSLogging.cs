@@ -23,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Compatibility.Logger
 		/// <param name="parameters">Message format parameters</param>
 		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static void LogTraceTag(EventId eventId, Category category, LogLevel level, string message, params object[] parameters) =>
-			GetLogger(category).Log(level, eventId, message, parameters);
+			GetLogger(category.Name).Log(level, eventId, message, parameters);
 
 
 		/// <summary>
@@ -36,7 +36,7 @@ namespace Microsoft.Omex.Extensions.Compatibility.Logger
 		/// <param name="parameters">Message format parameters</param>
 		[Obsolete(ObsoleteMessage, IsObsoleteError)]
 		public static void ReportExceptionTag(EventId eventId, Category category, Exception exception, string message, params object[] parameters) =>
-			GetLogger(category).LogError(eventId, exception, message, parameters);
+			GetLogger(category.Name).LogError(eventId, exception, message, parameters);
 
 
 		internal static void Initialize(ILoggerFactory loggerFactory)
@@ -46,9 +46,9 @@ namespace Microsoft.Omex.Extensions.Compatibility.Logger
 		}
 
 
-		private static ILogger GetLogger(Category category) =>
+		private static ILogger GetLogger(string category) =>
 			s_loggersDictionary != null && s_factory != null
-				? s_loggersDictionary.GetOrAdd(category.Name, s_factory.CreateLogger)
+				? s_loggersDictionary.GetOrAdd(category, s_factory.CreateLogger)
 				: throw new OmexCompatibilityInitializationException();
 
 

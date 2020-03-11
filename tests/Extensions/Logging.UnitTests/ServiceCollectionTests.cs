@@ -12,7 +12,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 	public class ServiceCollectionTests
 	{
 		[TestMethod]
-		public void AddOmexServiceContextShouldRegisterServiceContext()
+		public void AddOmexServiceContext_RegisterServiceContext()
 		{
 			IServiceCollection collection = new ServiceCollection()
 				.AddOmexServiceContext<MockServiceContext>();
@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 
 		[TestMethod]
-		public void AddOmexServiceContextShouldOverrrideContextType()
+		public void AddOmexServiceContext_OverridesContextType()
 		{
 			IServiceCollection collection = new ServiceCollection()
 				.AddOmexServiceContext<MockServiceContext>()
@@ -37,7 +37,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 
 		[TestMethod]
-		public void AddOmexLoggerToServiceCollectionShouldBeResolvable()
+		public void AddOmexLoggerOnServiceCollection_RegistersLogger()
 		{
 			IServiceCollection collection = new ServiceCollection().AddOmexLogging();
 			ValidateTypeRegistration<ILogger<ServiceCollectionTests>>(collection);
@@ -45,7 +45,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 
 		[TestMethod]
-		public void AddOmexLoggerToLogBuilderShouldBeResolvable()
+		public void AddOmexLoggerOnLogBuilder_RegistersLogger()
 		{
 			ILoggingBuilder builder = new MockLoggingBuilder().AddOmexLogging();
 			ValidateTypeRegistration<ILogger<ServiceCollectionTests>>(builder.Services);

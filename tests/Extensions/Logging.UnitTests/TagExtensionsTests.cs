@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[DataRow(0x3FFFFFFF, "?????")]
 		[DataRow(0x40000000, "@\0\0\0")]
 		[DataRow(int.MaxValue, "\u007f???")]
-		public void TestTagIdAsString(int tagId, string expected)
+		public void TagIdAsString_ConvertsProperly(int tagId, string expected)
 		{
 			Assert.AreEqual(expected, TagsExtensions.TagIdAsString(tagId));
 		}

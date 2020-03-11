@@ -8,6 +8,7 @@ namespace Microsoft.Omex.Extensions.Compatibility.Logger
 	/// <summary>
 	/// Logging category
 	/// </summary>
+	[Obsolete("In ILogger category provided as generic type parameter for ILogger<T> so Category struct should not be used", false)]
 	public readonly struct Category : IEquatable<Category>
 	{
 		/// <summary>

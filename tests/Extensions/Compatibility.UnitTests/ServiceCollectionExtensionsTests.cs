@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Compatibility.UnitTests
 	public class ServiceCollectionExtensionsTests
 	{
 		[TestMethod]
-		public void CheckThatTypesRegistred()
+		public void AddOmexCompatibilityServices_RegisterTypes()
 		{
 			Mock<ILogger> mockLogger = new Mock<ILogger>();
 			Mock<ILoggerFactory> mockFactory = new Mock<ILoggerFactory>();

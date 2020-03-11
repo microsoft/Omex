@@ -30,7 +30,7 @@ namespace Hosting.Services.UnitTests
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ITimedScopeProvider), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
-		public void TestOmexTypeRegistration(Type typeToResolver, Type? expectedImplementationType)
+		public void AddOmexServiceFabricDependencies_TypesRegistred(Type typeToResolver, Type? expectedImplementationType)
 		{
 			void CheckTypeRegistration<TContext>() where TContext : ServiceContext
 			{
@@ -54,7 +54,7 @@ namespace Hosting.Services.UnitTests
 
 
 		[TestMethod]
-		public void CheckServiceActionRegistration()
+		public void AddServiceActionUsingObject_RegisterInstance()
 		{
 			IServiceAction<ServiceContext> serviceAction = new Mock<IServiceAction<ServiceContext>>().Object;
 
@@ -67,7 +67,7 @@ namespace Hosting.Services.UnitTests
 
 
 		[TestMethod]
-		public async Task CheckServiceActionRegistrationUsingFunc()
+		public async Task AddServiceActionUsingFunc_RegisterInstance()
 		{
 			bool actionCalled = false;
 			Func<ServiceContext, CancellationToken, Task> action = (c, t) =>
@@ -88,7 +88,7 @@ namespace Hosting.Services.UnitTests
 
 
 		[TestMethod]
-		public void CheckServiceListenerRegistration()
+		public void AddServiceListenerUsingObject_RegisterInstance()
 		{
 			IListenerBuilder<ServiceContext> listenerBuilder = new Mock<IListenerBuilder<ServiceContext>>().Object;
 
@@ -101,7 +101,7 @@ namespace Hosting.Services.UnitTests
 
 
 		[TestMethod]
-		public void CheckServiceListenerRegistrationUsingFunc()
+		public void AddServiceListenerUsingFunc_RegisterInstance()
 		{
 			ICommunicationListener listener = new Mock<ICommunicationListener>().Object;
 			Func<ServiceContext, ICommunicationListener> listenerBuilder = context => listener;
@@ -124,7 +124,7 @@ namespace Hosting.Services.UnitTests
 		[DataRow(typeof(IOmexServiceRunner), typeof(OmexStatelessServiceRunner))]
 		[DataRow(typeof(IServiceContextAccessor<StatelessServiceContext>), typeof(ServiceContextAccessor<StatelessServiceContext>))]
 		[DataRow(typeof(IServiceContextAccessor<ServiceContext>), typeof(ServiceContextAccessor<StatelessServiceContext>))]
-		public void CheckBuildeStatelessService(Type type, Type? expectedImplementationType)
+		public void BuildStatelessService_RegisterTypes(Type type, Type? expectedImplementationType)
 		{
 			object obj = new HostBuilder()
 				.BuildStatelessService("TestStatelessService", c => { })
@@ -149,7 +149,7 @@ namespace Hosting.Services.UnitTests
 		[DataRow(typeof(IOmexServiceRunner), typeof(OmexStatefulServiceRunner))]
 		[DataRow(typeof(IServiceContextAccessor<StatefulServiceContext>), typeof(ServiceContextAccessor<StatefulServiceContext>))]
 		[DataRow(typeof(IServiceContextAccessor<ServiceContext>), typeof(ServiceContextAccessor<StatefulServiceContext>))]
-		public void CheckBuildeStatefulService(Type type, Type? expectedImplementationType)
+		public void BuildStatefulService_RegiesterTypes(Type type, Type? expectedImplementationType)
 		{
 			object obj = new HostBuilder()
 				.BuildStatefulService("TestStatefulService", c => { })
@@ -166,7 +166,7 @@ namespace Hosting.Services.UnitTests
 
 
 		[TestMethod]
-		public void TestExceptionHandlingAndReportingFroBuildStatelessService()
+		public void BuildStatelessService_LogsExceptions()
 		{
 			string serviceType = "StatelessFailedServiceName";
 			CustomEventListener listener = new CustomEventListener();
@@ -186,7 +186,7 @@ namespace Hosting.Services.UnitTests
 
 
 		[TestMethod]
-		public void TestExceptionHandlingAndReportingForBuildStatefulService()
+		public void BuildStatefulService_LogsException()
 		{
 			string serviceType = "StatefulFailedServiceName";
 			CustomEventListener listener = new CustomEventListener();

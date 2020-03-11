@@ -15,35 +15,35 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 	public class TaskExtensionsTests
 	{
 		[TestMethod]
-		public void TestSuccesWithTaskOfT() => TestSuccesfulExecution(s_wrapTaskOfTAction);
+		public void WithTimedScopeWithTaskOfT_Succes() => TestSuccesfulExecution(s_wrapTaskOfTAction);
 
 
 		[TestMethod]
-		public void TestSuccesWithTask() => TestSuccesfulExecution(s_wrapTaskAction);
+		public void WithTimedScopeUsingTask_Succes() => TestSuccesfulExecution(s_wrapTaskAction);
 
 
 		[TestMethod]
-		public void TestSuccesWithValueTaskOfT() => TestSuccesfulExecution(s_wrapValueTaskOfTAction);
+		public void WithTimedScopeUsingValueTaskOfT_Succes() => TestSuccesfulExecution(s_wrapValueTaskOfTAction);
 
 
 		[TestMethod]
-		public void TestSuccesWithValueTask() => TestSuccesfulExecution(s_wrapValueTaskAction);
+		public void WithTimedScopeUsingValueTask_Succes() => TestSuccesfulExecution(s_wrapValueTaskAction);
 
 
 		[TestMethod]
-		public void TestFailedWithTaskOfT() => TestFailedExecution(s_wrapTaskOfTAction);
+		public void WithTimedScopeUsingTaskOfT_Failed() => TestFailedExecution(s_wrapTaskOfTAction);
 
 
 		[TestMethod]
-		public void TestFailedWithTask() => TestFailedExecution(s_wrapTaskAction);
+		public void WithTimedScopeUsingTask_Failed() => TestFailedExecution(s_wrapTaskAction);
 
 
 		[TestMethod]
-		public void TestFailedWithValueTaskOfT() => TestFailedExecution(s_wrapValueTaskOfTAction);
+		public void WithTimedScopeUsingValueTaskOfT_Failed() => TestFailedExecution(s_wrapValueTaskOfTAction);
 
 
 		[TestMethod]
-		public void TestFailedWithValueTask() => TestFailedExecution(s_wrapValueTaskAction);
+		public void WithTimedScopeUsingValueTask_Failed() => TestFailedExecution(s_wrapValueTaskAction);
 
 
 		private void TestSuccesfulExecution(Action<Task<bool>, ITimedScopeProvider, TimedScopeDefinition> wrapTask, [CallerMemberName] string scopeName = "") =>

@@ -15,7 +15,7 @@ namespace Hosting.Services.UnitTests
 	public class ServiceFabricExecutionContextTests
 	{
 		[TestMethod]
-		public void TestExecutionContextInitialization()
+		public void Constructor_InitializesPropertiesProperly()
 		{
 			string appName = "SomeName";
 			string envirometnName = "SomeEnviroment";

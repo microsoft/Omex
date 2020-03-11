@@ -12,21 +12,21 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 	public class TimedScopeTests
 	{
 		[TestMethod]
-		public void CreateWithoutReplayer()
+		public void ConstructorWithoutReplayer_WorksProperly()
 		{
 			CreateTimedScope(null);
 		}
 
 
 		[TestMethod]
-		public void CreateWithReplayer()
+		public void ConstructorWithReplayer_WorksProperly()
 		{
 			CreateTimedScope(new Mock<ILogEventReplayer>().Object);
 		}
 
 
 		[TestMethod]
-		public void StartMethodStartsActivity()
+		public void Start_StartsActivity()
 		{
 			(TimedScope scope, _) = CreateTimedScope(null);
 
@@ -39,7 +39,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 
 		[TestMethod]
-		public void MultipleCallsOfStopIgnored()
+		public void Stop_MultipleCallsIgnored()
 		{
 			(TimedScope scope, _) = CreateTimedScope(null);
 			scope.Start();
@@ -52,7 +52,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 
 		[TestMethod]
-		public void MultipleCallsOfDisposeIgnored()
+		public void Dispose_MultipleCallsIgnored()
 		{
 			(TimedScope scope, _) = CreateTimedScope(null);
 			scope.Start();
@@ -67,7 +67,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 
 		[TestMethod]
-		public void StopCallsEventSource()
+		public void Stop_CallsEventSource()
 		{
 			(TimedScope scope, Mock<ITimedScopeEventSender> source) = CreateTimedScope(null);
 
@@ -84,7 +84,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 		[DataTestMethod]
 		[DynamicData(nameof(AllResults), DynamicDataSourceType.Method)]
-		public void StopNotCallsLogReplayerIfItNotExist(TimedScopeResult result)
+		public void Stop_NotCallsLogReplayerIfItNotExist(TimedScopeResult result)
 		{
 			Mock<ILogEventReplayer> replayer = new Mock<ILogEventReplayer>();
 			(TimedScope scope, Mock<ITimedScopeEventSender> source) = CreateTimedScope(null);
@@ -102,7 +102,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 		[DataTestMethod]
 		[DataRow(TimedScopeResult.SystemError)]
-		public void StopCallsLogReplayerInCaseOfError(TimedScopeResult result)
+		public void Stop_CallsLogReplayerInCaseOfError(TimedScopeResult result)
 		{
 			Mock<ILogEventReplayer> replayer = new Mock<ILogEventReplayer>();
 			(TimedScope scope, Mock<ITimedScopeEventSender> source) = CreateTimedScope(replayer.Object);
@@ -122,7 +122,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		[DataTestMethod]
 		[DataRow(TimedScopeResult.ExpectedError)]
 		[DataRow(TimedScopeResult.Success)]
-		public void StopNotCallsLogReplayerInCaseOfSucces(TimedScopeResult result)
+		public void Stop_NotCallsLogReplayerInCaseOfSucces(TimedScopeResult result)
 		{
 			Mock<ILogEventReplayer> replayer = new Mock<ILogEventReplayer>();
 			(TimedScope scope, Mock<ITimedScopeEventSender> source) = CreateTimedScope(replayer.Object);

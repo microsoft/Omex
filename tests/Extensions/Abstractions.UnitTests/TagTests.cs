@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 	public class TagTests
 	{
 		[TestMethod]
-		public void CreatedTagHasProperValue()
+		public void Create_HasProperValues()
 		{
 			EventId tag1 = Tag.Create();
 			// empty line to check that Tag.Create() use line number for Id value and not just incriment
@@ -32,7 +32,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 		[DataRow(0)]
 		[DataRow(13)]
 		[DataRow(int.MaxValue)]
-		public void ReserveTagPreserveTagValue(int tagId)
+		public void ReserveTag_PreserveTagValue(int tagId)
 		{
 			EventId tag = Tag.ReserveTag(tagId);
 			Assert.AreEqual(tagId, tag.Id);

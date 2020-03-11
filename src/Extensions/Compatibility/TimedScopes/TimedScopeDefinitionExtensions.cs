@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.Compatibility.TimedScopes
 		/// <param name="timedScopeDefinition">TimedScopeDefinition to use</param>
 		/// <param name="initialResult">Initial result to use</param>
 		/// <param name="startScope">Should the scope be automatically started (for use in e.g. 'using' statement)</param>
-		[Obsolete(ObsoleteMessage, IsObsoleteError)]
+		[Obsolete("Please consider using ITimedScopeProvider directly by injecting it", false)]
 		public static TimedScope Create(this TimedScopeDefinition timedScopeDefinition, TimedScopeResult initialResult, bool startScope = true)
 		{
 			if (s_timedScopeProvider == null)
@@ -41,7 +41,5 @@ namespace Microsoft.Omex.Extensions.Compatibility.TimedScopes
 
 
 		private static ITimedScopeProvider? s_timedScopeProvider;
-		private const string ObsoleteMessage = "Please consider using ITimedScopeProvider directly by injecting it";
-		private const bool IsObsoleteError = false;
 	}
 }

@@ -14,12 +14,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
 	[TestClass]
-	public class TimedScopeEventSenderTests
+	public class TimedScopeEventSourceTests
 	{
 		[DataTestMethod]
 		[DataRow(EventSourcesEventIds.LogTimedScopeTestContext, true)]
 		[DataRow(EventSourcesEventIds.LogTimedScope, false)]
-		public void LogTimedScopeEndEvent(EventSourcesEventIds eventId, bool isTransaction)
+		public void LogTimedScopeEndEvent_CreatesEvent(EventSourcesEventIds eventId, bool isTransaction)
 		{
 			CustomEventListener listener = new CustomEventListener();
 			listener.EnableEvents(TimedScopeEventSource.Instance, EventLevel.Informational);

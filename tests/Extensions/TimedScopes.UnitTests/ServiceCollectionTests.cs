@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 	public class ServiceCollectionTests
 	{
 		[TestMethod]
-		public void CheckThatTimedScopesProviderRegistred()
+		public void AddTimedScopes_TypesRegistred()
 		{
 			ITimedScopeProvider provider = new HostBuilder()
 				.ConfigureServices(collection =>

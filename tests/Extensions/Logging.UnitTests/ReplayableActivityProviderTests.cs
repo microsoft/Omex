@@ -14,14 +14,14 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 	public class ReplayableActivityProviderTests
 	{
 		[TestMethod]
-		public void CreatesReplayibleActivity()
+		public void CreateActivityWithTrue_CreatesReplayibleActivity()
 		{
 			Activity activity = CreateActivity(true);
 			Assert.IsInstanceOfType(activity, typeof(ReplayableActivity));
 		}
 
 		[TestMethod]
-		public void CreatesRegularActivity()
+		public void CreateActivityWithFalse_CreatesRegularActivity()
 		{
 			Activity activity = CreateActivity(false);
 			Assert.IsNotInstanceOfType(activity, typeof(ReplayableActivity));

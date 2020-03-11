@@ -14,12 +14,12 @@ namespace Hosting.Services.UnitTests
 	public class OmexServiceFabricContextTests
 	{
 		[TestMethod]
-		public void TestStateless() =>
+		public void SetContext_SetsStatelessContext() =>
 			TestContextSet(ServiceFabric.Mocks.MockStatelessServiceContextFactory.Default);
 
 
 		[TestMethod]
-		public void TestStatefulWithValue() =>
+		public void SetContext_StatefulContext() =>
 			TestContextSet(ServiceFabric.Mocks.MockStatefulServiceContextFactory.Default);
 
 

@@ -11,22 +11,22 @@ namespace Hosting.Services.UnitTests
 	public class ServiceAccessorTests
 	{
 		[TestMethod]
-		public void ContextOnInitializationStateless() =>
+		public void StatelessContextPasedInConstructor_ProperlyHandlesActions() =>
 			ContextOnInitialization(ServiceFabric.Mocks.MockStatelessServiceContextFactory.Default);
 
 
 		[TestMethod]
-		public void ContextOnInitializationStateful() =>
+		public void StatefulContextPasedInConstructor_ProperlyHandlesActions() =>
 			ContextOnInitialization(ServiceFabric.Mocks.MockStatefulServiceContextFactory.Default);
 
 
 		[TestMethod]
-		public void ContextAfterInitializationStateless() =>
+		public void StatelessContextAfterInitialization_ProperlyHandlesActions() =>
 			ContextAfterInitialization(ServiceFabric.Mocks.MockStatelessServiceContextFactory.Default);
 
 
 		[TestMethod]
-		public void ContextAfterInitializationStateful() =>
+		public void StatefulContextAfterInitialization_ProperlyHandlesActions() =>
 			ContextAfterInitialization(ServiceFabric.Mocks.MockStatefulServiceContextFactory.Default);
 
 

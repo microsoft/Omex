@@ -13,7 +13,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		[DataTestMethod]
 		[DataRow(null)]
 		[DataRow("")]
-		public void CheckCreationWithWrongName(string activityName)
+		public void Constructor_ThrowsException(string activityName)
 		{
 			Assert.ThrowsException<ArgumentException>(() =>
 			{
@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 		[DataTestMethod]
 		[DataRow("TestName")]
-		public void CheckCreationCorrectName(string activityName)
+		public void Constructor_PropagatesName(string activityName)
 		{
 			TimedScopeDefinition definition = new TimedScopeDefinition(activityName);
 			Assert.ReferenceEquals(activityName, definition.Name);
@@ -32,9 +32,9 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 
 		[TestMethod]
-		public void TestEquiality()
+		public void Equals_WorksProperly()
 		{
-			string name = nameof(TestEquiality);
+			string name = nameof(Equals_WorksProperly);
 
 			TimedScopeDefinition definition1 = new TimedScopeDefinition(name);
 
@@ -61,7 +61,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 
 		[TestMethod]
-		public void TestNonEquiality()
+		public void NotEquals_WorksProperly()
 		{
 			TimedScopeDefinition definition1 = new TimedScopeDefinition("TestName1");
 
@@ -88,9 +88,9 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 
 		[TestMethod]
-		public void TestEquialityWithEmpty()
+		public void EquilsWithEmpty_WorksProperly()
 		{
-			TimedScopeDefinition definition = new TimedScopeDefinition(nameof(TestEquialityWithEmpty));
+			TimedScopeDefinition definition = new TimedScopeDefinition(nameof(EquilsWithEmpty_WorksProperly));
 
 			Assert.IsFalse(definition.Equals(null), "definition Equals null");
 

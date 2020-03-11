@@ -17,7 +17,7 @@ namespace Hosting.Services.Web.UnitTests
 	public class HostBuilderExtensionsTests
 	{
 		[TestMethod]
-		public void CheckTypeRegistrationForStateless() =>
+		public void BuildStatelessService_TypesRegistredStateless() =>
 			CheckTypeRegistration(
 				MockStatelessServiceContextFactory.Default,
 				(v, h) => h.BuildStatelessService(
@@ -26,7 +26,7 @@ namespace Hosting.Services.Web.UnitTests
 
 
 		[TestMethod]
-		public void CheckTypeRegistrationForStateful() =>
+		public void BuildStateful_BuildStatelessService_TypesRegistred() =>
 			CheckTypeRegistration(
 				MockStatefulServiceContextFactory.Default,
 				(v, h) => h.BuildStatefulService(

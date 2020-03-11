@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 		[DataTestMethod]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>))]
 		[DataRow(typeof(ITimedScopeProvider))]
-		public void CheckThatRequiredTypesRegistred(Type type)
+		public void AddOmexServices_TypesRegistred(Type type)
 		{
 			object collectionObj = new ServiceCollection()
 				.AddSingleton<IHostEnvironment>(new HostingEnvironment())

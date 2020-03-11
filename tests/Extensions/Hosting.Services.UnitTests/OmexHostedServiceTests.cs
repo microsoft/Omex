@@ -16,7 +16,7 @@ namespace Hosting.Services.UnitTests
 	public class OmexHostedServiceTests
 	{
 		[TestMethod]
-		public async Task CheckHostStartAndCancelation()
+		public async Task StartAsync_ProperlyCanceled()
 		{
 			MockRunner runnerMock = new MockRunner(t => Task.Delay(int.MaxValue, t));
 			MockLifetime lifetimeMock = new MockLifetime();
@@ -47,7 +47,7 @@ namespace Hosting.Services.UnitTests
 
 
 		[TestMethod]
-		public async Task CheckHostStartAndFailure()
+		public async Task StartAsync_HandlesExceptions()
 		{
 			MockRunner runnerMock = new MockRunner(t => Task.Run(() => throw new Exception("Totaly valid exeption")));
 			MockLifetime lifetimeMock = new MockLifetime();

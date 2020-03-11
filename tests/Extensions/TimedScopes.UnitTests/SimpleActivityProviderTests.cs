@@ -13,7 +13,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		[DataTestMethod]
 		[DataRow("TestName")]
 		[DataRow("123")]
-		public void CheckActivityCreation(string expectedName)
+		public void Create_CreatesActivity(string expectedName)
 		{
 			Activity activity = new SimpleActivityProvider().Create(new TimedScopeDefinition(expectedName));
 

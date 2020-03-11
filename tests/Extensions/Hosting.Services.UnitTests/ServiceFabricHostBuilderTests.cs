@@ -13,7 +13,7 @@ namespace Hosting.Services.UnitTests
 	public class ServiceFabricHostBuilderTests
 	{
 		[TestMethod]
-		public void HostPropagatesTypesRegistration()
+		public void ConfigureServices_PropagatesTypesRegistration()
 		{
 			HostBuilder hostBuilder = new HostBuilder();
 

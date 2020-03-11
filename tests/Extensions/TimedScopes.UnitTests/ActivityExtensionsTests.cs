@@ -10,7 +10,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 	public class ActivityExtensionsTests
 	{
 		[TestMethod]
-		public void CheckUserHashGetAndSet()
+		public void SetUserHash_SetsHash()
 		{
 			Activity activity1 = new Activity("UserHashTest1");
 			Activity activity2 = new Activity("UserHashTest2");
@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 
 		[TestMethod]
-		public void CheckTransactionMarker()
+		public void MarkAsTransaction_AddsMarker()
 		{
 			Activity activity1 = new Activity("TransactionTest1");
 			Activity activity2 = new Activity("TransactionTest2");

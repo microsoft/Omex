@@ -10,7 +10,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 	public class EventSourcesEventIdsTests
 	{
 		[TestMethod]
-		public void EventIdsUnique()
+		public void EventIds_ShouldBeUnique()
 		{
 			CollectionAssert.AllItemsAreUnique(
 				Enum.GetValues(typeof(EventSourcesEventIds)),

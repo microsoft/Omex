@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[DataRow(EventLevel.Informational, LogLevel.Information, EventSourcesEventIds.LogInfo)]
 		[DataRow(EventLevel.Verbose, LogLevel.Debug, EventSourcesEventIds.LogVerbose)]
 		[DataRow(EventLevel.Verbose, LogLevel.Trace, EventSourcesEventIds.LogSpam)]
-		public void EventSourceLogsMessage(EventLevel eventLevel, LogLevel logLevel, EventSourcesEventIds eventId)
+		public void LogMessage_CreatesProperEvents(EventLevel eventLevel, LogLevel logLevel, EventSourcesEventIds eventId)
 		{
 			CustomEventListener listener = new CustomEventListener();
 			listener.EnableEvents(OmexLogEventSource.Instance, eventLevel);
