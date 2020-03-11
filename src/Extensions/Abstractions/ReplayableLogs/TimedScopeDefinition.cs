@@ -23,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		/// <exception cref="ArgumentException">Thrown when name null or empty</exception>
 		public TimedScopeDefinition(string name) =>
 			Name = string.IsNullOrWhiteSpace(name)
-				? throw new ArgumentException("TimedScope name should not be empty or null") // Activity won't be stated in case of an empty string
+				? throw new ArgumentException("TimedScope name must not be empty or null") // Activity won't be stated in case of an empty string
 				: name;
 
 

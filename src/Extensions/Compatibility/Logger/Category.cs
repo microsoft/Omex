@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Extensions.Compatibility.Logger
 		/// <param name="name">Category name</param>
 		public Category(string name) =>
 			Name = string.IsNullOrWhiteSpace(name)
-				? throw new ArgumentException("Cathegory name should not null or empty", nameof(name))
+				? throw new ArgumentException("Category name must not null or empty", nameof(name))
 				: name;
 
 

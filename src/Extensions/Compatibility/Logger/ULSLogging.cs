@@ -48,8 +48,8 @@ namespace Microsoft.Omex.Extensions.Compatibility.Logger
 
 		private static ILogger GetLogger(Category category) =>
 			s_loggersDictionary != null && s_factory != null
-			? s_loggersDictionary.GetOrAdd(category.Name, s_factory.CreateLogger)
-			: throw new OmexCompatibilityInitializationException();
+				? s_loggersDictionary.GetOrAdd(category.Name, s_factory.CreateLogger)
+				: throw new OmexCompatibilityInitializationException();
 
 
 		private static ILoggerFactory? s_factory;
