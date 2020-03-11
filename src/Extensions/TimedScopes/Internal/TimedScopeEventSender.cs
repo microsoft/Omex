@@ -35,8 +35,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			string name = activity.OperationName;
 			string correlationId = activity.Id;
 			double durationMs = activity.Duration.TotalMilliseconds;
-			string userHash = activity.GetUserHash(); //Breaking Change: field not set
-			bool isTransaction = activity.IsTransaction(); //Breaking Change: field not set
+			string userHash = activity.GetUserHash(); //TODO: We need add midleware that will set userhash in compliant way and IsTransaction PBI - ADO Office/OC 4016554
+			bool isTransaction = activity.IsTransaction();
 
 			string nameAsString = SanitizeString(name, nameof(name), name);
 			string subTypeAsString = SanitizeString(subtype, nameof(subtype), name);

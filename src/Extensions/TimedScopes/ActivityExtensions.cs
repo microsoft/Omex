@@ -15,7 +15,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// Get user hash from activity
 		/// </summary>
 		public static string GetUserHash(this Activity activity) =>
-			activity.GetBaggageItem(UserHashKey);
+			activity.GetBaggageItem(UserHashKey) ?? string.Empty;
 
 
 		/// <summary>
