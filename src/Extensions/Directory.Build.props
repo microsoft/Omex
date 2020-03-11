@@ -2,8 +2,9 @@
   <Import Project="$([MSBuild]::GetPathOfFileAbove('$(_DirectoryBuildPropsFile)', '$(MSBuildThisFileDirectory)../'))" />
   <PropertyGroup>
     <NetFameworkVersion>net472</NetFameworkVersion>
+    <NetStandardVersion>netstandard2.1</NetStandardVersion>
     <NetCoreVersion>netcoreapp3.1</NetCoreVersion>
-    <TargetFrameworksValue>$(NetFameworkVersion);$(NetCoreVersion)</TargetFrameworksValue>
+    <TargetFrameworksValue>$(NetFameworkVersion);$(NetStandardVersion)</TargetFrameworksValue>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>

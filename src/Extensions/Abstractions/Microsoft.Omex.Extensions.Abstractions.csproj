@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(Microsoft_Extensions_Logging_Abstractions_Version)" />
   </ItemGroup>
-  <ItemGroup Condition="$(IsNetFramework)">
+  <ItemGroup Condition="!$(IsNetCore)">
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="$(System_Diagnostics_DiagnosticSource_Version)" />
   </ItemGroup>
 </Project>
