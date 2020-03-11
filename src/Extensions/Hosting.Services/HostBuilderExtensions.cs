@@ -111,10 +111,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 				if (string.IsNullOrWhiteSpace(serviceName))
 				{
+					// use executing asembly name for loggins since application name might be not available yet
 					serviceName = Assembly.GetExecutingAssembly().GetName().FullName;
 				}
 				else
 				{
+					// override default application name if it's provided explisitly
+					// for generic host application name is the name of the service that it's running (don't confuse with Sf application name)
 					builder.UseApplicationName(serviceName);
 				}
 
@@ -132,6 +135,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 						options.ValidateScopes = true;
 					})
 					.Build();
+
+				// get proper application have from host
+				serviceName = host.Services.GetService<IHostEnvironment>().ApplicationName;
 
 				ServiceInitializationEventSource.Instance.LogServiceTypeRegistered(Process.GetCurrentProcess().Id, serviceName);
 
