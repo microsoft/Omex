@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		}
 
 
-		public OmexLogEventSender(OmexLogEventSource eventSource, IMachineInformation machineInformation, IServiceContext context)
+		public OmexLogEventSender(OmexLogEventSource eventSource, IExecutionContext machineInformation, IServiceContext context)
 		{
 			m_eventSource = eventSource;
 			m_machineInformation = machineInformation;
@@ -39,7 +39,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			ActivityTraceId traceId = activity?.TraceId ?? default;
 			Guid partitionId = m_serviceContext.PartitionId;
 			long replicaId = m_serviceContext.ReplicaOrInstanceId;
-			string applicationName = m_machineInformation.MachineRole;
+			string applicationName = m_machineInformation.ApplicationName;
 			string serviceName = m_machineInformation.ServiceName;
 			string buildVersion = m_machineInformation.BuildVersion;
 			string machineId = m_machineInformation.MachineId;
@@ -118,7 +118,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 		private readonly OmexLogEventSource m_eventSource;
 		private readonly IServiceContext m_serviceContext;
-		private readonly IMachineInformation m_machineInformation;
+		private readonly IExecutionContext m_machineInformation;
 		private static readonly string s_processName;
 
 

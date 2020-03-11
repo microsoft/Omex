@@ -6,9 +6,9 @@ using System.Net;
 namespace Microsoft.Omex.Extensions.Logging
 {
 	/// <summary>
-	/// Machine information interface
+	/// Interface with information about the enviroment that executes code
 	/// </summary>
-	public interface IMachineInformation
+	public interface IExecutionContext
 	{
 		/// <summary>
 		/// Build version string
@@ -43,19 +43,13 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <summary>
 		/// The name of the deployment cluster to which this machine belongs
 		/// </summary>
-		string MachineCluster { get; }
+		string Cluster { get; }
 
 
 		/// <summary>
 		/// The ip adress of the deployment cluster to which this machine belongs
 		/// </summary>
-		IPAddress MachineClusterIpAddress { get; }
-
-
-		/// <summary>
-		/// The number of machines in the service pool
-		/// </summary>
-		int MachineCount { get; }
+		IPAddress ClusterIpAddress { get; }
 
 
 		/// <summary>
@@ -65,9 +59,12 @@ namespace Microsoft.Omex.Extensions.Logging
 
 
 		/// <summary>
-		/// The role of the host machine
+		/// Name of the application
 		/// </summary>
-		string MachineRole { get; }
+		/// <remarks>
+		/// Could be the same as service name, but would be diffirent if you running ex. Service Fabric application with multiple services
+		/// </remarks>
+		string ApplicationName { get; }
 
 
 		/// <summary>

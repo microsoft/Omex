@@ -9,12 +9,11 @@ using Microsoft.Omex.Extensions.Logging;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal sealed class ServiceFabricMachineInformation : EmptyMachineInformation
+	internal sealed class ServiceFabricExecutionContext : EmptyExecutionContext
 	{
-		public ServiceFabricMachineInformation(IHostEnvironment hostEnvironment, IServiceContextAccessor<ServiceContext> accessor)
+		public ServiceFabricExecutionContext(IHostEnvironment hostEnvironment, IServiceContextAccessor<ServiceContext> accessor)
 		{
 			MachineName = GetMachineName();
-			MachineCount = 1;
 			ServiceName = hostEnvironment.ApplicationName;
 			EnvironmentName = hostEnvironment.EnvironmentName ?? DefaultEmptyValue;
 			IsPrivateDeployment = hostEnvironment.IsDevelopment();
@@ -35,16 +34,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		private void UpdateState(ServiceContext context)
 		{
 			ICodePackageActivationContext activationContext = context.CodePackageActivationContext;
-			MachineRole = activationContext.ApplicationName ?? DefaultEmptyValue;
+			ApplicationName = activationContext.ApplicationName ?? DefaultEmptyValue;
 			BuildVersion = activationContext.CodePackageVersion;
 
 			NodeContext nodeContext = context.NodeContext;
 			MachineId = FormattableString.Invariant($"{MachineName}_{nodeContext.NodeName}");
-			MachineClusterIpAddress = IPAddress.TryParse(nodeContext.IPAddressOrFQDN, out IPAddress ipAddress)
+			ClusterIpAddress = IPAddress.TryParse(nodeContext.IPAddressOrFQDN, out IPAddress ipAddress)
 				? ipAddress
 				: GetIpAddress(MachineName);
 
-			MachineCluster = GetClusterName()
+			Cluster = GetClusterName()
 				?? nodeContext.IPAddressOrFQDN
 				?? MachineId;
 		}

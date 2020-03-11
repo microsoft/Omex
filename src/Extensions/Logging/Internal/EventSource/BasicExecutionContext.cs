@@ -3,13 +3,13 @@
 
 namespace Microsoft.Omex.Extensions.Logging
 {
-	internal class BasicMachineInformation : EmptyMachineInformation
+	internal class BasicMachineInformation : EmptyExecutionContext
 	{
 		public BasicMachineInformation()
 		{
 			MachineName = GetMachineName();
 			MachineId = MachineName;
-			MachineClusterIpAddress = GetIpAddress(MachineName);
+			ClusterIpAddress = GetIpAddress(MachineName);
 			BuildVersion = GetBuildVersion();
 		}
 	}

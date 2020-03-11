@@ -93,7 +93,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			collection.TryAddSingleton<IServiceContextAccessor<TContext>>(p => p.GetService<ServiceContextAccessor<TContext>>());
 			collection.TryAddSingleton<IServiceContextAccessor<ServiceContext>>(p => p.GetService<ServiceContextAccessor<TContext>>());
 			collection.TryAddSingleton<IServiceContext, OmexServiceFabricContext>();
-			collection.TryAddSingleton<IMachineInformation, ServiceFabricMachineInformation>();
+			collection.TryAddSingleton<IExecutionContext, ServiceFabricExecutionContext>();
 			return collection.AddOmexServices();
 		}
 

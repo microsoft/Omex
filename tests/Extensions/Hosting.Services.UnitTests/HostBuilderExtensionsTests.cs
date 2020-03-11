@@ -27,7 +27,7 @@ namespace Hosting.Services.UnitTests
 	{
 		[DataTestMethod]
 		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
-		[DataRow(typeof(IMachineInformation), typeof(ServiceFabricMachineInformation))]
+		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ITimedScopeProvider), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		public void TestOmexTypeRegistration(Type typeToResolver, Type? expectedImplementationType)
@@ -117,7 +117,7 @@ namespace Hosting.Services.UnitTests
 
 		[DataTestMethod]
 		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
-		[DataRow(typeof(IMachineInformation), typeof(ServiceFabricMachineInformation))]
+		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ITimedScopeProvider), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		[DataRow(typeof(IHostedService), typeof(OmexHostedService))]
@@ -142,7 +142,7 @@ namespace Hosting.Services.UnitTests
 
 		[DataTestMethod]
 		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
-		[DataRow(typeof(IMachineInformation), typeof(ServiceFabricMachineInformation))]
+		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ITimedScopeProvider), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		[DataRow(typeof(IHostedService), typeof(OmexHostedService))]

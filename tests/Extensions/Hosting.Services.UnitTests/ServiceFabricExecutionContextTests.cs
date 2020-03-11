@@ -12,10 +12,10 @@ using Moq;
 namespace Hosting.Services.UnitTests
 {
 	[TestClass]
-	public class ServiceFabricMachineInformationTests
+	public class ServiceFabricExecutionContextTests
 	{
 		[TestMethod]
-		public void TestMachineInformationInitialization()
+		public void TestExecutionContextInitialization()
 		{
 			string appName = "SomeName";
 			string envirometnName = "SomeEnviroment";
@@ -29,12 +29,12 @@ namespace Hosting.Services.UnitTests
 			enviromentMock.SetupGet(e => e.ApplicationName).Returns(appName);
 			enviromentMock.SetupGet(e => e.EnvironmentName).Returns(envirometnName);
 			Mock<IServiceContextAccessor<StatelessServiceContext>> contextMock = new Mock<IServiceContextAccessor<StatelessServiceContext>>();
-			IMachineInformation info = new ServiceFabricMachineInformation(enviromentMock.Object, contextMock.Object);
+			IExecutionContext info = new ServiceFabricExecutionContext(enviromentMock.Object, contextMock.Object);
 
 			Assert.ReferenceEquals(appName, info.ServiceName);
 			Assert.ReferenceEquals(envirometnName, info.EnvironmentName);
 			Assert.ReferenceEquals(regionName, info.RegionName);
-			Assert.ReferenceEquals(clusterName, info.MachineCluster);
+			Assert.ReferenceEquals(clusterName, info.Cluster);
 		}
 	}
 }

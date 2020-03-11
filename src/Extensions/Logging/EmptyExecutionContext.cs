@@ -12,22 +12,22 @@ namespace Microsoft.Omex.Extensions.Logging
 	/// <summary>
 	/// Base class for machine information
 	/// </summary>
-	public class EmptyMachineInformation : IMachineInformation
+	public class EmptyExecutionContext : IExecutionContext
 	{
 		/// <summary>
-		/// Create instance of machine information
+		/// Create instance of empty execution context
+		/// Inherit from this class to populate defined properties with proper values
 		/// </summary>
 		/// <remarks>
 		/// Please keep this initialization as lightweight as possible
 		/// </remarks>
-		protected EmptyMachineInformation()
+		protected EmptyExecutionContext()
 		{
 			MachineName = DefaultEmptyValue;
 			MachineId = DefaultEmptyValue;
-			MachineRole = DefaultEmptyValue;
-			MachineClusterIpAddress = IPAddress.None;
-			MachineCount = 0;
-			MachineCluster = MachineId;
+			ApplicationName = DefaultEmptyValue;
+			ClusterIpAddress = IPAddress.None;
+			Cluster = MachineId;
 
 			EnvironmentName = DefaultEmptyValue;
 			DeploymentSlice = DefaultEmptyValue;
@@ -50,19 +50,15 @@ namespace Microsoft.Omex.Extensions.Logging
 
 
 		/// <inheritdoc/>
-		public string MachineRole { get; protected set; }
+		public string ApplicationName { get; protected set; }
 
 
 		/// <inheritdoc/>
-		public IPAddress MachineClusterIpAddress { get; protected set; }
+		public IPAddress ClusterIpAddress { get; protected set; }
 
 
 		/// <inheritdoc/>
-		public int MachineCount { get; protected set; }
-
-
-		/// <inheritdoc/>
-		public string MachineCluster { get; protected set; }
+		public string Cluster { get; protected set; }
 
 
 		/// <inheritdoc/>
