@@ -46,7 +46,10 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			string tagName = eventId.Name;
 			// In case if tag created using Tag.Create (line number and file in description) it's better to display decimal number 
-			string tagId = string.IsNullOrWhiteSpace(eventId.Name) ? TagIdAsString(eventId.Id) : eventId.Id.ToString(CultureInfo.InvariantCulture);
+			string tagId = string.IsNullOrWhiteSpace(eventId.Name)
+				? TagsExtensions.TagIdAsString(eventId.Id)
+				: eventId.Id.ToString(CultureInfo.InvariantCulture);
+
 			string traceIdAsString = traceId.ToHexString();
 
 			//Event methods should have all information as parameters so we are passing them each time
@@ -120,71 +123,5 @@ namespace Microsoft.Omex.Extensions.Logging
 		private readonly IServiceContext m_serviceContext;
 		private readonly IExecutionContext m_machineInformation;
 		private static readonly string s_processName;
-
-
-		/// <summary>
-		/// Get the Tag id as a string
-		/// </summary>
-		/// <param name="tagId">tag id</param>
-		/// <returns>the tag as string</returns>
-		/// <remarks>
-		/// In terms of the conversion from integer tag value to equivalent string reprsentation, the following scheme is used:
-		/// 1. If the integer tag &lt;= 0x0000FFFF, treat the tag as special tag called numeric only tag.
-		/// Hence the string representation is direct conversion i.e. tag id 6700 == 6700
-		/// 2. Else, if it's an alphanumeric tag, there are 2 different schemes to pack those. viz. 4 letter and 5 letter representations.
-		/// 2.1 four letter tags are converted by transforming each byte into it's equivalent ASCII. e.g. 0x61626364 => abcd
-		/// 2.2 five letter tags are converted by transforming lower 30 bits of the integer value into the symbol space a-z,0-9.
-		/// The conversion is done by treating each group of 6 bits as an index into the symbol space a,b,c,d, ... z, 0, 1, 2, ....9
-		/// eg. 0x000101D0 = 00 000000 000000 010000 000111 010000 2 = aaqhq
-		/// </remarks>
-		private static string TagIdAsString(int tagId)
-		{
-			if (tagId <= 0xFFFF)
-			{
-				// Use straight numeric values
-				return tagId.ToString("x4", CultureInfo.InvariantCulture);
-			}
-			else if (tagId <= 0x3FFFFFFF)
-			{
-				// Use the lower 30 bits, grouped into 6 bits each, index into
-				// valuespace 'a'-'z','0'-'9' (reverse order)
-				char[] chars = new char[5];
-				for (int i = 4; i >= 0; i--)
-				{
-					int charVal = tagId & 0x3F;
-					tagId = tagId >> 6;
-					if (charVal > 25)
-					{
-						if (charVal > 35)
-						{
-							chars[i] = '?';
-						}
-						else
-						{
-							chars[i] = (char)(charVal + 22);
-						}
-					}
-					else
-					{
-						chars[i] = (char)(charVal + 'a');
-					}
-				}
-
-				return new string(chars);
-			}
-			else
-			{
-				// Each byte represented as ASCII (reverse order)
-				byte[] bytes = BitConverter.GetBytes(tagId);
-				char[] characters = Encoding.ASCII.GetChars(bytes);
-				if (characters.Length > 0)
-				{
-					Array.Reverse(characters);
-					return new string(characters);
-				}
-			}
-
-			return "0000";
-		}
 	}
 }
