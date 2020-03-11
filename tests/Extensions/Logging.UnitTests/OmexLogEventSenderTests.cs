@@ -35,7 +35,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			OmexLogEventSender logsSender = new OmexLogEventSender(
 				OmexLogEventSource.Instance,
-				new EmptyMachineInformation(),
+				new BasicMachineInformation(),
 				new EmptyServiceContext());
 
 			logsSender.LogMessage(activity, category, logLevel, tagId, 0, message);
