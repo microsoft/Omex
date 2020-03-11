@@ -136,7 +136,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 					})
 					.Build();
 
-				// get proper application have from host
+				// get proper application name from host
 				serviceName = host.Services.GetService<IHostEnvironment>().ApplicationName;
 
 				ServiceInitializationEventSource.Instance.LogServiceTypeRegistered(Process.GetCurrentProcess().Id, serviceName);

@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <remarks>
 		/// Please keep this initialization as lightweight as possible
 		/// </remarks>
-		public EmptyMachineInformation()
+		protected EmptyMachineInformation()
 		{
 			MachineName = DefaultEmptyValue;
 			MachineId = DefaultEmptyValue;

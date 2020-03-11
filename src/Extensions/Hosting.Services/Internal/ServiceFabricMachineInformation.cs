@@ -14,18 +14,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public ServiceFabricMachineInformation(IHostEnvironment hostEnvironment, IServiceContextAccessor<ServiceContext> accessor)
 		{
 			MachineName = GetMachineName();
-			DeploymentSlice = DefaultEmptyValue;
-			IsCanary = false;
 			MachineCount = 1;
 			ServiceName = hostEnvironment.ApplicationName;
-			MachineRole = DefaultEmptyValue;
-			BuildVersion = DefaultEmptyValue;
-			MachineId = DefaultEmptyValue;
-			MachineClusterIpAddress = IPAddress.None;
 			EnvironmentName = hostEnvironment.EnvironmentName ?? DefaultEmptyValue;
 			IsPrivateDeployment = hostEnvironment.IsDevelopment();
 			RegionName = GetRegionName() ?? DefaultEmptyValue;
-			MachineCluster = DefaultEmptyValue;
 
 			accessor.OnContextAvailable(UpdateState);
 		}
