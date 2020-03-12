@@ -47,7 +47,9 @@ namespace Microsoft.Omex.Extensions.Logging
 			string tagName = eventId.Name;
 			// In case if tag created using Tag.Create (line number and file in description) it's better to display decimal number 
 			string tagId = string.IsNullOrWhiteSpace(eventId.Name)
+#pragma warning disable 618 // need to be used for to process reserved tags from GitTagger
 				? TagsExtensions.TagIdAsString(eventId.Id)
+#pragma warning restore 618
 				: eventId.Id.ToString(CultureInfo.InvariantCulture);
 
 			string traceIdAsString = traceId.ToHexString();

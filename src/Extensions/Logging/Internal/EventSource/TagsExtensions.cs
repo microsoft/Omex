@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
+	[Obsolete("Added for backward compatability, we are in a process of changing tagging system, please avoid using it if posible", false)]
 	internal static class TagsExtensions
 	{
 		/// <summary>

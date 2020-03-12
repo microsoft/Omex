@@ -27,6 +27,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// Starts TimedScopes before task execution and finish after it's completion
 		/// </summary>
 		public static async ValueTask WithTimedScope(this ValueTask task, ITimedScopeProvider provider, TimedScopeDefinition definition) =>
+			// await required to convert ValueTask<T> to ValueTask https://github.com/microsoft/Omex/pull/153#discussion_r389761929
 			await ConvertToTaskWithResultValue(task).WithTimedScope(provider, definition).ConfigureAwait(false);
 
 
