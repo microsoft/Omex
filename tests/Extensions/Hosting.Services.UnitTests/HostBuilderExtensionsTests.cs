@@ -30,7 +30,7 @@ namespace Hosting.Services.UnitTests
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ITimedScopeProvider), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
-		public void AddOmexServiceFabricDependencies_TypesRegistred(Type typeToResolver, Type? expectedImplementationType)
+		public void AddOmexServiceFabricDependencies_TypesRegistered(Type typeToResolver, Type? expectedImplementationType)
 		{
 			void CheckTypeRegistration<TContext>() where TContext : ServiceContext
 			{
@@ -207,9 +207,9 @@ namespace Hosting.Services.UnitTests
 
 		public class TypeThatShouldNotBeResolvable
 		{
-			public TypeThatShouldNotBeResolvable(TypeThatIsNotRegistred value) { }
+			public TypeThatShouldNotBeResolvable(TypeThatIsNotRegistered value) { }
 
-			public class TypeThatIsNotRegistred { }
+			public class TypeThatIsNotRegistered { }
 		}
 
 

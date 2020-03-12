@@ -13,7 +13,7 @@ namespace Hosting.Services.Web.UnitTests
 
 
 		public void ConfigureServices(IServiceCollection services) =>
-			services.AddTransient<TypeRegistredInStartup>();
+			services.AddTransient<TypeRegisteredInStartup>();
 
 
 		public void Configure(IApplicationBuilder app, IHostEnvironment env)
@@ -21,6 +21,6 @@ namespace Hosting.Services.Web.UnitTests
 		}
 
 
-		internal class TypeRegistredInStartup { }
+		internal class TypeRegisteredInStartup { }
 	}
 }

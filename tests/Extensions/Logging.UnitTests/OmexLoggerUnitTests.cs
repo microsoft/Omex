@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Logging.Replayable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,7 +21,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		public void LogMessage_PropagatedToEventSource()
 		{
 			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock(isEnabled: true);
-			LogMessage(nameof(LogMessage_PropagatedToEventSource), eventSourceMock);
+			LogMessage(eventSourceMock);
 			eventSourceMock.Verify(m_logExpression, Times.Once);
 		}
 
@@ -29,7 +30,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		public void LogMessage_UseIsEnabledFlag()
 		{
 			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock(isEnabled: false);
-			LogMessage(nameof(LogMessage_UseIsEnabledFlag), eventSourceMock);
+			LogMessage(eventSourceMock);
 			eventSourceMock.Verify(m_logExpression, Times.Never);
 		}
 
@@ -42,7 +43,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			ReplayableActivity activity = CreateActivity(suffix);
 			activity.Start();
-			LogMessage(nameof(LogMessage_UseIsReplayableMessageFlag), eventSourceMock);
+			LogMessage(eventSourceMock);
 			activity.Stop();
 
 			eventSourceMock.Verify(m_logExpression, Times.Once);
@@ -59,7 +60,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			ReplayableActivity activity = CreateActivity(suffix);
 			activity.Start();
-			LogMessage(nameof(LogMessage_ReplayedMessageSaved), eventSourceMock, eventId);
+			LogMessage(eventSourceMock, eventId);
 			activity.Stop();
 
 			eventSourceMock.Verify(m_logExpression, Times.Once);
@@ -83,7 +84,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			ReplayableActivity activity = CreateActivity(suffix);
 			activity.Start();
-			(ILogger logger, _) = LogMessage(nameof(LogMessage_ReplayedMessageSaved), eventSourceMock, eventId);
+			(ILogger logger, _) = LogMessage(eventSourceMock, eventId);
 			logger.LogDebug(replayMessage1);
 			logger.LogDebug(replayMessage2);
 			activity.Stop();
@@ -100,7 +101,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[TestMethod]
 		public void BeginScope_ScopeProperlyCreated()
 		{
-			(ILogger logger, Mock<IExternalScopeProvider> scopeProvicedMock) = LogMessage(nameof(LogMessage_ReplayedMessageSaved), CreateEventSourceMock());
+			(ILogger logger, Mock<IExternalScopeProvider> scopeProvicedMock) = LogMessage(CreateEventSourceMock());
 
 			object obj = new object();
 			IDisposable resultMock = new Mock<IDisposable>().Object;
@@ -122,7 +123,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		}
 
 
-		private (ILogger, Mock<IExternalScopeProvider>) LogMessage(string suffix, Mock<ILogEventSender> eventSourceMock, int eventId = 0)
+		private (ILogger, Mock<IExternalScopeProvider>) LogMessage(Mock<ILogEventSender> eventSourceMock, int eventId = 0, [CallerMemberName]string suffix = "")
 		{
 			Mock<IExternalScopeProvider> scopeProvicedMock = new Mock<IExternalScopeProvider>();
 			ILogger logger = new OmexLogger(eventSourceMock.Object, scopeProvicedMock.Object, GetLogCategory(suffix));

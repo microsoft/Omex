@@ -23,7 +23,7 @@ namespace Hosting.Services.Web.UnitTests
 	{
 		public ListenerValidator()
 		{
-			m_logsEventSourcMock = new Mock<ILogEventSender>();
+			m_logsEventSourceMock = new Mock<ILogEventSender>();
 			ListenerName = "TestListener";
 			IntegrationOptions = ServiceFabricIntegrationOptions.None;
 			BuilderAction = builder =>
@@ -32,8 +32,8 @@ namespace Hosting.Services.Web.UnitTests
 				{
 					collection
 						.AddOmexServiceFabricDependencies<TContext>()
-						.AddTransient<TypeRegistredInListenerExtension>()
-						.AddSingleton(m_logsEventSourcMock.Object);
+						.AddTransient<TypeRegisteredInListenerExtension>()
+						.AddSingleton(m_logsEventSourceMock.Object);
 				});
 			};
 		}
@@ -61,20 +61,20 @@ namespace Hosting.Services.Web.UnitTests
 			Assert.ReferenceEquals(context, ResolveType<TContext>(host));
 			Assert.ReferenceEquals(context, ResolveType<IServiceContextAccessor<TContext>>(host).ServiceContext);
 
-			ResolveType<TypeRegistredInListenerExtension>(host);
-			ResolveType<MockStartup.TypeRegistredInStartup>(host);
+			ResolveType<TypeRegisteredInListenerExtension>(host);
+			ResolveType<MockStartup.TypeRegisteredInStartup>(host);
 
 			return host;
 		}
 
 
-		public void ValidateOmexTypesRegistred(IWebHost host)
+		public void ValidateOmexTypesRegistered(IWebHost host)
 		{
 			ResolveType<ITimedScopeProvider>(host);
 			ILogger logger = ResolveType<ILogger<ListenerValidator<TContext>>>(host);
-			m_logsEventSourcMock.Invocations.Clear();
+			m_logsEventSourceMock.Invocations.Clear();
 			logger.LogError("TestMessage");
-			Assert.AreNotEqual(0, m_logsEventSourcMock.Invocations.Count, "Omex logger should be registred in WebHost");
+			Assert.AreNotEqual(0, m_logsEventSourceMock.Invocations.Count, "Omex logger should be registred in WebHost");
 		}
 
 
@@ -86,7 +86,7 @@ namespace Hosting.Services.Web.UnitTests
 		}
 
 
-		private Mock<ILogEventSender> m_logsEventSourcMock;
+		private Mock<ILogEventSender> m_logsEventSourceMock;
 
 
 		private T ResolveType<T>(IWebHost host) where T : class
@@ -97,7 +97,7 @@ namespace Hosting.Services.Web.UnitTests
 		}
 
 
-		private class TypeRegistredInListenerExtension { }
+		private class TypeRegisteredInListenerExtension { }
 
 
 		private class MockListener : AspNetCoreCommunicationListener

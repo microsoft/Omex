@@ -52,7 +52,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			Assert.IsTrue(definition1 == definition2, "1 == 2");
 
-			Assert.IsTrue(definition2  == definition1, "2 == 1");
+			Assert.IsTrue(definition2 == definition1, "2 == 1");
 
 			Assert.IsFalse(definition1 != definition2, "1 != 2");
 

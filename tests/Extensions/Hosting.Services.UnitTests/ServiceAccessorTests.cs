@@ -50,11 +50,11 @@ namespace Hosting.Services.UnitTests
 			ServiceContextAccessor<TContext>  accessor = new ServiceContextAccessor<TContext>();
 			IServiceContextAccessor<TContext> publicAccessor = accessor;
 
-			TContext? recivedContext = null;
-			publicAccessor.OnContextAvailable(c => recivedContext = c);
+			TContext? receivedContext = null;
+			publicAccessor.OnContextAvailable(c => receivedContext = c);
 			accessor.SetContext(context);
 
-			Assert.AreEqual(context, recivedContext);
+			Assert.AreEqual(context, receivedContext);
 		}
 	}
 }

@@ -12,11 +12,11 @@ namespace Hosting.Services.Web.UnitTests
 	public class KestrelListenerBuilderTests
 	{
 		[TestMethod]
-		public void StatelessService_TypesRegistred() => CheckTypeRegistration(MockStatelessServiceContextFactory.Default);
+		public void StatelessService_TypesRegistered() => CheckTypeRegistration(MockStatelessServiceContextFactory.Default);
 
 
 		[TestMethod]
-		public void StatefulService_TypesRegistred() => CheckTypeRegistration(MockStatefulServiceContextFactory.Default);
+		public void StatefulService_TypesRegistered() => CheckTypeRegistration(MockStatefulServiceContextFactory.Default);
 
 
 		private void CheckTypeRegistration<TContext>(TContext context)

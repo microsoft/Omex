@@ -21,26 +21,21 @@ namespace Hosting.Services.UnitTests
 			MockRunner runnerMock = new MockRunner(t => Task.Delay(int.MaxValue, t));
 			MockLifetime lifetimeMock = new MockLifetime();
 			ILogger<OmexHostedService> loggerMock = new NullLogger<OmexHostedService>();
-
 			OmexHostedService hostedService = new OmexHostedService(runnerMock, lifetimeMock, loggerMock);
 
 			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after constructor");
 
 			await hostedService.StartAsync(CancellationToken.None);
-
 			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after StartAsync");
 
 			lifetimeMock.ApplicationStartedSource.Cancel();
-
 			Assert.IsTrue(runnerMock.IsStarted, "RunServiceAsync should not be called after StartAsync");
 
 			Task task = runnerMock.Task!;
-
 			Assert.IsFalse(task.IsCanceled, "Task should not be canceled");
 			Assert.IsFalse(runnerMock.Token.IsCancellationRequested, "CancelationToken should not be canceled");
 
 			lifetimeMock.ApplicationStoppingSource.Cancel();
-
 			Assert.IsTrue(runnerMock.Token.IsCancellationRequested, "Task should be canceled");
 			Assert.IsTrue(task.IsCanceled, "CancelationToken should be canceled");
 		}
@@ -54,25 +49,19 @@ namespace Hosting.Services.UnitTests
 			ILogger<OmexHostedService> loggerMock = new NullLogger<OmexHostedService>();
 
 			OmexHostedService hostedService = new OmexHostedService(runnerMock, lifetimeMock, loggerMock);
-
 			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after constructor");
 
 			await hostedService.StartAsync(CancellationToken.None);
-
 			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after StartAsync");
 
 			lifetimeMock.ApplicationStartedSource.Cancel();
-
 			Assert.IsTrue(runnerMock.IsStarted, "RunServiceAsync should be called after StartAsync");
-
 			Assert.IsFalse(runnerMock.Token.IsCancellationRequested, "CancelationToken should not be canceled");
 
 			await lifetimeMock.CompletionTask;
-
 			Assert.IsTrue(runnerMock.Task!.IsFaulted, "Task should be faulted");
 
 			lifetimeMock.ApplicationStoppingSource.Cancel();
-
 			Assert.IsTrue(runnerMock.Token.IsCancellationRequested, "Task should be canceled");
 		}
 
