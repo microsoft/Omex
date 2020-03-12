@@ -4,7 +4,7 @@
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.ReplayableLogs;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {

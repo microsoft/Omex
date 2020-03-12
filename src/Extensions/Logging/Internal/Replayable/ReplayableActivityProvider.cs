@@ -4,7 +4,7 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.TimedScopes;
+using Microsoft.Omex.Extensions.Abstractions.ReplayableLogs;
 
 namespace Microsoft.Omex.Extensions.Logging.Replayable
 {

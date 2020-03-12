@@ -3,7 +3,7 @@
 
 using System.Diagnostics;
 
-namespace Microsoft.Omex.Extensions.Abstractions
+namespace Microsoft.Omex.Extensions.Abstractions.ReplayableLogs
 {
 	/// <summary>
 	/// Replays activity logs if activity collects them

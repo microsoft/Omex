@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.ReplayableLogs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

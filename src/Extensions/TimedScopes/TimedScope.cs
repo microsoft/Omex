@@ -3,7 +3,7 @@
 
 using System;
 using System.Diagnostics;
-using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.ReplayableLogs;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
