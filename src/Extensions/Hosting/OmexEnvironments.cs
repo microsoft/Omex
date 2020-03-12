@@ -17,19 +17,22 @@ namespace Microsoft.Omex.Extensions.Hosting
 
 
 		/// <summary>
-		/// Int environment
+		/// Integration environment
+		/// This is our CI/CD environment, deployments are triggered on completion of a master build
+		/// Consequently, we deploy to INT on completion of a PR
 		/// </summary>
 		public static string Int { get; } = "Int"; //TODO: Consider Removing PBI - ADO Office/OC 4005211
 
 
 		/// <summary>
 		/// Pre production environment
+		/// This environment is used to test builds that will eventually make their way to Production
 		/// </summary>
 		public static string EDog { get; } = "EDog"; //TODO: Consider replacing with Environments.Staging PBI - ADO Office/OC 4005211
 
 
 		/// <summary>
-		/// Production environment
+		/// Production/live environment
 		/// </summary>
 		public static string Production { get; } = Environments.Production;
 	}
