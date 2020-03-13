@@ -10,7 +10,7 @@ pool:
   
 steps:
 - task: UseDotNet@2
-  displayName: 'Use .NET Core sdk 3.0'
+  displayName: 'Use .NET Core sdk 3.x'
   inputs:
     version: 3.x
 

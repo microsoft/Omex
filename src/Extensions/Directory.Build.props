@@ -1,0 +1,16 @@
+<Project>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('$(_DirectoryBuildPropsFile)', '$(MSBuildThisFileDirectory)../'))" />
+  <PropertyGroup>
+    <NetFameworkVersion>net472</NetFameworkVersion>
+    <NetStandardVersion>netstandard2.1</NetStandardVersion>
+    <NetCoreVersion>netcoreapp3.1</NetCoreVersion>
+    <TargetFrameworksValue>$(NetFameworkVersion);$(NetStandardVersion)</TargetFrameworksValue>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup Label="Make internals visible for the corresponding unit test assemblies">
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(AssemblyName).UnitTests$(StrongNameSuffix)</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+</Project>

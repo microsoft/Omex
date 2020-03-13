@@ -1,0 +1,22 @@
+<Project>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('$(_DirectoryBuildPropsFile)', '$(MSBuildThisFileDirectory)../'))" />
+  <PropertyGroup>
+    <NetFameworkVersion>net472</NetFameworkVersion>
+    <NetCoreVersion>netcoreapp3.1</NetCoreVersion>
+    <TargetFrameworksValue>$(NetFameworkVersion);$(NetCoreVersion)</TargetFrameworksValue>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(Microsoft_Net_Test_Sdk_Version)" />
+    <PackageReference Include="MSTest.TestAdapter" Version="$(MSTest_TestAdapter_Version)" PrivateAssets="All" />
+    <PackageReference Include="MSTest.TestFramework" Version="$(MSTest_TestFramework_Version)" />
+    <PackageReference Include="Moq" Version="$(Moq_Version_Core)" />
+    <!-- exclude xunit packages used in other test projest -->
+    <PackageReference Remove="xunit.runner.visualstudio" />
+    <PackageReference Remove="xunit.assert" />
+    <PackageReference Remove="xunit.core" />
+  </ItemGroup>
+</Project>
