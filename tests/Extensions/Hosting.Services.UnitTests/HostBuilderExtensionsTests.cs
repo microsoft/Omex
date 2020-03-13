@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Omex.Extensions.EventSources;
+using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.Omex.Extensions.TimedScopes;

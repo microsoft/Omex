@@ -7,7 +7,7 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Omex.Extensions.EventSources;
+using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
