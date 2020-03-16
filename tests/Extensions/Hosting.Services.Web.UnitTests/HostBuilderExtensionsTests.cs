@@ -17,7 +17,7 @@ namespace Hosting.Services.Web.UnitTests
 	public class HostBuilderExtensionsTests
 	{
 		[TestMethod]
-		public void BuildStatelessService_TypesRegistredStateless() =>
+		public void BuildStatelessService_TypesRegisteredStateless() =>
 			CheckTypeRegistration(
 				MockStatelessServiceContextFactory.Default,
 				(v, h) => h.BuildStatelessService(
@@ -26,7 +26,7 @@ namespace Hosting.Services.Web.UnitTests
 
 
 		[TestMethod]
-		public void BuildStateful_BuildStatelessService_TypesRegistred() =>
+		public void BuildStateful_BuildStatelessService_TypesRegistered() =>
 			CheckTypeRegistration(
 				MockStatefulServiceContextFactory.Default,
 				(v, h) => h.BuildStatefulService(
@@ -57,7 +57,7 @@ namespace Hosting.Services.Web.UnitTests
 				= (KestrelListenerBuilder<MockStartup, TContext>)builder;
 
 			IWebHost webHost = validator.ValidateListenerBuilder(context, kestrelBuilder);
-			validator.ValidateOmexTypesRegistred(webHost);
+			validator.ValidateOmexTypesRegistered(webHost);
 			validator.ValidateBuildFunction(context, kestrelBuilder);
 		}
 	}

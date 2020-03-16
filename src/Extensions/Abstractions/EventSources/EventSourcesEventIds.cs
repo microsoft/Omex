@@ -1,11 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace Microsoft.Omex.Extensions.EventSources
+namespace Microsoft.Omex.Extensions.Abstractions.EventSources
 {
 	/// <summary>
 	/// Event ids enum
 	/// </summary>
+	/// <remarks>
+	/// enum numbers preserve historical order, changing them will require to change our log aggregation system
+	/// </remarks>
 	public enum EventSourcesEventIds
 	{
 		/// <summary>

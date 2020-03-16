@@ -4,7 +4,9 @@
 #if NETFRAMEWORK // This marker attribute only available starting from netstandard 2.1, so we need a replacement to build for full framework
 namespace System.Diagnostics.CodeAnalysis
 {
-	/// <summary>Specifies that when a method returns <see cref="ReturnValue"/>, the parameter will not be null even if the corresponding type allows it.</summary>
+	/// <summary>
+	/// Specifies that when a method returns <see cref="ReturnValue"/>, the parameter will not be null even if the corresponding type allows it.
+	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter, Inherited = false)]
 	public sealed class NotNullWhenAttribute : Attribute
 	{

@@ -43,8 +43,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained</returns>
 		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection)
 		{
-			serviceCollection
-				.AddLogging();
+			serviceCollection.AddLogging();
 
 			serviceCollection.TryAddTransient<IServiceContext, EmptyServiceContext>();
 			serviceCollection.TryAddTransient<IExecutionContext, BasicMachineInformation>();

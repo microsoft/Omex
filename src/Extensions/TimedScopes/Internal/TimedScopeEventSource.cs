@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 using System.Diagnostics.Tracing;
-using Microsoft.Omex.Extensions.EventSources;
+using Microsoft.Omex.Extensions.Abstractions.EventSources;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {

@@ -51,6 +51,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		{
 			private readonly OmexStatefulServiceRunner m_serviceParameters;
 
+
 			public OmexStatefulService(
 				OmexStatefulServiceRunner serviceRunner,
 				StatefulServiceContext serviceContext)

@@ -48,11 +48,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			Assert.IsTrue(definition2.Equals((object)definition1), "2 Equals (object)1");
 
-			Assert.IsTrue(definition1.GetHashCode() == definition2.GetHashCode(), "1 HashCode == 2 HashCode");
+			Assert.AreEqual(definition1.GetHashCode(), definition2.GetHashCode(), "1 HashCode equals 2 HashCode");
 
 			Assert.IsTrue(definition1 == definition2, "1 == 2");
 
-			Assert.IsTrue(definition2  == definition1, "2 == 1");
+			Assert.IsTrue(definition2 == definition1, "2 == 1");
 
 			Assert.IsFalse(definition1 != definition2, "1 != 2");
 
@@ -75,7 +75,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			Assert.IsFalse(definition2.Equals((object)definition1), "2 Equals (object)1");
 
-			Assert.IsFalse(definition1.GetHashCode() == definition2.GetHashCode(), "1 HashCode == 2 HashCode");
+			Assert.AreNotEqual(definition1.GetHashCode(), definition2.GetHashCode(), "1 HashCode NotEquals 2 HashCode");
 
 			Assert.IsFalse(definition1 == definition2, "1 == 2");
 

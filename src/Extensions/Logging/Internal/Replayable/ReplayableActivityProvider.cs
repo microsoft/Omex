@@ -20,6 +20,7 @@ namespace Microsoft.Omex.Extensions.Logging.Replayable
 			m_maxReplayedEventsPerActivity = options.Value.MaxReplayedEventsPerActivity;
 		}
 
+
 		public Activity Create(TimedScopeDefinition definition) =>
 			m_replayLogsInCaseOfError
 			? new ReplayableActivity(definition.Name, m_maxReplayedEventsPerActivity)

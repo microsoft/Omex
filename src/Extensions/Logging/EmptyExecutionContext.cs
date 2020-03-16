@@ -103,9 +103,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		protected string GetBuildVersion()
 		{
 			FileVersionInfo buildVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
-			return buildVersion != null
-				? string.Concat(buildVersion.FileBuildPart, ".", buildVersion.FilePrivatePart)
-				: string.Empty;
+			return string.Concat(buildVersion.FileBuildPart, ".", buildVersion.FilePrivatePart);
 		}
 
 

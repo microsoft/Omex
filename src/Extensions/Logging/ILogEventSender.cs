@@ -23,7 +23,9 @@ namespace Microsoft.Omex.Extensions.Logging
 		bool IsReplayableMessage(LogLevel logLevel);
 
 
-		/// <summary>Log message</summary>
+		/// <summary>
+		/// Log message
+		/// </summary>
 		/// <param name="activity">Activity for this log event</param>
 		/// <param name="category">Log category</param>
 		/// <param name="level">Log level</param>

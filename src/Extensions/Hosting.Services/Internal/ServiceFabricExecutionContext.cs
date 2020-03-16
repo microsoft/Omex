@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 
 		private string? GetRegionName() =>
-			Environment.GetEnvironmentVariable("REGION_NAME"); // should be defined by Azure http://whatazurewebsiteenvironmentvariablesareavailable.azurewebsites.net/
+			Environment.GetEnvironmentVariable("REGION_NAME"); // should be defined by Azure https://whatazurewebsiteenvironmentvariablesareavailable.azurewebsites.net/
 
 
 		private string? GetClusterName() =>

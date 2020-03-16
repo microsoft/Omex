@@ -3,7 +3,7 @@
 
 using System;
 using System.Diagnostics.Tracing;
-using Microsoft.Omex.Extensions.EventSources;
+using Microsoft.Omex.Extensions.Abstractions.EventSources;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
