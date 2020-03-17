@@ -34,7 +34,10 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities.Processing
 		public static string Unknown { get; } = "Unknown";
 
 
-		internal static string ResultToString(TimedScopeResult result) =>
+		/// <summary>
+		/// Returns coresponding to enum string value with creating new string
+		/// </summary>
+		public static string ResultToString(TimedScopeResult result) =>
 			result switch
 			{
 				TimedScopeResult.SystemError => SystemError,

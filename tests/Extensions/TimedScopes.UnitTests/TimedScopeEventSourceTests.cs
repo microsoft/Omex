@@ -7,6 +7,7 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -28,10 +29,10 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			string metaData = "TestmetaData";
 
 			Activity activity = new Activity(name);
-			using (TimedScope scope = new TimedScope(s_logEventSource, activity, TimedScopeResult.Success, null).Start())
+			using (TimedScope scope = new TimedScope(activity, TimedScopeResult.Success).Start())
 			{
-				scope.SubType = subType;
-				scope.Metadata = metaData;
+				scope.SetSubType(subType);
+				scope.SetMetadata(metaData);
 				activity.SetUserHash("TestUserHash");
 				if (isTransaction)
 				{
