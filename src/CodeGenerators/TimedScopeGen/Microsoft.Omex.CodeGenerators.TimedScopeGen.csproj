@@ -26,7 +26,7 @@
     <ProjectReference Include="..\..\..\src\System\Microsoft.Omex.System.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="$(OutputPath)\**\Microsoft.Omex.System.*" Pack="true" PackagePath="lib" />
+    <Content Include="$(OutputPath)\**\Microsoft.Omex.System.*" Pack="true" PackagePath="lib" Visible="false" />
     <Content Include="Microsoft.Omex.CodeGenerators.TimedScopeGen.targets" Pack="true" PackagePath="build" />
   </ItemGroup>
 </Project>

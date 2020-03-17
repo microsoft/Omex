@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(TargetFrameworksValue)</TargetFrameworks>
+    <NoWarn>CS0618</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="$(Microsoft_Extensions_Hosting_Abstractions_Version)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Extensions\Compatibility\Microsoft.Omex.Extensions.Compatibility.csproj" />
+    <ProjectReference Include="..\..\..\src\Extensions\TimedScopes\Microsoft.Omex.Extensions.TimedScopes.csproj" />
+  </ItemGroup>
+</Project>

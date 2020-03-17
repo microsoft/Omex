@@ -15,13 +15,13 @@ namespace Microsoft.Omex.System.Logging
 	{
 
 		/// <summary>
-		/// Log a trace
+		/// Logs a trace
 		/// </summary>
-		/// <param name="tagid">tagid (uniqueid) of the trace</param>
-		/// <param name="category">logging category</param>
-		/// <param name="level">logging level</param>
-		/// <param name="message">message to log</param>
-		/// <param name="parameters">additional parameters</param>
+		/// <param name="tagid">Unique tag id for the trace</param>
+		/// <param name="category">Logging category</param>
+		/// <param name="level">Logging level</param>
+		/// <param name="message">The message, or message format string, to log</param>
+		/// <param name="parameters">Message format parameters</param>
 		public static void LogTraceTag(uint tagid, Category category, Level level, string message, params object[] parameters)
 		{
 			LogEvent?.Invoke(LogEventSender, new LogEventArgs(null, false, tagid, category, level, message, string.Empty, parameters));
@@ -51,11 +51,11 @@ namespace Microsoft.Omex.System.Logging
 		/// <summary>
 		/// Report an exception
 		/// </summary>
-		/// <param name="tagid">tag</param>
-		/// <param name="category">category</param>
-		/// <param name="exception">exception</param>
-		/// <param name="message">message</param>
-		/// <param name="parameters">message format parameters</param>
+		/// <param name="tagid">Unique tag id for the trace</param>
+		/// <param name="category">Logging category</param>
+		/// <param name="exception">Exception to log</param>
+		/// <param name="message">The message, or message format string, to log</param>
+		/// <param name="parameters">Message format parameters</param>
 		public static void ReportExceptionTag(uint tagid, Category category, Exception exception, string message,
 			params object[] parameters)
 		{

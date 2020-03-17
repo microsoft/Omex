@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(TargetFrameworksValue)</TargetFrameworks>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ServiceFabric" Version="$(Microsoft_ServiceFabric_Version)" />
+    <PackageReference Include="Microsoft.ServiceFabric.Services" Version="$(Microsoft_ServiceFabric_Services_Version)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Hosting\Microsoft.Omex.Extensions.Hosting.csproj" />
+  </ItemGroup>
+</Project>
