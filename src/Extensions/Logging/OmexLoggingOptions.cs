@@ -16,6 +16,12 @@ namespace Microsoft.Omex.Extensions.Logging
 
 
 		/// <summary>
+		/// Enabling this option will add CorrelationId guid to activity that will increase its size
+		/// </summary>
+		public bool AddObsoleteCorrelationToActivity { get; set; } = false;
+
+
+		/// <summary>
 		/// Maximum number of events that activity can store for replay
 		/// </summary>
 		public uint MaxReplayedEventsPerActivity { get; set; } = 1000;

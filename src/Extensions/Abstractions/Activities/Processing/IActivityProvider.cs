@@ -3,11 +3,12 @@
 
 using System.Diagnostics;
 
-namespace Microsoft.Omex.Extensions.Abstractions.ReplayableLogs
+namespace Microsoft.Omex.Extensions.Abstractions.Activities.Processing
 {
 	/// <summary>
 	/// Provides activities
 	/// </summary>
+	/// <remarks>This interface would be deleted after move to net 5.0, since inheritance won't be a supported extension model for Activity</remarks>
 	public interface IActivityProvider
 	{
 		/// <summary>

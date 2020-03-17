@@ -3,8 +3,8 @@
 
 using System.Diagnostics;
 using Microsoft.Extensions.Options;
-using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.Abstractions.ReplayableLogs;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.Logging.Replayable
 {

@@ -3,7 +3,7 @@
 
 using System.Diagnostics;
 using Microsoft.Extensions.Options;
-using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Logging.Replayable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

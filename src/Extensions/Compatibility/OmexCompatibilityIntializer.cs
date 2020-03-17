@@ -5,10 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Compatibility.Logger;
 using Microsoft.Omex.Extensions.Compatibility.TimedScopes;
 using Microsoft.Omex.Extensions.Compatibility.Validation;
-using Microsoft.Omex.Extensions.TimedScopes;
 
 namespace Microsoft.Omex.Extensions.Compatibility
 {

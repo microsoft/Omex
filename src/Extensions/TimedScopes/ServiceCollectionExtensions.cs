@@ -4,7 +4,8 @@
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Omex.Extensions.Abstractions.ReplayableLogs;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
@@ -19,6 +20,10 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		public static IServiceCollection AddTimedScopes(this IServiceCollection serviceCollection)
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+			serviceCollection.AddHostedService<ActivityObserversIntializer>();
+			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ActivityStopObserver>());
+
+			serviceCollection.TryAddTransient<AggregatedActivityObserver>();
 			serviceCollection.TryAddTransient<IActivityProvider, SimpleActivityProvider>();
 			serviceCollection.TryAddTransient<ITimedScopeProvider,TimedScopeProvider>();
 			serviceCollection.TryAddTransient<ITimedScopeEventSender, TimedScopeEventSender>();

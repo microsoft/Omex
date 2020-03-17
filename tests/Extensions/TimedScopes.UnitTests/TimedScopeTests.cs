@@ -74,11 +74,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			scope.Start();
 
 			scope.Stop();
-			source.Verify(s => s.LogTimedScopeEndEvent(scope), Times.Once);
+			source.Verify(s => s.LogTimedScopeStopEvent(scope), Times.Once);
 			source.Invocations.Clear();
 
 			scope.Stop();
-			source.Verify(s => s.LogTimedScopeEndEvent(It.IsAny<TimedScope>()), Times.Never);
+			source.Verify(s => s.LogTimedScopeStopEvent(It.IsAny<TimedScope>()), Times.Never);
 		}
 
 

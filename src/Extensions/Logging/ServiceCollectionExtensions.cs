@@ -4,7 +4,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using Microsoft.Omex.Extensions.Abstractions.ReplayableLogs;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Logging.Replayable;
 
 namespace Microsoft.Omex.Extensions.Logging
@@ -48,13 +48,14 @@ namespace Microsoft.Omex.Extensions.Logging
 			serviceCollection.TryAddTransient<IServiceContext, EmptyServiceContext>();
 			serviceCollection.TryAddTransient<IExecutionContext, BasicMachineInformation>();
 			serviceCollection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
-
 			serviceCollection.TryAddTransient<IActivityProvider, ReplayableActivityProvider>();
 
 			serviceCollection.TryAddSingleton(p => OmexLogEventSource.Instance);
 			serviceCollection.TryAddTransient<ILogEventReplayer, OmexLogEventSender>();
 			serviceCollection.TryAddTransient<ILogEventSender, OmexLogEventSender>();
 
+			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStartObserver, ActivityEnhensementObserver>());
+			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ReplayableActivityStopObserver>());
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
 			return serviceCollection;
 		}

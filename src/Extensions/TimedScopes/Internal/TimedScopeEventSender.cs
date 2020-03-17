@@ -2,11 +2,14 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
@@ -20,7 +23,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		}
 
 
-		public void LogTimedScopeEndEvent(TimedScope scope)
+		public void LogActivityStop(Activity activity)
 		{
 			if (!m_eventSource.IsEnabled())
 			{
@@ -28,15 +31,31 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			}
 
 			string serviceName = m_serviceName;
-			string subtype = scope.SubType;
-			string metadata = scope.Metadata;
-			TimedScopeResult result = scope.Result;
-			Activity activity = scope.Activity;
 			string name = activity.OperationName;
 			string correlationId = activity.Id;
 			double durationMs = activity.Duration.TotalMilliseconds;
 			string userHash = activity.GetUserHash(); //TODO: We need add middleware that will set userhash in compliant way and IsTransaction GitHub Issue #166
 			bool isTransaction = activity.IsTransaction();
+
+
+			string subtype = NullPlaceholder;
+			string metadata = NullPlaceholder;
+			string resultAsString = NullPlaceholder;
+			foreach (KeyValuePair<string, string> pair in activity.Tags)
+			{
+				if (string.Equals(ActivityTagKeys.Result, pair.Key, StringComparison.Ordinal))
+				{
+					resultAsString = pair.Value;
+				}
+				else if (string.Equals(ActivityTagKeys.SubType, pair.Key, StringComparison.Ordinal))
+				{
+					subtype = pair.Value;
+				}
+				else if (string.Equals(ActivityTagKeys.Metadata, pair.Key, StringComparison.Ordinal))
+				{
+					metadata = pair.Value;
+				}
+			}
 
 			string nameAsString = SanitizeString(name, nameof(name), name);
 			string subTypeAsString = SanitizeString(subtype, nameof(subtype), name);
@@ -44,7 +63,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			string userHashAsString = SanitizeString(userHash, nameof(userHash), name);
 			string serviceNameAsString = SanitizeString(serviceName, nameof(serviceName), name);
 			string correlationIdAsString = SanitizeString(correlationId, nameof(correlationId), name);
-			string resultAsString = result.ToString();
 			long durationMsAsLong = Convert.ToInt64(durationMs, CultureInfo.InvariantCulture);
 
 			if (isTransaction)
@@ -93,5 +111,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		private readonly TimedScopeEventSource m_eventSource;
 		private readonly string m_serviceName;
 		private readonly ILogger<TimedScopeEventSender> m_logger;
+		private const string NullPlaceholder = "null";
 	}
 }

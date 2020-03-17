@@ -2,8 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
-using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.TimedScopes;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
 
 namespace Microsoft.Omex.Extensions.Compatibility.TimedScopes
 {

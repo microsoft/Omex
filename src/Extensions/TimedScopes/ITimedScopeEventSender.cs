@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System.Diagnostics;
+
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	/// <summary>
@@ -11,7 +13,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// <summary>
 		/// Log timed scope end information
 		/// </summary>
-		/// <param name="scope">Ended timed scope</param>
-		void LogTimedScopeEndEvent(TimedScope scope);
+		void LogActivityStop(Activity activity);
 	}
 }
