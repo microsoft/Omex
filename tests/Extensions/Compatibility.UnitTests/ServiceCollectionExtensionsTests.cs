@@ -64,6 +64,7 @@ namespace Microsoft.Omex.Extensions.Compatibility.UnitTests
 
 			using (TimedScope notStartedTimedScope = new TimedScopeDefinition("TestNotStartedTimedScope").Create(TimedScopeResult.ExpectedError, false))
 			{
+				notStartedTimedScope.Start();
 				AssertResult(ActivityResultStrings.ExpectedError);
 			}
 		}

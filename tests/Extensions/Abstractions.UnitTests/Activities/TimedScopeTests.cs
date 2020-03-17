@@ -61,8 +61,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			Assert.ReferenceEquals(activity, scope.Activity);
 			scope.AssertResult(result);
-			Assert.IsNotNull(scope.GetTag(ActivityTagKeys.SubType));
-			Assert.IsNotNull(scope.GetTag(ActivityTagKeys.Metadata));
 
 			return scope;
 		}

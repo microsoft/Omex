@@ -40,6 +40,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 				}
 			}
 
+			s_logEventSource.LogActivityStop(activity);
+
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
 
 			AssertPayload(eventInfo, "name", name);

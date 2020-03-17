@@ -35,9 +35,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			TimedScope scope = provider.CreateAndStart(definition, result);
 
 			Assert.IsNotNull(scope);
-
-			string resultString = ActivityResultStrings.ResultToString(result);
-			activityMock.Verify(s => s.AddTag(ActivityTagKeys.Result, resultString), Times.Once);
 		}
 	}
 }
