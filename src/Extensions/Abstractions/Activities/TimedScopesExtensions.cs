@@ -6,7 +6,7 @@ using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 namespace Microsoft.Omex.Extensions.Abstractions.Activities
 {
 	/// <summary>
-	/// Extnesions to TimedScopes class to set additional information
+	/// Extensions to TimedScopes class to set additional information
 	/// </summary>
 	public static class TimedScopesExtensions
 	{
