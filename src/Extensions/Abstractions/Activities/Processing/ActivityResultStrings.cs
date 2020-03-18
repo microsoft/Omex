@@ -35,7 +35,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities.Processing
 
 
 		/// <summary>
-		/// Returns coresponding to enum string value with creating new string
+		/// Returns corresponding to enum string value with creating new string
 		/// </summary>
 		public static string ResultToString(TimedScopeResult result) =>
 			result switch
