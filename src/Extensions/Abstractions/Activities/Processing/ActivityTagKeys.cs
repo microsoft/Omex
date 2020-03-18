@@ -4,7 +4,7 @@
 namespace Microsoft.Omex.Extensions.Abstractions.Activities.Processing
 {
 	/// <summary>
-	/// Activity does not have methods to extract tags efficiently, so we need to expose keys to povide ability of extracting tags
+	/// Activity does not have methods to extract tags efficiently, so we need to expose keys to provide ability of extracting tags
 	/// </summary>
 	public static class ActivityTagKeys
 	{
