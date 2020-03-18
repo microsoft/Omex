@@ -23,7 +23,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			serviceCollection.AddHostedService<ActivityObserversIntializer>();
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ActivityStopObserver>());
 
-			serviceCollection.TryAddTransient<AggregatedActivityObserver>();
 			serviceCollection.TryAddTransient<IActivityProvider, SimpleActivityProvider>();
 			serviceCollection.TryAddTransient<ITimedScopeProvider,TimedScopeProvider>();
 			serviceCollection.TryAddTransient<ITimedScopeEventSender, TimedScopeEventSender>();

@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
@@ -9,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
-	internal static class TestTimedScopesExtensions
+	internal static class HelperExtensions
 	{
 		public static void AssertResult(this TimedScope scope, TimedScopeResult expectedResult) =>
 			Assert.AreEqual(ActivityResultStrings.ResultToString(expectedResult), scope.GetTag(ActivityTagKeys.Result));

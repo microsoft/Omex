@@ -28,6 +28,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			string subType = "TestSubType";
 			string metaData = "TestmetaData";
 
+			TimedScopeEventSender logEventSource = new TimedScopeEventSender(
+				TimedScopeEventSource.Instance,
+				new HostingEnvironment { ApplicationName = "TestApp" },
+				new NullLogger<TimedScopeEventSender>());
+
 			Activity activity = new Activity(name);
 			using (TimedScope scope = new TimedScope(activity, TimedScopeResult.Success).Start())
 			{
@@ -40,7 +45,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 				}
 			}
 
-			s_logEventSource.LogActivityStop(activity);
+			logEventSource.LogActivityStop(activity);
 
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
 
@@ -48,13 +53,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			AssertPayload(eventInfo, "subType", subType);
 			AssertPayload(eventInfo, "metadata", metaData);
 		}
-
-
-		private static readonly TimedScopeEventSender s_logEventSource =
-			new TimedScopeEventSender(
-				TimedScopeEventSource.Instance,
-				new HostingEnvironment { ApplicationName = "TestApp" },
-				new NullLogger<TimedScopeEventSender>());
 
 
 		private class CustomEventListener : EventListener

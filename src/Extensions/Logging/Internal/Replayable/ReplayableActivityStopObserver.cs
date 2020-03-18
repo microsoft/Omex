@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Logging.Replayable
 			m_options = options;
 		}
 
-		public void OnStop(Activity activity)
+		public void OnStop(Activity activity, object? payload)
 		{
 			if (m_options.Value.ReplayLogsInCaseOfError && ShouldReplayEvents(activity))
 			{

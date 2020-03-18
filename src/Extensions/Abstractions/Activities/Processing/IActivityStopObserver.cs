@@ -13,6 +13,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities.Processing
 		/// <summary>
 		/// Method will be called after activity stop
 		/// </summary>
-		void OnStop(Activity activity);
+		void OnStop(Activity activity, object? payload);
 	}
 }

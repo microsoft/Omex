@@ -13,7 +13,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		public ActivityStopObserver(ITimedScopeEventSender timedScopeEventSender) =>
 			m_eventSender = timedScopeEventSender;
 
-		public void OnStop(Activity activity) =>
+		public void OnStop(Activity activity, object? payload) =>
 			m_eventSender.LogActivityStop(activity);
 	}
 }

@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			m_options = options;
 		}
 
-		public void OnStart(Activity activity)
+		public void OnStart(Activity activity, object? payload)
 		{
 			if (m_options.Value.AddObsoleteCorrelationToActivity)
 			{
