@@ -9,7 +9,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 	/// <summary>
 	/// Logs duration of activity
 	/// </summary>
-	/// <remarks>This class will be replaced with Activity after move to net 5, since it will be trackable and disposible</remarks>
+	/// <remarks>This class will be replaced with Activity after move to net 5, since it will be trackable and disposable</remarks>
 	public class TimedScope : IDisposable
 	{
 		/// <summary>
