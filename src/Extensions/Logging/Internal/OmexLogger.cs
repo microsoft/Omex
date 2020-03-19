@@ -34,7 +34,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			string message = formatter(state, exception);
 			int threadId = Thread.CurrentThread.ManagedThreadId;
-			Activity activity = Activity.Current;
+			Activity? activity = Activity.Current;
 
 			m_logsEventSender.LogMessage(activity, m_categoryName, logLevel, eventId, threadId, message);
 

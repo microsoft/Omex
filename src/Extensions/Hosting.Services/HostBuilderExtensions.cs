@@ -126,8 +126,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 					{
 						collection
 							.AddOmexServiceFabricDependencies<TContext>()
-							.AddTransient<IHostedService, OmexHostedService>()
-							.AddSingleton<IOmexServiceRunner, TRunner>();
+							.AddSingleton<IOmexServiceRunner, TRunner>()
+							.AddHostedService<OmexHostedService>();
 					})
 					.UseDefaultServiceProvider(options =>
 					{

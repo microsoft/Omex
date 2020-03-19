@@ -32,6 +32,6 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <param name="eventId">event Id</param>
 		/// <param name="threadId">Id of the thread</param>
 		/// <param name="message">Log message</param>
-		void LogMessage(Activity activity, string category, LogLevel level, EventId eventId, int threadId, string message);
+		void LogMessage(Activity? activity, string category, LogLevel level, EventId eventId, int threadId, string message);
 	}
 }

@@ -1,12 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Diagnostics;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
 	[TestClass]
+	[TestCategory(nameof(Activity))]
 	public class ActivityExtensionsTests
 	{
 		[TestMethod]
@@ -23,7 +26,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			Assert.AreNotEqual(userHash, activity2.GetUserHash());
 		}
 
-
 		[TestMethod]
 		public void MarkAsTransaction_AddsMarker()
 		{
@@ -34,6 +36,34 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			Assert.IsTrue(activity1.IsTransaction());
 			Assert.IsFalse(activity2.IsTransaction());
+		}
+
+		[TestMethod]
+		[Obsolete]
+		public void SetObsoleteCorrelationId_SetsValue()
+		{
+			Activity activity1 = new Activity("CorrelationTest1");
+			Activity activity2 = new Activity("CorrelationTest2");
+			Guid correlation = Guid.NewGuid();
+
+			activity1.SetObsoleteCorrelationId(correlation);
+
+			Assert.AreEqual(correlation, activity1.GetObsoleteCorrelationId());
+			Assert.AreNotEqual(correlation, activity2.GetObsoleteCorrelationId());
+		}
+
+		[TestMethod]
+		[Obsolete]
+		public void SetObsoleteTransactionId_SetsValue()
+		{
+			Activity activity1 = new Activity("TransactionIdTest1");
+			Activity activity2 = new Activity("TransactionIdTest2");
+			uint id = 117u;
+
+			activity1.SetObsoleteTransactionId(id);
+
+			Assert.AreEqual(id, activity1.GetObsolteteTransactionId());
+			Assert.AreNotEqual(id, activity2.GetObsolteteTransactionId());
 		}
 	}
 }

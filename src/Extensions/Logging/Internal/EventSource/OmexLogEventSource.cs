@@ -19,15 +19,18 @@ namespace Microsoft.Omex.Extensions.Logging
 			string processName,
 			Guid partitionId,
 			long replicaId,
-			string correlationId,
-			string transactionId,
+			string activityId,
+			string activityTraceId,
+			Guid correlationId,
+			uint transactionId,
 			string level,
 			string category,
 			string tagId,
 			string tagName,
 			int threadId,
 			string message) =>
-			WriteEvent((int)EventSourcesEventIds.LogError, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+			WriteEvent((int)EventSourcesEventIds.LogError, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
+				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
 		[Event((int)EventSourcesEventIds.LogWarning, Level = EventLevel.Warning, Message = "{13}", Version = 6)]
@@ -39,15 +42,18 @@ namespace Microsoft.Omex.Extensions.Logging
 			string processName,
 			Guid partitionId,
 			long replicaId,
-			string correlationId,
-			string transactionId,
+			string activityId,
+			string activityTraceId,
+			Guid correlationId,
+			uint transactionId,
 			string level,
 			string category,
 			string tagId,
 			string tagName,
 			int threadId,
 			string message) =>
-			WriteEvent((int)EventSourcesEventIds.LogWarning, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+			WriteEvent((int)EventSourcesEventIds.LogWarning, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
+				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
 		[Event((int)EventSourcesEventIds.LogInfo, Level = EventLevel.Informational, Message = "{13}", Version = 6)]
@@ -59,15 +65,18 @@ namespace Microsoft.Omex.Extensions.Logging
 			string processName,
 			Guid partitionId,
 			long replicaId,
-			string correlationId,
-			string transactionId,
+			string activityId,
+			string activityTraceId,
+			Guid correlationId,
+			uint transactionId,
 			string level,
 			string category,
 			string tagId,
 			string tagName,
 			int threadId,
 			string message) =>
-			WriteEvent((int)EventSourcesEventIds.LogInfo, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+			WriteEvent((int)EventSourcesEventIds.LogInfo, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
+				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
 		[Event((int)EventSourcesEventIds.LogVerbose, Level = EventLevel.Verbose, Message = "{13}", Version = 6)]
@@ -79,15 +88,18 @@ namespace Microsoft.Omex.Extensions.Logging
 			string processName,
 			Guid partitionId,
 			long replicaId,
-			string correlationId,
-			string transactionId,
+			string activityId,
+			string activityTraceId,
+			Guid correlationId,
+			uint transactionId,
 			string level,
 			string category,
 			string tagId,
 			string tagName,
 			int threadId,
 			string message) =>
-			WriteEvent((int)EventSourcesEventIds.LogVerbose, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+			WriteEvent((int)EventSourcesEventIds.LogVerbose, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
+				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
 		[Event((int)EventSourcesEventIds.LogSpam, Level = EventLevel.Verbose, Message = "{13}", Version = 6)]
@@ -99,15 +111,18 @@ namespace Microsoft.Omex.Extensions.Logging
 			string processName,
 			Guid partitionId,
 			long replicaId,
-			string correlationId,
-			string transactionId,
+			string activityId,
+			string activityTraceId,
+			Guid correlationId,
+			uint transactionId,
 			string level,
 			string category,
 			string tagId,
 			string tagName,
 			int threadId,
 			string message) =>
-			WriteEvent((int)EventSourcesEventIds.LogSpam, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+			WriteEvent((int)EventSourcesEventIds.LogSpam, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
+				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 
 		public static OmexLogEventSource Instance { get; } = new OmexLogEventSource();

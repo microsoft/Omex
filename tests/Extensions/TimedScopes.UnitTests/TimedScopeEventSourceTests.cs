@@ -7,6 +7,7 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -27,11 +28,16 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			string subType = "TestSubType";
 			string metaData = "TestmetaData";
 
+			TimedScopeEventSender logEventSource = new TimedScopeEventSender(
+				TimedScopeEventSource.Instance,
+				new HostingEnvironment { ApplicationName = "TestApp" },
+				new NullLogger<TimedScopeEventSender>());
+
 			Activity activity = new Activity(name);
-			using (TimedScope scope = new TimedScope(s_logEventSource, activity, TimedScopeResult.Success, null).Start())
+			using (TimedScope scope = new TimedScope(activity, TimedScopeResult.Success).Start())
 			{
-				scope.SubType = subType;
-				scope.Metadata = metaData;
+				scope.SetSubType(subType);
+				scope.SetMetadata(metaData);
 				activity.SetUserHash("TestUserHash");
 				if (isTransaction)
 				{
@@ -39,19 +45,14 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 				}
 			}
 
+			logEventSource.LogActivityStop(activity);
+
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
 
 			AssertPayload(eventInfo, "name", name);
 			AssertPayload(eventInfo, "subType", subType);
 			AssertPayload(eventInfo, "metadata", metaData);
 		}
-
-
-		private static readonly TimedScopeEventSender s_logEventSource =
-			new TimedScopeEventSender(
-				TimedScopeEventSource.Instance,
-				new HostingEnvironment { ApplicationName = "TestApp" },
-				new NullLogger<TimedScopeEventSender>());
 
 
 		private class CustomEventListener : EventListener

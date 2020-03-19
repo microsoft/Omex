@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Compatibility
 		public static IHostBuilder AddOmexCompatibilityServices(this IHostBuilder builder) =>
 			builder.ConfigureServices((context, collection) =>
 			{
-				collection.AddTransient<IHostedService, OmexCompatibilityIntializer>();
+				collection.AddHostedService<OmexCompatibilityIntializer>();
 			});
 	}
 }

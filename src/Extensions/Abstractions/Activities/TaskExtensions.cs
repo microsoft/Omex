@@ -2,9 +2,8 @@
 // Licensed under the MIT license.
 
 using System.Threading.Tasks;
-using Microsoft.Omex.Extensions.Abstractions;
 
-namespace Microsoft.Omex.Extensions.TimedScopes
+namespace Microsoft.Omex.Extensions.Abstractions.Activities
 {
 	/// <summary>
 	/// Extensions for Task to wrap them in TimedScope
@@ -18,7 +17,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		{
 			using TimedScope timedScope = provider.CreateAndStart(definition, TimedScopeResult.SystemError);
 			TResult result = await task.ConfigureAwait(false);
-			timedScope.Result = TimedScopeResult.Success; // set TimedScope result to success in case if task completed properly (without exception)
+			timedScope.SetResult(TimedScopeResult.Success); // set TimedScope result to success in case if task completed properly (without exception)
 			return result;
 		}
 
