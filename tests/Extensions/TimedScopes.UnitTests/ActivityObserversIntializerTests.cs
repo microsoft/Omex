@@ -3,6 +3,7 @@
 
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.TimedScopes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
