@@ -26,7 +26,7 @@ namespace Hosting.Services.UnitTests
 
 			try
 			{
-				await initializer.StartAsync(CancellationToken.None);
+				await initializer.StartAsync(CancellationToken.None).ConfigureAwait(false);
 
 				using DiagnosticListener listener = new DiagnosticListener(name);
 
@@ -45,7 +45,7 @@ namespace Hosting.Services.UnitTests
 			}
 			catch
 			{
-				await initializer.StopAsync(CancellationToken.None);
+				await initializer.StopAsync(CancellationToken.None).ConfigureAwait(false);
 				throw;
 			}
 		}
