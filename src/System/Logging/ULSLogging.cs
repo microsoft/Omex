@@ -24,7 +24,7 @@ namespace Microsoft.Omex.System.Logging
 		/// <param name="parameters">Message format parameters</param>
 		public static void LogTraceTag(uint tagid, Category category, Level level, string message, params object[] parameters)
 		{
-			LogEvent?.Invoke(LogEventSender, new LogEventArgs(null, false, tagid, category, level, message, string.Empty, parameters));
+			LogEvent?.Invoke(LogEventSender, new LogEventArgs(false, tagid, category, level, message, string.Empty, parameters));
 		}
 
 		/// <summary>
