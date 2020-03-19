@@ -4,7 +4,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Microsoft.Omex.Extensions.TimedScopes
+namespace Microsoft.Omex.Extensions.Abstractions.Activities
 {
 	/// <summary>
 	/// Defines the possible scope results
@@ -21,7 +21,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// </summary>
 		/// <remarks>Result should always be set to one of the other values explicitly. Unknown causes an error to be logged, and the scope is assumed failed.</remarks>
 		[EnumMember]
-		[Obsolete("Default value, not to be used explicitly", error: true)]
+		[Obsolete("Default value, not to be used explicitly", error: false)]
 		Unknown = 0,
 
 

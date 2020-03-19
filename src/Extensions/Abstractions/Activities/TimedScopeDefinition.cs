@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.Omex.Extensions.Abstractions
+namespace Microsoft.Omex.Extensions.Abstractions.Activities
 {
 	/// <summary>
 	/// Store Timed Scope name

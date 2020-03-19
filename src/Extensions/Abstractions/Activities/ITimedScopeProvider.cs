@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using Microsoft.Omex.Extensions.Abstractions;
-
-namespace Microsoft.Omex.Extensions.TimedScopes
+namespace Microsoft.Omex.Extensions.Abstractions.Activities
 {
 	/// <summary>
 	/// Interface to create TimedScope
@@ -13,12 +11,12 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// <summary>
 		/// Creates and start TimedScope
 		/// </summary>
-		TimedScope CreateAndStart(TimedScopeDefinition name, TimedScopeResult result);
+		TimedScope CreateAndStart(TimedScopeDefinition name, TimedScopeResult result = TimedScopeResult.SystemError);
 
 
 		/// <summary>
 		/// Creates TimedScope
 		/// </summary>
-		TimedScope Create(TimedScopeDefinition name, TimedScopeResult result);
+		TimedScope Create(TimedScopeDefinition name, TimedScopeResult result = TimedScopeResult.SystemError);
 	}
 }

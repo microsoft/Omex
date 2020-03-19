@@ -4,7 +4,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Hosting.Services;
@@ -19,23 +18,19 @@ namespace Hosting.Services.UnitTests
 		public async Task StartAsync_ProperlyCanceled()
 		{
 			MockRunner runnerMock = new MockRunner(t => Task.Delay(int.MaxValue, t));
-			MockLifetime lifetimeMock = new MockLifetime();
 			ILogger<OmexHostedService> loggerMock = new NullLogger<OmexHostedService>();
-			OmexHostedService hostedService = new OmexHostedService(runnerMock, lifetimeMock, loggerMock);
+			OmexHostedService hostedService = new OmexHostedService(runnerMock, loggerMock);
 
 			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after constructor");
 
-			await hostedService.StartAsync(CancellationToken.None);
-			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after StartAsync");
-
-			lifetimeMock.ApplicationStartedSource.Cancel();
-			Assert.IsTrue(runnerMock.IsStarted, "RunServiceAsync should not be called after StartAsync");
+			await hostedService.StartAsync(CancellationToken.None).ConfigureAwait(false);
+			Assert.IsTrue(runnerMock.IsStarted, "RunServiceAsync should be called after StartAsync");
 
 			Task task = runnerMock.Task!;
 			Assert.IsFalse(task.IsCanceled, "Task should not be canceled");
 			Assert.IsFalse(runnerMock.Token.IsCancellationRequested, "CancelationToken should not be canceled");
 
-			lifetimeMock.ApplicationStoppingSource.Cancel();
+			await hostedService.StopAsync(CancellationToken.None).ConfigureAwait(false);
 			Assert.IsTrue(runnerMock.Token.IsCancellationRequested, "Task should be canceled");
 			Assert.IsTrue(task.IsCanceled, "CancelationToken should be canceled");
 		}
@@ -44,24 +39,22 @@ namespace Hosting.Services.UnitTests
 		[TestMethod]
 		public async Task StartAsync_HandlesExceptions()
 		{
-			MockRunner runnerMock = new MockRunner(t => Task.Run(() => throw new Exception("Totaly valid exeption")));
-			MockLifetime lifetimeMock = new MockLifetime();
+			MockRunner runnerMock = new MockRunner(t => Task.Run(async () =>
+				{
+					await Task.Delay(5).ConfigureAwait(false);
+					throw new ArithmeticException("Totaly valid exeption");
+				}));
 			ILogger<OmexHostedService> loggerMock = new NullLogger<OmexHostedService>();
 
-			OmexHostedService hostedService = new OmexHostedService(runnerMock, lifetimeMock, loggerMock);
+			OmexHostedService hostedService = new OmexHostedService(runnerMock, loggerMock);
 			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after constructor");
 
-			await hostedService.StartAsync(CancellationToken.None);
-			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after StartAsync");
-
-			lifetimeMock.ApplicationStartedSource.Cancel();
+			await hostedService.StartAsync(CancellationToken.None).ConfigureAwait(false);
 			Assert.IsTrue(runnerMock.IsStarted, "RunServiceAsync should be called after StartAsync");
 			Assert.IsFalse(runnerMock.Token.IsCancellationRequested, "CancelationToken should not be canceled");
 
-			await lifetimeMock.CompletionTask;
+			await hostedService.StopAsync(CancellationToken.None).ConfigureAwait(false);
 			Assert.IsTrue(runnerMock.Task!.IsFaulted, "Task should be faulted");
-
-			lifetimeMock.ApplicationStoppingSource.Cancel();
 			Assert.IsTrue(runnerMock.Token.IsCancellationRequested, "Task should be canceled");
 		}
 
@@ -89,45 +82,6 @@ namespace Hosting.Services.UnitTests
 
 
 			private readonly Func<CancellationToken, Task> m_function;
-		}
-
-
-		private class MockLifetime : IHostApplicationLifetime
-		{
-			public MockLifetime()
-			{
-				ApplicationStartedSource = new CancellationTokenSource();
-				ApplicationStoppingSource = new CancellationTokenSource();
-				ApplicationStoppedSource = new CancellationTokenSource();
-				m_completionSource = new TaskCompletionSource<bool>();
-			}
-
-
-			public CancellationTokenSource ApplicationStartedSource { get; }
-
-
-			public CancellationTokenSource ApplicationStoppingSource { get; }
-
-
-			public CancellationTokenSource ApplicationStoppedSource { get; }
-
-
-			public Task CompletionTask => m_completionSource.Task;
-
-
-			public CancellationToken ApplicationStarted => ApplicationStartedSource.Token;
-
-
-			public CancellationToken ApplicationStopping => ApplicationStoppingSource.Token;
-
-
-			public CancellationToken ApplicationStopped => ApplicationStoppedSource.Token;
-
-
-			public void StopApplication() => m_completionSource.SetResult(true);
-
-
-			private readonly TaskCompletionSource<bool> m_completionSource;
 		}
 	}
 }

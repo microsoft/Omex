@@ -1,22 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.Abstractions.ReplayableLogs;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	internal sealed class TimedScopeProvider : ITimedScopeProvider
 	{
-		public TimedScopeProvider(
-			ITimedScopeEventSender eventSource,
-			IActivityProvider activityProvider,
-			ILogEventReplayer? logReplayer = null)
-		{
+		public TimedScopeProvider(IActivityProvider activityProvider) =>
 			m_activityProvider = activityProvider;
-			m_eventSender = eventSource;
-			m_logReplayer = logReplayer;
-		}
 
 
 		public TimedScope CreateAndStart(TimedScopeDefinition name, TimedScopeResult result) =>
@@ -24,11 +17,9 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 
 		public TimedScope Create(TimedScopeDefinition name, TimedScopeResult result) =>
-			new TimedScope(m_eventSender, m_activityProvider.Create(name), result, m_logReplayer);
+			new TimedScope(m_activityProvider.Create(name), result);
 
 
-		private readonly ITimedScopeEventSender m_eventSender;
 		private readonly IActivityProvider m_activityProvider;
-		private readonly ILogEventReplayer? m_logReplayer;
 	}
 }

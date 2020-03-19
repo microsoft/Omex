@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -36,7 +37,8 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			OmexLogEventSender logsSender = new OmexLogEventSender(
 				OmexLogEventSource.Instance,
 				new BasicMachineInformation(),
-				new EmptyServiceContext());
+				new EmptyServiceContext(),
+				Options.Create(new OmexLoggingOptions()));
 
 			logsSender.LogMessage(activity, category, logLevel, tagId, 0, message);
 
@@ -44,7 +46,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			AssertPayload(eventInfo, "message", message);
 			AssertPayload(eventInfo, "category", category);
-			AssertPayload(eventInfo, "correlationId", activity.Id);
+			AssertPayload(eventInfo, "activityId", activity.Id);
 			AssertPayload(eventInfo, "tagId", "fff9");
 		}
 

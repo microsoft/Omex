@@ -5,13 +5,14 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
 	[TestClass]
+	[TestCategory(nameof(Activity))]
 	public class TaskExtensionsTests
 	{
 		[TestMethod]
@@ -61,11 +62,10 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			TimedScopeResult expectedResult)
 		{
 			Mock<ITimedScopeProvider> providerMock = new Mock<ITimedScopeProvider>();
-			Mock<ITimedScopeEventSender> mockSender = new Mock<ITimedScopeEventSender>();
 			TimedScopeDefinition timedScopeDefinition = new TimedScopeDefinition(scopeName);
 			Activity activity = new Activity(scopeName);
 
-			TimedScope scope = new TimedScope(mockSender.Object, activity, TimedScopeResult.SystemError, null);
+			TimedScope scope = new TimedScope(activity, TimedScopeResult.SystemError);
 			providerMock.Setup(p => p.CreateAndStart(timedScopeDefinition, TimedScopeResult.SystemError)).Returns(scope);
 
 			TaskCompletionSource<bool> taskCompletionSource = new TaskCompletionSource<bool>();
@@ -73,12 +73,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			createTask(taskCompletionSource.Task, providerMock.Object, timedScopeDefinition);
 
 			providerMock.Verify(p => p.CreateAndStart(timedScopeDefinition, TimedScopeResult.SystemError), Times.Once);
-			Assert.AreEqual(scope.Result, TimedScopeResult.SystemError);
+			scope.AssertResult(TimedScopeResult.SystemError);
 
 			finishTask(taskCompletionSource);
 
-			Assert.IsTrue(scope.IsFinished);
-			Assert.AreEqual(scope.Result, expectedResult);
+			scope.AssertResult(expectedResult);
 		}
 
 

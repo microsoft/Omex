@@ -3,8 +3,8 @@
 
 using System;
 using System.Diagnostics;
-using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.Abstractions.ReplayableLogs;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -14,39 +14,27 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 	public class TimedScopeProviderTests
 	{
 		[TestMethod]
-		public void CreateAndStart_ActivityCreatedWithReplay()
+		public void CreateAndStart_ActivityCreated()
 		{
-			CreateAndValidateActivity("testNameWithReplay", new Mock<ILogEventReplayer>().Object);
+			CreateAndValidateActivity("testName");
 		}
 
 
-		[TestMethod]
-		public void CreateAndStart_ActivityCreatedWithoutReplay()
-		{
-			CreateAndValidateActivity("testNameWithoutReplay", null);
-		}
-
-
-		private void CreateAndValidateActivity(string activityName, ILogEventReplayer? replayer)
+		private void CreateAndValidateActivity(string activityName)
 		{
 			TimedScopeResult result = TimedScopeResult.ExpectedError;
 
-			Mock<ITimedScopeEventSender> eventSourceMock = new Mock<ITimedScopeEventSender>();
 			Mock<IActivityProvider> activityProviderMock = new Mock<IActivityProvider>();
 			Mock<Activity> activityMock = new Mock<Activity>(activityName);
 			TimedScopeDefinition definition = new TimedScopeDefinition(activityName);
 
 			activityProviderMock.Setup(p => p.Create(definition)).Returns(activityMock.Object);
 
-			TimedScopeProvider provider = new TimedScopeProvider(
-				eventSourceMock.Object,
-				activityProviderMock.Object,
-				replayer);
+			TimedScopeProvider provider = new TimedScopeProvider(activityProviderMock.Object);
 
 			TimedScope scope = provider.CreateAndStart(definition, result);
 
-			Assert.AreEqual(result, scope.Result);
-			Assert.ReferenceEquals(activityMock.Object, scope.Activity);
+			Assert.IsNotNull(scope);
 		}
 	}
 }

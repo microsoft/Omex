@@ -2,8 +2,8 @@
 // Licensed under the MIT license.
 
 using System.Diagnostics;
-using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.Abstractions.ReplayableLogs;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {

@@ -2,10 +2,13 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Diagnostics;
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Compatibility.Logger;
 using Microsoft.Omex.Extensions.Compatibility.TimedScopes;
 using Microsoft.Omex.Extensions.Compatibility.Validation;
@@ -54,13 +57,23 @@ namespace Microsoft.Omex.Extensions.Compatibility.UnitTests
 			Code.Validate(false, logMessage, eventId);
 			Assert.AreEqual(1, mockLogger.Invocations.Count, "Code.Validate not calling ILogger");
 
-			TimedScope startedTimedScope = new TimedScopeDefinition("TestStartedTimedScope").Create(TimedScopeResult.SystemError);
-			Assert.IsTrue(startedTimedScope.IsStarted);
-			Assert.AreEqual(TimedScopeResult.SystemError, startedTimedScope.Result);
+			using (TimedScope startedTimedScope = new TimedScopeDefinition("TestStartedTimedScope").Create(TimedScopeResult.SystemError))
+			{
+				AssertResult(ActivityResultStrings.SystemError);
+			}
 
-			TimedScope notStartedTimedScope = new TimedScopeDefinition("TestNotStartedTimedScope").Create(TimedScopeResult.ExpectedError, false);
-			Assert.IsFalse(notStartedTimedScope.IsStarted);
-			Assert.AreEqual(TimedScopeResult.ExpectedError, notStartedTimedScope.Result);
+			using (TimedScope notStartedTimedScope = new TimedScopeDefinition("TestNotStartedTimedScope").Create(TimedScopeResult.ExpectedError, false))
+			{
+				notStartedTimedScope.Start();
+				AssertResult(ActivityResultStrings.ExpectedError);
+			}
+		}
+
+
+		private static void AssertResult(string expectedResult)
+		{
+			string value = Activity.Current.Tags.FirstOrDefault(p => string.Equals(p.Key, ActivityTagKeys.Result, StringComparison.Ordinal)).Value;
+			Assert.AreEqual(expectedResult, value);
 		}
 	}
 }

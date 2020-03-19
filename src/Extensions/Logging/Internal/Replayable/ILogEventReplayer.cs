@@ -3,12 +3,12 @@
 
 using System.Diagnostics;
 
-namespace Microsoft.Omex.Extensions.Abstractions.ReplayableLogs
+namespace Microsoft.Omex.Extensions.Logging.Replayable
 {
 	/// <summary>
 	/// Replays activity logs if activity collects them
 	/// </summary>
-	public interface ILogEventReplayer
+	internal interface ILogEventReplayer
 	{
 		/// <summary>
 		/// Replays activity logs if activity supports it
