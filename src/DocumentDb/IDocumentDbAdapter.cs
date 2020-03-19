@@ -39,7 +39,6 @@ namespace Microsoft.Omex.DocumentDb
 		Task<ResourceResponse<Database>> GetOrCreateDatabaseAsync(
 			string dbId, RequestOptions requestOptions = null);
 
-
 		/// <summary>
 		/// Gets or creates the database.
 		/// </summary>
@@ -49,14 +48,12 @@ namespace Microsoft.Omex.DocumentDb
 		Task<ResourceResponse<Database>> GetOrCreateDatabaseAsync(
 			Database database, RequestOptions requestOptions = null);
 
-
 		/// <summary>
 		/// Gets all databases in the document db account.
 		/// </summary>
 		/// <param name="feedOptions">Feed options</param>
 		/// <returns>All databases in the account.</returns>
 		Task<IReadOnlyList<Database>> GetAllDatabasesAsync(FeedOptions feedOptions = null);
-
 
 		/// <summary>
 		/// Gets the database with specified id.
@@ -65,7 +62,6 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="feedOptions">Request options</param>
 		/// <returns>The Database.</returns>
 		Task<Database> GetDatabaseAsync(string dbId, FeedOptions feedOptions = null);
-
 
 		/// <summary>
 		/// Deletes the database.
@@ -94,7 +90,6 @@ namespace Microsoft.Omex.DocumentDb
 			string partitionKey,
 			int reservedRUs = 1000);
 
-
 		/// <summary>
 		/// Gets the DocumentCollection, otherwise creates it including the database.
 		/// </summary>
@@ -109,7 +104,6 @@ namespace Microsoft.Omex.DocumentDb
 			string partitionKey,
 			int reservedRUs = 1000);
 
-
 		/// <summary>
 		/// Creates the DocumentCollection if it does not exit otherwise returns the existing one.
 		/// </summary>
@@ -122,7 +116,6 @@ namespace Microsoft.Omex.DocumentDb
 			DocumentCollection documentCollection,
 			RequestOptions requestOptions);
 
-
 		/// <summary>
 		/// Gets the document collection.
 		/// </summary>
@@ -133,7 +126,6 @@ namespace Microsoft.Omex.DocumentDb
 		Task<ResourceResponse<DocumentCollection>> GetCollectionAsync(
 			string dbId, string collectionId, RequestOptions requestOptions);
 
-
 		/// <summary>
 		/// Gets the all document collections in the database.
 		/// </summary>
@@ -142,7 +134,6 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>All document collections in the database.</returns>
 		Task<IReadOnlyList<DocumentCollection>> GetAllCollectionsAsync(
 			string dbId, FeedOptions feedOptions = null);
-
 
 		/// <summary>
 		/// Deletes the document collection.
@@ -170,7 +161,6 @@ namespace Microsoft.Omex.DocumentDb
 		Task<ResourceResponse<Document>> CreateDocumentAsync(
 			string dbId, string collectionId, object document, RequestOptions requestOptions = null, bool disableIdGeneration = true);
 
-
 		/// <summary>
 		/// Creates a document.
 		/// </summary>
@@ -190,7 +180,6 @@ namespace Microsoft.Omex.DocumentDb
 			RequestOptions requestOptions = null,
 			bool disableIdGeneration = false);
 
-
 		/// <summary>
 		/// Gets a document.
 		/// </summary>
@@ -201,7 +190,6 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>Created document</returns>
 		Task<ResourceResponse<Document>> GetDocumentAsync(
 			string dbId, string collectionId, string docId, string partitionKey);
-
 
 		/// <summary>
 		/// Gets a document.
@@ -214,7 +202,6 @@ namespace Microsoft.Omex.DocumentDb
 		Task<ResourceResponse<Document>> GetDocumentAsync(
 			string dbId, string collectionId, string docId, RequestOptions requestOptions = null);
 
-
 		/// <summary>
 		/// Gets a document and converts to a POCO using specified converter.
 		/// </summary>
@@ -225,7 +212,6 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>POCO object deserialized by default default json deserialization settings by document db sdk.</returns>
 		Task<T> GetDocumentAsync<T>(string dbId, string collectionId, string docId, RequestOptions requestOptions = null)
 			where T : class;
-
 
 		/// <summary>
 		/// Gets a document and converts to a POCO using specified converter.
@@ -243,7 +229,6 @@ namespace Microsoft.Omex.DocumentDb
 			Func<Document, T> converter,
 			RequestOptions requestOptions = null);
 
-
 		/// <summary>
 		/// Gets all documents.
 		/// </summary>
@@ -257,7 +242,6 @@ namespace Microsoft.Omex.DocumentDb
 			string collectionId,
 			FeedOptions feedOptions = null,
 			Func<IQueryable<T>, IQueryable<T>> queryFunc = null);
-
 
 		/// <summary>
 		/// Queries all documents and returns continuation token for paged requests.
@@ -274,7 +258,6 @@ namespace Microsoft.Omex.DocumentDb
 			string continuationToken,
 			FeedOptions feedOptions = null);
 
-
 		/// <summary>
 		/// Gets all documents from specified partition.
 		/// </summary>
@@ -290,7 +273,6 @@ namespace Microsoft.Omex.DocumentDb
 			string partitionKey,
 			FeedOptions feedOptions = null,
 			Func<IQueryable<T>, IQueryable<T>> queryFunc = null);
-
 
 		/// <summary>
 		/// Queries all documents in current continuation from the specified partition and
@@ -309,7 +291,6 @@ namespace Microsoft.Omex.DocumentDb
 			string continuationToken,
 			FeedOptions feedOptions = null);
 
-
 		/// <summary>
 		/// Queries the collection using the specified sql query.
 		/// </summary>
@@ -324,7 +305,6 @@ namespace Microsoft.Omex.DocumentDb
 			string sqlQuery,
 			FeedOptions feedOptions = null);
 
-
 		/// <summary>
 		/// Queries the collection using the specified document query.
 		/// </summary>
@@ -333,7 +313,6 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>List of objects of specified type returned from document query.</returns>
 		Task<IReadOnlyList<T>> QueryDocumentsAsync<T>(
 			IDocumentQuery<T> query, FeedOptions feedOptions = null);
-
 
 		/// <summary>
 		/// Replaces a document.
@@ -347,7 +326,6 @@ namespace Microsoft.Omex.DocumentDb
 		Task<ResourceResponse<Document>> ReplaceDocumentAsync<T>(
 			string dbId, string collectionId, string docId, T entity, RequestOptions requestOptions = null);
 
-
 		/// <summary>
 		/// Upserts a document.
 		/// </summary>
@@ -360,7 +338,6 @@ namespace Microsoft.Omex.DocumentDb
 		Task<ResourceResponse<Document>> UpsertDocumentAsync<T>(
 			string dbId, string collectionId, T entity, RequestOptions requestOptions = null, bool disableIdGeneration = true);
 
-
 		/// <summary>
 		/// Deletes a document.
 		/// </summary>
@@ -371,7 +348,6 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>Deleted document.</returns>
 		Task<ResourceResponse<Document>> DeleteDocumentAsync(
 			string dbId, string collectionId, string docId, string partitionKey);
-
 
 		/// <summary>
 		/// Deletes a document.
@@ -402,7 +378,6 @@ namespace Microsoft.Omex.DocumentDb
 			StoredProcedure storedProcedure,
 			bool deleteStoredProcedure = false);
 
-
 		/// <summary>
 		/// Gets the trigger, or creates a new one if one with the specified trigger.id doesn't exist.
 		/// </summary>
@@ -417,7 +392,6 @@ namespace Microsoft.Omex.DocumentDb
 			Trigger trigger,
 			bool deleteTrigger = false);
 
-
 		/// <summary>
 		/// Deletes the stored procedure.
 		/// </summary>
@@ -427,7 +401,6 @@ namespace Microsoft.Omex.DocumentDb
 		/// <returns>True if operation is successful, false otherwise</returns>
 		Task DeleteStoredProcedureAsync(string dbId, string collectionId, string storedProcedureId);
 
-
 		/// <summary>
 		/// Deletes the trigger.
 		/// </summary>
@@ -436,7 +409,6 @@ namespace Microsoft.Omex.DocumentDb
 		/// <param name="triggerId">The trigger to get or create.</param>
 		/// <returns>True if operation is successful, false otherwise</returns>
 		Task DeleteTriggerAsync(string dbId, string collectionId, string triggerId);
-
 
 		/// <summary>
 		/// Registers the provided stored procedures and triggers.

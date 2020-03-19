@@ -18,12 +18,10 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </summary>
 		public string Name { get; }
 
-
 		/// <summary>
 		/// Description
 		/// </summary>
 		public string Description { get; }
-
 
 		/// <summary>
 		/// Description
@@ -31,18 +29,15 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <remarks>Could be null</remarks>
 		public string LinkToOnCallEngineerHandbook { get; }
 
-
 		/// <summary>
 		/// Should the scope be logged only when explicitly demanded
 		/// </summary>
 		public bool OnDemand { get; }
 
-
 		/// <summary>
 		/// Does the scope capture user hashes that are suitable for unique user-based alerting?
 		/// </summary>
 		public bool CapturesUniqueUserHashes { get; }
-
 
 		/// <summary>
 		/// Constructor
@@ -63,7 +58,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			CapturesUniqueUserHashes = capturesUniqueUserHashes;
 		}
 
-
 		/// <summary>
 		/// Creates a scope (and starts by default)
 		/// </summary>
@@ -75,7 +69,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="replayEventConfigurator">Optional replay event configurator</param>
 		/// <param name="timedScopeStackManager">Timed scope stack manager</param>
 		/// <returns>A timed scope</returns>
-		internal TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, ITimedScopeLogger customLogger,  IReplayEventConfigurator replayEventConfigurator, 
+		internal TimedScope Create(CorrelationData correlationData, IMachineInformation machineInformation, ITimedScopeLogger customLogger,  IReplayEventConfigurator replayEventConfigurator,
 			ITimedScopeStackManager timedScopeStackManager, TimedScopeResult initialResult, bool startScope = true)
 		{
 			TimedScope scope = TimedScope.Create(this, correlationData, machineInformation, customLogger, replayEventConfigurator, timedScopeStackManager, initialResult);

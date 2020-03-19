@@ -21,12 +21,10 @@ namespace Microsoft.Omex.System.AspNetCore
 			s_contextAccessor = Code.ExpectsArgument(contextAccessor, nameof(contextAccessor), TaggingUtilities.ReserveTag(0x23817743 /* tag_96x3d */));
 		}
 
-
 		/// <summary>
 		/// The current http context
 		/// </summary>
 		public static HttpContext Current => s_contextAccessor?.HttpContext;
-
 
 		/// <summary>
 		/// Http context accessor

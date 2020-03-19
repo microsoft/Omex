@@ -23,14 +23,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			accessor.OnContextAvailable(UpdateState);
 		}
 
-
 		private string? GetRegionName() =>
 			Environment.GetEnvironmentVariable("REGION_NAME"); // should be defined by Azure https://whatazurewebsiteenvironmentvariablesareavailable.azurewebsites.net/
 
-
 		private string? GetClusterName() =>
 			Environment.GetEnvironmentVariable("CLUSTER_NAME"); // We should define it
-
 
 		private void UpdateState(ServiceContext context)
 		{

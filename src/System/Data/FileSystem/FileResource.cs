@@ -53,7 +53,6 @@ namespace Microsoft.Omex.System.Data.FileSystem
 			}
 		}
 
-
 		/// <summary>
 		/// Retrieves resource contents
 		/// </summary>
@@ -84,55 +83,46 @@ namespace Microsoft.Omex.System.Data.FileSystem
 			}
 		}
 
-
 		/// <summary>
 		/// Resource Name
 		/// </summary>
 		public string Name { get; }
-
 
 		/// <summary>
 		/// Resource location
 		/// </summary>
 		public string Location { get; }
 
-
 		/// <summary>
 		/// File folder
 		/// </summary>
 		public string Folder { get; }
-
 
 		/// <summary>
 		/// Gets the last write time to the file.
 		/// </summary>
 		public DateTime LastWriteTime => File.GetLastWriteTime(Location);
 
-
 		/// <summary>
 		/// Gets the length of the file in bytes.
 		/// </summary>
 		public long Length => File.GetLength(Location);
-
 
 		/// <summary>
 		/// Is a static resource
 		/// </summary>
 		public bool IsStatic => false;
 
-
 		/// <summary>
 		/// File adaptor
 		/// </summary>
 		protected IFile File { get; }
-
 
 		/// <summary>
 		/// Check if path contains invalid path chars
 		/// Method created since Path.Combine in .netcore does not throw exception in case of illegal chars so check should be done manually
 		/// </summary>
 		private static bool HasInvalidPathChars(string path) => path.Any(s_InvalidPathCharsForFullFramework.Contains);
-
 
 		private static readonly ISet<char> s_InvalidPathCharsForFullFramework = new HashSet<char>(Path.GetInvalidPathChars()) { '"', '<', '>' };
 	}

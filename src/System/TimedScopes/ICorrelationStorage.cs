@@ -15,7 +15,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <returns>correlation data</returns>
 		CorrelationData CorrelationStart(CorrelationData data);
 
-
 		/// <summary>
 		/// Add correlation data
 		/// </summary>
@@ -23,7 +22,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="value">value</param>
 		/// <param name="data">existing correlation data</param>
 		void CorrelationAdd(string key, string value, CorrelationData data);
-
 
 		/// <summary>
 		/// End correlation

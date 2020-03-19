@@ -15,18 +15,15 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </summary>
 		public CorrelationData Correlation { get; private set; }
 
-
 		/// <summary>
 		/// If the correlation data has changed, the key of the data that changed
 		/// </summary>
 		public string ChangedKey { get; private set; }
 
-
 		/// <summary>
 		/// If the correlation data has changed, the old value of the data
 		/// </summary>
 		public string OldData { get; private set; }
-
 
 		/// <summary>
 		/// Constructor
@@ -40,7 +37,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			ChangedKey = key;
 			OldData = oldData;
 		}
-
 
 		/// <summary>
 		/// Constructor

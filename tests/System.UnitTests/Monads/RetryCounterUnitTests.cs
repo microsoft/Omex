@@ -24,7 +24,6 @@ namespace Microsoft.Omex.System.UnitTests.Monads
 			DoNumberOfCallsTesting(counter, retryLimit + 1);
 		}
 
-
 		[Fact]
 		public void RetryCounter_NegativeLimit_PerformsNoAttempts()
 		{
@@ -34,7 +33,6 @@ namespace Microsoft.Omex.System.UnitTests.Monads
 			RetryCounter counter = new RetryCounter(policy);
 			DoNumberOfCallsTesting(counter, 1);
 		}
-
 
 		[Fact]
 		public void RetryCounter_ZeroLimit_PerformsNoAttempts()
@@ -46,7 +44,6 @@ namespace Microsoft.Omex.System.UnitTests.Monads
 			DoNumberOfCallsTesting(counter, 1);
 		}
 
-
 		[Fact]
 		public void RetryCounter_AttemptsShouldStopOnSuccessfullCall()
 		{
@@ -56,7 +53,6 @@ namespace Microsoft.Omex.System.UnitTests.Monads
 			DoNumberOfCallsTesting(counter, SuccessfulCallNumber);
 		}
 
-
 		private void DoNumberOfCallsTesting(RetryCounter retryCounter, int expectedNumbersOfCall)
 		{
 			AtomicCounter callsCount = new AtomicCounter();
@@ -64,25 +60,20 @@ namespace Microsoft.Omex.System.UnitTests.Monads
 			Assert.Equal(expectedNumbersOfCall, result);
 		}
 
-
 		private static Tuple<bool, int> TestFunc(AtomicCounter counter)
 		{
 			counter.Increment();
 			return Tuple.Create(counter.Count == SuccessfulCallNumber, counter.Count);
 		}
 
-
 		private class AtomicCounter
 		{
 			public int Count => m_counter;
 
-
 			public void Increment() => Interlocked.Increment(ref m_counter);
-
 
 			private int m_counter;
 		}
-
 
 		private const int SuccessfulCallNumber = 5;
 	}

@@ -35,7 +35,6 @@ namespace Hosting.Services.UnitTests
 			Assert.IsTrue(task.IsCanceled, "CancelationToken should be canceled");
 		}
 
-
 		[TestMethod]
 		public async Task StartAsync_HandlesExceptions()
 		{
@@ -58,17 +57,13 @@ namespace Hosting.Services.UnitTests
 			Assert.IsTrue(runnerMock.Token.IsCancellationRequested, "Task should be canceled");
 		}
 
-
 		private class MockRunner : IOmexServiceRunner
 		{
 			public CancellationToken Token { get; private set; }
 
-
 			public Task? Task { get; private set; }
 
-
 			public bool IsStarted { get; private set; }
-
 
 			public Task RunServiceAsync(CancellationToken cancellationToken)
 			{
@@ -77,9 +72,7 @@ namespace Hosting.Services.UnitTests
 				return Task = m_function(cancellationToken);
 			}
 
-
 			public MockRunner(Func<CancellationToken, Task> function) => m_function = function;
-
 
 			private readonly Func<CancellationToken, Task> m_function;
 		}

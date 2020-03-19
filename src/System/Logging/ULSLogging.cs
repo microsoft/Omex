@@ -27,12 +27,10 @@ namespace Microsoft.Omex.System.Logging
 			LogEvent?.Invoke(LogEventSender, new LogEventArgs(null, false, tagid, category, level, message, string.Empty, parameters));
 		}
 
-
 		/// <summary>
 		/// Event handler for log events
 		/// </summary>
 		public static event EventHandler<LogEventArgs> LogEvent;
-
 
 		/// <summary>
 		/// Raise a log event
@@ -46,7 +44,6 @@ namespace Microsoft.Omex.System.Logging
 				LogEvent?.Invoke(sender ?? LogEventSender, e);
 			}
 		}
-
 
 		/// <summary>
 		/// Report an exception
@@ -62,12 +59,10 @@ namespace Microsoft.Omex.System.Logging
 			LogEvent?.Invoke(LogEventSender, new ReportExceptionEventArgs(tagid, category, exception, message, parameters));
 		}
 
-
 		/// <summary>
 		/// Optional log event sender, added as sender of event
 		/// </summary>
 		public static object LogEventSender { get; set; }
-
 
 		// ASSERTTAG_IGNORE_FINISH
 		// The preceding comment tells ULS auto-tagging to not tag above

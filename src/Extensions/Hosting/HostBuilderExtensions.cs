@@ -20,7 +20,6 @@ namespace Microsoft.Omex.Extensions.Hosting
 			builder
 				.ConfigureServices((context, collection) => collection.AddOmexServices());
 
-
 		/// <summary>
 		/// Add Omex Logging and TimedScopes dependencies
 		/// </summary>

@@ -23,7 +23,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Null(gates);
 		}
 
-
 		[Fact]
 		public void IsApplicable_WithOneApplicableGate_ReturnsNoApplicableGate()
 		{
@@ -37,7 +36,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Null(gates);
 		}
 
-
 		[Fact]
 		public void IsApplicable_WithOneNotApplicable_ReturnsSuccessForApplicableGate()
 		{
@@ -50,7 +48,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gateCombination.IsApplicable(context, out IGate[] gates), "Get applicable gates should be true");
 			Assert.Null(gates);
 		}
-
 
 		[Fact]
 		public void IsApplicable_WithOneNotApplicableAndOneApplicableGate_ReturnsNoApplicableGate()
@@ -67,7 +64,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 
 		}
 
-
 		[Fact]
 		public void IsApplicable_WithOneApplicableAndOneNotApplicableGate_ReturnsNoApplicableGate()
 		{
@@ -82,7 +78,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Null(gates);
 		}
 
-
 		[Fact]
 		public void IsApplicable_WithTwoApplicableGates_ReturnsNoApplicableGate()
 		{
@@ -96,7 +91,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(gateCombination.IsApplicable(context, out IGate[] gates), "Get applicable gates should be false");
 			Assert.Null(gates);
 		}
-
 
 		[Fact]
 		public void IsApplicable_WithTwoNotApplicableGates_ReturnsSuccessForApplicableGates()

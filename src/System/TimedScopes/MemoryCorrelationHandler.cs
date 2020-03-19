@@ -25,7 +25,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			return data;
 		}
 
-
 		/// <summary>
 		/// Add correlation data
 		/// </summary>
@@ -39,7 +38,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				data.AddData(key, value);
 			}
 		}
-
 
 		/// <summary>
 		/// End correlation

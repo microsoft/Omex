@@ -18,7 +18,6 @@ namespace Microsoft.Omex.System.Caching
 		/// </summary>
 		public LocalCache() => Cache = new ConcurrentDictionary<Type, object>();
 
-
 		/// <summary>
 		/// Gets a cache entry.
 		/// </summary>
@@ -40,7 +39,6 @@ namespace Microsoft.Omex.System.Caching
 
 			return value;
 		}
-
 
 		/// <summary>
 		/// Gets or adds a new cache entry.
@@ -86,7 +84,6 @@ namespace Microsoft.Omex.System.Caching
 
 			return result;
 		}
-
 
 		/// <summary>
 		/// Gets or updates a cache entry.
@@ -140,7 +137,6 @@ namespace Microsoft.Omex.System.Caching
 
 			return result;
 		}
-
 
 		/// <summary>
 		/// Gets or sets the cache.

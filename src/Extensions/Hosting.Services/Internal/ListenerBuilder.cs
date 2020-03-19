@@ -15,13 +15,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			Func<TServiceContext, ICommunicationListener> createListener) =>
 			(Name, m_createListener) = (name, createListener);
 
-
 		public string Name { get; }
-
 
 		public ICommunicationListener Build(TServiceContext context) =>
 			m_createListener(context);
-
 
 		private readonly Func<TServiceContext, ICommunicationListener> m_createListener;
 	}

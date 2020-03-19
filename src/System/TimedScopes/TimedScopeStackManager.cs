@@ -9,7 +9,7 @@ using Microsoft.Omex.System.Validation;
 namespace Microsoft.Omex.System.TimedScopes
 {
 	/// <summary>
-	/// Class for managing scopes stack 
+	/// Class for managing scopes stack
 	/// </summary>
 	public class TimedScopeStackManager : ITimedScopeStackManager
 	{
@@ -27,18 +27,15 @@ namespace Microsoft.Omex.System.TimedScopes
 			MachineInformation = machineInformation;
 		}
 
-
 		/// <summary>
 		/// Call Context Manager
 		/// </summary>
 		public ICallContextManager CallContextManager { get; }
 
-
 		/// <summary>
 		/// Timed Scope Definition
 		/// </summary>
 		public IMachineInformation MachineInformation { get; }
-
 
 		/// <summary>
 		/// Get a stack of active scopes, creating a new stack if one does not exist
@@ -79,7 +76,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Data key used to store the active time scopes on the call context

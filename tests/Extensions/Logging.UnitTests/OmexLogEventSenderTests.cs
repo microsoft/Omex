@@ -50,7 +50,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			AssertPayload(eventInfo, "tagId", "fff9");
 		}
 
-
 		private void AssertPayload<TPayloadType>(EventWrittenEventArgs info, string name, TPayloadType expected)
 			where TPayloadType : class
 		{
@@ -60,7 +59,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			Assert.AreEqual(expected, value, $"Wrong value for {name}");
 		}
-
 
 		private class CustomEventListener : EventListener
 		{

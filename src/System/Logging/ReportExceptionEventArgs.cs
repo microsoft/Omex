@@ -24,7 +24,6 @@ namespace Microsoft.Omex.System.Logging
 			Exception = exception;
 		}
 
-
 		/// <summary>
 		/// Exception to log
 		/// </summary>

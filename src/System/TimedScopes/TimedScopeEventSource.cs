@@ -29,7 +29,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </summary>
 		public static TimedScopeEventSource Instance => s_instance.Value;
 
-
 		/// <summary>
 		/// Static constructor
 		/// </summary>
@@ -40,7 +39,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			Task.Run(() => { });
 		}
 
-
 		/// <summary>
 		/// Constructor to enforce singleton semantics needed for the Event Source to work properly
 		/// </summary>
@@ -48,7 +46,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			: base()
 		{
 		}
-
 
 		/// <summary>
 		/// Lazy instance of the <see cref="TimedScopeEventSource"/> class
@@ -58,7 +55,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			LazyThreadSafetyMode.PublicationOnly);
 
 		#endregion
-
 
 		#region Non-Events
 
@@ -105,7 +101,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				Convert.ToInt64(durationMs, CultureInfo.InvariantCulture));
 		}
 
-
 		/// <summary>
 		/// Logs the occurrence of an activity
 		/// </summary>
@@ -145,7 +140,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				Convert.ToInt64(durationMs, CultureInfo.InvariantCulture));
 		}
 
-
 		private static string SanitizeString(string mdmString, string name, string activityName, Category logCategory)
 		{
 			string validatedString = Convert.ToString(mdmString, CultureInfo.InvariantCulture) ?? string.Empty;
@@ -159,12 +153,10 @@ namespace Microsoft.Omex.System.TimedScopes
 			return validatedString;
 		}
 
-
 		private const string StringLimitMessage =
 			"Our logging enforces a string length limit of {0} characters per dimension. Truncating length of dimension {1} on activity {2} from {3} chars in order to allow upload of the metric";
 
 		#endregion
-
 
 		#region Events
 
@@ -194,7 +186,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			WriteEvent((int)EventIds.LogTimedScopeEventId, name ?? string.Empty, subType ?? string.Empty, metadata ?? string.Empty, userHash ?? string.Empty, serviceName ?? string.Empty, logCategory, result, correlationId, durationMs);
 		}
-
 
 		/// <summary>
 		/// Writes a Timed scope trace event with Level=Informational.

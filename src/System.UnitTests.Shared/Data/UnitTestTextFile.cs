@@ -20,7 +20,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Data.FileSystem
 		public UnitTestTextFile(bool fileExists, bool canBeRead, string contents)
 			: base(fileExists, canBeRead) => Contents = contents;
 
-
 		/// <summary>
 		/// Returns the file contents as byte array.
 		/// </summary>
@@ -36,7 +35,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Data.FileSystem
 			return Encoding.UTF8.GetBytes(Contents ?? string.Empty);
 		}
 
-
 		/// <summary>
 		/// Writes given bytes to file.
 		/// When file exists it will be replaced with new content.
@@ -44,7 +42,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Data.FileSystem
 		/// <param name="path">Path to file.</param>
 		/// <param name="bytes">Bytes to write to file.</param>
 		public override void WriteAllBytes(string path, byte[] bytes) => Contents = Encoding.UTF8.GetString(bytes);
-
 
 		/// <summary>
 		/// The contents.

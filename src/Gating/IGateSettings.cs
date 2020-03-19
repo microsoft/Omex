@@ -16,13 +16,11 @@ namespace Microsoft.Omex.Gating
 		/// <value>Setting as a set of gate names which are to be enabled.</value>
 		ISet<string> GatesOverrideEnabled { get; }
 
-
 		/// <summary>
 		/// GatesOverrideDisabled Setting.
 		/// </summary>
 		/// <value>Setting as a set of gate names which are to be disabled.</value>
 		ISet<string> GatesOverrideDisabled { get; }
-
 
 		/// <summary>
 		/// GatesToggleEnable Setting.

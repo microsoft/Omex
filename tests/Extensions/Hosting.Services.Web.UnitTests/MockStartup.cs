@@ -11,15 +11,12 @@ namespace Hosting.Services.Web.UnitTests
 	{
 		public MockStartup() { }
 
-
 		public void ConfigureServices(IServiceCollection services) =>
 			services.AddTransient<TypeRegisteredInStartup>();
-
 
 		public void Configure(IApplicationBuilder app, IHostEnvironment env)
 		{
 		}
-
 
 		internal class TypeRegisteredInStartup { }
 	}

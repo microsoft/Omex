@@ -18,7 +18,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.TimedScopes
 		/// </summary>
 		public static string DefaultTimedScopeName = TimedScopes.DefaultScope.Name;
 
-
 		/// <summary>
 		/// Creates a default timed scope.
 		/// </summary>
@@ -56,7 +55,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.TimedScopes
 		{
 			return new TimedScopeProvider(new MockCorrelationDataProvider(), machineInformation, scopeLogger, replayEventConfigurator, timedScopeStackManager);
 		}
-
 
 		private class MockCorrelationDataProvider : ICorrelationDataProvider
 		{

@@ -25,7 +25,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			eventSourceMock.Verify(m_logExpression, Times.Once);
 		}
 
-
 		[TestMethod]
 		public void LogMessage_UseIsEnabledFlag()
 		{
@@ -33,7 +32,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			LogMessage(eventSourceMock);
 			eventSourceMock.Verify(m_logExpression, Times.Never);
 		}
-
 
 		[TestMethod]
 		public void LogMessage_UseIsReplayableMessageFlag()
@@ -49,7 +47,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			eventSourceMock.Verify(m_logExpression, Times.Once);
 			Assert.IsFalse(activity.GetLogEvents().Any(), "Log should not be stored for replay");
 		}
-
 
 		[TestMethod]
 		public void LogMessage_ReplayedMessageSaved()
@@ -70,7 +67,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			Assert.AreEqual(GetLogMessage(suffix), info.Message);
 			Assert.AreEqual(CreateEventId(eventId, suffix), info.EventId);
 		}
-
 
 		[TestMethod]
 		public void LogMessage_ReplayedMessageSavedUnitilTheLimit()
@@ -97,7 +93,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			Assert.AreEqual(replayMessage2, info[1].Message);
 		}
 
-
 		[TestMethod]
 		public void BeginScope_ScopeProperlyCreated()
 		{
@@ -113,7 +108,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			Assert.AreEqual(resultMock, result);
 		}
 
-
 		private Mock<ILogEventSender> CreateEventSourceMock(bool isEnabled = true, bool isReplayable = true)
 		{
 			Mock<ILogEventSender> eventSourceMock = new Mock<ILogEventSender>();
@@ -121,7 +115,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			eventSourceMock.Setup(e => e.IsReplayableMessage(It.IsAny<LogLevel>())).Returns(isReplayable);
 			return eventSourceMock;
 		}
-
 
 		private (ILogger, Mock<IExternalScopeProvider>) LogMessage(Mock<ILogEventSender> eventSourceMock, int eventId = 0, [CallerMemberName]string suffix = "")
 		{
@@ -133,18 +126,13 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			return (logger, scopeProvicedMock);
 		}
 
-
 		private string GetLogMessage(string suffix) => FormattableString.Invariant($"Message-{suffix}");
-
 
 		private string GetLogCategory(string suffix) => FormattableString.Invariant($"Category-{suffix}");
 
-
 		private EventId CreateEventId(int id, string suffix) => new EventId(id, FormattableString.Invariant($"EventId-{suffix}"));
 
-
 		private ReplayableActivity CreateActivity(string suffix) => new ReplayableActivity(FormattableString.Invariant($"Activity-{suffix}"), 2);
-
 
 		private readonly Expression<Action<ILogEventSender>> m_logExpression = e =>
 			e.LogMessage(

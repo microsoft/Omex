@@ -26,7 +26,6 @@ namespace Microsoft.Omex.CodeGenerators.TimedScopeGen
 			return timedScopeArea.name;
 		}
 
-
 		/// <summary>
 		/// Formats timed scope description by dividing it into several lines.
 		/// </summary>

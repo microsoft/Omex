@@ -21,7 +21,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	{
 		private UnitTestGateDataSet UnitTestGates { get; } = new UnitTestGateDataSet(ResourceNames.Gates, ResourceNames.TestGroups);
 
-
 		#region No restrictions
 		[Fact]
 		public void PerformAction_WhenNoRestrictionsAreSpecified_RunsAction()
@@ -41,7 +40,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gateContext.ActivatedGates.Contains(gate), "Expected gate to have been registered as activated.");
 		}
 		#endregion
-
 
 		#region Market restrictions
 		[Fact]
@@ -70,7 +68,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gateContext.ActivatedGates.Contains(gate), "Expected gate to have been registered as activated.");
 		}
 
-
 		/// <summary>
 		/// When multiple market restrictions are specified and one market exists in the request the action should be performed
 		/// </summary>
@@ -98,7 +95,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(result, "Expected action to be run.");
 			Assert.True(gateContext.ActivatedGates.Contains(gate), "Expected gate to be activated.");
 		}
-
 
 		/// <summary>
 		/// When market restrictions are specified and the market does not exist in the request the action should not be performed
@@ -130,7 +126,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(gateContext.ActivatedGates.Contains(gate), "Did not expected gate to be activated.");
 		}
 
-
 		/// <summary>
 		/// When multiple market restrictions are specified and none of the markets exist in the request the action should not be performed
 		/// </summary>
@@ -159,7 +154,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(gateContext.ActivatedGates.Contains(gate), "Did not expected gate to be activated.");
 		}
 
-
 		/// <summary>
 		/// When market restrictions are specified and no market exist in the request the action should not be performed
 		/// </summary>
@@ -185,7 +179,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(gateContext.ActivatedGates.Contains(gate), "Did not expected gate to be activated.");
 		}
 		#endregion
-
 
 		#region Gate ID Overrides
 		[Fact]
@@ -216,7 +209,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gateContext.ActivatedGates.Contains(gate), "Expected gate to be activated.");
 		}
 
-
 		[Fact]
 		public void PerformAction_WhenMarketRestrictionIsNotMetAndOverrideIsIncorrectlySpecified_DoesNotRunAction()
 		{
@@ -244,7 +236,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(result, "Did not expected action to be run.");
 			Assert.False(gateContext.ActivatedGates.Contains(gate), "Did not expected gate to be activated.");
 		}
-
 
 		[Fact]
 		public void PerformAction_WhenMarketRestrictionIsNotMetAndMultipleOverridesAreSpecified_RunsFirstMatchingAction()
@@ -287,7 +278,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(gateContext.ActivatedGates.Contains(secondGate), "Expected second gate not to be activated.");
 		}
 
-
 		[Fact]
 		public void PerformAction_WhenMarketRestrictionIsNotMetAndOneOverrideIsSpecified_RunsActionAgainstSpecifiedOverride()
 		{
@@ -326,7 +316,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		}
 		#endregion
 
-
 		#region Client Versions
 		[Fact]
 		public void PerformAction_WhenClientVersionIsSpecifiedAndRequestHasMatchingClientVersion_RunsAction()
@@ -355,7 +344,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gateContext.ActivatedGates.Contains(gate), "Expected gate to be activated.");
 		}
 
-
 		[Fact]
 		public void PerformAction_WhenClientVersionIsSpecifiedAndRequestHasSameClientVersion_RunsAction()
 		{
@@ -382,7 +370,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(result, "Expected action to be run.");
 			Assert.True(gateContext.ActivatedGates.Contains(gate), "Expected gate to be activated.");
 		}
-
 
 		[Fact]
 		public void PerformAction_WhenClientVersionIntervalIsSpecifiedAndRequestHasClientVersionWithinInterval_RunsAction()
@@ -411,7 +398,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gateContext.ActivatedGates.Contains(gate), "Expected gate to be activated.");
 		}
 
-
 		[Fact]
 		public void PerformAction_WhenClientVersionIsSpecifiedAndRequestDoesNotHaveMatchingClientVersion_DoesNotRunAction()
 		{
@@ -439,7 +425,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(gateContext.ActivatedGates.Contains(gate), "Did not expected gate to be activated.");
 		}
 
-
 		[Fact]
 		public void PerformAction_WhenClientVersionIntervalIsSpecifiedAndRequestHasClientVersionOutsideInterval_DoesNotRunAction()
 		{
@@ -466,7 +451,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(result, "Did not expected action to be run.");
 			Assert.False(gateContext.ActivatedGates.Contains(gate), "Did not expected gate to be activated.");
 		}
-
 
 		[Fact]
 		public void PerformAction_WhenClientVersionIntervalIsSpecifiedAndRequestHasClientMaxVersionExactlyOnInterval_DoesNotRunAction()
@@ -496,7 +480,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		}
 
 		#endregion
-
 
 		#region User Groups
 		[Fact]
@@ -528,7 +511,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gateContext.ActivatedGates.Contains(gate), "Expected gate to be activated.");
 		}
 
-
 		[Fact]
 		public void PerformAction_WhenTestGroupIsSpecifiedAndRequestDoesNotHaveMatchingUser_DoesNotRunAction()
 		{
@@ -558,7 +540,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(gateContext.ActivatedGates.Contains(gate), "Did not expected gate to be activated.");
 		}
 
-
 		[Fact]
 		public void PerformAction_WhenUsergroupNoneIsSpecified_DoesNotRunAction()
 		{
@@ -586,7 +567,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(result, "Did not expected action to be run.");
 			Assert.False(gateContext.ActivatedGates.Contains(gate), "Did not expected gate to be activated.");
 		}
-
 
 		[Fact]
 		public void PerformAction_WhenUsergroupNoneIsSpecifiedAndGateIsRequested_RunsAction()

@@ -12,7 +12,6 @@ namespace Microsoft.Omex.Extensions.Logging.Replayable
 		public int ThreadId { get; }
 		public string Message { get; }
 
-
 		public LogMessageInformation(string category, EventId eventId, int threadId, string message)
 		{
 			Category = category;

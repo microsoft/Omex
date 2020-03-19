@@ -20,7 +20,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			ValidateTypeRegistration<IServiceContext>(collection);
 		}
 
-
 		[TestMethod]
 		public void AddOmexServiceContext_OverridesContextType()
 		{
@@ -35,7 +34,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 				"Call of AddOmexServiceContext before AddOmexLogging should override IServiceCollection implementation");
 		}
 
-
 		[TestMethod]
 		public void AddOmexLoggerOnServiceCollection_RegistersLogger()
 		{
@@ -43,14 +41,12 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			ValidateTypeRegistration<ILogger<ServiceCollectionTests>>(collection);
 		}
 
-
 		[TestMethod]
 		public void AddOmexLoggerOnLogBuilder_RegistersLogger()
 		{
 			ILoggingBuilder builder = new MockLoggingBuilder().AddOmexLogging();
 			ValidateTypeRegistration<ILogger<ServiceCollectionTests>>(builder.Services);
 		}
-
 
 		private T ValidateTypeRegistration<T>(IServiceCollection collection)
 			where T : class
@@ -68,12 +64,10 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			return obj;
 		}
 
-
 		private class MockLoggingBuilder : ILoggingBuilder
 		{
 			public IServiceCollection Services { get; } = new ServiceCollection();
 		}
-
 
 		private class MockServiceContext : IServiceContext
 		{

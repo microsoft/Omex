@@ -31,7 +31,6 @@ namespace Microsoft.Omex.DocumentDb
 			return GetOrCreateDatabaseAsync(new Database { Id = dbId }, requestOptions);
 		}
 
-
 		/// <summary>
 		/// Gets or creates the database.
 		/// </summary>
@@ -49,7 +48,6 @@ namespace Microsoft.Omex.DocumentDb
 				() => client.CreateDatabaseIfNotExistsAsync(database, requestOptions)).ConfigureAwait(false);
 		}
 
-
 		/// <summary>
 		/// Gets all databases in the document db account.
 		/// </summary>
@@ -64,7 +62,6 @@ namespace Microsoft.Omex.DocumentDb
 				return await QueryDocumentsAsync(query, feedOptions).ConfigureAwait(false);
 			}
 		}
-
 
 		/// <summary>
 		/// Gets the database with specified id.
@@ -86,7 +83,6 @@ namespace Microsoft.Omex.DocumentDb
 				return dbs.FirstOrDefault();
 			}
 		}
-
 
 		/// <summary>
 		/// Deletes the database.

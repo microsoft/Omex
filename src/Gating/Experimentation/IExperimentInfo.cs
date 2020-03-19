@@ -13,7 +13,6 @@ namespace Microsoft.Omex.Gating.Experimentation
 		/// </summary>
 		string ExperimentName { get; }
 
-
 		/// <summary>
 		/// Weight of the gate in the experiment
 		/// </summary>

@@ -17,14 +17,12 @@ namespace Microsoft.Omex.System.Data.FileSystem
 		/// <returns>true if file exists, false otherwise</returns>
 		bool Exists(string path);
 
-
 		/// <summary>
 		/// Returns file contents as byte array
 		/// </summary>
 		/// <param name="path">path</param>
 		/// <returns>file contents</returns>
 		byte[] ReadAllBytes(string path);
-
 
 		/// <summary>
 		/// Writes given content to file.
@@ -34,14 +32,12 @@ namespace Microsoft.Omex.System.Data.FileSystem
 		/// <param name="value">Content to write to file.</param>
 		void WriteAllBytes(string path, byte[] value);
 
-
 		/// <summary>
 		/// Get the last write time for the file.
 		/// </summary>
 		/// <param name="path">The path to the file.</param>
 		/// <returns>The last write time for the file.</returns>
 		DateTime GetLastWriteTime(string path);
-
 
 		/// <summary>
 		/// Get the length of the file in bytes.

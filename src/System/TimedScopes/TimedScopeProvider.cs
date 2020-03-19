@@ -35,7 +35,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			m_timedScopeStackManager = Code.ExpectsArgument(timedScopeStackManager, nameof(timedScopeStackManager), TaggingUtilities.ReserveTag(0x2375d3d5 /* tag_933pv */));
 		}
 
-
 		/// <summary>
 		/// Creates a scope (and starts by default)
 		/// </summary>
@@ -44,7 +43,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="startScope">Should the scope be automatically started (for use in e.g. 'using' statement)</param>
 		public TimedScope Create(TimedScopeDefinition definition, TimedScopeResult initialResult, bool startScope = true)
 			=> definition.Create(m_correlation.CurrentCorrelation, m_machineInformation, m_scopeLogger, m_replayEventConfigurator, m_timedScopeStackManager, initialResult, startScope);
-
 
 		private readonly ICorrelationDataProvider m_correlation;
 		private readonly IMachineInformation m_machineInformation;

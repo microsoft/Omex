@@ -18,13 +18,11 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Data
 		/// </summary>
 		public UnitTestResourceMonitor() => m_enablesSuccessfully = true;
 
-
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="enablesSuccessfully">should start successfully</param>
 		public UnitTestResourceMonitor(bool enablesSuccessfully) => m_enablesSuccessfully = enablesSuccessfully;
-
 
 		/// <summary>
 		/// Start monitoring data deployment resources
@@ -56,7 +54,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Data
 			return IsEnabled;
 		}
 
-
 		/// <summary>
 		/// Stops monitoring
 		/// </summary>
@@ -66,31 +63,26 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Data
 			IsDisposed = true;
 		}
 
-
 		/// <summary>
 		/// Throws ResourceUpdated event
 		/// </summary>
 		/// <param name="arguments">The event arguments.</param>
 		public void ThrowResourceUpdated(ResourceUpdatedEventArgs arguments) => m_resourceUpdatedHandler?.Invoke(arguments);
 
-
 		/// <summary>
 		/// Is resource monitoring enabled
 		/// </summary>
 		public bool IsEnabled { get; private set; }
-
 
 		/// <summary>
 		/// Is disposed
 		/// </summary>
 		public bool IsDisposed { get; private set; }
 
-
 		/// <summary>
 		/// Should be enabled successfully
 		/// </summary>
 		private readonly bool m_enablesSuccessfully;
-
 
 		/// <summary>
 		/// A handler to be called when the resource is updated

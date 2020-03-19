@@ -19,24 +19,20 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		/// </summary>
 		public bool IsHealthy => LastReload > DateTime.MinValue && (Errors == null || Errors.Count == 0);
 
-
 		/// <summary>
 		/// Last Reload date and time
 		/// </summary>
 		public DateTime LastReload { get; protected set; }
-
 
 		/// <summary>
 		/// Gets the details.
 		/// </summary>
 		public IList<ConfigurationDataSetLoadDetails> LoadDetails { get; private set; }
 
-
 		/// <summary>
 		/// Loading errors
 		/// </summary>
 		public IList<string> Errors => ULSLogging.Errors;
-
 
 		/// <summary>
 		/// Loads the data set
@@ -58,7 +54,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			LoadDetails = new List<ConfigurationDataSetLoadDetails>(resources.Count);
 			return true;
 		}
-
 
 		/// <summary>
 		/// Loads resource
@@ -88,13 +83,11 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			return true;
 		}
 
-
 		/// <summary>
 		/// Own implementation of logging
 		/// </summary>
 		protected T ULSLogging { get; } = new T();
 	}
-
 
 	/// <summary>
 	/// Configuration DataSet base class

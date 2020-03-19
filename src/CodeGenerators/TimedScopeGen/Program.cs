@@ -20,7 +20,6 @@ namespace Microsoft.Omex.CodeGenerators.TimedScopeGen
 		/// </summary>
 		public const string ProductOmex = "Omex";
 
-
 		/// <summary>
 		/// Main entry point from command line.
 		/// </summary>
@@ -60,7 +59,6 @@ namespace Microsoft.Omex.CodeGenerators.TimedScopeGen
 			return 0;
 		}
 
-
 		/// <summary>
 		/// Generates TimedScope.cs from TimedScopes.xml
 		/// </summary>
@@ -78,7 +76,6 @@ namespace Microsoft.Omex.CodeGenerators.TimedScopeGen
 				writer.Write(generatedClass);
 			}
 		}
-
 
 		/// <summary>
 		/// Reads object from file using xml deserializer

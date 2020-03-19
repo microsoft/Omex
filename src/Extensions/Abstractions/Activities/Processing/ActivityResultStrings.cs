@@ -15,24 +15,20 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities.Processing
 		/// </summary>
 		public static string SystemError { get; } = "SystemError";
 
-
 		/// <summary>
 		/// Activity ExpectedError result string
 		/// </summary>
 		public static string ExpectedError { get; } = "ExpectedError";
-
 
 		/// <summary>
 		/// Activity Success result string
 		/// </summary>
 		public static string Success { get; } = "Success";
 
-
 		/// <summary>
 		/// Activity Unknown result string
 		/// </summary>
 		public static string Unknown { get; } = "Unknown";
-
 
 		/// <summary>
 		/// Returns corresponding to enum string value with creating new string

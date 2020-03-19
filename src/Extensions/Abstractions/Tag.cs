@@ -16,7 +16,6 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		/// </summary>
 		public static EventId ReserveTag(int tagId) => new EventId(tagId);
 
-
 		/// <summary>
 		/// Create an EventId tag using CallerFilePath and CallerLineNumber
 		/// </summary>

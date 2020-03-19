@@ -32,7 +32,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			WriteEvent((int)EventSourcesEventIds.LogError, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
 				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
-
 		[Event((int)EventSourcesEventIds.LogWarning, Level = EventLevel.Warning, Message = "{13}", Version = 6)]
 		public void LogWarningServiceMessage(
 			string applicationName,
@@ -54,7 +53,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			string message) =>
 			WriteEvent((int)EventSourcesEventIds.LogWarning, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
 				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
-
 
 		[Event((int)EventSourcesEventIds.LogInfo, Level = EventLevel.Informational, Message = "{13}", Version = 6)]
 		public void LogInfoServiceMessage(
@@ -78,7 +76,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			WriteEvent((int)EventSourcesEventIds.LogInfo, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
 				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
-
 		[Event((int)EventSourcesEventIds.LogVerbose, Level = EventLevel.Verbose, Message = "{13}", Version = 6)]
 		public void LogVerboseServiceMessage(
 			string applicationName,
@@ -100,7 +97,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			string message) =>
 			WriteEvent((int)EventSourcesEventIds.LogVerbose, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
 				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
-
 
 		[Event((int)EventSourcesEventIds.LogSpam, Level = EventLevel.Verbose, Message = "{13}", Version = 6)]
 		public void LogSpamServiceMessage(
@@ -124,9 +120,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			WriteEvent((int)EventSourcesEventIds.LogSpam, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
 				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
-
 		public static OmexLogEventSource Instance { get; } = new OmexLogEventSource();
-
 
 		private OmexLogEventSource() { }
 	}

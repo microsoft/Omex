@@ -30,13 +30,11 @@ namespace Microsoft.Omex.Gating
 			IsGateEnabled = true;
 		}
 
-
 		#region IGate Members
 		/// <summary>
 		/// Name of gate
 		/// </summary>
 		public string Name { get; set; }
-
 
 		/// <summary>
 		/// Fully qualified name, including parent Gate and Experiment information if applicable.
@@ -52,48 +50,40 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Unique lookup key for this gate.
 		/// </summary>
 		public int Key => FullyQualifiedName.GetHashCode();
-
 
 		/// <summary>
 		/// Parent gate
 		/// </summary>
 		public IGate ParentGate { get; set; }
 
-
 		/// <summary>
 		/// Set of users that have access to the gate
 		/// </summary>
 		public HashSet<string> Users { get; set; }
-
 
 		/// <summary>
 		/// Set of user group types applicable to the gate
 		/// </summary>
 		public UserGroupTypes UserTypes { get; set; }
 
-
 		/// <summary>
 		/// Set of applicable markets
 		/// </summary>
 		public HashSet<string> Markets { get; set; }
-
 
 		/// <summary>
 		/// Set of environments that apply for this gate
 		/// </summary>
 		public HashSet<string> Environments { get; set; }
 
-
 		/// <summary>
 		/// Set of applicable client versions
 		/// </summary>
 		public IDictionary<string, RequiredClient> ClientVersions { get; set; }
-
 
 		/// <summary>
 		/// A secure gate is a gate that cannot be requested using
@@ -101,85 +91,71 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		public bool IsSecureGate { get; set; }
 
-
 		/// <summary>
 		/// A toggle that enables/disables a gate.
 		/// </summary>
 		public bool IsGateEnabled { get; set; }
-
 
 		/// <summary>
 		/// Set of query parameters that block this gate
 		/// </summary>
 		public IDictionary<string, HashSet<string>> BlockedQueryParameters { get; set; }
 
-
 		/// <summary>
 		/// Set of host environments (CommonEnvironmentName) that apply for this gate
 		/// </summary>
 		public HashSet<string> HostEnvironments { get; set; }
-
 
 		/// <summary>
 		/// Set of known IP ranges that apply for this gate
 		/// </summary>
 		public HashSet<string> KnownIPRanges { get; set; }
 
-
 		/// <summary>
 		/// Set of browser type and corresponding versions that are allowed for this gate.
 		/// </summary>
 		public IDictionary<string, HashSet<int>> AllowedBrowsers { get; set; }
-
 
 		/// <summary>
 		/// Set of browser type and corresponding versions for which this gate will be blocked.
 		/// </summary>
 		public IDictionary<string, HashSet<int>> BlockedBrowsers { get; set; }
 
-
 		/// <summary>
 		/// Set of services and corresponding service flag.
 		/// </summary>
 		public IDictionary<string, GatedServiceTypes> Services { get; set; }
-
 
 		/// <summary>
 		/// Gets all the release gates for a release plan.
 		/// </summary>
 		public IGate[] ReleasePlan { get; set; }
 
-
 		/// <summary>
 		/// Start Date of the gate
 		/// </summary>
 		public DateTime? StartDate { get; set; }
-
 
 		/// <summary>
 		/// If the gate is a release gate, name of the gate with the release plan containing this gate.
 		/// </summary>
 		public string RepleasePlanGateName { get; set; }
 
-
 		/// <summary>
 		/// End Date of the gate
 		/// </summary>
 		public DateTime? EndDate { get; set; }
-
 
 		/// <summary>
 		/// Set of cloud contexts that apply to this gate
 		/// </summary>
 		public HashSet<string> CloudContexts { get; set; }
 
-
 		/// <summary>
 		/// Information about the experiment
 		/// </summary>
 		/// <remarks> it is null for the non experimental gate</remarks>
 		public IExperimentInfo ExperimentInfo { get; set; }
-
 
 		/// <summary>
 		/// Returns true if any of the markets includes a specified region.
@@ -200,12 +176,10 @@ namespace Microsoft.Omex.Gating
 
 		#endregion
 
-
 		/// <summary>
 		/// Market name delimiters.
 		/// </summary>
 		private static readonly char[] s_marketDelimiters = new[] { '-' };
-
 
 		/// <summary>
 		/// The wildcard to indicate any value of a query parameter should be blocked

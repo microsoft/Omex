@@ -19,72 +19,60 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 		/// </summary>
 		private const string TestScope = "TestScope";
 
-
 		/// <summary>
 		/// Test Subtype
 		/// </summary>
 		private const string TestSubtype = "TestSubType";
-
 
 		/// <summary>
 		/// Test Metadata
 		/// </summary>
 		private const string TestMetadata = "TestMetadata";
 
-
 		/// <summary>
 		/// Test Classification
 		/// </summary>
 		private const TimedScopeResult TestClassification = TimedScopeResult.SystemError;
-
 
 		/// <summary>
 		/// Test Scope with classification suffix
 		/// </summary>
 		private const string TestScopeWithClassification = TestScope + ".SystemError";
 
-
 		/// <summary>
 		/// Valid scope name
 		/// </summary>
 		private const string OnlyScope = TestScopeWithClassification;
-
 
 		/// <summary>
 		/// Valid scope name
 		/// </summary>
 		private const string ScopeWithSubtype = TestScopeWithClassification + "/" + TestSubtype;
 
-
 		/// <summary>
 		/// Valid scope name
 		/// </summary>
 		private const string ScopeWithMetadata = TestScopeWithClassification + "/" + TestMetadata;
-
 
 		/// <summary>
 		/// Valid scope name
 		/// </summary>
 		private const string ScopeWithSubtypeAndMetadata = TestScopeWithClassification + "/" + TestSubtype + "/" + TestMetadata;
 
-
 		/// <summary>
 		/// Valid scope name
 		/// </summary>
 		private const string ScopeWithEmptySubtype = TestScopeWithClassification + "/";
-
 
 		/// <summary>
 		/// Valid scope name
 		/// </summary>
 		private const string ScopeWithEmptySubtypeAndMetadata = TestScopeWithClassification + "//" + TestMetadata;
 
-
 		/// <summary>
 		/// Valid scope name
 		/// </summary>
 		private const string ScopeNameWithDescription = TestScopeWithClassification + ".Description/" + TestSubtype + "/" + TestMetadata;
-
 
 		/// <summary>
 		/// Constructor
@@ -93,7 +81,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 		public TimedScopeInstanceNameUnitTests(ITestOutputHelper log)
 		{
 		}
-
 
 		[Fact]
 		public void Verify_ValidScopeInstanceNames_Parsed()
@@ -157,7 +144,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			}
 		}
 
-
 		[Fact]
 		public void Verify_MalformedScopeNames_NotParsed()
 		{
@@ -173,7 +159,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			Assert.False(TimedScopeInstanceName.TryParse("x/y/z/a", out scopeName));
 		}
 
-
 		[Fact]
 		public void Verify_HashCodesAndEquality()
 		{
@@ -185,7 +170,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			CheckSingleScope(ScopeWithEmptySubtype);
 			CheckSingleScope(ScopeWithEmptySubtypeAndMetadata);
 		}
-
 
 		/// <summary>
 		/// Verifies that parsing the same string gives equal TimedScopeInstanceName instances
@@ -202,7 +186,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Check equality of two timed scope instance names by all possible ways
 		/// </summary>
@@ -217,7 +200,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			Assert.False(x != y);
 		}
 
-
 		[Fact]
 		public void Verify_ParseAndToStringRoundTrip_EqualStringRepresentation()
 		{
@@ -231,7 +213,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			// We are not checking round trip for ScopeNameWithDescription as we do not store the description in the scope name
 		}
 
-
 		/// <summary>
 		/// Checks that parsing a string and then converting back to string gives the same string
 		/// </summary>
@@ -244,7 +225,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 				Assert.Equal(parsed.ToString(), scopeName);
 			}
 		}
-
 
 		/// <summary>
 		/// Verifies that a condition is true and returns the value.

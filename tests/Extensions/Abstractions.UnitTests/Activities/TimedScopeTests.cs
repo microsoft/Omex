@@ -19,7 +19,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			CreateTimedScope();
 		}
 
-
 		[TestMethod]
 		public void Start_StartsActivity()
 		{
@@ -32,7 +31,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			Assert.IsNotNull(scope.Activity.Id);
 		}
 
-
 		[TestMethod]
 		public void Stop_WhenCalledMultipleTimes_IgnoresSuperfluousCalls()
 		{
@@ -41,7 +39,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			scope.Stop();
 			scope.Stop();
 		}
-
 
 		[TestMethod]
 		public void Dispose_WhenCalledMultipleTimes_IgnoresSuperfluousCalls()
@@ -53,7 +50,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			disposable.Dispose();
 			disposable.Dispose();
 		}
-
 
 		private TimedScope CreateTimedScope()
 		{

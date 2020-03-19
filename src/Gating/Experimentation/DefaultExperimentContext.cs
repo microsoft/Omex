@@ -15,7 +15,6 @@ namespace Microsoft.Omex.Gating.Experimentation
 		/// <returns>true if applicable, false otherwise</returns>
 		public bool IsExperimentalGateApplicable(IGate gate) => false;
 
-
 		/// <summary>
 		/// Is the user on the experiment
 		/// </summary>

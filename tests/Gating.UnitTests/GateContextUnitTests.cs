@@ -32,7 +32,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("DogfoodApps")), "Gate with environment restrictions should not be applicable");
 		}
 
-
 		[Fact]
 		public void RequestWithEnvironment_Specified()
 		{
@@ -43,7 +42,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.ReqEnvironment")), "Gate with environment restrictions should be applicable");
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("DogfoodApps")), "Gate with environment restrictions and no client version restrictions should be applicable");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_GateWithEnabledSetting_ReturnTrue()
@@ -56,7 +54,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate explicitly enabled should be applicable.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_GateWithDisabledSetting_ReturnFalse()
 		{
@@ -68,7 +65,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate explicitly disabled should not be applicable.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_WhenGateIsEnabled_ReturnTrue()
 		{
@@ -79,7 +75,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate is enabled through the enabled flag in the xml.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_WhenGateIsDisabled_ReturnFalse()
 		{
@@ -89,7 +84,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.DisabledGate")),
 				"Gate is disabled through the enabled flag in the xml.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_EnablingDisabledGateThroughSettingsForApplicableGate_ReturnsTrue()
@@ -102,7 +96,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Disabled gate enabled through settings and after applicablity check is returned as applicable.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_EnablingDisabledGateThroughSettingsForInApplicableGate_ReturnsFalse()
 		{
@@ -113,7 +106,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.InapplicableDisabledGate")),
 				"Disabled gate enabled through settings and after applicablity check is returned as inapplicable.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_EnablingEnabledGateThroughSettingsForApplicableGate_ReturnsTrue()
@@ -126,7 +118,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Enabling already enabled gate through settings, after applicablity check is returned as applicable.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_EnablingEnabledGateThroughSettingsForInapplicableGate_ReturnsFalse()
 		{
@@ -138,7 +129,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Enabling already enabled gate through settings, after applicablity check is returned as inapplicable.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_GateWithDates_ReturnCorrectly()
 		{
@@ -149,7 +139,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("BeforeStartDate")), "Gate Before Start Date should  ot be applicable");
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("AfterEndDate")), "Gate after end date should not be applicable");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_GateWithNoBlockedQueryParameterConstraints_ReturnsApplicable()
@@ -163,7 +152,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate having no BlockedQueryParameters constraint should be applicable.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_GateWithEmptyBlockedQueryParameterConstraints_ReturnsApplicable()
 		{
@@ -175,7 +163,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.BlockedQueryParameters.EmptyBlockedQueryParameters")),
 				"Gate having empty BlockedQueryParameters constraint should be applicable.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_RequestWithNoParametersAndGateWithBlockedQueryParameters_ReturnsApplicable()
@@ -189,7 +176,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate having some BlockedQueryParameters constraint should be applicable when the request has no query parameters.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_GateWithSomeBlockedQueryParameterConstraints_ReturnsApplicableWhenBlockedParametersAreNotPresent()
 		{
@@ -201,7 +187,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.BlockedQueryParameters.WithBlockedQueryParameters")),
 				"Gate having BlockedQueryParameters constraint but not matched in the request should be applicable");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_GateWithSomeBlockedQueryParameterConstraints_ReturnsNotApplicableWhenBlockedParameterPresent()
@@ -215,7 +200,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate having BlockedQueryParameters constraint and matched in the request should not should be applicable");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_GateWithSomeBlockedQueryParameterConstraints_ReturnsNotApplicableWhenBlockedParameterPresentWithDifferentCasing()
 		{
@@ -227,7 +211,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.BlockedQueryParameters.WithBlockedQueryParameters")),
 				"Gate having BlockedQueryParameters constraint with different casing to the query parameter in the request should be not applicable.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_GateWithSomeBlockedQueryParameterConstraints_ReturnsNotApplicableWhenUseingValueWildCard()
@@ -241,7 +224,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate having BlockedQueryParameters constraint with a wild card should block all requests with that query parameter name");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_GateWithEmptyValueBlockedQueryParameterConstraint_ReturnsApplicableAsItIsSkipped()
 		{
@@ -254,7 +236,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate having BlockedQueryParameters constraint with an empty value is ignored");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_GateWithNoBrowserConstraints_ReturnsApplicable()
 		{
@@ -264,7 +245,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.BrowserType.NoBrowser")),
 				"Gate having no browser constraint should be applicable.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_GateWithBrowserButNoVersion_ReturnsApplicable()
@@ -276,7 +256,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate having no browser version constraint should be applicable.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_GateWithNonCompatibleBrowser_ReturnsNotApplicable()
 		{
@@ -286,7 +265,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.BrowserType.NonCompatibleBrowser")),
 				"Gate having non compatibe browser should not be applicable.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_GateWithNonCompatibleBrowserVersion_ReturnsNotApplicable()
@@ -298,7 +276,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate having non compatible browser version should not be applicable.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_GateWithCompatibleBrowserAndVersion_ReturnsApplicable()
 		{
@@ -308,7 +285,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.BrowserType.Browsers")),
 				"Gate having compatible browser should be applicable.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_RequestNotMadeFromBrowserWithGateExpectingBrowsers_ReturnsNotApplicable()
@@ -320,7 +296,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"If request is not made from a browser and gate is active only for certain browsers, context should return not applicable");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_GateWithNoBlockedBrowser_ReturnsApplicable()
 		{
@@ -330,7 +305,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.BlockedBrowsers.NoBlockedBrowser")),
 				"Gate having no blocked browser constraint should be applicable.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_GateWithBlockedBrowserButNoVersion_ReturnsNotApplicable()
@@ -342,7 +316,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate having no browser version constraint should be not applicable as the browser is blocked for all versions.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_GateWithNonCompatibleBlockedBrowser_ReturnsApplicable()
 		{
@@ -352,7 +325,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.BlockedBrowsers.NonCompatibleBrowser")),
 				"Gate having non compatibe blocked browser should be not applicable.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_GateWithNonCompatibleBlockedBrowserVersion_ReturnsApplicable()
@@ -364,7 +336,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate having non compatible blocked browser version should be applicable.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_GateWithCompatibleBlockedBrowserAndVersion_ReturnsNotApplicable()
 		{
@@ -375,7 +346,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate having compatible blocked browser should not be applicable.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_RequestNotMadeFromBrowserWithGateBlockingBrowsers_ReturnsApplicable()
 		{
@@ -385,7 +355,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.BlockedBrowsers.Browsers")),
 				"If request is not made from a browser and gate is blocking access for certain browsers, context should return applicable");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_GateRequestWithRequestedGates_ReturnsApplicable()
@@ -404,7 +373,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.DogfoodUsers")), "Requested gate enabled for Dogfood users should be applicable.");
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.LiveIdUser")), "Requested gate enabled for LiveId users should be applicable.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_GateRequestWithRequestedAndBlockedGates_ReturnCorrectResults()
@@ -428,7 +396,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.LiveIdUser")), "Requested gate enabled for LiveId users should be applicable.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_ForNoServiceDescribedInGateOnRetailerService_ReturnsGateToBeNotApplicable()
 		{
@@ -438,7 +405,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.ServicesWithOutAnyService")),
 				"Gate should not be applicable when service tag doesn't have any service");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_OnRetailerService_ReturnsGateToBeApplicable()
@@ -450,7 +416,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate should be applicable for retailer service.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_OnRetailerCanaryService_ReturnsGateToBeApplicable()
 		{
@@ -460,7 +425,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.Services")),
 				"Gate should be applicable for retailer canary service.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_OnCoSubRetailerService_ReturnsGateToBeNotApplicable()
@@ -472,7 +436,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate should not be applicable for cosubretailer service.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_OnCoSubRetailerCanaryService_ReturnsGateToBeApplicable()
 		{
@@ -482,7 +445,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.Services")),
 				"Gate should not be applicable for cosubretailer canary service.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_OnDataStoreService_ReturnsGateToBeApplicable()
@@ -494,7 +456,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate should be applicable for datastore service.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_OnSupplyChainServiceWithNoneServiceFlag_ReturnsGateToBeNotApplicable()
 		{
@@ -504,7 +465,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.Services")),
 				"Gate should be not applicable for supplychain service as service flag is set to none.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_WithUserInSpecificOrgIdList_ReturnsGateApplicable()
@@ -523,7 +483,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate should be applicable for user in the specific OrgId list.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_WithUserNotInSpecificOrgIdList_ReturnsGateNotApplicable()
 		{
@@ -540,7 +499,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.SpecificOrgId")),
 				"Gate should not be applicable for user not in the specific OrgId list.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_WithUserInGroupOrgIdList_ReturnsGateApplicable()
@@ -559,7 +517,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate should be applicable for user in the group OrgId list.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_WithUserNotInGroupOrgIdList_ReturnsGateNotApplicable()
 		{
@@ -577,7 +534,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				"Gate should not be applicable for user not in the group OrgId list.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_GateWithClientAudienceGroup_ReturnsApplicable()
 		{
@@ -592,7 +548,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.NoEnvironment")), "Gate should not be applicable");
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.LoopUser")), "Gate should be applicable for audience group.");
 		}
-
 
 		[Fact]
 		public void IsGateApplicable_GateWithAppAudienceGroup_ReturnsApplicable()
@@ -609,7 +564,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.LoopUser")), "Gate should be applicable for audience group.");
 		}
 
-
 		[Fact]
 		public void IsGateApplicable_GateWithAppAudienceGroup_ReturnsNotApplicable()
 		{
@@ -624,7 +578,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.NoEnvironment")), "Gate should not be applicable");
 			Assert.False(context.IsGateApplicable(m_dataset.GetGate("MyProduct.Test.LoopUser")), "Gate should not be applicable for audience group.");
 		}
-
 
 		[Fact]
 		public void RequestWithCloudContext_Specified()
@@ -657,18 +610,15 @@ namespace Microsoft.Omex.Gating.UnitTests
 			return dataSet;
 		}
 
-
 		/// <summary>
 		/// Expired Date
 		/// </summary>
 		private static string OldDate { get; } = DateTime.UtcNow.AddDays(-2).ToString("s", CultureInfo.InvariantCulture);
 
-
 		/// <summary>
 		/// Later Date
 		/// </summary>
 		private static string LaterDate { get; } = DateTime.UtcNow.AddDays(2).ToString("s", CultureInfo.InvariantCulture);
-
 
 		/// <summary>
 		/// Valid test groups xml data
@@ -699,7 +649,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 					<Member email=""@microsoft.com"" alias=""myalias""/>
 				</TestGroup>
 			</TestGroups>";
-
 
 		/// <summary>
 		/// Gate xml file
@@ -942,13 +891,11 @@ namespace Microsoft.Omex.Gating.UnitTests
 			</Gate>
 		</Gates>";
 
-
 		/// <summary>
 		/// Gate dataset
 		/// </summary>
 		private GateDataSet m_dataset = LoadGateDataSet(GateXml);
 		#endregion
-
 
 		/// <summary>
 		/// Setups the gated request.

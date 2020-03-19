@@ -54,14 +54,12 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			AssertPayload(eventInfo, "metadata", metaData);
 		}
 
-
 		private class CustomEventListener : EventListener
 		{
 			public List<EventWrittenEventArgs> EventsInformation { get; } = new List<EventWrittenEventArgs>();
 
 			protected override void OnEventWritten(EventWrittenEventArgs eventData) => EventsInformation.Add(eventData);
 		}
-
 
 		private void AssertPayload<TPayloadType>(EventWrittenEventArgs info, string name, TPayloadType expected)
 			where TPayloadType : class

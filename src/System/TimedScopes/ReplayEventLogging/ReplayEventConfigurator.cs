@@ -13,9 +13,7 @@ namespace Microsoft.Omex.System.TimedScopes.ReplayEventLogging
 	{
 		private IReplayEventDisabledTimedScopes DisabledTimedScopes { get; }
 
-
 		private ICorrelationDataProvider Correlation { get; }
-
 
 		/// <summary>
 		/// Constructor
@@ -30,7 +28,6 @@ namespace Microsoft.Omex.System.TimedScopes.ReplayEventLogging
 			DisabledTimedScopes = disabledTimedScopes;
 			Correlation = correlation;
 		}
-
 
 		/// <summary>
 		/// Configure event replaying when a timed scope ends

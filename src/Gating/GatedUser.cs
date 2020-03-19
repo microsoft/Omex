@@ -13,7 +13,6 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		public string UserIdentifier { get; set; }
 
-
 		/// <summary>
 		/// Is the user a dogfood user or not
 		/// </summary>

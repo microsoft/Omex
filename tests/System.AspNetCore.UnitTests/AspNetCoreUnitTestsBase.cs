@@ -23,7 +23,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			HttpContextWrapper.Configure(m_httpContextAccessor.Value);
 		}
 
-
 		/// <summary>
 		/// Http context accessor
 		/// </summary>

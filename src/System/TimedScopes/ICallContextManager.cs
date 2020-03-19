@@ -16,7 +16,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </summary>
 		ICallContext CallContextHandler(IMachineInformation machineInformation);
 
-
 		/// <summary>
 		/// An overridable call context for unit test purposes
 		/// </summary>

@@ -19,18 +19,15 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		/// </summary>
 		event EventHandler DataSetLoaded;
 
-
 		/// <summary>
 		/// Resources loaded into the DataSet
 		/// </summary>
 		IEnumerable<IResource> Resources { get; }
 
-
 		/// <summary>
 		/// Loaded DataSet instance
 		/// </summary>
 		T LoadedDataSet { get; }
-
 
 		/// <summary>
 		/// DataSet instance corresponding to last unsuccessful loading

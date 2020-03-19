@@ -15,36 +15,30 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </summary>
 		public uint TransactionId { get; set; }
 
-
 		/// <summary>
 		/// Transaction Context Id
 		/// </summary>
 		public uint TransactionContextId { get; set; }
-
 
 		/// <summary>
 		/// Transaction Step Number
 		/// </summary>
 		public uint TransactionStep { get; set; }
 
-
 		/// <summary>
 		/// Originator
 		/// </summary>
 		public string Originator { get; set; }
-
 
 		/// <summary>
 		/// Start tick
 		/// </summary>
 		public long StartTick { get; set; }
 
-
 		/// <summary>
 		/// Correlation Id
 		/// </summary>
 		public Guid CorrelationId { get; set; }
-
 
 		/// <summary>
 		/// Tracks the depth of the call through proxying layers
@@ -56,7 +50,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </remarks>
 		public uint CallDepth { get; set; }
 
-
 		/// <summary>
 		/// logging sequence number used for guarenteed ordering of correlation events across machine boundaries
 		/// </summary>
@@ -66,12 +59,10 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </remarks>
 		public long EventSequenceNumber { get; set; }
 
-
 		/// <summary>
 		/// Result
 		/// </summary>
 		public uint Result { get; set; }
-
 
 		/// <summary>
 		/// User hash for the current correlation.
@@ -82,12 +73,10 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </remarks>
 		public string UserHash { get; set; }
 
-
 		/// <summary>
 		/// The TestScenarioId for Response Injection
 		/// </summary>
 		public string TestScenarioId { get; set; }
-
 
 		/// <summary>
 		/// The TestScenarioRecordingState for Response Injection
@@ -97,18 +86,15 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </remarks>
 		public string TestScenarioRecordingState { get; set; }
 
-
 		/// <summary>
 		/// The TestSceanrio failure message, if any, from use of Response Injection
 		/// </summary>
 		public string TestScenarioFailureMessage { get; set; }
 
-
 		/// <summary>
 		/// Is this a fallback call
 		/// </summary>
 		public bool IsFallbackCall { get; set; }
-
 
 		/// <summary>
 		/// Construct an empty transaction data

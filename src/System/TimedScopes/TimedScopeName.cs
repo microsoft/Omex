@@ -24,14 +24,12 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </summary>
 		private const char Separator = '/';
 
-
 		/// <summary>
 		/// Scope name
 		/// </summary>
 		[DataMember]
 		[Bond.Id(0)]
 		public string Scope { get; private set; }
-
 
 		/// <summary>
 		/// SubType
@@ -41,7 +39,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		[Bond.Id(1), Bond.Type(typeof(nullable<wstring>))]
 		public string SubType { get; private set; }
 
-
 		/// <summary>
 		/// MetaData
 		/// </summary>
@@ -49,7 +46,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		[DataMember]
 		[Bond.Id(2), Bond.Type(typeof(nullable<wstring>))]
 		public string MetaData { get; private set; }
-
 
 		/// <summary>
 		/// Constructor
@@ -66,7 +62,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			MetaData = metaData;
 		}
 
-
 		/// <summary>
 		/// Constructor that copies all fields (except the classification) from a TimedScopeInstanceName.
 		/// </summary>
@@ -80,14 +75,12 @@ namespace Microsoft.Omex.System.TimedScopes
 			MetaData = copyFrom.MetaData;
 		}
 
-
 		/// <summary>
 		/// Parameterless constructor for Bond serialization
 		/// </summary>
 		public TimedScopeName()
 		{
 		}
-
 
 		/// <summary>
 		/// Serves as a hash function for a particular type.
@@ -107,7 +100,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
 		/// </summary>
@@ -120,7 +112,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			return this == obj as TimedScopeName;
 		}
 
-
 		/// <summary>
 		/// Determines whether the specified TimedScopeName is equal to this object
 		/// </summary>
@@ -130,7 +121,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			return this == other;
 		}
-
 
 		/// <summary>
 		/// Equality operator
@@ -155,7 +145,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				&& string.Equals(x.MetaData, y.MetaData, StringComparison.Ordinal);
 		}
 
-
 		/// <summary>
 		/// Inequality operator
 		/// </summary>
@@ -166,7 +155,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			return !(x == y);
 		}
-
 
 		/// <summary>
 		/// Returns a string that represents the current object.
@@ -191,7 +179,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			return builder.ToString();
 		}
 
-
 		/// <summary>
 		/// Creates an instance name with provided scope result
 		/// </summary>
@@ -201,7 +188,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			return new TimedScopeInstanceName(this, result);
 		}
-
 
 		/// <summary>
 		/// All instances (all timed scope results) of given timed scope name
@@ -217,18 +203,15 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// True if it has a subtype
 		/// </summary>
 		public bool HasSubType => SubType != null;
 
-
 		/// <summary>
 		/// True if it has a metadata
 		/// </summary>
 		public bool HasMetaData => MetaData != null;
-
 
 		/// <summary>
 		/// Tries to parse a TimedScopeName instance from a string

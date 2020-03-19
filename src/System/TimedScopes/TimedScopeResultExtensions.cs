@@ -35,7 +35,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Decides whether we should replay events for scopes with given result
 		/// </summary>
@@ -52,5 +51,5 @@ namespace Microsoft.Omex.System.TimedScopes
 					return false;
 			}
 		}
-	}	
+	}
 }

@@ -14,7 +14,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="scope">Scope to log</param>
 		void LogScopeStart(TimedScope scope);
 
-
 		/// <summary>
 		/// Logs the scope end
 		/// </summary>

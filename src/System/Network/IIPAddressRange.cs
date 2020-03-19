@@ -15,18 +15,15 @@ namespace Microsoft.Omex.System.Network
 		/// </summary>
 		string FriendlyName { get; }
 
-
 		/// <summary>
 		/// Starting address
 		/// </summary>
 		IPAddress StartingAddress { get; }
 
-
 		/// <summary>
 		/// Ending address
 		/// </summary>
 		IPAddress EndingAddress { get; }
-
 
 		/// <summary>
 		/// Is address in range

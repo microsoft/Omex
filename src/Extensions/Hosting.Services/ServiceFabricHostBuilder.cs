@@ -23,9 +23,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			return this;
 		}
 
-
 		internal ServiceFabricHostBuilder(IHostBuilder builder) => m_builder = builder;
-
 
 		private readonly IHostBuilder m_builder;
 	}

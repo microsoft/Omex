@@ -25,7 +25,6 @@ namespace Microsoft.Omex.System.UnitTests.Logging
 			Assert.Equal("My message is this!", logEventArgs.FullMessage);
 		}
 
-
 		[Fact]
 		public void FullMessage_WithIncorrectFormattingString_DoesNotThrow()
 		{
@@ -40,7 +39,6 @@ namespace Microsoft.Omex.System.UnitTests.Logging
 			Assert.Equal("is this!", logEventArgs.MessageParameters[0]);
 			Assert.Contains("My message {1}", logEventArgs.FullMessage);
 		}
-
 
 		[Fact]
 		public void FullMessage_WithNullMessageString_DoesNotThrow()

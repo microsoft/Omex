@@ -15,7 +15,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// </summary>
 		public string Name { get; }
 
-
 		/// <summary>
 		/// TimedScopeDefinition constructor
 		/// </summary>
@@ -26,13 +25,11 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 				? throw new ArgumentException("TimedScope name must not be empty or null") // Activity won't be stated in case of an empty string
 				: name;
 
-
 		/// <summary>
 		/// Indicates whether the current object is equal to another object of the same type
 		/// </summary>
 		/// <param name="other">An object to compare with this object</param>
 		public bool Equals(TimedScopeDefinition other) => string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase);
-
 
 		/// <summary>
 		/// Determines whether the specified <see cref="object" />, is equal to this instance
@@ -40,12 +37,10 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <param name="obj">The <see cref="object" /> to compare with this instance</param>
 		public override bool Equals(object? obj) => obj is TimedScopeDefinition other && Equals(other);
 
-
 		/// <summary>
 		/// Returns a hash code for this instance
 		/// </summary>
 		public override int GetHashCode() => StringComparer.OrdinalIgnoreCase.GetHashCode(Name);
-
 
 		/// <summary>
 		/// Implements the operator ==
@@ -53,7 +48,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <param name="left">The left</param>
 		/// <param name="right">The right</param>
 		public static bool operator ==(TimedScopeDefinition left, TimedScopeDefinition right) => Equals(left, right);
-
 
 		/// <summary>
 		/// Implements the operator !=

@@ -39,42 +39,35 @@ namespace Microsoft.Omex.System.TimedScopes
 			MachineInformation = machineInformation;
 		}
 
-
 		/// <summary>
 		/// Current call context
 		/// </summary>
 		private ICallContext CallContext => CallContextManager.CallContextHandler(MachineInformation);
-
 
 		/// <summary>
 		/// Event raised when the correlation has started
 		/// </summary>
 		public event EventHandler<CorrelationEventArgs> CorrelationStarted;
 
-
 		/// <summary>
 		/// Event raised when correlation data has been added
 		/// </summary>
 		public event EventHandler<CorrelationEventArgs> CorrelationDataAdded;
-
 
 		/// <summary>
 		/// Event raised when the correlation has ended
 		/// </summary>
 		public event EventHandler<CorrelationEventArgs> CorrelationEnded;
 
-
 		/// <summary>
 		/// Key used to store the correlation context in the current HttpContext
 		/// </summary>
 		private const string CorrelationContextKey = "ULSLogging.correlations";
 
-
 		/// <summary>
 		/// Key used to store if direct logging should be used
 		/// </summary>
 		private const string LoggingContextKey = "ULSLogging.directLogging";
-
 
 		/// <summary>
 		/// Get the current correlation if set
@@ -104,7 +97,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Should log directly to the underlying log handler
@@ -154,7 +146,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// The correlation handler used to store the correlation
 		/// </summary>
@@ -164,7 +155,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// directly to the correlation handler.
 		/// </remarks>
 		public ICorrelationStorage CorrelationHandler { get; }
-
 
 		/// <summary>
 		/// The correlation handler used to store the correlation
@@ -176,7 +166,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </remarks>
 		public ICallContextManager CallContextManager { get; }
 
-
 		/// <summary>
 		/// The correlation handler used to store the correlation
 		/// </summary>
@@ -186,7 +175,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// directly to the correlation handler.
 		/// </remarks>
 		public IMachineInformation MachineInformation { get; }
-
 
 		/// <summary>
 		/// Start a correlation
@@ -214,7 +202,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Add data to the current correlation
@@ -248,7 +235,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Get correlation data from a thread
 		/// </summary>
@@ -268,7 +254,6 @@ namespace Microsoft.Omex.System.TimedScopes
 
 			return null;
 		}
-
 
 		/// <summary>
 		/// End the correlation
@@ -294,7 +279,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Clear all correlations from the current thread

@@ -23,12 +23,10 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </summary>
 		private const char FieldsSeparator = '/';
 
-
 		/// <summary>
 		/// Separator used for separating FailureClassification suffix
 		/// </summary>
 		private const char FailureClassificationSeparator = '.';
-
 
 		/// <summary>
 		/// Complete strongly typed scope name
@@ -37,14 +35,12 @@ namespace Microsoft.Omex.System.TimedScopes
 		[Bond.Id(0)]
 		public TimedScopeName CompleteScopeName { get; private set; }
 
-
 		/// <summary>
 		/// Failure Classification
 		/// </summary>
 		[DataMember]
 		[Bond.Id(1)]
 		public TimedScopeResult Classification { get; private set; }
-
 
 		/// <summary>
 		/// Scope name
@@ -56,7 +52,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				return CompleteScopeName.Scope;
 			}
 		}
-
 
 		/// <summary>
 		/// SubType
@@ -70,7 +65,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// MetaData
 		/// </summary>
@@ -82,7 +76,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				return CompleteScopeName.MetaData;
 			}
 		}
-
 
 		/// <summary>
 		/// Constructor
@@ -97,7 +90,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			Classification = classification;
 		}
 
-
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -109,7 +101,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			: this(new TimedScopeName(scope, subType, metaData), classification)
 		{
 		}
-
 
 		/// <summary>
 		/// Serves as a hash function for a particular type.
@@ -128,7 +119,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
 		/// </summary>
@@ -141,7 +131,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			return this == obj as TimedScopeInstanceName;
 		}
 
-
 		/// <summary>
 		/// Determines whether the specified instance is equal to this object
 		/// </summary>
@@ -151,7 +140,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			return this == other;
 		}
-
 
 		/// <summary>
 		/// Equality operator
@@ -175,7 +163,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				&& x.CompleteScopeName.Equals(y.CompleteScopeName);
 		}
 
-
 		/// <summary>
 		/// Inequality operator
 		/// </summary>
@@ -186,7 +173,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			return !(x == y);
 		}
-
 
 		/// <summary>
 		/// Returns a string that represents the current object.
@@ -211,7 +197,6 @@ namespace Microsoft.Omex.System.TimedScopes
 
 			return builder.ToString();
 		}
-
 
 		/// <summary>
 		/// Tries to parse a TimedScopeInstanceName instance from a string
@@ -278,7 +263,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				return false;
 			}
 		}
-
 
 		/// <summary>
 		/// Tries to parse a TimedScopeInstanceName instance from a string.

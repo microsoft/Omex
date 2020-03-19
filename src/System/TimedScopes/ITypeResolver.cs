@@ -16,7 +16,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		TFrom Resolve<TFrom>()
 			where TFrom : class;
 
-
 		/// <summary>
 		/// Is the type 'TFrom' known to the type resolver
 		/// </summary>

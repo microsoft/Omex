@@ -22,7 +22,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			m_logger = logger;
 		}
 
-
 		public void LogActivityStop(Activity activity)
 		{
 			if (!m_eventSource.IsEnabled())
@@ -89,7 +88,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			}
 		}
 
-
 		private string SanitizeString(string value, string name, string activityName)
 		{
 			const int stringLimit = 1024;
@@ -102,10 +100,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			return value;
 		}
 
-
 		private const string StringLimitMessage =
 			"Log aggregator enforces a string length limit of {0} characters per dimension. Truncating length of dimension {1} on activity {2} from {3} chars in order to allow upload of the metric";
-
 
 		private readonly TimedScopeEventSource m_eventSource;
 		private readonly string m_serviceName;

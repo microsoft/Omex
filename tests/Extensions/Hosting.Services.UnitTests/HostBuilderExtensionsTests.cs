@@ -52,7 +52,6 @@ namespace Hosting.Services.UnitTests
 			CheckTypeRegistration<StatefulServiceContext>();
 		}
 
-
 		[TestMethod]
 		public void AddServiceActionUsingObject_RegisterInstance()
 		{
@@ -64,7 +63,6 @@ namespace Hosting.Services.UnitTests
 
 			Assert.ReferenceEquals(serviceAction, resolvedAction);
 		}
-
 
 		[TestMethod]
 		public async Task AddServiceActionUsingFunc_RegisterInstance()
@@ -86,7 +84,6 @@ namespace Hosting.Services.UnitTests
 			Assert.IsTrue(actionCalled);
 		}
 
-
 		[TestMethod]
 		public void AddServiceListenerUsingObject_RegisterInstance()
 		{
@@ -98,7 +95,6 @@ namespace Hosting.Services.UnitTests
 
 			Assert.ReferenceEquals(listenerBuilder, resolvedAction);
 		}
-
 
 		[TestMethod]
 		public void AddServiceListenerUsingFunc_RegisterInstance()
@@ -113,7 +109,6 @@ namespace Hosting.Services.UnitTests
 
 			Assert.ReferenceEquals(listener, resultedListener);
 		}
-
 
 		[DataTestMethod]
 		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
@@ -139,7 +134,6 @@ namespace Hosting.Services.UnitTests
 			}
 		}
 
-
 		[DataTestMethod]
 		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
@@ -164,7 +158,6 @@ namespace Hosting.Services.UnitTests
 			}
 		}
 
-
 		[TestMethod]
 		public void BuildStatelessService_LogsExceptions()
 		{
@@ -183,7 +176,6 @@ namespace Hosting.Services.UnitTests
 
 			Assert.IsTrue(hasErrorEvent, "BuildStatelessService error should be logged");
 		}
-
 
 		[TestMethod]
 		public void BuildStatefulService_LogsException()
@@ -204,7 +196,6 @@ namespace Hosting.Services.UnitTests
 			Assert.IsTrue(hasErrorEvent, "BuildStatefulService error should be logged");
 		}
 
-
 		public class TypeThatShouldNotBeResolvable
 		{
 			public TypeThatShouldNotBeResolvable(TypeThatIsNotRegistered value) { }
@@ -212,21 +203,17 @@ namespace Hosting.Services.UnitTests
 			public class TypeThatIsNotRegistered { }
 		}
 
-
 		private class CustomEventListener : EventListener
 		{
 			public List<EventWrittenEventArgs> EventsInformation { get; } = new List<EventWrittenEventArgs>();
-
 
 			protected override void OnEventSourceCreated(EventSource eventSource)
 			{
 				base.OnEventSourceCreated(eventSource);
 			}
 
-
 			protected override void OnEventWritten(EventWrittenEventArgs eventData) => EventsInformation.Add(eventData);
 		}
-
 
 		private static TPayloadType? GetPayloadValue<TPayloadType>(EventWrittenEventArgs info, string name)
 			where TPayloadType : class
@@ -234,7 +221,6 @@ namespace Hosting.Services.UnitTests
 			int index = info.PayloadNames?.IndexOf(name) ?? -1;
 			return (TPayloadType?)(index < 0 ? null : info.Payload?[index]);
 		}
-
 
 		private const string ServiceTypePayloadName = "serviceType";
 	}

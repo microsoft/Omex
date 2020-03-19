@@ -16,12 +16,10 @@ namespace Microsoft.Omex.System.Context
 		/// </summary>
 		IDictionary<string, object> Data { get; }
 
-
 		/// <summary>
 		/// Dictionary of data stored on the call context and shared between derived call contexts
 		/// </summary>
 		ConcurrentDictionary<string, object> SharedData { get; }
-
 
 		/// <summary>
 		/// Add data to context

@@ -13,15 +13,11 @@ namespace Microsoft.Omex.Extensions.Logging
 			m_defaultExternalScopeProvider = defaultExternalScopeProvider;
 		}
 
-
 		public ILogger CreateLogger(string categoryName) => new OmexLogger(m_logsEventSender, m_externalScopeProvider ?? m_defaultExternalScopeProvider, categoryName);
-
 
 		public void Dispose() { }
 
-
 		public void SetScopeProvider(IExternalScopeProvider scopeProvider) => m_externalScopeProvider = scopeProvider;
-
 
 		private IExternalScopeProvider? m_externalScopeProvider;
 		private readonly IExternalScopeProvider m_defaultExternalScopeProvider;

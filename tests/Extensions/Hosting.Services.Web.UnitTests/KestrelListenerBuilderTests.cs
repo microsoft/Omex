@@ -14,10 +14,8 @@ namespace Hosting.Services.Web.UnitTests
 		[TestMethod]
 		public void StatelessService_TypesRegistered() => CheckTypeRegistration(MockStatelessServiceContextFactory.Default);
 
-
 		[TestMethod]
 		public void StatefulService_TypesRegistered() => CheckTypeRegistration(MockStatefulServiceContextFactory.Default);
-
 
 		private void CheckTypeRegistration<TContext>(TContext context)
 			where TContext : ServiceContext

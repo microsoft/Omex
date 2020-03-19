@@ -23,7 +23,6 @@ namespace Microsoft.Omex.System.AspNetCore
 		[NonSerialized]
 		private IImmutableStack<TValue> m_store;
 
-
 		/// <summary>
 		/// Stores serilization info received in the constructor until
 		/// the deserilization callback is called and the object can be deserilized
@@ -32,9 +31,7 @@ namespace Microsoft.Omex.System.AspNetCore
 		[NonSerialized]
 		private SerializationInfo m_serializationInfo;
 
-
 		private IImmutableStack<TValue> Store => m_store;
-
 
 		/// <summary>
 		/// Constructor
@@ -47,7 +44,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			m_store = store;
 		}
 
-
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -55,7 +51,6 @@ namespace Microsoft.Omex.System.AspNetCore
 		{
 			m_store = ImmutableStack<TValue>.Empty;
 		}
-
 
 		/// <summary>
 		/// Constructor used for deserialization.
@@ -68,13 +63,11 @@ namespace Microsoft.Omex.System.AspNetCore
 			m_serializationInfo = info;
 		}
 
-
 		/// <summary>
 		/// Returns an enumerator that iterates through the immutable stack.
 		/// </summary>
 		/// <returns>Enumerator</returns>
 		public IEnumerator<TValue> GetEnumerator() => Store.GetEnumerator();
-
 
 		/// <summary>
 		/// Returns an enumerator that iterates through the immutable stack.
@@ -82,14 +75,12 @@ namespace Microsoft.Omex.System.AspNetCore
 		/// <returns>Enumerator</returns>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-
 		/// <summary>
 		/// Removes all objects from the immutable stack.
 		/// </summary>
 		/// <returns>Empty stack</returns>
 		public IImmutableStack<TValue> Clear()
 			=> new SerializableImmutableStack<TValue>(Store.Clear());
-
 
 		/// <summary>
 		/// Inserts an object at the top of the immutable stack and returns the new stack.
@@ -99,7 +90,6 @@ namespace Microsoft.Omex.System.AspNetCore
 		public IImmutableStack<TValue> Push(TValue value)
 			=> new SerializableImmutableStack<TValue>(Store.Push(value));
 
-
 		/// <summary>
 		/// Removes the specified element from the immutable stack and returns the stack after the removal.
 		/// </summary>
@@ -107,19 +97,16 @@ namespace Microsoft.Omex.System.AspNetCore
 		public IImmutableStack<TValue> Pop()
 			=> new SerializableImmutableStack<TValue>(Store.Pop());
 
-
 		/// <summary>
 		/// Returns the object at the top of the stack without removing it.
 		/// </summary>
 		/// <returns>Object at the top of the stack</returns>
 		public TValue Peek() => Store.Peek();
 
-
 		/// <summary>
 		/// Gets a value that indicates whether this instance of the immutable stack is empty.
 		/// </summary>
 		public bool IsEmpty => Store.IsEmpty;
-
 
 		/// <summary>
 		/// Populates a SerializationInfo with the data needed to serialize the target object.
@@ -133,7 +120,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			info.AddValue(SerializedFieldName, new Stack<TValue>(m_store), typeof(Stack<TValue>));
 		}
 
-
 		/// <summary>
 		/// Runs when the entire object graph has been deserialized.
 		/// </summary>
@@ -146,7 +132,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			m_store = ImmutableStack.CreateRange(deserializedValues);
 			m_serializationInfo = null;
 		}
-
 
 		private const string SerializedFieldName = "Store";
 	}

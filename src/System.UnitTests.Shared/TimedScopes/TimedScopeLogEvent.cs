@@ -16,48 +16,40 @@ namespace Microsoft.Omex.System.UnitTests.Shared.TimedScopes
 		/// </summary>
 		public string Name { get; }
 
-
 		/// <summary>
 		/// Scope subtype
 		/// </summary>
 		public string SubType { get; }
-
 
 		/// <summary>
 		/// Scope metadata
 		/// </summary>
 		public string MetaData { get; }
 
-
 		/// <summary>
 		/// User hash
 		/// </summary>
 		public string UserHash { get; }
-
 
 		/// <summary>
 		/// Duration
 		/// </summary>
 		public TimeSpan Duration { get; }
 
-
 		/// <summary>
 		/// Scope result
 		/// </summary>
 		public TimedScopeResult Result { get; }
-
 
 		/// <summary>
 		/// Failure Description (strongly typed)
 		/// </summary>
 		public Enum FailureDescriptionEnum { get; }
 
-
 		/// <summary>
 		/// Failure Description
 		/// </summary>
 		public string FailureDescription => FailureDescriptionEnum?.ToString();
-
 
 		/// <summary>
 		/// Constructor

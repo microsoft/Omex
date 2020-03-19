@@ -46,7 +46,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			TimedScopeStackManager = timedScopeStackManager;
 		}
 
-
 		/// <summary>
 		/// Create a timed scope
 		/// </summary>
@@ -59,7 +58,7 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// <param name="machineInformation">Machine Information</param>
 		/// <returns>Newly created scope</returns>
 		internal static TimedScope Create(TimedScopeDefinition scopeDefinition, CorrelationData correlationData, IMachineInformation machineInformation,
-			ITimedScopeLogger customLogger, IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager, 
+			ITimedScopeLogger customLogger, IReplayEventConfigurator replayEventConfigurator, ITimedScopeStackManager timedScopeStackManager,
 			TimedScopeResult initialResult)
 		{
 			return new TimedScope(scopeDefinition, correlationData, customLogger, replayEventConfigurator, machineInformation, timedScopeStackManager)
@@ -70,12 +69,10 @@ namespace Microsoft.Omex.System.TimedScopes
 			};
 		}
 
-
 		/// <summary>
 		/// Parent Scope if available
 		/// </summary>
 		public TimedScope Parent { get; private set; }
-
 
 		/// <summary>
 		/// Start the timed scope
@@ -147,7 +144,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			PerfDiagnostics.Start();
 		}
 
-
 		/// <summary>
 		/// End the timed scope
 		/// </summary>
@@ -163,7 +159,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			EndScope(MachineInformation);
 		}
 
-
 		/// <summary>
 		/// Discard the timed scope, aborting timer and avoiding any data being logged
 		/// </summary>
@@ -175,7 +170,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Timed Scope Definition
 		/// </summary>
@@ -186,24 +180,20 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </summary>
 		public IMachineInformation MachineInformation { get; }
 
-
 		/// <summary>
 		/// Timed Scope Stack Manager
 		/// </summary>
 		public ITimedScopeStackManager TimedScopeStackManager { get; }
-
 
 		/// <summary>
 		/// The name of the timed scope
 		/// </summary>
 		public string Name => string.Concat(ScopeDefinition.Name, NameSuffix);
 
-
 		/// <summary>
 		/// Timed Scope Name suffix
 		/// </summary>
 		private string NameSuffix { get; set; } = string.Empty;
-
 
 		/// <summary>
 		/// Subtype
@@ -214,7 +204,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			get { return TimedScopeData.Data(TimedScopeDataKeys.SubType); }
 		}
 
-
 		/// <summary>
 		/// Metadata
 		/// </summary>
@@ -224,48 +213,40 @@ namespace Microsoft.Omex.System.TimedScopes
 			get { return TimedScopeData.Data(TimedScopeDataKeys.ObjectMetaData); }
 		}
 
-
 		/// <summary>
 		/// Unique Id for this timed scope
 		/// </summary>
 		public Guid InstanceId { get; } = Guid.NewGuid();
-
 
 		/// <summary>
 		/// Description of the timed scope
 		/// </summary>
 		public string Description => ScopeDefinition.Description;
 
-
 		/// <summary>
 		/// Is this the outermost scope in a call stack
 		/// </summary>
 		public bool IsRoot { get; private set; }
-
 
 		/// <summary>
 		/// The Performance diagnostics instance
 		/// </summary>
 		public PerfDiagnostics PerfDiagnostics { get; private set; }
 
-
 		/// <summary>
 		/// Timed Scope metrics logger
 		/// </summary>
 		private ITimedScopeLogger ScopeLogger { get; }
-
 
 		/// <summary>
 		/// Replay event configurator
 		/// </summary>
 		private IReplayEventConfigurator ReplayEventConfigurator { get; }
 
-
 		/// <summary>
 		/// Correlation Data
 		/// </summary>
 		public CorrelationData CorrelationData { get; }
-
 
 		/// <summary>
 		/// Id of the counterset
@@ -281,24 +262,20 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Explicit duration property
 		/// </summary>
 		public TimeSpan? Duration { get; set; }
-
 
 		/// <summary>
 		/// Starting tick of the timed scope
 		/// </summary>
 		public long StartTick { get; private set; }
 
-
 		/// <summary>
 		/// Ending tick of the timed scope
 		/// </summary>
 		public long EndTick { get; private set; }
-
 
 		/// <summary>
 		/// Scope duration in milliseconds
@@ -322,7 +299,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// The frequency for the timed scope
 		/// </summary>
@@ -334,7 +310,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Failure description
 		/// </summary>
@@ -342,7 +317,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// This field is only exposed in ULS logs and the MDS timed scope stream.
 		/// </remarks>
 		public Enum FailureDescription { get; set; }
-
 
 		/// <summary>
 		/// Result of the timed scope.
@@ -352,7 +326,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// Setting this property is strongly prefered over authoring new heuristic rules.
 		/// </remarks>
 		public TimedScopeResult Result { get; set; }
-
 
 		/// <summary>
 		/// Is the timed scope successful
@@ -374,30 +347,25 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Is running transaction
 		/// </summary>
 		public bool IsTransaction => RunningTransaction != Transactions.None;
-
 
 		/// <summary>
 		/// Scope ended flag - 0 not ended, 1 ended
 		/// </summary>
 		private int m_isScopeEnded;
 
-
 		/// <summary>
 		/// Is the timed scope active
 		/// </summary>
 		private bool m_isScopeActive;
 
-
 		/// <summary>
 		/// UserHash override
 		/// </summary>
 		private string m_userHashOverride = null;
-
 
 		/// <summary>
 		/// Sets the user hash override
@@ -412,7 +380,6 @@ namespace Microsoft.Omex.System.TimedScopes
 
 			m_userHashOverride = userHash;
 		}
-
 
 		/// <summary>
 		/// Is the timed scope active
@@ -435,12 +402,10 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Gets or sets a flag indicating if Verbose ULS capture should be disabled if this scope fails
 		/// </summary>
 		public bool DisableVerboseUlsCapture { get; set; }
-
 
 		/// <summary>
 		/// Abort the timer
@@ -454,7 +419,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				IsSuccessful = success;
 			}
 		}
-
 
 		/// <summary>
 		/// Adds the given key and value to the context of the timed scope
@@ -485,7 +449,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Set success value from a passed in status code
 		/// </summary>
@@ -507,12 +470,10 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Is the timed scope disposed
 		/// </summary>
 		private bool IsDisposed { get; set; }
-
 
 		/// <summary>
 		/// End the timed scope explicitly
@@ -530,7 +491,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				IsScopeActive = false;
 			}
 		}
-
 
 		/// <summary>
 		/// Logs the scope end to ULS
@@ -561,7 +521,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			GC.SuppressFinalize(this);
 		}
 
-
 		/// <summary>
 		/// Dispose of the timed scope
 		/// </summary>
@@ -576,12 +535,10 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Timed scope data, added to the log output
 		/// </summary>
 		private CorrelationData TimedScopeData { get; set; }
-
 
 		/// <summary>
 		/// Constructs the timed scope correlation data
@@ -651,7 +608,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			return scopeData;
 		}
 
-
 		/// <summary>
 		/// Modify the set of active scopes
 		/// </summary>
@@ -692,7 +648,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			TimedScopeStackManager.Scopes = scopes;
 		}
 
-
 		/// <summary>
 		/// Converts bool? scope results (legacy type) to TimedScopeResult type
 		/// </summary>
@@ -714,12 +669,10 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Data key used to store set of all active time scopes on the call context
 		/// </summary>
 		private const string AllActiveScopesDataKey = "TimedScope.AllActiveScopes";
-
 
 		/// <summary>
 		/// Internal failure descriptions
@@ -731,7 +684,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			/// </summary>
 			UnknownResultAsSystemError,
 		}
-
 
 		/// <summary>
 		/// Running transaction Id, or Transactions.None
