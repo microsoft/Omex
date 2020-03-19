@@ -23,7 +23,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 			this.SetResult(result);
 		}
 
-
 		/// <summary>
 		/// Starts TimedScope activity
 		/// </summary>
@@ -33,18 +32,14 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 			return this;
 		}
 
-
 		/// <summary>
 		/// Stop TimedScope and log informations about it
 		/// </summary>
 		public void Stop() => s_listener.StopActivity(Activity, this);
 
-
 		internal Activity Activity { get; }
 
-
 		void IDisposable.Dispose() => Stop();
-
 
 		private static readonly DiagnosticListener s_listener = new DiagnosticListener("TimedScopesListener");
 	}

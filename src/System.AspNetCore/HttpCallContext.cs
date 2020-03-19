@@ -26,7 +26,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			m_backupCallContext = useLogicalCallContext ? (ICallContext)new LogicalCallContext(machineInformation) : new OperationCallContext();
 		}
 
-
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -34,12 +33,10 @@ namespace Microsoft.Omex.System.AspNetCore
 		{
 		}
 
-
 		/// <summary>
 		/// Used when there is no http call context
 		/// </summary>
 		private readonly ICallContext m_backupCallContext;
-
 
 		/// <summary>
 		/// Dictionary of data stored on the call context
@@ -76,7 +73,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			}
 		}
 
-
 		/// <summary>
 		/// Dictionary of data stored on the call context and shared between derived call contexts
 		/// </summary>
@@ -98,7 +94,6 @@ namespace Microsoft.Omex.System.AspNetCore
 				return m_backupCallContext.SharedData;
 			}
 		}
-
 
 		/// <summary>
 		/// Set data to http context
@@ -122,7 +117,6 @@ namespace Microsoft.Omex.System.AspNetCore
 				m_backupCallContext.AddContextValue(key, value);
 			}
 		}
-
 
 		/// <summary>
 		/// Start the call context
@@ -169,7 +163,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			return null;
 		}
 
-
 		/// <summary>
 		/// End the call context
 		/// </summary>
@@ -211,7 +204,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			}
 		}
 
-
 		/// <summary>
 		/// Get the existing call context if there is one
 		/// </summary>
@@ -237,7 +229,6 @@ namespace Microsoft.Omex.System.AspNetCore
 
 			return m_backupCallContext.ExistingCallContext(threadId);
 		}
-
 
 		/// <summary>
 		/// Move data to backup context
@@ -270,7 +261,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			}
 		}
 
-
 		/// <summary>
 		/// Retrieve data from backup context
 		/// </summary>
@@ -302,7 +292,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			}
 		}
 
-
 		private static IDictionary<string, object> GetData(HttpContext currentContext)
 		{
 			Dictionary<string, object> dictionary = null;
@@ -319,7 +308,6 @@ namespace Microsoft.Omex.System.AspNetCore
 
 			return dictionary;
 		}
-
 
 		private static ConcurrentDictionary<string, object> GetSharedData(HttpContext currentContext)
 		{
@@ -338,24 +326,20 @@ namespace Microsoft.Omex.System.AspNetCore
 			return sharedDictionary;
 		}
 
-
 		/// <summary>
 		/// Key used to signify that the context should fall through and use backup context instead
 		/// </summary>
 		private const string UseBackupKey = "ThreadCallContext.UseBackup";
-
 
 		/// <summary>
 		/// Key used to store data shared between multiple related contexts
 		/// </summary>
 		private const string DataKey = "ThreadCallContext.Data";
 
-
 		/// <summary>
 		/// Key used to store data on the underlying context
 		/// </summary>
 		private const string DictionaryKey = "ThreadCallContext.Dictionary";
-
 
 		/// <summary>
 		/// Key used to store nested call contexts

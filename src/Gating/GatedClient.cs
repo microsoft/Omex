@@ -19,24 +19,20 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		public string Name { get; set; }
 
-
 		/// <summary>
 		/// App code of the client
 		/// </summary>
 		public string AppCode { get; set; }
-
 
 		/// <summary>
 		/// Product code of the client
 		/// </summary>
 		public ProductCode ProductCode { get; set; }
 
-
 		/// <summary>
 		/// Version of the client
 		/// </summary>
 		public ProductVersion Version { get; set; }
-
 
 		/// <summary>
 		/// Audience Group of the client
@@ -110,13 +106,11 @@ namespace Microsoft.Omex.Gating
 			return mergedClient;
 		}
 
-
 		/// <summary>
 		/// Returns a string representation of the client.
 		/// </summary>
 		/// <returns>A string representation of the client.</returns>
 		public override string ToString() => ToGatedClientString(ProductCode, Version);
-
 
 		/// <summary>
 		/// Returns a string representation of the client.

@@ -19,13 +19,11 @@ namespace Microsoft.Omex.System.TimedScopes
 		[DataMember]
 		public string CategoryName { get; set; }
 
-
 		/// <summary>
 		/// CorrelationId this entry is part of
 		/// </summary>
 		[DataMember]
 		public Guid CorrelationId { get; set; }
-
 
 		/// <summary>
 		/// ULS Message
@@ -33,13 +31,11 @@ namespace Microsoft.Omex.System.TimedScopes
 		[DataMember]
 		public string Message { get; set; }
 
-
 		/// <summary>
 		/// ULS TagId in numeric format
 		/// </summary>
 		[DataMember]
 		public uint NumericTagId { get; set; }
-
 
 		/// <summary>
 		/// Unique Sequence Number for this event in the context of the host service type
@@ -47,13 +43,11 @@ namespace Microsoft.Omex.System.TimedScopes
 		[DataMember]
 		public long SequenceNumber { get; set; }
 
-
 		/// <summary>
 		/// Server Timestamp (Stopwatch.GetTimestamp) when event occurred
 		/// </summary>
 		[DataMember]
 		public long ServerTimestamp { get; set; }
-
 
 		/// <summary>
 		/// Server UTC Time when event occurred
@@ -61,13 +55,11 @@ namespace Microsoft.Omex.System.TimedScopes
 		[DataMember]
 		public DateTime ServerTimeUtc { get; set; }
 
-
 		/// <summary>
 		/// ULS TagId in string format
 		/// </summary>
 		[DataMember]
 		public string TagId { get; set; }
-
 
 		/// <summary>
 		/// ULS trace level

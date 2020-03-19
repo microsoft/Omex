@@ -18,42 +18,32 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		[TestMethod]
 		public void WithTimedScopeWithTaskOfT_Success() => TestSuccessfulExecution(s_wrapTaskOfTAction);
 
-
 		[TestMethod]
 		public void WithTimedScopeUsingTask_Success() => TestSuccessfulExecution(s_wrapTaskAction);
-
 
 		[TestMethod]
 		public void WithTimedScopeUsingValueTaskOfT_Success() => TestSuccessfulExecution(s_wrapValueTaskOfTAction);
 
-
 		[TestMethod]
 		public void WithTimedScopeUsingValueTask_Success() => TestSuccessfulExecution(s_wrapValueTaskAction);
-
 
 		[TestMethod]
 		public void WithTimedScopeUsingTaskOfT_Failed() => TestFailedExecution(s_wrapTaskOfTAction);
 
-
 		[TestMethod]
 		public void WithTimedScopeUsingTask_Failed() => TestFailedExecution(s_wrapTaskAction);
-
 
 		[TestMethod]
 		public void WithTimedScopeUsingValueTaskOfT_Failed() => TestFailedExecution(s_wrapValueTaskOfTAction);
 
-
 		[TestMethod]
 		public void WithTimedScopeUsingValueTask_Failed() => TestFailedExecution(s_wrapValueTaskAction);
-
 
 		private void TestSuccessfulExecution(Action<Task<bool>, ITimedScopeProvider, TimedScopeDefinition> wrapTask, [CallerMemberName] string scopeName = "") =>
 			TestExecution(scopeName, wrapTask, tcs => tcs.SetResult(true), TimedScopeResult.Success);
 
-
 		private void TestFailedExecution(Action<Task<bool>, ITimedScopeProvider, TimedScopeDefinition> wrapTask, [CallerMemberName] string scopeName = "") =>
 			TestExecution(scopeName, wrapTask, tcs => tcs.SetException(new Exception("Some failure")), TimedScopeResult.SystemError);
-
 
 		private void TestExecution(
 			string scopeName,
@@ -80,18 +70,14 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			scope.AssertResult(expectedResult);
 		}
 
-
 		private static Action<Task<bool>, ITimedScopeProvider, TimedScopeDefinition> s_wrapTaskOfTAction =
 			(task, provider, name) => task.WithTimedScope(provider, name).ConfigureAwait(false);
-
 
 		private static Action<Task<bool>, ITimedScopeProvider, TimedScopeDefinition> s_wrapTaskAction =
 			(task, provider, name) => ((Task)task).WithTimedScope(provider, name).ConfigureAwait(false);
 
-
 		private static Action<Task<bool>, ITimedScopeProvider, TimedScopeDefinition> s_wrapValueTaskOfTAction =
 			async (task, provider, name) => await new ValueTask<bool>(task).WithTimedScope(provider, name).ConfigureAwait(false);
-
 
 		private static Action<Task<bool>, ITimedScopeProvider, TimedScopeDefinition> s_wrapValueTaskAction =
 			async (task, provider, name) => await new ValueTask(task).WithTimedScope(provider, name).ConfigureAwait(false);

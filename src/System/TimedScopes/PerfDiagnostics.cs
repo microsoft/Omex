@@ -18,30 +18,25 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </summary>
 		public bool LastStatus { get; private set; }
 
-
 		/// <summary>
 		/// Number of cycles used (updated after Stop is called)
 		/// </summary>
 		public long CyclesUsed { get; private set; }
-
 
 		/// <summary>
 		/// Approximate number of milliseconds spent in User Mode
 		/// </summary>
 		public decimal UserModeMilliseconds { get; private set; }
 
-
 		/// <summary>
 		/// Approximate number of milliseconds spent in Kernel Mode
 		/// </summary>
 		public decimal KernelModeMilliseconds { get; private set; }
 
-
 		/// <summary>
 		/// Backing field for number of http requests
 		/// </summary>
 		private int m_httpRequests;
-
 
 		/// <summary>
 		/// Number of HttpRequests
@@ -54,12 +49,10 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Backing field for number of service calls
 		/// </summary>
 		private int m_serviceCalls;
-
 
 		/// <summary>
 		/// Number of service calls
@@ -72,42 +65,35 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Psuedo handle to the current thread
 		/// </summary>
 		private static readonly IntPtr s_currentThreadHandle = NativeMethods.GetCurrentThread();
-
 
 		/// <summary>
 		/// Parent diagnostics if available
 		/// </summary>
 		private readonly PerfDiagnostics m_parent;
 
-
 		/// <summary>
 		/// Id of the thread being timed
 		/// </summary>
 		private uint m_threadId;
-
 
 		/// <summary>
 		/// Kernel mode ticks at start of timing
 		/// </summary>
 		private long m_startKernel;
 
-
 		/// <summary>
 		/// User mode ticks at start of timing
 		/// </summary>
 		private long m_startUser;
 
-
 		/// <summary>
 		/// Cpu cycles at start of timing
 		/// </summary>
 		private ulong m_startCycles;
-
 
 		/// <summary>
 		/// Constructor
@@ -117,7 +103,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			m_parent = parent;
 		}
-
 
 		/// <summary>
 		/// Reset the state of the Timer
@@ -132,7 +117,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			m_httpRequests = 0;
 			m_serviceCalls = 0;
 		}
-
 
 		/// <summary>
 		/// Start the timer
@@ -161,7 +145,6 @@ namespace Microsoft.Omex.System.TimedScopes
 
 			return true;
 		}
-
 
 		/// <summary>
 		/// Get timing metrics since Start was called
@@ -205,7 +188,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			return true;
 		}
 
-
 		/// <summary>
 		/// Suspend Cpu timer tree
 		/// </summary>
@@ -218,7 +200,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				m_parent.Stop();
 			}
 		}
-
 
 		/// <summary>
 		/// Resume Cpu timer tree
@@ -233,7 +214,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Increment the number of Service Calls
 		/// </summary>
@@ -246,7 +226,6 @@ namespace Microsoft.Omex.System.TimedScopes
 
 			Interlocked.Increment(ref m_serviceCalls);
 		}
-
 
 		/// <summary>
 		/// Increment the number of Http Requests
@@ -261,7 +240,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			Interlocked.Increment(ref m_httpRequests);
 		}
 
-
 		/// <summary>
 		/// Private Windows API definitions
 		/// </summary>
@@ -274,14 +252,12 @@ namespace Microsoft.Omex.System.TimedScopes
 			[DllImport("kernel32.dll")]
 			public static extern uint GetCurrentThreadId();
 
-
 			/// <summary>
 			/// Gets a psuedo handle to the current native thread
 			/// </summary>
 			/// <returns>Psuedo handle, doesn't need to be closed</returns>
 			[DllImport("kernel32.dll")]
 			public static extern IntPtr GetCurrentThread();
-
 
 			/// <summary>
 			/// Gets Cpu times for the specified native thread, accurate to around 15ms
@@ -294,7 +270,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			/// <returns>Success status</returns>
 			[DllImport("kernel32.dll")]
 			public static extern bool GetThreadTimes(IntPtr thread, out long creationTime, out long exitTime, out long kernelModeTime, out long userModeTime);
-
 
 			/// <summary>
 			/// Query the current Cpu cycle count for a specified thread

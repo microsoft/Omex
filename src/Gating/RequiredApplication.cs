@@ -18,42 +18,35 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		private HashSet<ProductVersionRange> Range { get; }
 
-
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		public RequiredApplication() => Range = new HashSet<ProductVersionRange>();
-
 
 		/// <summary>
 		/// Name of AppCode
 		/// </summary>
 		public string Name { get; set; }
 
-
 		/// <summary>
 		/// Minimum version required
 		/// </summary>
 		public ProductVersion MinVersion { get; set; }
-
 
 		/// <summary>
 		/// Maximum version allowed
 		/// </summary>
 		public ProductVersion MaxVersion { get; set; }
 
-
 		/// <summary>
 		/// Allowed version range
 		/// </summary>
 		public HashSet<ProductVersionRange> VersionRanges => Range;
 
-
 		/// <summary>
 		/// Value of Audience Group
 		/// </summary>
 		public string AudienceGroup { get; set; }
-
 
 		/// <summary>
 		/// Add version range to range set

@@ -18,12 +18,9 @@ namespace Microsoft.Omex.Extensions.Logging
 			m_categoryName = categoryName;
 		}
 
-
 		public IDisposable BeginScope<TState>(TState state) => m_externalScopeProvider.Push(state);
 
-
 		public bool IsEnabled(LogLevel logLevel) => m_logsEventSender.IsEnabled(logLevel);
-
 
 		public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
 		{
@@ -43,7 +40,6 @@ namespace Microsoft.Omex.Extensions.Logging
 				replayableScope.AddLogEvent(new LogMessageInformation(m_categoryName, eventId, threadId, message));
 			}
 		}
-
 
 		private readonly IExternalScopeProvider m_externalScopeProvider;
 		private readonly ILogEventSender m_logsEventSender;

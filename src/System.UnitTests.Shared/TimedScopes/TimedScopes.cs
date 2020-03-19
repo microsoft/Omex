@@ -14,7 +14,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.TimedScopes
 		public static TimedScopeDefinition DefaultScope => new TimedScopeDefinition("OmexDefaultTimedScope",
 			"Omex default timed scope");
 
-
 		/// <summary>
 		/// Test counters
 		/// </summary>
@@ -27,7 +26,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.TimedScopes
 				"Omex unit test timed scope");
 		}
 	}
-
 
 	/// <summary>
 	/// Timed scopes

@@ -42,7 +42,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 			return dataSet;
 		}
 
-
 		/// <summary>
 		/// Verifies that DataSet loads with one parsing error from given resources
 		/// </summary>
@@ -88,7 +87,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 
 			return dataSet;
 		}
-
 
 		/// <summary>
 		/// Merges all load errors into one string for easier unit test output

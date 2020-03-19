@@ -25,14 +25,12 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// </summary>
 		private string TestGroupsResourceName { get; }
 
-
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		public TestGroupsDataSet()
 		{
 		}
-
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TestGroupsDataSet"/> class.
@@ -44,7 +42,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 
 			DefaultGroups = new List<string> { "all" };
 		}
-
 
 		/// <summary>
 		/// Load the DataSet
@@ -78,7 +75,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			return IsHealthy;
 		}
 
-
 		/// <summary>
 		/// Retrieves all groups for a given group email or deployment id
 		/// </summary>
@@ -102,7 +98,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 				return DefaultGroups;
 			}
 		}
-
 
 		/// <summary>
 		/// Get group users (email or deployment identifiers)
@@ -140,24 +135,20 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			return emptyList;
 		}
 
-
 		/// <summary>
 		/// DataSet member data (group groups)
 		/// </summary>
 		private Dictionary<string, List<string>> m_userGroups;
-
 
 		/// <summary>
 		/// DataSet member data (user users)
 		/// </summary>
 		private Dictionary<string, List<string>> m_groupUsers;
 
-
 		/// <summary>
 		/// The name of the TestGroups Schema
 		/// </summary>
 		private const string GroupsSchema = ResourceNames.TestGroupsConfiguration;
-
 
 		/// <summary>
 		/// Load the test groups DataSet
@@ -181,7 +172,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 					true, "Failed to load test groups DataSet due to exception.");
 			}
 		}
-
 
 		/// <summary>
 		/// Load the Test Groups Data
@@ -256,7 +246,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			}
 		}
 
-
 		/// <summary>
 		/// Connects user to a group
 		/// </summary>
@@ -307,19 +296,16 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			}
 		}
 
-
 		/// <summary>
 		/// User groups any group belongs to
 		/// </summary>
 		public IEnumerable<string> DefaultGroups { get; }
-
 
 		/// <summary>
 		/// The character separating elements in a list stored within an asset field.
 		/// </summary>
 		private const string ListSeparator = ";";
 	}
-
 
 	/// <summary>
 	/// Test groups data set
@@ -332,7 +318,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		public TestGroupsDataSet()
 		{
 		}
-
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TestGroupsDataSet"/> class.

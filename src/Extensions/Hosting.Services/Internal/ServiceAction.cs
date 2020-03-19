@@ -14,10 +14,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public ServiceAction(Func<TServiceContext, CancellationToken, Task> action) =>
 			m_action = action;
 
-
 		public Task RunAsync(TServiceContext service, CancellationToken cancellationToken) =>
 			m_action(service, cancellationToken);
-
 
 		private readonly Func<TServiceContext, CancellationToken, Task> m_action;
 	}

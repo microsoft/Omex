@@ -13,18 +13,15 @@ namespace Microsoft.Omex.System.Data
 		/// </summary>
 		Unknown,
 
-
 		/// <summary>
 		/// Successful
 		/// </summary>
 		Success,
 
-
 		/// <summary>
 		/// Resource could not be found
 		/// </summary>
 		NotFound,
-
 
 		/// <summary>
 		/// Resource data could not be read

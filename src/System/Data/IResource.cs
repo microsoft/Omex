@@ -17,30 +17,25 @@ namespace Microsoft.Omex.System.Data
 		/// <returns>Resource read status</returns>
 		ResourceReadStatus GetContent(out byte[] content);
 
-
 		/// <summary>
 		/// Resource name
 		/// </summary>
 		string Name { get; }
-
 
 		/// <summary>
 		/// Resource location
 		/// </summary>
 		string Location { get; }
 
-
 		/// <summary>
 		/// Gets the last write time to the file.
 		/// </summary>
 		DateTime LastWriteTime { get; }
 
-
 		/// <summary>
 		/// Gets the length of the file in bytes.
 		/// </summary>
 		long Length { get; }
-
 
 		/// <summary>
 		/// Is a static resource

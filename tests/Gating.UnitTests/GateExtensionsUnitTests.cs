@@ -85,7 +85,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gateContext.ActivatedGates.Contains(Gates.GetGate("ActiveGate1")), "Expected one gate to be activated");
 		}
 
-
 		[Fact]
 		public void PerformAction_WithUnscopedModeAndMultipleActiveAndInactiveGates_ShouldPerformUnscopedActionForFirstActiveGate()
 		{
@@ -107,7 +106,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(gateContext.ActivatedGates.Contains(Gates.GetGate("ActiveGate1")), "Expected one gate not to be reported as activated");
 		}
 
-
 		[Fact]
 		public void PerformAction_SingleInactiveGate_ShouldNotPerformScopedActionForInactiveGate()
 		{
@@ -118,7 +116,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(gateContext.ActivatedGates.Count(), 0);
 		}
 
-
 		[Fact]
 		public void PerformAction_SingleActiveGate_ShouldPerformScopedActionForActiveGate()
 		{
@@ -128,7 +125,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(count, 1);
 			Assert.True(gateContext.ActivatedGates.Contains(Gates.GetGate("ActiveGate1")), "Expected one gate to be activated");
 		}
-
 
 		[Fact]
 		public void PerformAsyncAction_SingleInactiveGate_ShouldNotPerformScopedActionForInactiveGate()
@@ -148,7 +144,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			});
 		}
 
-
 		[Fact]
 		public void PerformAsyncAction_SingleActiveGate_ShouldPerformScopedActionForActiveGate()
 		{
@@ -166,7 +161,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				Assert.True(gateContext.ActivatedGates.Contains(Gates.GetGate("ActiveGate1")));
 			});
 		}
-
 
 		[Fact]
 		public void PerformFunction_WithMultipleActiveAndInactiveGates_ShouldPerformScopedFunctionForFirstActiveGate()
@@ -188,7 +182,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gateContext.ActivatedGates.Contains(Gates.GetGate("ActiveGate1")), "Expected one gate to be activated");
 		}
 
-
 		[Fact]
 		public void PerformFunction_WithUnscopedModeAndMultipleActiveAndInactiveGates_ShouldPerformUnscopedFunctionForFirstActiveGate()
 		{
@@ -208,7 +201,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(count, 2);
 			Assert.False(gateContext.ActivatedGates.Contains(Gates.GetGate("ActiveGate1")), "Expected no Gates reported as activated");
 		}
-
 
 		[Fact]
 		public void PerformAsyncFunction_WithMultipleActiveAndInactiveGates_ShouldPerformScopedFunctionForFirstActiveGate()
@@ -233,7 +225,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			});
 		}
 
-
 		[Fact]
 		public void PerformAsyncFunction_WithUnscopedModeAndMultipleActiveAndInactiveGates_ShouldPerformUnscopedFunctionForFirstActiveGate()
 		{
@@ -257,7 +248,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			});
 		}
 
-
 		[Fact]
 		public void PerformEachAction_WithMultipleActiveAndInactiveGates_ShouldPerformScopedActionsForAllActiveGates()
 		{
@@ -279,7 +269,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gateContext.ActivatedGates.Contains(Gates.GetGate("ActiveGate1")), "Expected gate1 to be activated");
 			Assert.True(gateContext.ActivatedGates.Contains(Gates.GetGate("ActiveGate2")), "Expected gate2 to be activated");
 		}
-
 
 		[Fact]
 		public void PerformEachAction_WithUnscopedModeAndWithMultipleActiveAndInactiveGates_ShouldPerformUnscopedActionsForAllActiveGates()
@@ -303,7 +292,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(gateContext.ActivatedGates.Contains(Gates.GetGate("ActiveGate2")), "Expected gate2 not to be reported as activated");
 		}
 
-
 		[Fact]
 		public void PerformEachFunction_WithMultipleActiveAndInactiveGates_ShouldPerformScopedFunctionForAllActiveGates()
 		{
@@ -324,7 +312,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gateContext.ActivatedGates.Contains(Gates.GetGate("ActiveGate1")), "Expected gate1 to be activated");
 			Assert.True(gateContext.ActivatedGates.Contains(Gates.GetGate("ActiveGate2")), "Expected gate2 to be activated");
 		}
-
 
 		[Fact]
 		public void PerformEachFunction_UnscopedWithMultipleActiveAndInactiveGates_ShouldPerformUnscopedFunctionForAllActiveGates()
@@ -347,7 +334,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(gateContext.ActivatedGates.Contains(Gates.GetGate("ActiveGate2")), "Expected gate2 not to be reported as activated");
 		}
 
-
 		[Fact]
 		public void PerformFunction_WithOnlyInactiveGates_ShouldReturnDefaultOfType()
 		{
@@ -360,7 +346,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 
 			Assert.Equal(count, default(int));
 		}
-
 
 		[Fact]
 		public void PerformAsyncFunction_WithOnlyInactiveGates_ShouldReturnDefaultOfType()
@@ -378,7 +363,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			});
 		}
 
-
 		[Fact]
 		public void PerformEachFunction_WithOnlyInactiveGates_ShouldReturnInput()
 		{
@@ -392,7 +376,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(count, 1);
 		}
 
-
 		[Fact]
 		public void PerformFunction_SingleInactiveGate_ShouldNotPerformScopedFunctionForInactiveGate()
 		{
@@ -402,7 +385,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(gateContext.ActivatedGates.Count(), 0);
 		}
 
-
 		[Fact]
 		public void PerformFunction_SingleActiveGate_ShouldPerformScopedFunctionForActiveGate()
 		{
@@ -411,7 +393,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(result, 1);
 			Assert.True(gateContext.ActivatedGates.Contains(Gates.GetGate("ActiveGate1")), "Expected one gate to be activated");
 		}
-
 
 		[Fact]
 		public void PerformConditionalFunction_WithValidGates_ShouldPerformTheFirstGatedFunction()
@@ -441,7 +422,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(count, 1);
 		}
 
-
 		[Fact]
 		public void PerformConditionalFunction_WithValidAndNonValidGates_ShouldPerformTheOnlyGatedFunction()
 		{
@@ -469,7 +449,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 
 			Assert.Equal(count, 2);
 		}
-
 
 		[Fact]
 		public void PerformConditionalFunction_NonValidGates_ShouldNotPerformAnyGatedFunction()
@@ -499,7 +478,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(count, 0);
 		}
 
-
 		[Fact]
 		public void PerformConditionalFunction_WithFailedCondition_ShouldNotPerformAnyGatedFunction()
 		{
@@ -528,7 +506,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(count, 0);
 		}
 
-
 		[Fact]
 		public void PerformConditionalFunction_WithFailedCondition_ShouldPerformDefaultFunction()
 		{
@@ -556,7 +533,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(count, 2);
 		}
 
-
 		[Fact]
 		public void PerformAsyncFunction_SingleInactiveGate_ShouldNotPerformScopedFunctionForInactiveGate()
 		{
@@ -571,7 +547,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			});
 		}
 
-
 		[Fact]
 		public void PerformAsyncFunction_SingleActiveGate_ShouldPerformScopedFunctionForActiveGate()
 		{
@@ -585,7 +560,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				Assert.True(gateContext.ActivatedGates.Contains(Gates.GetGate("ActiveGate1")), "Expected one gate to be activated");
 			});
 		}
-
 
 		[Fact]
 		public void PerformConditionalAsyncFunction_WithValidGates_ShouldPerformTheFirstGatedFunction()
@@ -615,7 +589,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			});
 		}
 
-
 		[Fact]
 		public void PerformConditionalAsyncFunction_WithValidAndNonValidGates_ShouldPerformTheOnlyGatedFunction()
 		{
@@ -643,7 +616,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				Assert.Equal(count, 2);
 			});
 		}
-
 
 		[Fact]
 		public void PerformConditionalAsyncFunction_NonValidGates_ShouldNotPerformAnyGatedFunction()
@@ -673,7 +645,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			});
 		}
 
-
 		[Fact]
 		public void PerformConditionalAsyncFunction_WithFailedCondition_ShouldNotPerformAnyGatedFunction()
 		{
@@ -702,7 +673,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			});
 		}
 
-
 		[Fact]
 		public void PerformConditionalAsyncFunction_WithFailedCondition_ShouldPerformDefaultFunction()
 		{
@@ -730,7 +700,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			});
 		}
 
-
 		[Fact]
 		public void PerformConditionalAction_WithValidGates_ShouldPerformTheFirstGateAction()
 		{
@@ -747,7 +716,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 
 			Assert.Equal(count, 1);
 		}
-
 
 		[Fact]
 		public void PerformConditionalAction_WithValidAndNonValidGates_ShouldPerformTheOnlyAvailableGatedAction()
@@ -766,7 +734,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(count, 1);
 		}
 
-
 		[Fact]
 		public void PerformConditionalAction_WithNonValidGates_ShouldNotPerformAnyGatedAction()
 		{
@@ -784,7 +751,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(count, 0);
 		}
 
-
 		[Fact]
 		public void PerformConditionalAction_WithValidGates_ShouldPerformTheFirstAvailableGate()
 		{
@@ -801,7 +767,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 
 			Assert.Equal(count, 0);
 		}
-
 
 		[Fact]
 		public void PerformConditionalAction_WithValidGates_ShouldPerformDefaultGatedAction()
@@ -822,7 +787,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(count2, 1);
 		}
 
-
 		[Fact]
 		public void PerformConditionalAsyncAction_WithValidGates_ShouldPerformTheFirstGateAction()
 		{
@@ -840,7 +804,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				Assert.Equal(count, 1);
 			});
 		}
-
 
 		[Fact]
 		public void PerformConditionalAsyncAction_WithValidAndNonValidGates_ShouldPerformTheOnlyAvailableGatedAction()
@@ -860,7 +823,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			});
 		}
 
-
 		[Fact]
 		public void PerformConditionalAsyncAction_WithNonValidGates_ShouldNotPerformAnyGatedAction()
 		{
@@ -879,7 +841,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			});
 		}
 
-
 		[Fact]
 		public void PerformConditionalAsyncAction_WithValidGates_ShouldPerformTheFirstAvailableGate()
 		{
@@ -897,7 +858,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				Assert.Equal(count, 0);
 			});
 		}
-
 
 		[Fact]
 		public void PerformConditionalAsyncAction_WithValidGates_ShouldPerformDefaultGatedAction()

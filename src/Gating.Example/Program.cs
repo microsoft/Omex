@@ -40,7 +40,6 @@ namespace Microsoft.Omex.Gating.Example
 			}
 		}
 
-
 		private static GateDataSetLoader CreateGateDataSetLoader(bool fromFile)
 		{
 			if (fromFile)
@@ -63,7 +62,6 @@ namespace Microsoft.Omex.Gating.Example
 			}
 		}
 
-
 		private static void SampleAction()
 		{
 			Console.WriteLine("SampleAction has been called");
@@ -85,7 +83,6 @@ namespace Microsoft.Omex.Gating.Example
 			}
 		}
 
-
 		// This code added to correctly implement the disposable pattern.
 		public void Dispose()
 		{
@@ -96,30 +93,22 @@ namespace Microsoft.Omex.Gating.Example
 		}
 		#endregion
 
-
 		private GateDataSetLoader GateDataSetLoader { get; set; }
 	}
-
 
 	internal class SampleGatedRequest : IGatedRequest
 	{
 		public GatedClient CallingClient => throw new NotImplementedException();
 
-
 		public string Market => throw new NotImplementedException();
-
 
 		public IEnumerable<GatedUser> Users => throw new NotImplementedException();
 
-
 		public HashSet<string> RequestedGateIds => new HashSet<string>() { "sample_allowed_gate" };
-
 
 		public HashSet<string> BlockedGateIds => new HashSet<string>() { "sample_blocked_gate" };
 
-
 		public string Environment => throw new NotImplementedException();
-
 
 		public IDictionary<string, HashSet<string>> QueryParameters => new Dictionary<string, HashSet<string>>()
 		{
@@ -127,18 +116,14 @@ namespace Microsoft.Omex.Gating.Example
 			{"sample_parameter_name2", new HashSet<string>() {"*"}},
 		};
 
-
 		public HashSet<string> CloudContexts => new HashSet<string>
 		{
 			"Public"
 		};
 
-
 		public Tuple<string, int> GetUserAgentBrowser() => throw new NotImplementedException();
 
-
 		public bool IsPartOfKnownIPRange(INamedIPAddresses knownIpAddresses, string ipRange) => throw new NotImplementedException();
-
 
 		public void UpdateExpectedClients(GatedClient[] clients) => throw new NotImplementedException();
 	}

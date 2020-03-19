@@ -16,7 +16,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// </summary>
 		string Name { get; }
 
-
 		/// <summary>
 		/// Creates comunication listener for SF service
 		/// </summary>

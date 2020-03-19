@@ -26,7 +26,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			Initialize(new List<IResource> { testGroups });
 		}
 
-
 		/// <summary>
 		/// Called when the data set is loaded.
 		/// </summary>
@@ -36,7 +35,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			ULSLogging.LogTraceTag(0x2382108c /* tag_967cm */, Categories.TestGroupsDataSet, Levels.Info,
 				FormatOnLoadMessage(fileDetails));
 		}
-
 
 		/// <summary>
 		/// Called when the data set is reloaded.
@@ -50,7 +48,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 				FormatOnReloadMessage(oldFileDetails, newFileDetails));
 		}
 	}
-
 
 	/// <summary>
 	/// TestGroups DataSet Loader

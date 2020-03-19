@@ -18,54 +18,45 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 		/// </summary>
 		private const string TestScope = "TestScope";
 
-
 		/// <summary>
 		/// Test Subtype
 		/// </summary>
 		private const string TestSubtype = "TestSubType";
-
 
 		/// <summary>
 		/// Test Metadata
 		/// </summary>
 		private const string TestMetadata = "TestMetadata";
 
-
 		/// <summary>
 		/// Valid scope name
 		/// </summary>
 		private const string OnlyScope = TestScope;
-
 
 		/// <summary>
 		/// Valid scope name
 		/// </summary>
 		private const string ScopeWithSubtype = TestScope + "/" + TestSubtype;
 
-
 		/// <summary>
 		/// Valid scope name
 		/// </summary>
 		private const string ScopeWithMetadata = TestScope + "/" + TestMetadata;
-
 
 		/// <summary>
 		/// Valid scope name
 		/// </summary>
 		private const string ScopeWithSubtypeAndMetadata = TestScope + "/" + TestSubtype + "/" + TestMetadata;
 
-
 		/// <summary>
 		/// Valid scope name
 		/// </summary>
 		private const string ScopeWithEmptySubtype = TestScope + "/";
 
-
 		/// <summary>
 		/// Valid scope name
 		/// </summary>
 		private const string ScopeWithEmptySubtypeAndMetadata = TestScope + "//" + TestMetadata;
-
 
 		/// <summary>
 		/// Constructor
@@ -74,7 +65,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 		public TimedScopeNameUnitTests(ITestOutputHelper log)
 		{
 		}
-
 
 		[Fact]
 		public void Verify_ValidScopeNames_Parsed()
@@ -124,7 +114,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			}
 		}
 
-
 		[Fact]
 		public void Verify_MalformedScopeNames_NotParsed()
 		{
@@ -137,7 +126,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			Assert.False(TimedScopeName.TryParse("x/y/z/a", out scopeName), "Malformed scope name should not be parsed");
 		}
 
-
 		[Fact]
 		public void Verify_HashCodesAndEquality()
 		{
@@ -148,7 +136,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			CheckSingleScope(ScopeWithEmptySubtype);
 			CheckSingleScope(ScopeWithEmptySubtypeAndMetadata);
 		}
-
 
 		/// <summary>
 		/// Verifies that parsing the same string (even with changed letter casing) gives equal TimedScopeName instances
@@ -165,7 +152,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Check equality of two timed scope name instances by all possible ways
 		/// </summary>
@@ -180,7 +166,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			Assert.False(x != y);
 		}
 
-
 		[Fact]
 		public void Verify_ParseAndToStringRoundTrip_EqualStringRepresentation()
 		{
@@ -191,7 +176,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			CheckRoundTrip(ScopeWithEmptySubtype);
 			CheckRoundTrip(ScopeWithEmptySubtypeAndMetadata);
 		}
-
 
 		/// <summary>
 		/// Checks that parsing a string and then converting back to string gives the same string

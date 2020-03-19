@@ -24,7 +24,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			return serviceCollection;
 		}
 
-
 		/// <summary>
 		/// Adds Omex event logger to the factory
 		/// </summary>
@@ -34,7 +33,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			builder.Services.AddOmexLogging();
 			return builder;
 		}
-
 
 		/// <summary>
 		/// Adds Omex event logger to the factory

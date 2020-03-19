@@ -24,7 +24,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.TimedScopes
 		{
 		}
 
-
 		/// <summary>
 		/// Logs the scope end
 		/// </summary>
@@ -44,7 +43,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.TimedScopes
 			m_events.Enqueue(evt);
 		}
 
-
 		/// <summary>
 		/// Gets the last scope event of given name logged
 		/// </summary>
@@ -55,7 +53,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.TimedScopes
 			return m_events.LastOrDefault(evt => string.Equals(evt.Name, scopeName, StringComparison.Ordinal));
 		}
 
-
 		/// <summary>
 		/// Gets the single scope event of given name logged
 		/// </summary>
@@ -65,7 +62,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.TimedScopes
 		{
 			return m_events.SingleOrDefault(evt => string.Equals(evt.Name, scopeName, StringComparison.Ordinal));
 		}
-
 
 		/// <summary>
 		/// Logged events

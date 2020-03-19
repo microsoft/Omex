@@ -13,18 +13,15 @@ namespace Microsoft.Omex.Gating.Data
 		/// </summary>
 		public const string Gates = "DefaultGates.xml";
 
-
 		/// <summary>
 		/// Gating configuration resource name.
 		/// </summary>
 		public const string GatingConfiguration = "GatingConfiguration.xsd";
 
-
 		/// <summary>
 		/// Test Groups resource name.
 		/// </summary>
 		public const string TestGroups = "TestGroups.xml";
-
 
 		/// <summary>
 		/// Test Groups configuration resource name.

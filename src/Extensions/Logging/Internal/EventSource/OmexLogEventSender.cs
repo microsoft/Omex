@@ -19,7 +19,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			s_processName = string.Format(CultureInfo.InvariantCulture, "{0} (0x{1:X4})", process.ProcessName, process.Id);
 		}
 
-
 		public OmexLogEventSender(OmexLogEventSource eventSource, IExecutionContext executionContext, IServiceContext context, IOptions<OmexLoggingOptions> options)
 		{
 			m_eventSource = eventSource;
@@ -27,7 +26,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			m_serviceContext = context;
 			m_options = options;
 		}
-
 
 		public void LogMessage(Activity? activity, string category, LogLevel level, EventId eventId, int threadId, string message)
 		{
@@ -44,7 +42,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			string machineId = m_executionContext.MachineId;
 
 			string tagName = eventId.Name;
-			// In case if tag created using Tag.Create (line number and file in description) it's better to display decimal number 
+			// In case if tag created using Tag.Create (line number and file in description) it's better to display decimal number
 			string tagId = string.IsNullOrWhiteSpace(eventId.Name)
 #pragma warning disable CS0618 // Need to be used for to process reserved tags from GitTagger
 				? TagsExtensions.TagIdAsString(eventId.Id)
@@ -108,14 +106,12 @@ namespace Microsoft.Omex.Extensions.Logging
 			}
 		}
 
-
 		public bool IsEnabled(LogLevel level) =>
 			level switch
 			{
 				LogLevel.None => false,
 				_ => m_eventSource.IsEnabled()
 			};
-
 
 		public bool IsReplayableMessage(LogLevel logLevel) =>
 			logLevel switch
@@ -124,7 +120,6 @@ namespace Microsoft.Omex.Extensions.Logging
 				LogLevel.Debug => true,
 				_ => false
 			};
-
 
 		public void ReplayLogs(Activity activity)
 		{
@@ -142,7 +137,6 @@ namespace Microsoft.Omex.Extensions.Logging
 				}
 			}
 		}
-
 
 		private readonly OmexLogEventSource m_eventSource;
 		private readonly IServiceContext m_serviceContext;

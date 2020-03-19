@@ -20,7 +20,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 			return timedScope;
 		}
 
-
 		/// <summary>
 		/// Set sub type
 		/// </summary>
@@ -30,7 +29,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 			timedScope.Activity.AddTag(ActivityTagKeys.SubType, subType);
 			return timedScope;
 		}
-
 
 		/// <summary>
 		/// Set metadata

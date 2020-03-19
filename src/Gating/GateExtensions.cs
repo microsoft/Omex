@@ -23,14 +23,12 @@ namespace Microsoft.Omex.Gating
 		/// <param name="action">action delegate</param>
 		public static void PerformAction(this IGateContext context, IGate gate, Action action) => SelectAction(context, new GatedAction[] { new GatedAction(gate, action) })();
 
-
 		/// <summary>
 		/// Perform an action that is applicable in the current gate context
 		/// </summary>
 		/// <param name="context">gate context</param>
 		/// <param name="actions">array of gated actions</param>
 		public static void PerformAction(this IGateContext context, params GatedAction[] actions) => SelectAction(context, actions)();
-
 
 		/// <summary>
 		/// Perform an action that is applicable in the current gate context
@@ -39,7 +37,6 @@ namespace Microsoft.Omex.Gating
 		/// <param name="mode">mode to run the gated code in</param>
 		/// <param name="actions">array of gated actions</param>
 		public static void PerformAction(this IGateContext context, GatedCode.Modes mode, params GatedAction[] actions) => SelectAction(context, mode, null, actions)();
-
 
 		/// <summary>
 		/// Perform an action based on a condition that is specified using predicate.
@@ -50,7 +47,6 @@ namespace Microsoft.Omex.Gating
 		public static void PerformConditionalAction(this IGateContext context, Func<bool> conditionalPredicate,
 			params GatedAction[] actions) => SelectAction(context, GatedCode.Modes.Scoped, conditionalPredicate, actions)();
 
-
 		/// <summary>
 		/// Perform an action that is applicable in the current gate context
 		/// </summary>
@@ -59,14 +55,12 @@ namespace Microsoft.Omex.Gating
 		/// <param name="action">action delegate</param>
 		public static Task PerformAction(this IGateContext context, IGate gate, Func<Task> action) => SelectAction(context, new GatedAsyncAction(gate, action))();
 
-
 		/// <summary>
 		/// Perform an action that is applicable in the current gate context
 		/// </summary>
 		/// <param name="context">gate context</param>
 		/// <param name="actions">array of gated actions</param>
 		public static Task PerformAction(this IGateContext context, params GatedAsyncAction[] actions) => SelectAction(context, actions)();
-
 
 		/// <summary>
 		/// Perform an action that is applicable in the current gate context
@@ -76,7 +70,6 @@ namespace Microsoft.Omex.Gating
 		/// <param name="actions">array of gated actions</param>
 		public static Task PerformAction(this IGateContext context, GatedCode.Modes mode, params GatedAsyncAction[] actions) => SelectAction(context, mode, null, actions)();
 
-
 		/// <summary>
 		/// Perform an action based on a condition that is specified using predicate.
 		/// </summary>
@@ -85,7 +78,6 @@ namespace Microsoft.Omex.Gating
 		/// <param name="actions">The actions.</param>
 		public static Task PerformConditionalAction(this IGateContext context, Func<bool> conditionalPredicate,
 			params GatedAsyncAction[] actions) => SelectAction(context, GatedCode.Modes.Scoped, conditionalPredicate, actions)();
-
 
 		/// <summary>
 		/// Perform a function that is applicable in the current gate context based on the passed predicate.
@@ -98,7 +90,6 @@ namespace Microsoft.Omex.Gating
 		public static T PerformConditionalFunction<T>(this IGateContext context, Func<bool> conditionalPredicate,
 			params GatedFunc<T>[] functions) => SelectFunction(context, GatedCode.Modes.Scoped, conditionalPredicate, functions)();
 
-
 		/// <summary>
 		/// Perform a function that is applicable in the current gate context
 		/// </summary>
@@ -109,7 +100,6 @@ namespace Microsoft.Omex.Gating
 		/// <returns>instance of T (default if no applicable action found)</returns>
 		public static T PerformFunction<T>(this IGateContext context, IGate gate, Func<T> function) => SelectFunction(context, new GatedFunc<T>[] { new GatedFunc<T>(gate, function) })();
 
-
 		/// <summary>
 		/// Perform a function that is applicable in the current gate context
 		/// </summary>
@@ -118,7 +108,6 @@ namespace Microsoft.Omex.Gating
 		/// <typeparam name="T">the return type of the function</typeparam>
 		/// <returns>instance of T (default if no applicable action found)</returns>
 		public static T PerformFunction<T>(this IGateContext context, params GatedFunc<T>[] functions) => SelectFunction(context, functions)();
-
 
 		/// <summary>
 		/// Perform a function that is applicable in the current gate context
@@ -129,7 +118,6 @@ namespace Microsoft.Omex.Gating
 		/// <typeparam name="T">the return type of the function</typeparam>
 		/// <returns>instance of T (default if no applicable action found)</returns>
 		public static T PerformFunction<T>(this IGateContext context, GatedCode.Modes mode, params GatedFunc<T>[] functions) => SelectFunction(context, mode, null, functions)();
-
 
 		/// <summary>
 		/// Perform a function that is applicable in the current gate context based on the passed predicate.
@@ -142,7 +130,6 @@ namespace Microsoft.Omex.Gating
 		public static Task<T> PerformConditionalFunction<T>(this IGateContext context, Func<bool> conditionalPredicate,
 			params GatedAsyncFunc<T>[] functions) => SelectFunction(context, GatedCode.Modes.Scoped, conditionalPredicate, functions)();
 
-
 		/// <summary>
 		/// Perform a function that is applicable in the current gate context
 		/// </summary>
@@ -153,7 +140,6 @@ namespace Microsoft.Omex.Gating
 		/// <returns>instance of T (default if no applicable action found)</returns>
 		public static Task<T> PerformFunction<T>(this IGateContext context, IGate gate, Func<Task<T>> function) => SelectFunction(context, new GatedAsyncFunc<T>(gate, function))();
 
-
 		/// <summary>
 		/// Perform a function that is applicable in the current gate context
 		/// </summary>
@@ -162,7 +148,6 @@ namespace Microsoft.Omex.Gating
 		/// <typeparam name="T">the return type of the function</typeparam>
 		/// <returns>instance of T (default if no applicable action found)</returns>
 		public static Task<T> PerformFunction<T>(this IGateContext context, params GatedAsyncFunc<T>[] functions) => SelectFunction(context, functions)();
-
 
 		/// <summary>
 		/// Perform a function that is applicable in the current gate context
@@ -174,14 +159,12 @@ namespace Microsoft.Omex.Gating
 		/// <returns>instance of T (default if no applicable action found)</returns>
 		public static Task<T> PerformFunction<T>(this IGateContext context, GatedCode.Modes mode, params GatedAsyncFunc<T>[] functions) => SelectFunction(context, mode, null, functions)();
 
-
 		/// <summary>
 		/// Perform each action that is applicable in the current gate context
 		/// </summary>
 		/// <param name="context">gated context</param>
 		/// <param name="actions">array of gated actions</param>
 		public static void PerformEachAction(this IGateContext context, params GatedAction[] actions) => PerformEachAction(context, GatedCode.Modes.Scoped, actions);
-
 
 		/// <summary>
 		/// Perform each action that is applicable in the current gate context
@@ -193,7 +176,6 @@ namespace Microsoft.Omex.Gating
 		{
 			Array.ForEach(actions, (action) => PerformAction(context, mode, action));
 		}
-
 
 		/// <summary>
 		/// Perform each function that is applicable in the current gate context. The input parameter
@@ -210,7 +192,6 @@ namespace Microsoft.Omex.Gating
 		{
 			return PerformEachFunction(context, GatedCode.Modes.Scoped, input, functions);
 		}
-
 
 		/// <summary>
 		/// Perform each function that is applicable in the current gate context. The input parameter
@@ -234,7 +215,6 @@ namespace Microsoft.Omex.Gating
 			);
 			return input;
 		}
-
 
 		/// <summary>
 		/// Runs the given action in the scope of the gates associated with it
@@ -263,7 +243,6 @@ namespace Microsoft.Omex.Gating
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Executes the given function in the scope of the gates associated with it
@@ -295,7 +274,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Select an applicable action without executing it
 		/// </summary>
@@ -303,7 +281,6 @@ namespace Microsoft.Omex.Gating
 		/// <param name="actions">array of gated actions</param>
 		/// <returns>an action to perform, never null</returns>
 		public static Action SelectAction(this IGateContext context, params GatedAction[] actions) => SelectAction(context, GatedCode.Modes.Scoped, null, actions);
-
 
 		/// <summary>
 		/// Select an applicable action without executing it
@@ -337,7 +314,6 @@ namespace Microsoft.Omex.Gating
 			return new Action(() => { });
 		}
 
-
 		/// <summary>
 		/// Select an applicable action without executing it
 		/// </summary>
@@ -345,7 +321,6 @@ namespace Microsoft.Omex.Gating
 		/// <param name="actions">array of gated actions</param>
 		/// <returns>an action to perform, never null</returns>
 		public static Func<Task> SelectAction(this IGateContext context, params GatedAsyncAction[] actions) => SelectAction(context, GatedCode.Modes.Scoped, null, actions);
-
 
 		/// <summary>
 		/// Select an applicable action without executing it
@@ -359,7 +334,6 @@ namespace Microsoft.Omex.Gating
 		{
 			return SelectAction(context, mode, conditionalPredicate, actions, false);
 		}
-
 
 		/// <summary>
 		/// Select an applicable action without executing it
@@ -400,12 +374,10 @@ namespace Microsoft.Omex.Gating
 			};
 		}
 
-
 		/// <summary>
 		/// Empty awaitable action
 		/// </summary>
 		private static readonly Func<Task> s_noOpAction = () => Task.FromResult(true);
-
 
 		/// <summary>
 		/// Select an applicable function without executing it
@@ -417,7 +389,6 @@ namespace Microsoft.Omex.Gating
 		{
 			return SelectFunction(context, GatedCode.Modes.Scoped, null, functions);
 		}
-
 
 		/// <summary>
 		/// Select an applicable function without executing it
@@ -457,7 +428,6 @@ namespace Microsoft.Omex.Gating
 			return new Func<T>(() => default(T));
 		}
 
-
 		/// <summary>
 		/// Select an applicable function without executing it
 		/// </summary>
@@ -468,7 +438,6 @@ namespace Microsoft.Omex.Gating
 		{
 			return SelectFunction(context, GatedCode.Modes.Scoped, functions);
 		}
-
 
 		/// <summary>
 		/// Select an applicable function without executing it
@@ -506,7 +475,6 @@ namespace Microsoft.Omex.Gating
 			return new Func<T, T>((t) => t);
 		}
 
-
 		/// <summary>
 		/// Select an applicable function without executing it
 		/// </summary>
@@ -517,7 +485,6 @@ namespace Microsoft.Omex.Gating
 		{
 			return SelectFunction(context, GatedCode.Modes.Scoped, null, functions);
 		}
-
 
 		/// <summary>
 		/// Select an applicable function without executing it
@@ -533,7 +500,6 @@ namespace Microsoft.Omex.Gating
 		{
 			return SelectFunction(context, mode, conditionalPredicate, functions, false);
 		}
-
 
 		/// <summary>
 		/// Select an applicable function without executing it
@@ -578,7 +544,6 @@ namespace Microsoft.Omex.Gating
 			};
 		}
 
-
 		/// <summary>
 		/// Select an applicable function without executing it
 		/// </summary>
@@ -589,7 +554,6 @@ namespace Microsoft.Omex.Gating
 		{
 			return SelectFunction(context, GatedCode.Modes.Scoped, functions);
 		}
-
 
 		/// <summary>
 		/// Select an applicable function without executing it
@@ -602,7 +566,6 @@ namespace Microsoft.Omex.Gating
 		{
 			return SelectFunction(context, mode, functions, false);
 		}
-
 
 		/// <summary>
 		/// Select an applicable function without executing it
@@ -643,7 +606,6 @@ namespace Microsoft.Omex.Gating
 
 			return Task.FromResult;
 		}
-
 
 		/// <summary>
 		/// Select a code
@@ -695,7 +657,6 @@ namespace Microsoft.Omex.Gating
 			return new Tuple<T, IGate[]>(gatedCode, gates);
 		}
 
-
 		/// <summary>
 		/// Enter a scope for gated code
 		/// </summary>
@@ -709,7 +670,6 @@ namespace Microsoft.Omex.Gating
 				context.EnterScope(gate);
 			}
 		}
-
 
 		/// <summary>
 		/// Enters a collection of scopes in a nested way.
@@ -730,7 +690,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Exits a collection of scopes in a reverse order.
 		/// </summary>
@@ -750,7 +709,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Exit a scope for gated code
 		/// </summary>
@@ -764,7 +722,6 @@ namespace Microsoft.Omex.Gating
 				context.ExitScope(gate);
 			}
 		}
-
 
 		/// <summary>
 		/// Should the context scope the code
@@ -800,7 +757,6 @@ namespace Microsoft.Omex.Gating
 			return false;
 		}
 
-
 		/// <summary>
 		/// Retrieve the current active gates as a string
 		/// </summary>
@@ -812,7 +768,6 @@ namespace Microsoft.Omex.Gating
 			return context != null ?
 				GatesAsString(context.CurrentGates, separator) : null;
 		}
-
 
 		/// <summary>
 		/// Retrieve the activated gates as a string
@@ -826,7 +781,6 @@ namespace Microsoft.Omex.Gating
 				GatesAsString(context.ActivatedGates.Select(gate => gate.Name), separator) : null;
 		}
 
-
 		/// <summary>
 		/// Retrieve the requested gates as a string
 		/// </summary>
@@ -838,7 +792,6 @@ namespace Microsoft.Omex.Gating
 			return context != null && context.Request != null ?
 				GatesAsString(context.Request.RequestedGateIds, separator) : null;
 		}
-
 
 		/// <summary>
 		/// Join a set of gates to a string

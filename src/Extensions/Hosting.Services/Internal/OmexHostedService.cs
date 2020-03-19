@@ -19,13 +19,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		private readonly IOmexServiceRunner m_runner;
 		private readonly ILogger<OmexHostedService> m_logger;
 
-
 		public OmexHostedService(IOmexServiceRunner runner, ILogger<OmexHostedService> logger)
 		{
 			m_runner = runner;
 			m_logger = logger;
 		}
-
 
 		protected override async Task ExecuteAsync(CancellationToken token)
 		{

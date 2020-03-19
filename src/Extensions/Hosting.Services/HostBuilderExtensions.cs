@@ -31,7 +31,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				where TContext : ServiceContext =>
 					builder.AddServiceAction(new ServiceAction<TContext>(action));
 
-
 		/// <summary>
 		/// Add actions that will be executed inside stateless service RunAsync method
 		/// </summary>
@@ -40,7 +39,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			IServiceAction<TContext> action)
 				where TContext : ServiceContext =>
 					builder.ConfigureServices((config, collection) => collection.AddSingleton(action));
-
 
 		/// <summary>
 		/// Add service listener to stateless service fabric service
@@ -52,7 +50,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				where TContext : ServiceContext =>
 					builder.AddServiceListener(new ListenerBuilder<TContext>(name, createListener));
 
-
 		/// <summary>
 		/// Add service listener to stateless service fabric service
 		/// </summary>
@@ -61,7 +58,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			IListenerBuilder<TContext> listenerBuilder)
 				where TContext : ServiceContext =>
 					builder.ConfigureServices((config, collection) => collection.AddSingleton(listenerBuilder));
-
 
 		/// <summary>
 		/// Configures host to run service fabric stateless service with initializded Omex dependencies
@@ -72,7 +68,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			Action<ServiceFabricHostBuilder<StatelessServiceContext>> builderAction) =>
 				builder.BuildServiceFabricService<OmexStatelessServiceRunner, StatelessServiceContext>(serviceName, builderAction);
 
-
 		/// <summary>
 		/// Configures host to run service fabric stateful service with initializded Omex dependencies
 		/// </summary>
@@ -81,7 +76,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			string serviceName,
 			Action<ServiceFabricHostBuilder<StatefulServiceContext>> builderAction) =>
 				builder.BuildServiceFabricService<OmexStatefulServiceRunner, StatefulServiceContext>(serviceName, builderAction);
-
 
 		/// <summary>
 		/// Registering Dependency Injection classes that will provide Service Fabric specific information for logging
@@ -96,7 +90,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			collection.TryAddSingleton<IExecutionContext, ServiceFabricExecutionContext>();
 			return collection.AddOmexServices();
 		}
-
 
 		private static IHost BuildServiceFabricService<TRunner,TContext>(
 			this IHostBuilder builder,
@@ -149,7 +142,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				throw;
 			}
 		}
-
 
 		private static IHostBuilder UseApplicationName(this IHostBuilder builder, string applicationName) =>
 			builder.ConfigureAppConfiguration(configuration =>

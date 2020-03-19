@@ -19,7 +19,6 @@ namespace Microsoft.Omex.DocumentDb
 		ReadOnly = 1
 	}
 
-
 	/// <summary>
 	/// Document Db Settings Configuration. This class can be used by the Settings provider to decide which settings to provide.
 	/// </summary>
@@ -30,12 +29,10 @@ namespace Microsoft.Omex.DocumentDb
 		/// </summary>
 		public string Environment { get; set; }
 
-
 		/// <summary>
 		/// Azure Region.
 		/// </summary>
 		public string Region { get; set; }
-
 
 		/// <summary>
 		/// Azure Region.

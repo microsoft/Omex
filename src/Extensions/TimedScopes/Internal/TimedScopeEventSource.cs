@@ -21,7 +21,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			long durationMs) =>
 			WriteEvent((int)EventSourcesEventIds.LogTimedScope, name, subType, metadata, userHash, serviceName, m_logCategory, result, correlationId, durationMs);
 
-
 		[Event((int)EventSourcesEventIds.LogTimedScopeTestContext, Level = EventLevel.Informational, Version = 3)]
 		public void WriteTimedScopeTestEvent(
 			string name,
@@ -33,13 +32,10 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			long durationMs) =>
 			WriteEvent((int)EventSourcesEventIds.LogTimedScopeTestContext, name, subType, metadata, serviceName, m_logCategory, result, correlationId, durationMs);
 
-
 		public static TimedScopeEventSource Instance { get; } = new TimedScopeEventSource();
-
 
 		private TimedScopeEventSource() =>
 			m_logCategory = typeof(TimedScopeEventSource).FullName ?? nameof(TimedScopeEventSource);
-
 
 		private readonly string m_logCategory;
 	}

@@ -38,7 +38,6 @@ namespace Microsoft.Omex.DocumentDb
 			return await GetOrCreateCollectionAsync(dbId, collectionId, partitionKey, reservedRUs).ConfigureAwait(false);
 		}
 
-
 		/// <summary>
 		/// Gets the DocumentCollection, otherwise creates it including the database.
 		/// </summary>
@@ -69,7 +68,6 @@ namespace Microsoft.Omex.DocumentDb
 			return GetOrCreateCollectionAsync(dbId, documentCollection, requestOptions);
 		}
 
-
 		/// <summary>
 		/// Creates the DocumentCollection if it does not exit otherwise returns the existing one.
 		/// </summary>
@@ -91,7 +89,6 @@ namespace Microsoft.Omex.DocumentDb
 					documentCollection,
 					requestOptions)).ConfigureAwait(false);
 		}
-
 
 		/// <summary>
 		/// Gets the document collection.
@@ -124,7 +121,6 @@ namespace Microsoft.Omex.DocumentDb
 				}).ConfigureAwait(false);
 		}
 
-
 		/// <summary>
 		/// Gets the all document collections in the database.
 		/// </summary>
@@ -144,7 +140,6 @@ namespace Microsoft.Omex.DocumentDb
 				return await QueryDocumentsAsync(query).ConfigureAwait(false);
 			}
 		}
-
 
 		/// <summary>
 		/// Deletes the document collection.

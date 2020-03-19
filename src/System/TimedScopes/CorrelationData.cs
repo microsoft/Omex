@@ -23,12 +23,10 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// should be small (less than 10 items).</remarks>
 		private ListDictionary m_additionalData;
 
-
 		/// <summary>
 		/// Parent correlation for nested correlations.
 		/// </summary>
 		private CorrelationData m_parentCorrelation;
-
 
 		/// <summary>
 		/// Should log directly to the underlying log handler
@@ -39,7 +37,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </remarks>
 		private bool m_shouldLogDirectly;
 
-
 		/// <summary>
 		/// Is this correlation running in ULS replay mode
 		/// </summary>
@@ -49,24 +46,20 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </remarks>
 		private bool m_ulsReplay;
 
-
 		/// <summary>
 		/// Information if previously cached ULS events for this correlation already been replayed
 		/// </summary>
 		private int m_cachedUlsEventsReplayed;
-
 
 		/// <summary>
 		/// Event sequence number for guarenteed logging order within a correlation
 		/// </summary>
 		private long m_eventSequenceNumber;
 
-
 		/// <summary>
 		/// Log event cache reference for triggering replay events.
 		/// </summary>
 		private readonly ILogEventCache m_logEventCache;
-
 
 		/// <summary>
 		/// Root scopes have this sequence number (with high probability),
@@ -74,12 +67,10 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </summary>
 		public const int RootScopeBoundary = 1000;
 
-
 		/// <summary>
 		/// Transaction Id key
 		/// </summary>
 		public const string TransactionIdKey = "TransactionId";
-
 
 		/// <summary>
 		/// The ID of the correlation
@@ -89,7 +80,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// Correlation.CorrelationStart(CorrelationData correlation).</remarks>
 		public Guid VisibleId { get; set; }
 
-
 		/// <summary>
 		/// Transaction id for the correlation
 		/// </summary>
@@ -97,31 +87,26 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// is used as part of a specific monitored transaction</remarks>
 		public uint TransactionId { get; set; }
 
-
 		/// <summary>
 		/// Id of a registered ITransactionContext to apply
 		/// </summary>
 		public uint TransactionContextId { get; set; }
-
 
 		/// <summary>
 		/// Step number for a multi-step Transaction
 		/// </summary>
 		public uint TransactionStep { get; set; }
 
-
 		/// <summary>
 		/// Is this a fallback call
 		/// </summary>
 		public bool IsFallbackCall { get; set; }
-
 
 		/// <summary>
 		/// Tracks the depth of the correlation through proxying layers
 		/// Original caller is Depth 0, subsequent hops are +1 each time
 		/// </summary>
 		public uint CallDepth { get; set; }
-
 
 		/// <summary>
 		/// Gets or sets the user hash for the current correlation.  Only call the setter directly
@@ -132,7 +117,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		/// </summary>
 		/// <remarks>Used to count timed scope hits by user.</remarks>
 		public string UserHash { get; set; }
-
 
 		/// <summary>
 		/// Current event sequence number for this correlation
@@ -149,7 +133,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				m_eventSequenceNumber = value;
 			}
 		}
-
 
 		/// <summary>
 		/// All correlation data keys
@@ -170,7 +153,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Does the correlation have any correlation data
 		/// </summary>
@@ -181,7 +163,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				return m_additionalData == null ? false : m_additionalData.Count > 0;
 			}
 		}
-
 
 		/// <summary>
 		/// Parent correlation for nested correlation
@@ -220,7 +201,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Allocates the next sequence number to be used for logging purposes
 		/// </summary>
@@ -229,7 +209,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			return Interlocked.Increment(ref m_eventSequenceNumber);
 		}
-
 
 		/// <summary>
 		/// Allocates the next sequence number to be used for logging the
@@ -250,7 +229,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			return Interlocked.Increment(ref m_eventSequenceNumber);
 		}
 
-
 		/// <summary>
 		/// Should log directly to the underlying log handler
 		/// </summary>
@@ -266,7 +244,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				m_shouldLogDirectly = value;
 			}
 		}
-
 
 		/// <summary>
 		/// Determines if ULS events should be replayed for the current correlation.
@@ -292,7 +269,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Have previously cached ULS events for this correlation already been replayed?
 		/// </summary>
@@ -303,7 +279,6 @@ namespace Microsoft.Omex.System.TimedScopes
 				return m_cachedUlsEventsReplayed == 1;
 			}
 		}
-
 
 		/// <summary>
 		/// Replay previously cached ULS events for this correlation now.
@@ -320,7 +295,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Get the correlation data for a key
 		/// </summary>
@@ -335,7 +309,6 @@ namespace Microsoft.Omex.System.TimedScopes
 
 			return (string)m_additionalData[key];
 		}
-
 
 		/// <summary>
 		/// Add correlation data
@@ -381,7 +354,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			m_additionalData[key] = value;
 		}
 
-
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -390,7 +362,6 @@ namespace Microsoft.Omex.System.TimedScopes
 		{
 			m_cachedUlsEventsReplayed = cachedUlsEventsReplayed ? 1 : 0;
 		}
-
 
 		/// <summary>
 		/// Constructor.
@@ -404,7 +375,6 @@ namespace Microsoft.Omex.System.TimedScopes
 			m_cachedUlsEventsReplayed = cachedUlsEventsReplayed ? 1 : 0;
 		}
 	}
-
 
 	/// <summary>
 	/// Correlation data extension methods
@@ -469,7 +439,6 @@ namespace Microsoft.Omex.System.TimedScopes
 
 			return newCorrelation;
 		}
-
 
 		/// <summary>
 		/// Creates a new TransactionData object from the current CorrelationData object.

@@ -21,19 +21,15 @@ namespace Microsoft.Omex.System.AspNetCore
 	{
 		private static readonly AsyncLocal<ConcurrentDictionary<string, object>> s_dataAsyncLocal = new AsyncLocal<ConcurrentDictionary<string, object>>();
 
-
 		private static readonly AsyncLocal<IImmutableDictionary<string, object>> s_dictionaryAsyncLocal = new AsyncLocal<IImmutableDictionary<string, object>>();
 
-
 		private static readonly AsyncLocal<IImmutableStack<IImmutableDictionary<string, object>>> s_stackAsyncLocal = new AsyncLocal<IImmutableStack<IImmutableDictionary<string, object>>>();
-
 
 		/// <summary> Context data stored on LogicalCallContext </summary>
 		public LogicalCallContext(IMachineInformation machineInformation)
 		{
 			MachineInformation = machineInformation;
 		}
-
 
 		/// <summary> Gets or sets the context data </summary>
 		protected ConcurrentDictionary<string, object> ContextData
@@ -42,7 +38,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			set => s_dataAsyncLocal.Value = value;
 		}
 
-
 		/// <summary> Gets or sets the context dictionary </summary>
 		protected IImmutableDictionary<string, object> ContextDictionary
 		{
@@ -50,14 +45,12 @@ namespace Microsoft.Omex.System.AspNetCore
 			set => s_dictionaryAsyncLocal.Value = value;
 		}
 
-
 		/// <summary> Gets or sets the context stack  </summary>
 		protected IImmutableStack<IImmutableDictionary<string, object>> ContextStack
 		{
 			get => s_stackAsyncLocal.Value;
 			set => s_stackAsyncLocal.Value = value;
 		}
-
 
 		/// <summary>
 		/// Dictionary of data stored on the call context
@@ -82,7 +75,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			}
 		}
 
-
 		/// <summary>
 		/// Dictionary of data stored on the call context and shared between derived call contexts
 		/// </summary>
@@ -99,7 +91,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			}
 		}
 
-
 		/// <summary>
 		/// Set data to http context
 		/// </summary>
@@ -108,7 +99,6 @@ namespace Microsoft.Omex.System.AspNetCore
 		public void AddContextValue(string key, object value)
 		{
 		}
-
 
 		/// <summary>
 		/// Start the call context
@@ -140,7 +130,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			ContextDictionary = new SerializableImmutableDictionary<string, object>(ImmutableDictionary<string, object>.Empty.WithComparers(StringComparer.Ordinal));
 			return null;
 		}
-
 
 		/// <summary>
 		/// End the call context
@@ -174,12 +163,10 @@ namespace Microsoft.Omex.System.AspNetCore
 			}
 		}
 
-
 		/// <summary>
 		/// Machine information
 		/// </summary>
 		public static IMachineInformation MachineInformation { get; set; }
-
 
 		/// <summary>
 		/// Current environment
@@ -187,7 +174,6 @@ namespace Microsoft.Omex.System.AspNetCore
 		private static readonly Lazy<bool> s_testEnvironment = new Lazy<bool>(() =>
 			MachineInformation.IsPrivateDeployment,
 			LazyThreadSafetyMode.PublicationOnly);
-
 
 		/// <summary>
 		/// Get the existing call context if there is one
@@ -203,7 +189,6 @@ namespace Microsoft.Omex.System.AspNetCore
 
 			return null;
 		}
-
 
 		/// <summary>
 		/// Mutable dictionary which ensures that all changes are persisted correctly
@@ -221,12 +206,10 @@ namespace Microsoft.Omex.System.AspNetCore
 				m_innerDictionary = innerDictionary;
 			}
 
-
 			/// <summary>
 			/// Items storage
 			/// </summary>
 			private IImmutableDictionary<string, object> m_innerDictionary;
-
 
 			/// <summary>
 			/// Returns an enumerator that iterates through the immutable dictionary.
@@ -234,13 +217,11 @@ namespace Microsoft.Omex.System.AspNetCore
 			/// <returns></returns>
 			public IEnumerator<KeyValuePair<string, object>> GetEnumerator() => m_innerDictionary.GetEnumerator();
 
-
 			/// <summary>
 			/// Returns an enumerator that iterates through the immutable dictionary.
 			/// </summary>
 			/// <returns></returns>
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
 
 			/// <summary>
 			/// Adds an element with the provided key and value to the immutable dictionary.
@@ -251,7 +232,6 @@ namespace Microsoft.Omex.System.AspNetCore
 				Add(item.Key, item.Value);
 			}
 
-
 			/// <summary>
 			/// Clears this instance.
 			/// </summary>
@@ -261,13 +241,11 @@ namespace Microsoft.Omex.System.AspNetCore
 				m_context.ContextDictionary = dict;
 			}
 
-
 			/// <summary>
 			/// Determines whether this immutable dictionary contains the specified key/value pair.
 			/// </summary>
 			/// <param name="item"></param>
 			public bool Contains(KeyValuePair<string, object> item) => m_innerDictionary.Contains(item);
-
 
 			/// <summary>
 			/// Copies the elements of the dictionary to an array, starting at a particular array index.
@@ -279,7 +257,6 @@ namespace Microsoft.Omex.System.AspNetCore
 				((IDictionary<string, object>)m_innerDictionary).CopyTo(array, arrayIndex);
 			}
 
-
 			/// <summary>
 			/// Removes an item from the dictionary
 			/// </summary>
@@ -287,18 +264,15 @@ namespace Microsoft.Omex.System.AspNetCore
 			/// <returns>True if items was removed from the dictionary</returns>
 			public bool Remove(KeyValuePair<string, object> item) => Remove(item.Key);
 
-
 			/// <summary>
 			/// Gets the number of elements contained in the dictionary
 			/// </summary>
 			public int Count => m_innerDictionary.Count;
 
-
 			/// <summary>
 			/// Gets a value indicating whether the dictionary is read only
 			/// </summary>
 			public bool IsReadOnly => false;
-
 
 			/// <summary>
 			/// Determines whether the dictinoary contains an element with the specified key.
@@ -306,7 +280,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			/// <param name="key">Key</param>
 			/// <returns>True if dictionary contains specified key</returns>
 			public bool ContainsKey(string key) => m_innerDictionary.ContainsKey(key);
-
 
 			/// <summary>
 			/// Adds an element with the provided key and value to the Dictionary
@@ -318,7 +291,6 @@ namespace Microsoft.Omex.System.AspNetCore
 				m_innerDictionary = m_innerDictionary.SetItem(key, value);
 				m_context.ContextDictionary = m_innerDictionary;
 			}
-
 
 			/// <summary>
 			/// Removes the element with the specified key from the dictionary
@@ -338,7 +310,6 @@ namespace Microsoft.Omex.System.AspNetCore
 				return true;
 			}
 
-
 			/// <summary>
 			/// Gets the value associated with the specified key.
 			/// </summary>
@@ -346,7 +317,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			/// <param name="value">Value</param>
 			/// <returns>True if key exisited in the dictionary</returns>
 			public bool TryGetValue(string key, out object value) => m_innerDictionary.TryGetValue(key, out value);
-
 
 			/// <summary>
 			/// Gets or sets the element with the specified key.
@@ -366,18 +336,15 @@ namespace Microsoft.Omex.System.AspNetCore
 				}
 			}
 
-
 			/// <summary>
 			/// Collection containing keys of the dictionary
 			/// </summary>
 			public ICollection<string> Keys => m_innerDictionary.Keys.ToList();
 
-
 			/// <summary>
 			/// Collection containing values of the dictionary
 			/// </summary>
 			public ICollection<object> Values => m_innerDictionary.Values.ToList();
-
 
 			private readonly LogicalCallContext m_context;
 		}

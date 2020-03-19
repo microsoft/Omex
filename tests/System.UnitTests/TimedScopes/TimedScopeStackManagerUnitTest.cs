@@ -32,7 +32,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			});
 		}
 
-
 		[Fact]
 		public void GetTimedScopeStack_CallContextManager_Null_Value()
 		{
@@ -45,7 +44,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 				new TimedScopeStackManager(null, machineInformation);
 			});
 		}
-
 
 		[Fact]
 		public void GetTimedScopeStack_ShouldReturnValue()
@@ -82,7 +80,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 
 			callContextManager.Verify(x => x.CallContextHandler(machineInformation), Times.Once);
 		}
-
 
 		[Fact]
 		public void SetTimedScopeStack_ShouldReturnValue()

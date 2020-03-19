@@ -30,7 +30,6 @@ namespace Microsoft.Omex.System.UnitTests.Logging
 			Assert.Equal(Levels.LevelFromLogLevel(logLevel), LoggedEvents[0].Level);
 		}
 
-
 		[Fact]
 		public void ReportExceptionTag_ShouldLog()
 		{
@@ -49,14 +48,12 @@ namespace Microsoft.Omex.System.UnitTests.Logging
 			Assert.Equal(Categories.ArgumentValidation, exceptionEventArgs.CategoryId);
 		}
 
-
 		[Fact]
 		public void RaiseLogEvent_WithoutEvent_DoesNotLog()
 		{
 			UntaggedLogging.RaiseLogEvent(null, null);
 			Assert.Empty(LoggedEvents);
 		}
-
 
 		[Fact]
 		public void RaiseLogEvent_WithEvent_Logs()

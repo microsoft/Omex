@@ -20,7 +20,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			m_actions = new LinkedList<WeakReference<Action<TContext>>>();
 		}
 
-
 		/// <summary>
 		/// Set ServiceContext when it's available
 		/// </summary>
@@ -43,7 +42,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			m_actions.Clear();
 		}
 
-
 		/// <inheritdoc />
 		void IServiceContextAccessor<TContext>.OnContextAvailable(Action<TContext> action)
 		{
@@ -57,10 +55,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			}
 		}
 
-
 		/// <inheritdoc />
 		TContext? IServiceContextAccessor<TContext>.ServiceContext => m_serviceContext;
-
 
 		private readonly LinkedList<WeakReference<Action<TContext>>> m_actions;
 		private TContext? m_serviceContext;

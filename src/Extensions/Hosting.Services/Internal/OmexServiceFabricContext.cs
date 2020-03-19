@@ -19,14 +19,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			accessor.OnContextAvailable(UpdateState);
 		}
 
-
 		/// <inheritdoc/>
 		public Guid PartitionId { get; private set; }
 
-
 		/// <inheritdoc/>
 		public long ReplicaOrInstanceId { get; private set; }
-
 
 		private void UpdateState(ServiceContext context)
 		{

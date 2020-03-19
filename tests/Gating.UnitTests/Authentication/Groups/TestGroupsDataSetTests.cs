@@ -36,7 +36,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 			Assert.True(testGroupsDataSet.IsHealthy, "DataSet reports to be healthy");
 		}
 
-
 		[Fact]
 		public void Load_ValidTestGroupsXml_LoadsUserGroups()
 		{
@@ -75,7 +74,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 			Assert.True(testGroupsDataSet.GetGroupUsers("all").Contains("test3@mydomain.xx", StringComparer.OrdinalIgnoreCase), "Expected test3@mydomain.xx to be in 'all'");
 		}
 
-
 		[Fact]
 		public void GetGroupUsers_InputInDifferentCasing_ReturnsCorrectResult()
 		{
@@ -88,7 +86,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 
 			Assert.True(testGroupsDataSet.GetGroupUsers("AutomatION").Count() == 2, "Expected GetGroupUsers search to be case insensitive");
 		}
-
 
 		[Fact]
 		public void GetUserGroups_InputInDifferentCasing_ReturnsCorrectResult()
@@ -103,7 +100,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 			Assert.True(testGroupsDataSet.GetUserGroups("TesT1@mydomain.xx").Count() == 3, "Expected GetUserGroups search to be case insensitive");
 		}
 
-
 		[Fact]
 		public void GetUserGroups_WhenUserNotInDataSet_ReturnsDefaultGroup()
 		{
@@ -114,7 +110,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 			Assert.True(loadedDataSet.GetUserGroups("randomuser@mydomain.xx").Count() == 1, "Expected 1 group for randomuser@mydomain.xx");
 			Assert.True(loadedDataSet.GetUserGroups("randomuser@mydomain.xx").Contains("all"), "Expected groups for randomuser@mydomain.xx to contain group 'all'");
 		}
-
 
 		[Fact]
 		public void GetUserGroups_WhenDataSetIsEmpty_ReturnsDefaultGroup()
@@ -129,38 +124,29 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 			Assert.True(emptyDataSet.GetUserGroups("randomuser@mydomain.xx").Contains("all"), "Expected groups for randomuser@mydomain.xx to contain group 'all'");
 		}
 
-
 		[Fact]
 		public void Load_IncorrectTestGroupsXml_FailsToDeserialise() => LoadDataSetWithOneError(IncorrectDataRaw);
-
 
 		[Fact]
 		public void Load_GroupWithNoMembers_LoadsWithError() => LoadDataSetWithOneError(IncorrectDataNoMembers);
 
-
 		[Fact]
 		public void Load_EmptyMemberEmail_LoadsWithError() => LoadDataSetWithOneError(IncorrectDataEmptyEmail);
-
 
 		[Fact]
 		public void Load_EmptyMemberDeploymentId_LoadsWithError() => LoadDataSetWithOneError(IncorrectDataEmptyDeploymentId);
 
-
 		[Fact]
 		public void Load_GroupWithEmptyName_LoadsWithError() => LoadDataSetWithOneError(IncorrectDataEmptyGroupName);
-
 
 		[Fact]
 		public void Load_GroupWithSemicolonInName_LoadsWithError() => LoadDataSetWithOneError(IncorrectDataSemicolonInGroupName);
 
-
 		[Fact]
 		public void Load_GroupWithReservedName_LoadsWithError() => LoadDataSetWithOneError(IncorrectDataReservedGroupName);
 
-
 		[Fact]
 		public void Load_EmptyXml_FailsToDeserialise() => LoadDataSetWithOneError(string.Empty);
-
 
 		/// <summary>
 		/// Verifies that DataSet loads with one parsing error from given resource
@@ -186,14 +172,12 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 			Assert.Equal(1, testGroupsDataSet.Errors.Count);
 		}
 
-
 		/// <summary>
 		/// Merges all load errors into one string for easier unit test output
 		/// </summary>
 		/// <param name="dataSet">Test Groups DataSet</param>
 		/// <returns>String with all loading errors</returns>
 		private static string GetDataSetLoadingErrors(TestGroupsDataSet dataSet) => GetDataSetLoadingErrors(dataSet.Errors);
-
 
 		/// <summary>
 		/// Merges all load errors into one string for easier unit test output
@@ -216,12 +200,10 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 			return stringBuilder.ToString();
 		}
 
-
 		/// <summary>
 		/// Test resource name
 		/// </summary>
 		private const string TestResourceName = ResourceNames.TestGroups;
-
 
 		/// <summary>
 		/// Xml Data to be loaded into DataSet for testing - incorrect data
@@ -235,7 +217,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 			};
 		}
 
-
 		/// <summary>
 		/// Xml Data to be loaded into DataSet for testing - correct data
 		/// </summary>
@@ -247,7 +228,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 				{ TestResourceName, EmbeddedResources.CreateResourceDetails(ValidDataRaw) }
 			};
 		}
-
 
 		/// <summary>
 		/// Valid test groups xml data
@@ -271,7 +251,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 	</TestGroup>
 </TestGroups>";
 
-
 		/// <summary>
 		/// Incorrect test groups xml data - no members in Test group
 		/// </summary>
@@ -286,7 +265,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 	</TestGroup>
 </TestGroups>";
 
-
 		/// <summary>
 		/// Incorrect test groups xml data - empty email
 		/// </summary>
@@ -298,7 +276,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 		<Member email=""test1@mydomain.xx"" alias=""myalias""/>
 	</TestGroup>
 </TestGroups>";
-
 
 		/// <summary>
 		/// Incorrect test groups xml data - empty deployment id
@@ -312,7 +289,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 	</TestGroup>
 </TestGroups>";
 
-
 		/// <summary>
 		/// Incorrect test groups xml data - empty group name
 		/// </summary>
@@ -324,7 +300,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 		<Member email=""test1@mydomain.xx"" alias=""myalias""/>
 	</TestGroup>
 </TestGroups>";
-
 
 		/// <summary>
 		/// Incorrect test groups XML data, featuring a group name containing a semicolon.
@@ -338,7 +313,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 	</TestGroup>
 </TestGroups>";
 
-
 		/// <summary>
 		/// Incorrect test groups XML data, featuring a reserved group name.
 		/// </summary>
@@ -350,7 +324,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Authentication.Groups
 		<Member email=""test1@mydomain.xx"" alias=""myalias""/>
 	</TestGroup>
 </TestGroups>";
-
 
 		/// <summary>
 		/// Incorrect test groups xml data, closing bracket is missing after ""Test""

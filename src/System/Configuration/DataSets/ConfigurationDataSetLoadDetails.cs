@@ -40,30 +40,25 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				TaggingUtilities.ReserveTag(0x23821011 /* tag_967ar */));
 		}
 
-
 		/// <summary>
 		/// Gets the file name.
 		/// </summary>
 		private string Name { get; }
-
 
 		/// <summary>
 		/// Gets the last write time for the file.
 		/// </summary>
 		private DateTime LastWrite { get; }
 
-
 		/// <summary>
 		/// Gets the length of the file in bytes.
 		/// </summary>
 		private long Length { get; }
 
-
 		/// <summary>
 		/// The SHA256 hash of the file.
 		/// </summary>
 		private string SHA256Hash { get; }
-
 
 		/// <summary>
 		/// Returns a <see cref="string"/> that represents this instance.

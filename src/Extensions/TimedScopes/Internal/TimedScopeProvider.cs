@@ -11,14 +11,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		public TimedScopeProvider(IActivityProvider activityProvider) =>
 			m_activityProvider = activityProvider;
 
-
 		public TimedScope CreateAndStart(TimedScopeDefinition name, TimedScopeResult result) =>
 			Create(name, result).Start();
 
-
 		public TimedScope Create(TimedScopeDefinition name, TimedScopeResult result) =>
 			new TimedScope(m_activityProvider.Create(name), result);
-
 
 		private readonly IActivityProvider m_activityProvider;
 	}

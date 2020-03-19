@@ -32,7 +32,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Null(applicableReleaseGates);
 		}
 
-
 		[Fact]
 		public void IsApplicable_ForApplicableReleaseGate_ApplicableReleaseGateReturned()
 		{
@@ -48,7 +47,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.NotNull(applicableReleaseGates);
 			Assert.Same(applicableReleaseGates[0], gate.ReleasePlan[0]);
 		}
-
 
 		[Fact]
 		public void IsApplicable_ContainterGateIsApplicable_ApplicableReleaseGateReturned()
@@ -66,7 +64,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Same(applicableReleaseGates[0], gate.ReleasePlan[0]);
 		}
 
-
 		[Fact]
 		public void IsApplicable_ContainterGateIsNotApplicable_NoReleaseGateReturned()
 		{
@@ -80,7 +77,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(gates.IsApplicable(context, out IGate[] applicableReleaseGates), "Gate should not be applicable");
 			Assert.Null(applicableReleaseGates);
 		}
-
 
 		/// <summary>
 		/// Loads the gate data set.
@@ -100,7 +96,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			dataSet.Load(resources);
 			return dataSet;
 		}
-
 
 		/// <summary>
 		/// Valid test groups xml data
@@ -126,7 +121,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 					<Member deploymentId=""{8499ED16-258C-49d4-A1E0-C9E1B1460FDC}"" alias=""myalias""/>
 				</TestGroup>
 			</TestGroups>";
-
 
 		/// <summary>
 		/// The gate XML to be used by the unit test.
@@ -194,7 +188,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				</Gate>
 			</Gates>";
 
-
 		/// <summary>
 		/// The gate XML to be used for testing applicability of release gates subject to applicability of container gate.
 		/// </summary>
@@ -235,7 +228,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		/// The m_dataset
 		/// </summary>
 		private static GateDataSet Dataset { get; }  = LoadGateDataSet(GateXml);
-
 
 		/// <summary>
 		/// Setups the gate request.

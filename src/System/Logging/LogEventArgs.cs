@@ -23,42 +23,35 @@ namespace Microsoft.Omex.System.Logging
 		/// </summary>
 		private const int ParameterCapacity = 64;
 
-
 		/// <summary>
 		/// Tag id
 		/// </summary>
 		public uint TagId { get; }
-
 
 		/// <summary>
 		/// Get the Tag id as a string
 		/// </summary>
 		public string TagIdAsString => ULSLogging.TagIdAsString(TagId);
 
-
 		/// <summary>
 		/// Category id
 		/// </summary>
 		public Category CategoryId { get; }
-
 
 		/// <summary>
 		/// Thread id
 		/// </summary>
 		public int ThreadId { get; }
 
-
 		/// <summary>
 		/// Get the category id as a string
 		/// </summary>
 		public virtual string CategoryIdAsString => CategoryId.Name;
 
-
 		/// <summary>
 		/// Message
 		/// </summary>
 		public virtual string Message { get; }
-
 
 		/// <summary>
 		/// Optional parameters for the message
@@ -66,12 +59,10 @@ namespace Microsoft.Omex.System.Logging
 		[SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays", Justification = "Explicitly need an array to match underlying logging.")]
 		public object[] MessageParameters { get; }
 
-
 		/// <summary>
 		/// Optional details string in addition to the message/message parameters value
 		/// </summary>
 		public string Details { get; }
-
 
 		/// <summary>
 		/// The fully formatted message
@@ -100,7 +91,6 @@ namespace Microsoft.Omex.System.Logging
 			}
 		}
 
-
 		/// <summary>
 		/// Join the message parameters into a string
 		/// </summary>
@@ -123,48 +113,40 @@ namespace Microsoft.Omex.System.Logging
 			return builder.ToString();
 		}
 
-
 		/// <summary>
 		/// Trace level
 		/// </summary>
 		public Level Level { get; }
-
 
 		/// <summary>
 		/// Get the trace level as a string
 		/// </summary>
 		public virtual string LevelAsString => Level.ToString();
 
-
 		/// <summary>
 		/// Correlation data
 		/// </summary>
 		public CorrelationData CorrelationData { get; }
-
 
 		/// <summary>
 		/// Should log directly to the underlying log handler
 		/// </summary>
 		public bool ShouldLogDirectly { get; }
 
-
 		/// <summary>
 		/// Unique Sequence Number for this event within the context of the correlation
 		/// </summary>
 		public long SequenceNumber { get; }
-
 
 		/// <summary>
 		/// Server Timestamp (Stopwatch.GetTimestamp) when event occurred
 		/// </summary>
 		public long ServerTimestamp { get; }
 
-
 		/// <summary>
 		/// Server UTC Time when event occurred
 		/// </summary>
 		public DateTime ServerTimeUtc { get; }
-
 
 		/// <summary>
 		/// Construct the event arguments

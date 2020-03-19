@@ -28,7 +28,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 			CheckLogCount(tagId, false);
 		}
 
-
 		[Theory]
 		[InlineData(true)]
 		[InlineData(false)]
@@ -43,7 +42,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 			CheckLogCount(tagId, log);
 		}
 
-
 		[Theory]
 		[InlineData("")]
 		[InlineData("", "")]
@@ -57,7 +55,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 			CheckLogCount(tagId, false);
 		}
-
 
 		[Theory]
 		[InlineData(null, true)]
@@ -86,7 +83,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 			CheckLogCount(tagId, log);
 		}
 
-
 		[Theory]
 		[InlineData(0)]
 		[InlineData(1)]
@@ -107,7 +103,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 			CheckLogCount(tagId, false);
 		}
-
 
 		[Theory]
 		[InlineData(0, true)]
@@ -147,7 +142,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 			CheckLogCount(tagId, log);
 		}
 
-
 		[Theory]
 		[InlineData(1)]
 		[InlineData(2)]
@@ -167,8 +161,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 			CheckLogCount(tagId, false);
 		}
-
-
 
 		[Theory]
 		[InlineData(true, true)]
@@ -195,7 +187,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 			CheckLogCount(tagId, log);
 		}
 
-
 		[Theory]
 		[InlineData("")]
 		[InlineData("fd")]
@@ -209,7 +200,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 			CheckLogCount(tagId, false);
 		}
-
 
 		[Theory]
 		[InlineData(null, true)]
@@ -225,7 +215,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 			CheckLogCount(tagId, log);
 		}
 
-
 		[Theory]
 		[InlineData("")]
 		[InlineData("fd")]
@@ -239,7 +228,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 			CheckLogCount(tagId, false);
 		}
-
 
 		[Theory]
 		[InlineData(null, true)]
@@ -255,7 +243,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 			CheckLogCount(tagId, log);
 		}
 
-
 		[Theory]
 		[InlineData("argument value")]
 		public void ExpectsNotNullOrWhiteSpaceArgument_CorrectArgument_DoesNotLogOrThrowException(string argument)
@@ -268,7 +255,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 			CheckLogCount(tagId, false);
 		}
-
 
 		[Theory]
 		[InlineData(null, true)]
@@ -295,7 +281,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 			CheckLogCount(tagId, log);
 		}
 
-
 		[Theory]
 		[InlineData("")]
 		[InlineData("fd")]
@@ -309,7 +294,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 			CheckLogCount(tagId, false);
 		}
-
 
 		[Theory]
 		[InlineData(null, true)]
@@ -325,7 +309,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 			CheckLogCount(tagId, log);
 		}
 
-
 		[Fact]
 		public void Validate_CorrectArgument_DoesNotLogAndReturnsTrue()
 		{
@@ -337,7 +320,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 			CheckLogCount(tagId, false);
 		}
-
 
 		[Theory]
 		[InlineData(true)]
@@ -352,7 +334,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 			CheckLogCount(tagId, log);
 		}
-
 
 		[Theory]
 		[InlineData(new string[0], true)]
@@ -374,7 +355,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 			CheckLogCount(tagId, log);
 		}
 
-
 		[Fact]
 		public void ValidateNotEmptyAndAllNotNull_CorrectArgument_DoesNotLogAndReturnsTrue()
 		{
@@ -386,7 +366,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 			CheckLogCount(tagId, false);
 		}
-
 
 		[Theory]
 		[InlineData(0)]
@@ -408,7 +387,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 			CheckLogCount(tagId, false);
 		}
-
 
 		[Theory]
 		[InlineData(0, true)]
@@ -441,7 +419,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 			CheckLogCount(tagId, log);
 		}
 
-
 		[Theory]
 		[InlineData("")]
 		[InlineData("", null)]
@@ -455,7 +432,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 			CheckLogCount(tagId, false);
 		}
-
 
 		[Theory]
 		[InlineData(true, true)]
@@ -482,7 +458,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 			CheckLogCount(tagId, log);
 		}
 
-
 		[Fact]
 		public void ValidateArgument_CorrectArgument_DoesNotLogAndReturnsTrue()
 		{
@@ -494,7 +469,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 			CheckLogCount(tagId, false);
 		}
-
 
 		[Theory]
 		[InlineData(true)]
@@ -509,8 +483,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 
 			CheckLogCount(tagId, log);
 		}
-
-
 
 		private void CheckLogCount(uint? tagId, bool log)
 		{
@@ -530,7 +502,6 @@ namespace Microsoft.Omex.System.UnitTests.Validation
 				Assert.Contains(ArgumentName, eventArg.FullMessage);
 			}
 		}
-
 
 		/// <summary>
 		/// Argument's name

@@ -47,7 +47,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			timedScopeLoggerMock.Verify(x => x.LogScopeEnd(scope, It.IsAny<CorrelationData>()), Times.Once);
 		}
 
-
 		[Fact]
 		public void Start_ShouldConstructTimedScope_WithTimerActive()
 		{
@@ -72,7 +71,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 				Assert.False(scope.IsSuccessful.Value, "IsSuccessful should be set to false.");
 			}
 		}
-
 
 		[Fact]
 		public void Create_ShouldConstructTimedScope_WithTimerInactive()
@@ -99,7 +97,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			}
 		}
 
-
 		[Fact]
 		public void AbortTimer_ShouldDisableTimerActive()
 		{
@@ -110,7 +107,7 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			IMachineInformation machineInformation = new UnitTestMachineInformation();
 			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
 
-			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation: machineInformation, 
+			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation: machineInformation,
 				timedScopeStackManager: timedScopeStackManager))
 			{
 				Assert.True(scope.IsScopeActive, "Default scope should have timer active.");
@@ -119,7 +116,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 				Assert.False(scope.IsScopeActive, "Aborting timer should stop timer.");
 			}
 		}
-
 
 		[Fact]
 		public void AbortTimer_ShouldDisableTimerActive_AndSetResultsToTrue()
@@ -131,7 +127,7 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			IMachineInformation machineInformation = new UnitTestMachineInformation();
 			ITimedScopeStackManager timedScopeStackManager = new TimedScopeStackManager(callContextManagerMock.Object, machineInformation);
 
-			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation: machineInformation, 
+			using (TimedScope scope = TestHooks.CreateDefaultTimedScope(timedScopeLoggerMock.Object, replyEventConfiguratorMock.Object, machineInformation: machineInformation,
 				timedScopeStackManager: timedScopeStackManager))
 			{
 				Assert.True(scope.IsScopeActive, "Default scope should have timer active.");
@@ -142,7 +138,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 				Assert.True(scope.IsSuccessful.Value, "IsSuccesful should be set to true.");
 			}
 		}
-
 
 		[Fact]
 		public void AbortTimer_ShouldDisableTimerActive_AndSetResultsToFalse()
@@ -169,7 +164,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 				Assert.False(scope.IsSuccessful.Value, "IsSuccesful should be set to false.");
 			}
 		}
-
 
 		[Fact]
 		public void AddLoggingValue_ShouldOutputValueInLogEvent()
@@ -201,7 +195,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			}
 		}
 
-
 		[Fact]
 		public void FailedScope_ResultAndFailureDescription_ShouldOutputValueInLogEvent()
 		{
@@ -230,7 +223,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			}
 		}
 
-
 		[Fact]
 		public void SucceededScope_Result_ShouldOutputValueInLogEvent()
 		{
@@ -256,7 +248,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			}
 		}
 
-
 		[Fact]
 		public void AddLoggingValue_WithNullKey_ShouldLogError()
 		{
@@ -278,7 +269,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			}
 		}
 
-
 		[Fact]
 		public void Start_DisposedTimedScope_ShoudLogError()
 		{
@@ -299,7 +289,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			Assert.Equal(TraceErrors.Count(), 1);
 			LoggedEvents.Clear();
 		}
-
 
 		[Fact]
 		public void Start_WithActiveTimer_ShouldLogError()
@@ -323,7 +312,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 				LoggedEvents.Clear();
 			}
 		}
-
 
 		[Fact]
 		public void End_WithDisposedTimedScope_ShouldLogError()
@@ -352,13 +340,11 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			}
 		}
 
-
 		[Fact]
 		public void Frequency_ShouldMatchFrequencyOfStopwatch()
 		{
 			Assert.Equal(TimedScope.Frequency, Stopwatch.Frequency);
 		}
-
 
 		[Fact]
 		public void NotSettingTimedScopeResult_ChangesToSystemError()
@@ -383,7 +369,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			}
 		}
 
-
 		[Fact]
 		public void DefaultTimedScopeResult_IsSeparateValue()
 		{
@@ -396,7 +381,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			Assert.NotEqual(TimedScopeResult.SystemError, result);
 			Assert.NotEqual(TimedScopeResult.ExpectedError, result);
 		}
-
 
 		[Fact]
 		public void DefaultTimedScopeResult_LogsAsSystemError()
@@ -424,7 +408,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Unit test failure descriptions
 		/// </summary>
@@ -435,7 +418,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			/// </summary>
 			ExampleDescription,
 		}
-
 
 		/// <summary>
 		/// Verifies that a reference type is not null and returns the evaluation result.
@@ -459,7 +441,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 			}
 		}
 
-
 		/// <summary>
 		/// Trace errors
 		/// </summary>
@@ -470,7 +451,6 @@ namespace Microsoft.Omex.System.UnitTests.TimedScopes
 				return LoggedEvents.Except(ReportExceptions).Where((args) => { return args.Level == Levels.Error; });
 			}
 		}
-
 
 		/// <summary>
 		/// Exceptions reported
