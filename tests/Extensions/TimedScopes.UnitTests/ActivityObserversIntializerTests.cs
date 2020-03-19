@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.TimedScopes;
@@ -15,9 +14,9 @@ namespace Hosting.Services.UnitTests
 	public class ActivityObserversIntializerTests
 	{
 		[TestMethod]
-		public void ActivityObserversIvokedProperly()
+		public async Task ActivityObserversInvokedProperly()
 		{
-			string name = nameof(ActivityObserversIvokedProperly);
+			string name = nameof(ActivityObserversInvokedProperly);
 			Mock<IActivityStartObserver> startObserver = new Mock<IActivityStartObserver>();
 			Mock<IActivityStopObserver> stopObserver = new Mock<IActivityStopObserver>();
 			ActivityObserversIntializer initializer = new ActivityObserversIntializer(
@@ -26,7 +25,7 @@ namespace Hosting.Services.UnitTests
 
 			try
 			{
-				initializer.StartAsync(CancellationToken.None);
+				await initializer.StartAsync(CancellationToken.None);
 
 				using DiagnosticListener listener = new DiagnosticListener(name);
 
@@ -45,7 +44,7 @@ namespace Hosting.Services.UnitTests
 			}
 			catch
 			{
-				initializer.StopAsync(CancellationToken.None);
+				await initializer.StopAsync(CancellationToken.None);
 				throw;
 			}
 		}

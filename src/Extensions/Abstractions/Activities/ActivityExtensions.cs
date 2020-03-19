@@ -3,6 +3,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Microsoft.Omex.Extensions.Abstractions.Activities
 {
@@ -79,7 +80,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
 		[Obsolete(TransactionIdObsoleteMessage, false)]
 		public static Activity SetObsoleteTransactionId(this Activity activity, uint transactionId) =>
-			activity.AddBaggage(ObsoleteTransactionId, transactionId.ToString());
+			activity.AddBaggage(ObsoleteTransactionId, transactionId.ToString(CultureInfo.InvariantCulture));
 
 
 		private const string UserHashKey = "UserHash";

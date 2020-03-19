@@ -3,8 +3,8 @@
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {

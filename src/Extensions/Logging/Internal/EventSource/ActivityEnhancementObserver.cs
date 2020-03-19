@@ -9,11 +9,11 @@ using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
-	internal class ActivityEnhensementObserver : IActivityStartObserver
+	internal class ActivityEnhancementObserver : IActivityStartObserver
 	{
 		private readonly IOptions<OmexLoggingOptions> m_options;
 
-		public ActivityEnhensementObserver(IOptions<OmexLoggingOptions> options)
+		public ActivityEnhancementObserver(IOptions<OmexLoggingOptions> options)
 		{
 			m_options = options;
 		}
@@ -22,8 +22,8 @@ namespace Microsoft.Omex.Extensions.Logging
 		{
 			if (m_options.Value.AddObsoleteCorrelationToActivity)
 			{
-#pragma warning disable CS0618
-				if (activity.GetObsoleteCorrelationId() != null)
+#pragma warning disable CS0618 // if we are supporting old correlation we need to add it for new activities
+				if (activity.GetObsoleteCorrelationId() == null)
 				{
 					activity.SetObsoleteCorrelationId(Guid.NewGuid());
 				}

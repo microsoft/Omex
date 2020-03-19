@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 	public interface ITimedScopeEventSender
 	{
 		/// <summary>
-		/// Log timed scope end information
+		/// Log information about activity stop
 		/// </summary>
 		void LogActivityStop(Activity activity);
 	}

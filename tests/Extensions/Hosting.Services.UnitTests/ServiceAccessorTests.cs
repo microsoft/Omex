@@ -7,8 +7,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Hosting.Services.UnitTests
 {
-
-
 	[TestClass]
 	public class ServiceAccessorTests
 	{

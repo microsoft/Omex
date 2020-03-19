@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
 	[TestClass]
+	[TestCategory(nameof(Activity))]
 	public class TimedScopeExtensionsTests
 	{
 		[DataTestMethod]

@@ -40,13 +40,14 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			{
 				disposable.Dispose();
 			}
+
 			m_observerLifetime?.Dispose();
 			return Task.CompletedTask;
 		}
 
-		private bool IsActivityStart(string eventName) => m_activityStartObservers.Any() && eventName.EndsWith(".Start", StringComparison.Ordinal);
+		private bool IsActivityStart(string eventName) => m_activityStartObservers.Length > 0 && eventName.EndsWith(".Start", StringComparison.Ordinal);
 
-		private bool IsActivityStop(string eventName) => m_activityStopObservers.Any() && eventName.EndsWith(".Stop", StringComparison.Ordinal);
+		private bool IsActivityStop(string eventName) => m_activityStopObservers.Length > 0 && eventName.EndsWith(".Stop", StringComparison.Ordinal);
 
 		private bool IsEnabled(string eventName) => IsActivityStart(eventName) || IsActivityStop(eventName);
 
@@ -68,8 +69,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			{
 				OnActivityStarted(activity, value.Value);
 			}
-
-			if (IsActivityStop(value.Key))
+			else if (IsActivityStop(value.Key))
 			{
 				OnActivityStoped(activity, value.Value);
 			}

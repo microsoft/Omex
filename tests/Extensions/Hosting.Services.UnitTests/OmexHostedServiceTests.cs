@@ -4,7 +4,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Hosting.Services;
@@ -24,14 +23,14 @@ namespace Hosting.Services.UnitTests
 
 			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after constructor");
 
-			await hostedService.StartAsync(CancellationToken.None);
+			await hostedService.StartAsync(CancellationToken.None).ConfigureAwait(false);
 			Assert.IsTrue(runnerMock.IsStarted, "RunServiceAsync should be called after StartAsync");
 
 			Task task = runnerMock.Task!;
 			Assert.IsFalse(task.IsCanceled, "Task should not be canceled");
 			Assert.IsFalse(runnerMock.Token.IsCancellationRequested, "CancelationToken should not be canceled");
 
-			await hostedService.StopAsync(CancellationToken.None);
+			await hostedService.StopAsync(CancellationToken.None).ConfigureAwait(false);
 			Assert.IsTrue(runnerMock.Token.IsCancellationRequested, "Task should be canceled");
 			Assert.IsTrue(task.IsCanceled, "CancelationToken should be canceled");
 		}
@@ -42,19 +41,19 @@ namespace Hosting.Services.UnitTests
 		{
 			MockRunner runnerMock = new MockRunner(t => Task.Run(async () =>
 				{
-					await Task.Delay(5);
-					throw new Exception("Totaly valid exeption");
+					await Task.Delay(5).ConfigureAwait(false);
+					throw new ArithmeticException("Totaly valid exeption");
 				}));
 			ILogger<OmexHostedService> loggerMock = new NullLogger<OmexHostedService>();
 
 			OmexHostedService hostedService = new OmexHostedService(runnerMock, loggerMock);
 			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after constructor");
 
-			await hostedService.StartAsync(CancellationToken.None);
+			await hostedService.StartAsync(CancellationToken.None).ConfigureAwait(false);
 			Assert.IsTrue(runnerMock.IsStarted, "RunServiceAsync should be called after StartAsync");
 			Assert.IsFalse(runnerMock.Token.IsCancellationRequested, "CancelationToken should not be canceled");
 
-			await hostedService.StopAsync(CancellationToken.None);
+			await hostedService.StopAsync(CancellationToken.None).ConfigureAwait(false);
 			Assert.IsTrue(runnerMock.Task!.IsFaulted, "Task should be faulted");
 			Assert.IsTrue(runnerMock.Token.IsCancellationRequested, "Task should be canceled");
 		}

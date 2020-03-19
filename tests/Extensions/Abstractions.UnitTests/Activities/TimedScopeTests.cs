@@ -1,16 +1,16 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 using System;
 using System.Diagnostics;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
-using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
 	[TestClass]
+	[TestCategory(nameof(Activity))]
 	public class TimedScopeTests
 	{
 		[TestMethod]
@@ -34,7 +34,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 
 		[TestMethod]
-		public void Stop_MultipleCallsIgnored()
+		public void Stop_WhenCalledMultipleTimes_IgnoresSuperfluousCalls()
 		{
 			TimedScope scope = CreateTimedScope();
 			scope.Start();
@@ -44,7 +44,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 
 		[TestMethod]
-		public void Dispose_MultipleCallsIgnored()
+		public void Dispose_WhenCalledMultipleTimes_IgnoresSuperfluousCalls()
 		{
 			TimedScope scope = CreateTimedScope();
 			scope.Start();

@@ -4,12 +4,12 @@
 using System;
 using System.Diagnostics;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
-using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
 	[TestClass]
+	[TestCategory(nameof(Activity))]
 	public class ActivityExtensionsTests
 	{
 		[TestMethod]
@@ -25,7 +25,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			Assert.AreEqual(userHash, activity1.GetUserHash());
 			Assert.AreNotEqual(userHash, activity2.GetUserHash());
 		}
-
 
 		[TestMethod]
 		public void MarkAsTransaction_AddsMarker()
@@ -52,7 +51,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			Assert.AreEqual(correlation, activity1.GetObsoleteCorrelationId());
 			Assert.AreNotEqual(correlation, activity2.GetObsoleteCorrelationId());
 		}
-
 
 		[TestMethod]
 		[Obsolete]

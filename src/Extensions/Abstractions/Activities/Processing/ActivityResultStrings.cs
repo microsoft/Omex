@@ -43,9 +43,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities.Processing
 				TimedScopeResult.SystemError => SystemError,
 				TimedScopeResult.ExpectedError => ExpectedError,
 				TimedScopeResult.Success => Success,
-#pragma warning disable CS0618 // need to handle all enum values
-				TimedScopeResult.Unknown => Unknown,
-#pragma warning restore CS0618
 				_ => throw new ArgumentException(FormattableString.Invariant($"Unsupported enum value '{result}'"))
 			};
 	}

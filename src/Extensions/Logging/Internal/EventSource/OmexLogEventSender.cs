@@ -51,7 +51,6 @@ namespace Microsoft.Omex.Extensions.Logging
 #pragma warning restore CS0618
 				: eventId.Id.ToString(CultureInfo.InvariantCulture);
 
-
 			string activityId = string.Empty;
 			ActivityTraceId activityTraceId = default;
 			Guid obsoleteCorrelationId = Guid.Empty;
@@ -71,7 +70,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			}
 
 			string traceIdAsString = activityTraceId.ToHexString();
-
 
 			//Event methods should have all information as parameters so we are passing them each time
 			// Posible Breaking changes:
