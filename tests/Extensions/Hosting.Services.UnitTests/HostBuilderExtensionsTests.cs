@@ -18,7 +18,6 @@ using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using ServiceFabric.Mocks;
 
 namespace Hosting.Services.UnitTests
 {
@@ -35,7 +34,7 @@ namespace Hosting.Services.UnitTests
 			void CheckTypeRegistration<TContext>() where TContext : ServiceContext
 			{
 				object obj = new ServiceCollection()
-					.AddOmexServiceFabricDependencies<StatelessServiceContext>()
+					.AddOmexServiceFabricDependencies<TContext>()
 					.AddSingleton(new Mock<IHostEnvironment>().Object)
 					.BuildServiceProvider()
 					.GetService(typeToResolver);
@@ -55,11 +54,11 @@ namespace Hosting.Services.UnitTests
 		[TestMethod]
 		public void AddServiceActionUsingObject_RegisterInstance()
 		{
-			IServiceAction<ServiceContext> serviceAction = new Mock<IServiceAction<ServiceContext>>().Object;
+			IServiceAction<object> serviceAction = new Mock<IServiceAction<object>>().Object;
 
 			HostBuilder hostBuilder = new HostBuilder();
-			new ServiceFabricHostBuilder<ServiceContext>(hostBuilder).AddServiceAction(serviceAction);
-			IServiceAction<ServiceContext> resolvedAction = hostBuilder.Build().Services.GetService<IServiceAction<ServiceContext>>();
+			new ServiceFabricHostBuilder<object>(hostBuilder).AddServiceAction(serviceAction);
+			IServiceAction<object> resolvedAction = hostBuilder.Build().Services.GetService<IServiceAction<object>>();
 
 			Assert.ReferenceEquals(serviceAction, resolvedAction);
 		}
@@ -68,18 +67,18 @@ namespace Hosting.Services.UnitTests
 		public async Task AddServiceActionUsingFunc_RegisterInstance()
 		{
 			bool actionCalled = false;
-			Func<ServiceContext, CancellationToken, Task> action = (c, t) =>
+			Task action(object c, CancellationToken t)
 			{
 				actionCalled = true;
 				return Task.CompletedTask;
-			};
+			}
 
 			HostBuilder hostBuilder = new HostBuilder();
-			new ServiceFabricHostBuilder<ServiceContext>(hostBuilder).AddServiceAction(action);
+			new ServiceFabricHostBuilder<object>(hostBuilder).AddServiceAction(action);
 
-			IServiceAction<ServiceContext> resolvedAction = hostBuilder.Build().Services.GetService<IServiceAction<ServiceContext>>();
+			IServiceAction<object> resolvedAction = hostBuilder.Build().Services.GetService<IServiceAction<object>>();
 
-			await resolvedAction.RunAsync(MockStatelessServiceContextFactory.Default, CancellationToken.None);
+			await resolvedAction.RunAsync(new object(), CancellationToken.None).ConfigureAwait(false);
 
 			Assert.IsTrue(actionCalled);
 		}
@@ -87,11 +86,11 @@ namespace Hosting.Services.UnitTests
 		[TestMethod]
 		public void AddServiceListenerUsingObject_RegisterInstance()
 		{
-			IListenerBuilder<ServiceContext> listenerBuilder = new Mock<IListenerBuilder<ServiceContext>>().Object;
+			IListenerBuilder<object> listenerBuilder = new Mock<IListenerBuilder<object>>().Object;
 
 			HostBuilder hostBuilder = new HostBuilder();
-			new ServiceFabricHostBuilder<ServiceContext>(hostBuilder).AddServiceListener(listenerBuilder);
-			IListenerBuilder<ServiceContext> resolvedAction = hostBuilder.Build().Services.GetService<IListenerBuilder<ServiceContext>>();
+			new ServiceFabricHostBuilder<object>(hostBuilder).AddServiceListener(listenerBuilder);
+			IListenerBuilder<ServiceContext> resolvedAction = hostBuilder.Build().Services.GetService<IListenerBuilder<object>>();
 
 			Assert.ReferenceEquals(listenerBuilder, resolvedAction);
 		}
@@ -100,12 +99,12 @@ namespace Hosting.Services.UnitTests
 		public void AddServiceListenerUsingFunc_RegisterInstance()
 		{
 			ICommunicationListener listener = new Mock<ICommunicationListener>().Object;
-			Func<ServiceContext, ICommunicationListener> listenerBuilder = context => listener;
+			Func<object, ICommunicationListener> listenerBuilder = context => listener;
 
 			HostBuilder hostBuilder = new HostBuilder();
-			new ServiceFabricHostBuilder<ServiceContext>(hostBuilder).AddServiceListener("testName", listenerBuilder);
-			IListenerBuilder<ServiceContext> resolvedBuilder = hostBuilder.Build().Services.GetService<IListenerBuilder<ServiceContext>>();
-			ICommunicationListener resultedListener = resolvedBuilder.Build(MockStatelessServiceContextFactory.Default);
+			new ServiceFabricHostBuilder<object>(hostBuilder).AddServiceListener("testName", listenerBuilder);
+			IListenerBuilder<object> resolvedBuilder = hostBuilder.Build().Services.GetService<IListenerBuilder<object>>();
+			ICommunicationListener resultedListener = resolvedBuilder.Build(new object());
 
 			Assert.ReferenceEquals(listener, resultedListener);
 		}

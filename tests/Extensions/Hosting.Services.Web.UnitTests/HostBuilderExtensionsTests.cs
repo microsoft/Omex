@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
+using Microsoft.ServiceFabric.Services.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ServiceFabric.Mocks;
 
 namespace Hosting.Services.Web.UnitTests
 {
@@ -19,7 +19,8 @@ namespace Hosting.Services.Web.UnitTests
 		[TestMethod]
 		public void BuildStatelessService_TypesRegisteredStateless() =>
 			CheckTypeRegistration(
-				MockStatelessServiceContextFactory.Default,
+				(StatelessService)new MockStatelessService(),
+				service => service.Context,
 				(v, h) => h.BuildStatelessService(
 					"StatelessServiceName",
 					b => b.AddKestrelListener<MockStartup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
@@ -27,17 +28,19 @@ namespace Hosting.Services.Web.UnitTests
 		[TestMethod]
 		public void BuildStateful_BuildStatelessService_TypesRegistered() =>
 			CheckTypeRegistration(
-				MockStatefulServiceContextFactory.Default,
+				(StatefulService)new MockStatefulService(),
+				service => service.Context,
 				(v, h) => h.BuildStatefulService(
 					"StatefulServiceName",
 					b => b.AddKestrelListener<MockStartup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
 
-		private void CheckTypeRegistration<TContext>(
-			TContext context,
-			Func<ListenerValidator<TContext>, IHostBuilder, IHost> buildAction)
+		private void CheckTypeRegistration<TService,TContext>(
+			TService service,
+			Func<TService,TContext> getContext,
+			Func<ListenerValidator<TService, TContext>, IHostBuilder, IHost> buildAction)
 			where TContext : ServiceContext
 		{
-			ListenerValidator<TContext> validator = new ListenerValidator<TContext>();
+			ListenerValidator<TService, TContext> validator = new ListenerValidator<TService, TContext>();
 
 			IHostBuilder hostBuilder = new HostBuilder()
 				.UseDefaultServiceProvider(options =>
@@ -47,16 +50,16 @@ namespace Hosting.Services.Web.UnitTests
 				});
 
 			IHost host = buildAction(validator, hostBuilder);
-			IListenerBuilder<TContext> builder = host.Services.GetService<IListenerBuilder<TContext>>();
+			IListenerBuilder<TService> builder = host.Services.GetService<IListenerBuilder<TService>>();
 
 			Assert.IsNotNull(builder);
 
-			KestrelListenerBuilder<MockStartup, TContext> kestrelBuilder
-				= (KestrelListenerBuilder<MockStartup, TContext>)builder;
+			KestrelListenerBuilder<MockStartup, TService, TContext> kestrelBuilder
+				= (KestrelListenerBuilder<MockStartup, TService, TContext>)builder;
 
-			IWebHost webHost = validator.ValidateListenerBuilder(context, kestrelBuilder);
+			IWebHost webHost = validator.ValidateListenerBuilder(getContext(service), kestrelBuilder);
 			validator.ValidateOmexTypesRegistered(webHost);
-			validator.ValidateBuildFunction(context, kestrelBuilder);
+			validator.ValidateBuildFunction(service, kestrelBuilder);
 		}
 	}
 }

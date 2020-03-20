@@ -3,7 +3,6 @@
 
 using System;
 using System.Fabric;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -11,7 +10,6 @@ using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
 using Microsoft.Omex.Extensions.Logging;
-using Microsoft.Omex.Extensions.TimedScopes;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,7 +17,7 @@ using Moq;
 
 namespace Hosting.Services.Web.UnitTests
 {
-	internal class ListenerValidator<TContext>
+	internal class ListenerValidator<TService, TContext>
 		where TContext : ServiceContext
 	{
 		public ListenerValidator()
@@ -45,7 +43,7 @@ namespace Hosting.Services.Web.UnitTests
 
 		public Action<IWebHostBuilder> BuilderAction { get; }
 
-		public IWebHost ValidateListenerBuilder(TContext context, KestrelListenerBuilder<MockStartup, TContext> builder)
+		public IWebHost ValidateListenerBuilder(TContext context, KestrelListenerBuilder<MockStartup, TService, TContext> builder)
 		{
 			Assert.AreEqual(ListenerName, builder.Name);
 
@@ -67,15 +65,15 @@ namespace Hosting.Services.Web.UnitTests
 		public void ValidateOmexTypesRegistered(IWebHost host)
 		{
 			ResolveType<ITimedScopeProvider>(host);
-			ILogger logger = ResolveType<ILogger<ListenerValidator<TContext>>>(host);
+			ILogger logger = ResolveType<ILogger<ListenerValidator<TService, TContext>>>(host);
 			m_logsEventSourceMock.Invocations.Clear();
 			logger.LogError("TestMessage");
 			Assert.AreNotEqual(0, m_logsEventSourceMock.Invocations.Count, "Omex logger should be registred in WebHost");
 		}
 
-		public ICommunicationListener ValidateBuildFunction(TContext context, KestrelListenerBuilder<MockStartup, TContext> builder)
+		public ICommunicationListener ValidateBuildFunction(TService service, KestrelListenerBuilder<MockStartup, TService, TContext> builder)
 		{
-			ICommunicationListener listener = builder.Build(context);
+			ICommunicationListener listener = builder.Build(service);
 			Assert.IsNotNull(listener, "Listener should not be null");
 			return listener;
 		}
