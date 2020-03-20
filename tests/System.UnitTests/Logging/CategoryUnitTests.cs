@@ -19,20 +19,17 @@ namespace Microsoft.Omex.System.UnitTests.Logging
 			Assert.Equal(categoryName, new Category(categoryName).Name);
 		}
 
-
 		[Fact]
 		public void ConstructorWithNullArgument_ThrowsArgumentNullException()
 		{
 			Assert.Throws<ArgumentNullException>(() => new Category(null));
 		}
 
-
 		[Fact]
 		public void ConstructorWithEmptyArgument_ThrowsArgumentException()
 		{
 			Assert.Throws<ArgumentException>(() => new Category(""));
 		}
-
 
 		[Fact]
 		public void ConstructorWithWhiteSpaceArgument_ThrowsArgumentException()

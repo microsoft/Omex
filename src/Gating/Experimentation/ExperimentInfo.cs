@@ -22,12 +22,10 @@ namespace Microsoft.Omex.Gating.Experimentation
 			ExperimentWeight = experimentWeight;
 		}
 
-
 		/// <summary>
 		/// Name of the experiment the gate is a part of
 		/// </summary>
 		public string ExperimentName { get; }
-
 
 		/// <summary>
 		/// Weight of the gate in the experiment

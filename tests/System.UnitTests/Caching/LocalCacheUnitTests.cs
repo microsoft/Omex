@@ -23,7 +23,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			Assert.Null(result);
 		}
 
-
 		[Fact]
 		public void Get_WithNonExistentTypeParameter_ReturnsNull()
 		{
@@ -31,7 +30,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			object result = cache.Get(typeof(TestStringObject));
 			Assert.Null(result);
 		}
-
 
 		[Fact]
 		public void Get_WithExistingTypeParameter_ReturnsValue()
@@ -44,7 +42,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			TestStringObject getResult = cache.Get(typeof(TestStringObject)) as TestStringObject;
 			Assert.Equal(TestString1, getResult.Value);
 		}
-
 
 		[Fact]
 		public void Get_InParallelWithExistingTypeParameter_ReturnsValue()
@@ -61,7 +58,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			});
 		}
 
-
 		[Fact]
 		public void GetOrAdd_WithNullTypeParameter_ReturnsNull()
 		{
@@ -72,7 +68,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			Assert.Null(result);
 			Assert.False(wasAdded);
 		}
-
 
 		[Fact]
 		public void GetOrAdd_InParallelWithNullTypeParameter_ReturnsNull()
@@ -88,7 +83,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			});
 		}
 
-
 		[Fact]
 		public void GetOrAdd_WithNullValueParameter_ReturnsNull()
 		{
@@ -99,7 +93,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			Assert.Null(result);
 			Assert.False(wasAdded);
 		}
-
 
 		[Fact]
 		public void GetOrAdd_InParallelWithNullValueParameter_ReturnsNull()
@@ -115,7 +108,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			});
 		}
 
-
 		[Fact]
 		public void GetOrAdd_WithEmptyDictionary_ReturnsAddedObject()
 		{
@@ -124,7 +116,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			Assert.Equal(TestString1, resultString.Value);
 			Assert.True(wasAdded);
 		}
-
 
 		[Fact]
 		public void GetOrAdd_InParallelWithEmptyDictionary_ReturnsAddedObject()
@@ -144,7 +135,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			Assert.Equal(addCount, 1);
 		}
 
-
 		[Fact]
 		public void GetOrAdd_WithNonEmptyDictionary_ReturnsAddedObject()
 		{
@@ -157,7 +147,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			Assert.Equal(TestString1, resultString.Value);
 			Assert.True(wasAdded, "GetOrAdd added an entry to the cache.");
 		}
-
 
 		[Fact]
 		public void GetOrAdd_InParallelWithNonEmptyDictionary_ReturnsAddedObject()
@@ -181,7 +170,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			Assert.Equal(addCount, 1);
 		}
 
-
 		[Fact]
 		public void GetOrAdd_WithRepeatedEntry_ReturnsFirstObject()
 		{
@@ -194,7 +182,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			Assert.Equal(TestString1, resultString2.Value);
 			Assert.False(wasAdded);
 		}
-
 
 		[Fact]
 		public void GetOrAdd_InParallelWithRepeatedEntry_ReturnsFirstObject()
@@ -212,7 +199,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			});
 		}
 
-
 		[Fact]
 		public void AddOrUpdate_WithNullTypeParameter_ReturnsNull()
 		{
@@ -223,7 +209,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			Assert.Null(result);
 			Assert.False(wasUpdated);
 		}
-
 
 		[Fact]
 		public void AddOrUpdate_InParallelWithNullTypeParameter_ReturnsNull()
@@ -239,7 +224,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			});
 		}
 
-
 		[Fact]
 		public void AddOrUpdate_WithNullValueParameter_ReturnsNull()
 		{
@@ -250,7 +234,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			Assert.Null(result);
 			Assert.False(wasUpdated);
 		}
-
 
 		[Fact]
 		public void AddOrUpdate_InParallelWithNullValueParameter_ReturnsNull()
@@ -266,7 +249,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			});
 		}
 
-
 		[Fact]
 		public void AddOrUpdate_WithEmptyDictionary_ReturnsUpdatedObject()
 		{
@@ -277,7 +259,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			Assert.Equal(TestString1, resultString.Value);
 			Assert.True(wasUpdated);
 		}
-
 
 		[Fact]
 		public void AddOrUpdate_InParallelWithEmptyDictionary_ReturnsUpdatedObject()
@@ -293,7 +274,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			});
 		}
 
-
 		[Fact]
 		public void AddOrUpdate_WithNonEmptyDictionary_ReturnsUpdatedObject()
 		{
@@ -308,7 +288,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			Assert.Equal(TestString1, resultString.Value);
 			Assert.True(wasUpdated);
 		}
-
 
 		[Fact]
 		public void AddOrUpdate_InParallelWithNonEmptyDictionary_ReturnsUpdatedObject()
@@ -328,7 +307,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			});
 		}
 
-
 		[Fact]
 		public void AddOrUpdate_WithRepeatedEntry_ReturnsSecondObject()
 		{
@@ -341,7 +319,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			Assert.Equal(resultString2.Value, TestString2);
 			Assert.True(wasUpdated);
 		}
-
 
 		[Fact]
 		public void AddOrUpdate_InParallelWithRepeatedEntry_ReturnsSecondObject()
@@ -359,24 +336,20 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			});
 		}
 
-
 		/// <summary>
 		/// The first test string.
 		/// </summary>
 		private const string TestString1 = "string";
-
 
 		/// <summary>
 		/// The second test string.
 		/// </summary>
 		private const string TestString2 = "string2";
 
-
 		/// <summary>
 		/// The test integer.
 		/// </summary>
 		private const int TestInteger = 2;
-
 
 		/// <summary>
 		/// A test string object.
@@ -390,13 +363,11 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			/// <param name="value">The value.</param>
 			public TestStringObject(string value) => Value = value;
 
-
 			/// <summary>
 			/// Gets the value.
 			/// </summary>
 			public string Value { get; }
 		}
-
 
 		/// <summary>
 		/// A test integer object.
@@ -409,7 +380,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Caching
 			/// </summary>
 			/// <param name="value">The value.</param>
 			public TestIntegerObject(int value) => Value = value;
-
 
 			/// <summary>
 			/// Gets the value.

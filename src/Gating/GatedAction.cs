@@ -17,7 +17,6 @@ namespace Microsoft.Omex.Gating
 		/// <remarks>Creates a baseline gated action</remarks>
 		public GatedAction(Action action) => Action = action;
 
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GatedAction"/> class.
 		/// </summary>
@@ -26,7 +25,6 @@ namespace Microsoft.Omex.Gating
 		public GatedAction(IGate gate, Action action)
 			: base(gate) => Action = action;
 
-
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -34,7 +32,6 @@ namespace Microsoft.Omex.Gating
 		/// <param name="action">The action to perform.</param>
 		public GatedAction(GateCombination combination, Action action)
 			: base(combination) => Action = action;
-
 
 		/// <summary>
 		/// The action to perform

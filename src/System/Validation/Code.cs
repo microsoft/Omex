@@ -33,7 +33,6 @@ namespace Microsoft.Omex.System.Validation
 			}
 		}
 
-
 		/// <summary>
 		/// Checks that the enumerable argument is not null and doesn't contain any nulls
 		/// </summary>
@@ -57,7 +56,6 @@ namespace Microsoft.Omex.System.Validation
 			return argumentValue;
 		}
 
-
 		/// <summary>
 		/// Checks the collection and throws an exception if it is null, contains no values, or contains any null values
 		/// </summary>
@@ -79,7 +77,6 @@ namespace Microsoft.Omex.System.Validation
 			return argumentValue;
 		}
 
-
 		/// <summary>
 		/// Checks the argument value and throws an exception if it is null or contains no values.
 		/// </summary>
@@ -100,7 +97,6 @@ namespace Microsoft.Omex.System.Validation
 			return argumentValue;
 		}
 
-
 		/// <summary>
 		/// Check object argument, throws exception if it is NULL
 		/// </summary>
@@ -113,7 +109,6 @@ namespace Microsoft.Omex.System.Validation
 		{
 			return (T)ExpectsArgumentNotNull((object?)argumentValue, argumentName, tagId);
 		}
-
 
 		/// <summary>
 		/// Check object argument, throws exception if it is NULL
@@ -135,7 +130,6 @@ namespace Microsoft.Omex.System.Validation
 			return argumentValue;
 		}
 
-
 		/// <summary>
 		/// Check object argument against a predicate, throws if condition not met
 		/// </summary>
@@ -155,7 +149,6 @@ namespace Microsoft.Omex.System.Validation
 
 			return argumentValue;
 		}
-
 
 		/// <summary>
 		/// Checks the string argument and throws an exception if it is null, empty or whitespace.
@@ -180,7 +173,6 @@ namespace Microsoft.Omex.System.Validation
 			return argumentValue;
 		}
 
-
 		/// <summary>
 		/// Checks the supplied argument and returns it if not null, otherwise throws.
 		/// </summary>
@@ -194,7 +186,6 @@ namespace Microsoft.Omex.System.Validation
 		{
 			return ExpectsArgumentNotNull<T>(argumentValue, argumentName, tagId);
 		}
-
 
 		/// <summary>
 		/// Validate object's state
@@ -215,7 +206,6 @@ namespace Microsoft.Omex.System.Validation
 
 			return state;
 		}
-
 
 		/// <summary>
 		/// Validate object's state
@@ -238,7 +228,6 @@ namespace Microsoft.Omex.System.Validation
 			return state;
 		}
 
-
 		/// <summary>
 		/// Checks that the collection is not null, is not empty, and does not contain nulls
 		/// </summary>
@@ -247,7 +236,7 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="argumentName">Name of the argument.</param>
 		/// <param name="tagId">Tag Id to log, leave null if no logging is needed</param>
 		/// <returns>True if the argument <paramref name="argumentValue"/> is not null, is not empty, and does not contain nulls; false otherwise.</returns>
-		public static bool ValidateNotEmptyAndAllNotNull<T>([NotNullWhen(true)]ICollection<T>? argumentValue, string argumentName, uint? tagId) 
+		public static bool ValidateNotEmptyAndAllNotNull<T>([NotNullWhen(true)]ICollection<T>? argumentValue, string argumentName, uint? tagId)
 			where T : class
 		{
 			if (!ValidateArgument(argumentValue, argumentName, tagId))
@@ -268,7 +257,6 @@ namespace Microsoft.Omex.System.Validation
 
 			return true;
 		}
-
 
 		/// <summary>
 		/// Checks that the enumerable argument is not null and doesn't contain any nulls
@@ -301,7 +289,6 @@ namespace Microsoft.Omex.System.Validation
 			return true;
 		}
 
-
 		/// <summary>
 		/// Validates that the argument value is not null and contains values.
 		/// </summary>
@@ -331,7 +318,6 @@ namespace Microsoft.Omex.System.Validation
 			return true;
 		}
 
-
 		/// <summary>
 		/// Validates the argument isn't null.
 		/// </summary>
@@ -354,7 +340,6 @@ namespace Microsoft.Omex.System.Validation
 
 			return true;
 		}
-
 
 		/// <summary>
 		/// Validates argument against a predicate
@@ -382,7 +367,6 @@ namespace Microsoft.Omex.System.Validation
 			return true;
 		}
 
-
 		/// <summary>
 		/// Validates the guid argument and returns false if it is empty.
 		/// </summary>
@@ -405,7 +389,6 @@ namespace Microsoft.Omex.System.Validation
 
 			return true;
 		}
-
 
 		/// <summary>
 		/// Validates the string argument and returns false if it is null, empty or only whitespace.
@@ -435,7 +418,6 @@ namespace Microsoft.Omex.System.Validation
 			return true;
 		}
 
-
 		/// <summary>
 		/// Report a null argument
 		/// </summary>
@@ -445,7 +427,6 @@ namespace Microsoft.Omex.System.Validation
 		{
 			throw new ArgumentNullException(argumentName);
 		}
-
 
 		/// <summary>
 		/// Report an incorrect argument
@@ -457,7 +438,6 @@ namespace Microsoft.Omex.System.Validation
 			throw new ArgumentException(errorDescription, argumentName);
 		}
 
-
 		/// <summary>
 		/// Report an error
 		/// </summary>
@@ -468,42 +448,35 @@ namespace Microsoft.Omex.System.Validation
 			throw (Exception)Activator.CreateInstance(typeof(TException), message);
 		}
 
-
 		/// <summary>
 		/// The error message for all *Any methods.
 		/// </summary>
 		private const string HasAnyErrorMessage = "argument does not contain any values";
-
 
 		/// <summary>
 		/// The error message for all *All methods.
 		/// </summary>
 		private const string AllErrorMessage = "argument contains a null value";
 
-
 		/// <summary>
 		/// The error message for argument is null.
 		/// </summary>
 		private const string ArgumentIsNull = "argument is null";
-
 
 		/// <summary>
 		/// The error message for argument containing empty string
 		/// </summary>
 		private const string ArgumentContainsEmptyString = "argument contains an empty string";
 
-
 		/// <summary>
 		/// The error message for argument containing whitespace string
 		/// </summary>
 		private const string ArgumentContainsWhiteSpaceString = "argument contains a string with only white space characters";
 
-
 		/// <summary>
 		/// The error message when argument is an empty GUID
 		/// </summary>
 		private const string ArgumentIsEmptyGuid = "argument is an empty GUID";
-
 
 		/// <summary>
 		/// Logging message for failed validation

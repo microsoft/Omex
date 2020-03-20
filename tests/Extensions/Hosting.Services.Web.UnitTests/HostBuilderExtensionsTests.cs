@@ -24,7 +24,6 @@ namespace Hosting.Services.Web.UnitTests
 					"StatelessServiceName",
 					b => b.AddKestrelListener<MockStartup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
 
-
 		[TestMethod]
 		public void BuildStateful_BuildStatelessService_TypesRegistered() =>
 			CheckTypeRegistration(
@@ -32,7 +31,6 @@ namespace Hosting.Services.Web.UnitTests
 				(v, h) => h.BuildStatefulService(
 					"StatefulServiceName",
 					b => b.AddKestrelListener<MockStartup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
-
 
 		private void CheckTypeRegistration<TContext>(
 			TContext context,

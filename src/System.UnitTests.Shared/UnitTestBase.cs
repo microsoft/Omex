@@ -41,24 +41,20 @@ namespace Microsoft.Omex.System.UnitTests.Shared
 			UntaggedLogging.LogEvent += HandleLogEvent;
 		}
 
-
 		/// <summary>
 		/// Should log events be tracked
 		/// </summary>
 		protected bool TrackLogEvents { get; set; }
-
 
 		/// <summary>
 		/// Should tests fail if an error is logged
 		/// </summary>
 		protected bool FailOnErrors { get; set; }
 
-
 		/// <summary>
 		/// The set of logged events
 		/// </summary>
 		protected IList<LogEventArgs> LoggedEvents { get; }
-
 
 		/// <summary>
 		/// Dispose of the test
@@ -68,7 +64,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
-
 
 		/// <summary>
 		/// Teardown test method.
@@ -81,7 +76,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared
 				logEventSender.Sender = null;
 			}
 		}
-
 
 		/// <summary>
 		/// Handle a log event
@@ -106,7 +100,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Verify the async function

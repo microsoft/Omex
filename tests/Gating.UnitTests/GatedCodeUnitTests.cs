@@ -26,7 +26,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gatedCode.IsBaselineCode, "Default Constructor should set BaseLineCodeFlag as true");
 		}
 
-
 		[Fact]
 		public void GatedCode_IntitialzedWithNullObject_NonApplicableGatesShouldBeReturnedApplicableUsingGatesProperty()
 		{
@@ -46,7 +45,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gatedCode.Gates.IsApplicable(gateContext, out IGate[] gates), "Returns true as no gate was applicable.");
 			Assert.Null(gates);
 		}
-
 
 		[Fact]
 		public void GatedCode_UsingGateWithoutReleasePlan_ApplicableGateReturnedApplicableUsingGatesProperty()
@@ -69,7 +67,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal("Test.Gate1", gates.First().FullyQualifiedName);
 		}
 
-
 		[Fact]
 		public void GatedCode_UsingGateWithoutReleasePlan_NonApplicableGateReturnedNonApplicableUsingGatesProperty()
 		{
@@ -90,7 +87,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(gatedCode.Gates.IsApplicable(gateContext, out IGate[] gates), "Returns false as no gate was applicable.");
 			Assert.Null(gates);
 		}
-
 
 		[Fact]
 		public void GatedCode_UsingGateWithReleasePlanHavingNoReleaseGate_NonApplicableGateReturnedApplicableUsingGatesProperty()
@@ -115,7 +111,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Null(gates);
 		}
 
-
 		[Fact]
 		public void GatedCode_UsingGateWithReleasePlanHavingApplicableReleaseGates_FirstApplicableReleaseGateReturnedUsingGatesProperty()
 		{
@@ -139,7 +134,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal("MyProduct.WebSite.Feature.ReleasePlan.Integration", gates.First().FullyQualifiedName);
 		}
 
-
 		[Fact]
 		public void GatedCode_UsingGateWithReleasePlanHavingNoApplicableReleaseGates_NoApplicableReleaseGateReturnedUsingGatesProperty()
 		{
@@ -162,7 +156,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Null(gates);
 		}
 
-
 		/// <summary>
 		/// Loads the gate data set.
 		/// </summary>
@@ -181,7 +174,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			dataSet.Load(resources);
 			return dataSet;
 		}
-
 
 		/// <summary>
 		/// Valid test groups xml data
@@ -207,7 +199,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 					<Member deploymentId=""{8499ED16-258C-49d4-A1E0-C9E1B1460FDC}"" alias=""myalias""/>
 				</TestGroup>
 			</TestGroups>";
-
 
 		/// <summary>
 		/// The gate XML to be used by the unit test.
@@ -262,7 +253,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 					</ReleasePlan>
 				</Gate>
 			</Gates>";
-
 
 		/// <summary>
 		/// The gate XML to be used by the unit test.

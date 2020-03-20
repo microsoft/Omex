@@ -77,7 +77,6 @@ namespace Microsoft.Omex.DocumentDb
 				}).ConfigureAwait(false);
 		}
 
-
 		/// <summary>
 		/// Gets the trigger, or creates a new one if one with the specified trigger.id doesn't exist.
 		/// </summary>
@@ -117,7 +116,7 @@ namespace Microsoft.Omex.DocumentDb
 						}
 
 						return await client.CreateTriggerAsync(colUri, trigger).ConfigureAwait(false);
-						
+
 					}
 					catch (DocumentClientException ex)
 					{
@@ -128,7 +127,6 @@ namespace Microsoft.Omex.DocumentDb
 					}
 				});
 		}
-
 
 		/// <summary>
 		/// Deletes the stored procedure.
@@ -160,7 +158,6 @@ namespace Microsoft.Omex.DocumentDb
 				});
 		}
 
-
 		/// <summary>
 		/// Deletes the trigger.
 		/// </summary>
@@ -189,7 +186,6 @@ namespace Microsoft.Omex.DocumentDb
 					}
 				});
 		}
-
 
 		/// <summary>
 		/// Registers the provided stored procedures and triggers.

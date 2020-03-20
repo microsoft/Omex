@@ -19,12 +19,10 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		private HashSet<ProductVersionRange> Range { get; }
 
-
 		/// <summary>
 		/// HashSet to store app override
 		/// </summary>
 		private SortedDictionary<string, RequiredApplication> App { get; }
-
 
 		/// <summary>
 		/// Constructor
@@ -35,36 +33,30 @@ namespace Microsoft.Omex.Gating
 			App = new SortedDictionary<string, RequiredApplication>(StringComparer.OrdinalIgnoreCase);
 		}
 
-
 		/// <summary>
 		/// Name of client
 		/// </summary>
 		public string Name { get; set; }
-
 
 		/// <summary>
 		/// Minimum version required
 		/// </summary>
 		public ProductVersion MinVersion { get; set; }
 
-
 		/// <summary>
 		/// Maximum version allowed
 		/// </summary>
 		public ProductVersion MaxVersion { get; set; }
-
 
 		/// <summary>
 		/// Allowed version range
 		/// </summary>
 		public HashSet<ProductVersionRange> VersionRanges => Range;
 
-
 		/// <summary>
 		/// Audience Group of client
 		/// </summary>
 		public string AudienceGroup { get; set; }
-
 
 		/// <summary>
 		/// Add version range to range set
@@ -79,12 +71,10 @@ namespace Microsoft.Omex.Gating
 			return Range.Add(range);
 		}
 
-
 		/// <summary>
 		/// List of app override
 		/// </summary>
 		public SortedDictionary<string, RequiredApplication> Overrides => App;
-
 
 		/// <summary>
 		/// Add app override to overrides set

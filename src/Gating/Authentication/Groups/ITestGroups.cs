@@ -19,14 +19,12 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// otherwise.</returns>
 		bool IsDefault(string groupNames);
 
-
 		/// <summary>
 		/// Retrieves all groups for the currently logged-in user.
 		/// </summary>
 		/// <param name="identity">The identity of the logged in user. This value cannot be null.</param>
 		/// <returns>The list of user groups.</returns>
 		IEnumerable<string> GetUserGroups(IUserIdentity identity);
-
 
 		/// <summary>
 		/// Retrieves all groups for a user
@@ -35,14 +33,12 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <returns>List of user groups</returns>
 		IEnumerable<string> GetUserGroups(string userEmail);
 
-
 		/// <summary>
 		/// Retrieves all groups for a deployment id
 		/// </summary>
 		/// <param name="deploymentId">Deployment id. This value cannot be null.</param>
 		/// <returns>List of user groups</returns>
 		IEnumerable<string> GetDeploymentIdGroups(string deploymentId);
-
 
 		/// <summary>
 		/// Retrieves all users for a group
@@ -52,7 +48,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <returns>List of group users</returns>
 		IEnumerable<string> GetGroupUsers(string groupName);
 
-
 		/// <summary>
 		/// Checks if the logged-in user with the specified identity is in one or more of the
 		/// specified groups.
@@ -61,7 +56,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <param name="groupNames">A semicolon-delimited list of group names. This value cannot be null.</param>
 		/// <returns>True if the user belongs to one or more of the groups, false otherwise.</returns>
 		bool IsUserInGroups(IUserIdentity identity, string groupNames);
-
 
 		/// <summary>
 		/// Checks if user is in one or more of the specified groups

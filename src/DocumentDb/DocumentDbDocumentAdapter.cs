@@ -45,7 +45,6 @@ namespace Microsoft.Omex.DocumentDb
 					.ConfigureAwait(false);
 		}
 
-
 		/// <summary>
 		/// Creates a document and its parent containers (database, collection) if they do not exist.
 		/// </summary>
@@ -89,7 +88,6 @@ namespace Microsoft.Omex.DocumentDb
 				}).ConfigureAwait(false);
 		}
 
-
 		/// <summary>
 		/// Gets a document.
 		/// </summary>
@@ -110,7 +108,6 @@ namespace Microsoft.Omex.DocumentDb
 
 			return GetDocumentAsync(dbId, collectionId, docId, requestOptions);
 		}
-
 
 		/// <summary>
 		/// Gets a document.
@@ -144,7 +141,6 @@ namespace Microsoft.Omex.DocumentDb
 				}).ConfigureAwait(false);
 		}
 
-
 		/// <summary>
 		/// Gets a document and converts to a POCO type.
 		/// </summary>
@@ -177,7 +173,6 @@ namespace Microsoft.Omex.DocumentDb
 				}).ConfigureAwait(false);
 		}
 
-
 		/// <summary>
 		/// Gets a document and converts to a POCO using specified converter.
 		/// </summary>
@@ -203,7 +198,6 @@ namespace Microsoft.Omex.DocumentDb
 
 			return converter(response.Resource);
 		}
-
 
 		/// <summary>
 		/// Gets all documents.
@@ -237,7 +231,6 @@ namespace Microsoft.Omex.DocumentDb
 				return await QueryDocumentsAsync(query, feedOptions).ConfigureAwait(false);
 			}
 		}
-
 
 		/// <summary>
 		/// Queries all documents in current continuation and returns continuation token for paged requests.
@@ -280,7 +273,6 @@ namespace Microsoft.Omex.DocumentDb
 			}
 		}
 
-
 		/// <summary>
 		/// Gets all documents from specified partition.
 		/// </summary>
@@ -302,7 +294,6 @@ namespace Microsoft.Omex.DocumentDb
 			return GetAllDocumentsAsync<T>(dbId, collectionId, feedOptions, queryFunc);
 		}
 
-
 		/// <summary>
 		/// Queries all documents in current continuation from the specified partition and
 		/// returns continuation token for paged requests.
@@ -323,7 +314,6 @@ namespace Microsoft.Omex.DocumentDb
 
 			return GetAllDocumentsWithPagingAsync<T>(dbId, collectionId, continuationToken, feedOptions);
 		}
-
 
 		/// <summary>
 		/// Queries the collection using the specified sql query.
@@ -350,7 +340,6 @@ namespace Microsoft.Omex.DocumentDb
 				return await QueryDocumentsAsync(query, feedOptions).ConfigureAwait(false);
 			}
 		}
-
 
 		/// <summary>
 		/// Queries the collection using the specified document query.
@@ -383,7 +372,6 @@ namespace Microsoft.Omex.DocumentDb
 			return data;
 		}
 
-
 		/// <summary>
 		/// Replaces a document.
 		/// </summary>
@@ -409,7 +397,6 @@ namespace Microsoft.Omex.DocumentDb
 						.ConfigureAwait(false);
 		}
 
-
 		/// <summary>
 		/// Upserts a document.
 		/// </summary>
@@ -434,7 +421,6 @@ namespace Microsoft.Omex.DocumentDb
 						.ConfigureAwait(false);
 		}
 
-
 		/// <summary>
 		/// Deletes a document.
 		/// </summary>
@@ -455,7 +441,6 @@ namespace Microsoft.Omex.DocumentDb
 
 			return DeleteDocumentAsync(dbId, collectionId, docId, requestOptions);
 		}
-
 
 		/// <summary>
 		/// Deletes a document.

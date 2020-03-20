@@ -51,7 +51,6 @@ namespace Microsoft.Omex.System.Extensions
 			return attribute != null ? attribute.Value : null;
 		}
 
-
 		/// <summary>
 		/// Creates an untyped object containing the XML data. This object
 		/// can be cast to the type passed in parameter "type" by the caller.
@@ -65,7 +64,6 @@ namespace Microsoft.Omex.System.Extensions
 		{
 			return Read(stream, CompressionType.NoCompression, type, schema, schemaUri, null, null, null);
 		}
-
 
 		/// <summary>
 		/// Creates an untyped object containing the XML data. This object
@@ -81,7 +79,6 @@ namespace Microsoft.Omex.System.Extensions
 			return Read(stream, CompressionType.NoCompression, typeof(T), schema, schemaUri, null, null, null) as T;
 		}
 
-
 		/// <summary>
 		/// Deserialise stream using provided xml parser objects.
 		/// Use this method if you perform multiple deserialisations of the same type to improve performance
@@ -96,7 +93,6 @@ namespace Microsoft.Omex.System.Extensions
 		{
 			return Read(stream, compressionType, null, null, null, context, settings, serialiser);
 		}
-
 
 		/// <summary>
 		/// Verifies that given xml file stream is a well formed xml document
@@ -146,7 +142,6 @@ namespace Microsoft.Omex.System.Extensions
 			}
 		}
 
-
 		/// <summary>
 		/// Validate xml document against the schema
 		/// </summary>
@@ -193,7 +188,6 @@ namespace Microsoft.Omex.System.Extensions
 
 			return validationErrors.Count == 0;
 		}
-
 
 		/// <summary>
 		/// Verifies if given xml file is valid as specified by the given xml schema
@@ -258,7 +252,6 @@ namespace Microsoft.Omex.System.Extensions
 			}
 		}
 
-
 		/// <summary>
 		/// Creates XmlParserContext
 		/// </summary>
@@ -275,7 +268,6 @@ namespace Microsoft.Omex.System.Extensions
 
 			return context;
 		}
-
 
 		/// <summary>
 		/// Retrieves the XML reader settings.

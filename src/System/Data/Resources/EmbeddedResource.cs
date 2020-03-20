@@ -26,7 +26,6 @@ namespace Microsoft.Omex.System.Data.Resources
 		{
 		}
 
-
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -61,30 +60,25 @@ namespace Microsoft.Omex.System.Data.Resources
 			}, LazyThreadSafetyMode.PublicationOnly);
 		}
 
-
 		/// <summary>
 		/// Resource name
 		/// </summary>
 		public string Name { get; }
-
 
 		/// <summary>
 		/// Resource location
 		/// </summary>
 		public string Location => Assembly.FullName;
 
-
 		/// <summary>
 		/// Gets the last write time to the file.
 		/// </summary>
 		public DateTime LastWriteTime => DateTime.MinValue;
 
-
 		/// <summary>
 		/// Gets the length of the file in bytes.
 		/// </summary>
 		public long Length => ResourceContent.Value.Item2?.Length ?? 0;
-
 
 		/// <summary>
 		/// Retrieves resource contents
@@ -97,15 +91,12 @@ namespace Microsoft.Omex.System.Data.Resources
 			return ResourceContent.Value.Item1;
 		}
 
-
 		/// <summary>
 		/// Is a static resource
 		/// </summary>
 		public bool IsStatic => true;
 
-
 		private Lazy<Tuple<ResourceReadStatus, byte[]>> ResourceContent { get; }
-
 
 		private Assembly Assembly { get; }
 	}

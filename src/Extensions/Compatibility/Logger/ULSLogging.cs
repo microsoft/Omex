@@ -25,7 +25,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Logger
 		public static void LogTraceTag(EventId eventId, Category category, LogLevel level, string message, params object[] parameters) =>
 			GetLogger(category.Name).Log(level, eventId, message, parameters);
 
-
 		/// <summary>
 		/// Report an exception
 		/// </summary>
@@ -38,19 +37,16 @@ namespace Microsoft.Omex.Extensions.Compatibility.Logger
 		public static void ReportExceptionTag(EventId eventId, Category category, Exception exception, string message, params object[] parameters) =>
 			GetLogger(category.Name).LogError(eventId, exception, message, parameters);
 
-
 		internal static void Initialize(ILoggerFactory loggerFactory)
 		{
 			s_factory = loggerFactory;
 			s_loggersDictionary = new ConcurrentDictionary<string, ILogger>(StringComparer.OrdinalIgnoreCase);
 		}
 
-
 		private static ILogger GetLogger(string category) =>
 			s_loggersDictionary != null && s_factory != null
 				? s_loggersDictionary.GetOrAdd(category, s_factory.CreateLogger)
 				: throw new OmexCompatibilityInitializationException();
-
 
 		private static ILoggerFactory? s_factory;
 		private static ConcurrentDictionary<string, ILogger>? s_loggersDictionary;

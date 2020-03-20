@@ -24,13 +24,11 @@ namespace Microsoft.Omex.System.Context
 		{
 		}
 
-
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="threadId">Id of the thread</param>
 		public ThreadCallContext(int? threadId = null) => m_id = threadId;
-
 
 		/// <summary>
 		/// Dictionary of thread context data. Managed thread id is used as a key.
@@ -41,18 +39,15 @@ namespace Microsoft.Omex.System.Context
 		/// </remarks>
 		private static readonly ConcurrentDictionary<int, ThreadCallContextData> s_threads = new ConcurrentDictionary<int, ThreadCallContextData>(100, 1000);
 
-
 		/// <summary>
 		/// Dictionary of data stored on the call context
 		/// </summary>
 		public IDictionary<string, object> Data => SharedData;
 
-
 		/// <summary>
 		/// Dictionary of data stored on the call context and shared between derived call contexts
 		/// </summary>
 		public ConcurrentDictionary<string, object> SharedData => s_threads.GetOrAdd(ID, _ => new ThreadCallContextData()).SharedData;
-
 
 		/// <summary>
 		/// Add data to context
@@ -61,25 +56,21 @@ namespace Microsoft.Omex.System.Context
 		/// <param name="value">value</param>
 		public void AddContextValue(string key, object value) => SharedData?.AddOrUpdate(key, value, (_, __) => value);
 
-
 		/// <summary>
 		/// Start the call context
 		/// </summary>
 		/// <returns>id of the context node</returns>
 		public Guid? StartCallContext() => s_threads.GetOrAdd(ID, _ => new ThreadCallContextData()).StartCallContext();
 
-
 		/// <summary>
 		/// Id of the current thread. Used to access thread specific data
 		/// </summary>
 		private int ID => m_id ?? Thread.CurrentThread.ManagedThreadId;
 
-
 		/// <summary>
 		/// Id override
 		/// </summary>
 		private readonly int? m_id;
-
 
 		/// <summary>
 		/// End the call context
@@ -100,7 +91,6 @@ namespace Microsoft.Omex.System.Context
 				s_threads.TryRemove(currentId, out _);
 			}
 		}
-
 
 		/// <summary>
 		/// Get the existing call context if there is one
@@ -124,7 +114,6 @@ namespace Microsoft.Omex.System.Context
 			return null;
 		}
 
-
 		/// <summary>
 		/// Class which stores thread specific data about a call context
 		/// </summary>
@@ -135,36 +124,30 @@ namespace Microsoft.Omex.System.Context
 			/// </summary>
 			private ConcurrentDictionary<string, object> m_data = new ConcurrentDictionary<string, object>(StringComparer.Ordinal);
 
-
 			/// <summary>
 			/// Stack of nested call contexts
 			/// </summary>
 			private readonly LinkedList<ConcurrentDictionary<string, object>> m_dataStack = new LinkedList<ConcurrentDictionary<string, object>>();
-
 
 			/// <summary>
 			/// Mapping between a GUID (context node id) and its call context
 			/// </summary>
 			private readonly IOrderedDictionary m_nodesDictionary = new OrderedDictionary();
 
-
 			/// <summary>
 			/// List of GUIDs (context node id) for call contexts which have ended asynchronously and can be safely removed
 			/// </summary>
 			private readonly ConcurrentQueue<Guid> m_nodesToRemove = new ConcurrentQueue<Guid>();
-
 
 			/// <summary>
 			/// Current level of nesting of call contexts
 			/// </summary>
 			private int m_stackCount = 0;
 
-
 			/// <summary>
 			/// Is there any active call context
 			/// </summary>
 			public bool Exists => m_stackCount > 0;
-
 
 			/// <summary>
 			/// Dictionary of data stored on the call context
@@ -189,7 +172,6 @@ namespace Microsoft.Omex.System.Context
 				}
 			}
 
-
 			/// <summary>
 			/// Start call context
 			/// </summary>
@@ -212,11 +194,9 @@ namespace Microsoft.Omex.System.Context
 					}
 				}
 
-
 				Interlocked.Increment(ref m_stackCount);
 				return nodeGuid;
 			}
-
 
 			/// <summary>
 			/// End call context
@@ -263,7 +243,6 @@ namespace Microsoft.Omex.System.Context
 
 				Interlocked.Decrement(ref m_stackCount);
 			}
-
 
 			/// <summary>
 			/// Remove call context which ended

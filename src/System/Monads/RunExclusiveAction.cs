@@ -20,7 +20,6 @@ namespace Microsoft.Omex.System.Monads
 		/// <param name="runOnlyOnce">If set to <c>true</c>, the action will be run only once.</param>
 		public RunExclusiveAction(bool runOnlyOnce = false) => RunOnlyOnce = runOnlyOnce;
 
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="RunExclusiveAction"/> class.
 		/// </summary>
@@ -35,42 +34,35 @@ namespace Microsoft.Omex.System.Monads
 			RunOnlyOnce = runOnlyOnce;
 		}
 
-
 		/// <summary>
 		/// Gets a value indicating whether the action is running.
 		/// </summary>
 		public bool IsRunning => m_status == (int)Status.Running;
-
 
 		/// <summary>
 		/// Gets a value indicating whether this instance has run.
 		/// </summary>
 		public bool HasRun => m_status == (int)Status.RunAndMayRunAgain || m_status == (int)Status.RunAndMayNotRunAgain;
 
-
 		/// <summary>
 		/// Gets or sets the m_action to run.
 		/// </summary>
 		protected readonly Action m_action;
-
 
 		/// <summary>
 		/// Gets or sets a value indicating whether the action should be run only once.
 		/// </summary>
 		protected bool RunOnlyOnce { get; }
 
-
 		/// <summary>
 		/// A flag indicating if the action has ran, is currently running or can be run again.
 		/// </summary>
 		private int m_status;
 
-
 		/// <summary>
 		/// Do the action.
 		/// </summary>
 		public virtual void Do() => Do(m_action);
-
 
 		/// <summary>
 		/// Do the m_action.
@@ -97,7 +89,6 @@ namespace Microsoft.Omex.System.Monads
 			}
 		}
 
-
 		/// <summary>
 		/// Performs an interlocked compare exchange on the status value.
 		/// </summary>
@@ -106,13 +97,11 @@ namespace Microsoft.Omex.System.Monads
 		/// <returns>The original status value.</returns>
 		protected Status InterlockedCompareExchange(Status value, Status comparand) => (Status)Interlocked.CompareExchange(ref m_status, (int)value, (int)comparand);
 
-
 		/// <summary>
 		/// Performs an interlocked exchange on the status value.
 		/// </summary>
 		/// <param name="value">The value to which the status is set.</param>
 		protected void InterlockedExchange(Status value) => Interlocked.Exchange(ref m_status, (int)value);
-
 
 		/// <summary>
 		/// The status values.
@@ -124,18 +113,15 @@ namespace Microsoft.Omex.System.Monads
 			/// </summary>
 			NotRun,
 
-
 			/// <summary>
 			/// A value indicating the m_action is currently running.
 			/// </summary>
 			Running,
 
-
 			/// <summary>
 			/// A value indicating the m_action has run and may run again.
 			/// </summary>
 			RunAndMayRunAgain,
-
 
 			/// <summary>
 			/// A value indicating the m_action has run and may not run again.

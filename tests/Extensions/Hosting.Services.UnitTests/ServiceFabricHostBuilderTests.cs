@@ -28,7 +28,6 @@ namespace Hosting.Services.UnitTests
 			Assert.IsNotNull(obj);
 		}
 
-
 		private class TestTypeToResolve { }
 	}
 }

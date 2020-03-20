@@ -15,18 +15,15 @@ namespace Microsoft.Omex.System.Data
 		/// </summary>
 		DateTime LastWrite { get; }
 
-
 		/// <summary>
 		/// Gets the length of the file in bytes.
 		/// </summary>
 		long Length { get; }
 
-
 		/// <summary>
 		/// Gets the file contents.
 		/// </summary>
 		byte[] Contents { get; }
-
 
 		/// <summary>
 		/// Gets the SHA256 hash of the file contents.

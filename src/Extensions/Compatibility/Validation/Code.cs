@@ -31,7 +31,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 			}
 		}
 
-
 		/// <summary>
 		/// Checks that the enumerable argument is not null and doesn't contain any nulls
 		/// </summary>
@@ -56,7 +55,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 			return argumentValue;
 		}
 
-
 		/// <summary>
 		/// Checks the collection and throws an exception if it is null, contains no values, or contains any null values
 		/// </summary>
@@ -79,7 +77,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 			return argumentValue;
 		}
 
-
 		/// <summary>
 		/// Checks the argument value and throws an exception if it is null or contains no values.
 		/// </summary>
@@ -101,7 +98,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 			return argumentValue;
 		}
 
-
 		/// <summary>
 		/// Check object argument, throws exception if it is NULL
 		/// </summary>
@@ -115,7 +111,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 		{
 			return (T)ExpectsArgumentNotNull((object?)argumentValue, argumentName, tagId);
 		}
-
 
 		/// <summary>
 		/// Check object argument, throws exception if it is NULL
@@ -138,7 +133,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 			return argumentValue;
 		}
 
-
 		/// <summary>
 		/// Check object argument against a predicate, throws if condition not met
 		/// </summary>
@@ -159,7 +153,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 
 			return argumentValue;
 		}
-
 
 		/// <summary>
 		/// Checks the string argument and throws an exception if it is null, empty or whitespace.
@@ -185,7 +178,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 			return argumentValue;
 		}
 
-
 		/// <summary>
 		/// Checks the supplied argument and returns it if not null, otherwise throws.
 		/// </summary>
@@ -200,7 +192,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 		{
 			return ExpectsArgumentNotNull(argumentValue, argumentName, tagId);
 		}
-
 
 		/// <summary>
 		/// Validate object's state
@@ -220,7 +211,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 			return state;
 		}
 
-
 		/// <summary>
 		/// Validate object's state
 		/// </summary>
@@ -239,7 +229,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 
 			return state;
 		}
-
 
 		/// <summary>
 		/// Checks that the collection is not null, is not empty, and does not contain nulls
@@ -266,7 +255,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 
 			return true;
 		}
-
 
 		/// <summary>
 		/// Checks that the enumerable argument is not null and doesn't contain any nulls
@@ -295,7 +283,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 			return true;
 		}
 
-
 		/// <summary>
 		/// Validates that the argument value is not null and contains values.
 		/// </summary>
@@ -321,7 +308,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 			return true;
 		}
 
-
 		/// <summary>
 		/// Validates the argument isn't null.
 		/// </summary>
@@ -340,7 +326,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 
 			return true;
 		}
-
 
 		/// <summary>
 		/// Validates argument against a predicate
@@ -364,7 +349,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 			return true;
 		}
 
-
 		/// <summary>
 		/// Validates the guid argument and returns false if it is empty.
 		/// </summary>
@@ -383,7 +367,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 
 			return true;
 		}
-
 
 		/// <summary>
 		/// Validates the string argument and returns false if it is null, empty or only whitespace.
@@ -412,12 +395,9 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 			return true;
 		}
 
-
 		internal static void Initialize(ILoggerFactory loggerFactory) => s_logger = loggerFactory.CreateLogger("ArgumentValidation");
 
-
 		private static ILogger? s_logger;
-
 
 		private static void LogError(EventId? eventId, string message, params object[] args)
 		{
@@ -434,7 +414,6 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 			s_logger.LogError(eventId.Value, message, args);
 		}
 
-
 		/// <summary>
 		/// Report a null argument
 		/// </summary>
@@ -442,14 +421,12 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 		/// <returns>The function has a return type in order to be used in the return statement, to explain compiler that it will end method execution</returns>
 		private static T ReportArgumentNull<T>(string argumentName) => throw new ArgumentNullException(argumentName);
 
-
 		/// <summary>
 		/// Report an incorrect argument
 		/// </summary>
 		/// <param name="argumentName">Argument name</param>
 		/// <param name="errorDescription">Error description message</param>
 		private static void ReportArgumentError(string argumentName, string errorDescription) => throw new ArgumentException(errorDescription, argumentName);
-
 
 		/// <summary>
 		/// Report an error
@@ -465,49 +442,41 @@ namespace Microsoft.Omex.Extensions.Compatibility.Validation
 			}
 		}
 
-
 		/// <summary>
 		/// The error message for all *Any methods.
 		/// </summary>
 		private const string HasAnyErrorMessage = "argument does not contain any values";
-
 
 		/// <summary>
 		/// The error message for all *All methods.
 		/// </summary>
 		private const string AllErrorMessage = "argument contains a null value";
 
-
 		/// <summary>
 		/// The error message for argument is null.
 		/// </summary>
 		private const string ArgumentIsNull = "argument is null";
-
 
 		/// <summary>
 		/// The error message for argument containing empty string
 		/// </summary>
 		private const string ArgumentContainsEmptyString = "argument contains an empty string";
 
-
 		/// <summary>
 		/// The error message for argument containing whitespace string
 		/// </summary>
 		private const string ArgumentContainsWhiteSpaceString = "argument contains a string with only white space characters";
-
 
 		/// <summary>
 		/// The error message when argument is an empty GUID
 		/// </summary>
 		private const string ArgumentIsEmptyGuid = "argument is an empty GUID";
 
-
 		/// <summary>
 		/// Logging message for failed validation
 		/// </summary>
 		/// <remarks>The '{0}' placeholder is replaced with one of the messages above. The '{1}' is replaced with the argument name.</remarks>
 		private const string ValidationFailed = "Code validation failed, {0}: {1}";
-
 
 		private const string ObsoleteMessage = "Please consider using non-nullable reference types instead or regular null check";
 		private const bool IsObsoleteError = false;

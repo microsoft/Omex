@@ -20,7 +20,6 @@ namespace Microsoft.Omex.System.UnitTests.Monads
 			Assert.Throws<ArgumentNullException>(() => new RunExclusiveAction(null));
 		}
 
-
 		[Fact]
 		public void DoViaConstructor_WithRunOnlyOnce_RunsOnce()
 		{
@@ -38,7 +37,6 @@ namespace Microsoft.Omex.System.UnitTests.Monads
 			Assert.True(action.HasRun);
 		}
 
-
 		[Fact]
 		public void DoViaConstructor_WithoutRunOnlyOnce_RunsEachTime()
 		{
@@ -55,7 +53,6 @@ namespace Microsoft.Omex.System.UnitTests.Monads
 			Assert.True(action.HasRun);
 		}
 
-
 		[Fact]
 		public void DoViaConstructor_WithException_Throws()
 		{
@@ -69,7 +66,6 @@ namespace Microsoft.Omex.System.UnitTests.Monads
 			Assert.True(action.HasRun);
 		}
 
-
 		[Fact]
 		public void Do_WithNullAction_DoesNotThrow()
 		{
@@ -81,7 +77,6 @@ namespace Microsoft.Omex.System.UnitTests.Monads
 
 			Assert.False(action.HasRun);
 		}
-
 
 		[Fact]
 		public void Do_WithNoAction_ThrowsArgumentNullException()

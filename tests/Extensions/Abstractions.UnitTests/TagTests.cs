@@ -26,7 +26,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 			StringAssert.EndsWith(tag2.Name, relativePath, "tag2 Name should point to current file");
 		}
 
-
 		[DataTestMethod]
 		[DataRow(-19)]
 		[DataRow(0)]

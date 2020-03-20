@@ -17,7 +17,6 @@ namespace Microsoft.Omex.Extensions.Compatibility
 		public OmexCompatibilityIntializer(ITimedScopeProvider timedScopeProvider, ILoggerFactory loggerFactory) =>
 			(m_timedScopeProvider, m_loggerFactory) = (timedScopeProvider, loggerFactory);
 
-
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
 			TimedScopeDefinitionExtensions.Initialize(m_timedScopeProvider);
@@ -27,10 +26,8 @@ namespace Microsoft.Omex.Extensions.Compatibility
 			return Task.CompletedTask;
 		}
 
-
 		public Task StopAsync(CancellationToken cancellationToken) =>
 			Task.CompletedTask;
-
 
 		private readonly ITimedScopeProvider m_timedScopeProvider;
 		private readonly ILoggerFactory m_loggerFactory;

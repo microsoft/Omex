@@ -24,20 +24,17 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		[Obsolete("Default value, not to be used explicitly", error: false)]
 		Unknown = 0,
 
-
 		/// <summary>
 		/// Success
 		/// </summary>
 		[EnumMember]
 		Success = 1,
 
-
 		/// <summary>
 		/// System Error
 		/// </summary>
 		[EnumMember]
 		SystemError = 2,
-
 
 		/// <summary>
 		/// Expected Error (consolidating old UserError and PayloadError)

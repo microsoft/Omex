@@ -14,10 +14,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		public static void AssertResult(this TimedScope scope, TimedScopeResult expectedResult) =>
 			Assert.AreEqual(ActivityResultStrings.ResultToString(expectedResult), scope.GetTag(ActivityTagKeys.Result));
 
-
 		public static void AssertTag(this TimedScope scope, string tag, string expectedValue) =>
 			Assert.AreEqual(expectedValue, scope.GetTag(tag));
-
 
 		public static string GetTag(this TimedScope scope, string tag) =>
 			scope.Activity.Tags.FirstOrDefault(p => string.Equals(p.Key, tag, StringComparison.Ordinal)).Value;

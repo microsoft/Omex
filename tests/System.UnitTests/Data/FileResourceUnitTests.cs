@@ -21,7 +21,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 			Assert.Equal(string.Join("\\", FolderName, FileName), fileResource.Location);
 		}
 
-
 		[Fact]
 		public void Constructor_LocationCannotBeSet_SetsLocationToNameAndLogs()
 		{
@@ -31,7 +30,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 			FileResource fileResource = new FileResource(new IOFile(), folderWithIncorrectChars, FileName);
 			Assert.Equal(FileName, fileResource.Location);
 		}
-
 
 		[Fact]
 		public void GetContent_FileDoesNotExist_ReturnsNotFoundAndLogs()
@@ -43,7 +41,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 			Assert.Null(content);
 		}
 
-
 		[Fact]
 		public void GetContent_FileCouldNotBeRead_ReturnsReadFailedAndLogs()
 		{
@@ -53,7 +50,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 			Assert.Equal(ResourceReadStatus.ReadFailed, fileResource.GetContent(out byte[] content));
 			Assert.Null(content);
 		}
-
 
 		[Fact]
 		public void GetContent_FileRead_ReturnsFileContents()
@@ -65,12 +61,10 @@ namespace Microsoft.Omex.System.UnitTests.Data
 			Assert.NotNull(fileData);
 		}
 
-
 		/// <summary>
 		/// Folder Name
 		/// </summary>
 		private const string FolderName = "c:\\mydir";
-
 
 		/// <summary>
 		/// File Name

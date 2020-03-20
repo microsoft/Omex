@@ -29,7 +29,6 @@ namespace Microsoft.Omex.System.Data
 			m_wasCalledAtLeastOnce = false;
 		}
 
-
 		/// <summary>
 		/// Checks whether the conditions to call a handler are met and calls it if necessary
 		/// </summary>
@@ -50,7 +49,6 @@ namespace Microsoft.Omex.System.Data
 				m_wasCalledAtLeastOnce = true;
 			}
 		}
-
 
 		/// <summary>
 		/// Create a dictionary of resources details in the format in which handlers expect it
@@ -75,7 +73,6 @@ namespace Microsoft.Omex.System.Data
 			return result;
 		}
 
-
 		/// <summary>
 		/// Indicates whether a handler should be called
 		/// </summary>
@@ -92,18 +89,15 @@ namespace Microsoft.Omex.System.Data
 			return m_trackedResources.All(resource => availableResources.Contains(resource));
 		}
 
-
 		/// <summary>
 		/// A sequence of all the resources current handler is interested in
 		/// </summary>
 		private readonly IList<IResource> m_trackedResources;
 
-
 		/// <summary>
 		/// A handler to be called when the resources are modified
 		/// </summary>
 		private event ResourceUpdatedHandler OnSomeOfTrackedResourcesUpdated;
-
 
 		/// <summary>
 		/// Indicates whether this handler was called at least once

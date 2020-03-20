@@ -15,48 +15,40 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// </summary>
 		string BuildVersion { get; }
 
-
 		/// <summary>
 		/// The deployment slice
 		/// </summary>
 		string DeploymentSlice { get; }
-
 
 		/// <summary>
 		/// The environment name
 		/// </summary>
 		string EnvironmentName { get; }
 
-
 		/// <summary>
 		/// Is Canary environment
 		/// </summary>
 		bool IsCanary { get; }
-
 
 		/// <summary>
 		/// Is the deployment a private deployment
 		/// </summary>
 		bool IsPrivateDeployment { get; }
 
-
 		/// <summary>
 		/// The name of the deployment cluster to which this machine belongs
 		/// </summary>
 		string Cluster { get; }
-
 
 		/// <summary>
 		/// The ip adress of the deployment cluster to which this machine belongs
 		/// </summary>
 		IPAddress ClusterIpAddress { get; }
 
-
 		/// <summary>
 		/// The reporting identifier for the current machine
 		/// </summary>
 		string MachineId { get; }
-
 
 		/// <summary>
 		/// Name of the application
@@ -66,12 +58,10 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// </remarks>
 		string ApplicationName { get; }
 
-
 		/// <summary>
 		/// Azure region name
 		/// </summary>
 		string RegionName { get; }
-
 
 		/// <summary>
 		/// The service name

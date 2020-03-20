@@ -26,18 +26,15 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		/// </summary>
 		private T DataSetOverride { get; }
 
-
 		/// <summary>
 		/// The exclusive action to run.
 		/// </summary>
 		private readonly RunExclusiveAction m_action = new RunExclusiveAction();
 
-
 		/// <summary>
 		/// The exclusive action to run.
 		/// </summary>
 		private static readonly RunExclusiveAction s_action = new RunExclusiveAction();
-
 
 		/// <summary>
 		/// Constructor
@@ -53,7 +50,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			DataSetOverride = dataSetOverride;
 		}
 
-
 		/// <summary>
 		/// Dispose
 		/// </summary>
@@ -62,7 +58,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
-
 
 		/// <summary>
 		/// Dispose
@@ -75,7 +70,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				Interlocked.Exchange(ref m_resourceMonitor, null)?.StopMonitoring(OnResourceUpdated);
 			}
 		}
-
 
 		/// <summary>
 		/// Loads DataSet and starts resources monitoring
@@ -97,13 +91,11 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			}
 		}
 
-
 		/// <summary>
 		/// Called when the data set is loaded.
 		/// </summary>
 		/// <param name="fileDetails">The file details.</param>
 		protected abstract void OnLoad(IList<ConfigurationDataSetLoadDetails> fileDetails);
-
 
 		/// <summary>
 		/// Called when the data set is reloaded.
@@ -112,7 +104,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		/// <param name="newFileDetails">The new file details.</param>
 		protected abstract void OnReload(IList<ConfigurationDataSetLoadDetails> oldFileDetails,
 			IList<ConfigurationDataSetLoadDetails> newFileDetails);
-
 
 		/// <summary>
 		/// Format the message for indicating that the data set has been loaded.
@@ -126,7 +117,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				typeof(T).Name,
 				fileDetails == null ? "null" : string.Join(";", fileDetails));
 		}
-
 
 		/// <summary>
 		/// Format the message for indicating that the data set has been reloaded.
@@ -143,7 +133,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				oldFileDetails == null ? "null" : string.Join(";", oldFileDetails),
 				newFileDetails == null ? "null" : string.Join(";", newFileDetails));
 		}
-
 
 		/// <summary>
 		/// Attempts to load a new dataset and replaces the old one if load was successful
@@ -168,7 +157,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 					}
 					else
 					{
-						ULSLogging.LogTraceTag(0x23850399 /* tag_97qoz */, Categories.ConfigurationDataSet, Levels.Verbose,
+						ULSLogging.LogTraceTag(0x2361b6a1 /* tag_9y107 */, Categories.ConfigurationDataSet, Levels.Verbose,
 							"Updating data set type '{0}' in cache.", typeof(T).Name);
 						CachedConfigurationDataSet<T> dataSets = DataSets;
 						IList<ConfigurationDataSetLoadDetails> loadDetails = dataSets.LoadDetails;
@@ -183,7 +172,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				});
 		}
 
-
 		/// <summary>
 		/// Creates the cached configuration data set.
 		/// </summary>
@@ -196,7 +184,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			initialValue.UpdateLoadedDataSet(arguments);
 			return initialValue;
 		}
-
 
 		/// <summary>
 		/// Updates DataSet on resources change event
@@ -214,30 +201,25 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			DataSetLoaded?.Invoke(this, EventArgs.Empty);
 		}
 
-
 		/// <summary>
 		/// DataSet resources
 		/// </summary>
 		public IEnumerable<IResource> Resources { get; private set; }
-
 
 		/// <summary>
 		/// The event raised on dataset load.
 		/// </summary>
 		public event EventHandler DataSetLoaded;
 
-
 		/// <summary>
 		/// Loaded DataSet instance
 		/// </summary>
 		public T LoadedDataSet => DataSets?.LoadedDataSet;
 
-
 		/// <summary>
 		/// DataSet instance corresponding to last unsuccessful loading
 		/// </summary>
 		public T FailedToLoadDataSet => DataSets?.FailedToLoadDataSet;
-
 
 		/// <summary>
 		/// The internal data set representation
@@ -257,18 +239,15 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			}
 		}
 
-
 		/// <summary>
 		/// Gets or sets the cache object.
 		/// </summary>
 		private ICache Cache { get; }
 
-
 		/// <summary>
 		/// Resource watcher instance
 		/// </summary>
 		private IResourceMonitor m_resourceMonitor;
-
 
 		/// <summary>
 		/// A cached configuration data set, that ensures all relevant information for a data set is stored in a cache line.
@@ -282,13 +261,11 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			/// </summary>
 			private readonly TDataSet m_dataSetDefault;
 
-
 			/// <summary>
 			/// Initializes a new instance of the <see cref="CachedConfigurationDataSet{TDataSet}" /> class.
 			/// </summary>
 			/// <param name="dataSetDefault">The data set default.</param>
 			public CachedConfigurationDataSet(TDataSet dataSetDefault) => m_dataSetDefault = dataSetDefault;
-
 
 			/// <summary>
 			/// Attempts to load a new dataset and replaces the old one if load was successful
@@ -336,7 +313,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				LoadDetails = dataSet?.LoadDetails;
 			}
 
-
 			/// <summary>
 			/// Loads DataSet
 			/// </summary>
@@ -362,18 +338,15 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				return dataSet;
 			}
 
-
 			/// <summary>
 			/// The loaded data set instance.
 			/// </summary>
 			public TDataSet LoadedDataSet { get; private set; }
 
-
 			/// <summary>
 			/// The data set instance corresponding to the last unsuccessful loading.
 			/// </summary>
 			public TDataSet FailedToLoadDataSet { get; private set; }
-
 
 			/// <summary>
 			/// The last data set load details.
@@ -381,7 +354,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			public IList<ConfigurationDataSetLoadDetails> LoadDetails { get; private set; }
 		}
 	}
-
 
 	/// <summary>
 	/// Non-generic base class for common behaviour

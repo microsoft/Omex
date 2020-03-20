@@ -25,7 +25,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 				where TStartup : class =>
 					builder.AddKestrelListener<TStartup, StatelessServiceContext>(name, options, builderExtension);
 
-
 		/// <summary>
 		/// Add Kestrel service listener to stateful service
 		/// </summary>
@@ -38,7 +37,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 				where TStartup : class =>
 					builder.AddKestrelListener<TStartup, StatefulServiceContext>(name, options, builderExtension);
 
-
 		private static ServiceFabricHostBuilder<TContext> AddKestrelListener<TStartup, TContext>(
 			this ServiceFabricHostBuilder<TContext> builder,
 			string name,
@@ -50,7 +48,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 						name,
 						options,
 						builder => BuilderExtension<TContext>(builder, builderExtension)));
-
 
 		private static void BuilderExtension<TContext>(IWebHostBuilder builder, Action<IWebHostBuilder>? builderExtension)
 			where TContext : ServiceContext

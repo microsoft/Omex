@@ -30,24 +30,20 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		private readonly string m_gatesResourceName;
 
-
 		/// <summary>
 		/// The Test Groups resource name
 		/// </summary>
 		private readonly string m_testGroupsResourceName;
-
 
 		/// <summary>
 		/// Delimiter to split version range from string
 		/// </summary>
 		private static readonly char[] s_versionRangeDelimiters = new char[] { ';', ',' };
 
-
 		/// <summary>
 		/// Delimiter to split version from version range
 		/// </summary>
 		private static readonly char[] s_versionDelimiters = new char[] { '-' };
-
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GateDataSet"/> class.
@@ -56,7 +52,6 @@ namespace Microsoft.Omex.Gating
 			: this(DefaultGatesResourceName, DefaultTestGroupsResourceName)
 		{
 		}
-
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GateDataSet"/> class.
@@ -70,7 +65,6 @@ namespace Microsoft.Omex.Gating
 
 			Experiments = new Experiments();
 		}
-
 
 		#region IGateDataSet Members
 
@@ -96,7 +90,6 @@ namespace Microsoft.Omex.Gating
 			return null;
 		}
 
-
 		/// <summary>
 		/// Lookup a gate based on its key.
 		/// </summary>
@@ -112,12 +105,10 @@ namespace Microsoft.Omex.Gating
 			return null;
 		}
 
-
 		/// <summary>
 		/// Get all gate names that are part of the DataSet
 		/// </summary>
 		public virtual IEnumerable<string> GateNames => m_gates?.Keys ?? Enumerable.Empty<string>();
-
 
 		/// <summary>
 		/// Get all gates that are part of the DataSet
@@ -125,38 +116,32 @@ namespace Microsoft.Omex.Gating
 		public virtual IEnumerable<IGate> Gates => m_gates?.Values ?? Enumerable.Empty<IGate>();
 		#endregion
 
-
 		#region Member variables
 		/// <summary>
 		/// All gates in the DataSet
 		/// </summary>
 		private Dictionary<string, IGate> m_gates;
 
-
 		/// <summary>
 		/// All gates in the DataSet, indexed by key.
 		/// </summary>
 		private Dictionary<int, IGate> m_gatesByKey;
-
 
 		/// <summary>
 		/// List of gates which have release plan.
 		/// </summary>
 		private readonly HashSet<string> m_gatesWithReleasePlan = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-
 		/// <summary>
 		/// All experiments in the DataSet
 		/// </summary>
 		private Dictionary<string, IExperiment> m_experiments;
-
 
 		/// <summary>
 		/// Gating configuration schema
 		/// </summary>
 		private const string GatingSchema = ResourceNames.GatingConfiguration;
 		#endregion
-
 
 		#region Load from xml
 
@@ -194,7 +179,6 @@ namespace Microsoft.Omex.Gating
 			LastReload = DateTime.UtcNow;
 			return IsHealthy;
 		}
-
 
 		/// <summary>
 		/// Load the DataSet from an array of bytes
@@ -242,7 +226,6 @@ namespace Microsoft.Omex.Gating
 					true, "Failed to load gate DataSet due to exception.");
 			}
 		}
-
 
 		/// <summary>
 		/// Load the gates from the configuration
@@ -379,7 +362,6 @@ namespace Microsoft.Omex.Gating
 			return loadedGates;
 		}
 
-
 		/// <summary>
 		/// Consolidates the gates.
 		/// </summary>
@@ -438,7 +420,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Consolidate the host environments of a gate and the host environments of a parent gate
 		/// </summary>
@@ -464,7 +445,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Consolidate the known IP ranges of a gate and the known IP ranges of a parent gate
 		/// </summary>
@@ -489,7 +469,6 @@ namespace Microsoft.Omex.Gating
 				gate.KnownIPRanges.IntersectWith(parent.KnownIPRanges);
 			}
 		}
-
 
 		/// <summary>
 		/// Consolidate the users of a gate and the users of a parent gate
@@ -532,7 +511,6 @@ namespace Microsoft.Omex.Gating
 				return;
 			}
 		}
-
 
 		/// <summary>
 		/// Consolidate the clients of a gate and the clients of a parent gate
@@ -609,7 +587,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Consolidate the markets of a gate and the markets of a parent gate
 		/// </summary>
@@ -635,7 +612,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Consolidate the environments of a gate and the environments of a parent gate
 		/// </summary>
@@ -660,7 +636,6 @@ namespace Microsoft.Omex.Gating
 				gate.Environments.IntersectWith(parent.Environments);
 			}
 		}
-
 
 		/// <summary>
 		/// Consolidates the browsers and corresponding versions of a gate with that of the parent gate.
@@ -737,7 +712,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Consolidates the services.
 		/// </summary>
@@ -770,7 +744,6 @@ namespace Microsoft.Omex.Gating
 			gate.Services = mergedServices;
 		}
 
-
 		/// <summary>
 		/// Consolidate the start date of a gate and the start date of a parent gate
 		/// </summary>
@@ -796,7 +769,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Consolidate the start date of a gate and the End date of a parent gate
 		/// </summary>
@@ -821,7 +793,6 @@ namespace Microsoft.Omex.Gating
 				gate.EndDate = gate.EndDate < parent.EndDate ? gate.EndDate : parent.EndDate;
 			}
 		}
-
 
 		/// <summary>
 		/// Consolidate an experimental gate and if the gate contains a release plan, sets the experiment info in the release gates.
@@ -855,7 +826,6 @@ namespace Microsoft.Omex.Gating
 			experiments[gate.ExperimentInfo.ExperimentName].Add(gate);
 		}
 
-
 		/// <summary>
 		/// Consolidate the cloud contexts of a gate and the host environments of a parent gate
 		/// </summary>
@@ -880,7 +850,6 @@ namespace Microsoft.Omex.Gating
 				gate.CloudContexts.IntersectWith(parent.CloudContexts);
 			}
 		}
-
 
 		/// <summary>
 		/// Build the hierarchy of the gates, by resolving the name of each parent gate to the actual
@@ -966,7 +935,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Reads the parent gate and checks if it exists and it is not experimental. Also ensures no circular dependency
 		/// </summary>
@@ -1051,7 +1019,6 @@ namespace Microsoft.Omex.Gating
 			existingGate.ParentGate = parent;
 		}
 
-
 		/// <summary>
 		/// Reads the gate from a configuration gate
 		/// </summary>
@@ -1092,7 +1059,6 @@ namespace Microsoft.Omex.Gating
 			return gate;
 		}
 
-
 		/// <summary>
 		/// Reads the experiment gate from a configuration gate
 		/// </summary>
@@ -1111,7 +1077,6 @@ namespace Microsoft.Omex.Gating
 
 			return gate;
 		}
-
 
 		/// <summary>
 		/// Read the host environments from a configuration gate
@@ -1144,7 +1109,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Read the known IP ranges from a configuration gate
 		/// </summary>
@@ -1175,7 +1139,6 @@ namespace Microsoft.Omex.Gating
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Reads the browsers for a gate from configuration gate.
@@ -1241,7 +1204,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Reads the services for a gate from loaded configuration gate.
 		/// </summary>
@@ -1268,7 +1230,6 @@ namespace Microsoft.Omex.Gating
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Reads the release plan for a gate from configuration file.
@@ -1306,7 +1267,6 @@ namespace Microsoft.Omex.Gating
 			m_gatesWithReleasePlan.Add(gate.Name);
 		}
 
-
 		/// <summary>
 		/// Read the markets from a configuration gate
 		/// </summary>
@@ -1339,7 +1299,6 @@ namespace Microsoft.Omex.Gating
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Read the query parameters from a configuration gate
@@ -1387,7 +1346,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Read the environments from a configuration gate
 		/// </summary>
@@ -1420,7 +1378,6 @@ namespace Microsoft.Omex.Gating
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Read the clients from a configuration gate
@@ -1522,7 +1479,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Read the override from a configuration gate
 		/// </summary>
@@ -1614,7 +1570,6 @@ namespace Microsoft.Omex.Gating
 			return requiredApp;
 		}
 
-
 		/// <summary>
 		/// Read the existing client from gate and merge with new client
 		/// </summary>
@@ -1664,7 +1619,6 @@ namespace Microsoft.Omex.Gating
 
 			return client;
 		}
-
 
 		/// <summary>
 		/// Read the users that have access to the gate from a configuration gate
@@ -1778,7 +1732,6 @@ namespace Microsoft.Omex.Gating
 			gate.UserTypes = userTypes;
 		}
 
-
 		/// <summary>
 		/// Read the start date from a configuration gate
 		/// </summary>
@@ -1794,7 +1747,6 @@ namespace Microsoft.Omex.Gating
 			gate.StartDate = configurationGate.StartDate.Value;
 		}
 
-
 		/// <summary>
 		/// Read the end date from a configuration gate
 		/// </summary>
@@ -1809,7 +1761,6 @@ namespace Microsoft.Omex.Gating
 
 			gate.EndDate = configurationGate.EndDate.Value;
 		}
-
 
 		/// <summary>
 		/// Read the cloud contexts from a configuration gate
@@ -1842,7 +1793,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Read the end date from a configuration gate
 		/// </summary>
@@ -1866,7 +1816,6 @@ namespace Microsoft.Omex.Gating
 
 			return experimentWeight;
 		}
-
 
 		/// <summary>
 		/// Loads private copy
@@ -1898,12 +1847,10 @@ namespace Microsoft.Omex.Gating
 			return testGroupsDataSet;
 		}
 
-
 		/// <summary>
 		/// TestGroupsDataSet
 		/// </summary>
 		private TestGroupsDataSet<T> m_testGroupsDataSet;
-
 
 		/// <summary>
 		/// Experiments
@@ -1912,14 +1859,12 @@ namespace Microsoft.Omex.Gating
 
 		#endregion
 
-
 		#region Constants
 
 		/// <summary>
 		/// The default gates resource name.
 		/// </summary>
 		public const string DefaultGatesResourceName = "OmexGates.xml";
-
 
 		/// <summary>
 		/// The default test groups resource name.
@@ -1928,7 +1873,6 @@ namespace Microsoft.Omex.Gating
 
 		#endregion
 	}
-
 
 	/// <summary>
 	/// Gate DataSet handles reading from the gates file and manages reloading of
@@ -1942,7 +1886,6 @@ namespace Microsoft.Omex.Gating
 		public GateDataSet()
 		{
 		}
-
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GateDataSet"/> class.

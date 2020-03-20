@@ -59,7 +59,6 @@ namespace Microsoft.Omex.System.Extensions
 			}
 		}
 
-
 		/// <summary>
 		/// Find an argument which minimizes a value calculated using a passed function
 		/// </summary>
@@ -81,7 +80,6 @@ namespace Microsoft.Omex.System.Extensions
 
 			return enumerable.ArgMax(map, new ReverseComparer<TValue>(comparer));
 		}
-
 
 		private sealed class ReverseComparer<T> : IComparer<T>
 		{

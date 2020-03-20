@@ -18,7 +18,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		public static string GetUserHash(this Activity activity) =>
 			activity.GetBaggageItem(UserHashKey) ?? string.Empty;
 
-
 		/// <summary>
 		/// Returns true if activity is transaction
 		/// </summary>
@@ -28,7 +27,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 				TransactionMarkerValue,
 				StringComparison.OrdinalIgnoreCase);
 
-
 		/// <summary>
 		/// Set user hash for the activity
 		/// </summary>
@@ -36,14 +34,12 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		public static Activity SetUserHash(this Activity activity, string userHash) =>
 			activity.AddBaggage(UserHashKey, userHash);
 
-
 		/// <summary>
 		/// Mark activity as transaction
 		/// </summary>
 		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
 		public static Activity MarkAsTransaction(this Activity activity) =>
 			activity.AddBaggage(TransactionMarkerKey, TransactionMarkerValue);
-
 
 		/// <summary>
 		/// Get correlation guid that is used by old Omex services
@@ -54,7 +50,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 				? correlation
 				: (Guid?)null;
 
-
 		/// <summary>
 		/// Set correlation guid that is used by old Omex services
 		/// </summary>
@@ -62,7 +57,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		[Obsolete(CorrelationIdObsoleteMessage, false)]
 		public static Activity SetObsoleteCorrelationId(this Activity activity, Guid correlation) =>
 			activity.AddBaggage(ObsoleteCorrelationId, correlation.ToString());
-
 
 		/// <summary>
 		/// Get transaction id that is used by old Omex services
@@ -73,7 +67,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 				? transactionId
 				: (uint?)null;
 
-
 		/// <summary>
 		/// Set transaction id that is used by old Omex services
 		/// </summary>
@@ -81,7 +74,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		[Obsolete(TransactionIdObsoleteMessage, false)]
 		public static Activity SetObsoleteTransactionId(this Activity activity, uint transactionId) =>
 			activity.AddBaggage(ObsoleteTransactionId, transactionId.ToString(CultureInfo.InvariantCulture));
-
 
 		private const string UserHashKey = "UserHash";
 		private const string TransactionMarkerKey = "TransactionMarkerKey";

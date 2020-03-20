@@ -16,18 +16,15 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		None = 0,
 
-
 		/// <summary>
 		/// Unspecified
 		/// </summary>
 		Unspecified = 0x1,
 
-
 		/// <summary>
 		/// Dogfood user group
 		/// </summary>
 		Dogfood = 0x2,
-
 
 		/// <summary>
 		/// Custom user groups

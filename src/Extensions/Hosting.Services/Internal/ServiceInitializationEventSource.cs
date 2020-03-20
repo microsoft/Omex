@@ -18,7 +18,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// </summary>
 		public static ServiceInitializationEventSource Instance { get; } = new ServiceInitializationEventSource();
 
-
 		/// <summary>
 		/// Logs a service type registered ETW event.
 		/// </summary>
@@ -37,7 +36,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				serviceType,
 				FormattableString.Invariant($"Service host process {hostProcessId} registered service type {serviceType}"));
 		}
-
 
 		/// <summary>
 		/// Logs a service host initialization failed ETW event.
@@ -58,14 +56,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				FormattableString.Invariant($"Service host initialization failed for {serviceType} with exception {exception}"));
 		}
 
-
 		private ServiceInitializationEventSource() { }
-
 
 		[Event((int)EventSourcesEventIds.ServiceTypeRegistered, Level = EventLevel.Informational, Message = "{2}", Version = 1)]
 		private void LogServiceTypeRegistered(int hostProcessId, string serviceType, string message) =>
 			WriteEvent((int)EventSourcesEventIds.ServiceTypeRegistered, hostProcessId, serviceType, message);
-
 
 		//Breaking Change: serviceType paramiter added
 		[Event((int)EventSourcesEventIds.ServiceHostInitializationFailed, Level = EventLevel.Error, Message = "{1}", Version = 1)]

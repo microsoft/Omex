@@ -29,7 +29,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 			}
 		}
 
-
 		[Fact]
 		public void TryStartMonitoring_WithIncorrectResource_ReturnsFalse()
 		{
@@ -45,7 +44,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 			}
 		}
 
-
 		[Fact]
 		public void TryStartMonitoring_WithValidResource_ReturnsTrue()
 		{
@@ -59,7 +57,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 				WaitForEnabled(monitor);
 			}
 		}
-
 
 		[Fact]
 		public void TryStartMonitoring_CalledTwice_ReturnsFalse()
@@ -84,7 +81,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 			}
 		}
 
-
 		[Fact]
 		public void StopMonitoring_WithoutStart_DisablesAction()
 		{
@@ -95,7 +91,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 			}
 		}
 
-
 		[Fact]
 		public void Dispose_WithoutStart_DisablesAction()
 		{
@@ -105,7 +100,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 				Assert.False(monitor.IsEnabled);
 			}
 		}
-
 
 		[Fact]
 		public void Dispose_WithStart_DisablesAction()
@@ -123,7 +117,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 				Assert.False(monitor.IsEnabled);
 			}
 		}
-
 
 		[Fact]
 		public void ResourceMonitor_WhenResourceUpdates_CausesCallbackToBeCalled()
@@ -148,7 +141,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 				Assert.True(m_handlerCalledIndicator);
 			}
 		}
-
 
 		[Fact]
 		public void ResourceMonitor_WhenMultipleResourcesUpdated_CorrectCallbacksAreCalled()
@@ -194,7 +186,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 				Assert.False(handlerCalled1);
 			}
 		}
-
 
 		[Fact]
 		public void ResourceMonitor_WhenResourceMonitoredByMultipleParties_CorrectCallbacksAreCalled()
@@ -246,7 +237,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 			}
 		}
 
-
 		/// <summary>
 		/// Performs the event.
 		/// </summary>
@@ -255,7 +245,6 @@ namespace Microsoft.Omex.System.UnitTests.Data
 		{
 			m_handlerCalledIndicator = true;
 		}
-
 
 		/// <summary>
 		/// Waits for a file resource monitor to become enabled.
@@ -273,18 +262,15 @@ namespace Microsoft.Omex.System.UnitTests.Data
 			Assert.True(monitor.IsEnabled);
 		}
 
-
 		/// <summary>
 		/// An indicator that the ResourceUpdateHandler was called
 		/// </summary>
 		private bool m_handlerCalledIndicator;
 
-
 		/// <summary>
 		/// Maximum time we dedicate to resource monitoring in the unit test
 		/// </summary>
 		private TimeSpan m_monitoringMaxTime = new TimeSpan(0, 0, 10);
-
 
 		/// <summary>
 		/// A unit test wrapper around the FileResourceMonitor class.

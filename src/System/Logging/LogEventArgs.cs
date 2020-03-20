@@ -7,7 +7,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 using System.Threading;
-using Microsoft.Omex.System.TimedScopes;
 
 namespace Microsoft.Omex.System.Logging
 {
@@ -23,42 +22,35 @@ namespace Microsoft.Omex.System.Logging
 		/// </summary>
 		private const int ParameterCapacity = 64;
 
-
 		/// <summary>
 		/// Tag id
 		/// </summary>
 		public uint TagId { get; }
-
 
 		/// <summary>
 		/// Get the Tag id as a string
 		/// </summary>
 		public string TagIdAsString => ULSLogging.TagIdAsString(TagId);
 
-
 		/// <summary>
 		/// Category id
 		/// </summary>
 		public Category CategoryId { get; }
-
 
 		/// <summary>
 		/// Thread id
 		/// </summary>
 		public int ThreadId { get; }
 
-
 		/// <summary>
 		/// Get the category id as a string
 		/// </summary>
 		public virtual string CategoryIdAsString => CategoryId.Name;
 
-
 		/// <summary>
 		/// Message
 		/// </summary>
 		public virtual string Message { get; }
-
 
 		/// <summary>
 		/// Optional parameters for the message
@@ -66,12 +58,10 @@ namespace Microsoft.Omex.System.Logging
 		[SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays", Justification = "Explicitly need an array to match underlying logging.")]
 		public object[] MessageParameters { get; }
 
-
 		/// <summary>
 		/// Optional details string in addition to the message/message parameters value
 		/// </summary>
 		public string Details { get; }
-
 
 		/// <summary>
 		/// The fully formatted message
@@ -100,7 +90,6 @@ namespace Microsoft.Omex.System.Logging
 			}
 		}
 
-
 		/// <summary>
 		/// Join the message parameters into a string
 		/// </summary>
@@ -123,53 +112,39 @@ namespace Microsoft.Omex.System.Logging
 			return builder.ToString();
 		}
 
-
 		/// <summary>
 		/// Trace level
 		/// </summary>
 		public Level Level { get; }
-
 
 		/// <summary>
 		/// Get the trace level as a string
 		/// </summary>
 		public virtual string LevelAsString => Level.ToString();
 
-
-		/// <summary>
-		/// Correlation data
-		/// </summary>
-		public CorrelationData CorrelationData { get; }
-
-
 		/// <summary>
 		/// Should log directly to the underlying log handler
 		/// </summary>
 		public bool ShouldLogDirectly { get; }
-
 
 		/// <summary>
 		/// Unique Sequence Number for this event within the context of the correlation
 		/// </summary>
 		public long SequenceNumber { get; }
 
-
 		/// <summary>
 		/// Server Timestamp (Stopwatch.GetTimestamp) when event occurred
 		/// </summary>
 		public long ServerTimestamp { get; }
-
 
 		/// <summary>
 		/// Server UTC Time when event occurred
 		/// </summary>
 		public DateTime ServerTimeUtc { get; }
 
-
 		/// <summary>
 		/// Construct the event arguments
 		/// </summary>
-		/// <param name="correlation">correlation data</param>
 		/// <param name="shouldLogDirectly">should log directly to underlying log handler</param>
 		/// <param name="tagId">tag id</param>
 		/// <param name="categoryId">category id</param>
@@ -177,7 +152,7 @@ namespace Microsoft.Omex.System.Logging
 		/// <param name="message">message</param>
 		/// <param name="details">additional details to include in message which is not part of message formatting and parameters</param>
 		/// <param name="parameters">parameters for the message</param>
-		public LogEventArgs(CorrelationData correlation, bool shouldLogDirectly, uint tagId, Category categoryId, Level traceLevel, string message, string details, params object[] parameters)
+		public LogEventArgs(bool shouldLogDirectly, uint tagId, Category categoryId, Level traceLevel, string message, string details, params object[] parameters)
 		{
 			TagId = tagId;
 			CategoryId = categoryId;
@@ -188,18 +163,8 @@ namespace Microsoft.Omex.System.Logging
 			MessageParameters = parameters;
 			ServerTimestamp = Stopwatch.GetTimestamp();
 			ServerTimeUtc = DateTime.UtcNow;
-
-			CorrelationData = correlation;
-			if (CorrelationData != null)
-			{
-				ShouldLogDirectly = CorrelationData.ShouldLogDirectly;
-				SequenceNumber = CorrelationData.NextEventSequenceNumber();
-			}
-			else
-			{
-				ShouldLogDirectly = shouldLogDirectly;
-				SequenceNumber = -1;
-			}
+			ShouldLogDirectly = shouldLogDirectly;
+			SequenceNumber = -1;
 		}
 	}
 }

@@ -19,7 +19,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			CreateAndValidateActivity("testName");
 		}
 
-
 		private void CreateAndValidateActivity(string activityName)
 		{
 			TimedScopeResult result = TimedScopeResult.ExpectedError;

@@ -23,7 +23,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			});
 		}
 
-
 		[DataTestMethod]
 		[DataRow("TestName")]
 		public void Constructor_PropagatesName(string activityName)
@@ -31,7 +30,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			TimedScopeDefinition definition = new TimedScopeDefinition(activityName);
 			Assert.ReferenceEquals(activityName, definition.Name);
 		}
-
 
 		[TestMethod]
 		public void Equals_WorksProperly()
@@ -61,7 +59,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			Assert.IsFalse(definition2 != definition1, "2 != 1");
 		}
 
-
 		[TestMethod]
 		public void NotEquals_WorksProperly()
 		{
@@ -87,7 +84,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			Assert.IsTrue(definition2 != definition1, "2 != 1");
 		}
-
 
 		[TestMethod]
 		public void EquilsWithEmpty_WorksProperly()

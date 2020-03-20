@@ -16,12 +16,10 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// </summary>
 		bool IsEnabled(LogLevel level);
 
-
 		/// <summary>
 		/// Should this message be replayed in case of failure
 		/// </summary>
 		bool IsReplayableMessage(LogLevel logLevel);
-
 
 		/// <summary>
 		/// Log message

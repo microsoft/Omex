@@ -17,11 +17,9 @@ namespace Hosting.Services.UnitTests
 		public void SetContext_SetsStatelessContext() =>
 			TestContextSet(ServiceFabric.Mocks.MockStatelessServiceContextFactory.Default);
 
-
 		[TestMethod]
 		public void SetContext_StatefulContext() =>
 			TestContextSet(ServiceFabric.Mocks.MockStatefulServiceContextFactory.Default);
-
 
 		public void TestContextSet<TContext>(TContext serviceContext)
 			where TContext : ServiceContext

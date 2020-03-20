@@ -33,7 +33,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(dataSet.Gates.Count(), 0);
 		}
 
-
 		[Fact]
 		public void Load_WithDifferentSchema_ShouldReturnIncorrectDataSet()
 		{
@@ -44,7 +43,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.NotNull(dataSet);
 			Assert.Equal(dataSet.GateNames.Count(), 0);
 		}
-
 
 		[Fact]
 		public void RetrieveAllGates_WithDataSetUsingOnlyOneGate_ShouldReturnOnlyOneGate()
@@ -65,7 +63,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(gate.ClientVersions.Count, 1);
 			Assert.Equal(gate.ClientVersions.Keys.First(), "ClientOne");
 		}
-
 
 		[Fact]
 		public void RetrieveAllGates_WithDataSetUsingOnlyOneGateWithEnvironments_ShouldReturnOnlyOneGate()
@@ -92,7 +89,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(gate.ClientVersions.Keys.First(), "ClientOne");
 		}
 
-
 		[Fact]
 		public void ClientVersions_WhereParentsHaveNoClientVersionsSpecified_ShouldReturnLeafClientVersions()
 		{
@@ -112,7 +108,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(client.MinVersion, ProductVersion.Parse("16.1"));
 			Assert.Equal(client.MaxVersion, ProductVersion.Parse("16.3"));
 		}
-
 
 		[Fact]
 		public void ClientVersions_WhereParentsHaveNoClientVersionsAndEnvironmentsSpecified_ShouldReturnLeafClientVersionsAndEnvironments()
@@ -139,7 +134,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(client.MaxVersion, ProductVersion.Parse("16.3"));
 		}
 
-
 		[Fact]
 		public void Load_DataSetFileWithMissingParentGate_ShouldReturnDataSetWithNoGates()
 		{
@@ -148,7 +142,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 
 			Assert.Equal(dataSet.Gates.Count(), 0);
 		}
-
 
 		[Fact]
 		public void Load_NestedGates_ShouldReturnLeafGateWithDenormalizedRestrictions()
@@ -170,7 +163,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(client.MinVersion, ProductVersion.Parse("16.2"));
 			Assert.Equal(client.MaxVersion, ProductVersion.Parse("16.3"));
 		}
-
 
 		[Fact]
 		public void Load_NestedGatesWithEnvironments_ShouldReturnLeafGateWithDenormalizedRestrictions()
@@ -197,7 +189,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(client.MaxVersion, ProductVersion.Parse("16.3"));
 		}
 
-
 		[Fact]
 		public void UserGroup_WhereParentsHaveNoneUserGroupSpecified_ShouldOverrideChildUserGroup()
 		{
@@ -220,7 +211,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			IGateContext gateContext = new GateContext(request, new BasicMachineInformation(), new DefaultExperimentContext());
 			Assert.False(gateContext.IsGateApplicable(gate));
 		}
-
 
 		[Fact]
 		public void UserGroup_WhereParentsHaveNoneUserGroupAndNoneEnvironmentSpecified_ShouldOverrideChildUserGroupAndEnvironment()
@@ -248,7 +238,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.False(gateContext.IsGateApplicable(gate));
 		}
 
-
 		[Fact]
 		public void AllowedBrowsers_WithValidSimpleConstraintsOnBrowser_ShouldLoadCorrectly()
 		{
@@ -266,7 +255,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(childGate.AllowedBrowsers["BrowserOne"].Count, 2);
 			Assert.Equal(childGate.AllowedBrowsers["BrowserFour"].Count, 0);
 		}
-
 
 		[Fact]
 		public void AllowedBrowsers_WithValidNestedConstraintsOnBrowser_ShouldLoadCorrectly()
@@ -297,7 +285,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(childGate.AllowedBrowsers["BrowserFour"].Count, 2);
 		}
 
-
 		[Fact]
 		public void BlockedBrowsers_WithValidSimpleConstraintsOnBlockedBrowsers_ShouldLoadCorrectly()
 		{
@@ -318,7 +305,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(childGate.BlockedBrowsers["BrowserOne"].Count, 2);
 			Assert.Equal(childGate.BlockedBrowsers["BrowserFour"].Count, 0);
 		}
-
 
 		[Fact]
 		public void BlockedBrowsers_WithValidNestedConstraintsOnBlockedBrowser_ShouldLoadCorrectly()
@@ -349,7 +335,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(childGate.BlockedBrowsers["BrowserFour"].Count, 2);
 		}
 
-
 		[Fact]
 		public void Browsers_WithNotValidGateXml_ShouldNotLoadCorrectly()
 		{
@@ -360,8 +345,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 
 			Assert.Null(gate);
 		}
-
-
 
 		[Fact]
 		public void Load_GateSimpleDates_ShouldLoadCorrectly()
@@ -377,7 +360,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(gate.EndDate.Value, DateTime.Parse("2015-01-18T14:12:50Z", CultureInfo.InvariantCulture).ToUniversalTime());
 		}
 
-
 		[Fact]
 		public void Load_GateNestedDates_ShouldLoadCorrectly()
 		{
@@ -392,7 +374,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(gate.EndDate.Value, DateTime.Parse("2015-01-18T08:12:24Z", CultureInfo.InvariantCulture).ToUniversalTime());
 		}
 
-
 		[Fact]
 		public void Load_GatedReleasePlanWithOneReleaseGate_ShouldLoadCorrectly()
 		{
@@ -406,7 +387,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(gate.ReleasePlan.Length, 1);
 			Assert.Equal(gate.ReleasePlan[0].Name, "MyProduct.WebService.Feature.ReleasePlan.Integration");
 		}
-
 
 		[Fact]
 		public void Load_GatedReleasePlanWithOneReleaseGate_ReleaseGateShouldHaveReleasePlanName()
@@ -424,7 +404,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Null(gate.RepleasePlanGateName);
 		}
 
-
 		[Fact]
 		public void Load_GatedReleasePlanWithMultipleReleaseGates_ShouldLoadCorrectly()
 		{
@@ -440,7 +419,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(gate.ReleasePlan[1].Name, "MyProduct.WebService.Feature.ReleasePlan.PreProduction");
 			Assert.Equal(gate.ReleasePlan[2].Name, "MyProduct.WebService.Feature.ReleasePlan.Production");
 		}
-
 
 		[Fact]
 		public void Load_GatedReleasePlanWithSameReleaseGates_ShouldLoadCorrectly()
@@ -460,7 +438,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(gate.ReleasePlan[1].Name, "MyProduct.WebService.Feature.ReleasePlan.PreProduction");
 			Assert.Equal(gate.ReleasePlan[2].Name, "MyProduct.WebService.Feature.ReleasePlan.Production");
 		}
-
 
 		[Fact]
 		public void Load_GatedReleasePlanWithConsolidationFromContainingGate_ShouldLoadCorrectly()
@@ -488,7 +465,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(gate.ReleasePlan[1].Users.Count, 2);
 		}
 
-
 		[Fact]
 		public void Load_ExperimentalGate_ShouldLoadCorrectly()
 		{
@@ -508,7 +484,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(gates.First().Name, "MyProduct.Test");
 			Assert.Equal(gates.First().ParentGate.Name, "MyProduct");
 		}
-
 
 		[Fact]
 		public void Load_GateWithParentExperimentalGate_ShouldNotLoadCorrectly()
@@ -532,7 +507,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			gate = dataSet.GetGate("MyProduct.ParentExperiment");
 			Assert.Null(gate);
 		}
-
 
 		[Fact]
 		public void Load_ExperimentsWithReleasePlan_ShouldLoadCorrectly()
@@ -567,7 +541,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(gates.ElementAt(1).ReleasePlan[1].Name, "MyProduct.TestExperiment2.ReleaseGate2");
 		}
 
-
 		[Fact]
 		public void Load_GateSimpleVersionRange_ShouldLoadCorrectly()
 		{
@@ -586,7 +559,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(client.VersionRanges.First().Max, ProductVersion.Parse("16.3"));
 		}
 
-
 		[Fact]
 		public void Load_GateSimpleAudienceGroup_ShouldLoadCorrectly()
 		{
@@ -602,7 +574,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(client.Name, "ClientOne");
 			Assert.Equal(client.AudienceGroup, "ClientLoop");
 		}
-
 
 		[Fact]
 		public void Load_GateSimpleAppOverride_ShouldLoadCorrectly()
@@ -626,7 +597,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(app.MaxVersion, ProductVersion.Parse("16.9"));
 			Assert.Equal(app.AudienceGroup, "AppLoop");
 		}
-
 
 		[Fact]
 		public void Load_GatedSimpleServices_ShouldLoadCorrectly()
@@ -653,7 +623,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gate.Services.TryGetValue("ServiceFour", out serviceFlags));
 			Assert.Equal(serviceFlags.ToString(), GatedServiceTypes.All.ToString());
 		}
-
 
 		[Fact]
 		public void Load_GatedNestedServices_ShouldLoadCorrectly()
@@ -686,7 +655,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(serviceFlags.ToString(), GatedServiceTypes.None.ToString());
 		}
 
-
 		[Fact]
 		public void Load_GateOneCloudContext_ShouldLoadCorrectly()
 		{
@@ -699,7 +667,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.Equal(gate.CloudContexts.Count(), 1);
 			Assert.Equal(gate.CloudContexts.Single(), "Public");
 		}
-
 
 		[Fact]
 		public void Load_GateThreeCloudContexts_ShouldLoadCorrectly()
@@ -715,7 +682,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.True(gate.CloudContexts.Contains("Sovereign"));
 			Assert.True(gate.CloudContexts.Contains("Local"));
 		}
-
 
 		/// <summary>
 		/// Loads GateDataSet with required contents
@@ -734,7 +700,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			dataSet.Load(resources);
 			return dataSet;
 		}
-
 
 		/// <summary>
 		/// Valid test groups xml data
@@ -758,7 +723,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</TestGroup>
 </TestGroups>";
 
-
 		/// <summary>
 		/// Simple valid gating file
 		/// </summary>
@@ -777,7 +741,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		</ClientVersions>
 	</Gate>
 </Gates>";
-
 
 		/// <summary>
 		/// Simple valid gating file with environments
@@ -802,13 +765,11 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</Gate>
 </Gates>";
 
-
 		/// <summary>
 		/// Incorrect Xml
 		/// </summary>
 		private const string IncorrectXml =
 			@"This is not xml";
-
 
 		/// <summary>
 		/// Different schema
@@ -822,7 +783,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		</Markets>
 	</Gate>
 </Root>";
-
 
 		/// <summary>
 		/// Simple valid nested gating file
@@ -845,7 +805,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	<Gate Name=""MyProduct"">
 	</Gate>
 </Gates>";
-
 
 		/// <summary>
 		/// Simple valid nested gating file with environments
@@ -873,7 +832,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</Gate>
 </Gates>";
 
-
 		/// <summary>
 		/// User group nesting
 		/// </summary>
@@ -898,7 +856,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		</UserGroups>
 	</Gate>
 </Gates>";
-
 
 		/// <summary>
 		/// User group and environment nesting
@@ -932,7 +889,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</Gate>
 </Gates>";
 
-
 		/// <summary>
 		/// Gating file with a missing parent gate
 		/// </summary>
@@ -943,7 +899,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		<ParentGate Name=""MyProduct""/>
 	</Gate>
 </Gates>";
-
 
 		/// <summary>
 		/// Gating file with nested requirements
@@ -978,7 +933,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		</ClientVersions>
 	</Gate>
 </Gates>";
-
 
 		/// <summary>
 		/// Gating file with nested requirements with environments
@@ -1021,7 +975,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</Gate>
 </Gates>";
 
-
 		/// <summary>
 		/// Start date and end dates
 		/// </summary>
@@ -1033,7 +986,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		<EndDate Value=""2015-01-18T14:12:50Z"" />
 	</Gate>
 </Gates>";
-
 
 		/// <summary>
 		/// Dates inherited from parent
@@ -1051,7 +1003,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		<EndDate Value=""2015-01-18T08:12:24Z"" />
 	</Gate>
 </Gates>";
-
 
 		/// <summary>
 		/// Valid gates with experiment
@@ -1086,7 +1037,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		</ExperimentGate>
 	</Experiment>
 </Gates>";
-
 
 		/// <summary>
 		/// Gates with experiment parent gate
@@ -1124,7 +1074,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		</ExperimentGate>
 	</Experiment>
 </Gates>";
-
 
 		/// <summary>
 		/// Experiment with release plan.
@@ -1187,7 +1136,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</Experiment>
 </Gates>";
 
-
 		/// <summary>
 		/// Browser type and versions for a gate.
 		/// </summary>
@@ -1236,7 +1184,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		</Environments>
 	</Gate>
 </Gates>";
-
 
 		/// <summary>
 		/// Browser types and versions of a gate inherited from a parent gate.
@@ -1311,7 +1258,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</Gate>
 </Gates>";
 
-
 		/// <summary>
 		/// Browser type and versions for a gate for which the access is to be blocked.
 		/// </summary>
@@ -1356,7 +1302,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		</Markets>
 	</Gate>
 </Gates>";
-
 
 		/// <summary>
 		/// Browser types and versions of a gate inherited from a parent gate for which gate is to be blocked.
@@ -1431,7 +1376,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</Gate>
 </Gates>";
 
-
 		/// <summary>
 		/// NotValid Gate xml having both Allowed and Blocked browsers.
 		/// </summary>
@@ -1480,7 +1424,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		</Markets>
 	</Gate>
 </Gates>";
-
 
 		/// <summary>
 		/// Release plan with multiple release gates.
@@ -1546,7 +1489,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</Gate>
 </Gates>";
 
-
 		/// <summary>
 		/// Release plan with one release gate.
 		/// </summary>
@@ -1582,7 +1524,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		</ReleasePlan>
 	</Gate>
 </Gates>";
-
 
 		/// <summary>
 		/// Release plan having release gates with same name.
@@ -1673,7 +1614,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</Gate>
 </Gates>";
 
-
 		/// <summary>
 		/// Release plan containing release gates which will be consolidated using the container gate.
 		/// </summary>
@@ -1720,7 +1660,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</Gate>
 </Gates>";
 
-
 		/// <summary>
 		/// Gating file with simple services.
 		/// </summary>
@@ -1744,7 +1683,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		</Services>
 	</Gate>
 </Gates>";
-
 
 		/// <summary>
 		/// Gating file with nested services.
@@ -1780,7 +1718,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</Gate>
 </Gates>";
 
-
 		/// <summary>
 		/// Gating file with version range
 		/// </summary>
@@ -1794,7 +1731,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</Gate>
 </Gates>";
 
-
 		/// <summary>
 		/// Gating file with audience group
 		/// </summary>
@@ -1807,7 +1743,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		</ClientVersions>
 	</Gate>
 </Gates>";
-
 
 		/// <summary>
 		/// Gating file with application override
@@ -1824,7 +1759,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 	</Gate>
 </Gates>";
 
-
 		/// <summary>
 		/// Gating file with a sigle cloud context
 		/// </summary>
@@ -1837,7 +1771,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 		</CloudContexts>
 	</Gate>
 </Gates>";
-
 
 		/// <summary>
 		/// Gating file with multiple cloud context

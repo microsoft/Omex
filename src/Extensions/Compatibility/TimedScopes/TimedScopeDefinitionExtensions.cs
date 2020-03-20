@@ -35,9 +35,7 @@ namespace Microsoft.Omex.Extensions.Compatibility.TimedScopes
 			return scope;
 		}
 
-
 		internal static void Initialize(ITimedScopeProvider provider) => s_timedScopeProvider = provider;
-
 
 		private static ITimedScopeProvider? s_timedScopeProvider;
 	}

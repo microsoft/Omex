@@ -16,24 +16,20 @@ namespace Microsoft.Omex.CodeGenerators.TimedScopeGen
 		/// </summary>
 		private TimedScopeCollection ScopeCollection { get; }
 
-
 		/// <summary>
 		/// Are we rendering shared timed scopes?
 		/// </summary>
 		private bool IsSharedTimedScopes { get; }
-
 
 		/// <summary>
 		/// Name of the generated class
 		/// </summary>
 		private string TimedScopeClassName => IsSharedTimedScopes ? "SharedTimedScopes" : "TimedScopes";
 
-
 		/// <summary>
 		/// Assembly name
 		/// </summary>
 		private string AssemblyName => Assembly.GetExecutingAssembly().GetName().Name;
-
 
 		/// <summary>
 		/// Assembly version
@@ -46,7 +42,6 @@ namespace Microsoft.Omex.CodeGenerators.TimedScopeGen
 				return string.Concat(version.FileMajorPart, ".", version.FileMinorPart, ".0000.0000");
 			}
 		}
-
 
 		/// <summary>
 		/// Constructor

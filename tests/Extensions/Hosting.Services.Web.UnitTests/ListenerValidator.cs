@@ -39,15 +39,11 @@ namespace Hosting.Services.Web.UnitTests
 			};
 		}
 
-
 		public string ListenerName { get; }
-
 
 		public ServiceFabricIntegrationOptions IntegrationOptions { get; }
 
-
 		public Action<IWebHostBuilder> BuilderAction { get; }
-
 
 		public IWebHost ValidateListenerBuilder(TContext context, KestrelListenerBuilder<MockStartup, TContext> builder)
 		{
@@ -68,7 +64,6 @@ namespace Hosting.Services.Web.UnitTests
 			return host;
 		}
 
-
 		public void ValidateOmexTypesRegistered(IWebHost host)
 		{
 			ResolveType<ITimedScopeProvider>(host);
@@ -78,7 +73,6 @@ namespace Hosting.Services.Web.UnitTests
 			Assert.AreNotEqual(0, m_logsEventSourceMock.Invocations.Count, "Omex logger should be registred in WebHost");
 		}
 
-
 		public ICommunicationListener ValidateBuildFunction(TContext context, KestrelListenerBuilder<MockStartup, TContext> builder)
 		{
 			ICommunicationListener listener = builder.Build(context);
@@ -86,9 +80,7 @@ namespace Hosting.Services.Web.UnitTests
 			return listener;
 		}
 
-
 		private Mock<ILogEventSender> m_logsEventSourceMock;
-
 
 		private T ResolveType<T>(IWebHost host) where T : class
 		{
@@ -97,9 +89,7 @@ namespace Hosting.Services.Web.UnitTests
 			return obj;
 		}
 
-
 		private class TypeRegisteredInListenerExtension { }
-
 
 		private class MockListener : AspNetCoreCommunicationListener
 		{

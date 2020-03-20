@@ -13,7 +13,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// </summary>
 		TimedScope CreateAndStart(TimedScopeDefinition name, TimedScopeResult result = TimedScopeResult.SystemError);
 
-
 		/// <summary>
 		/// Creates TimedScope
 		/// </summary>

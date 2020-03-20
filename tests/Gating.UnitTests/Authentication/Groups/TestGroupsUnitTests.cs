@@ -43,7 +43,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			}
 		}
 
-
 		[Fact]
 		public void IsDefault_GroupNamesContainDefault_ReturnsTrue()
 		{
@@ -62,7 +61,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 					"IsDefault returns true if test groups contain default group in the middle.");
 			}
 		}
-
 
 		[Fact]
 		public void GetUserGroups_TestGroupsDataSetIsNull_ReturnsEmptyListAndLogs()
@@ -85,7 +83,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			}
 		}
 
-
 		[Fact]
 		public void GetDeploymentIdGroups_IdNotInDataSet_ReturnsDefaultGroups()
 		{
@@ -101,7 +98,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 					"Returns default access groups list when deploymentId is not in DataSet.");
 			}
 		}
-
 
 		[Fact]
 		public void GetDeploymentIdGroups_IdInDataSet_ReturnsExpectedGroups()
@@ -119,7 +115,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 				Assert.True(userGroups.Contains("all"), "Groups contain group 'all'");
 			}
 		}
-
 
 		[Fact]
 		public void GetGroupUsers_TestGroupsDataSetIsNull_ReturnsEmptyListAndLogs()
@@ -142,7 +137,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			}
 		}
 
-
 		[Fact]
 		public void GetGroupUsers_GroupNotInDataSet_ReturnsEmptyList()
 		{
@@ -156,7 +150,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 					"Returns empty list when group is not in DataSet.");
 			}
 		}
-
 
 		[Fact]
 		public void GetGroupUsers_GroupInDataSet_ReturnsUsers()
@@ -174,7 +167,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			}
 		}
 
-
 		[Fact]
 		public void IsUserInGroups_InputInDifferentCasing_ReturnsCorrectResult()
 		{
@@ -188,7 +180,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 					"Expected IsUserInGroups search to be case insensitive");
 			}
 		}
-
 
 		/// <summary>
 		/// Merges all load errors into one string for easier unit test output
@@ -211,30 +202,25 @@ namespace Microsoft.Omex.Gating.UnitTests
 			return stringBuilder.ToString();
 		}
 
-
 		/// <summary>
 		/// Test resource folder
 		/// </summary>
 		private const string TestResourceFolder = "TestFolder";
-
 
 		/// <summary>
 		/// Test resource name
 		/// </summary>
 		private const string TestResourceName = ResourceNames.TestGroups;
 
-
 		/// <summary>
 		/// Deployment id
 		/// </summary>
 		private const string DeploymentId = "{3D5ABF05-6148-4594-9BBE-A3CB2A34EBF8}";
 
-
 		/// <summary>
 		/// Deployment id not in DataSet
 		/// </summary>
 		private const string DeploymentIdNotInDataSet = "{3D5ABF05-6148-4594-9BBE-A3CB2A34E000}";
-
 
 		/// <summary>
 		/// Checks the test groups data set loader
@@ -245,7 +231,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			Assert.NotNull(loader.LoadedDataSet);
 			Assert.True(loader.LoadedDataSet.IsHealthy, GetDataSetLoadingErrors(loader.LoadedDataSet.Errors));
 		}
-
 
 		/// <summary>
 		/// TestGroups DataSet Loader
@@ -267,7 +252,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 								});
 			}
 
-
 			/// <summary>
 			/// Called when the data set is loaded.
 			/// </summary>
@@ -275,7 +259,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			protected override void OnLoad(IList<ConfigurationDataSetLoadDetails> fileDetails)
 			{
 			}
-
 
 			/// <summary>
 			/// Called when the data set is reloaded.
@@ -287,7 +270,6 @@ namespace Microsoft.Omex.Gating.UnitTests
 			{
 			}
 		}
-
 
 		/// <summary>
 		/// Valid test groups xml data

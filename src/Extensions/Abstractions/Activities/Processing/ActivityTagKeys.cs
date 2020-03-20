@@ -13,12 +13,10 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities.Processing
 		/// </summary>
 		public static string Result { get; } = "Result";
 
-
 		/// <summary>
 		/// Activity sub type tag key
 		/// </summary>
 		public static string SubType { get; } = "SubType";
-
 
 		/// <summary>
 		/// Activity metadata tag key

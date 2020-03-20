@@ -17,12 +17,10 @@ namespace Microsoft.Omex.Gating.UnitTests.Shared
 		public UnitTestGateDataSet(string gatesResourceName, string testGroupsResourceName)
 			: base(gatesResourceName, testGroupsResourceName) => GateDictionary = new Dictionary<string, IGate>();
 
-
 		/// <summary>
 		/// Dictionary containing overridden gates
 		/// </summary>
 		private Dictionary<string, IGate> GateDictionary { get; set; }
-
 
 		/// <summary>
 		/// Override a gate. If a gate with the specified name
@@ -33,13 +31,11 @@ namespace Microsoft.Omex.Gating.UnitTests.Shared
 		/// <param name="gate">gate to return, use 'null' to effectively hide a gate</param>
 		public void AddGateOverride(string name, IGate gate) => GateDictionary[name] = gate;
 
-
 		/// <summary>
 		/// Remove an overridden gate
 		/// </summary>
 		/// <param name="name">name of gate</param>
 		public void RemoveGateOverride(string name) => GateDictionary.Remove(name);
-
 
 		/// <summary>
 		/// Get a gate by name
@@ -55,7 +51,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Shared
 
 			return gate;
 		}
-
 
 		/// <summary>
 		/// Get the gate names that are part of the dataSet
@@ -80,7 +75,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Shared
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Get the gates that are part of the dataSet

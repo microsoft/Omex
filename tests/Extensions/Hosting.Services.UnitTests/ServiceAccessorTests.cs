@@ -14,21 +14,17 @@ namespace Hosting.Services.UnitTests
 		public void StatelessContextPasedInConstructor_ProperlyHandlesActions() =>
 			ContextOnInitialization(ServiceFabric.Mocks.MockStatelessServiceContextFactory.Default);
 
-
 		[TestMethod]
 		public void StatefulContextPasedInConstructor_ProperlyHandlesActions() =>
 			ContextOnInitialization(ServiceFabric.Mocks.MockStatefulServiceContextFactory.Default);
-
 
 		[TestMethod]
 		public void StatelessContextAfterInitialization_ProperlyHandlesActions() =>
 			ContextAfterInitialization(ServiceFabric.Mocks.MockStatelessServiceContextFactory.Default);
 
-
 		[TestMethod]
 		public void StatefulContextAfterInitialization_ProperlyHandlesActions() =>
 			ContextAfterInitialization(ServiceFabric.Mocks.MockStatefulServiceContextFactory.Default);
-
 
 		private void ContextOnInitialization<TContext>(TContext context)
 			where TContext : ServiceContext
@@ -42,7 +38,6 @@ namespace Hosting.Services.UnitTests
 
 			Assert.AreEqual(context, recivedContext);
 		}
-
 
 		private void ContextAfterInitialization<TContext>(TContext context)
 			where TContext : ServiceContext

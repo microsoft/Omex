@@ -25,12 +25,10 @@ namespace Microsoft.Omex.System.Data
 			IsInitialLoad = isInitialLoad;
 		}
 
-
 		/// <summary>
 		/// Gets the details of the updated resource.
 		/// </summary>
 		public IDictionary<string, IResourceDetails> Details { get; }
-
 
 		/// <summary>
 		/// Gets a value indicating whether this is the initial load.

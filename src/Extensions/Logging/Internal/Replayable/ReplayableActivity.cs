@@ -15,7 +15,6 @@ namespace Microsoft.Omex.Extensions.Logging.Replayable
 			m_logEvents = new ConcurrentQueue<LogMessageInformation>();
 		}
 
-
 		public void AddLogEvent(LogMessageInformation logEvent)
 		{
 			m_logEvents.Enqueue(logEvent);
@@ -26,9 +25,7 @@ namespace Microsoft.Omex.Extensions.Logging.Replayable
 			}
 		}
 
-
 		public IEnumerable<LogMessageInformation> GetLogEvents() => m_logEvents;
-
 
 		private readonly ConcurrentQueue<LogMessageInformation> m_logEvents;
 		private readonly uint m_maxReplayedEventsPerActivity;

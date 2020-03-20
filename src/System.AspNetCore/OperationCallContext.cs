@@ -20,7 +20,6 @@ namespace Microsoft.Omex.System.AspNetCore
 		/// </summary>
 		private readonly ICallContext m_backupCallContext = new ThreadCallContext();
 
-
 		/// <summary>
 		/// Dictionary of data stored on the call context
 		/// </summary>
@@ -54,7 +53,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			}
 		}
 
-
 		/// <summary>
 		/// Dictionary of data stored on the call context and shared between derived call contexts
 		/// </summary>
@@ -72,7 +70,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			}
 		}
 
-
 		/// <summary>
 		/// Add data to context
 		/// </summary>
@@ -81,7 +78,6 @@ namespace Microsoft.Omex.System.AspNetCore
 		public void AddContextValue(string key, object value)
 		{
 		}
-
 
 		/// <summary>
 		/// Start the call context
@@ -102,7 +98,6 @@ namespace Microsoft.Omex.System.AspNetCore
 
 			return null;
 		}
-
 
 		/// <summary>
 		/// End the call context
@@ -137,7 +132,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			m_backupCallContext.EndCallContext(threadId, nodeId);
 		}
 
-
 		/// <summary>
 		/// Get the existing call context if there is one
 		/// </summary>
@@ -160,7 +154,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			return m_backupCallContext.ExistingCallContext(threadId);
 		}
 
-
 		/// <summary>
 		/// Data stored per operation context
 		/// </summary>
@@ -170,7 +163,6 @@ namespace Microsoft.Omex.System.AspNetCore
 		/// </remarks>
 		private static readonly ConcurrentDictionary<OperationContext, Stack<Dictionary<string, object>>> s_contextData =
 			new ConcurrentDictionary<OperationContext, Stack<Dictionary<string, object>>>(100, 1000);
-
 
 		/// <summary>
 		/// Data stored per operation context and shared between all child contexts
