@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System.Fabric;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
