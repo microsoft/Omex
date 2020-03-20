@@ -78,7 +78,7 @@ namespace Hosting.Services.UnitTests
 
 			IServiceAction<object> resolvedAction = hostBuilder.Build().Services.GetService<IServiceAction<object>>();
 
-			await resolvedAction.RunAsync(new object(), CancellationToken.None);
+			await resolvedAction.RunAsync(new object(), CancellationToken.None).ConfigureAwait(false);
 
 			Assert.IsTrue(actionCalled);
 		}

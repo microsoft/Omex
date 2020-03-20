@@ -27,7 +27,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			TServiceContext context = m_getContext(service);
 			return new KestrelCommunicationListener(context, Name, (url, listener) => BuildWebHost(context, url, listener));
 		}
-			
 
 		internal KestrelListenerBuilder(
 			string name,

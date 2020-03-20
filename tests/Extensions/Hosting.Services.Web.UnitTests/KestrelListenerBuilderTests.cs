@@ -18,7 +18,7 @@ namespace Hosting.Services.Web.UnitTests
 		[TestMethod]
 		public void StatefulService_TypesRegistered() => CheckTypeRegistration((StatefulService)new MockStatefulService(), service => service.Context);
 
-		private void CheckTypeRegistration<TService, TContext>(TService service, Func<TService,TContext> getContex)
+		private void CheckTypeRegistration<TService, TContext>(TService service, Func<TService,TContext> getContext)
 			where TContext : ServiceContext
 		{
 			ListenerValidator<TService, TContext> validator = new ListenerValidator<TService, TContext>();
@@ -27,10 +27,10 @@ namespace Hosting.Services.Web.UnitTests
 				new KestrelListenerBuilder<MockStartup, TService, TContext>(
 					validator.ListenerName,
 					validator.IntegrationOptions,
-					getContex,
+					getContext,
 					validator.BuilderAction);
 
-			validator.ValidateListenerBuilder(getContex(service), builder);
+			validator.ValidateListenerBuilder(getContext(service), builder);
 			validator.ValidateBuildFunction(service, builder);
 		}
 	}
