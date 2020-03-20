@@ -19,7 +19,7 @@ namespace Hosting.Services.Web.UnitTests
 		[TestMethod]
 		public void BuildStatelessService_TypesRegisteredStateless() =>
 			CheckTypeRegistration(
-				new MockStatelessService(),
+				(StatelessService)new MockStatelessService(),
 				service => service.Context,
 				(v, h) => h.BuildStatelessService(
 					"StatelessServiceName",
@@ -28,7 +28,7 @@ namespace Hosting.Services.Web.UnitTests
 		[TestMethod]
 		public void BuildStateful_BuildStatelessService_TypesRegistered() =>
 			CheckTypeRegistration(
-				new MockStatefulService(),
+				(StatefulService)new MockStatefulService(),
 				service => service.Context,
 				(v, h) => h.BuildStatefulService(
 					"StatefulServiceName",

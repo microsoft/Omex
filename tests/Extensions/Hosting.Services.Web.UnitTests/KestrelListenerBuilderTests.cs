@@ -4,6 +4,7 @@
 using System;
 using System.Fabric;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
+using Microsoft.ServiceFabric.Services.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Hosting.Services.Web.UnitTests
@@ -12,10 +13,10 @@ namespace Hosting.Services.Web.UnitTests
 	public class KestrelListenerBuilderTests
 	{
 		[TestMethod]
-		public void StatelessService_TypesRegistered() => CheckTypeRegistration(new MockStatelessService(), service => service.Context);
+		public void StatelessService_TypesRegistered() => CheckTypeRegistration((StatelessService)new MockStatelessService(), service => service.Context);
 
 		[TestMethod]
-		public void StatefulService_TypesRegistered() => CheckTypeRegistration(new MockStatefulService(), service => service.Context);
+		public void StatefulService_TypesRegistered() => CheckTypeRegistration((StatefulService)new MockStatefulService(), service => service.Context);
 
 		private void CheckTypeRegistration<TService, TContext>(TService service, Func<TService,TContext> getContex)
 			where TContext : ServiceContext
