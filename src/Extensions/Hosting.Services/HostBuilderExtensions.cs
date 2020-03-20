@@ -26,7 +26,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>
 		/// Add actions that will be executed inside service fabric service RunAsync method
 		/// </summary>
-		/// <typeparam name="TService">Type of service fabric service, currently should be only StatelessService or StatefulService</typeparam>
+		/// <typeparam name="TService">Type of service fabric service, currently should be only <see cref="StatelessService"/> or <see cref="StatefulService"/></typeparam>
 		public static ServiceFabricHostBuilder<TService> AddServiceAction<TService>(
 			this ServiceFabricHostBuilder<TService> builder,
 			Func<TService,CancellationToken, Task> action) =>
@@ -35,7 +35,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>
 		/// Add actions that will be executed inside stateless service RunAsync method
 		/// </summary>
-		/// <typeparam name="TService">Type of service fabric service, currently should be only StatelessService or StatefulService</typeparam>
+		/// <typeparam name="TService">Type of service fabric service, currently should be only <see cref="StatelessService"/> or <see cref="StatefulService"/></typeparam>
 		public static ServiceFabricHostBuilder<TService> AddServiceAction<TService>(
 			this ServiceFabricHostBuilder<TService> builder,
 			IServiceAction<TService> action) =>
@@ -44,7 +44,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>
 		/// Add service listener to stateless service fabric service
 		/// </summary>
-		/// <typeparam name="TService">Type of service fabric service, currently should be only StatelessService or StatefulService</typeparam>
+		/// <typeparam name="TService">Type of service fabric service, currently should be only <see cref="StatelessService"/> or <see cref="StatefulService"/></typeparam>
 		public static ServiceFabricHostBuilder<TService> AddServiceListener<TService>(
 			this ServiceFabricHostBuilder<TService> builder,
 			string name,
@@ -54,7 +54,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>
 		/// Add service listener to stateless service fabric service
 		/// </summary>
-		/// <typeparam name="TService">Type of service fabric service, currently should be only StatelessService or StatefulService</typeparam>
+		/// <typeparam name="TService">Type of service fabric service, currently should be only <see cref="StatelessService"/> or <see cref="StatefulService"/></typeparam>
 		public static ServiceFabricHostBuilder<TService> AddServiceListener<TService>(
 			this ServiceFabricHostBuilder<TService> builder,
 			IListenerBuilder<TService> listenerBuilder) =>
