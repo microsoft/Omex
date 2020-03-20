@@ -2,21 +2,19 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal sealed class ServiceAction<TServiceContext> : IServiceAction<TServiceContext>
-		where TServiceContext : ServiceContext
+	internal sealed class ServiceAction<TService> : IServiceAction<TService>
 	{
-		public ServiceAction(Func<TServiceContext, CancellationToken, Task> action) =>
+		public ServiceAction(Func<TService, CancellationToken, Task> action) =>
 			m_action = action;
 
-		public Task RunAsync(TServiceContext service, CancellationToken cancellationToken) =>
+		public Task RunAsync(TService service, CancellationToken cancellationToken) =>
 			m_action(service, cancellationToken);
 
-		private readonly Func<TServiceContext, CancellationToken, Task> m_action;
+		private readonly Func<TService, CancellationToken, Task> m_action;
 	}
 }

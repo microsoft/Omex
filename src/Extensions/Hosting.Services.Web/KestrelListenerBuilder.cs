@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 	/// <summary>
 	/// Creates ServiceInstanceListener with all of Omex dependencies initialized
 	/// </summary>
-	internal sealed class KestrelListenerBuilder<TStartup, TServiceContext> : IListenerBuilder<TServiceContext>
+	internal sealed class KestrelListenerBuilder<TStartup,TService,TServiceContext> : IListenerBuilder<TService>
 		where TStartup : class
 		where TServiceContext : ServiceContext
 	{
@@ -22,16 +22,22 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		public string Name { get; }
 
 		/// <inheritdoc />
-		public ICommunicationListener Build(TServiceContext context) =>
-			new KestrelCommunicationListener(context, Name, (url, listener) => BuildWebHost(context, url, listener));
+		public ICommunicationListener Build(TService service)
+		{
+			TServiceContext context = m_getContext(service);
+			return new KestrelCommunicationListener(context, Name, (url, listener) => BuildWebHost(context, url, listener));
+		}
+			
 
 		internal KestrelListenerBuilder(
 			string name,
 			ServiceFabricIntegrationOptions options,
+			Func<TService,TServiceContext> getContext,
 			Action<IWebHostBuilder> builderExtension)
 		{
 			Name = name;
 			m_options = options;
+			m_getContext = getContext;
 			m_builderExtension = builderExtension;
 		}
 
@@ -64,5 +70,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 
 		private readonly ServiceFabricIntegrationOptions m_options;
 		private readonly Action<IWebHostBuilder> m_builderExtension;
+		private readonly Func<TService, TServiceContext> m_getContext;
 	}
 }

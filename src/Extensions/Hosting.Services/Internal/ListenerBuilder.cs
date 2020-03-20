@@ -2,24 +2,22 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Fabric;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal sealed class ListenerBuilder<TServiceContext> : IListenerBuilder<TServiceContext>
-		where TServiceContext : ServiceContext
+	internal sealed class ListenerBuilder<TService> : IListenerBuilder<TService>
 	{
 		public ListenerBuilder(
 			string name,
-			Func<TServiceContext, ICommunicationListener> createListener) =>
+			Func<TService, ICommunicationListener> createListener) =>
 			(Name, m_createListener) = (name, createListener);
 
 		public string Name { get; }
 
-		public ICommunicationListener Build(TServiceContext context) =>
-			m_createListener(context);
+		public ICommunicationListener Build(TService service) =>
+			m_createListener(service);
 
-		private readonly Func<TServiceContext, ICommunicationListener> m_createListener;
+		private readonly Func<TService, ICommunicationListener> m_createListener;
 	}
 }
