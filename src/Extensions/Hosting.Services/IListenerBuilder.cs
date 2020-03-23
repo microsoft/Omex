@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System.Fabric;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
@@ -9,7 +8,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// <summary>
 	/// Creates comunication listener for SF service
 	/// </summary>
-	public interface IListenerBuilder<in TServiceContext> where TServiceContext : ServiceContext
+	public interface IListenerBuilder<in TService>
 	{
 		/// <summary>
 		/// Listener name
@@ -19,6 +18,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>
 		/// Creates comunication listener for SF service
 		/// </summary>
-		ICommunicationListener Build(TServiceContext context);
+		ICommunicationListener Build(TService service);
 	}
 }
