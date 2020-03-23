@@ -1,0 +1,36 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Omex.Extensions.Logging;
+
+namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
+{
+	/// <summary>
+	/// Adds Omex headers to responces, like MachineId and BuildVersion
+	/// </summary>
+	public class ResponseHeadersMiddleware
+	{
+		/// <summary>
+		/// Invoke middleware
+		/// </summary>
+		public Task InvokeAsync(HttpContext context)
+		{
+			context.Response.OnStarting(SetResponceHeaders, context);
+			return Task.CompletedTask;
+		}
+
+		internal ResponseHeadersMiddleware(IExecutionContext context) => m_context = context;
+
+		private Task SetResponceHeaders(object state)
+		{
+			HttpResponse response = (HttpResponse)state;
+			response.Headers.Add("X-Machine", m_context.MachineId);
+			response.Headers.Add("X-BuildVersion", m_context.BuildVersion); //Renamed from X-OfficeVersion
+			return Task.CompletedTask;
+		}
+
+		private readonly IExecutionContext m_context;
+	}
+}

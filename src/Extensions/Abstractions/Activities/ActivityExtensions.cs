@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.Abstractions.Activities
 {
@@ -40,6 +41,27 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
 		public static Activity MarkAsTransaction(this Activity activity) =>
 			activity.AddBaggage(TransactionMarkerKey, TransactionMarkerValue);
+
+		/// <summary>
+		/// Set result
+		/// </summary>
+		/// <remarks>This property won't be transfered to child activity or via web requests</remarks>
+		public static Activity SetResult(this Activity activity, TimedScopeResult result) =>
+			activity.AddTag(ActivityTagKeys.Result, ActivityResultStrings.ResultToString(result));
+
+		/// <summary>
+		/// Set sub type
+		/// </summary>
+		/// <remarks>This property won't be transfered to child activity or via web requests</remarks>
+		public static Activity SetSubType(this Activity activity, string subType) =>
+			activity.AddTag(ActivityTagKeys.SubType, subType);
+
+		/// <summary>
+		/// Set metadata
+		/// </summary>
+		/// <remarks>This property won't be transfered to child activity or via web requests</remarks>
+		public static Activity SetMetadata(this Activity activity, string metadata) =>
+			activity.AddTag(ActivityTagKeys.Metadata, metadata);
 
 		/// <summary>
 		/// Get correlation guid that is used by old Omex services
