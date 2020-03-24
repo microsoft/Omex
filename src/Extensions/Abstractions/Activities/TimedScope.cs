@@ -39,7 +39,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 
 		/// <remarks>
 		/// Activity property should not be public,
-		/// since it may lead to calls to Activity.Stop that won't be properly logged untill net core 5
+		/// since it may lead to calls to Activity.Stop that won't be properly logged until net core 5
 		/// After move to net core 5, <see cref="TimedScope"/> should be replaced with <see cref="Activity"/> completly
 		/// </remarks>
 		internal Activity Activity { get; }
