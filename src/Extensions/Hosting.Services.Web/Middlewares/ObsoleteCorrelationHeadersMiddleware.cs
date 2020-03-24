@@ -93,7 +93,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 				: null;
 
 		/// <summary>
-		/// Checks if the context is for a request that contains identifiers indicating that the request originated from an Office client or not
+		/// Checks if the context is for a request that contains identifiers indicating that the request originated from an Office client
 		/// </summary>
 		private static bool IsClientRequest(HttpRequest request) =>
 			request.Headers.ContainsKey(OfficeClientVersionHeader)
