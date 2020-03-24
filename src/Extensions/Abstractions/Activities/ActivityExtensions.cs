@@ -45,7 +45,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <summary>
 		/// Set result
 		/// </summary>
-		/// <remarks>This property won't be transfered to child activity or via web requests</remarks>
+		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
 		public static Activity SetResult(this Activity activity, TimedScopeResult result) =>
 			activity.AddTag(ActivityTagKeys.Result, ActivityResultStrings.ResultToString(result));
 
