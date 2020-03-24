@@ -41,7 +41,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		}
 
 		/// <summary>
-		/// Adds the default exception heandling logic that will display developer expeption page in develop and short message during deployment
+		/// Adds the default exception handling logic that will display a developer exception page in develop and a short message during deployment
 		/// </summary>
 		public static IApplicationBuilder UseOmexExceptionHandler(this IApplicationBuilder builder, IHostEnvironment environment)
 		{
