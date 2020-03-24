@@ -23,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		/// Adds the default exception handling logic that will display a developer exception page in develop and a short message during deployment
 		/// </summary>
 		/// <param name="builder">Application builder</param>
-		/// <param name="acceptObsoleteCorrelationHeader">Set it to true if service need to accept request with old style correlation</param>
+		/// <param name="acceptObsoleteCorrelationHeader">Set it to true if the service needs to accept a request with old style correlation</param>
 		public static IApplicationBuilder UseOmexMiddlewares(this IApplicationBuilder builder, bool acceptObsoleteCorrelationHeader)
 		{
 			builder
