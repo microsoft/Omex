@@ -29,36 +29,48 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <typeparam name="TService">Type of service fabric service, currently should be only <see cref="StatelessService"/> or <see cref="StatefulService"/></typeparam>
 		public static ServiceFabricHostBuilder<TService> AddServiceAction<TService>(
 			this ServiceFabricHostBuilder<TService> builder,
-			Func<TService,CancellationToken, Task> action) =>
-				builder.AddServiceAction(new ServiceAction<TService>(action));
+			Func<IServiceProvider, TService, CancellationToken, Task> action) =>
+				builder.ConfigureServices((config, collection) =>
+					collection.AddSingleton<IServiceAction<TService>>(p => new ServiceAction<TService>(p, action)));
 
 		/// <summary>
-		/// Add actions that will be executed inside stateless service RunAsync method
-		/// </summary>
-		/// <typeparam name="TService">Type of service fabric service, currently should be only <see cref="StatelessService"/> or <see cref="StatefulService"/></typeparam>
-		public static ServiceFabricHostBuilder<TService> AddServiceAction<TService>(
-			this ServiceFabricHostBuilder<TService> builder,
-			IServiceAction<TService> action) =>
-				builder.ConfigureServices((config, collection) => collection.AddSingleton(action));
-
-		/// <summary>
-		/// Add service listener to stateless service fabric service
+		/// Add service listener to service fabric service
 		/// </summary>
 		/// <typeparam name="TService">Type of service fabric service, currently should be only <see cref="StatelessService"/> or <see cref="StatefulService"/></typeparam>
 		public static ServiceFabricHostBuilder<TService> AddServiceListener<TService>(
 			this ServiceFabricHostBuilder<TService> builder,
 			string name,
-			Func<TService, ICommunicationListener> createListener) =>
-				builder.AddServiceListener(new ListenerBuilder<TService>(name, createListener));
+			Func<IServiceProvider, TService, ICommunicationListener> createListener) =>
+				builder.ConfigureServices((config, collection) =>
+					collection.AddSingleton<IListenerBuilder<TService>>(p => new ListenerBuilder<TService>(name, p, createListener)));
+
+		/// <summary>
+		/// Add actions that will be executed inside service fabric stateless service RunAsync method
+		/// </summary>
+		public static ServiceFabricHostBuilder<StatelessService> AddServiceAction<TAction>(this ServiceFabricHostBuilder<StatelessService> builder)
+			where TAction : class, IServiceAction<StatelessService> =>
+				builder.AddServiceAction<TAction>();
+
+		/// <summary>
+		/// Add actions that will be executed inside service fabric stateful service RunAsync method
+		/// </summary>
+		public static ServiceFabricHostBuilder<StatefulService> AddServiceAction<TAction>(this ServiceFabricHostBuilder<StatefulService> builder)
+			where TAction : class, IServiceAction<StatefulService> =>
+				builder.AddServiceAction<TAction>();
+
+		/// <summary>
+		/// Add service listener to stateful service fabric service
+		/// </summary>
+		public static ServiceFabricHostBuilder<StatefulService> AddServiceListener<TListener>(this ServiceFabricHostBuilder<StatefulService> builder)
+			where TListener : class, IListenerBuilder<StatefulService> =>
+				builder.AddServiceListener<TListener>();
 
 		/// <summary>
 		/// Add service listener to stateless service fabric service
 		/// </summary>
-		/// <typeparam name="TService">Type of service fabric service, currently should be only <see cref="StatelessService"/> or <see cref="StatefulService"/></typeparam>
-		public static ServiceFabricHostBuilder<TService> AddServiceListener<TService>(
-			this ServiceFabricHostBuilder<TService> builder,
-			IListenerBuilder<TService> listenerBuilder) =>
-				builder.ConfigureServices((config, collection) => collection.AddSingleton(listenerBuilder));
+		public static ServiceFabricHostBuilder<StatelessService> AddServiceListener<TListener>(this ServiceFabricHostBuilder<StatelessService> builder)
+			where TListener : class, IListenerBuilder<StatelessService> =>
+				builder.AddServiceListener<TListener>();
 
 		/// <summary>
 		/// Configures host to run service fabric stateless service with initializded Omex dependencies
@@ -91,6 +103,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			collection.TryAddSingleton<IExecutionContext, ServiceFabricExecutionContext>();
 			return collection.AddOmexServices();
 		}
+
+		private static ServiceFabricHostBuilder<TService> AddServiceAction<TService, TAction>(this ServiceFabricHostBuilder<TService> builder)
+			where TAction : class, IServiceAction<TService> =>
+				builder.ConfigureServices((config, collection) => collection.AddTransient<IServiceAction<TService>, TAction>());
+
+		private static ServiceFabricHostBuilder<TService> AddServiceListener<TService, TListener>(this ServiceFabricHostBuilder<TService> builder)
+			where TListener : class, IListenerBuilder<TService> =>
+				builder.ConfigureServices((config, collection) => collection.AddTransient<IListenerBuilder<TService>, TListener>());
 
 		private static IHost BuildServiceFabricService<TRunner, TService, TContext>(
 			this IHostBuilder builder,
