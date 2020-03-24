@@ -54,7 +54,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			Action<IWebHostBuilder>? builderExtension = null)
 				where TStartup : class
 				where TContext : ServiceContext =>
-					builder.AddServiceListener(new KestrelListenerBuilder<TStartup, TService, TContext>(
+					builder.AddServiceListener(p => new KestrelListenerBuilder<TStartup, TService, TContext>(
 						name,
 						options,
 						getContext,
