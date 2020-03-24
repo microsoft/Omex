@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Hosting.Services.Web.UnitTests
 {
 	[TestClass]
+	[TestCategory("MiddlewareTests")]
 	public class ActivityEnrichmentMiddlewareTests
 	{
 		[DataTestMethod]

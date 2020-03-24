@@ -36,7 +36,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 				.SetMetadata(statusCode.ToString());
 		}
 
-		private TimedScopeResult GetResult(int? statusCode) =>
+		private TimedScopeResult GetResult(int statusCode) =>
 			statusCode >= 100 && statusCode < 400
 				? TimedScopeResult.Success
 				: statusCode >= 400 && statusCode < 500

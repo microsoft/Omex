@@ -28,11 +28,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		public Task InvokeAsync(HttpContext context)
 		{
 			ExtractCorrelationFromRequest(context.Request);
-			context.Response.OnStarting(SetCorrelationHeadersToResponce, context.Response);
+			context.Response.OnStarting(SetCorrelationHeadersToResponse, context.Response);
 			return Task.CompletedTask;
 		}
 
-		private Task SetCorrelationHeadersToResponce(object state)
+		private Task SetCorrelationHeadersToResponse(object state)
 		{
 			HttpResponse response = (HttpResponse)state;
 			Guid? oldCorrelation = Activity.Current?.GetObsoleteCorrelationId();

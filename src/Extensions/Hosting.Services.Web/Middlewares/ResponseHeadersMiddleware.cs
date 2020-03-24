@@ -19,11 +19,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		/// </summary>
 		public Task InvokeAsync(HttpContext context)
 		{
-			context.Response.OnStarting(SetResponceHeaders, context.Response);
+			context.Response.OnStarting(SetResponseHeaders, context.Response);
 			return Task.CompletedTask;
 		}
 
-		private Task SetResponceHeaders(object state)
+		private Task SetResponseHeaders(object state)
 		{
 			HttpResponse response = (HttpResponse)state;
 			response.Headers.Add("X-Machine", m_context.MachineId);

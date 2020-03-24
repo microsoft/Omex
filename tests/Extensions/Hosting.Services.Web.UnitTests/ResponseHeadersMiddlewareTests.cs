@@ -16,6 +16,7 @@ namespace Hosting.Services.Web.UnitTests
 	public class ResponseHeadersMiddlewareTests
 	{
 		[TestMethod]
+		[TestCategory("MiddlewareTests")]
 		public async Task InvokeAsync_WithoutActivity_NotFailing()
 		{
 			string machineId = "MachineIdTestValue";
