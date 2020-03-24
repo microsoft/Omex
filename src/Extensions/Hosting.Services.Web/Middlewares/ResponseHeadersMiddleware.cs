@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		/// </summary>
 		public Task InvokeAsync(HttpContext context)
 		{
-			context.Response.OnStarting(SetResponceHeaders, context);
+			context.Response.OnStarting(SetResponceHeaders, context.Response);
 			return Task.CompletedTask;
 		}
 

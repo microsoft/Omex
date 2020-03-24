@@ -60,7 +60,7 @@ namespace Hosting.Services.UnitTests
 			new ServiceFabricHostBuilder<object>(hostBuilder).AddServiceAction(serviceAction);
 			IServiceAction<object> resolvedAction = hostBuilder.Build().Services.GetService<IServiceAction<object>>();
 
-			Assert.ReferenceEquals(serviceAction, resolvedAction);
+			Assert.AreEqual(serviceAction, resolvedAction);
 		}
 
 		[TestMethod]

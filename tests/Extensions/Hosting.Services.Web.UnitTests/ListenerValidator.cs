@@ -52,9 +52,9 @@ namespace Hosting.Services.Web.UnitTests
 					string.Empty,
 					new MockListener(context, (s, l) => new Mock<IWebHost>().Object));
 
-			Assert.ReferenceEquals(context, ResolveType<ServiceContext>(host));
-			Assert.ReferenceEquals(context, ResolveType<TContext>(host));
-			Assert.ReferenceEquals(context, ResolveType<IServiceContextAccessor<TContext>>(host).ServiceContext);
+			Assert.AreEqual(context, ResolveType<ServiceContext>(host));
+			Assert.AreEqual(context, ResolveType<TContext>(host));
+			Assert.AreEqual(context, ResolveType<IServiceContextAccessor<TContext>>(host).ServiceContext);
 
 			ResolveType<TypeRegisteredInListenerExtension>(host);
 			ResolveType<MockStartup.TypeRegisteredInStartup>(host);

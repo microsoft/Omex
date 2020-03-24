@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
@@ -64,6 +65,47 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			Assert.AreEqual(id, activity1.GetObsolteteTransactionId());
 			Assert.AreNotEqual(id, activity2.GetObsolteteTransactionId());
+		}
+
+		[DataTestMethod]
+		[DataRow(TimedScopeResult.SystemError)]
+		[DataRow(TimedScopeResult.ExpectedError)]
+		[DataRow(TimedScopeResult.Success)]
+		public void SetResult_SetsValue(TimedScopeResult result)
+		{
+			Activity activity1 = new Activity("SetResultTest1");
+			Activity activity2 = new Activity("SetResultTest2");
+
+			activity1.SetResult(result);
+
+			activity1.AssertResult(result);
+			Assert.IsNull(activity2.GetTag(ActivityTagKeys.Result));
+		}
+
+		[TestMethod]
+		public void SetSubType_SetsValue()
+		{
+			Activity activity1 = new Activity("SetSubTypeTest1");
+			Activity activity2 = new Activity("SetSubTypeTest2");
+			string value = "Some sub type";
+
+			activity1.SetSubType(value);
+
+			Assert.AreEqual(value, activity1.GetTag(ActivityTagKeys.SubType));
+			Assert.IsNull(activity2.GetTag(ActivityTagKeys.SubType));
+		}
+
+		[TestMethod]
+		public void SetMetadata_SetsValue()
+		{
+			Activity activity1 = new Activity("SetMetadataTest1");
+			Activity activity2 = new Activity("SetMetadataTest2");
+			string value = "Some metadata";
+
+			activity1.SetMetadata(value);
+
+			Assert.AreEqual(value, activity1.GetTag(ActivityTagKeys.Metadata));
+			Assert.IsNull(activity2.GetTag(ActivityTagKeys.Metadata));
 		}
 	}
 }

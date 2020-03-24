@@ -21,7 +21,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			string actualName = activity.OperationName;
 
-			Assert.ReferenceEquals(expectedName, actualName);
+			Assert.AreEqual(expectedName, actualName);
 		}
 	}
 }
