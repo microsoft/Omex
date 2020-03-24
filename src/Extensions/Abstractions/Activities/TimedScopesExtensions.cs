@@ -7,7 +7,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 	/// Extensions to TimedScopes class to set additional information
 	/// </summary>
 	/// <remarks>
-	/// This extensions class propagest calls of some activity extensions methond, to avoid making Activity property public,
+	/// This extensions class propagates calls of some activity extensions methods, to avoid making Activity property public,
 	/// since it may lead to calls to Activity.Stop that won't be properly logged untill net core 5
 	/// </remarks>
 	public static class TimedScopesExtensions
