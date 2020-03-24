@@ -157,7 +157,7 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 					}
 					else
 					{
-						ULSLogging.LogTraceTag(0x23850399 /* tag_97qoz */, Categories.ConfigurationDataSet, Levels.Verbose,
+						ULSLogging.LogTraceTag(0x2361b6a1 /* tag_9y107 */, Categories.ConfigurationDataSet, Levels.Verbose,
 							"Updating data set type '{0}' in cache.", typeof(T).Name);
 						CachedConfigurationDataSet<T> dataSets = DataSets;
 						IList<ConfigurationDataSetLoadDetails> loadDetails = dataSets.LoadDetails;
