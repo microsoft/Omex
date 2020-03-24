@@ -69,28 +69,28 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// </summary>
 		public static ServiceFabricHostBuilder<StatelessService> AddServiceAction<TAction>(this ServiceFabricHostBuilder<StatelessService> builder)
 			where TAction : class, IServiceAction<StatelessService> =>
-				builder.AddServiceAction<TAction>();
+				builder.AddServiceAction<StatelessService, TAction>();
 
 		/// <summary>
 		/// Add actions that will be executed inside service fabric stateful service RunAsync method
 		/// </summary>
 		public static ServiceFabricHostBuilder<StatefulService> AddServiceAction<TAction>(this ServiceFabricHostBuilder<StatefulService> builder)
 			where TAction : class, IServiceAction<StatefulService> =>
-				builder.AddServiceAction<TAction>();
+				builder.AddServiceAction<StatefulService, TAction>();
 
 		/// <summary>
 		/// Add service listener to stateful service fabric service
 		/// </summary>
 		public static ServiceFabricHostBuilder<StatefulService> AddServiceListener<TListener>(this ServiceFabricHostBuilder<StatefulService> builder)
 			where TListener : class, IListenerBuilder<StatefulService> =>
-				builder.AddServiceListener<TListener>();
+				builder.AddServiceListener<StatefulService, TListener>();
 
 		/// <summary>
 		/// Add service listener to stateless service fabric service
 		/// </summary>
 		public static ServiceFabricHostBuilder<StatelessService> AddServiceListener<TListener>(this ServiceFabricHostBuilder<StatelessService> builder)
 			where TListener : class, IListenerBuilder<StatelessService> =>
-				builder.AddServiceListener<TListener>();
+				builder.AddServiceListener<StatelessService, TListener>();
 
 		/// <summary>
 		/// Configures host to run service fabric stateless service with initializded Omex dependencies
