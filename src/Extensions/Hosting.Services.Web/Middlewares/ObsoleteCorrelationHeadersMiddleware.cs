@@ -65,10 +65,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			{
 				activity.SetObsoleteTransactionId(transactionId.Value);
 			}
-			else
-			{
-				return;
-			}
 		}
 
 		private static Guid? ExtractCorrelationId(HttpRequest request) =>
@@ -102,7 +98,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		private static bool IsClientRequest(HttpRequest request) =>
 			request.Headers.ContainsKey(OfficeClientVersionHeader)
 				? true
-				: request.Query.Count < 1 // Don't check empty params
+				: request.Query.Count == 0 // Don't check empty params
 					? false
 					: s_officeClientQueryParameters.Any(p => request.Query.ContainsKey(p)); // Check if the request contains an Office client query parameter
 
@@ -127,6 +123,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			"app" };					// Identifies the client application
 
 		private const string CorrelationHeader = "X-CorrelationId";
+
 		private const string OfficeClientVersionHeader = "X-Office-Version";
 	}
 }

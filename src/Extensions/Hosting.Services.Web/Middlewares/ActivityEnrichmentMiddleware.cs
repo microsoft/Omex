@@ -9,10 +9,12 @@ using Microsoft.Omex.Extensions.Abstractions.Activities;
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 {
 	/// <summary>
-	/// Enrich request activity with Result, SubType and Methadata
+	/// Enrich request activity with Result, SubType and Metadata
 	/// </summary>
 	public class ActivityEnrichmentMiddleware
 	{
+		internal ActivityEnrichmentMiddleware(RequestDelegate next) => m_next = next;
+
 		/// <summary>
 		/// Invoke middleware
 		/// </summary>
@@ -33,8 +35,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 				.SetSubType($"{context.Request.Scheme}:{context.Connection.LocalPort}")
 				.SetMetadata(statusCode.ToString());
 		}
-
-		internal ActivityEnrichmentMiddleware(RequestDelegate next) => m_next = next;
 
 		private TimedScopeResult GetResult(int? statusCode) =>
 			statusCode >= 100 && statusCode < 400

@@ -12,6 +12,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	/// </summary>
 	public class ResponseHeadersMiddleware
 	{
+		internal ResponseHeadersMiddleware(IExecutionContext context) => m_context = context;
+
 		/// <summary>
 		/// Invoke middleware
 		/// </summary>
@@ -20,8 +22,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			context.Response.OnStarting(SetResponceHeaders, context.Response);
 			return Task.CompletedTask;
 		}
-
-		internal ResponseHeadersMiddleware(IExecutionContext context) => m_context = context;
 
 		private Task SetResponceHeaders(object state)
 		{

@@ -65,7 +65,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 							{ "Message", "Internal Server Error" },
 							{ "ErrorMessage", contextFeature?.Error?.Message ?? string.Empty },
 							{ "RequestId", Activity.Current?.Id ?? context.TraceIdentifier },
-							{ "Suggestion", "For local debugging, enable the set ASPNETCORE_ENVIRONMENT environment variable to 'Development' and restart the app." }
+							{ "Suggestion", "For local debugging, set ASPNETCORE_ENVIRONMENT environment variable to 'Development' and restart the app" }
 						};
 
 						return context.Response.WriteAsync(JsonSerializer.Serialize(errorDict));
