@@ -73,7 +73,19 @@ namespace Hosting.Services.UnitTests
 		}
 
 		[TestMethod]
-		public async Task AddServiceActionUsingFunc_RegisterInstance()
+		public void AddServiceAction_UsingObject_RegisterInstance()
+		{
+			IServiceAction<object> serviceAction = new Mock<IServiceAction<object>>().Object;
+
+			HostBuilder hostBuilder = new HostBuilder();
+			new ServiceFabricHostBuilder<object>(hostBuilder).AddServiceAction(p => serviceAction);
+			IServiceAction<object> resolvedAction = hostBuilder.Build().Services.GetService<IServiceAction<object>>();
+
+			Assert.AreEqual(serviceAction, resolvedAction);
+		}
+
+		[TestMethod]
+		public async Task AddServiceAction_UsingFunc_RegisterInstance()
 		{
 			bool actionCalled = false;
 			Task action(IServiceProvider provider, object c, CancellationToken t)
@@ -114,7 +126,19 @@ namespace Hosting.Services.UnitTests
 		}
 
 		[TestMethod]
-		public void AddServiceListenerUsingFunc_RegisterInstance()
+		public void AddServiceListener_UsingObject_RegisterInstance()
+		{
+			IListenerBuilder<object> listenerBuilder = new Mock<IListenerBuilder<object>>().Object;
+
+			HostBuilder hostBuilder = new HostBuilder();
+			new ServiceFabricHostBuilder<object>(hostBuilder).AddServiceListener(p => listenerBuilder);
+			IListenerBuilder<ServiceContext> resolvedAction = hostBuilder.Build().Services.GetService<IListenerBuilder<object>>();
+
+			Assert.ReferenceEquals(listenerBuilder, resolvedAction);
+		}
+
+		[TestMethod]
+		public void AddServiceListener_UsingFunc_RegisterInstance()
 		{
 			ICommunicationListener listener = new Mock<ICommunicationListener>().Object;
 			ICommunicationListener listenerBuilder(IServiceProvider provider, object context) => listener;

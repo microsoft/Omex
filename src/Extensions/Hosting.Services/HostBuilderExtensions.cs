@@ -34,6 +34,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 					collection.AddSingleton<IServiceAction<TService>>(p => new ServiceAction<TService>(p, action)));
 
 		/// <summary>
+		/// Add actions that will be executed inside service fabric service RunAsync method
+		/// </summary>
+		/// <typeparam name="TService">Type of service fabric service, currently should be only <see cref="StatelessService"/> or <see cref="StatefulService"/></typeparam>
+		public static ServiceFabricHostBuilder<TService> AddServiceAction<TService>(
+			this ServiceFabricHostBuilder<TService> builder,
+			Func<IServiceProvider, IServiceAction<TService>> implementationFactory) =>
+				builder.ConfigureServices((config, collection) =>
+					collection.AddSingleton(implementationFactory));
+
+		/// <summary>
 		/// Add service listener to service fabric service
 		/// </summary>
 		/// <typeparam name="TService">Type of service fabric service, currently should be only <see cref="StatelessService"/> or <see cref="StatefulService"/></typeparam>
@@ -43,6 +53,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			Func<IServiceProvider, TService, ICommunicationListener> createListener) =>
 				builder.ConfigureServices((config, collection) =>
 					collection.AddSingleton<IListenerBuilder<TService>>(p => new ListenerBuilder<TService>(name, p, createListener)));
+
+		/// <summary>
+		/// Add service listener to service fabric service
+		/// </summary>
+		/// <typeparam name="TService">Type of service fabric service, currently should be only <see cref="StatelessService"/> or <see cref="StatefulService"/></typeparam>
+		public static ServiceFabricHostBuilder<TService> AddServiceListener<TService>(
+			this ServiceFabricHostBuilder<TService> builder,
+			Func<IServiceProvider, IListenerBuilder<TService>> implementationFactory) =>
+				builder.ConfigureServices((config, collection) =>
+					collection.AddSingleton(implementationFactory));
 
 		/// <summary>
 		/// Add actions that will be executed inside service fabric stateless service RunAsync method
