@@ -8,7 +8,7 @@ using Microsoft.Omex.Extensions.Logging;
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 {
 	/// <summary>
-	/// Adds Omex headers to responces, like MachineId and BuildVersion
+	/// Adds Omex headers to responses, like MachineId and BuildVersion
 	/// </summary>
 	public class ResponseHeadersMiddleware
 	{
