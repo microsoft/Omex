@@ -118,7 +118,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			"HTTP_X_CORRELATIONID" };
 
 		private static readonly string[] s_officeClientQueryParameters = {
-			"client",					// Identifying the client application and platform
+			"client",					// Identifies the client application and platform
 			"av",						// Identifies the client application, platform and partial version
 			"app" };					// Identifies the client application
 
