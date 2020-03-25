@@ -16,23 +16,8 @@ namespace Microsoft.Omex.Extensions.Compatibility
 	/// <summary>
 	/// Class to initialize static depdencies from this project
 	/// </summary>
-	public sealed class OmexCompatibilityIntializer : IHostedService
+	public static class OmexCompatibilityIntializer
 	{
-		private readonly ITimedScopeProvider m_timedScopeProvider;
-		private readonly ILoggerFactory m_loggerFactory;
-
-		internal OmexCompatibilityIntializer(ITimedScopeProvider timedScopeProvider, ILoggerFactory loggerFactory) =>
-			(m_timedScopeProvider, m_loggerFactory) = (timedScopeProvider, loggerFactory);
-
-		Task IHostedService.StartAsync(CancellationToken cancellationToken)
-		{
-			Initialize(m_loggerFactory, m_timedScopeProvider);
-			return Task.CompletedTask;
-		}
-
-		Task IHostedService.StopAsync(CancellationToken cancellationToken) =>
-			Task.CompletedTask;
-
 		/// <summary>
 		/// Initialize compatablitity classes with provided instances
 		/// </summary>
