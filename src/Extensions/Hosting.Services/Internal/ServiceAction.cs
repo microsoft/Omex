@@ -9,12 +9,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	internal sealed class ServiceAction<TService> : IServiceAction<TService>
 	{
-		public ServiceAction(Func<TService, CancellationToken, Task> action) =>
-			m_action = action;
+		public ServiceAction(IServiceProvider provider, Func<IServiceProvider, TService, CancellationToken, Task> action) =>
+			(m_provider, m_action) = (provider, action);
 
 		public Task RunAsync(TService service, CancellationToken cancellationToken) =>
-			m_action(service, cancellationToken);
+			m_action(m_provider, service, cancellationToken);
 
-		private readonly Func<TService, CancellationToken, Task> m_action;
+		private readonly Func<IServiceProvider, TService, CancellationToken, Task> m_action;
+		private readonly IServiceProvider m_provider;
 	}
 }
