@@ -23,8 +23,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			scope1.SetResult(result);
 
-			scope1.AssertResult(result);
-			scope2.AssertResult(TimedScopeResult.SystemError);
+			scope1.Activity.AssertResult(result);
+			scope2.Activity.AssertResult(TimedScopeResult.SystemError);
 		}
 
 		[TestMethod]
@@ -36,8 +36,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			scope1.SetSubType(value);
 
-			Assert.AreEqual(value, scope1.GetTag(ActivityTagKeys.SubType));
-			Assert.IsNull(scope2.GetTag(ActivityTagKeys.SubType));
+			Assert.AreEqual(value, scope1.Activity.GetTag(ActivityTagKeys.SubType));
+			Assert.IsNull(scope2.Activity.GetTag(ActivityTagKeys.SubType));
 		}
 
 		[TestMethod]
@@ -49,8 +49,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			scope1.SetMetadata(value);
 
-			Assert.AreEqual(value, scope1.GetTag(ActivityTagKeys.Metadata));
-			Assert.IsNull(scope2.GetTag(ActivityTagKeys.Metadata));
+			Assert.AreEqual(value, scope1.Activity.GetTag(ActivityTagKeys.Metadata));
+			Assert.IsNull(scope2.Activity.GetTag(ActivityTagKeys.Metadata));
 		}
 
 		private TimedScope CreateScope(string name) =>

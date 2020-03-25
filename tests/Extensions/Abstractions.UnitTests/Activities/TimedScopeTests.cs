@@ -58,8 +58,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			TimedScope scope = new TimedScope(activity, result);
 
-			Assert.ReferenceEquals(activity, scope.Activity);
-			scope.AssertResult(result);
+			Assert.AreEqual(activity, scope.Activity);
+			scope.Activity.AssertResult(result);
 
 			return scope;
 		}

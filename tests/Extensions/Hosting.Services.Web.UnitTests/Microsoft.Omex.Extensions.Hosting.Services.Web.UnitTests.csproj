@@ -8,5 +8,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Extensions\Hosting.Services.Web\Microsoft.Omex.Extensions.Hosting.Services.Web.csproj" />
+    <ProjectReference Include="..\Abstractions.UnitTests\Microsoft.Omex.Extensions.Abstractions.UnitTests.csproj" />
   </ItemGroup>
 </Project>

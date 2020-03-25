@@ -63,11 +63,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			createTask(taskCompletionSource.Task, providerMock.Object, timedScopeDefinition);
 
 			providerMock.Verify(p => p.CreateAndStart(timedScopeDefinition, TimedScopeResult.SystemError), Times.Once);
-			scope.AssertResult(TimedScopeResult.SystemError);
+			scope.Activity.AssertResult(TimedScopeResult.SystemError);
 
 			finishTask(taskCompletionSource);
 
-			scope.AssertResult(expectedResult);
+			scope.Activity.AssertResult(expectedResult);
 		}
 
 		private static Action<Task<bool>, ITimedScopeProvider, TimedScopeDefinition> s_wrapTaskOfTAction =
