@@ -18,7 +18,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			ServiceName = hostEnvironment.ApplicationName;
 			EnvironmentName = hostEnvironment.EnvironmentName ?? DefaultEmptyValue;
 			IsPrivateDeployment = hostEnvironment.IsDevelopment();
-			RegionName = GetRegionName() ?? DefaultEmptyValue;
 
 			accessor.OnContextAvailable(UpdateState);
 		}
@@ -41,6 +40,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				? ipAddress
 				: GetIpAddress(MachineName);
 
+			RegionName = GetRegionName() ?? DefaultEmptyValue;
 			Cluster = GetClusterName()
 				?? nodeContext.IPAddressOrFQDN
 				?? MachineId;

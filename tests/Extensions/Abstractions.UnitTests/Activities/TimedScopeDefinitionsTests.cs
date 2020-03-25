@@ -28,7 +28,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		public void Constructor_PropagatesName(string activityName)
 		{
 			TimedScopeDefinition definition = new TimedScopeDefinition(activityName);
-			Assert.ReferenceEquals(activityName, definition.Name);
+			Assert.AreEqual(activityName, definition.Name);
 		}
 
 		[TestMethod]

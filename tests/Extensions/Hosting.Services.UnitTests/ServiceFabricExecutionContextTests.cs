@@ -28,13 +28,14 @@ namespace Hosting.Services.UnitTests
 			Mock<IHostEnvironment> enviromentMock = new Mock<IHostEnvironment>();
 			enviromentMock.SetupGet(e => e.ApplicationName).Returns(appName);
 			enviromentMock.SetupGet(e => e.EnvironmentName).Returns(envirometnName);
-			Mock<IServiceContextAccessor<StatelessServiceContext>> contextMock = new Mock<IServiceContextAccessor<StatelessServiceContext>>();
-			IExecutionContext info = new ServiceFabricExecutionContext(enviromentMock.Object, contextMock.Object);
+			ServiceContextAccessor<StatelessServiceContext> context = new ServiceContextAccessor<StatelessServiceContext>();
+			IExecutionContext info = new ServiceFabricExecutionContext(enviromentMock.Object, context);
+			context.SetContext(ServiceFabric.Mocks.MockStatelessServiceContextFactory.Default);
 
-			Assert.ReferenceEquals(appName, info.ServiceName);
-			Assert.ReferenceEquals(envirometnName, info.EnvironmentName);
-			Assert.ReferenceEquals(regionName, info.RegionName);
-			Assert.ReferenceEquals(clusterName, info.Cluster);
+			Assert.AreEqual(appName, info.ServiceName);
+			Assert.AreEqual(envirometnName, info.EnvironmentName);
+			Assert.AreEqual(regionName, info.RegionName);
+			Assert.AreEqual(clusterName, info.Cluster);
 		}
 	}
 }

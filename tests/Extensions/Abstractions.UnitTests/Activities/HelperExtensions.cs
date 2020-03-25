@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
@@ -9,15 +10,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
-	internal static class HelperExtensions
+	public static class HelperExtensions
 	{
-		public static void AssertResult(this TimedScope scope, TimedScopeResult expectedResult) =>
-			Assert.AreEqual(ActivityResultStrings.ResultToString(expectedResult), scope.GetTag(ActivityTagKeys.Result));
+		public static void AssertResult(this Activity activity, TimedScopeResult expectedResult) =>
+			Assert.AreEqual(ActivityResultStrings.ResultToString(expectedResult), activity.GetTag(ActivityTagKeys.Result));
 
-		public static void AssertTag(this TimedScope scope, string tag, string expectedValue) =>
-			Assert.AreEqual(expectedValue, scope.GetTag(tag));
+		public static void AssertTag(this Activity activity, string tag, string expectedValue) =>
+			Assert.AreEqual(expectedValue, activity.GetTag(tag));
 
-		public static string GetTag(this TimedScope scope, string tag) =>
-			scope.Activity.Tags.FirstOrDefault(p => string.Equals(p.Key, tag, StringComparison.Ordinal)).Value;
+		public static string GetTag(this Activity activity, string tag) =>
+			activity.Tags.FirstOrDefault(p => string.Equals(p.Key, tag, StringComparison.Ordinal)).Value;
 	}
 }
