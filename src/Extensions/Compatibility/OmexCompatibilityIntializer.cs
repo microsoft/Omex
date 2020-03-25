@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Compatibility.Logger;
 using Microsoft.Omex.Extensions.Compatibility.TimedScopes;
@@ -12,24 +13,25 @@ using Microsoft.Omex.Extensions.Compatibility.Validation;
 
 namespace Microsoft.Omex.Extensions.Compatibility
 {
-	internal sealed class OmexCompatibilityIntializer : IHostedService
+	/// <summary>
+	/// Class to initialize static depdencies from this project
+	/// </summary>
+	public static class OmexCompatibilityIntializer
 	{
-		public OmexCompatibilityIntializer(ITimedScopeProvider timedScopeProvider, ILoggerFactory loggerFactory) =>
-			(m_timedScopeProvider, m_loggerFactory) = (timedScopeProvider, loggerFactory);
-
-		public Task StartAsync(CancellationToken cancellationToken)
+		/// <summary>
+		/// Initialize compatablitity classes with provided instances
+		/// </summary>
+		public static void Initialize(ILoggerFactory factory, ITimedScopeProvider scopeProvider)
 		{
-			TimedScopeDefinitionExtensions.Initialize(m_timedScopeProvider);
-			Code.Initialize(m_loggerFactory);
-			ULSLogging.Initialize(m_loggerFactory);
-
-			return Task.CompletedTask;
+			TimedScopeDefinitionExtensions.Initialize(scopeProvider);
+			Code.Initialize(factory);
+			ULSLogging.Initialize(factory);
 		}
 
-		public Task StopAsync(CancellationToken cancellationToken) =>
-			Task.CompletedTask;
-
-		private readonly ITimedScopeProvider m_timedScopeProvider;
-		private readonly ILoggerFactory m_loggerFactory;
+		/// <summary>
+		/// Initialize compatablitity classes with simple implementation that might be used for logging
+		/// </summary>
+		public static void InitializeWithStubs() =>
+			Initialize(new NullLoggerFactory(), new SimpleScopeProvider());
 	}
 }
