@@ -184,8 +184,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			}
 		}
 
-		private static IHostBuilder UseApplicationName(this IHostBuilder builder, string applicationName) =>
-			builder.ConfigureAppConfiguration(configuration =>
+		/// <summary>
+		/// Overides ApplicationName in host configuration
+		/// </summary>
+		/// <remarks>
+		/// Method done internal instead of private to create unit tests for it,
+		/// since failure to set proper application name could cause Service Fabric error that is hard to debug:
+		///    System.Fabric.FabricException: Invalid Service Type
+		/// </remarks>
+		internal static IHostBuilder UseApplicationName(this IHostBuilder builder, string applicationName) =>
+			builder.ConfigureHostConfiguration(configuration =>
 			{
 				configuration.AddInMemoryCollection(new[]
 				{
