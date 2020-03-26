@@ -237,6 +237,18 @@ namespace Hosting.Services.UnitTests
 			Assert.IsTrue(hasErrorEvent, "BuildStatefulService error should be logged");
 		}
 
+		[TestMethod]
+		public void UseApplicationName_OverridesApplicationName()
+		{
+			string expectedName = "TestApplicationName";
+
+			string actualName = Host.CreateDefaultBuilder()
+				.UseApplicationName(expectedName)
+				.Build().Services.GetService<IHostEnvironment>().ApplicationName;
+
+			Assert.AreEqual(expectedName, actualName);
+		}
+
 		private class TestListenerBuilder<TService> : IListenerBuilder<TService>
 		{
 			public string Name => "TestName";
