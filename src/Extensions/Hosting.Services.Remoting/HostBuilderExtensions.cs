@@ -30,7 +30,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 					builder.AddServiceListener<TListener>();
 
 		/// <summary>
-		/// Add's remote listener using delegate to create <see cref="IService"/>
+		/// Adds remote listener using delegate to create <see cref="IService"/>
 		/// </summary>
 		public static ServiceFabricHostBuilder<TService, TContext> AddRemotingListener<TService, TContext>(
 				this ServiceFabricHostBuilder<TService, TContext> builder,
