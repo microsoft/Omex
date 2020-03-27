@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Hosting.Services.UnitTests
+namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 {
 	[TestClass]
 	public class OmexHostedServiceTests

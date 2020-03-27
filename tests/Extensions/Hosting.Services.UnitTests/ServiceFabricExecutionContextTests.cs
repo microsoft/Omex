@@ -4,12 +4,12 @@
 using System;
 using System.Fabric;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using ServiceFabric.Mocks;
 
-namespace Hosting.Services.UnitTests
+namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 {
 	[TestClass]
 	public class ServiceFabricExecutionContextTests
@@ -30,7 +30,7 @@ namespace Hosting.Services.UnitTests
 			enviromentMock.SetupGet(e => e.EnvironmentName).Returns(envirometnName);
 			ServiceContextAccessor<StatelessServiceContext> context = new ServiceContextAccessor<StatelessServiceContext>();
 			IExecutionContext info = new ServiceFabricExecutionContext(enviromentMock.Object, context);
-			context.SetContext(ServiceFabric.Mocks.MockStatelessServiceContextFactory.Default);
+			context.SetContext(MockStatelessServiceContextFactory.Default);
 
 			Assert.AreEqual(appName, info.ServiceName);
 			Assert.AreEqual(envirometnName, info.EnvironmentName);

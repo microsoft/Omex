@@ -2,22 +2,22 @@
 // Licensed under the MIT license.
 
 using System.Fabric;
-using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ServiceFabric.Mocks;
 
-namespace Hosting.Services.UnitTests
+namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 {
 	[TestClass]
 	public class OmexServiceFabricContextTests
 	{
 		[TestMethod]
 		public void SetContext_SetsStatelessContext() =>
-			TestContextSet(ServiceFabric.Mocks.MockStatelessServiceContextFactory.Default);
+			TestContextSet(MockStatelessServiceContextFactory.Default);
 
 		[TestMethod]
 		public void SetContext_StatefulContext() =>
-			TestContextSet(ServiceFabric.Mocks.MockStatefulServiceContextFactory.Default);
+			TestContextSet(MockStatefulServiceContextFactory.Default);
 
 		public void TestContextSet<TContext>(TContext serviceContext)
 			where TContext : ServiceContext
