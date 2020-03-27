@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System;
 using System.Fabric;
+using Microsoft.Omex.Extensions.Hosting.Services;
+using Microsoft.Omex.Extensions.Hosting.Services.UnitTests;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
-using Microsoft.ServiceFabric.Services.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Hosting.Services.Web.UnitTests
@@ -13,12 +13,15 @@ namespace Hosting.Services.Web.UnitTests
 	public class KestrelListenerBuilderTests
 	{
 		[TestMethod]
-		public void StatelessService_TypesRegistered() => CheckTypeRegistration((StatelessService)new MockStatelessService(), service => service.Context);
+		public void StatelessService_TypesRegistered() =>
+			CheckTypeRegistration<OmexStatelessService, StatelessServiceContext>(MockServiceFabricServices.MockOmexStatelessService);
 
 		[TestMethod]
-		public void StatefulService_TypesRegistered() => CheckTypeRegistration((StatefulService)new MockStatefulService(), service => service.Context);
+		public void StatefulService_TypesRegistered() =>
+			CheckTypeRegistration<OmexStatefulService, StatefulServiceContext>(MockServiceFabricServices.MockOmexStatefulService);
 
-		private void CheckTypeRegistration<TService, TContext>(TService service, Func<TService,TContext> getContext)
+		private void CheckTypeRegistration<TService, TContext>(TService service)
+			where TService : IServiceFabricService<TContext>
 			where TContext : ServiceContext
 		{
 			ListenerValidator<TService, TContext> validator = new ListenerValidator<TService, TContext>();
@@ -27,10 +30,9 @@ namespace Hosting.Services.Web.UnitTests
 				new KestrelListenerBuilder<MockStartup, TService, TContext>(
 					validator.ListenerName,
 					validator.IntegrationOptions,
-					getContext,
 					validator.BuilderAction);
 
-			validator.ValidateListenerBuilder(getContext(service), builder);
+			validator.ValidateListenerBuilder(service.Context, builder);
 			validator.ValidateBuildFunction(service, builder);
 		}
 	}

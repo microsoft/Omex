@@ -2,12 +2,15 @@
 // Licensed under the MIT license.
 
 using System.Fabric;
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using ServiceFabric.Mocks;
 
-namespace Hosting.Services.UnitTests
+namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 {
 	[TestClass]
 	public class ServiceFabricHostBuilderTests
@@ -17,7 +20,7 @@ namespace Hosting.Services.UnitTests
 		{
 			HostBuilder hostBuilder = new HostBuilder();
 
-			new ServiceFabricHostBuilder<ServiceContext>(hostBuilder)
+			new ServiceFabricHostBuilder<IServiceFabricService<ServiceContext>, ServiceContext>(hostBuilder)
 				.ConfigureServices((context, collection) =>
 				{
 					collection.AddTransient<TestTypeToResolve>();

@@ -13,14 +13,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
-using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
-using Microsoft.ServiceFabric.Services.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Hosting.Services.UnitTests
+namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 {
 	[TestClass]
 	public class HostBuilderExtensionsTests
@@ -56,8 +54,12 @@ namespace Hosting.Services.UnitTests
 		public void AddServiceAction_UsingTypeForStateless_RegisterInstance()
 		{
 			HostBuilder hostBuilder = new HostBuilder();
-			new ServiceFabricHostBuilder<StatelessService>(hostBuilder).AddServiceAction<TestServiceAction<StatelessService>>();
-			IServiceAction<StatelessService> resolvedAction = hostBuilder.Build().Services.GetService<IServiceAction<StatelessService>>();
+			new ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext>(hostBuilder)
+				.AddServiceAction<TestServiceAction<OmexStatelessService>>();
+
+			IServiceAction<OmexStatelessService> resolvedAction = hostBuilder
+				.Build()
+				.Services.GetService<IServiceAction<OmexStatelessService>>();
 
 			Assert.IsNotNull(resolvedAction);
 		}
@@ -66,8 +68,12 @@ namespace Hosting.Services.UnitTests
 		public void AddServiceAction_UsingTypeForStateful_RegisterInstance()
 		{
 			HostBuilder hostBuilder = new HostBuilder();
-			new ServiceFabricHostBuilder<StatefulService>(hostBuilder).AddServiceAction<TestServiceAction<StatefulService>>();
-			IServiceAction<StatefulService> resolvedAction = hostBuilder.Build().Services.GetService<IServiceAction<StatefulService>>();
+			new ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext>(hostBuilder)
+				.AddServiceAction<TestServiceAction<OmexStatefulService>>();
+
+			IServiceAction<OmexStatefulService> resolvedAction = hostBuilder
+				.Build()
+				.Services.GetService<IServiceAction<OmexStatefulService>>();
 
 			Assert.IsNotNull(resolvedAction);
 		}
@@ -75,11 +81,13 @@ namespace Hosting.Services.UnitTests
 		[TestMethod]
 		public void AddServiceAction_UsingObject_RegisterInstance()
 		{
-			IServiceAction<object> serviceAction = new Mock<IServiceAction<object>>().Object;
+			IServiceAction<IServiceFabricService<ServiceContext>> serviceAction = new Mock<IServiceAction<IServiceFabricService<ServiceContext>>>().Object;
 
 			HostBuilder hostBuilder = new HostBuilder();
-			new ServiceFabricHostBuilder<object>(hostBuilder).AddServiceAction(p => serviceAction);
-			IServiceAction<object> resolvedAction = hostBuilder.Build().Services.GetService<IServiceAction<object>>();
+			new ServiceFabricHostBuilder<IServiceFabricService<ServiceContext>, ServiceContext>(hostBuilder).AddServiceAction(p => serviceAction);
+			IServiceAction<IServiceFabricService<ServiceContext>> resolvedAction = hostBuilder
+				.Build()
+				.Services.GetService<IServiceAction<IServiceFabricService<ServiceContext>>>();
 
 			Assert.AreEqual(serviceAction, resolvedAction);
 		}
@@ -96,11 +104,14 @@ namespace Hosting.Services.UnitTests
 			}
 
 			HostBuilder hostBuilder = new HostBuilder();
-			new ServiceFabricHostBuilder<object>(hostBuilder).AddServiceAction(action);
+			new ServiceFabricHostBuilder<IServiceFabricService<ServiceContext>, ServiceContext>(hostBuilder).AddServiceAction(action);
 
-			IServiceAction<object> resolvedAction = hostBuilder.Build().Services.GetService<IServiceAction<object>>();
+			IServiceAction<IServiceFabricService<ServiceContext>> resolvedAction = hostBuilder
+				.Build()
+				.Services.GetService<IServiceAction<IServiceFabricService<ServiceContext>>>();
 
-			await resolvedAction.RunAsync(new object(), CancellationToken.None).ConfigureAwait(false);
+			IServiceFabricService<ServiceContext> mockService = new Mock<IServiceFabricService<ServiceContext>>().Object;
+			await resolvedAction.RunAsync(mockService, CancellationToken.None).ConfigureAwait(false);
 
 			Assert.IsTrue(actionCalled);
 		}
@@ -109,8 +120,12 @@ namespace Hosting.Services.UnitTests
 		public void AddServiceListener_UsingTypeForStateless_RegisterInstance()
 		{
 			HostBuilder hostBuilder = new HostBuilder();
-			new ServiceFabricHostBuilder<StatelessService>(hostBuilder).AddServiceListener<TestListenerBuilder<StatelessService>>();
-			IListenerBuilder<StatelessService> resolvedAction = hostBuilder.Build().Services.GetService<IListenerBuilder<StatelessService>>();
+			new ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext>(hostBuilder)
+				.AddServiceListener<TestListenerBuilder<OmexStatelessService>>();
+
+			IListenerBuilder<OmexStatelessService> resolvedAction = hostBuilder
+				.Build()
+				.Services.GetService<IListenerBuilder<OmexStatelessService>>();
 
 			Assert.IsNotNull(resolvedAction);
 		}
@@ -119,8 +134,12 @@ namespace Hosting.Services.UnitTests
 		public void AddServiceListener_UsingTypeForStateful_RegisterInstance()
 		{
 			HostBuilder hostBuilder = new HostBuilder();
-			new ServiceFabricHostBuilder<StatelessService>(hostBuilder).AddServiceListener<TestListenerBuilder<StatelessService>>();
-			IListenerBuilder<StatelessService> resolvedAction = hostBuilder.Build().Services.GetService<IListenerBuilder<StatelessService>>();
+			new ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext>(hostBuilder)
+				.AddServiceListener<TestListenerBuilder<OmexStatelessService>>();
+
+			IListenerBuilder<OmexStatelessService> resolvedAction = hostBuilder
+				.Build()
+				.Services.GetService<IListenerBuilder<OmexStatelessService>>();
 
 			Assert.IsNotNull(resolvedAction);
 		}
@@ -128,13 +147,17 @@ namespace Hosting.Services.UnitTests
 		[TestMethod]
 		public void AddServiceListener_UsingObject_RegisterInstance()
 		{
-			IListenerBuilder<object> listenerBuilder = new Mock<IListenerBuilder<object>>().Object;
+			IListenerBuilder<IServiceFabricService<ServiceContext>> listenerBuilder = new Mock<IListenerBuilder<IServiceFabricService<ServiceContext>>>().Object;
 
 			HostBuilder hostBuilder = new HostBuilder();
-			new ServiceFabricHostBuilder<object>(hostBuilder).AddServiceListener(p => listenerBuilder);
-			IListenerBuilder<ServiceContext> resolvedAction = hostBuilder.Build().Services.GetService<IListenerBuilder<object>>();
+			new ServiceFabricHostBuilder<IServiceFabricService<ServiceContext>, ServiceContext>(hostBuilder)
+				.AddServiceListener(p => listenerBuilder);
 
-			Assert.ReferenceEquals(listenerBuilder, resolvedAction);
+			IListenerBuilder<IServiceFabricService<ServiceContext>> resolvedAction = hostBuilder
+				.Build()
+				.Services.GetService<IListenerBuilder<IServiceFabricService<ServiceContext>>>();
+
+			ReferenceEquals(listenerBuilder, resolvedAction);
 		}
 
 		[TestMethod]
@@ -144,11 +167,17 @@ namespace Hosting.Services.UnitTests
 			ICommunicationListener listenerBuilder(IServiceProvider provider, object context) => listener;
 
 			HostBuilder hostBuilder = new HostBuilder();
-			new ServiceFabricHostBuilder<object>(hostBuilder).AddServiceListener("testName", listenerBuilder);
-			IListenerBuilder<object> resolvedBuilder = hostBuilder.Build().Services.GetService<IListenerBuilder<object>>();
-			ICommunicationListener resultedListener = resolvedBuilder.Build(new object());
+			new ServiceFabricHostBuilder<IServiceFabricService<ServiceContext>, ServiceContext>(hostBuilder)
+				.AddServiceListener("testName", listenerBuilder);
 
-			Assert.ReferenceEquals(listener, resultedListener);
+			IListenerBuilder<IServiceFabricService<ServiceContext>> resolvedBuilder = hostBuilder
+				.Build().Services
+				.GetService<IListenerBuilder<IServiceFabricService<ServiceContext>>>();
+
+			IServiceFabricService<ServiceContext> mockService = new Mock<IServiceFabricService<ServiceContext>>().Object;
+			ICommunicationListener resultedListener = resolvedBuilder.Build(mockService);
+
+			ReferenceEquals(listener, resultedListener);
 		}
 
 		[DataTestMethod]
@@ -206,7 +235,7 @@ namespace Hosting.Services.UnitTests
 			CustomEventListener listener = new CustomEventListener();
 			listener.EnableEvents(ServiceInitializationEventSource.Instance, EventLevel.Error);
 
-			Assert.ThrowsException<AggregateException>(() =>  new HostBuilder()
+			Assert.ThrowsException<AggregateException>(() => new HostBuilder()
 				.ConfigureServices(c => c.AddTransient<TypeThatShouldNotBeResolvable>())
 				.BuildStatelessService(serviceType, c => { }),
 				"BuildStatelessService should fail in case of unresolvable dependencies");
@@ -250,6 +279,7 @@ namespace Hosting.Services.UnitTests
 		}
 
 		private class TestListenerBuilder<TService> : IListenerBuilder<TService>
+			where TService : IServiceFabricService<ServiceContext>
 		{
 			public string Name => "TestName";
 
@@ -257,6 +287,7 @@ namespace Hosting.Services.UnitTests
 		}
 
 		private class TestServiceAction<TService> : IServiceAction<TService>
+			where TService : IServiceFabricService<ServiceContext>
 		{
 			public Task RunAsync(TService service, CancellationToken cancellationToken) => Task.CompletedTask;
 		}

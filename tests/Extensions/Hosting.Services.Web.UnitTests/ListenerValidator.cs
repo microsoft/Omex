@@ -18,6 +18,7 @@ using Moq;
 namespace Hosting.Services.Web.UnitTests
 {
 	internal class ListenerValidator<TService, TContext>
+		where TService : IServiceFabricService<TContext>
 		where TContext : ServiceContext
 	{
 		public ListenerValidator()

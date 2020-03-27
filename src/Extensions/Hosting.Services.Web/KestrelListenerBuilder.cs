@@ -14,9 +14,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 	/// <summary>
 	/// Creates ServiceInstanceListener with all of Omex dependencies initialized
 	/// </summary>
-	internal sealed class KestrelListenerBuilder<TStartup,TService,TServiceContext> : IListenerBuilder<TService>
+	internal sealed class KestrelListenerBuilder<TStartup,TService,TContext> : IListenerBuilder<TService>
 		where TStartup : class
-		where TServiceContext : ServiceContext
+		where TService : IServiceFabricService<TContext>
+		where TContext : ServiceContext
 	{
 		/// <inheritdoc />
 		public string Name { get; }
@@ -24,24 +25,22 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		/// <inheritdoc />
 		public ICommunicationListener Build(TService service)
 		{
-			TServiceContext context = m_getContext(service);
+			TContext context = service.Context;
 			return new KestrelCommunicationListener(context, Name, (url, listener) => BuildWebHost(context, url, listener));
 		}
 
 		internal KestrelListenerBuilder(
 			string name,
 			ServiceFabricIntegrationOptions options,
-			Func<TService,TServiceContext> getContext,
 			Action<IWebHostBuilder> builderExtension)
 		{
 			Name = name;
 			m_options = options;
-			m_getContext = getContext;
 			m_builderExtension = builderExtension;
 		}
 
 		// Method made internal instead of private to check test registration in service collection from unit tests
-		internal IWebHost BuildWebHost(TServiceContext context, string url, AspNetCoreCommunicationListener listener)
+		internal IWebHost BuildWebHost(TContext context, string url, AspNetCoreCommunicationListener listener)
 		{
 			IWebHostBuilder hostBuilder = new WebHostBuilder()
 				.UseKestrel()
@@ -61,7 +60,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			return hostBuilder.Build();
 		}
 
-		private void ConfigureServices(TServiceContext context, IServiceCollection services)
+		private void ConfigureServices(TContext context, IServiceCollection services)
 		{
 			services.AddSingleton<ServiceContext>(context);
 			services.AddSingleton(context);
@@ -69,6 +68,5 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 
 		private readonly ServiceFabricIntegrationOptions m_options;
 		private readonly Action<IWebHostBuilder> m_builderExtension;
-		private readonly Func<TService, TServiceContext> m_getContext;
 	}
 }

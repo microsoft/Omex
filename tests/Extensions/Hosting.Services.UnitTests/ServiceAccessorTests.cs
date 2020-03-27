@@ -2,29 +2,29 @@
 // Licensed under the MIT license.
 
 using System.Fabric;
-using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ServiceFabric.Mocks;
 
-namespace Hosting.Services.UnitTests
+namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 {
 	[TestClass]
 	public class ServiceAccessorTests
 	{
 		[TestMethod]
 		public void StatelessContextPasedInConstructor_ProperlyHandlesActions() =>
-			ContextOnInitialization(ServiceFabric.Mocks.MockStatelessServiceContextFactory.Default);
+			ContextOnInitialization(MockStatelessServiceContextFactory.Default);
 
 		[TestMethod]
 		public void StatefulContextPasedInConstructor_ProperlyHandlesActions() =>
-			ContextOnInitialization(ServiceFabric.Mocks.MockStatefulServiceContextFactory.Default);
+			ContextOnInitialization(MockStatefulServiceContextFactory.Default);
 
 		[TestMethod]
 		public void StatelessContextAfterInitialization_ProperlyHandlesActions() =>
-			ContextAfterInitialization(ServiceFabric.Mocks.MockStatelessServiceContextFactory.Default);
+			ContextAfterInitialization(MockStatelessServiceContextFactory.Default);
 
 		[TestMethod]
 		public void StatefulContextAfterInitialization_ProperlyHandlesActions() =>
-			ContextAfterInitialization(ServiceFabric.Mocks.MockStatefulServiceContextFactory.Default);
+			ContextAfterInitialization(MockStatefulServiceContextFactory.Default);
 
 		private void ContextOnInitialization<TContext>(TContext context)
 			where TContext : ServiceContext
@@ -42,7 +42,7 @@ namespace Hosting.Services.UnitTests
 		private void ContextAfterInitialization<TContext>(TContext context)
 			where TContext : ServiceContext
 		{
-			ServiceContextAccessor<TContext>  accessor = new ServiceContextAccessor<TContext>();
+			ServiceContextAccessor<TContext> accessor = new ServiceContextAccessor<TContext>();
 			IServiceContextAccessor<TContext> publicAccessor = accessor;
 
 			TContext? receivedContext = null;

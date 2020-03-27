@@ -2,11 +2,14 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Fabric;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal sealed class ListenerBuilder<TService> : IListenerBuilder<TService>
+	internal sealed class ListenerBuilder<TService, TContext> : IListenerBuilder<TService>
+		where TService : IServiceFabricService<TContext>
+		where TContext : ServiceContext
 	{
 		public ListenerBuilder(
 			string name,
