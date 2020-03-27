@@ -9,7 +9,7 @@ using Microsoft.ServiceFabric.Services.Remoting.FabricTransport.Runtime;
 namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 {
 	/// <summary>
-	/// Extnsion methods for <see cref="ServiceFabricHostBuilder{TService, TContext}"/>
+	/// Extension methods for <see cref="ServiceFabricHostBuilder{TService, TContext}"/>
 	/// </summary>
 	public static class HostBuilderExtensions
 	{
