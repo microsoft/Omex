@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// Action that will be executed in RunAsync methond of SF service
 	/// </summary>
 	public interface IServiceAction<in TService>
+		where TService : IServiceFabricService<ServiceContext>
 	{
 		/// <summary>
 		/// Action that will be executed in RunAsync methond of SF service
