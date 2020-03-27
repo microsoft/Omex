@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	/// This middleware should be removed after all services moved to use <see cref="Activity"/>
 	/// </remarks>
 	[Obsolete("Use it only if you need to comunicate with services that use old correlation", false)]
-	internal class ObsoleteCorrelationHeadersMiddleware
+	public class ObsoleteCorrelationHeadersMiddleware
 	{
 		/// <summary>
 		/// Invoke middleware

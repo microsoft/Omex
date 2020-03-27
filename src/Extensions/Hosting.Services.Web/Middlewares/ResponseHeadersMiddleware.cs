@@ -12,7 +12,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	/// </summary>
 	public class ResponseHeadersMiddleware
 	{
-		internal ResponseHeadersMiddleware(IExecutionContext context) => m_context = context;
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ResponseHeadersMiddleware(IExecutionContext context) => m_context = context;
 
 		/// <summary>
 		/// Invoke middleware

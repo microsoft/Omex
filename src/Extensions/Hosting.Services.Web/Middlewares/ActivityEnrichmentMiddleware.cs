@@ -13,7 +13,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	/// </summary>
 	public class ActivityEnrichmentMiddleware
 	{
-		internal ActivityEnrichmentMiddleware(RequestDelegate next) => m_next = next;
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ActivityEnrichmentMiddleware(RequestDelegate next) => m_next = next;
 
 		/// <summary>
 		/// Invoke middleware
