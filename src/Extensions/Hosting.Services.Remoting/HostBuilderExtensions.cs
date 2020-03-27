@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 					builder.AddServiceListener<TListener>();
 
 		/// <summary>
-		/// Add's remote listener to stateless service
+		/// Adds remote listener to stateless service
 		/// </summary>
 		public static ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext> AddRemotingListener<TListener>(
 			this ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext> builder)
