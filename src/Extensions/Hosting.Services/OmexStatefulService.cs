@@ -12,7 +12,7 @@ using Microsoft.ServiceFabric.Services.Runtime;
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	/// <summary>
-	/// Omex implementation of statefull service fabric service
+	/// Omex implementation of stateful service fabric service
 	/// </summary>
 	public sealed class OmexStatefulService : StatefulService, IServiceFabricService<StatefulServiceContext>
 	{
