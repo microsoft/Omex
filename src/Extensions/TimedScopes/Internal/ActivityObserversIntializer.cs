@@ -14,6 +14,21 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	internal sealed class ActivityObserversIntializer : IHostedService, IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object>>
 	{
+		private const string ActivityStartEnding = ".Start";
+
+		private const string ActivityStopEnding = ".Stop";
+
+		private static readonly string[] s_eventEndMarkersToListen = new[] {
+			ActivityStartEnding,
+			ActivityStopEnding,
+			// we need to listen for "Microsoft.AspNetCore.Hosting.HttpRequestIn" event in order singnal Kestrel to create Activity for incoming http request
+			// searching of for RequestIn in case any other requests follow the same pattern
+			"RequestIn",
+			// we need to listen for "System.Net.Http.HttpRequestOut" to create activity for outgoing http requests
+			// searching only for RequestOut in case any other requests follow the same pattern
+			"RequestOut",
+		};
+
 		private readonly IActivityStartObserver[] m_activityStartObservers;
 		private readonly IActivityStopObserver[] m_activityStopObservers;
 		private readonly LinkedList<IDisposable> m_disposables;
@@ -45,17 +60,33 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			return Task.CompletedTask;
 		}
 
-		private bool IsActivityStart(string eventName) => m_activityStartObservers.Length > 0 && eventName.EndsWith(".Start", StringComparison.Ordinal);
+		private bool EventEndsWith(string eventName, string ending) => eventName.EndsWith(ending, StringComparison.Ordinal);
 
-		private bool IsActivityStop(string eventName) => m_activityStopObservers.Length > 0 && eventName.EndsWith(".Stop", StringComparison.Ordinal);
+		private bool IsEnabled(string eventName)
+		{
+			// using foreach instead of Any to avoid creating closure since this method called very often
+			foreach (string ending in s_eventEndMarkersToListen)
+			{
+				if (EventEndsWith(eventName, ending))
+				{
+					return true;
+				}
+			}
 
-		private bool IsEnabled(string eventName) => IsActivityStart(eventName) || IsActivityStop(eventName);
+			return false;
+		}
 
 		void IObserver<DiagnosticListener>.OnCompleted() { }
 
 		void IObserver<DiagnosticListener>.OnError(Exception error) { }
 
-		void IObserver<DiagnosticListener>.OnNext(DiagnosticListener value) => m_disposables.AddLast(value.Subscribe(this, IsEnabled));
+		void IObserver<DiagnosticListener>.OnNext(DiagnosticListener value)
+		{
+			if (m_activityStartObservers.Length != 0 || m_activityStopObservers.Length != 0)
+			{
+				m_disposables.AddLast(value.Subscribe(this, IsEnabled));
+			}
+		}
 
 		void IObserver<KeyValuePair<string, object>>.OnCompleted() { }
 
@@ -64,12 +95,13 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		void IObserver<KeyValuePair<string, object>>.OnNext(KeyValuePair<string, object> value)
 		{
 			Activity activity = Activity.Current;
+			string eventName = value.Key;
 
-			if (IsActivityStart(value.Key))
+			if (EventEndsWith(eventName, ActivityStartEnding))
 			{
 				OnActivityStarted(activity, value.Value);
 			}
-			else if (IsActivityStop(value.Key))
+			else if (EventEndsWith(eventName, ActivityStopEnding))
 			{
 				OnActivityStoped(activity, value.Value);
 			}

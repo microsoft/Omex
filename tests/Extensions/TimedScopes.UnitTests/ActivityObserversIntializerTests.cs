@@ -30,9 +30,13 @@ namespace Hosting.Services.UnitTests
 
 				using DiagnosticListener listener = new DiagnosticListener(name);
 
-				Assert.IsTrue(listener.IsEnabled(MakeStartName(name)), "Should be enabled for Activity.Start");
+				AssertEnabledFor(listener, HttpRequestOutEventName);
+				AssertEnabledFor(listener, HttpRequestInEventName);
+
+				AssertEnabledFor(listener, MakeStartName(name));
+				AssertEnabledFor(listener, MakeStopName(name));
+
 				Assert.IsFalse(listener.IsEnabled(name, "Should be disabled for other events"));
-				Assert.IsTrue(listener.IsEnabled(MakeStopName(name)), "Should be enabled for Activity.Stop");
 
 				Activity activity = new Activity(name);
 				object obj = new object();
@@ -50,8 +54,15 @@ namespace Hosting.Services.UnitTests
 			}
 		}
 
+		private void AssertEnabledFor(DiagnosticListener listener, string eventName) =>
+			Assert.IsTrue(listener.IsEnabled(eventName), "Should be enabled for '{0}'", eventName);
+
 		private string MakeStartName(string name) => name + ".Start";
 
 		private string MakeStopName(string name) => name + ".Stop";
+
+		private const string HttpRequestOutEventName = "System.Net.Http.HttpRequestOut";
+
+		private const string HttpRequestInEventName = "Microsoft.AspNetCore.Hosting.HttpRequestIn";
 	}
 }
