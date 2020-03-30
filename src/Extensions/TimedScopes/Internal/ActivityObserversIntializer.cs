@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			ActivityStartEnding,
 			ActivityStopEnding,
 			// We need to listen for the "Microsoft.AspNetCore.Hosting.HttpRequestIn" event in order to signal Kestrel to create an Activity for the incoming http request.
-			// searching of for RequestIn in case any other requests follow the same pattern
+			// Searching only for RequestIn, in case any other requests follow the same pattern
 			"RequestIn",
 			// we need to listen for "System.Net.Http.HttpRequestOut" to create activity for outgoing http requests
 			// searching only for RequestOut in case any other requests follow the same pattern
