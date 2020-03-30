@@ -11,11 +11,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	/// <summary>
 	/// Enrich request activity with Result, SubType and Metadata
 	/// </summary>
-	public class ActivityEnrichmentMiddleware
+	internal class ActivityEnrichmentMiddleware
 	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
 		public ActivityEnrichmentMiddleware(RequestDelegate next) => m_next = next;
 
 		/// <summary>

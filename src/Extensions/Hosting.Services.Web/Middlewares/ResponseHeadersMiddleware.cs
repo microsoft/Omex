@@ -10,11 +10,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	/// <summary>
 	/// Adds Omex headers to responses, like MachineId and BuildVersion
 	/// </summary>
-	public class ResponseHeadersMiddleware
+	internal class ResponseHeadersMiddleware
 	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
 		public ResponseHeadersMiddleware(IExecutionContext context) => m_context = context;
 
 		/// <summary>
