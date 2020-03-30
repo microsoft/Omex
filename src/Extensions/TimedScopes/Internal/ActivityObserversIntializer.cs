@@ -64,7 +64,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 		private bool IsEnabled(string eventName)
 		{
-			// using foreach instead of Any to avoid creating closure since this method called very often
+			// Using foreach instead of Any to avoid creating closure since this method is called very often
 			foreach (string ending in s_eventEndMarkersToListen)
 			{
 				if (EventEndsWith(eventName, ending))
