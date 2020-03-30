@@ -14,9 +14,15 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	internal sealed class ActivityObserversIntializer : IHostedService, IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object>>
 	{
-		private const string ActivityStartEnding = ".Start";
+		/// <summary>
+		/// Ending of the Activity Start event
+		/// </summary>
+		internal static readonly string ActivityStartEnding = ".Start";
 
-		private const string ActivityStopEnding = ".Stop";
+		/// <summary>
+		/// Ending of the Activity Stop event
+		/// </summary>
+		internal static readonly string ActivityStopEnding = ".Stop";
 
 		private static readonly string[] s_eventEndMarkersToListen = new[] {
 			ActivityStartEnding,
@@ -28,6 +34,22 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			// Searching only for RequestOut, in case any other requests follow the same pattern
 			"RequestOut",
 		};
+
+		private static bool EventEndsWith(string eventName, string ending) => eventName.EndsWith(ending, StringComparison.Ordinal);
+
+		private static bool IsEnabled(string eventName)
+		{
+			// Using foreach instead of Any to avoid creating closure since this method is called very often
+			foreach (string ending in s_eventEndMarkersToListen)
+			{
+				if (EventEndsWith(eventName, ending))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 
 		private readonly IActivityStartObserver[] m_activityStartObservers;
 		private readonly IActivityStopObserver[] m_activityStopObservers;
@@ -58,22 +80,6 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 			m_observerLifetime?.Dispose();
 			return Task.CompletedTask;
-		}
-
-		private bool EventEndsWith(string eventName, string ending) => eventName.EndsWith(ending, StringComparison.Ordinal);
-
-		private bool IsEnabled(string eventName)
-		{
-			// Using foreach instead of Any to avoid creating closure since this method is called very often
-			foreach (string ending in s_eventEndMarkersToListen)
-			{
-				if (EventEndsWith(eventName, ending))
-				{
-					return true;
-				}
-			}
-
-			return false;
 		}
 
 		void IObserver<DiagnosticListener>.OnCompleted() { }

@@ -57,9 +57,9 @@ namespace Hosting.Services.UnitTests
 		private void AssertEnabledFor(DiagnosticListener listener, string eventName) =>
 			Assert.IsTrue(listener.IsEnabled(eventName), "Should be enabled for '{0}'", eventName);
 
-		private string MakeStartName(string name) => name + ".Start";
+		private string MakeStartName(string name) => name + ActivityObserversIntializer.ActivityStartEnding;
 
-		private string MakeStopName(string name) => name + ".Stop";
+		private string MakeStopName(string name) => name + ActivityObserversIntializer.ActivityStopEnding;
 
 		private const string HttpRequestOutEventName = "System.Net.Http.HttpRequestOut";
 
