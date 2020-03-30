@@ -103,7 +103,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			}
 			else if (EventEndsWith(eventName, ActivityStopEnding))
 			{
-				OnActivityStoped(activity, value.Value);
+				OnActivityStopped(activity, value.Value);
 			}
 		}
 
@@ -115,7 +115,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			}
 		}
 
-		private void OnActivityStoped(Activity activity, object payload)
+		private void OnActivityStopped(Activity activity, object payload)
 		{
 			foreach (IActivityStopObserver stopHandler in m_activityStopObservers)
 			{
