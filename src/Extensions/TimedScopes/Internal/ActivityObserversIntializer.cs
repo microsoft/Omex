@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			// Searching only for RequestIn, in case any other requests follow the same pattern
 			"RequestIn",
 			// We need to listen for the "System.Net.Http.HttpRequestOut" event in order to create an Activity for the outgoing http requests.
-			// searching only for RequestOut in case any other requests follow the same pattern
+			// Searching only for RequestOut, in case any other requests follow the same pattern
 			"RequestOut",
 		};
 
