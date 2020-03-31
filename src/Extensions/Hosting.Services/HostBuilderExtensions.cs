@@ -193,13 +193,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				// get proper application name from host
 				serviceName = host.Services.GetService<IHostEnvironment>().ApplicationName;
 
-				ServiceInitializationEventSource.Instance.LogServiceTypeRegistered(Process.GetCurrentProcess().Id, serviceName);
+				ServiceInitializationEventSource.Instance.LogHostBuildeSucceded(Process.GetCurrentProcess().Id, serviceName);
 
 				return host;
 			}
 			catch (Exception e)
 			{
-				ServiceInitializationEventSource.Instance.LogServiceHostInitializationFailed(e.ToString(), serviceName);
+				ServiceInitializationEventSource.Instance.LogHostBuildFailed(e.ToString(), serviceName);
 				throw;
 			}
 		}
