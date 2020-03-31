@@ -29,9 +29,9 @@ namespace Hosting.Services.Web.UnitTests
 			ResponseFeatureForCallbacks feature = new ResponseFeatureForCallbacks();
 			HttpContext context = new DefaultHttpContext();
 			context.Features.Set<IHttpResponseFeature>(feature);
-			ResponseHeadersMiddleware middleware = new ResponseHeadersMiddleware(mock.Object);
+			IMiddleware middleware = new ResponseHeadersMiddleware(mock.Object);
 
-			await middleware.InvokeAsync(context);
+			await middleware.InvokeAsync(context, s => Task.CompletedTask);
 			await feature.InvokeOnStarting();
 
 			mock.Verify(c => c.MachineId, Times.Once);

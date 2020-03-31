@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
+using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
@@ -70,6 +71,13 @@ namespace Hosting.Services.Web.UnitTests
 			m_logsEventSourceMock.Invocations.Clear();
 			logger.LogError("TestMessage");
 			Assert.AreNotEqual(0, m_logsEventSourceMock.Invocations.Count, "Omex logger should be registred in WebHost");
+
+			ResolveType<ActivityEnrichmentMiddleware>(host);
+			ResolveType<ResponseHeadersMiddleware>(host);
+
+#pragma warning disable CS0618 // Obsolete middlewares also should be resolvable
+			ResolveType<ObsoleteCorrelationHeadersMiddleware>(host);
+#pragma warning restore CS0618
 		}
 
 		public ICommunicationListener ValidateBuildFunction(TService service, KestrelListenerBuilder<MockStartup, TService, TContext> builder)

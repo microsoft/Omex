@@ -11,16 +11,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	/// <summary>
 	/// Enrich request activity with Result, SubType and Metadata
 	/// </summary>
-	internal class ActivityEnrichmentMiddleware
+	internal class ActivityEnrichmentMiddleware : IMiddleware
 	{
-		public ActivityEnrichmentMiddleware(RequestDelegate next) => m_next = next;
-
-		/// <summary>
-		/// Invoke middleware
-		/// </summary>
-		public async Task InvokeAsync(HttpContext context)
+		async Task IMiddleware.InvokeAsync(HttpContext context, RequestDelegate next)
 		{
-			await m_next(context).ConfigureAwait(false);
+			await next(context).ConfigureAwait(false);
 
 			Activity? activity = Activity.Current;
 
@@ -42,7 +37,5 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 				: statusCode >= 400 && statusCode < 500
 					? TimedScopeResult.ExpectedError
 					: TimedScopeResult.SystemError;
-
-		private readonly RequestDelegate m_next;
 	}
 }

@@ -10,14 +10,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	/// <summary>
 	/// Adds Omex headers to responses, like MachineId and BuildVersion
 	/// </summary>
-	internal class ResponseHeadersMiddleware
+	internal class ResponseHeadersMiddleware : IMiddleware
 	{
 		public ResponseHeadersMiddleware(IExecutionContext context) => m_context = context;
 
-		/// <summary>
-		/// Invoke middleware
-		/// </summary>
-		public Task InvokeAsync(HttpContext context)
+		Task IMiddleware.InvokeAsync(HttpContext context, RequestDelegate next)
 		{
 			context.Response.OnStarting(SetResponseHeaders, context.Response);
 			return Task.CompletedTask;
@@ -30,6 +27,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			response.Headers.Add("X-BuildVersion", m_context.BuildVersion); //Renamed from X-OfficeVersion
 			return Task.CompletedTask;
 		}
+
+
 
 		private readonly IExecutionContext m_context;
 	}
