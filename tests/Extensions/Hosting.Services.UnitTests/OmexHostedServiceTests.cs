@@ -4,10 +4,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 {
@@ -19,7 +21,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		{
 			MockRunner runnerMock = new MockRunner(t => Task.Delay(int.MaxValue, t));
 			ILogger<OmexHostedService> loggerMock = new NullLogger<OmexHostedService>();
-			OmexHostedService hostedService = new OmexHostedService(runnerMock, loggerMock);
+			IHostLifetime lifetimeMock = new Mock<IHostLifetime>().Object;
+
+			OmexHostedService hostedService = new OmexHostedService(runnerMock,lifetimeMock, loggerMock);
 
 			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after constructor");
 
@@ -44,8 +48,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 					throw new ArithmeticException("Totaly valid exeption");
 				}));
 			ILogger<OmexHostedService> loggerMock = new NullLogger<OmexHostedService>();
+			IHostLifetime lifetimeMock = new Mock<IHostLifetime>().Object;
 
-			OmexHostedService hostedService = new OmexHostedService(runnerMock, loggerMock);
+			OmexHostedService hostedService = new OmexHostedService(runnerMock, lifetimeMock, loggerMock);
 			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after constructor");
 
 			await hostedService.StartAsync(CancellationToken.None).ConfigureAwait(false);
@@ -55,6 +60,25 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			await hostedService.StopAsync(CancellationToken.None).ConfigureAwait(false);
 			Assert.IsTrue(runnerMock.Task!.IsFaulted, "Task should be faulted");
 			Assert.IsTrue(runnerMock.Token.IsCancellationRequested, "Task should be canceled");
+		}
+
+		[TestMethod]
+		public async Task TaskCompletion_StopsHost()
+		{
+			TaskCompletionSource<bool> completionSource = new TaskCompletionSource<bool>();
+			MockRunner runnerMock = new MockRunner(t => completionSource.Task);
+			ILogger<OmexHostedService> loggerMock = new NullLogger<OmexHostedService>();
+			Mock<IHostLifetime> lifetimeMock = new Mock<IHostLifetime>();
+
+			OmexHostedService hostedService = new OmexHostedService(runnerMock, lifetimeMock.Object, loggerMock);
+
+			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after constructor");
+
+			await hostedService.StartAsync(CancellationToken.None).ConfigureAwait(false);
+			Assert.IsTrue(runnerMock.IsStarted, "RunServiceAsync should be called after StartAsync");
+
+			completionSource.SetResult(true);
+			lifetimeMock.Verify(l => l.StopAsync(It.IsAny<CancellationToken>()), Times.Once(), "Should stop host after task completion");
 		}
 
 		private class MockRunner : IOmexServiceRunner

@@ -17,11 +17,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	internal sealed class OmexHostedService : BackgroundService
 	{
 		private readonly IOmexServiceRunner m_runner;
+		private readonly IHostLifetime m_lifetime;
 		private readonly ILogger<OmexHostedService> m_logger;
 
-		public OmexHostedService(IOmexServiceRunner runner, ILogger<OmexHostedService> logger)
+		public OmexHostedService(IOmexServiceRunner runner, IHostLifetime lifetime, ILogger<OmexHostedService> logger)
 		{
 			m_runner = runner;
+			m_lifetime = lifetime;
 			m_logger = logger;
 		}
 
@@ -29,7 +31,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		{
 			try
 			{
-				ConfiguredTaskAwaitable task = m_runner.RunServiceAsync(token).ConfigureAwait(false);
+				ConfiguredTaskAwaitable task = m_runner.RunServiceAsync(token)
+					.ContinueWith(OnServiceStop)
+					.ConfigureAwait(false);
 
 				m_logger.LogInformation(Tag.Create(), "ServiceFabricHost initialized");
 
@@ -41,5 +45,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				throw;
 			}
 		}
+
+		private void OnServiceStop(Task task) => m_lifetime.StopAsync(CancellationToken.None);
 	}
 }
