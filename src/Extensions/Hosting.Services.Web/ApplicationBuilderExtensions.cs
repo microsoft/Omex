@@ -61,7 +61,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		/// <summary>
 		/// Add middleware that adds Omex headers to responses, like MachineId and BuildVersion
 		/// </summary>
-		[Obsolete("Use it only if you need to comunicate with services that use old correlation", false)]
+		[Obsolete("Use it only if you need to communicate with services that use old correlation", false)]
 		public static IApplicationBuilder UseObsoleteCorrelationHeadersMiddleware(this IApplicationBuilder builder) =>
 			builder.UseMiddleware<ObsoleteCorrelationHeadersMiddleware>();
 
