@@ -10,7 +10,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// <summary>
 	/// Service Fabric event source
 	/// </summary>
-	[EventSource(Name = "Microsoft-OMEX-ServiceInitializationLogs")] //TODO: new event source should be registred
+	[EventSource(Name = "Microsoft-OMEX-ServiceInitializationLogs")] //TODO: new event source should be registred GitHub Issue #187
 	internal sealed class ServiceInitializationEventSource : EventSource
 	{
 		/// <summary>
@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <param name="hostProcessId">Host process id</param>
 		/// <param name="serviceType">Service type</param>
 		[NonEvent]
-		public void LogHostBuildeSucceded(int hostProcessId, string serviceType)
+		public void LogHostBuildSucceded(int hostProcessId, string serviceType)
 		{
 			if (!IsEnabled())
 			{
