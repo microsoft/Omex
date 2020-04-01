@@ -242,7 +242,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			bool hasErrorEvent = listener.EventsInformation.Any(e =>
 				serviceType == GetPayloadValue<string>(e, ServiceTypePayloadName)
-				&& e.EventId == (int)EventSourcesEventIds.ServiceHostInitializationFailed);
+				&& e.EventId == (int)EventSourcesEventIds.GenericHostBuildFailed);
 
 			Assert.IsTrue(hasErrorEvent, "BuildStatelessService error should be logged");
 		}
@@ -261,7 +261,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			bool hasErrorEvent = listener.EventsInformation.Any(e =>
 				serviceType == GetPayloadValue<string>(e, ServiceTypePayloadName)
-				&& e.EventId == (int)EventSourcesEventIds.ServiceHostInitializationFailed);
+				&& e.EventId == (int)EventSourcesEventIds.GenericHostBuildFailed);
 
 			Assert.IsTrue(hasErrorEvent, "BuildStatefulService error should be logged");
 		}

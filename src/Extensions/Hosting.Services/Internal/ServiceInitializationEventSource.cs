@@ -64,6 +64,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 		[Event((int)EventSourcesEventIds.GenericHostBuildFailed, Level = EventLevel.Error, Message = "{1}", Version = 1)]
 		private void LogHostBuildFailed(string exception, string serviceType, string message) =>
-			WriteEvent((int)EventSourcesEventIds.GenericHostBuildSucceded, exception, serviceType, message);
+			WriteEvent((int)EventSourcesEventIds.GenericHostBuildFailed, exception, serviceType, message);
 	}
 }
