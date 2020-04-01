@@ -31,7 +31,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				return;
 			}
 
-			LogHostBuildeSucceded(
+			LogHostBuildSucceded(
 				hostProcessId,
 				serviceType,
 				FormattableString.Invariant($"Service host process {hostProcessId} registered service type {serviceType}"));
@@ -59,7 +59,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		private ServiceInitializationEventSource() { }
 
 		[Event((int)EventSourcesEventIds.GenericHostBuildSucceded, Level = EventLevel.Informational, Message = "{2}", Version = 1)]
-		private void LogHostBuildeSucceded(int hostProcessId, string serviceType, string message) =>
+		private void LogHostBuildSucceded(int hostProcessId, string serviceType, string message) =>
 			WriteEvent((int)EventSourcesEventIds.GenericHostBuildSucceded, hostProcessId, serviceType, message);
 
 		[Event((int)EventSourcesEventIds.GenericHostBuildFailed, Level = EventLevel.Error, Message = "{1}", Version = 1)]
