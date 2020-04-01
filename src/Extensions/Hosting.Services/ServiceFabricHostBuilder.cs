@@ -69,6 +69,5 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public ServiceFabricHostBuilder<TService, TContext> AddServiceListener<TListener>()
 			where TListener : class, IListenerBuilder<TService> =>
 				ConfigureServices((config, collection) => collection.AddTransient<IListenerBuilder<TService>, TListener>());
-
 	}
 }
