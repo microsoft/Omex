@@ -70,5 +70,15 @@ namespace Microsoft.Omex.Extensions.Abstractions.EventSources
 		/// Event Id for logging Analytics information
 		/// </summary>
 		LogAnalytics = 15,
+
+		/// <summary>
+		/// Event Id for generic host build succeded
+		/// </summary>
+		GenericHostBuildSucceded = 16,
+
+		/// <summary>
+		/// Event Id for generic host build failed
+		/// </summary>
+		GenericHostBuildFailed = 17
 	}
 }
