@@ -10,7 +10,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// <summary>
 	/// Service Fabric event source
 	/// </summary>
-	[EventSource(Name = "Microsoft-OMEX-ServiceInitializationLogs")] //Breaking Change: event source renamed
+	[EventSource(Name = "Microsoft-OMEX-ServiceInitializationLogs")] //TODO: new event source should be registred GitHub Issue #187
 	internal sealed class ServiceInitializationEventSource : EventSource
 	{
 		/// <summary>
@@ -24,14 +24,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <param name="hostProcessId">Host process id</param>
 		/// <param name="serviceType">Service type</param>
 		[NonEvent]
-		public void LogServiceTypeRegistered(int hostProcessId, string serviceType)
+		public void LogHostBuildSucceeded(int hostProcessId, string serviceType)
 		{
 			if (!IsEnabled())
 			{
 				return;
 			}
 
-			LogServiceTypeRegistered(
+			LogHostBuildSucceeded(
 				hostProcessId,
 				serviceType,
 				FormattableString.Invariant($"Service host process {hostProcessId} registered service type {serviceType}"));
@@ -43,14 +43,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <param name="exception">Exception</param>
 		/// <param name="serviceType">Service type</param>
 		[NonEvent]
-		public void LogServiceHostInitializationFailed(string exception, string serviceType)
+		public void LogHostBuildFailed(string exception, string serviceType)
 		{
 			if (!IsEnabled())
 			{
 				return;
 			}
 
-			LogServiceHostInitializationFailed(
+			LogHostBuildFailed(
 				exception,
 				serviceType,
 				FormattableString.Invariant($"Service host initialization failed for {serviceType} with exception {exception}"));
@@ -58,13 +58,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 		private ServiceInitializationEventSource() { }
 
-		[Event((int)EventSourcesEventIds.ServiceTypeRegistered, Level = EventLevel.Informational, Message = "{2}", Version = 1)]
-		private void LogServiceTypeRegistered(int hostProcessId, string serviceType, string message) =>
-			WriteEvent((int)EventSourcesEventIds.ServiceTypeRegistered, hostProcessId, serviceType, message);
+		[Event((int)EventSourcesEventIds.GenericHostBuildSucceded, Level = EventLevel.Informational, Message = "{2}", Version = 1)]
+		private void LogHostBuildSucceeded(int hostProcessId, string serviceType, string message) =>
+			WriteEvent((int)EventSourcesEventIds.GenericHostBuildSucceded, hostProcessId, serviceType, message);
 
-		//Breaking Change: serviceType paramiter added
-		[Event((int)EventSourcesEventIds.ServiceHostInitializationFailed, Level = EventLevel.Error, Message = "{1}", Version = 1)]
-		private void LogServiceHostInitializationFailed(string exception, string serviceType, string message) =>
-			WriteEvent((int)EventSourcesEventIds.ServiceHostInitializationFailed, exception, serviceType, message);
+		[Event((int)EventSourcesEventIds.GenericHostBuildFailed, Level = EventLevel.Error, Message = "{1}", Version = 1)]
+		private void LogHostBuildFailed(string exception, string serviceType, string message) =>
+			WriteEvent((int)EventSourcesEventIds.GenericHostBuildFailed, exception, serviceType, message);
 	}
 }
