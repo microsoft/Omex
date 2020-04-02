@@ -6,6 +6,7 @@ using System.Fabric;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 
@@ -64,9 +65,22 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		{
 			services.AddSingleton<ServiceContext>(context);
 			services.AddSingleton(context);
+			AddMiddlewares(services);
 		}
 
 		private readonly ServiceFabricIntegrationOptions m_options;
+
 		private readonly Action<IWebHostBuilder> m_builderExtension;
+
+		private static void AddMiddlewares(IServiceCollection services)
+		{
+			services
+				.AddSingleton<ActivityEnrichmentMiddleware>()
+				.AddSingleton<ResponseHeadersMiddleware>();
+
+#pragma warning disable CS0618 // We need to register all middlewares, even if obsolete
+			services.AddSingleton<ObsoleteCorrelationHeadersMiddleware>();
+#pragma warning restore CS0618
+		}
 	}
 }
