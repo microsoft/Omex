@@ -28,8 +28,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			return Task.CompletedTask;
 		}
 
-
-
 		private readonly IExecutionContext m_context;
 	}
 }
