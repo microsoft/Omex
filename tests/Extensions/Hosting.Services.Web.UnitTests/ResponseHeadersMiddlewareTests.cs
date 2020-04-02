@@ -31,8 +31,8 @@ namespace Hosting.Services.Web.UnitTests
 			context.Features.Set<IHttpResponseFeature>(feature);
 			IMiddleware middleware = new ResponseHeadersMiddleware(mock.Object);
 
-			await middleware.InvokeAsync(context, s => Task.CompletedTask);
-			await feature.InvokeOnStarting();
+			await middleware.InvokeAsync(context, s => Task.CompletedTask).ConfigureAwait(false);
+			await feature.InvokeOnStarting().ConfigureAwait(false);
 
 			mock.Verify(c => c.MachineId, Times.Once);
 			mock.Verify(c => c.BuildVersion, Times.Once);

@@ -43,7 +43,7 @@ namespace Hosting.Services.Web.UnitTests
 
 			Activity activity = new Activity("TestName").Start();
 
-			await middleware.InvokeAsync(context, RequestDelegate);
+			await middleware.InvokeAsync(context, RequestDelegate).ConfigureAwait(false);
 
 			activity.Stop();
 
@@ -62,7 +62,7 @@ namespace Hosting.Services.Web.UnitTests
 
 			HttpContext context = new DefaultHttpContext();
 			IMiddleware middleware = new ActivityEnrichmentMiddleware();
-			await middleware.InvokeAsync(context, RequestDelegate);
+			await middleware.InvokeAsync(context, RequestDelegate).ConfigureAwait(false);
 		}
 	}
 }
