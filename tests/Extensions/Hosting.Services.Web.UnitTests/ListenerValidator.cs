@@ -75,7 +75,7 @@ namespace Hosting.Services.Web.UnitTests
 			ResolveType<ActivityEnrichmentMiddleware>(host);
 			ResolveType<ResponseHeadersMiddleware>(host);
 
-#pragma warning disable CS0618 // Obsolete middlewares also should be resolvable
+#pragma warning disable CS0618 // Obsolete middlewares should also be resolvable
 			ResolveType<ObsoleteCorrelationHeadersMiddleware>(host);
 #pragma warning restore CS0618
 		}
