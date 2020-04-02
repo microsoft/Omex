@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\..\src\Extensions\Aspects\BuildTransitive\Microsoft.Omex.Extensions.Aspects.props" />
+  <PropertyGroup>
+    <TargetFrameworks>$(TargetFrameworksValue)</TargetFrameworks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Extensions\Aspects\Microsoft.Omex.Extensions.Aspects.csproj" />
+    <ProjectReference Include="..\Abstractions.UnitTests\Microsoft.Omex.Extensions.Abstractions.UnitTests.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="$(MethodBoundaryAspect_Fody_Version)" />
+  </ItemGroup>
+</Project>

@@ -106,26 +106,39 @@ namespace Microsoft.Omex.Extensions.Aspects
 
 		private void HandleResult(TimedScope scope, Exception? exception)
 		{
-			TimedScopeResult result = TimedScopeResult.SystemError;
+			TimedScopeResult result = exception == null
+				? TimedScopeResult.Success
+				: IsExpectedException(exception)
+					? TimedScopeResult.ExpectedError
+					: TimedScopeResult.SystemError;
 
-			if (exception == null)
+			scope.SetResult(result);
+		}
+
+		private bool IsExpectedException(Exception exception)
+		{
+			Type exceptionType = exception.GetType();
+			foreach (Type exeption in m_expectedExceptions)
 			{
-				result = TimedScopeResult.Success;
-			}
-			else
-			{
-				Type exceptionType = exception.GetType();
-				foreach (Type exeption in m_expectedExceptions)
+				if (exeption.IsAssignableFrom(exceptionType))
 				{
-					if (exeption.IsAssignableFrom(exceptionType))
+					return true;
+				}
+				else if (exception is AggregateException aggregated)
+				{
+					foreach (Exception subException in aggregated.InnerExceptions)
 					{
-						result = TimedScopeResult.ExpectedError;
-						break;
+						if (!IsExpectedException(subException))
+						{
+							return false;
+						}
 					}
+
+					return true;
 				}
 			}
 
-			scope.SetResult(result);
+			return false;
 		}
 	}
 }

@@ -41,6 +41,10 @@
     <MSTest_TestFramework_Version>2.1.0</MSTest_TestFramework_Version>
     <MSTest_TestAdapter_Version>2.1.0</MSTest_TestAdapter_Version>
   </PropertyGroup>
+  <PropertyGroup Label="Packages for Aspects. AutoUpdate">
+    <Fody_Version>6.1.1</Fody_Version>
+    <MethodBoundaryAspect_Fody_Version>2.0.118</MethodBoundaryAspect_Fody_Version>
+  </PropertyGroup>
   <PropertyGroup Label="ServiceFabric packages for Omex Extensions">
     <Microsoft_ServiceFabric_Version>7.0.470</Microsoft_ServiceFabric_Version>
     <Microsoft_ServiceFabric_Services_Version>4.0.470</Microsoft_ServiceFabric_Services_Version>

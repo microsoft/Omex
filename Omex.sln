@@ -88,7 +88,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.H
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests", "tests\Extensions\Hosting.Services.Remoting.UnitTests\Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests.csproj", "{9DE57D70-EBFE-4AB2-A0B5-63638CAE83EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decorators", "src\Extensions\Aspects\Microsoft.Omex.Extensions.Aspects.csproj", "{477945F2-CC7F-482A-A4FF-3BFAE3FE8821}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Aspects", "src\Extensions\Aspects\Microsoft.Omex.Extensions.Aspects.csproj", "{477945F2-CC7F-482A-A4FF-3BFAE3FE8821}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Omex.Extensions.Aspects.UnitTests", "tests\Extensions\Aspects.UnitTests\Microsoft.Omex.Extensions.Aspects.UnitTests.csproj", "{209BED73-33A0-4541-8895-F4761A70F202}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -306,6 +308,14 @@ Global
 		{477945F2-CC7F-482A-A4FF-3BFAE3FE8821}.Release|Any CPU.Build.0 = Release|Any CPU
 		{477945F2-CC7F-482A-A4FF-3BFAE3FE8821}.Release|x64.ActiveCfg = Release|Any CPU
 		{477945F2-CC7F-482A-A4FF-3BFAE3FE8821}.Release|x64.Build.0 = Release|Any CPU
+		{209BED73-33A0-4541-8895-F4761A70F202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{209BED73-33A0-4541-8895-F4761A70F202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{209BED73-33A0-4541-8895-F4761A70F202}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{209BED73-33A0-4541-8895-F4761A70F202}.Debug|x64.Build.0 = Debug|Any CPU
+		{209BED73-33A0-4541-8895-F4761A70F202}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{209BED73-33A0-4541-8895-F4761A70F202}.Release|Any CPU.Build.0 = Release|Any CPU
+		{209BED73-33A0-4541-8895-F4761A70F202}.Release|x64.ActiveCfg = Release|Any CPU
+		{209BED73-33A0-4541-8895-F4761A70F202}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -340,6 +350,7 @@ Global
 		{4F6590D4-925E-4865-A19E-6AC4FEDF2A9F} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 		{9DE57D70-EBFE-4AB2-A0B5-63638CAE83EF} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
 		{477945F2-CC7F-482A-A4FF-3BFAE3FE8821} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
+		{209BED73-33A0-4541-8895-F4761A70F202} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6FB7BCB-BF07-4F19-ACBA-457479D421BB}

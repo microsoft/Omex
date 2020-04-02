@@ -1,0 +1,6 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectWeaverXml>$(MSBuildThisFileDirectory)\..\tools\FodyWeavers.xml</ProjectWeaverXml>
+    <FodyGenerateXsd>false</FodyGenerateXsd>
+  </PropertyGroup>
+</Project>

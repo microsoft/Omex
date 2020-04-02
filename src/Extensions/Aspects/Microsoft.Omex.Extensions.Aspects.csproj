@@ -1,9 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="BuildTransitive\Microsoft.Omex.Extensions.Aspects.props" />
   <PropertyGroup>
     <TargetFrameworks>$(TargetFrameworksValue)</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.118" />
+    <Content Include="BuildTransitive\*" Pack="true" PackagePath="buildTransitive" />
+    <Content Include="Tools\*" Pack="true" PackagePath="tools" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Fody" Version="$(Fody_Version)" />
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="$(MethodBoundaryAspect_Fody_Version)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
