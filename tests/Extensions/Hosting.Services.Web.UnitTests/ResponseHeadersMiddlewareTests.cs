@@ -29,10 +29,10 @@ namespace Hosting.Services.Web.UnitTests
 			ResponseFeatureForCallbacks feature = new ResponseFeatureForCallbacks();
 			HttpContext context = new DefaultHttpContext();
 			context.Features.Set<IHttpResponseFeature>(feature);
-			ResponseHeadersMiddleware middleware = new ResponseHeadersMiddleware(mock.Object);
+			IMiddleware middleware = new ResponseHeadersMiddleware(mock.Object);
 
-			await middleware.InvokeAsync(context);
-			await feature.InvokeOnStarting();
+			await middleware.InvokeAsync(context, s => Task.CompletedTask).ConfigureAwait(false);
+			await feature.InvokeOnStarting().ConfigureAwait(false);
 
 			mock.Verify(c => c.MachineId, Times.Once);
 			mock.Verify(c => c.BuildVersion, Times.Once);
