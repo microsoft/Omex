@@ -26,7 +26,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		{
 			ExtractCorrelationFromRequest(context.Request);
 			context.Response.OnStarting(SetCorrelationHeadersToResponse, context.Response);
-			return Task.CompletedTask;
+			return next(context);
 		}
 
 		private Task SetCorrelationHeadersToResponse(object state)
