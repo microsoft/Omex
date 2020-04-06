@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	/// <summary>
-	/// Type for accessing object that are not available during dependency injection container creation
+	/// Type for accessing an object that is not available during dependency injection container creation
 	/// </summary>
 	/// <typeparam name="TValue">Type that will be accessable after dependency injection creation</typeparam>
 	public class Accessor<TValue> : IAccessor<TValue>, IAccessorSetter<TValue>
