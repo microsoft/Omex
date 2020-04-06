@@ -6,7 +6,7 @@ using System;
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	/// <summary>
-	/// Provides access to object that is not available during dependency injection contaniner build,
+	/// Provides access to an object that is not available during dependency injection container build,
 	/// because it could be not available during container creation
 	/// </summary>
 	public interface IAccessor<out TValue>
