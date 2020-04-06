@@ -8,12 +8,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 	/// <summary>
 	/// Static methods to simplify creation of <see cref="FabricTransportRemotingListenerSettings" />
 	/// </summary>
-	public static class Remoting
+	public static class RemotingSettings
 	{
 		/// <summary>
 		/// Creates <see cref="FabricTransportRemotingListenerSettings" /> with provided EndpointResourceName
 		/// </summary>
-		public static FabricTransportRemotingListenerSettings EndpointResourceName(string value)
+		public static FabricTransportRemotingListenerSettings WithEndpoint(string value)
 		{
 			return new FabricTransportRemotingListenerSettings()
 			{
