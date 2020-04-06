@@ -14,25 +14,25 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		where TValue : class
 	{
 		/// <summary>
-		/// Creates Service context accessor for dependency injection, because it could be not available during container creation
+		/// Creates accessor for dependency injection, for values that not available during container creation
 		/// </summary>
-		/// <param name="context">ServiceContext if it's immediately available from dependency injection</param>
-		public Accessor(TValue? context = null)
+		/// <param name="value">Value if it's immediately available from dependency injection</param>
+		public Accessor(TValue? value = null)
 		{
-			m_serviceContext = context;
+			m_value = value;
 			m_actions = new LinkedList<WeakReference<Action<TValue>>>();
 		}
 
 		/// <inheritdoc />
-		void IAccessorSetter<TValue>.SetContext(TValue context)
+		void IAccessorSetter<TValue>.SetContext(TValue value)
 		{
-			m_serviceContext = context;
+			m_value = value;
 
 			foreach (WeakReference<Action<TValue>> actionReference in m_actions)
 			{
 				if (actionReference.TryGetTarget(out Action<TValue>? action) && action != null)
 				{
-					action(context);
+					action(value);
 				}
 			}
 
@@ -42,9 +42,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <inheritdoc />
 		void IAccessor<TValue>.OnAvailable(Action<TValue> action)
 		{
-			if (m_serviceContext != null)
+			if (m_value != null)
 			{
-				action(m_serviceContext);
+				action(m_value);
 			}
 			else
 			{
@@ -53,9 +53,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 		/// <inheritdoc />
-		TValue? IAccessor<TValue>.Value => m_serviceContext;
+		TValue? IAccessor<TValue>.Value => m_value;
 
 		private readonly LinkedList<WeakReference<Action<TValue>>> m_actions;
-		private TValue? m_serviceContext;
+		private TValue? m_value;
 	}
 }
