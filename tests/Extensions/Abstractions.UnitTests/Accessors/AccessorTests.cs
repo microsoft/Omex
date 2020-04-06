@@ -10,7 +10,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 	public class ServiceAccessorTests
 	{
 		[TestMethod]
-		public void ValuePasedInConstructor_ProperlyHandlesActions()
+		public void ValuePassedInConstructor_ProperlyHandlesActions()
 		{
 			object value = new object();
 			Accessor<object> accessor = new Accessor<object>(value);
