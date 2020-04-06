@@ -13,7 +13,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// Set value when it's available
 		/// </summary>
 		/// <remarks>
-		/// Beside saving value it will also execute saved activities that where waiting for a value
+		/// Beside saving value it will also execute saved activities that were waiting for a value
 		/// </remarks>
 		void SetContext(TValue value);
 	}
