@@ -7,7 +7,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	/// <summary>
 	/// Provides access to an object that is not available during dependency injection container build,
-	/// because it could be not available during container creation
+	/// because it was not available during container creation
 	/// </summary>
 	public interface IAccessor<out TValue>
 		where TValue : class
