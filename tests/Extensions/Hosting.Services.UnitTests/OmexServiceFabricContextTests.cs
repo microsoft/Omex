@@ -22,13 +22,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		public void TestContextSet<TContext>(TContext serviceContext)
 			where TContext : ServiceContext
 		{
-			ServiceContextAccessor<TContext> accessor = new ServiceContextAccessor<TContext>();
+			Accessor<TContext> accessor = new Accessor<TContext>();
+			IAccessorSetter<TContext> setter = accessor;
 			IServiceContext context = new OmexServiceFabricContext(accessor);
 
 			Assert.AreEqual(default, context.PartitionId);
 			Assert.AreEqual(default, context.ReplicaOrInstanceId);
 
-			accessor.SetContext(serviceContext);
+			setter.SetContext(serviceContext);
 
 			Assert.AreEqual(serviceContext.PartitionId, context.PartitionId);
 			Assert.AreEqual(serviceContext.ReplicaOrInstanceId, context.ReplicaOrInstanceId);
