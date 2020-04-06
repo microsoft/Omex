@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	{
 		public OmexStatelessServiceRunner(
 			IHostEnvironment environment,
-			ServiceContextAccessor<StatelessServiceContext> contextAccessor,
+			IAccessorSetter<StatelessServiceContext> contextAccessor,
 			IEnumerable<IListenerBuilder<OmexStatelessService>> listenerBuilders,
 			IEnumerable<IServiceAction<OmexStatelessService>> serviceActions)
 				: base(environment, contextAccessor, listenerBuilders, serviceActions) { }

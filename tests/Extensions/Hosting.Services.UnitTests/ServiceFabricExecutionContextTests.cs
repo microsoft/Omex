@@ -28,9 +28,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			Mock<IHostEnvironment> enviromentMock = new Mock<IHostEnvironment>();
 			enviromentMock.SetupGet(e => e.ApplicationName).Returns(appName);
 			enviromentMock.SetupGet(e => e.EnvironmentName).Returns(envirometnName);
-			ServiceContextAccessor<StatelessServiceContext> context = new ServiceContextAccessor<StatelessServiceContext>();
-			IExecutionContext info = new ServiceFabricExecutionContext(enviromentMock.Object, context);
-			context.SetContext(MockStatelessServiceContextFactory.Default);
+			Accessor<StatelessServiceContext> accessor = new Accessor<StatelessServiceContext>();
+			IAccessorSetter<StatelessServiceContext> setter = accessor;
+			IExecutionContext info = new ServiceFabricExecutionContext(enviromentMock.Object, accessor);
+			setter.SetContext(MockStatelessServiceContextFactory.Default);
 
 			Assert.AreEqual(appName, info.ServiceName);
 			Assert.AreEqual(envirometnName, info.EnvironmentName);

@@ -12,11 +12,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// </summary>
 	internal sealed class OmexServiceFabricContext : IServiceContext
 	{
-		public OmexServiceFabricContext(IServiceContextAccessor<ServiceContext> accessor)
+		public OmexServiceFabricContext(IAccessor<ServiceContext> accessor)
 		{
 			PartitionId = Guid.Empty;
 			ReplicaOrInstanceId = 0L;
-			accessor.OnContextAvailable(UpdateState);
+			accessor.OnAvailable(UpdateState);
 		}
 
 		/// <inheritdoc/>
