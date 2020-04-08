@@ -3,6 +3,7 @@
 
 using System;
 using System.Fabric;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.ServiceFabric.Services.Remoting;
 using Microsoft.ServiceFabric.Services.Remoting.FabricTransport.Runtime;
 
@@ -13,6 +14,26 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 	/// </summary>
 	public static class HostBuilderExtensions
 	{
+		/// <summary>
+		/// Adds remote listener to statefull service
+		/// </summary>
+		public static ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext> AddRemotingListener<TService>(
+			this ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext> builder,
+			string name,
+			FabricTransportRemotingListenerSettings? settings = null)
+				where TService : IService =>
+					builder.AddRemotingListener(name, (provider, _) => provider.GetService<TService>(), settings);
+
+		/// <summary>
+		/// Adds remote listener to stateless service
+		/// </summary>
+		public static ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext> AddRemotingListener<TService>(
+			this ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext> builder,
+			string name,
+			FabricTransportRemotingListenerSettings? settings = null)
+				where TService : IService =>
+					builder.AddRemotingListener(name, (provider, _) => provider.GetService<TService>(), settings);
+
 		/// <summary>
 		/// Adds remote listener to statefull service
 		/// </summary>
