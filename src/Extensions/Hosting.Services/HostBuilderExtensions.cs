@@ -43,9 +43,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public static IServiceCollection AddOmexServiceFabricDependencies<TContext>(this IServiceCollection collection)
 			where TContext : ServiceContext
 		{
-			collection.TryAddSingleton<ServiceContextAccessor<TContext>, ServiceContextAccessor<TContext>>();
-			collection.TryAddSingleton<IServiceContextAccessor<TContext>>(p => p.GetService<ServiceContextAccessor<TContext>>());
-			collection.TryAddSingleton<IServiceContextAccessor<ServiceContext>>(p => p.GetService<ServiceContextAccessor<TContext>>());
+			collection.TryAddSingleton<Accessor<TContext>, Accessor<TContext>>();
+			collection.TryAddSingleton<IAccessorSetter<TContext>>(p => p.GetService<Accessor<TContext>>());
+			collection.TryAddSingleton<IAccessor<TContext>>(p => p.GetService<Accessor<TContext>>());
+			collection.TryAddSingleton<IAccessor<ServiceContext>>(p => p.GetService<Accessor<TContext>>());
 			collection.TryAddSingleton<IServiceContext, OmexServiceFabricContext>();
 			collection.TryAddSingleton<IExecutionContext, ServiceFabricExecutionContext>();
 			return collection.AddOmexServices();

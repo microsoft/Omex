@@ -54,8 +54,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		[DataRow(typeof(IHostedService), typeof(OmexHostedService))]
 		[DataRow(typeof(IOmexServiceRunner), typeof(OmexStatelessServiceRunner))]
-		[DataRow(typeof(IServiceContextAccessor<StatelessServiceContext>), typeof(ServiceContextAccessor<StatelessServiceContext>))]
-		[DataRow(typeof(IServiceContextAccessor<ServiceContext>), typeof(ServiceContextAccessor<StatelessServiceContext>))]
+		[DataRow(typeof(IAccessor<StatelessServiceContext>), typeof(Accessor<StatelessServiceContext>))]
+		[DataRow(typeof(IAccessor<ServiceContext>), typeof(Accessor<StatelessServiceContext>))]
 		public void BuildStatelessService_RegisterTypes(Type type, Type? expectedImplementationType)
 		{
 			object obj = new HostBuilder()
@@ -78,8 +78,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		[DataRow(typeof(IHostedService), typeof(OmexHostedService))]
 		[DataRow(typeof(IOmexServiceRunner), typeof(OmexStatefulServiceRunner))]
-		[DataRow(typeof(IServiceContextAccessor<StatefulServiceContext>), typeof(ServiceContextAccessor<StatefulServiceContext>))]
-		[DataRow(typeof(IServiceContextAccessor<ServiceContext>), typeof(ServiceContextAccessor<StatefulServiceContext>))]
+		[DataRow(typeof(IAccessor<StatefulServiceContext>), typeof(Accessor<StatefulServiceContext>))]
+		[DataRow(typeof(IAccessor<ServiceContext>), typeof(Accessor<StatefulServiceContext>))]
 		public void BuildStatefulService_RegiesterTypes(Type type, Type? expectedImplementationType)
 		{
 			object obj = new HostBuilder()

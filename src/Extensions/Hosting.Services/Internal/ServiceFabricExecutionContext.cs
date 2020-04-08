@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	internal sealed class ServiceFabricExecutionContext : EmptyExecutionContext
 	{
-		public ServiceFabricExecutionContext(IHostEnvironment hostEnvironment, IServiceContextAccessor<ServiceContext> accessor)
+		public ServiceFabricExecutionContext(IHostEnvironment hostEnvironment, IAccessor<ServiceContext> accessor)
 		{
 			MachineName = GetMachineName();
 			// In generic host context application is what it's running, Service Fabric service in this case, so it's application name is service fabric service name
@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			EnvironmentName = hostEnvironment.EnvironmentName ?? DefaultEmptyValue;
 			IsPrivateDeployment = hostEnvironment.IsDevelopment();
 
-			accessor.OnContextAvailable(UpdateState);
+			accessor.OnAvailable(UpdateState);
 		}
 
 		private string? GetRegionName() =>
