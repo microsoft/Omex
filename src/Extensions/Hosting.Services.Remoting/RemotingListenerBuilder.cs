@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System.Fabric;
+using Microsoft.Omex.Extensions.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting;
 using Microsoft.ServiceFabric.Services.Remoting.FabricTransport.Runtime;
@@ -38,9 +39,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 
 		ICommunicationListener IListenerBuilder<TService>.Build(TService service)
 		{
+			ServiceContext context = service.Context;
 			return new FabricTransportServiceRemotingListener(
-				service.Context,
-				BuildService(service),
+				context,
+				new OmexServiceRemotingDispatcher(context, BuildService(service)),
 				m_settings);
 		}
 	}
