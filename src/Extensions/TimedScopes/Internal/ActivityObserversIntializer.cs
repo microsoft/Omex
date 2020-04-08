@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
@@ -24,15 +26,21 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// </summary>
 		internal static readonly string ActivityStopEnding = ".Stop";
 
+		/// <summary>
+		/// Exception events
+		/// </summary>
+		internal static readonly string ExceptionEventEnding = "Exception";
+
 		private static readonly string[] s_eventEndMarkersToListen = new[] {
 			ActivityStartEnding,
 			ActivityStopEnding,
+			ExceptionEventEnding,
 			// We need to listen for the "Microsoft.AspNetCore.Hosting.HttpRequestIn" event in order to signal Kestrel to create an Activity for the incoming http request.
 			// Searching only for RequestIn, in case any other requests follow the same pattern
 			"RequestIn",
 			// We need to listen for the "System.Net.Http.HttpRequestOut" event in order to create an Activity for the outgoing http requests.
 			// Searching only for RequestOut, in case any other requests follow the same pattern
-			"RequestOut",
+			"RequestOut"
 		};
 
 		private static bool EventEndsWith(string eventName, string ending) => eventName.EndsWith(ending, StringComparison.Ordinal);
@@ -53,15 +61,18 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 		private readonly IActivityStartObserver[] m_activityStartObservers;
 		private readonly IActivityStopObserver[] m_activityStopObservers;
+		private readonly ILogger<ActivityObserversIntializer> m_logger;
 		private readonly LinkedList<IDisposable> m_disposables;
 		private IDisposable? m_observerLifetime;
 
 		public ActivityObserversIntializer(
 			IEnumerable<IActivityStartObserver> activityStartObservers,
-			IEnumerable<IActivityStopObserver> activityStopObservers)
+			IEnumerable<IActivityStopObserver> activityStopObservers,
+			ILogger<ActivityObserversIntializer> logger)
 		{
 			m_activityStartObservers = activityStartObservers.ToArray();
 			m_activityStopObservers = activityStopObservers.ToArray();
+			m_logger = logger;
 			m_disposables = new LinkedList<IDisposable>();
 		}
 
@@ -111,6 +122,10 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			{
 				OnActivityStopped(activity, value.Value);
 			}
+			else if (EventEndsWith(eventName, ExceptionEventEnding))
+			{
+				OnException(eventName, value.Value);
+			}
 		}
 
 		private void OnActivityStarted(Activity activity, object payload)
@@ -127,6 +142,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			{
 				stopHandler.OnStop(activity, payload);
 			}
+		}
+
+		private void OnException(string eventName, object payload)
+		{
+			m_logger.LogError(Tag.Create(), payload as Exception, "Exception diagnostic event '{0}'", eventName);
 		}
 	}
 }
