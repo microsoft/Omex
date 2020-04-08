@@ -4,6 +4,7 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.TimedScopes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,7 +23,8 @@ namespace Hosting.Services.UnitTests
 			Mock<IActivityStopObserver> stopObserver = new Mock<IActivityStopObserver>();
 			ActivityObserversIntializer initializer = new ActivityObserversIntializer(
 				new [] { startObserver.Object },
-				new [] { stopObserver.Object });
+				new [] { stopObserver.Object },
+				new NullLogger<ActivityObserversIntializer>());
 
 			try
 			{
