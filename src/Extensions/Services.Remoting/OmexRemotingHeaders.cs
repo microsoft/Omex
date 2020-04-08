@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Fabric;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -61,14 +62,14 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		/// <summary>
 		/// Extract activity information from incoming remoting request headers
 		/// </summary>
-		public static void ExtractActivityFromIncominRequest(Activity? activity, IServiceRemotingResponseMessage responceMessage)
+		public static void ExtractActivityFromIncominRequest(Activity? activity, IServiceRemotingRequestMessage requestMessage)
 		{
 			if (activity == null)
 			{
 				return;
 			}
 
-			IServiceRemotingResponseMessageHeader headers = responceMessage.GetHeader();
+			IServiceRemotingRequestMessageHeader headers = requestMessage.GetHeader();
 
 			if (headers.TryGetHeaderValue(TraceParentHeaderName, out byte[] idBytes))
 			{

@@ -20,12 +20,16 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 	internal class ServiceRemotingClientWrapper : IServiceRemotingClient
 	{
 		/// <summary>
-		/// Activity name for outgoing request
+		/// Suffix for this class activities
 		/// </summary>
 		/// <remarks>
 		/// Should end with RequestOut to be enabled by out telemetry
 		/// </remarks>
-		private const string ActivityName = "Microsoft.Omex.Extensions.Hosting.Services.Remoting.RequestOut";
+		private const string RequestOutActivitySuffix = "RequestOut";
+
+		private const string OneWayMessageActivityName = Diagnostics.AssemblyName + "OneWay" + RequestOutActivitySuffix;
+
+		private const string RequestActivityName = Diagnostics.AssemblyName + RequestOutActivitySuffix;
 
 		internal readonly IServiceRemotingClient Client;
 
@@ -54,7 +58,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 
 		public async Task<IServiceRemotingResponseMessage> RequestResponseAsync(IServiceRemotingRequestMessage requestMessage)
 		{
-			Activity? activity = Diagnostics.StartActivity(ActivityName);
+			Activity? activity = Diagnostics.StartActivity(OneWayMessageActivityName);
 			OmexRemotingHeaders.AttachActivityToOuthgoingRequest(activity, requestMessage);
 			IServiceRemotingResponseMessage? responseMessage = null;
 
@@ -78,7 +82,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 
 		public void SendOneWay(IServiceRemotingRequestMessage requestMessage)
 		{
-			Activity? activity = Diagnostics.StartActivity(ActivityName);
+			Activity? activity = Diagnostics.StartActivity(RequestActivityName);
 			OmexRemotingHeaders.AttachActivityToOuthgoingRequest(activity, requestMessage);
 
 			try

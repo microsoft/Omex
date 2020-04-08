@@ -13,7 +13,7 @@ using Microsoft.ServiceFabric.Services.Remoting.V2.Client;
 namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 {
 	/// <summary>
-	/// A factory for creating <see cref="IServiceRemotingClientFactory" />
+	/// Factory for creating <see cref="IServiceRemotingClientFactory" />
 	/// </summary>
 	internal class OmexServiceRemotingClientFactory : IServiceRemotingClientFactory
 	{
