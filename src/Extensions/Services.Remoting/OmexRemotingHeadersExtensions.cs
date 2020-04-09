@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using Microsoft.ServiceFabric.Services.Remoting.V2;
 
@@ -42,11 +40,6 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		private const string TraceStateHeaderName = "omex-tracestate";
 
 		private static readonly Encoding s_encoding = Encoding.Unicode;
-
-		private static readonly BinaryFormatter s_binaryFormatter = new BinaryFormatter
-		{
-			Binder = new HeadersSerializationBinder()
-		};
 
 		/// <summary>
 		/// Attach activity information to outgoing remoting request headers
@@ -92,24 +85,16 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		private static byte[] SerializeBaggage(KeyValuePair<string, string>[] baggage)
 		{
 			using MemoryStream stream = new MemoryStream();
-			s_binaryFormatter.Serialize(stream, baggage);
+			s_serializer.WriteObject(stream, baggage);
 			return stream.ToArray();
 		}
 
 		private static KeyValuePair<string, string>[] DeserializeBaggage(byte[] bytes)
 		{
 			using MemoryStream stream = new MemoryStream(bytes);
-			return (KeyValuePair<string, string>[])s_binaryFormatter.Deserialize(stream);
+			return (KeyValuePair<string, string>[])s_serializer.ReadObject(stream);
 		}
 
-		private class HeadersSerializationBinder : SerializationBinder
-		{
-			public override Type? BindToType(string assemblyName, string typeName) =>
-				assemblyName.StartsWith("mscorlib,") // checking that type comes from base library
-					? (Type?)null
-					: throw new ArgumentException(
-						$"Unexpected deserialization type. TypeName:'{typeName}', AssemplyName:'{assemblyName}'.",
-						nameof(typeName));
-		}
+		private static readonly DataContractSerializer s_serializer = new DataContractSerializer(typeof(KeyValuePair<string, string>[]));
 	}
 }
