@@ -56,7 +56,7 @@ namespace Hosting.Services.Web.UnitTests
 
 			Assert.AreEqual(context, ResolveType<ServiceContext>(host));
 			Assert.AreEqual(context, ResolveType<TContext>(host));
-			Assert.AreEqual(context, ResolveType<IServiceContextAccessor<TContext>>(host).ServiceContext);
+			Assert.AreEqual(context, ResolveType<IAccessor<TContext>>(host).Value);
 
 			ResolveType<TypeRegisteredInListenerExtension>(host);
 			ResolveType<MockStartup.TypeRegisteredInStartup>(host);

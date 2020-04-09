@@ -15,7 +15,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	{
 		protected readonly string ApplicationName;
 
-		protected readonly ServiceContextAccessor<TContext> ContextAccessor;
+		protected readonly IAccessorSetter<TContext> ContextAccessor;
 
 		public IEnumerable<IListenerBuilder<TService>> ListenerBuilders { get; }
 
@@ -23,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 		public OmexServiceRunner(
 			IHostEnvironment environment,
-			ServiceContextAccessor<TContext> contextAccessor,
+			IAccessorSetter<TContext> contextAccessor,
 			IEnumerable<IListenerBuilder<TService>> listenerBuilders,
 			IEnumerable<IServiceAction<TService>> serviceActions)
 		{
