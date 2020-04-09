@@ -17,7 +17,9 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 	/// Helper class for adding remoting headers
 	/// </summary>
 	/// <remarks>
-	/// Implemented simular to Asp .Net Core http request from here: https://github.com/dotnet/aspnetcore/blob/master/src/Hosting/Hosting/src/Internal/HostingApplicationDiagnostics.cs
+	/// Implemented simular to Asp .Net Core http request from here:
+	/// - reading headers https://github.com/dotnet/aspnetcore/blob/master/src/Hosting/Hosting/src/Internal/HostingApplicationDiagnostics.cs
+	/// - writing headers https://github.com/dotnet/runtime/blob/master/src/libraries/System.Net.Http/src/System/Net/Http/DiagnosticsHandler.cs
 	/// </remarks>
 	public static class OmexRemotingHeadersExtensions
 	{
