@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Omex.Extensions.Services.Remoting;
 using Microsoft.ServiceFabric.Services.Remoting.V2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,6 +33,7 @@ namespace Services.Remoting
 		public void OmexRemotingHeaders_WithoutBaggage_ProperlyTransfered()
 		{
 			Activity outgoingActivity = new Activity(nameof(OmexRemotingHeaders_WithoutBaggage_ProperlyTransfered));
+
 			TestActivityTransfer(outgoingActivity);
 		}
 
@@ -42,29 +44,32 @@ namespace Services.Remoting
 				.AddBaggage("NullValue", null)
 				.AddBaggage("EmptyValue", string.Empty)
 				.AddBaggage("TestValue", "Value @+&")
-				.AddBaggage("UnicodeValue", "☕☘☔ (┛ಠ_ಠ)┛彡┻━┻")
-				.AddBaggage("QuotesValue", "value with \"quotes\" inside \" test ");
-			;
+				.AddBaggage("QuotesValue", "value with \"quotes\" inside \" test ")
+				.AddBaggage("UnicodeValue", "☕☘☔ (┛ಠ_ಠ)┛彡┻━┻");
 
 			TestActivityTransfer(outgoingActivity);
 		}
 
 		private void TestActivityTransfer(Activity outgoingActivity)
 		{
-			HeaderMock header = new HeaderMock();
-			Mock<IServiceRemotingRequestMessage> requestMock = new Mock<IServiceRemotingRequestMessage>();
-			requestMock.Setup(m => m.GetHeader()).Returns(header);
+			// run in sepacate thread to avoid interference from other activities
+			Task.Run(() =>
+			{
+				HeaderMock header = new HeaderMock();
+				Mock<IServiceRemotingRequestMessage> requestMock = new Mock<IServiceRemotingRequestMessage>();
+				requestMock.Setup(m => m.GetHeader()).Returns(header);
 
-			outgoingActivity.Start();
-			requestMock.Object.AttachActivityToOuthgoingRequest(outgoingActivity);
-			outgoingActivity.Stop();
+				outgoingActivity.Start();
+				requestMock.Object.AttachActivityToOuthgoingRequest(outgoingActivity);
+				outgoingActivity.Stop();
 
-			Activity incomingActivity = new Activity(outgoingActivity.OperationName + "_Out").Start();
-			requestMock.Object.ExtractActivityFromIncominRequest(incomingActivity);
-			incomingActivity.Stop();
+				Activity incomingActivity = new Activity(outgoingActivity.OperationName + "_Out").Start();
+				requestMock.Object.ExtractActivityFromIncominRequest(incomingActivity);
+				incomingActivity.Stop();
 
-			Assert.AreEqual(outgoingActivity.Id, incomingActivity.ParentId);
-			CollectionAssert.AreEquivalent(outgoingActivity.Baggage.ToArray(), incomingActivity.Baggage.ToArray());
+				Assert.AreEqual(outgoingActivity.Id, incomingActivity.ParentId);
+				CollectionAssert.AreEquivalent(outgoingActivity.Baggage.ToArray(), incomingActivity.Baggage.ToArray());
+			});
 		}
 
 		public class HeaderMock : IServiceRemotingRequestMessageHeader
