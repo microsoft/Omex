@@ -8,7 +8,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 {
 	internal static class Diagnostics
 	{
-		internal const string AssemblyName = "Microsoft.Omex.Extensions.Services.Remoting";
+		internal const string ListenerName = "Microsoft.Omex.Extensions.Services.Remoting";
 
 		/// <summary>
 		/// Name of the exception event
@@ -16,9 +16,9 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		/// <remarks>
 		/// Should end with Exception to be enabled by out telemetry
 		/// </remarks>
-		private const string ExceptionEventName = AssemblyName + ".Exception";
+		private const string ExceptionEventName = ListenerName + ".Exception";
 
-		private static DiagnosticListener s_diagnosticListener = new DiagnosticListener(AssemblyName);
+		private static DiagnosticListener s_diagnosticListener = new DiagnosticListener(ListenerName);
 
 		public static Activity? StartActivity(string name)
 		{

@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Fabric;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -17,6 +16,9 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 	/// <summary>
 	/// Helper class for adding remoting headers
 	/// </summary>
+	/// <remarks>
+	/// Implemented simular to Asp .Net Core http request from here: https://github.com/dotnet/aspnetcore/blob/master/src/Hosting/Hosting/src/Internal/HostingApplicationDiagnostics.cs
+	/// </remarks>
 	public static class OmexRemotingHeaders
 	{
 		/// <summary>
@@ -74,13 +76,13 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 			if (headers.TryGetHeaderValue(TraceParentHeaderName, out byte[] idBytes))
 			{
 				activity.SetParentId(s_encoding.GetString(idBytes));
-			}
 
-			if (headers.TryGetHeaderValue(TraceStateHeaderName, out byte[] baggageBytes))
-			{
-				foreach (KeyValuePair<string, string> pair in DeserializeBaggage(baggageBytes))
+				if (headers.TryGetHeaderValue(TraceStateHeaderName, out byte[] baggageBytes))
 				{
-					activity.AddBaggage(pair.Key, pair.Value);
+					foreach (KeyValuePair<string, string> pair in DeserializeBaggage(baggageBytes))
+					{
+						activity.AddBaggage(pair.Key, pair.Value);
+					}
 				}
 			}
 		}

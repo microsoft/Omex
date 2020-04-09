@@ -14,9 +14,6 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 	/// <summary>
 	/// Wrapper for adding Omex headers to Remoting request
 	/// </summary>
-	/// <remarks>
-	/// Implemented simular to Asp .Net Core http request from here: https://github.com/dotnet/aspnetcore/blob/b6698757a85f9b6d6c63311e64dd6ac9e734ef56/src/Hosting/Hosting/src/Internal/HostingApplicationDiagnostics.cs
-	/// </remarks>
 	internal class ServiceRemotingClientWrapper : IServiceRemotingClient
 	{
 		/// <summary>
@@ -27,9 +24,9 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 		/// </remarks>
 		private const string RequestOutActivitySuffix = "RequestOut";
 
-		private const string OneWayMessageActivityName = Diagnostics.AssemblyName + "OneWay" + RequestOutActivitySuffix;
+		private const string OneWayMessageActivityName = Diagnostics.ListenerName + "OneWay" + RequestOutActivitySuffix;
 
-		private const string RequestActivityName = Diagnostics.AssemblyName + RequestOutActivitySuffix;
+		private const string RequestActivityName = Diagnostics.ListenerName + RequestOutActivitySuffix;
 
 		internal readonly IServiceRemotingClient Client;
 

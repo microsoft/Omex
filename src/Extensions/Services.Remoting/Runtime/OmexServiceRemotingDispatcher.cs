@@ -25,9 +25,9 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Runtime
 		/// </remarks>
 		private const string RequestInActivitySuffix = "RequestIn";
 
-		private const string OneWayMessageActivityName = Diagnostics.AssemblyName + "OneWay" + RequestInActivitySuffix;
+		private const string OneWayMessageActivityName = Diagnostics.ListenerName + "OneWay" + RequestInActivitySuffix;
 
-		private const string RequestActivityName = Diagnostics.AssemblyName + RequestInActivitySuffix;
+		private const string RequestActivityName = Diagnostics.ListenerName + RequestInActivitySuffix;
 
 		/// <inheritdoc />
 		public OmexServiceRemotingDispatcher(

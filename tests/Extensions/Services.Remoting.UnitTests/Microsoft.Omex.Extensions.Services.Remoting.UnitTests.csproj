@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(TargetFrameworksValue)</TargetFrameworks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Extensions\Services.Remoting\Microsoft.Omex.Extensions.Services.Remoting.csproj" />
+  </ItemGroup>
+</Project>
