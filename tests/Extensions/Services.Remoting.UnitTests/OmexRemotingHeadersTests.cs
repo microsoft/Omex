@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Omex.Extensions.Services.Remoting;
 using Microsoft.ServiceFabric.Services.Remoting.V2;
@@ -80,7 +81,7 @@ namespace Services.Remoting
 
 			public void AddHeader(string headerName, byte[] headerValue) => m_headers.Add(headerName, headerValue);
 
-			public bool TryGetHeaderValue(string headerName, out byte[] headerValue) => m_headers.TryGetValue(headerName, out headerValue);
+			public bool TryGetHeaderValue(string headerName, [MaybeNullWhen(false)] out byte[] headerValue) => m_headers.TryGetValue(headerName, out headerValue);
 		}
 	}
 }
