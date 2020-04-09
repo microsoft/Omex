@@ -18,32 +18,32 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		/// </remarks>
 		private const string ExceptionEventName = ListenerName + ".Exception";
 
-		private static DiagnosticListener s_diagnosticListener = new DiagnosticListener(ListenerName);
+		public static DiagnosticListener DefaultListener { get; } = new DiagnosticListener(ListenerName);
 
-		public static Activity? StartActivity(string name)
+		public static Activity? CreateAndStartActivity(this DiagnosticListener listener, string name)
 		{
-			if (!s_diagnosticListener.IsEnabled(name))
+			if (!listener.IsEnabled(name))
 			{
 				return null;
 			}
 
 			Activity activity = new Activity(name);
-			return s_diagnosticListener.StartActivity(activity, null);
+			return listener.StartActivity(activity, null);
 		}
 
-		public static void StopActivity(Activity? activity)
+		public static void StopActivityIfExist(this DiagnosticListener listener, Activity? activity)
 		{
 			if (activity != null)
 			{
-				s_diagnosticListener.StopActivity(activity, null);
+				listener.StopActivity(activity, null);
 			}
 		}
 
-		public static void ReportException(Exception exception)
+		public static void ReportException(this DiagnosticListener listener, Exception exception)
 		{
-			if (s_diagnosticListener.IsEnabled(ExceptionEventName))
+			if (listener.IsEnabled(ExceptionEventName))
 			{
-				s_diagnosticListener.Write(ExceptionEventName, exception);
+				listener.Write(ExceptionEventName, exception);
 			}
 		}
 	}

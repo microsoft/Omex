@@ -4,6 +4,9 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="ServiceFabric.Mocks" Version="$(ServiceFabric_Mocks_Version)" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\..\src\Extensions\Services.Remoting\Microsoft.Omex.Extensions.Services.Remoting.csproj" />
   </ItemGroup>
 </Project>

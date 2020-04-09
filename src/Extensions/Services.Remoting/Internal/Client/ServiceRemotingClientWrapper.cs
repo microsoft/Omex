@@ -28,11 +28,14 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 
 		private const string RequestActivityName = Diagnostics.ListenerName + RequestOutActivitySuffix;
 
+		private readonly DiagnosticListener m_diagnosticListener;
+
 		internal readonly IServiceRemotingClient Client;
 
-		public ServiceRemotingClientWrapper(IServiceRemotingClient client)
+		public ServiceRemotingClientWrapper(IServiceRemotingClient client, DiagnosticListener? diagnosticListener = null)
 		{
 			Client = client;
+			m_diagnosticListener = diagnosticListener ?? Diagnostics.DefaultListener;
 		}
 
 		public ResolvedServicePartition ResolvedServicePartition
@@ -55,8 +58,8 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 
 		public async Task<IServiceRemotingResponseMessage> RequestResponseAsync(IServiceRemotingRequestMessage requestMessage)
 		{
-			Activity? activity = Diagnostics.StartActivity(OneWayMessageActivityName);
-			OmexRemotingHeaders.AttachActivityToOuthgoingRequest(activity, requestMessage);
+			Activity? activity = m_diagnosticListener.CreateAndStartActivity(OneWayMessageActivityName);
+			requestMessage.AttachActivityToOuthgoingRequest(activity);
 			IServiceRemotingResponseMessage? responseMessage = null;
 
 			try
@@ -66,12 +69,12 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 			}
 			catch (Exception ex)
 			{
-				Diagnostics.ReportException(ex);
+				m_diagnosticListener.ReportException(ex);
 				throw;
 			}
 			finally
 			{
-				Diagnostics.StopActivity(activity);
+				m_diagnosticListener.StopActivityIfExist(activity);
 			}
 
 			return responseMessage;
@@ -79,8 +82,8 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 
 		public void SendOneWay(IServiceRemotingRequestMessage requestMessage)
 		{
-			Activity? activity = Diagnostics.StartActivity(RequestActivityName);
-			OmexRemotingHeaders.AttachActivityToOuthgoingRequest(activity, requestMessage);
+			Activity? activity = m_diagnosticListener.CreateAndStartActivity(RequestActivityName);
+			requestMessage.AttachActivityToOuthgoingRequest(activity);
 
 			try
 			{
@@ -89,12 +92,12 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 			}
 			catch (Exception ex)
 			{
-				Diagnostics.ReportException(ex);
+				m_diagnosticListener.ReportException(ex);
 				throw;
 			}
 			finally
 			{
-				Diagnostics.StopActivity(activity);
+				m_diagnosticListener.StopActivityIfExist(activity);
 			}
 		}
 	}

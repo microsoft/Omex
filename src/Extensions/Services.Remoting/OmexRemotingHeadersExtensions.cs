@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 	/// <remarks>
 	/// Implemented simular to Asp .Net Core http request from here: https://github.com/dotnet/aspnetcore/blob/master/src/Hosting/Hosting/src/Internal/HostingApplicationDiagnostics.cs
 	/// </remarks>
-	public static class OmexRemotingHeaders
+	public static class OmexRemotingHeadersExtensions
 	{
 		/// <summary>
 		/// Header name for passing <see cref="Activity" /> id
@@ -49,7 +49,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		/// <summary>
 		/// Attach activity information to outgoing remoting request headers
 		/// </summary>
-		public static void AttachActivityToOuthgoingRequest(Activity? activity, IServiceRemotingRequestMessage requestMessage)
+		public static void AttachActivityToOuthgoingRequest(this IServiceRemotingRequestMessage requestMessage, Activity? activity)
 		{
 			if (activity == null)
 			{
@@ -64,7 +64,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		/// <summary>
 		/// Extract activity information from incoming remoting request headers
 		/// </summary>
-		public static void ExtractActivityFromIncominRequest(Activity? activity, IServiceRemotingRequestMessage requestMessage)
+		public static void ExtractActivityFromIncominRequest(this IServiceRemotingRequestMessage requestMessage, Activity? activity)
 		{
 			if (activity == null)
 			{

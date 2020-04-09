@@ -29,32 +29,38 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Runtime
 
 		private const string RequestActivityName = Diagnostics.ListenerName + RequestInActivitySuffix;
 
+		private readonly DiagnosticListener m_diagnosticListener;
+
 		/// <inheritdoc />
 		public OmexServiceRemotingDispatcher(
 			ServiceContext serviceContext,
 			IService serviceImplementation,
-			IServiceRemotingMessageBodyFactory? serviceRemotingMessageBodyFactory = null)
-			: base(serviceContext, serviceImplementation, serviceRemotingMessageBodyFactory) { }
+			IServiceRemotingMessageBodyFactory? serviceRemotingMessageBodyFactory = null,
+			DiagnosticListener? diagnosticListener = null)
+			: base(serviceContext, serviceImplementation, serviceRemotingMessageBodyFactory)
+		{
+			m_diagnosticListener = diagnosticListener ?? Diagnostics.DefaultListener;
+		}
 
 		/// <inheritdoc />
 		public override void HandleOneWayMessage(IServiceRemotingRequestMessage requestMessage)
 		{
-			Activity? activity = Diagnostics.StartActivity(OneWayMessageActivityName);
+			Activity? activity = m_diagnosticListener.CreateAndStartActivity(OneWayMessageActivityName);
 
 			try
 			{
-				OmexRemotingHeaders.ExtractActivityFromIncominRequest(activity, requestMessage);
+				requestMessage.ExtractActivityFromIncominRequest(activity);
 				base.HandleOneWayMessage(requestMessage);
 				activity?.SetResult(TimedScopeResult.Success);
 			}
 			catch (Exception ex)
 			{
-				Diagnostics.ReportException(ex);
+				m_diagnosticListener.ReportException(ex);
 				throw;
 			}
 			finally
 			{
-				Diagnostics.StopActivity(activity);
+				m_diagnosticListener.StopActivityIfExist(activity);
 			}
 		}
 
@@ -64,23 +70,23 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Runtime
 			IServiceRemotingRequestContext requestContext,
 			IServiceRemotingRequestMessage requestMessage)
 		{
-			Activity? activity = Diagnostics.StartActivity(RequestActivityName);
+			Activity? activity = m_diagnosticListener.CreateAndStartActivity(RequestActivityName);
 			IServiceRemotingResponseMessage? responseMessage = null;
 
 			try
 			{
-				OmexRemotingHeaders.ExtractActivityFromIncominRequest(activity, requestMessage);
+				requestMessage.ExtractActivityFromIncominRequest(activity);
 				responseMessage = await base.HandleRequestResponseAsync(requestContext, requestMessage).ConfigureAwait(false);
 				activity?.SetResult(TimedScopeResult.Success);
 			}
 			catch (Exception ex)
 			{
-				Diagnostics.ReportException(ex);
+				m_diagnosticListener.ReportException(ex);
 				throw;
 			}
 			finally
 			{
-				Diagnostics.StopActivity(activity);
+				m_diagnosticListener.StopActivityIfExist(activity);
 			}
 
 			return responseMessage;

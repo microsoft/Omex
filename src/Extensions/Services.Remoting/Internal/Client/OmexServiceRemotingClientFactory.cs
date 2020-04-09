@@ -80,7 +80,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 					retrySettings,
 					cancellationToken);
 
-		private IServiceRemotingClient Unwrap(IServiceRemotingClient client) =>
+		internal static IServiceRemotingClient Unwrap(IServiceRemotingClient client) =>
 			client is ServiceRemotingClientWrapper wrapper
 				? wrapper.Client
 				: client;

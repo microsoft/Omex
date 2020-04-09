@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Omex.Extensions.Services.Remoting;
 using Microsoft.ServiceFabric.Services.Remoting.V2;
@@ -20,14 +18,14 @@ namespace Services.Remoting
 		public void OmexRemotingHeaders_AttachActivityToOuthgoingRequest_HandlessNullActivityProperly()
 		{
 			Mock<IServiceRemotingRequestMessage> requestMock = new Mock<IServiceRemotingRequestMessage>();
-			OmexRemotingHeaders.AttachActivityToOuthgoingRequest(null, requestMock.Object);
+			requestMock.Object.AttachActivityToOuthgoingRequest(null);
 		}
 
 		[TestMethod]
 		public void OmexRemotingHeaders_ExtractActivityFromIncominRequest_HandlessNullActivityProperly()
 		{
 			Mock<IServiceRemotingRequestMessage> requestMock = new Mock<IServiceRemotingRequestMessage>();
-			OmexRemotingHeaders.ExtractActivityFromIncominRequest(null, requestMock.Object);
+			requestMock.Object.ExtractActivityFromIncominRequest(null);
 		}
 
 		[TestMethod]
@@ -44,7 +42,9 @@ namespace Services.Remoting
 				.AddBaggage("NullValue", null)
 				.AddBaggage("EmptyValue", string.Empty)
 				.AddBaggage("TestValue", "Value @+&")
-				.AddBaggage("UnicodeValue", "☕☘☔ (┛ಠ_ಠ)┛彡┻━┻");
+				.AddBaggage("UnicodeValue", "☕☘☔ (┛ಠ_ಠ)┛彡┻━┻")
+				.AddBaggage("QuotesValue", "value with \"quotes\" inside \" test ");
+			;
 
 			TestActivityTransfer(outgoingActivity);
 		}
@@ -56,11 +56,11 @@ namespace Services.Remoting
 			requestMock.Setup(m => m.GetHeader()).Returns(header);
 
 			outgoingActivity.Start();
-			OmexRemotingHeaders.AttachActivityToOuthgoingRequest(outgoingActivity, requestMock.Object);
+			requestMock.Object.AttachActivityToOuthgoingRequest(outgoingActivity);
 			outgoingActivity.Stop();
 
 			Activity incomingActivity = new Activity(outgoingActivity.OperationName + "_Out").Start();
-			OmexRemotingHeaders.ExtractActivityFromIncominRequest(incomingActivity, requestMock.Object);
+			requestMock.Object.ExtractActivityFromIncominRequest(incomingActivity);
 			incomingActivity.Stop();
 
 			Assert.AreEqual(outgoingActivity.Id, incomingActivity.ParentId);
