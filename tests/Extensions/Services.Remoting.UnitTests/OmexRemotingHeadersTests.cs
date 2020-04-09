@@ -64,7 +64,7 @@ namespace Services.Remoting
 			incomingActivity.Stop();
 
 			Assert.AreEqual(outgoingActivity.Id, incomingActivity.ParentId);
-			CollectionAssert.AreEqual(outgoingActivity.Baggage.ToArray(), incomingActivity.Baggage.ToArray());
+			CollectionAssert.AreEquivalent(outgoingActivity.Baggage.ToArray(), incomingActivity.Baggage.ToArray());
 		}
 
 		public class HeaderMock : IServiceRemotingRequestMessageHeader
@@ -81,7 +81,7 @@ namespace Services.Remoting
 
 			public void AddHeader(string headerName, byte[] headerValue) => m_headers.Add(headerName, headerValue);
 
-			public bool TryGetHeaderValue(string headerName, [MaybeNullWhen(false)] out byte[] headerValue) => m_headers.TryGetValue(headerName, out headerValue);
+			public bool TryGetHeaderValue(string headerName, out byte[]? headerValue) => m_headers.TryGetValue(headerName, out headerValue);
 		}
 	}
 }

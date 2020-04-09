@@ -2,12 +2,12 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.TimedScopes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,13 +22,13 @@ namespace Hosting.Services.UnitTests
 		public async Task ActivityObserversInvokedProperly()
 		{
 			string name = nameof(ActivityObserversInvokedProperly);
-			Mock<ILogger<ActivityObserversIntializer>> loggerMock = new Mock<ILogger<ActivityObserversIntializer>>();
+			MockLogger logger = new MockLogger();
 			Mock<IActivityStartObserver> startObserver = new Mock<IActivityStartObserver>();
 			Mock<IActivityStopObserver> stopObserver = new Mock<IActivityStopObserver>();
 			ActivityObserversIntializer initializer = new ActivityObserversIntializer(
-				new [] { startObserver.Object },
-				new [] { stopObserver.Object },
-				loggerMock.Object);
+				new[] { startObserver.Object },
+				new[] { stopObserver.Object },
+				logger);
 
 			try
 			{
@@ -54,9 +54,9 @@ namespace Hosting.Services.UnitTests
 				listener.StopActivity(activity, obj);
 				stopObserver.Verify(obs => obs.OnStop(activity, obj), Times.Once);
 
-				Assert.IsFalse(loggerMock.Invocations.Any(), "Logger invocation should be empty before");
-				listener.Write(ExceptionEventName, new ArithmeticException());
-				Assert.IsTrue(loggerMock.Invocations.Count == 1, "Should log exception event");
+				Exception exception = new ArithmeticException();
+				listener.Write(ExceptionEventName, exception);
+				Assert.IsTrue(logger.Exceptions.Contains(exception), "Should log exception event");
 			}
 			catch
 			{
@@ -77,5 +77,16 @@ namespace Hosting.Services.UnitTests
 		private const string HttpRequestOutEventName = "System.Net.Http.HttpRequestOut";
 
 		private const string HttpRequestInEventName = "Microsoft.AspNetCore.Hosting.HttpRequestIn";
+
+		private class MockLogger : ILogger<ActivityObserversIntializer>
+		{
+			public List<Exception> Exceptions { get; } = new List<Exception>();
+
+			public IDisposable BeginScope<TState>(TState state) => throw new NotImplementedException();
+
+			public bool IsEnabled(LogLevel logLevel) => true;
+
+			public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter) => Exceptions.Add(exception);
+		}
 	}
 }

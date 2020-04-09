@@ -102,24 +102,12 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 
 		private class HeadersSerializationBinder : SerializationBinder
 		{
-			public override Type BindToType(string assemblyName, string typeName)
-			{
-				Type? BindToTypeOrDefault<TTypeToMatch>()
-				{
-					Type type = typeof(TTypeToMatch);
-					return string.Equals(typeName, type.FullName, StringComparison.InvariantCulture)
-						&& string.Equals(assemblyName, type.Assembly.FullName, StringComparison.InvariantCulture)
-							? type
-							: null;
-				}
-
-				return BindToTypeOrDefault<KeyValuePair<string, string>[]>()
-					?? BindToTypeOrDefault<KeyValuePair<string, string>>()
-					?? BindToTypeOrDefault<string>()
-					?? throw new ArgumentException(
+			public override Type? BindToType(string assemblyName, string typeName) =>
+				assemblyName.StartsWith("mscorlib,") // checking that type comes from base library
+					? (Type?)null
+					: throw new ArgumentException(
 						$"Unexpected deserialization type. TypeName:'{typeName}', AssemplyName:'{assemblyName}'.",
 						nameof(typeName));
-			}
 		}
 	}
 }
