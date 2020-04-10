@@ -83,7 +83,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 		public void SendOneWay(IServiceRemotingRequestMessage requestMessage)
 		{
 			Activity? activity = m_diagnosticListener.CreateAndStartActivity(RequestActivityName);
-			requestMessage.AttachActivityToOuthgoingRequest(activity);
+			requestMessage.AttachActivityToOutgoingRequest(activity);
 
 			try
 			{
