@@ -21,7 +21,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Runtime
 		/// Suffix for this class activities
 		/// </summary>
 		/// <remarks>
-		/// Should end with RequestIn to be enabled by out telemetry
+		/// Should end with RequestIn to be enabled by our telemetry
 		/// </remarks>
 		private const string RequestInActivitySuffix = "RequestIn";
 
