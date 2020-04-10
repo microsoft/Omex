@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Logging;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
@@ -98,9 +99,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 				return host;
 			}
-			catch (Exception e)
+			catch (Exception ex) when (ex.IsRecoverable())
 			{
-				ServiceInitializationEventSource.Instance.LogHostBuildFailed(e.ToString(), serviceName);
+				ServiceInitializationEventSource.Instance.LogHostBuildFailed(ex.ToString(), serviceName);
 				throw;
 			}
 		}

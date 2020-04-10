@@ -146,7 +146,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 		private void OnException(string eventName, object payload)
 		{
-			m_logger.LogError(Tag.Create(), payload as Exception, "Exception diagnostic event '{0}'", eventName);
+			m_logger.LogError(Tag.Create(), payload as Exception, "Exception diagnostic event '{0}' with payload {1}", eventName, payload);
 		}
 	}
 }

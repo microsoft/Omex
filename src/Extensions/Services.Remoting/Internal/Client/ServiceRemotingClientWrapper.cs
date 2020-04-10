@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Fabric;
 using System.Threading.Tasks;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.ServiceFabric.Services.Remoting.V2;
 using Microsoft.ServiceFabric.Services.Remoting.V2.Client;
@@ -59,15 +60,15 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 		public async Task<IServiceRemotingResponseMessage> RequestResponseAsync(IServiceRemotingRequestMessage requestMessage)
 		{
 			Activity? activity = m_diagnosticListener.CreateAndStartActivity(OneWayMessageActivityName);
-			requestMessage.AttachActivityToOutgoingRequest(activity);
 			IServiceRemotingResponseMessage? responseMessage = null;
 
 			try
 			{
+				requestMessage.AttachActivityToOutgoingRequest(activity);
 				responseMessage = await Client.RequestResponseAsync(requestMessage).ConfigureAwait(false);
 				activity?.SetResult(TimedScopeResult.Success);
 			}
-			catch (Exception ex)
+			catch (Exception ex) when (ex.IsRecoverable())
 			{
 				m_diagnosticListener.ReportException(ex);
 				throw;
@@ -83,14 +84,14 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 		public void SendOneWay(IServiceRemotingRequestMessage requestMessage)
 		{
 			Activity? activity = m_diagnosticListener.CreateAndStartActivity(RequestActivityName);
-			requestMessage.AttachActivityToOutgoingRequest(activity);
 
 			try
 			{
+				requestMessage.AttachActivityToOutgoingRequest(activity);
 				Client.SendOneWay(requestMessage);
 				activity?.SetResult(TimedScopeResult.Success);
 			}
-			catch (Exception ex)
+			catch (Exception ex) when (ex.IsRecoverable())
 			{
 				m_diagnosticListener.ReportException(ex);
 				throw;

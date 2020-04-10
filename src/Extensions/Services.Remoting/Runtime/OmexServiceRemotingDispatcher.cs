@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Fabric;
 using System.Threading.Tasks;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.ServiceFabric.Services.Remoting;
 using Microsoft.ServiceFabric.Services.Remoting.V2;
@@ -53,7 +54,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Runtime
 				base.HandleOneWayMessage(requestMessage);
 				activity?.SetResult(TimedScopeResult.Success);
 			}
-			catch (Exception ex)
+			catch (Exception ex) when (ex.IsRecoverable())
 			{
 				m_diagnosticListener.ReportException(ex);
 				throw;
@@ -79,7 +80,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Runtime
 				responseMessage = await base.HandleRequestResponseAsync(requestContext, requestMessage).ConfigureAwait(false);
 				activity?.SetResult(TimedScopeResult.Success);
 			}
-			catch (Exception ex)
+			catch (Exception ex) when (ex.IsRecoverable())
 			{
 				m_diagnosticListener.ReportException(ex);
 				throw;

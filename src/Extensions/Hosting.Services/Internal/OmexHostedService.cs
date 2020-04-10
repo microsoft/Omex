@@ -35,9 +35,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 				await task;
 			}
-			catch (Exception e)
+			catch (Exception ex) when (ex.IsRecoverable())
 			{
-				m_logger.LogCritical(Tag.Create(), e, "Exception during ServiceFabricHost execution");
+				m_logger.LogCritical(Tag.Create(), ex, "Exception during ServiceFabricHost execution");
 				throw;
 			}
 		}
