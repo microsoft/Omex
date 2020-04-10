@@ -52,7 +52,7 @@ namespace Services.Remoting
 
 		private void TestActivityTransfer(Activity outgoingActivity)
 		{
-			// run in sepacate thread to avoid interference from other activities
+			// run in separate thread to avoid interference from other activities
 			Task.Run(() =>
 			{
 				HeaderMock header = new HeaderMock();
