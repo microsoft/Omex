@@ -49,7 +49,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Runtime
 
 			try
 			{
-				requestMessage.ExtractActivityFromIncominRequest(activity);
+				requestMessage.ExtractActivityFromIncomingRequest(activity);
 				base.HandleOneWayMessage(requestMessage);
 				activity?.SetResult(TimedScopeResult.Success);
 			}
