@@ -75,7 +75,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Runtime
 
 			try
 			{
-				requestMessage.ExtractActivityFromIncominRequest(activity);
+				requestMessage.ExtractActivityFromIncomingRequest(activity);
 				responseMessage = await base.HandleRequestResponseAsync(requestContext, requestMessage).ConfigureAwait(false);
 				activity?.SetResult(TimedScopeResult.Success);
 			}
