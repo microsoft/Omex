@@ -59,7 +59,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 		public async Task<IServiceRemotingResponseMessage> RequestResponseAsync(IServiceRemotingRequestMessage requestMessage)
 		{
 			Activity? activity = m_diagnosticListener.CreateAndStartActivity(OneWayMessageActivityName);
-			requestMessage.AttachActivityToOuthgoingRequest(activity);
+			requestMessage.AttachActivityToOutgoingRequest(activity);
 			IServiceRemotingResponseMessage? responseMessage = null;
 
 			try
