@@ -44,7 +44,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		/// <summary>
 		/// Attach activity information to outgoing remoting request headers
 		/// </summary>
-		public static void AttachActivityToOuthgoingRequest(this IServiceRemotingRequestMessage requestMessage, Activity? activity)
+		public static void AttachActivityToOutgoingRequest(this IServiceRemotingRequestMessage requestMessage, Activity? activity)
 		{
 			if (activity == null)
 			{
