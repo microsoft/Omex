@@ -78,7 +78,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 		}
 
 		[TestMethod]
-		public void AddRemotingListener_ToStatefullServiceUsingIServiceType_RegisterType()
+		public void AddRemotingListener_ToStatefulServiceUsingIServiceType_RegisterType()
 		{
 			string expectedName = nameof(AddRemotingListener_ToStatefulServiceUsingIServiceType_RegisterType);
 			FabricTransportRemotingListenerSettings settings = new FabricTransportRemotingListenerSettings();
