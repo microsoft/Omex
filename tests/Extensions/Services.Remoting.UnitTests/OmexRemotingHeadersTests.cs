@@ -64,7 +64,7 @@ namespace Services.Remoting
 				outgoingActivity.Stop();
 
 				Activity incomingActivity = new Activity(outgoingActivity.OperationName + "_Out").Start();
-				requestMock.Object.ExtractActivityFromIncominRequest(incomingActivity);
+				requestMock.Object.ExtractActivityFromIncomingRequest(incomingActivity);
 				incomingActivity.Stop();
 
 				Assert.AreEqual(outgoingActivity.Id, incomingActivity.ParentId);
