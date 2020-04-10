@@ -3,17 +3,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Fabric;
 using System.IO;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Omex.Extensions.Services.Remoting.Client;
-using Microsoft.Omex.Extensions.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Communication.Client;
-using Microsoft.ServiceFabric.Services.Remoting;
 using Microsoft.ServiceFabric.Services.Remoting.V2;
 using Microsoft.ServiceFabric.Services.Remoting.V2.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -69,7 +66,7 @@ namespace Services.Remoting
 				targetReplicaSelector,
 				listenerName,
 				retrySettings,
-				cancellationToken);
+				cancellationToken).ConfigureAwait(false);
 
 			factoryMock.Verify(expression, Times.Once);
 
@@ -106,7 +103,7 @@ namespace Services.Remoting
 				targetReplicaSelector,
 				listenerName,
 				retrySettings,
-				cancellationToken);
+				cancellationToken).ConfigureAwait(false);
 
 			factoryMock.Verify(expression, Times.Once);
 
@@ -138,7 +135,7 @@ namespace Services.Remoting
 				client,
 				exceptionInformation,
 				retrySettings,
-				cancellationToken);
+				cancellationToken).ConfigureAwait(false);
 
 			factoryMock.Verify(expression, Times.Once);
 

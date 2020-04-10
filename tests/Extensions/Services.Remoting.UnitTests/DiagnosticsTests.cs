@@ -70,5 +70,14 @@ namespace Services.Remoting
 			listener.StopActivityIfExist(null);
 			Assert.IsFalse(mockObserver.Events.Any(), "Should not produce any events");
 		}
+
+		[TestMethod]
+		public void DiagnosticListenerName_CorrespondsAssemblyName()
+		{
+			Assert.AreEqual(
+				typeof(Diagnostics).Assembly.GetName().Name,
+				Diagnostics.DiagnosticListenerName,
+				"DiagnosticListenerName should be the same as assembly name");
+		}
 	}
 }

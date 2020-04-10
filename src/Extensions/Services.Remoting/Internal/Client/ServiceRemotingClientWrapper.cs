@@ -24,9 +24,9 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 		/// </remarks>
 		private const string RequestOutActivitySuffix = "RequestOut";
 
-		private const string OneWayMessageActivityName = Diagnostics.ListenerName + "OneWay" + RequestOutActivitySuffix;
+		private const string OneWayMessageActivityName = Diagnostics.DiagnosticListenerName + "OneWay" + RequestOutActivitySuffix;
 
-		private const string RequestActivityName = Diagnostics.ListenerName + RequestOutActivitySuffix;
+		private const string RequestActivityName = Diagnostics.DiagnosticListenerName + RequestOutActivitySuffix;
 
 		private readonly DiagnosticListener m_diagnosticListener;
 
