@@ -26,7 +26,7 @@ namespace Services.Remoting
 		public void OmexRemotingHeaders_ExtractActivityFromIncomingRequest_HandlesNullActivityProperly()
 		{
 			Mock<IServiceRemotingRequestMessage> requestMock = new Mock<IServiceRemotingRequestMessage>();
-			requestMock.Object.ExtractActivityFromIncominRequest(null);
+			requestMock.Object.ExtractActivityFromIncomingRequest(null);
 		}
 
 		[TestMethod]
