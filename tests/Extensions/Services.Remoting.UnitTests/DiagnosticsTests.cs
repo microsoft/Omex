@@ -37,7 +37,7 @@ namespace Services.Remoting
 		}
 
 		[TestMethod]
-		public void CreateAndStartActivity_DontCreateEventsIfNobodyListen()
+		public void CreateAndStartActivity_DontCreateEventsIfNobodyListens()
 		{
 			string name = nameof(CreateAndStartActivity_DontCreateEventsIfNobodyListen);
 			DiagnosticListener listener = new DiagnosticListener(name);
