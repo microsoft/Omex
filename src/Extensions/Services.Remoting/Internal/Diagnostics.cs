@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		/// Name of the exception event
 		/// </summary>
 		/// <remarks>
-		/// Should end with Exception to be enabled by out telemetry
+		/// Should end with Exception to be enabled by our telemetry
 		/// </remarks>
 		private const string ExceptionEventName = ListenerName + ".Exception";
 
