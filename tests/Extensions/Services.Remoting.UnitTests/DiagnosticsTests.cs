@@ -39,7 +39,7 @@ namespace Services.Remoting
 		[TestMethod]
 		public void CreateAndStartActivity_DontCreateEventsIfNobodyListens()
 		{
-			string name = nameof(CreateAndStartActivity_DontCreateEventsIfNobodyListen);
+			string name = nameof(CreateAndStartActivity_DontCreateEventsIfNobodyListens);
 			DiagnosticListener listener = new DiagnosticListener(name);
 
 			Activity? activity = listener.CreateAndStartActivity(name);
