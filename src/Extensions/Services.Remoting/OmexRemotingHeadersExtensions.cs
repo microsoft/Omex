@@ -59,7 +59,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		/// <summary>
 		/// Extract activity information from incoming remoting request headers
 		/// </summary>
-		public static void ExtractActivityFromIncominRequest(this IServiceRemotingRequestMessage requestMessage, Activity? activity)
+		public static void ExtractActivityFromIncomingRequest(this IServiceRemotingRequestMessage requestMessage, Activity? activity)
 		{
 			if (activity == null)
 			{
