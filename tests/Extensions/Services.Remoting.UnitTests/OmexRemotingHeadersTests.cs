@@ -38,7 +38,7 @@ namespace Services.Remoting
 		}
 
 		[TestMethod]
-		public void OmexRemotingHeaders_WithBaggage_ProperlyTransfered()
+		public void OmexRemotingHeaders_WithBaggage_ProperlyTransferred()
 		{
 			Activity outgoingActivity = new Activity(nameof(OmexRemotingHeaders_WithBaggage_ProperlyTransfered))
 				.AddBaggage("NullValue", null)
