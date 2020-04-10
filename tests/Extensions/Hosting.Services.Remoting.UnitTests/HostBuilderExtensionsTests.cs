@@ -80,7 +80,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 		[TestMethod]
 		public void AddRemotingListener_ToStatefullServiceUsingIServiceType_RegisterType()
 		{
-			string expectedName = nameof(AddRemotingListener_ToStatelessServiceUsingIServiceType_RegisterType);
+			string expectedName = nameof(AddRemotingListener_ToStatefulServiceUsingIServiceType_RegisterType);
 			FabricTransportRemotingListenerSettings settings = new FabricTransportRemotingListenerSettings();
 			HostBuilder builder = new HostBuilder();
 			ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext> sfBuilder =
