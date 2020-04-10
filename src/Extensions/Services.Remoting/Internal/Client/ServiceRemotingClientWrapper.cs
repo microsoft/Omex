@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 		/// Suffix for this class activities
 		/// </summary>
 		/// <remarks>
-		/// Should end with RequestOut to be enabled by out telemetry
+		/// Should end with RequestOut to be enabled by our telemetry
 		/// </remarks>
 		private const string RequestOutActivitySuffix = "RequestOut";
 
