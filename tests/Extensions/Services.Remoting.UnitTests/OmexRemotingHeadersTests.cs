@@ -60,7 +60,7 @@ namespace Services.Remoting
 				requestMock.Setup(m => m.GetHeader()).Returns(header);
 
 				outgoingActivity.Start();
-				requestMock.Object.AttachActivityToOuthgoingRequest(outgoingActivity);
+				requestMock.Object.AttachActivityToOutgoingRequest(outgoingActivity);
 				outgoingActivity.Stop();
 
 				Activity incomingActivity = new Activity(outgoingActivity.OperationName + "_Out").Start();
