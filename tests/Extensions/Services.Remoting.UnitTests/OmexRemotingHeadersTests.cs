@@ -30,7 +30,7 @@ namespace Services.Remoting
 		}
 
 		[TestMethod]
-		public void OmexRemotingHeaders_WithoutBaggage_ProperlyTransfered()
+		public void OmexRemotingHeaders_WithoutBaggage_ProperlyTransferred()
 		{
 			Activity outgoingActivity = new Activity(nameof(OmexRemotingHeaders_WithoutBaggage_ProperlyTransferred));
 
