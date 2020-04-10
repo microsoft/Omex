@@ -16,7 +16,7 @@ namespace Services.Remoting
 	public class OmexRemotingHeadersTests
 	{
 		[TestMethod]
-		public void OmexRemotingHeaders_AttachActivityToOuthgoingRequest_HandlessNullActivityProperly()
+		public void OmexRemotingHeaders_AttachActivityToOutgoingRequest_HandlesNullActivityProperly()
 		{
 			Mock<IServiceRemotingRequestMessage> requestMock = new Mock<IServiceRemotingRequestMessage>();
 			requestMock.Object.AttachActivityToOuthgoingRequest(null);
