@@ -76,7 +76,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		public DiagnosticsObserversInitializer(
 			IEnumerable<IActivityStartObserver> activityStartObservers,
 			IEnumerable<IActivityStopObserver> activityStopObservers,
-			ILogger<DiagnosticsObserversIntializer> logger)
+			ILogger<DiagnosticsObserversInitializer> logger)
 		{
 			m_activityStartObservers = activityStartObservers.ToArray();
 			m_activityStopObservers = activityStopObservers.ToArray();
