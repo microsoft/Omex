@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		public static IServiceCollection AddTimedScopes(this IServiceCollection serviceCollection)
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
-			serviceCollection.AddHostedService<DiagnosticsObserversIntializer>();
+			serviceCollection.AddHostedService<DiagnosticsObserversInitializer>();
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ActivityStopObserver>());
 
 			serviceCollection.TryAddTransient<IActivityProvider, SimpleActivityProvider>();
