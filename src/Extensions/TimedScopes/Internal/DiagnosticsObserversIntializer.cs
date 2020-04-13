@@ -171,7 +171,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			{
 				// Attempting to find exception property since payload often use private classes,
 				// It would be completely removed after .net 5 release.
-				// It's definetly not ideal identification
+				// It's definitely not ideal identification
 				// DataAdapters doing it by parameter name https://github.com/aspnet/EventNotification/blob/28b77e7fb51b30797ce34adf86748c98c040985e/src/Microsoft.Extensions.DiagnosticAdapter/Internal/ProxyMethodEmitter.cs#L69
 				// Sample class with payload https://github.com/dotnet/runtime/blob/master/src/libraries/System.Net.Http/src/System/Net/Http/DiagnosticsHandler.cs#L181
 				Type payloadType = payload.GetType();
