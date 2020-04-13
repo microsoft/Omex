@@ -6,11 +6,11 @@ using Microsoft.ServiceFabric.Services.Remoting;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 {
-	internal class MockRemoteListenerBuilder<TService> : RemotingListenerBuilder<TService>
-		where TService : IServiceFabricService<ServiceContext>
+	internal class MockRemoteListenerBuilder<TContext> : RemotingListenerBuilder<TContext>
+		where TContext : ServiceContext
 	{
 		public MockRemoteListenerBuilder() : base("TestListener") { }
 
-		public override IService BuildService(TService service) => new MockService();
+		public override IService BuildService(TContext service) => new MockService();
 	}
 }

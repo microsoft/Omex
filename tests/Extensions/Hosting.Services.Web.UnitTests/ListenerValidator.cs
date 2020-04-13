@@ -19,7 +19,7 @@ using Moq;
 namespace Hosting.Services.Web.UnitTests
 {
 	internal class ListenerValidator<TService, TContext>
-		where TService : IServiceFabricService<TContext>
+		where TService : class, IServiceFabricService<TContext>
 		where TContext : ServiceContext
 	{
 		public ListenerValidator()
@@ -32,7 +32,7 @@ namespace Hosting.Services.Web.UnitTests
 				builder.ConfigureServices(collection =>
 				{
 					collection
-						.AddOmexServiceFabricDependencies<TContext>()
+						.AddOmexServiceFabricDependencies<TService, TContext>()
 						.AddTransient<TypeRegisteredInListenerExtension>()
 						.AddSingleton(m_logsEventSourceMock.Object);
 				});
@@ -80,9 +80,9 @@ namespace Hosting.Services.Web.UnitTests
 #pragma warning restore CS0618
 		}
 
-		public ICommunicationListener ValidateBuildFunction(TService service, KestrelListenerBuilder<MockStartup, TService, TContext> builder)
+		public ICommunicationListener ValidateBuildFunction(TContext context, KestrelListenerBuilder<MockStartup, TService, TContext> builder)
 		{
-			ICommunicationListener listener = builder.Build(service);
+			ICommunicationListener listener = builder.Build(context);
 			Assert.IsNotNull(listener, "Listener should not be null");
 			return listener;
 		}

@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Logging;
+using Microsoft.ServiceFabric.Data;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
@@ -40,13 +41,24 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>
 		/// Registering Dependency Injection classes that will provide Service Fabric specific information for logging
 		/// </summary>
-		public static IServiceCollection AddOmexServiceFabricDependencies<TContext>(this IServiceCollection collection)
+		public static IServiceCollection AddOmexServiceFabricDependencies<TService, TContext>(this IServiceCollection collection, bool skipAccessorsRegistration = false)
+			where TService : class, IServiceFabricService<TContext>
 			where TContext : ServiceContext
 		{
-			collection.TryAddSingleton<Accessor<TContext>, Accessor<TContext>>();
-			collection.TryAddSingleton<IAccessorSetter<TContext>>(p => p.GetService<Accessor<TContext>>());
-			collection.TryAddSingleton<IAccessor<TContext>>(p => p.GetService<Accessor<TContext>>());
-			collection.TryAddSingleton<IAccessor<ServiceContext>>(p => p.GetService<Accessor<TContext>>());
+			if (!skipAccessorsRegistration)
+			{
+				bool isStatefullService = typeof(StatefulServiceContext).IsAssignableFrom(typeof(TContext));
+
+				if (isStatefullService)
+				{
+					collection.TryAddAccessor<IReliableStateManager>();
+				}
+
+				collection.TryAddAccessor<TService>();
+				collection.TryAddAccessor<TContext>();
+				collection.TryAddSingleton<IAccessor<ServiceContext>>(p => p.GetService<Accessor<TContext>>());
+			}
+
 			collection.TryAddSingleton<IServiceContext, OmexServiceFabricContext>();
 			collection.TryAddSingleton<IExecutionContext, ServiceFabricExecutionContext>();
 			return collection.AddOmexServices();
@@ -57,7 +69,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			string serviceName,
 			Action<ServiceFabricHostBuilder<TService, TContext>> builderAction)
 				where TRunner : OmexServiceRunner<TService, TContext>
-				where TService : IServiceFabricService<TContext>
+				where TService : class, IServiceFabricService<TContext>
 				where TContext : ServiceContext
 		{
 			try
@@ -80,7 +92,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 					.ConfigureServices((context, collection) =>
 					{
 						collection
-							.AddOmexServiceFabricDependencies<TContext>()
+							.AddOmexServiceFabricDependencies<TService, TContext>()
 							.AddSingleton<IOmexServiceRunner, TRunner>()
 							.AddHostedService<OmexHostedService>();
 					})
@@ -125,5 +137,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 							: applicationName)
 				});
 			});
+
+		internal static IServiceCollection TryAddAccessor<TValue>(this IServiceCollection collection)
+			where TValue : class
+		{
+			collection.TryAddSingleton<Accessor<TValue>, Accessor<TValue>>();
+			collection.TryAddSingleton<IAccessorSetter<TValue>>(p => p.GetService<Accessor<TValue>>());
+			collection.TryAddSingleton<IAccessor<TValue>>(p => p.GetService<Accessor<TValue>>());
+			return collection;
+		}
 	}
 }

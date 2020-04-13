@@ -7,22 +7,21 @@ using Microsoft.ServiceFabric.Services.Communication.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal sealed class ListenerBuilder<TService, TContext> : IListenerBuilder<TService>
-		where TService : IServiceFabricService<TContext>
+	internal sealed class ListenerBuilder<TContext> : IListenerBuilder<TContext>
 		where TContext : ServiceContext
 	{
 		public ListenerBuilder(
 			string name,
 			IServiceProvider provider,
-			Func<IServiceProvider, TService, ICommunicationListener> createListener) =>
+			Func<IServiceProvider, TContext, ICommunicationListener> createListener) =>
 			(Name, m_provider, m_createListener) = (name, provider, createListener);
 
 		public string Name { get; }
 
-		public ICommunicationListener Build(TService service) =>
+		public ICommunicationListener Build(TContext service) =>
 			m_createListener(m_provider, service);
 
-		private readonly Func<IServiceProvider, TService, ICommunicationListener> m_createListener;
+		private readonly Func<IServiceProvider, TContext, ICommunicationListener> m_createListener;
 		private readonly IServiceProvider m_provider;
 	}
 }

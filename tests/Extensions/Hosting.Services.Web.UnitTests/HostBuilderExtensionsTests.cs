@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Hosting.Services;
-using Microsoft.Omex.Extensions.Hosting.Services.UnitTests;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ServiceFabric.Mocks;
 
 namespace Hosting.Services.Web.UnitTests
 {
@@ -19,7 +19,7 @@ namespace Hosting.Services.Web.UnitTests
 		[TestMethod]
 		public void BuildStatelessService_TypesRegisteredStateless() =>
 			CheckTypeRegistration<OmexStatelessService, StatelessServiceContext>(
-				MockServiceFabricServices.MockOmexStatelessService,
+				MockStatelessServiceContextFactory.Default,
 				(v, h) => h.BuildStatelessService(
 					"StatelessServiceName",
 					b => b.AddKestrelListener<MockStartup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
@@ -27,15 +27,15 @@ namespace Hosting.Services.Web.UnitTests
 		[TestMethod]
 		public void BuildStateful_BuildStatelessService_TypesRegistered() =>
 			CheckTypeRegistration<OmexStatefulService, StatefulServiceContext>(
-				MockServiceFabricServices.MockOmexStatefulService,
+				MockStatefulServiceContextFactory.Default,
 				(v, h) => h.BuildStatefulService(
 					"StatefulServiceName",
 					b => b.AddKestrelListener<MockStartup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
 
 		private void CheckTypeRegistration<TService, TContext>(
-			TService service,
+			TContext context,
 			Func<ListenerValidator<TService, TContext>, IHostBuilder, IHost> buildAction)
-			where TService : IServiceFabricService<TContext>
+			where TService : class, IServiceFabricService<TContext>
 			where TContext : ServiceContext
 		{
 			ListenerValidator<TService, TContext> validator = new ListenerValidator<TService, TContext>();
@@ -48,16 +48,16 @@ namespace Hosting.Services.Web.UnitTests
 				});
 
 			IHost host = buildAction(validator, hostBuilder);
-			IListenerBuilder<TService> builder = host.Services.GetService<IListenerBuilder<TService>>();
+			IListenerBuilder<TContext> builder = host.Services.GetService<IListenerBuilder<TContext>>();
 
 			Assert.IsNotNull(builder);
 
 			KestrelListenerBuilder<MockStartup, TService, TContext> kestrelBuilder
 				= (KestrelListenerBuilder<MockStartup, TService, TContext>)builder;
 
-			IWebHost webHost = validator.ValidateListenerBuilder(service.Context, kestrelBuilder);
+			IWebHost webHost = validator.ValidateListenerBuilder(context, kestrelBuilder);
 			validator.ValidateOmexTypesRegistered(webHost);
-			validator.ValidateBuildFunction(service, kestrelBuilder);
+			validator.ValidateBuildFunction(context, kestrelBuilder);
 		}
 	}
 }

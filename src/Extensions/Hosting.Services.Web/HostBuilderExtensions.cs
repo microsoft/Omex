@@ -49,18 +49,20 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			ServiceFabricIntegrationOptions options,
 			Action<IWebHostBuilder>? builderExtension = null)
 				where TStartup : class
-				where TService : IServiceFabricService<TContext>
+				where TService : class, IServiceFabricService<TContext>
 				where TContext : ServiceContext =>
-					builder.AddServiceListener(p => new KestrelListenerBuilder<TStartup, TService, TContext>(
+					builder.AddServiceListener(provider => new KestrelListenerBuilder<TStartup, TService, TContext>(
 						name,
+						provider,
 						options,
-						builder => builder.BuilderExtension<TContext>(builderExtension)));
+						builder => builder.BuilderExtension<TService, TContext>(builderExtension)));
 
-		private static void BuilderExtension<TContext>(this IWebHostBuilder builder, Action<IWebHostBuilder>? builderExtension)
+		private static void BuilderExtension<TService, TContext>(this IWebHostBuilder builder, Action<IWebHostBuilder>? builderExtension)
+			where TService : class, IServiceFabricService<TContext>
 			where TContext : ServiceContext
 		{
 			builderExtension?.Invoke(builder);
-			builder.ConfigureServices((context, collection) => collection.AddOmexServiceFabricDependencies<TContext>());
+			builder.ConfigureServices((context, collection) => collection.AddOmexServiceFabricDependencies<TService, TContext>());
 		}
 	}
 }

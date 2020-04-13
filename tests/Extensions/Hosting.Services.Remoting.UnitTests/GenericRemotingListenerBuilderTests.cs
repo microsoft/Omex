@@ -2,10 +2,12 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Fabric;
 using Microsoft.Omex.Extensions.Hosting.Services.UnitTests;
 using Microsoft.ServiceFabric.Services.Remoting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using ServiceFabric.Mocks;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 {
@@ -18,10 +20,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 			string name = "TestName";
 			MockService mockService = new MockService();
 			IServiceProvider mockProvider = new Mock<IServiceProvider>().Object;
-			OmexStatefulService omexStatefulService = MockServiceFabricServices.MockOmexStatefulService;
+			StatefulServiceContext omexStatefulService = MockStatefulServiceContextFactory.Default;
 
-			GenericRemotingListenerBuilder<OmexStatefulService> builder =
-				new GenericRemotingListenerBuilder<OmexStatefulService>(name, mockProvider,
+			GenericRemotingListenerBuilder<StatefulServiceContext> builder =
+				new GenericRemotingListenerBuilder<StatefulServiceContext>(name, mockProvider,
 					(p, s) =>
 					{
 						Assert.AreEqual(omexStatefulService, s);

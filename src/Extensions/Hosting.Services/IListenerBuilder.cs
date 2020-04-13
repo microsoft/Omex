@@ -9,8 +9,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// <summary>
 	/// Creates comunication listener for SF service
 	/// </summary>
-	public interface IListenerBuilder<in TService>
-		where TService : IServiceFabricService<ServiceContext>
+	public interface IListenerBuilder<in TContext>
+		where TContext : ServiceContext
 	{
 		/// <summary>
 		/// Listener name
@@ -20,6 +20,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>
 		/// Creates comunication listener for SF service
 		/// </summary>
-		ICommunicationListener Build(TService service);
+		ICommunicationListener Build(TContext service);
 	}
 }

@@ -13,8 +13,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 	/// <summary>
 	/// Base builder for <see cref="FabricTransportServiceRemotingListener"/>
 	/// </summary>
-	public abstract class RemotingListenerBuilder<TService> : IListenerBuilder<TService>
-		where TService : IServiceFabricService<ServiceContext>
+	public abstract class RemotingListenerBuilder<TContext> : IListenerBuilder<TContext>
+		where TContext : ServiceContext
 	{
 		/// <inheritdoc />
 		public string Name { get; }
@@ -36,15 +36,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 		/// <summary>
 		/// Method should create <see cref="IService"/> for <see cref="FabricTransportServiceRemotingListener"/>
 		/// </summary>
-		public abstract IService BuildService(TService service);
+		public abstract IService BuildService(TContext context);
 
-		ICommunicationListener IListenerBuilder<TService>.Build(TService service)
-		{
-			ServiceContext context = service.Context;
-			return new FabricTransportServiceRemotingListener(
+		ICommunicationListener IListenerBuilder<TContext>.Build(TContext context) =>
+			new FabricTransportServiceRemotingListener(
 				context,
-				new OmexServiceRemotingDispatcher(context, BuildService(service)),
+				new OmexServiceRemotingDispatcher(context, BuildService(context)),
 				Settings);
-		}
 	}
 }

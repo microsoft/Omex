@@ -39,7 +39,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 		/// </summary>
 		public static ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext> AddRemotingListener<TListener>(
 			this ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext> builder)
-				where TListener : RemotingListenerBuilder<OmexStatefulService> =>
+				where TListener : RemotingListenerBuilder<StatefulServiceContext> =>
 					builder.AddServiceListener<TListener>();
 
 		/// <summary>
@@ -47,7 +47,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 		/// </summary>
 		public static ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext> AddRemotingListener<TListener>(
 			this ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext> builder)
-				where TListener : RemotingListenerBuilder<OmexStatelessService> =>
+				where TListener : RemotingListenerBuilder<StatelessServiceContext> =>
 					builder.AddServiceListener<TListener>();
 
 		/// <summary>
@@ -56,11 +56,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 		public static ServiceFabricHostBuilder<TService, TContext> AddRemotingListener<TService, TContext>(
 				this ServiceFabricHostBuilder<TService, TContext> builder,
 				string name,
-				Func<IServiceProvider, TService, IService> createService,
+				Func<IServiceProvider, TContext, IService> createService,
 				FabricTransportRemotingListenerSettings? settings = null)
 					where TService : IServiceFabricService<TContext>
 					where TContext : ServiceContext =>
 						builder.AddServiceListener(p =>
-							new GenericRemotingListenerBuilder<TService>(name, p, createService, settings));
+							new GenericRemotingListenerBuilder<TContext>(name, p, createService, settings));
 	}
 }

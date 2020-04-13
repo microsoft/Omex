@@ -20,11 +20,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 			ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext> sfBuilder =
 				MockServiceFabricHostBuilder.CreateMockBuilder<OmexStatefulService, StatefulServiceContext>(builder);
 
-			sfBuilder.AddRemotingListener<MockRemoteListenerBuilder<OmexStatefulService>>();
+			sfBuilder.AddRemotingListener<MockRemoteListenerBuilder<StatefulServiceContext>>();
 
-			IListenerBuilder<OmexStatefulService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatefulService>>();
+			IListenerBuilder<StatefulServiceContext> value = builder.Build().Services.GetService<IListenerBuilder<StatefulServiceContext>>();
 
-			Assert.IsInstanceOfType(value, typeof(MockRemoteListenerBuilder<OmexStatefulService>));
+			Assert.IsInstanceOfType(value, typeof(MockRemoteListenerBuilder<StatefulServiceContext>));
 		}
 
 		[TestMethod]
@@ -34,11 +34,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 			ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext> sfBuilder =
 				MockServiceFabricHostBuilder.CreateMockBuilder<OmexStatelessService, StatelessServiceContext>(builder);
 
-			sfBuilder.AddRemotingListener<MockRemoteListenerBuilder<OmexStatelessService>>();
+			sfBuilder.AddRemotingListener<MockRemoteListenerBuilder<StatelessServiceContext>>();
 
-			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatelessService>>();
+			IListenerBuilder<StatelessServiceContext> value = builder.Build().Services.GetService<IListenerBuilder<StatelessServiceContext>>();
 
-			Assert.IsInstanceOfType(value, typeof(MockRemoteListenerBuilder<OmexStatelessService>));
+			Assert.IsInstanceOfType(value, typeof(MockRemoteListenerBuilder<StatelessServiceContext>));
 		}
 
 		[TestMethod]
@@ -52,7 +52,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 
 			sfBuilder.AddRemotingListener(expectedName, (p, s) => new MockService(), settings);
 
-			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatelessService>>();
+			IListenerBuilder<StatelessServiceContext> value = builder.Build().Services.GetService<IListenerBuilder<StatelessServiceContext>>();
 
 			Assert.IsNotNull(value);
 			Assert.AreEqual(expectedName, value.Name);
@@ -70,9 +70,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 
 			sfBuilder.AddRemotingListener<MockService>(expectedName, settings);
 
-			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatelessService>>();
+			IListenerBuilder<StatelessServiceContext> value = builder.Build().Services.GetService<IListenerBuilder<StatelessServiceContext>>();
 
-			Assert.IsInstanceOfType(value, typeof(GenericRemotingListenerBuilder<OmexStatelessService>));
+			Assert.IsInstanceOfType(value, typeof(GenericRemotingListenerBuilder<StatelessServiceContext>));
 			Assert.AreEqual(expectedName, value.Name);
 			Assert.AreEqual(settings, GetSettings(value));
 		}
@@ -88,16 +88,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 
 			sfBuilder.AddRemotingListener<MockService>(expectedName, settings);
 
-			IListenerBuilder<OmexStatefulService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatefulService>>();
+			IListenerBuilder<StatefulServiceContext> value = builder.Build().Services.GetService<IListenerBuilder<StatefulServiceContext>>();
 
-			Assert.IsInstanceOfType(value, typeof(GenericRemotingListenerBuilder<OmexStatefulService>));
+			Assert.IsInstanceOfType(value, typeof(GenericRemotingListenerBuilder<StatefulServiceContext>));
 			Assert.AreEqual(expectedName, value.Name);
 			Assert.AreEqual(settings, GetSettings(value));
 		}
 
-		private static FabricTransportRemotingListenerSettings? GetSettings<TService>(IListenerBuilder<TService> listenerBuilder)
-			where TService : IServiceFabricService<ServiceContext>
-				=> listenerBuilder is RemotingListenerBuilder<TService> remotingBuilder
+		private static FabricTransportRemotingListenerSettings? GetSettings<TContext>(IListenerBuilder<TContext> listenerBuilder)
+			where TContext : ServiceContext
+				=> listenerBuilder is RemotingListenerBuilder<TContext> remotingBuilder
 					? remotingBuilder.Settings
 					: null;
 	}

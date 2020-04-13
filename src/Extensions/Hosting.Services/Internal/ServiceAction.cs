@@ -8,17 +8,16 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal sealed class ServiceAction<TService, TContext> : IServiceAction<TService>
-		where TService : IServiceFabricService<TContext>
+	internal sealed class ServiceAction<TContext> : IServiceAction<TContext>
 		where TContext : ServiceContext
 	{
-		public ServiceAction(IServiceProvider provider, Func<IServiceProvider, TService, CancellationToken, Task> action) =>
+		public ServiceAction(IServiceProvider provider, Func<IServiceProvider, CancellationToken, Task> action) =>
 			(m_provider, m_action) = (provider, action);
 
-		public Task RunAsync(TService service, CancellationToken cancellationToken) =>
-			m_action(m_provider, service, cancellationToken);
+		public Task RunAsync(CancellationToken cancellationToken) =>
+			m_action(m_provider, cancellationToken);
 
-		private readonly Func<IServiceProvider, TService, CancellationToken, Task> m_action;
+		private readonly Func<IServiceProvider, CancellationToken, Task> m_action;
 		private readonly IServiceProvider m_provider;
 	}
 }

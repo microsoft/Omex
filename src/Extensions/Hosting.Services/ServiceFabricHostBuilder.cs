@@ -35,39 +35,39 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>
 		/// Add actions that will be executed inside service fabric service RunAsync method
 		/// </summary>
-		public ServiceFabricHostBuilder<TService, TContext> AddServiceAction(Func<IServiceProvider, TService, CancellationToken, Task> action) =>
-			ConfigureServices((config, collection) => collection.AddSingleton<IServiceAction<TService>>(p => new ServiceAction<TService, TContext>(p, action)));
+		public ServiceFabricHostBuilder<TService, TContext> AddServiceAction(Func<IServiceProvider, CancellationToken, Task> action) =>
+			ConfigureServices((config, collection) => collection.AddSingleton<IServiceAction<TContext>>(p => new ServiceAction<TContext>(p, action)));
 
 		/// <summary>
 		/// Add actions that will be executed inside service fabric service RunAsync method
 		/// </summary>
-		public ServiceFabricHostBuilder<TService, TContext> AddServiceAction(Func<IServiceProvider, IServiceAction<TService>> implementationFactory) =>
+		public ServiceFabricHostBuilder<TService, TContext> AddServiceAction(Func<IServiceProvider, IServiceAction<TContext>> implementationFactory) =>
 			ConfigureServices((config, collection) => collection.AddSingleton(implementationFactory));
 
 		/// <summary>
 		/// Add service listener to service fabric service
 		/// </summary>
-		public ServiceFabricHostBuilder<TService, TContext> AddServiceListener(string name, Func<IServiceProvider, TService, ICommunicationListener> createListener) =>
-			ConfigureServices((config, collection) => collection.AddSingleton<IListenerBuilder<TService>>(p => new ListenerBuilder<TService, TContext>(name, p, createListener)));
+		public ServiceFabricHostBuilder<TService, TContext> AddServiceListener(string name, Func<IServiceProvider, TContext, ICommunicationListener> createListener) =>
+			ConfigureServices((config, collection) => collection.AddSingleton<IListenerBuilder<TContext>>(p => new ListenerBuilder<TContext>(name, p, createListener)));
 
 		/// <summary>
 		/// Add service listener to service fabric service
 		/// </summary>
-		public ServiceFabricHostBuilder<TService, TContext> AddServiceListener(Func<IServiceProvider, IListenerBuilder<TService>> implementationFactory) =>
+		public ServiceFabricHostBuilder<TService, TContext> AddServiceListener(Func<IServiceProvider, IListenerBuilder<TContext>> implementationFactory) =>
 			ConfigureServices((config, collection) => collection.AddSingleton(implementationFactory));
 
 		/// <summary>
 		/// Add actions that will be executed inside service fabric service RunAsync method
 		/// </summary>
 		public ServiceFabricHostBuilder<TService, TContext> AddServiceAction<TAction>()
-			where TAction : class, IServiceAction<TService> =>
-				ConfigureServices((config, collection) => collection.AddTransient<IServiceAction<TService>, TAction>());
+			where TAction : class, IServiceAction<TContext> =>
+				ConfigureServices((config, collection) => collection.AddTransient<IServiceAction<TContext>, TAction>());
 
 		/// <summary>
 		/// Add service listener to stateless service fabric service
 		/// </summary>
 		public ServiceFabricHostBuilder<TService, TContext> AddServiceListener<TListener>()
-			where TListener : class, IListenerBuilder<TService> =>
-				ConfigureServices((config, collection) => collection.AddTransient<IListenerBuilder<TService>, TListener>());
+			where TListener : class, IListenerBuilder<TContext> =>
+				ConfigureServices((config, collection) => collection.AddTransient<IListenerBuilder<TContext>, TListener>());
 	}
 }

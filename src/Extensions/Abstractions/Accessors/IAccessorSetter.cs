@@ -15,6 +15,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <remarks>
 		/// Beside saving value it will also execute saved activities that were waiting for a value
 		/// </remarks>
-		void SetContext(TValue value);
+		void SetValue(TValue value);
 	}
 }

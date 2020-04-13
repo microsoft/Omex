@@ -10,25 +10,29 @@ using Microsoft.Extensions.Hosting;
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	internal abstract class OmexServiceRunner<TService, TContext> : IOmexServiceRunner
-		where TService : IServiceFabricService<TContext>
+		where TService : class, IServiceFabricService<TContext>
 		where TContext : ServiceContext
 	{
 		protected readonly string ApplicationName;
 
 		protected readonly IAccessorSetter<TContext> ContextAccessor;
 
-		public IEnumerable<IListenerBuilder<TService>> ListenerBuilders { get; }
+		protected readonly IAccessorSetter<TService> ServiceAccessor;
 
-		public IEnumerable<IServiceAction<TService>> ServiceActions { get; }
+		public IEnumerable<IListenerBuilder<TContext>> ListenerBuilders { get; }
+
+		public IEnumerable<IServiceAction<TContext>> ServiceActions { get; }
 
 		public OmexServiceRunner(
 			IHostEnvironment environment,
+			IAccessorSetter<TService> serviceAccessor,
 			IAccessorSetter<TContext> contextAccessor,
-			IEnumerable<IListenerBuilder<TService>> listenerBuilders,
-			IEnumerable<IServiceAction<TService>> serviceActions)
+			IEnumerable<IListenerBuilder<TContext>> listenerBuilders,
+			IEnumerable<IServiceAction<TContext>> serviceActions)
 		{
 			ApplicationName = environment.ApplicationName;
 			ContextAccessor = contextAccessor;
+			ServiceAccessor = serviceAccessor;
 			ListenerBuilders = listenerBuilders;
 			ServiceActions = serviceActions;
 		}

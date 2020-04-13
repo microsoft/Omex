@@ -8,16 +8,16 @@ using Microsoft.ServiceFabric.Services.Remoting.FabricTransport.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 {
-	internal sealed class GenericRemotingListenerBuilder<TService> : RemotingListenerBuilder<TService>
-		where TService : IServiceFabricService<ServiceContext>
+	internal sealed class GenericRemotingListenerBuilder<TContext> : RemotingListenerBuilder<TContext>
+		where TContext : ServiceContext
 	{
 		private readonly IServiceProvider m_provider;
-		private readonly Func<IServiceProvider, TService, IService> m_createService;
+		private readonly Func<IServiceProvider, TContext, IService> m_createService;
 
 		public GenericRemotingListenerBuilder(
 			string name,
 			IServiceProvider provider,
-			Func<IServiceProvider, TService, IService> createService,
+			Func<IServiceProvider, TContext, IService> createService,
 			FabricTransportRemotingListenerSettings? settings = null)
 				: base(name, settings)
 		{
@@ -25,6 +25,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 			m_createService = createService;
 		}
 
-		public override IService BuildService(TService service) => m_createService(m_provider, service);
+		public override IService BuildService(TContext service) => m_createService(m_provider, service);
 	}
 }

@@ -10,12 +10,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// <summary>
 	/// Action that will be executed in RunAsync methond of SF service
 	/// </summary>
-	public interface IServiceAction<in TService>
-		where TService : IServiceFabricService<ServiceContext>
+	public interface IServiceAction<in TContext>
+		where TContext : ServiceContext
 	{
 		/// <summary>
 		/// Action that will be executed in RunAsync methond of SF service
 		/// </summary>
-		Task RunAsync(TService service, CancellationToken cancellationToken);
+		Task RunAsync(CancellationToken cancellationToken);
 	}
 }

@@ -27,10 +27,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		public void AddOmexServiceFabricDependencies_TypesRegistered(Type typeToResolver, Type? expectedImplementationType)
 		{
-			void CheckTypeRegistration<TContext>() where TContext : ServiceContext
+			void CheckTypeRegistration<TService, TContext>()
+				where TService : class, IServiceFabricService<TContext>
+				where TContext : ServiceContext
 			{
 				object obj = new ServiceCollection()
-					.AddOmexServiceFabricDependencies<TContext>()
+					.AddOmexServiceFabricDependencies<TService, TContext>()
 					.AddSingleton(new Mock<IHostEnvironment>().Object)
 					.BuildServiceProvider()
 					.GetService(typeToResolver);
@@ -43,8 +45,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 				}
 			}
 
-			CheckTypeRegistration<StatelessServiceContext>();
-			CheckTypeRegistration<StatefulServiceContext>();
+			CheckTypeRegistration<OmexStatelessService, StatelessServiceContext>();
+			CheckTypeRegistration<OmexStatefulService, StatefulServiceContext>();
 		}
 
 		[DataTestMethod]

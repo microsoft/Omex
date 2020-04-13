@@ -7,6 +7,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
+using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 
@@ -15,27 +16,26 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 	/// <summary>
 	/// Creates ServiceInstanceListener with all of Omex dependencies initialized
 	/// </summary>
-	internal sealed class KestrelListenerBuilder<TStartup,TService,TContext> : IListenerBuilder<TService>
+	internal sealed class KestrelListenerBuilder<TStartup, TService, TContext> : IListenerBuilder<TContext>
 		where TStartup : class
-		where TService : IServiceFabricService<TContext>
+		where TService : class, IServiceFabricService<TContext>
 		where TContext : ServiceContext
 	{
 		/// <inheritdoc />
 		public string Name { get; }
 
 		/// <inheritdoc />
-		public ICommunicationListener Build(TService service)
-		{
-			TContext context = service.Context;
-			return new KestrelCommunicationListener(context, Name, (url, listener) => BuildWebHost(context, url, listener));
-		}
+		public ICommunicationListener Build(TContext context) =>
+			new KestrelCommunicationListener(context, Name, (url, listener) => BuildWebHost(context, url, listener));
 
 		internal KestrelListenerBuilder(
 			string name,
+			IServiceProvider serviceProvider,
 			ServiceFabricIntegrationOptions options,
 			Action<IWebHostBuilder> builderExtension)
 		{
 			Name = name;
+			m_serviceProvider = serviceProvider;
 			m_options = options;
 			m_builderExtension = builderExtension;
 		}
@@ -61,25 +61,41 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			return hostBuilder.Build();
 		}
 
-		private void ConfigureServices(TContext context, IServiceCollection services)
+		private void ConfigureServices(TContext context, IServiceCollection collection)
 		{
-			services.AddSingleton<ServiceContext>(context);
-			services.AddSingleton(context);
-			AddMiddlewares(services);
+			collection.AddSingleton<ServiceContext>(context);
+			collection.AddSingleton(context);
+			PropagateAccessors(collection, m_serviceProvider);
+			AddMiddlewares(collection);
 		}
+
+		private readonly IServiceProvider m_serviceProvider;
 
 		private readonly ServiceFabricIntegrationOptions m_options;
 
 		private readonly Action<IWebHostBuilder> m_builderExtension;
 
-		private static void AddMiddlewares(IServiceCollection services)
+		private static void PropagateAccessors(IServiceCollection collection, IServiceProvider provider)
 		{
-			services
+			collection
+				.AddSingleton(provider.GetRequiredService<IAccessor<TService>>())
+				.AddSingleton(provider.GetRequiredService<IAccessor<TContext>>());
+
+			IAccessor<IReliableStateManager>? accessor = provider.GetService<IAccessor<IReliableStateManager>>();
+			if (accessor == null)
+			{
+				collection.AddSingleton(accessor);
+			}
+		}
+
+		private static void AddMiddlewares(IServiceCollection collection)
+		{
+			collection
 				.AddSingleton<ActivityEnrichmentMiddleware>()
 				.AddSingleton<ResponseHeadersMiddleware>();
 
 #pragma warning disable CS0618 // We need to register all middlewares, even if obsolete
-			services.AddSingleton<ObsoleteCorrelationHeadersMiddleware>();
+			collection.AddSingleton<ObsoleteCorrelationHeadersMiddleware>();
 #pragma warning restore CS0618
 		}
 	}

@@ -14,18 +14,21 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	{
 		public OmexStatelessServiceRunner(
 			IHostEnvironment environment,
+			IAccessorSetter<OmexStatelessService> serviceAccessor,
 			IAccessorSetter<StatelessServiceContext> contextAccessor,
-			IEnumerable<IListenerBuilder<OmexStatelessService>> listenerBuilders,
-			IEnumerable<IServiceAction<OmexStatelessService>> serviceActions)
-				: base(environment, contextAccessor, listenerBuilders, serviceActions) { }
+			IEnumerable<IListenerBuilder<StatelessServiceContext>> listenerBuilders,
+			IEnumerable<IServiceAction<StatelessServiceContext>> serviceActions)
+				: base(environment, serviceAccessor, contextAccessor, listenerBuilders, serviceActions) { }
 
 		public override Task RunServiceAsync(CancellationToken cancellationToken) =>
 			ServiceRuntime.RegisterServiceAsync(ApplicationName, ServiceFactory, cancellationToken: cancellationToken);
 
 		private StatelessService ServiceFactory(StatelessServiceContext context)
 		{
-			ContextAccessor.SetContext(context);
-			return new OmexStatelessService(this, context);
+			ContextAccessor.SetValue(context);
+			OmexStatelessService service = new OmexStatelessService(this, context);
+			ServiceAccessor.SetValue(service);
+			return service;
 		}
 	}
 }

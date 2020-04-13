@@ -25,10 +25,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 		/// <inheritdoc />
 		protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners() =>
-			m_serviceParameters.ListenerBuilders.Select(b => new ServiceInstanceListener(c => b.Build(this), b.Name));
+			m_serviceParameters.ListenerBuilders.Select(b => new ServiceInstanceListener(b.Build, b.Name));
 
 		/// <inheritdoc />
 		protected override Task RunAsync(CancellationToken cancellationToken) =>
-			Task.WhenAll(m_serviceParameters.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
+			Task.WhenAll(m_serviceParameters.ServiceActions.Select(r => r.RunAsync(cancellationToken)));
 	}
 }
