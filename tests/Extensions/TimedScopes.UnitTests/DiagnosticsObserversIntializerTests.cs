@@ -43,7 +43,7 @@ namespace Hosting.Services.UnitTests
 		[TestMethod]
 		public async Task DiagnosticsObserversIntializer_InvokedProperly()
 		{
-			string name = nameof(DiagnosticsObserversIntializer_InvokedProperly);
+			string name = nameof(DiagnosticsObserversInitializer_InvokedProperly);
 			MockLogger logger = new MockLogger();
 			Mock<IActivityStartObserver> startObserver = new Mock<IActivityStartObserver>();
 			Mock<IActivityStopObserver> stopObserver = new Mock<IActivityStopObserver>();
