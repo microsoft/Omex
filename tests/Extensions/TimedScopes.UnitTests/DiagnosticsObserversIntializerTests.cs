@@ -36,7 +36,7 @@ namespace Hosting.Services.UnitTests
 		public void ExtractExceptionFromPayload_HandleExceptionProperty()
 		{
 			ArgumentException exception = new ArgumentException();
-			Exception? result = DiagnosticsObserversIntializer.ExtractExceptionFromPayload(new { Exception = exception });
+			Exception? result = DiagnosticsObserversInitializer.ExtractExceptionFromPayload(new { Exception = exception });
 			Assert.AreEqual(exception, result);
 		}
 
