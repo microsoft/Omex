@@ -100,7 +100,7 @@ namespace Hosting.Services.UnitTests
 
 		private const string HttpRequestInEventName = "Microsoft.AspNetCore.Hosting.HttpRequestIn";
 
-		private class MockLogger : ILogger<DiagnosticsObserversIntializer>
+		private class MockLogger : ILogger<DiagnosticsObserversInitializer>
 		{
 			public List<Exception> Exceptions { get; } = new List<Exception>();
 
