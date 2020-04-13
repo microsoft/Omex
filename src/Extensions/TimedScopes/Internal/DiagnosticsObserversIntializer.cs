@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 	/// <remarks>
 	/// Should be changed after .net 5 release https://github.com/dotnet/designs/pull/98
 	/// </remarks>
-	internal sealed class DiagnosticsObserversIntializer : IHostedService, IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object>>
+	internal sealed class DiagnosticsObserversInitializer : IHostedService, IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object>>
 	{
 		/// <summary>
 		/// Ending of the Activity Start event
