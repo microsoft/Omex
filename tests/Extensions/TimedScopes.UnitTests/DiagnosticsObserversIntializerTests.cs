@@ -47,7 +47,7 @@ namespace Hosting.Services.UnitTests
 			MockLogger logger = new MockLogger();
 			Mock<IActivityStartObserver> startObserver = new Mock<IActivityStartObserver>();
 			Mock<IActivityStopObserver> stopObserver = new Mock<IActivityStopObserver>();
-			DiagnosticsObserversIntializer initializer = new DiagnosticsObserversIntializer(
+			DiagnosticsObserversInitializer initializer = new DiagnosticsObserversInitializer(
 				new[] { startObserver.Object },
 				new[] { stopObserver.Object },
 				logger);
