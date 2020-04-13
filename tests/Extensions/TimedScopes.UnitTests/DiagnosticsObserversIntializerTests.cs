@@ -41,7 +41,7 @@ namespace Hosting.Services.UnitTests
 		}
 
 		[TestMethod]
-		public async Task DiagnosticsObserversIntializer_InvokedProperly()
+		public async Task DiagnosticsObserversInitializer_InvokedProperly()
 		{
 			string name = nameof(DiagnosticsObserversInitializer_InvokedProperly);
 			MockLogger logger = new MockLogger();
