@@ -69,7 +69,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 		private readonly IActivityStartObserver[] m_activityStartObservers;
 		private readonly IActivityStopObserver[] m_activityStopObservers;
-		private readonly ILogger<DiagnosticsObserversIntializer> m_logger;
+		private readonly ILogger<DiagnosticsObserversInitializer> m_logger;
 		private readonly LinkedList<IDisposable> m_disposables;
 		private IDisposable? m_observerLifetime;
 
