@@ -156,7 +156,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 				"Exception diagnostic event '{0}' with payload '{1}'", eventName, payload);
 
 
-		// done internal for unit testing
+		// Made internal for unit testing
 		internal static Exception? ExtractExceptionFromPayload(object? payload)
 		{
 			if (payload == null)
