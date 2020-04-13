@@ -20,7 +20,7 @@ namespace Hosting.Services.UnitTests
 		[TestMethod]
 		public void ExtractExceptionFromPayload_HandleNullValue()
 		{
-			Exception? result = DiagnosticsObserversIntializer.ExtractExceptionFromPayload(null);
+			Exception? result = DiagnosticsObserversInitializer.ExtractExceptionFromPayload(null);
 			Assert.IsNull(result);
 		}
 
