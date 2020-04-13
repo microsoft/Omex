@@ -2,9 +2,11 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -14,7 +16,13 @@ using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
-	internal sealed class ActivityObserversIntializer : IHostedService, IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object>>
+	/// <summary>
+	/// Hosted service for listening diagnostic events
+	/// </summary>
+	/// <remarks>
+	/// Should be changed after .net 5 release https://github.com/dotnet/designs/pull/98
+	/// </remarks>
+	internal sealed class DiagnosticsObserversIntializer : IHostedService, IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object>>
 	{
 		/// <summary>
 		/// Ending of the Activity Start event
@@ -27,7 +35,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		internal static readonly string ActivityStopEnding = ".Stop";
 
 		/// <summary>
-		/// Exception events
+		/// Ending of the exception events
 		/// </summary>
 		internal static readonly string ExceptionEventEnding = "Exception";
 
@@ -61,14 +69,14 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 		private readonly IActivityStartObserver[] m_activityStartObservers;
 		private readonly IActivityStopObserver[] m_activityStopObservers;
-		private readonly ILogger<ActivityObserversIntializer> m_logger;
+		private readonly ILogger<DiagnosticsObserversIntializer> m_logger;
 		private readonly LinkedList<IDisposable> m_disposables;
 		private IDisposable? m_observerLifetime;
 
-		public ActivityObserversIntializer(
+		public DiagnosticsObserversIntializer(
 			IEnumerable<IActivityStartObserver> activityStartObservers,
 			IEnumerable<IActivityStopObserver> activityStopObservers,
-			ILogger<ActivityObserversIntializer> logger)
+			ILogger<DiagnosticsObserversIntializer> logger)
 		{
 			m_activityStartObservers = activityStartObservers.ToArray();
 			m_activityStopObservers = activityStopObservers.ToArray();
@@ -93,11 +101,12 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			return Task.CompletedTask;
 		}
 
-		void IObserver<DiagnosticListener>.OnCompleted() { }
+		public void OnCompleted() { }
 
-		void IObserver<DiagnosticListener>.OnError(Exception error) { }
+		public void OnError(Exception error) =>
+			m_logger.LogError(Tag.Create(), error, "Exception in diagnostic events provider");
 
-		void IObserver<DiagnosticListener>.OnNext(DiagnosticListener value)
+		public void OnNext(DiagnosticListener value)
 		{
 			if (m_activityStartObservers.Length != 0 || m_activityStopObservers.Length != 0)
 			{
@@ -105,11 +114,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			}
 		}
 
-		void IObserver<KeyValuePair<string, object>>.OnCompleted() { }
-
-		void IObserver<KeyValuePair<string, object>>.OnError(Exception error) { }
-
-		void IObserver<KeyValuePair<string, object>>.OnNext(KeyValuePair<string, object> value)
+		public void OnNext(KeyValuePair<string, object> value)
 		{
 			Activity activity = Activity.Current;
 			string eventName = value.Key;
@@ -144,9 +149,46 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			}
 		}
 
-		private void OnException(string eventName, object payload)
+		private void OnException(string eventName, object payload) =>
+			m_logger.LogError(
+				Tag.Create(),
+				ExtractExceptionFromPayload(payload),
+				"Exception diagnostic event '{0}' with payload '{1}'", eventName, payload);
+
+
+		// done internal for unit testing
+		internal static Exception? ExtractExceptionFromPayload(object? payload)
 		{
-			m_logger.LogError(Tag.Create(), payload as Exception, "Exception diagnostic event '{0}'", eventName);
+			if (payload == null)
+			{
+				return null;
+			}
+			else if (payload is Exception exception)
+			{
+				return exception;
+			}
+			else
+			{
+				// Attempting to find exception property since payload often use private classes,
+				// It would be completly removed after .net 5 release.
+				// It's definetly not ideal identification
+				// DataAdapters doing it by parameter name https://github.com/aspnet/EventNotification/blob/28b77e7fb51b30797ce34adf86748c98c040985e/src/Microsoft.Extensions.DiagnosticAdapter/Internal/ProxyMethodEmitter.cs#L69
+				// Sample class with payload https://github.com/dotnet/runtime/blob/master/src/libraries/System.Net.Http/src/System/Net/Http/DiagnosticsHandler.cs#L181
+				Type payloadType = payload.GetType();
+				if (!s_exceptionProperties.TryGetValue(payloadType, out PropertyInfo? propertyInfo))
+				{
+					propertyInfo = payload.GetType()
+						.GetProperties()
+						.FirstOrDefault(p => typeof(Exception).IsAssignableFrom(p.PropertyType));
+
+					s_exceptionProperties.TryAdd(payloadType, propertyInfo);
+				}
+
+				return propertyInfo?.GetValue(payload) as Exception;
+			}
 		}
+
+		private static readonly ConcurrentDictionary<Type, PropertyInfo?> s_exceptionProperties =
+			new ConcurrentDictionary<Type, PropertyInfo?>();
 	}
 }

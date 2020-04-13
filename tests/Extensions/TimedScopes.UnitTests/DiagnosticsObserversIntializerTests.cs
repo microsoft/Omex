@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -16,16 +15,39 @@ using Moq;
 namespace Hosting.Services.UnitTests
 {
 	[TestClass]
-	public class ActivityObserversIntializerTests
+	public class DiagnosticsObserversIntializerTests
 	{
 		[TestMethod]
-		public async Task ActivityObserversInvokedProperly()
+		public void ExtractExceptionFromPayload_HandleNullValue()
 		{
-			string name = nameof(ActivityObserversInvokedProperly);
+			Exception? result = DiagnosticsObserversIntializer.ExtractExceptionFromPayload(null);
+			Assert.IsNull(result);
+		}
+
+		[TestMethod]
+		public void ExtractExceptionFromPayload_HandleExceptionPayload()
+		{
+			NullReferenceException exception = new NullReferenceException();
+			Exception? result = DiagnosticsObserversIntializer.ExtractExceptionFromPayload(exception);
+			Assert.AreEqual(exception, result);
+		}
+
+		[TestMethod]
+		public void ExtractExceptionFromPayload_HandleExceptionProperty()
+		{
+			ArgumentException exception = new ArgumentException();
+			Exception? result = DiagnosticsObserversIntializer.ExtractExceptionFromPayload(new { Exception = exception });
+			Assert.AreEqual(exception, result);
+		}
+
+		[TestMethod]
+		public async Task DiagnosticsObserversIntializer_InvokedProperly()
+		{
+			string name = nameof(DiagnosticsObserversIntializer_InvokedProperly);
 			MockLogger logger = new MockLogger();
 			Mock<IActivityStartObserver> startObserver = new Mock<IActivityStartObserver>();
 			Mock<IActivityStopObserver> stopObserver = new Mock<IActivityStopObserver>();
-			ActivityObserversIntializer initializer = new ActivityObserversIntializer(
+			DiagnosticsObserversIntializer initializer = new DiagnosticsObserversIntializer(
 				new[] { startObserver.Object },
 				new[] { stopObserver.Object },
 				logger);
@@ -68,9 +90,9 @@ namespace Hosting.Services.UnitTests
 		private void AssertEnabledFor(DiagnosticListener listener, string eventName) =>
 			Assert.IsTrue(listener.IsEnabled(eventName), "Should be enabled for '{0}'", eventName);
 
-		private string MakeStartName(string name) => name + ActivityObserversIntializer.ActivityStartEnding;
+		private string MakeStartName(string name) => name + DiagnosticsObserversIntializer.ActivityStartEnding;
 
-		private string MakeStopName(string name) => name + ActivityObserversIntializer.ActivityStopEnding;
+		private string MakeStopName(string name) => name + DiagnosticsObserversIntializer.ActivityStopEnding;
 
 		private const string ExceptionEventName = "System.Net.Http.Exception";
 
@@ -78,7 +100,7 @@ namespace Hosting.Services.UnitTests
 
 		private const string HttpRequestInEventName = "Microsoft.AspNetCore.Hosting.HttpRequestIn";
 
-		private class MockLogger : ILogger<ActivityObserversIntializer>
+		private class MockLogger : ILogger<DiagnosticsObserversIntializer>
 		{
 			public List<Exception> Exceptions { get; } = new List<Exception>();
 
