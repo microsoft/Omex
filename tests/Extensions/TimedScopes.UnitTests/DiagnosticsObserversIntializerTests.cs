@@ -15,7 +15,7 @@ using Moq;
 namespace Hosting.Services.UnitTests
 {
 	[TestClass]
-	public class DiagnosticsObserversIntializerTests
+	public class DiagnosticsObserversInitializerTests
 	{
 		[TestMethod]
 		public void ExtractExceptionFromPayload_HandleNullValue()
