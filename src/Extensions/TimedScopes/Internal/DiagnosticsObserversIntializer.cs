@@ -17,7 +17,7 @@ using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	/// <summary>
-	/// Hosted service for listening diagnostic events
+	/// Hosted service for listening to diagnostic events
 	/// </summary>
 	/// <remarks>
 	/// Should be changed after .net 5 release https://github.com/dotnet/designs/pull/98
