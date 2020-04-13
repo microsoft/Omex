@@ -90,7 +90,7 @@ namespace Hosting.Services.UnitTests
 		private void AssertEnabledFor(DiagnosticListener listener, string eventName) =>
 			Assert.IsTrue(listener.IsEnabled(eventName), "Should be enabled for '{0}'", eventName);
 
-		private string MakeStartName(string name) => name + DiagnosticsObserversIntializer.ActivityStartEnding;
+		private string MakeStartName(string name) => name + DiagnosticsObserversInitializer.ActivityStartEnding;
 
 		private string MakeStopName(string name) => name + DiagnosticsObserversIntializer.ActivityStopEnding;
 
