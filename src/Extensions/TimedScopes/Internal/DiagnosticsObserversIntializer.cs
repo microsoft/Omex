@@ -73,7 +73,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		private readonly LinkedList<IDisposable> m_disposables;
 		private IDisposable? m_observerLifetime;
 
-		public DiagnosticsObserversIntializer(
+		public DiagnosticsObserversInitializer(
 			IEnumerable<IActivityStartObserver> activityStartObservers,
 			IEnumerable<IActivityStopObserver> activityStopObservers,
 			ILogger<DiagnosticsObserversIntializer> logger)
