@@ -28,7 +28,7 @@ namespace Hosting.Services.UnitTests
 		public void ExtractExceptionFromPayload_HandleExceptionPayload()
 		{
 			NullReferenceException exception = new NullReferenceException();
-			Exception? result = DiagnosticsObserversIntializer.ExtractExceptionFromPayload(exception);
+			Exception? result = DiagnosticsObserversInitializer.ExtractExceptionFromPayload(exception);
 			Assert.AreEqual(exception, result);
 		}
 
