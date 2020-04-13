@@ -92,7 +92,7 @@ namespace Hosting.Services.UnitTests
 
 		private string MakeStartName(string name) => name + DiagnosticsObserversInitializer.ActivityStartEnding;
 
-		private string MakeStopName(string name) => name + DiagnosticsObserversIntializer.ActivityStopEnding;
+		private string MakeStopName(string name) => name + DiagnosticsObserversInitializer.ActivityStopEnding;
 
 		private const string ExceptionEventName = "System.Net.Http.Exception";
 
