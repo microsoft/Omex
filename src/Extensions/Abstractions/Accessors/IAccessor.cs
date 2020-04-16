@@ -24,6 +24,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// If value is not null, action will be executed immediately,
 		/// otherwise activity will be stored until it's available and then executed.
 		/// </remarks>
-		void OnAvailable(Action<TValue> function);
+		void OnUpdated(Action<TValue> function);
 	}
 }
