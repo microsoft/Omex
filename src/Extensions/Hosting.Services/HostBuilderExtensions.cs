@@ -46,7 +46,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		{
 			bool isStatefullService = typeof(StatefulServiceContext).IsAssignableFrom(typeof(TContext));
 
-			if (isStatefullService)
+			if (isStatefulService)
 			{
 				collection.TryAddAccessor<IReliableStateManager>();
 			}
