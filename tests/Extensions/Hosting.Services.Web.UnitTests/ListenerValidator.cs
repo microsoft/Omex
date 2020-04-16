@@ -54,12 +54,12 @@ namespace Hosting.Services.Web.UnitTests
 					string.Empty,
 					new MockListener(context, (s, l) => new Mock<IWebHost>().Object));
 
-			Assert.AreEqual(context, ResolveType<IAccessor<TContext>>(host).Value);
+			ResolveType<IAccessor<TContext>>(host);
 
 			bool isStatefulService = typeof(StatefulServiceContext).IsAssignableFrom(typeof(TContext));
 			if (isStatefulService)
 			{
-				Assert.IsNotNull(ResolveType<IAccessor<IReliableStateManager>>(host).Value);
+				ResolveType<IAccessor<IReliableStateManager>>(host);
 			}
 
 			ResolveType<TypeRegisteredInListenerExtension>(host);
