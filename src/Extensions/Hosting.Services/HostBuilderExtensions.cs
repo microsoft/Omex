@@ -44,7 +44,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public static IServiceCollection AddOmexServiceFabricDependencies<TContext>(this IServiceCollection collection)
 			where TContext : ServiceContext
 		{
-			bool isStatefullService = typeof(StatefulServiceContext).IsAssignableFrom(typeof(TContext));
+			bool isStatefulService = typeof(StatefulServiceContext).IsAssignableFrom(typeof(TContext));
 
 			if (isStatefulService)
 			{
