@@ -31,7 +31,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			Accessor<StatelessServiceContext> accessor = new Accessor<StatelessServiceContext>();
 			IAccessorSetter<StatelessServiceContext> setter = accessor;
 			IExecutionContext info = new ServiceFabricExecutionContext(enviromentMock.Object, accessor);
-			setter.SetContext(MockStatelessServiceContextFactory.Default);
+			setter.SetValue(MockStatelessServiceContextFactory.Default);
 
 			Assert.AreEqual(appName, info.ServiceName);
 			Assert.AreEqual(envirometnName, info.EnvironmentName);

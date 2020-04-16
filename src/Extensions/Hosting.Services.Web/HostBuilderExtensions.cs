@@ -51,8 +51,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 				where TStartup : class
 				where TService : IServiceFabricService<TContext>
 				where TContext : ServiceContext =>
-					builder.AddServiceListener(p => new KestrelListenerBuilder<TStartup, TService, TContext>(
+					builder.AddServiceListener(provider => new KestrelListenerBuilder<TStartup, TService, TContext>(
 						name,
+						provider,
 						options,
 						builder => builder.BuilderExtension<TContext>(builderExtension)));
 

@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 		private StatelessService ServiceFactory(StatelessServiceContext context)
 		{
-			ContextAccessor.SetContext(context);
+			ContextAccessor.SetValue(context);
 			return new OmexStatelessService(this, context);
 		}
 	}
