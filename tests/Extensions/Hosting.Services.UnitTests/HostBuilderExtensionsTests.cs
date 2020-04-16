@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.Omex.Extensions.Logging;
+using Microsoft.ServiceFabric.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -80,6 +81,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[DataRow(typeof(IOmexServiceRunner), typeof(OmexStatefulServiceRunner))]
 		[DataRow(typeof(IAccessor<StatefulServiceContext>), typeof(Accessor<StatefulServiceContext>))]
 		[DataRow(typeof(IAccessor<ServiceContext>), typeof(Accessor<StatefulServiceContext>))]
+		[DataRow(typeof(IAccessor<IReliableStateManager>), typeof(Accessor<IReliableStateManager>))]
 		public void BuildStatefulService_RegiesterTypes(Type type, Type? expectedImplementationType)
 		{
 			object obj = new HostBuilder()

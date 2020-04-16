@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			Assert.AreEqual(value, publicAccessor.Value);
 			object? recivedContext = null;
-			publicAccessor.OnAvailable(c => recivedContext = c);
+			publicAccessor.OnUpdated(c => recivedContext = c);
 
 			Assert.AreEqual(value, recivedContext);
 		}
@@ -32,7 +32,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			IAccessorSetter<object> setter = accessor;
 
 			object? receivedContext = null;
-			publicAccessor.OnAvailable(c => receivedContext = c);
+			publicAccessor.OnUpdated(c => receivedContext = c);
 			setter.SetValue(value);
 
 			Assert.AreEqual(value, receivedContext);

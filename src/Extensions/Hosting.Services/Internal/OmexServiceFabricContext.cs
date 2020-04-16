@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		{
 			PartitionId = Guid.Empty;
 			ReplicaOrInstanceId = 0L;
-			accessor.OnAvailable(UpdateState);
+			accessor.OnUpdated(UpdateState);
 		}
 
 		/// <inheritdoc/>

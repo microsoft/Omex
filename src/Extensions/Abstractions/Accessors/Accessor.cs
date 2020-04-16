@@ -38,7 +38,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 		/// <inheritdoc />
-		void IAccessor<TValue>.OnAvailable(Action<TValue> action)
+		void IAccessor<TValue>.OnUpdated(Action<TValue> action)
 		{
 			if (m_value != null)
 			{
