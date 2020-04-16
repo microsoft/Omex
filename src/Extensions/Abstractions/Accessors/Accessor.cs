@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 		/// <inheritdoc />
-		void IAccessorSetter<TValue>.SetContext(TValue value)
+		void IAccessorSetter<TValue>.SetValue(TValue value)
 		{
 			m_value = value;
 
@@ -35,8 +35,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 					action(value);
 				}
 			}
-
-			m_actions.Clear();
 		}
 
 		/// <inheritdoc />

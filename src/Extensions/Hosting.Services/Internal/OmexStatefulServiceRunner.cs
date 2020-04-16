@@ -6,6 +6,7 @@ using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
@@ -15,17 +16,25 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public OmexStatefulServiceRunner(
 			IHostEnvironment environment,
 			IAccessorSetter<StatefulServiceContext> contextAccessor,
+			IAccessorSetter<IReliableStateManager> stateAccessor,
 			IEnumerable<IListenerBuilder<OmexStatefulService>> listenerBuilders,
 			IEnumerable<IServiceAction<OmexStatefulService>> serviceActions)
-				: base(environment, contextAccessor, listenerBuilders, serviceActions) { }
+				: base(environment, contextAccessor, listenerBuilders, serviceActions)
+		{
+			m_stateAccessor = stateAccessor;
+		}
 
 		public override Task RunServiceAsync(CancellationToken cancellationToken) =>
 			ServiceRuntime.RegisterServiceAsync(ApplicationName, ServiceFactory, cancellationToken: cancellationToken);
 
 		private StatefulService ServiceFactory(StatefulServiceContext context)
 		{
-			ContextAccessor.SetContext(context);
-			return new OmexStatefulService(this, context);
+			ContextAccessor.SetValue(context);
+			OmexStatefulService service = new OmexStatefulService(this, context);
+			m_stateAccessor.SetValue(service.StateManager);
+			return service;
 		}
+
+		private readonly IAccessorSetter<IReliableStateManager> m_stateAccessor;
 	}
 }

@@ -11,6 +11,7 @@ using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 using Microsoft.Omex.Extensions.Logging;
+using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -50,13 +51,16 @@ namespace Hosting.Services.Web.UnitTests
 			Assert.AreEqual(ListenerName, builder.Name);
 
 			IWebHost host = builder.BuildWebHost(
-					context,
 					string.Empty,
 					new MockListener(context, (s, l) => new Mock<IWebHost>().Object));
 
-			Assert.AreEqual(context, ResolveType<ServiceContext>(host));
-			Assert.AreEqual(context, ResolveType<TContext>(host));
 			Assert.AreEqual(context, ResolveType<IAccessor<TContext>>(host).Value);
+
+			bool isStatefulService = typeof(StatefulServiceContext).IsAssignableFrom(typeof(TContext));
+			if (isStatefulService)
+			{
+				Assert.IsNotNull(ResolveType<IAccessor<IReliableStateManager>>(host).Value);
+			}
 
 			ResolveType<TypeRegisteredInListenerExtension>(host);
 			ResolveType<MockStartup.TypeRegisteredInStartup>(host);

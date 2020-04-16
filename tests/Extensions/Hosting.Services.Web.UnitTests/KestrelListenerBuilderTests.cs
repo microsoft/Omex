@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System.Fabric;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Hosting.Services.UnitTests;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
@@ -25,12 +26,17 @@ namespace Hosting.Services.Web.UnitTests
 			where TContext : ServiceContext
 		{
 			ListenerValidator<TService, TContext> validator = new ListenerValidator<TService, TContext>();
+			ServiceProvider serviceProvider = new ServiceCollection()
+				.AddOmexServiceFabricDependencies<TContext>()
+				.BuildServiceProvider();
+
 
 			KestrelListenerBuilder<MockStartup, TService, TContext> builder =
 				new KestrelListenerBuilder<MockStartup, TService, TContext>(
 					validator.ListenerName,
+					serviceProvider,
 					validator.IntegrationOptions,
-					validator.BuilderAction);
+					validator.BuilderAction); ;
 
 			validator.ValidateListenerBuilder(service.Context, builder);
 			validator.ValidateBuildFunction(service, builder);

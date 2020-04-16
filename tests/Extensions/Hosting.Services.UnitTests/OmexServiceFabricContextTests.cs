@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			Assert.AreEqual(default, context.PartitionId);
 			Assert.AreEqual(default, context.ReplicaOrInstanceId);
 
-			setter.SetContext(serviceContext);
+			setter.SetValue(serviceContext);
 
 			Assert.AreEqual(serviceContext.PartitionId, context.PartitionId);
 			Assert.AreEqual(serviceContext.ReplicaOrInstanceId, context.ReplicaOrInstanceId);

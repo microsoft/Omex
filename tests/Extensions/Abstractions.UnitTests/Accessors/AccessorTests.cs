@@ -33,7 +33,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			object? receivedContext = null;
 			publicAccessor.OnAvailable(c => receivedContext = c);
-			setter.SetContext(value);
+			setter.SetValue(value);
 
 			Assert.AreEqual(value, receivedContext);
 		}
