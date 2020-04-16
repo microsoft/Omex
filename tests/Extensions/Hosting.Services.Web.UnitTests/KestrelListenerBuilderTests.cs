@@ -36,7 +36,7 @@ namespace Hosting.Services.Web.UnitTests
 					validator.ListenerName,
 					serviceProvider,
 					validator.IntegrationOptions,
-					validator.BuilderAction); ;
+					validator.BuilderAction);
 
 			validator.ValidateListenerBuilder(service.Context, builder);
 			validator.ValidateBuildFunction(service, builder);
