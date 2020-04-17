@@ -56,7 +56,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 			collection.TryAddSingleton<IServiceContext, OmexServiceFabricContext>();
 			collection.TryAddSingleton<IExecutionContext, ServiceFabricExecutionContext>();
-			return collection.AddOmexServices();
+			return collection;
 		}
 
 		private static IHost BuildServiceFabricService<TRunner, TService, TContext>(
@@ -67,71 +67,18 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				where TService : IServiceFabricService<TContext>
 				where TContext : ServiceContext
 		{
-			try
-			{
-				builderAction(new ServiceFabricHostBuilder<TService, TContext>(builder));
-
-				if (string.IsNullOrWhiteSpace(serviceName))
+			return builder
+				.ConfigureServices((context, collection) =>
 				{
-					// use executing asembly name for loggins since application name might be not available yet
-					serviceName = Assembly.GetExecutingAssembly().GetName().FullName;
-				}
-				else
-				{
-					// override default application name if it's provided explisitly
-					// for generic host application name is the name of the service that it's running (don't confuse with Sf application name)
-					builder.UseApplicationName(serviceName);
-				}
-
-				IHost host = builder
-					.ConfigureServices((context, collection) =>
-					{
-						collection
-							.AddOmexServiceFabricDependencies<TContext>()
-							.AddSingleton<IOmexServiceRunner, TRunner>()
-							.AddHostedService<OmexHostedService>();
-					})
-					.UseDefaultServiceProvider(options =>
-					{
-						options.ValidateOnBuild = true;
-						options.ValidateScopes = true;
-					})
-					.Build();
-
-				// get proper application name from host
-				serviceName = host.Services.GetService<IHostEnvironment>().ApplicationName;
-
-				ServiceInitializationEventSource.Instance.LogHostBuildSucceeded(Process.GetCurrentProcess().Id, serviceName);
-
-				return host;
-			}
-			catch (Exception e)
-			{
-				ServiceInitializationEventSource.Instance.LogHostBuildFailed(e.ToString(), serviceName);
-				throw;
-			}
+					collection
+						.AddOmexServiceFabricDependencies<TContext>()
+						.AddSingleton<IOmexServiceRunner, TRunner>()
+						.AddHostedService<OmexHostedService>();
+				})
+				.BuildWithReporting(
+					serviceName,
+					b => builderAction(new ServiceFabricHostBuilder<TService, TContext>(builder)));
 		}
-
-		/// <summary>
-		/// Overides ApplicationName in host configuration
-		/// </summary>
-		/// <remarks>
-		/// Method done internal instead of private to create unit tests for it,
-		/// since failure to set proper application name could cause Service Fabric error that is hard to debug:
-		///    System.Fabric.FabricException: Invalid Service Type
-		/// </remarks>
-		internal static IHostBuilder UseApplicationName(this IHostBuilder builder, string applicationName) =>
-			builder.ConfigureHostConfiguration(configuration =>
-			{
-				configuration.AddInMemoryCollection(new[]
-				{
-					new KeyValuePair<string, string>(
-						HostDefaults.ApplicationKey,
-						string.IsNullOrWhiteSpace(applicationName)
-							? throw new ArgumentNullException(nameof(applicationName))
-							: applicationName)
-				});
-			});
 
 		internal static IServiceCollection TryAddAccessor<TValue>(this IServiceCollection collection)
 			where TValue : class
