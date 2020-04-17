@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Data;
 
@@ -67,21 +69,21 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				where TService : IServiceFabricService<TContext>
 				where TContext : ServiceContext
 		{
+			string serviceNameForLogging = serviceName;
+
 			try
 			{
-				builderAction(new ServiceFabricHostBuilder<TService, TContext>(builder));
-
 				if (string.IsNullOrWhiteSpace(serviceName))
 				{
+					serviceNameForLogging = Assembly.GetExecutingAssembly().GetName().FullName;
 					// use executing asembly name for loggins since application name might be not available yet
-					serviceName = Assembly.GetExecutingAssembly().GetName().FullName;
+					throw new ArgumentException("Service type name is null of whitespace", nameof(serviceName));
 				}
-				else
-				{
-					// override default application name if it's provided explisitly
-					// for generic host application name is the name of the service that it's running (don't confuse with Sf application name)
-					builder.UseApplicationName(serviceName);
-				}
+
+				// for generic host application name is the name of the service that it's running (don't confuse with Sf application name)
+				builder.UseApplicationName(serviceName);
+
+				builderAction(new ServiceFabricHostBuilder<TService, TContext>(builder));
 
 				IHost host = builder
 					.ConfigureServices((context, collection) =>
@@ -101,13 +103,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				// get proper application name from host
 				serviceName = host.Services.GetService<IHostEnvironment>().ApplicationName;
 
-				ServiceInitializationEventSource.Instance.LogHostBuildSucceeded(Process.GetCurrentProcess().Id, serviceName);
+				ServiceInitializationEventSource.Instance.LogHostBuildSucceeded(Process.GetCurrentProcess().Id, serviceNameForLogging);
 
 				return host;
 			}
 			catch (Exception e)
 			{
-				ServiceInitializationEventSource.Instance.LogHostBuildFailed(e.ToString(), serviceName);
+				ServiceInitializationEventSource.Instance.LogHostBuildFailed(e.ToString(), serviceNameForLogging);
 				throw;
 			}
 		}

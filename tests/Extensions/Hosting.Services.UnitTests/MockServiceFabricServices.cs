@@ -4,6 +4,7 @@
 using System.Fabric;
 using System.Linq;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.ServiceFabric.Data;
 using Moq;
 using ServiceFabric.Mocks;

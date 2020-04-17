@@ -4,6 +4,7 @@
 using System;
 using System.Fabric;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
