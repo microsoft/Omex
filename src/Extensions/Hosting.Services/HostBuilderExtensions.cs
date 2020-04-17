@@ -75,8 +75,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			{
 				if (string.IsNullOrWhiteSpace(serviceName))
 				{
-					serviceNameForLogging = Assembly.GetExecutingAssembly().GetName().FullName;
 					// use executing asembly name for loggins since application name might be not available yet
+					serviceNameForLogging = Assembly.GetExecutingAssembly().GetName().FullName;
 					throw new ArgumentException("Service type name is null of whitespace", nameof(serviceName));
 				}
 
