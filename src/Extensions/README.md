@@ -97,29 +97,69 @@ Currently they are not opensourced so could be found in internal repo and wiki
 Additional information about IOptions: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options?view=aspnetcore-3.1
 
 ### Service definition
+Service creation done by calling `BuildStatelessService` or `BuildStatefulService` on `IHostBuilder`
 ```csharp
 public async Task Main(string[] args)
 {
   await Host
     .CreateDefaultBuilder(args)
-    .AddOmexCompatabilityServices()  // Microsoft.Omex.Extensions.Compatability, needed only if you want to use ULSLogger or Code.Validate
     .BuildStatelessService(  // Microsoft.Omex.Extensions.Hosting.Services
-      "MyAwesomeService",
+      "MyAwesomeServiceServiceType",
       builder =>
       {
         builder
-          .AddServiceAction(RunAsyncAction1)
-          .AddServiceAction(RunAsyncAction2)
-          .AddServiceListener("MyListener1", Listener1)
-          .AddServiceListener("MyListener2", Listener2)
-          .AddKestrelListener<Startup>(  // Microsoft.Omex.Extensions.Hosting.Services.Web
-            "MyWebListener",
-            ServiceFabricIntegrationOptions.UseReverseProxyIntegration);
+          .AddServiceAction<ActionBuilderType>()
+          .AddServiceAction((sp, _) => /* logic to create action */)
+          .AddServiceListener<ListenerBuilderType>()
+          .AddServiceListener("MyListener2", (sp, _) => /* logic to create listener */));
       })
     .RunAsync();
 }
 ```
 ### Compatability
-#### Web listener definition
-#### Remoting listener definition
-#### Remoting clients
+You add compatability if you need to use `UlsLogger` or `CodeValidation` or `TimedScopeDefinition.Create` (does not support log replay).
+To add compatability services you should add package reference and call `AddOmexCompatabilityServices()` on `IHostBuilder`.
+```csharp
+  Host
+    .CreateDefaultBuilder(args)
+    .AddOmexCompatabilityServices()  // Microsoft.Omex.Extensions.Compatability, needed only if you want to use ULSLogger or
+```
+### Web listener definition
+In order to add web listeners to service you need to call `AddKestrelListener` on SF service builder and provide startup type plus listener name, also you can call some addition actions on WebBuilder.
+Additional complexity with this task is that `WebHostBuilder` has separate DI container, so it's better to do all types registration for it in the startup class and don't try to use types from the main host builder (all Omex infrastructure and SF types would be registered in both containers).
+```csharp
+  .BuildStatelessService(
+      "MyAwesomeServiceServiceType",
+      builder =>
+      {
+      builder
+          .AddKestrelListener<Startup1>(  // Microsoft.Omex.Extensions.Hosting.Services.Web
+            "MyWebListener1",
+            ServiceFabricIntegrationOptions.UseReverseProxyIntegration);
+          .AddKestrelListener<Startup2>(
+            "MyWebListener2",
+            ServiceFabricIntegrationOptions.UseReverseProxyIntegration,
+            webBuilder => /* Some aditional actions */);
+      })
+```
+### Remoting listener definition
+In order to add remoting listeners to service you need to call `AddRemotingListener` on SF service builder and provide type that implements `IService` plus listener name and remoting settings
+```csharp
+  .BuildStatelessService(
+      "MyAwesomeServiceServiceType",
+      builder =>
+      {
+        builder
+            .AddRemotingListener<MyService>(  // Microsoft.Omex.Extensions.Hosting.Services.Remoting
+              "MyRemotinsListener",
+              RemotingSettings.WithEndpoint("ServiceEndpoint"));
+      })
+```
+### Remoting clients
+`Microsoft.Omex.Extensions.Services.Remoting` provides static property `OmexServiceProxyFactory.Instance` that contains wraped version of remoting factory with our telemetly on top of it
+```csharp
+  OmexServiceProxyFactory.Instance.CreateServiceProxy<MyService>(
+    serviceRemotingUri),
+    servicePartitionKey,
+    listenerName: listenerName));
+```
