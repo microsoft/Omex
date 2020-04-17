@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Omex.Extensions.Hosting.Services
+namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 {
 	/// <summary>
 	/// Type for accessing an object that is not available during dependency injection container creation

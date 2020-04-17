@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.Omex.Extensions.Hosting.Services
+namespace Microsoft.Omex.Extensions.Abstractions
 {
 	/// <summary>
 	/// Provides access to an object that is not available during dependency injection container build,
