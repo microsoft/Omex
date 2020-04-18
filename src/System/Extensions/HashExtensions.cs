@@ -36,7 +36,6 @@ namespace Microsoft.Omex.System.Extensions
 			}
 		}
 
-
 		/// <summary>
 		/// Converts byte array to string.
 		/// </summary>
@@ -52,7 +51,6 @@ namespace Microsoft.Omex.System.Extensions
 
 			return convertToHexString ? ConvertToHexString(input) : Convert.ToBase64String(input);
 		}
-
 
 		/// <summary>
 		/// Converts byte array to hex string.

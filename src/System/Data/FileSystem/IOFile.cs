@@ -18,7 +18,6 @@ namespace Microsoft.Omex.System.Data.FileSystem
 		/// <returns>value returned by File.Exists method</returns>
 		public bool Exists(string path) => File.Exists(path);
 
-
 		/// <summary>
 		/// Calls File.ReadAllBytes
 		/// </summary>
@@ -39,7 +38,6 @@ namespace Microsoft.Omex.System.Data.FileSystem
 			return bytes;
 		}
 
-
 		/// <summary>
 		/// Writes given content to file.
 		/// When file exists it will be replaced with new content.
@@ -54,14 +52,12 @@ namespace Microsoft.Omex.System.Data.FileSystem
 			}
 		}
 
-
 		/// <summary>
 		/// Get the last write time for the file.
 		/// </summary>
 		/// <param name="path">The path to the file.</param>
 		/// <returns>The last write time for the file.</returns>
 		public DateTime GetLastWriteTime(string path) => File.GetLastWriteTimeUtc(path);
-
 
 		/// <summary>
 		/// Get the length of the file in bytes.

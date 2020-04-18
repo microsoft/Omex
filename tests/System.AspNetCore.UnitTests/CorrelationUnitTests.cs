@@ -46,7 +46,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			Assert.Null(Correlation.CurrentCorrelation);
 		}
 
-
 		[TestMethod]
 		public void CorrelationStart_WithNullData_ShouldStartNewCorrelation()
 		{
@@ -57,7 +56,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 
 			CallContextManagerInstance.CallContextOverride.EndCallContext();
 		}
-
 
 		[TestMethod]
 		public void CorrelationStart_MultipleCorrelations_ShouldCreateAHierarchy()
@@ -82,7 +80,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 
 			CallContextManagerInstance.CallContextOverride.EndCallContext();
 		}
-
 
 		[TestMethod]
 		public void CorrelationEnd_MultipleCorrelations_ShouldUnwindHierarchy()
@@ -109,7 +106,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			CallContextManagerInstance.CallContextOverride.EndCallContext();
 		}
 
-
 		[TestMethod]
 		public void CorrelationData_SetParent_ShouldThrowIfAlreadySet()
 		{
@@ -121,7 +117,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 				() => data.ParentCorrelation = new CorrelationData());
 		}
 
-
 		[TestMethod]
 		public void CorrelationData_SetParentCausingCircularReference_ShouldThrow()
 		{
@@ -131,14 +126,12 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 				() => data.ParentCorrelation.ParentCorrelation = data);
 		}
 
-
 		[TestMethod]
 		public void CorrelationData_CloneWithNullData_ShouldReturnNull()
 		{
 			CorrelationData data = null;
 			Assert.Null(data.Clone());
 		}
-
 
 		[TestMethod]
 		public void CorrelationData_Clone_ShouldReturnCopyOfCorrelationData()
@@ -154,7 +147,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			Assert.Equal(data.ShouldLogDirectly, clone.ShouldLogDirectly);
 			Assert.Equal(data.HasData, clone.HasData);
 		}
-
 
 		[TestMethod]
 		public void CorrelationData_Add_WithNullKey_ShouldThrowException()
@@ -177,7 +169,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			}
 		}
 
-
 		[TestMethod]
 		public void CorrelationData_Add_WithNullValue_ShouldThrowException()
 		{
@@ -199,14 +190,12 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			}
 		}
 
-
 		[TestMethod]
 		public void CorrelationData_NullObjectToTransactionData_ShouldReturnNull()
 		{
 			CorrelationData data = null;
 			Assert.Null(data.ToTransactionData());
 		}
-
 
 		[TestMethod]
 		public void CorrelationData_ToTransactionData_ShouldReturnSameData()
@@ -231,7 +220,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			}
 		}
 
-
 		[TestMethod]
 		public void CorrelationClear_ShouldClearAllCorrelations()
 		{
@@ -253,7 +241,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 
 				Correlation.CorrelationClear();
 
-
 				Assert.Null(Correlation.CurrentCorrelation);
 			}
 			finally
@@ -261,7 +248,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 				EndRequest();
 			}
 		}
-
 
 		[TestMethod]
 		public void SettingShouldLogDirectly_WithoutAnActiveCorrelation_ShouldSetResetShouldLogDirectly()
@@ -287,7 +273,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			}
 		}
 
-
 		[TestMethod]
 		public void SettingShouldLogDirectly_OnCurrentCorrelation_ShouldSetOnCorrelationOnly()
 		{
@@ -312,7 +297,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			}
 		}
 
-
 		[TestMethod]
 		public void SettingShouldLogDirectly_OnBaseCorrelation_ShouldBeInheritedByCurrentCorrelation()
 		{
@@ -336,21 +320,16 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			}
 		}
 
-
 		private ICallContextManager CreateCallContextManager()
 		{
 			return new CallContextManager();
 		}
 
-
 		private Correlation Correlation { get; set; }
-
 
 		private ICallContextManager CallContextManagerInstance { get; set; }
 
-
 		private IMachineInformation MachineInformation { get; set; }
-
 
 		/// <summary>
 		/// Create an HttpContext and configure HttpContext.Current
@@ -362,7 +341,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 
 			m_httpContextAccessor.Value.HttpContext = httpContext;
 		}
-
 
 		/// <summary>
 		/// End a request

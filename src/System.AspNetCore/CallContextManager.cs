@@ -19,7 +19,6 @@ namespace Microsoft.Omex.System.AspNetCore
 		/// </summary>
 		public ICallContext CallContextOverride { get; set; }
 
-
 		/// <summary>
 		/// The call context
 		/// Depending on the 'UseLogicalCallContext' app setting it will either use classic - OperationCallContext -> ThreadCallContext chain
@@ -29,7 +28,6 @@ namespace Microsoft.Omex.System.AspNetCore
 		{
 			return new Lazy<ICallContext>(() => new HttpCallContext(useLogicalCallContext: false, machineInformation: machineInformation), LazyThreadSafetyMode.PublicationOnly);
 		}
-
 
 		/// <summary>
 		/// Current call context

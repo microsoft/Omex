@@ -22,12 +22,10 @@ namespace Microsoft.Omex.System.Monads
 			RetryPolicy = Code.ExpectsArgument(policy, nameof(policy), 0);
 		}
 
-
 		/// <summary>
 		/// Retry policy
 		/// </summary>
 		private RetryPolicy RetryPolicy { get; }
-
 
 		/// <summary>
 		/// Retries func RetryLimit times.
@@ -69,7 +67,6 @@ namespace Microsoft.Omex.System.Monads
 			}
 		}
 
-
 		/// <summary>
 		/// Check for possibility of next attempt.
 		/// </summary>
@@ -84,7 +81,7 @@ namespace Microsoft.Omex.System.Monads
 		protected bool TryAgain(TimeSpan? elapsedTime, ref int attempts, out TimeSpan timeToWait)
 		{
 			timeToWait = TimeSpan.Zero;
-			
+
 			if (attempts >= RetryPolicy.RetryLimit)
 			{
 				return false;

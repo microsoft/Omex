@@ -24,14 +24,12 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Data.FileSystem
 			LengthInBytes = 10;
 		}
 
-
 		/// <summary>
 		/// Checks if file exists
 		/// </summary>
 		/// <param name="path">path</param>
 		/// <returns>true if file exists, false otherwise</returns>
 		public bool Exists(string path) => FileExists;
-
 
 		/// <summary>
 		/// Get the last write time for the file.
@@ -40,7 +38,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Data.FileSystem
 		/// <returns>The last write time for the file.</returns>
 		public DateTime GetLastWriteTime(string path) => LastKnownWriteTime ?? DateTime.UtcNow;
 
-
 		/// <summary>
 		/// Get the length of the file in bytes.
 		/// </summary>
@@ -48,36 +45,30 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Data.FileSystem
 		/// <returns>The length of the file in bytes.</returns>
 		public long GetLength(string path) => LengthInBytes;
 
-
 		/// <summary>
 		/// Makes file unreadable
 		/// </summary>
 		public void CorruptFile() => CanBeRead = false;
-
 
 		/// <summary>
 		/// Makes file readable
 		/// </summary>
 		public void FixCorruptFile() => CanBeRead = true;
 
-
 		/// <summary>
 		/// Is the file unlocked?
 		/// </summary>
 		public bool FileUnlocked { get; set; }
-
 
 		/// <summary>
 		/// Gets the last known write time for the file.
 		/// </summary>
 		public DateTime? LastKnownWriteTime { get; set; }
 
-
 		/// <summary>
 		/// Gets the length of the file in bytes.
 		/// </summary>
 		public long LengthInBytes { get; set; }
-
 
 		/// <summary>
 		/// Returns file contents as byte array
@@ -85,7 +76,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Data.FileSystem
 		/// <param name="path">path</param>
 		/// <returns>file contents</returns>
 		public abstract byte[] ReadAllBytes(string path);
-
 
 		/// <summary>
 		/// Writes given bytes to file.
@@ -95,12 +85,10 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Data.FileSystem
 		/// <param name="bytes">Bytes to write to file.</param>
 		public abstract void WriteAllBytes(string path, byte[] bytes);
 
-
 		/// <summary>
 		/// Does file exist
 		/// </summary>
 		protected bool FileExists { get; set; }
-
 
 		/// <summary>
 		/// Can file be read

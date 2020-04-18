@@ -25,7 +25,6 @@ namespace Microsoft.Omex.System.UnitTests.Monads
 			Assert.Equal(0, backoffTime.Milliseconds);
 		}
 
-
 		[Fact]
 		public void NegativeFactor_ReturnsZero()
 		{
@@ -37,7 +36,6 @@ namespace Microsoft.Omex.System.UnitTests.Monads
 			TimeSpan backoffTime = policy.CalculateBackoff(exponent, factor);
 			Assert.Equal(0, backoffTime.Milliseconds);
 		}
-
 
 		[Fact]
 		public void LinearBackoff_ReturnsFactor()

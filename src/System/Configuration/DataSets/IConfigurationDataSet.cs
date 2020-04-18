@@ -17,24 +17,20 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		/// </summary>
 		bool IsHealthy { get; }
 
-
 		/// <summary>
 		/// Last reload DateTime
 		/// </summary>
 		DateTime LastReload { get; }
-
 
 		/// <summary>
 		/// Gets the details.
 		/// </summary>
 		IList<ConfigurationDataSetLoadDetails> LoadDetails { get; }
 
-
 		/// <summary>
 		/// Loading errors
 		/// </summary>
 		IList<string> Errors { get; }
-
 
 		/// <summary>
 		/// Loads the DataSet

@@ -17,7 +17,6 @@ namespace Microsoft.Omex.Gating.Experimentation
 		/// <returns>true if gate added successfully</returns>
 		bool Add(IGate gate);
 
-
 		/// <summary>
 		/// All gates in the DataSet
 		/// </summary>

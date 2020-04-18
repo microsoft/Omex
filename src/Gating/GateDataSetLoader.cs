@@ -38,7 +38,6 @@ namespace Microsoft.Omex.Gating
 			Initialize(resources);
 		}
 
-
 		/// <summary>
 		/// Called when the data set is loaded.
 		/// </summary>
@@ -48,7 +47,6 @@ namespace Microsoft.Omex.Gating
 			ULSLogging.LogTraceTag(0x23821048 /* tag_967bi */, Categories.GateDataSet, Levels.Info,
 				FormatOnLoadMessage(fileDetails));
 		}
-
 
 		/// <summary>
 		/// Called when the data set is reloaded.

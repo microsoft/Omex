@@ -25,13 +25,11 @@ namespace Microsoft.Omex.System.Model.Types
 			Max = Code.ExpectsArgument(max, nameof(max), TaggingUtilities.ReserveTag(0x23820853 /* tag_9667t */));
 		}
 
-
 		/// <summary>
 		/// The min number
 		/// </summary>
 		[DataMember]
 		public ProductVersion Min { get; private set; }
-
 
 		/// <summary>
 		/// The max number

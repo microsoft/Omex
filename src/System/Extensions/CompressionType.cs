@@ -13,7 +13,6 @@ namespace Microsoft.Omex.System.Extensions
 		/// </summary>
 		NoCompression,
 
-
 		/// <summary>
 		/// GZip
 		/// </summary>

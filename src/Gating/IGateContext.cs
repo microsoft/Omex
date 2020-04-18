@@ -15,7 +15,6 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		IGatedRequest Request { get; }
 
-
 		/// <summary>
 		/// Is the gate applicable for the current context
 		/// </summary>
@@ -23,13 +22,11 @@ namespace Microsoft.Omex.Gating
 		/// <returns>true if applicable, false otherwise</returns>
 		bool IsGateApplicable(IGate gate);
 
-
 		/// <summary>
 		/// Enter a scope of code that is gated if it is applicable
 		/// </summary>
 		/// <param name="gate">the gate to enter scope for</param>
 		void EnterScope(IGate gate);
-
 
 		/// <summary>
 		/// Exit a scope of code that is gated
@@ -37,13 +34,11 @@ namespace Microsoft.Omex.Gating
 		/// <param name="gate">the gate to enter scope for</param>
 		void ExitScope(IGate gate);
 
-
 		/// <summary>
 		/// The current active gates for the context
 		/// </summary>
 		/// <returns>collection of all active gates</returns>
 		IEnumerable<string> CurrentGates { get; }
-
 
 		/// <summary>
 		/// The collection of all gates that have been used for the current request

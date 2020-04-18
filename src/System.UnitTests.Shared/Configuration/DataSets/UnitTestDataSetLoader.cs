@@ -22,7 +22,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 		{
 		}
 
-
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -35,7 +34,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 			UnitTestLoader.DataSetLoaded += OnDataSetLoadedByInternalLoader;
 		}
 
-
 		/// <summary>
 		/// Loads DataSet and starts resources monitoring
 		/// </summary>
@@ -46,24 +44,20 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 			UnitTestLoader.Initialize(Resources);
 		}
 
-
 		/// <summary>
 		/// DataSet resources
 		/// </summary>
 		public IEnumerable<IResource> Resources { get; protected set; }
-
 
 		/// <summary>
 		/// The event raised on dataset load.
 		/// </summary>
 		public event EventHandler DataSetLoaded;
 
-
 		/// <summary>
 		/// Loaded DataSet instance
 		/// </summary>
 		public T LoadedDataSet => m_dataSetOverride != null ? m_dataSetOverride as T : UnitTestLoader.LoadedDataSet;
-
 
 		/// <summary>
 		/// Dispose
@@ -74,7 +68,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 			GC.SuppressFinalize(this);
 		}
 
-
 		/// <summary>
 		/// Dispose
 		/// </summary>
@@ -83,24 +76,20 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 		{
 		}
 
-
 		/// <summary>
 		/// DataSet instance corresponding to last unsuccessful loading
 		/// </summary>
 		public T FailedToLoadDataSet => UnitTestLoader.FailedToLoadDataSet;
-
 
 		/// <summary>
 		/// DataSet override
 		/// </summary>
 		private IConfigurationDataSet m_dataSetOverride;
 
-
 		/// <summary>
 		/// Underlying ConfigurationDataSetLoader
 		/// </summary>
 		protected UnitTestConfigurationDataSetLoader<T> UnitTestLoader { get; set; }
-
 
 		/// <summary>
 		/// Override loaded dataSet
@@ -111,7 +100,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 			m_dataSetOverride = dataSet;
 			DataSetLoaded?.Invoke(this, EventArgs.Empty);
 		}
-
 
 		/// <summary>
 		/// Loads from contents of embedded resources
@@ -129,19 +117,16 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 			Initialize(resources);
 		}
 
-
 		/// <summary>
 		/// Handles ResourceUpdated event
 		/// </summary>
 		/// <param name="e">event args</param>
 		private void UnitTestOnResourceUpdated(ResourceUpdatedEventArgs e) => ResourceUpdatedCalled = true;
 
-
 		/// <summary>
 		/// Indicates whether InternalLoader fired DataSetLoaded event
 		/// </summary>
 		public bool InternalLoaderDataSetLoadedEventFired { get; set; }
-
 
 		/// <summary>
 		/// A subscription to events fired by internal DataSetLoader
@@ -150,12 +135,10 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 		/// <param name="args">Event arguments</param>
 		private void OnDataSetLoadedByInternalLoader(object sender, EventArgs args) => InternalLoaderDataSetLoadedEventFired = true;
 
-
 		/// <summary>
 		/// Has ResourceUpdated been called
 		/// </summary>
 		public bool ResourceUpdatedCalled { get; set; }
-
 
 		/// <summary>
 		/// Unit Test implementation of ConfigurationDataSetLoader
@@ -174,13 +157,11 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 			public UnitTestConfigurationDataSetLoader(ICache cache, IResourceMonitor resourceMonitor, TConfigurationDataSet dataSetOverride = null, ResourceUpdatedHandler resourceUpdatedHandler = null)
 				: base(cache, resourceMonitor, dataSetOverride) => m_resourceUpdatedHandler = resourceUpdatedHandler;
 
-
 			/// <summary>
 			/// Loads DataSet and starts resources monitoring
 			/// </summary>
 			/// <param name="resources">resources</param>
 			public new void Initialize(IEnumerable<IResource> resources) => base.Initialize(resources);
-
 
 			/// <summary>
 			/// Handler called when resource monitor notices that the resource has changed
@@ -192,7 +173,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 				m_resourceUpdatedHandler?.Invoke(arguments);
 			}
 
-
 			/// <summary>
 			/// Called when the data set is loaded.
 			/// </summary>
@@ -200,7 +180,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 			protected override void OnLoad(IList<ConfigurationDataSetLoadDetails> fileDetails)
 			{
 			}
-
 
 			/// <summary>
 			/// Called when the data set is reloaded.
@@ -211,7 +190,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 				IList<ConfigurationDataSetLoadDetails> newFileDetails)
 			{
 			}
-
 
 			/// <summary>
 			/// A handler to be called when the resource is updated

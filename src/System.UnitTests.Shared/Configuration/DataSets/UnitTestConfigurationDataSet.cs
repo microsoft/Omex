@@ -19,30 +19,25 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration.DataSets
 		/// </summary>
 		public UnitTestConfigurationDataSet() => IsHealthy = true;
 
-
 		/// <summary>
 		/// Is DataSet loaded successfully
 		/// </summary>
 		public bool IsHealthy { get; set; }
-
 
 		/// <summary>
 		/// Last reload DateTime
 		/// </summary>
 		public DateTime LastReload { get; set; }
 
-
 		/// <summary>
 		/// Gets the details.
 		/// </summary>
 		public IList<ConfigurationDataSetLoadDetails> LoadDetails { get; private set; }
 
-
 		/// <summary>
 		/// Loading errors
 		/// </summary>
 		public IList<string> Errors { get; private set; }
-
 
 		/// <summary>
 		/// Loads the DataSet

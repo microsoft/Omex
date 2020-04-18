@@ -18,15 +18,15 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Label="Condition Variables" >
-    <IsNetStandard>false</IsNetStandard>
-    <IsNetStandard Condition="$(NetStandardVersions.Contains('$(TargetFramework)'))">true</IsNetStandard>
-    <IsNetCore>false</IsNetCore>
-    <IsNetCore Condition="$(NetCoreVersions.Contains('$(TargetFramework)'))">true</IsNetCore>
+    <IsNetStandard>$(NetStandardVersions.Contains('$(TargetFramework)'))</IsNetStandard>
+    <IsNetCore>$(NetCoreVersions.Contains('$(TargetFramework)'))</IsNetCore>
+    <IsNetFramework>$(NetFrameworkVersions.Contains('$(TargetFramework)'))</IsNetFramework>
   </PropertyGroup>
-  <PropertyGroup Label="Signing" Condition="'$(SignAssemblies)' == 'true'">
+  <PropertyGroup Label="Signing" >
     <SignAssembly>true</SignAssembly>
-    <DelaySign>true</DelaySign>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\ship.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\OmexOpenSource.snk</AssemblyOriginatorKeyFile>
+    <StrongNameSuffix>, PublicKey=00240000048000009400000006020000002400005253413100040000010001004d77aff3ec12650e8979fb873e4b409556a1a650482e6d4dfcf9fea3c87dc334dc2f08ab4820ad3555b949a172553484f5f8fecd302db2907a5d8e3c33d394276c05e18865c5776e0c1f04bba8c4d3e4b12bc44b70e70dc076cc69611b04368d7eff2e83f5b016db366f9d572dad24f09adc6ae732802958048b69727561d1bd</StrongNameSuffix>
   </PropertyGroup>
   <PropertyGroup Label="Build Output" >
     <BaseOutputPath>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)</BaseOutputPath>

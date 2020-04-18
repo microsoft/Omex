@@ -15,18 +15,15 @@ namespace Microsoft.Omex.Gating.UnitTests.Shared
 		/// </summary>
 		private readonly List<string> m_gatesOverrideEnabled;
 
-
 		/// <summary>
 		/// GatesOverrideDisabled Setting.
 		/// </summary>
 		private readonly List<string> m_gatesOverrideDisabled;
 
-
 		/// <summary>
 		/// GatesToggleEnable Setting.
 		/// </summary>
 		private readonly List<string> m_gatesToggleEnabled;
-
 
 		/// <summary>
 		/// Constructor.
@@ -41,20 +38,17 @@ namespace Microsoft.Omex.Gating.UnitTests.Shared
 			m_gatesToggleEnabled = gatesToggleEnabled ?? new List<string>();
 		}
 
-
 		/// <summary>
 		/// GatesOverrideEnabled Setting.
 		/// </summary>
 		/// <value>IOsiSetting as a list of gate names which are to be enabled.</value>
 		public ISet<string> GatesOverrideEnabled => new HashSet<string>(m_gatesOverrideEnabled);
 
-
 		/// <summary>
 		/// GatesOverrideDisabled Setting.
 		/// </summary>
 		/// <value>IOsiSetting as a list of gate names which are to be disabled.</value>
 		public ISet<string> GatesOverrideDisabled => new HashSet<string>(m_gatesOverrideDisabled);
-
 
 		/// <summary>
 		/// GatesToggleEnable Setting.

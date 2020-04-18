@@ -25,7 +25,6 @@ namespace Microsoft.Omex.System.AspNetCore
 			m_machineInformation = Code.ExpectsArgument(machineInformation, nameof(machineInformation), TaggingUtilities.ReserveTag(0x2375d3d7 /* tag_933px */));
 		}
 
-
 		/// <summary>
 		/// Logs the scope start
 		/// </summary>
@@ -33,7 +32,6 @@ namespace Microsoft.Omex.System.AspNetCore
 		public void LogScopeStart(TimedScope scope)
 		{
 		}
-
 
 		/// <summary>
 		/// Logs the scope end
@@ -73,24 +71,20 @@ namespace Microsoft.Omex.System.AspNetCore
 			}
 		}
 
-
 		/// <summary>
 		/// The service name
 		/// </summary>
 		private string ServiceName => m_machineInformation?.ServiceName?.ToString();
-
 
 		/// <summary>
 		/// Used as a dimension value for null scope dimensions
 		/// </summary>
 		private const string NullPlaceholder = "null";
 
-
 		/// <summary>
 		/// The event source for timed scopes
 		/// </summary>
 		private readonly TimedScopeEventSource m_eventSource;
-
 
 		/// <summary>
 		/// Machine information

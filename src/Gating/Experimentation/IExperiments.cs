@@ -15,14 +15,12 @@ namespace Microsoft.Omex.Gating.Experimentation
 		/// </summary>
 		void Load(IDictionary<string, IExperiment> experiments);
 
-
 		/// <summary>
 		/// Is experiment valid
 		/// </summary>
 		/// <param name="experimentName">experiment name</param>
 		/// <returns>true if the list of experiment contains the experiment</returns>
 		bool IsValidExperiment(string experimentName);
-
 
 		/// <summary>
 		/// Gets the experiment corresponding to the experimentName

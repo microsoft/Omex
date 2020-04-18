@@ -19,7 +19,6 @@ namespace Microsoft.Omex.DocumentDb
 		/// </summary>
 		private readonly IDocumentDbSettingsProvider m_DocumentDbSettingsProvider;
 
-
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -30,7 +29,6 @@ namespace Microsoft.Omex.DocumentDb
 
 			m_DocumentDbSettingsProvider = documentDbSettingsProvider;
 		}
-
 
 		/// <summary>
 		/// Gets document client.

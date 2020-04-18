@@ -17,13 +17,11 @@ namespace Microsoft.Omex.Gating.UnitTests.Shared
 		/// </summary>
 		public IGatedRequest Request { get; set; }
 
-
 		/// <summary>
 		/// Gets or sets a value indicating whether <see cref="IsGateApplicable"/> should always
 		/// return <c>true</c>.
 		/// </summary>
 		public bool AlwaysReturnApplicable { get; set; }
-
 
 		/// <summary>
 		/// A flag when set to true returns all gates to be applicable for the mock gate context.
@@ -45,7 +43,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Shared
 			return ApplicableGates.Contains(gate.Name, StringComparer.OrdinalIgnoreCase);
 		}
 
-
 		/// <summary>
 		/// Enter the gate scope.
 		/// </summary>
@@ -60,7 +57,6 @@ namespace Microsoft.Omex.Gating.UnitTests.Shared
 			((List<IGate>)ActivatedGates).Add(gate);
 		}
 
-
 		/// <summary>
 		/// Exit the gate scope.
 		/// </summary>
@@ -69,18 +65,15 @@ namespace Microsoft.Omex.Gating.UnitTests.Shared
 		{
 		}
 
-
 		/// <summary>
 		/// The list of current gates.
 		/// </summary>
 		public IEnumerable<string> CurrentGates { get; set; }
 
-
 		/// <summary>
 		/// The list of activated gates.
 		/// </summary>
 		public IEnumerable<IGate> ActivatedGates { get; set; }
-
 
 		/// <summary>
 		/// The list of applicable gates.

@@ -35,24 +35,20 @@ namespace Microsoft.Omex.System.Data
 			SHA256Hash = contents.GetHash<SHA256CryptoServiceProvider>();
 		}
 
-
 		/// <summary>
 		/// Gets the last write time for the file.
 		/// </summary>
 		public DateTime LastWrite { get; }
-
 
 		/// <summary>
 		/// Gets the length of the file in bytes.
 		/// </summary>
 		public long Length { get; }
 
-
 		/// <summary>
 		/// Gets the file contents.
 		/// </summary>
 		public byte[] Contents { get; }
-
 
 		/// <summary>
 		/// Gets the SHA256 hash of the file contents.

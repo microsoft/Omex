@@ -20,7 +20,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Diagnostics
 		{
 		}
 
-
 		/// <summary>
 		/// Public Constructor.
 		/// </summary>
@@ -48,84 +47,70 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Diagnostics
 			MachineCount = machineCount;
 		}
 
-
 		/// <summary>
 		/// Get the current agent instance
 		/// </summary>
 		public string AgentName { get; }
-
 
 		/// <summary>
 		/// Build version string
 		/// </summary>
 		public string BuildVersion => "1.0.0.0";
 
-
 		/// <summary>
 		/// The deployment slice
 		/// </summary>
 		public string DeploymentSlice { get; }
-
 
 		/// <summary>
 		/// The environment name
 		/// </summary>
 		public string EnvironmentName { get; }
 
-
 		/// <summary>
 		/// Is Canary environment?
 		/// </summary>
 		public bool IsCanary { get; }
-
 
 		/// <summary>
 		/// Is Dev Fabric environment?
 		/// </summary>
 		public bool IsDevFabric { get; }
 
-
 		/// <summary>
 		/// Is private deployment?
 		/// </summary>
 		public bool IsPrivateDeployment { get; }
-
 
 		/// <summary>
 		/// The number of machines in the service pool.
 		/// </summary>
 		public int MachineCount { get; }
 
-
 		/// <summary>
 		/// The name of the deployment cluster to which this machine belongs.
 		/// </summary>
 		public string MachineCluster => "MachineCluster";
-
 
 		/// <summary>
 		/// The ip adress of the deployment cluster to which this machine belongs.
 		/// </summary>
 		public IPAddress MachineClusterIpAddress => IPAddress.None;
 
-
 		/// <summary>
 		/// The reporting identifier for the current machine.
 		/// </summary>
 		public string MachineId { get; }
-
 
 		/// <summary>
 		/// The role of the host machine
 		/// </summary>
 		public string MachineRole => "MachineRole";
 
-
 		/// <summary>
 		/// The region
 		/// </summary>
 		public string RegionName { get; }
-
 
 		/// <summary>
 		/// The service name

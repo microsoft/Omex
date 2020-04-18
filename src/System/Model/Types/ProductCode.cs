@@ -18,19 +18,16 @@ namespace Microsoft.Omex.System.Model.Types
 		/// </summary>
 		public string Application { get; private set; }
 
-
 		/// <summary>
 		/// Gets the platform portion of the Product Code, e.g. Win32
 		/// </summary>
 		public string Platform { get; private set; }
-
 
 		/// <summary>
 		/// The Product code.
 		/// </summary>
 		[DataMember]
 		protected string m_code;
-
 
 		/// <summary>
 		/// A protected constructor. Callers should use TryParse() on derived classes instead.
@@ -43,13 +40,11 @@ namespace Microsoft.Omex.System.Model.Types
 			InitProductCodeParts();
 		}
 
-
 		/// <summary>
 		/// Return the product code.
 		/// </summary>
 		/// <returns>product code</returns>
 		public override string ToString() => m_code;
-
 
 		/// <summary>
 		/// Checks if the current object equals the specified other.
@@ -65,7 +60,6 @@ namespace Microsoft.Omex.System.Model.Types
 
 			return m_code.Equals(other.m_code, StringComparison.OrdinalIgnoreCase);
 		}
-
 
 		/// <summary>
 		/// Determines whether the specified object is equal to this instance.
@@ -87,14 +81,12 @@ namespace Microsoft.Omex.System.Model.Types
 			return m_code.Equals(other.m_code, StringComparison.OrdinalIgnoreCase);
 		}
 
-
 		/// <summary>
 		/// Returns a hash code for this instance. To be consistent with the overriden Equals method,
 		/// calculates hash value in a case insensitive way.
 		/// </summary>
 		/// <returns>a hash code for this instance</returns>
 		public override int GetHashCode() => m_code?.ToLower().GetHashCode() ?? 0;
-
 
 		/// <summary>
 		/// Indicates whether the current object is equal to another object of the same type.
@@ -115,7 +107,6 @@ namespace Microsoft.Omex.System.Model.Types
 			return code1.m_code.Equals(code2.m_code, StringComparison.OrdinalIgnoreCase);
 		}
 
-
 		/// <summary>
 		/// Indicates whether the current object is equal to another object of the same type.
 		/// </summary>
@@ -124,7 +115,6 @@ namespace Microsoft.Omex.System.Model.Types
 		{
 			return !(code1 == code2);
 		}
-
 
 		/// <summary>
 		/// An implicit conversion from ProductCode to string.
@@ -142,10 +132,8 @@ namespace Microsoft.Omex.System.Model.Types
 			return code.ToString();
 		}
 
-
 		[OnDeserialized]
 		private void SetValuesOnDeserialized(StreamingContext context) => InitProductCodeParts();
-
 
 		/// <summary>
 		/// Initializes <see cref="Application"/> and <see cref="Platform"/> based on passed product code.

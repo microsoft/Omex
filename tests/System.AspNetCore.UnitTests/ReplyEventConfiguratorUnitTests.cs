@@ -36,7 +36,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			callContext.StartCallContext();
 		}
 
-
 		[TestCleanup]
 		public void TestCleanup()
 		{
@@ -46,7 +45,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			Correlation.CorrelationEnd();
 			context.EndCallContext();
 		}
-
 
 		[TestMethod]
 		public void SuccessTimedScope_DoesntReplayLogs()
@@ -81,7 +79,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 
 			Assert.False(currentCorrelation.ShouldReplayUls);
 		}
-
 
 		[TestMethod]
 		public void FailedTimedScope_ShouldReplayLogs()
@@ -119,7 +116,6 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			Assert.True(currentCorrelation.ShouldReplayUls, "Logs should be replayed");
 		}
 
-
 		[TestMethod]
 		public void FailedDisabledTimedScope_DoesntReplayLogs()
 		{
@@ -154,21 +150,16 @@ namespace Microsoft.Omex.System.AspNetCore.UnitTests
 			Assert.False(currentCorrelation.ShouldReplayUls, "Logs shouldn't be replayed");
 		}
 
-
 		private ICallContextManager CreateCallContextManager()
 		{
 			return new CallContextManager();
 		}
 
-
 		private Correlation Correlation { get; set; }
-
 
 		private ICallContextManager CallContextManagerInstance { get; set; }
 
-
 		private IMachineInformation MachineInformation { get; set; }
-
 
 		/// <summary>
 		/// Create an HttpContext and configure HttpContext.Current

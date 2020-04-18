@@ -43,7 +43,6 @@ namespace Microsoft.Omex.System.Logging
 		/// </summary>
 		public static Category GateDataSet { get; } = new Category("OmexGateDataSet");
 
-
 		/// <summary>
 		/// Omex Gate Selection
 		/// </summary>

@@ -13,7 +13,7 @@ namespace Microsoft.Omex.System.UnitTests.Logging
 		[Fact]
 		public void Constructor_SetsMemberVariables()
 		{
-			LogEventArgs logEventArgs = new LogEventArgs(null, false, 0, Categories.ArgumentValidation, Levels.Error, "My message {0}", string.Empty, "is this!");
+			LogEventArgs logEventArgs = new LogEventArgs(false, 0, Categories.ArgumentValidation, Levels.Error, "My message {0}", string.Empty, "is this!");
 
 			Assert.Equal<uint>(0, logEventArgs.TagId);
 			Assert.Equal(Thread.CurrentThread.ManagedThreadId, logEventArgs.ThreadId);
@@ -25,11 +25,10 @@ namespace Microsoft.Omex.System.UnitTests.Logging
 			Assert.Equal("My message is this!", logEventArgs.FullMessage);
 		}
 
-
 		[Fact]
 		public void FullMessage_WithIncorrectFormattingString_DoesNotThrow()
 		{
-			LogEventArgs logEventArgs = new LogEventArgs(null, false, 0, Categories.ArgumentValidation, Levels.Error, "My message {1}", string.Empty, "is this!");
+			LogEventArgs logEventArgs = new LogEventArgs(false, 0, Categories.ArgumentValidation, Levels.Error, "My message {1}", string.Empty, "is this!");
 
 			Assert.Equal<uint>(0, logEventArgs.TagId);
 			Assert.Equal(Thread.CurrentThread.ManagedThreadId, logEventArgs.ThreadId);
@@ -41,11 +40,10 @@ namespace Microsoft.Omex.System.UnitTests.Logging
 			Assert.Contains("My message {1}", logEventArgs.FullMessage);
 		}
 
-
 		[Fact]
 		public void FullMessage_WithNullMessageString_DoesNotThrow()
 		{
-			LogEventArgs logEventArgs = new LogEventArgs(null, false, 0, Categories.ArgumentValidation, Levels.Error, null, string.Empty, "is this!");
+			LogEventArgs logEventArgs = new LogEventArgs(false, 0, Categories.ArgumentValidation, Levels.Error, null, string.Empty, "is this!");
 
 			Assert.Equal<uint>(0, logEventArgs.TagId);
 			Assert.Equal(Thread.CurrentThread.ManagedThreadId, logEventArgs.ThreadId);

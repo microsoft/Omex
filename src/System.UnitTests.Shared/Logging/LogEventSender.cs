@@ -13,7 +13,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Logging
 		[ThreadStatic]
 		private static UnitTestBase s_runningTest;
 
-
 		/// <summary>
 		/// The currently running test
 		/// </summary>

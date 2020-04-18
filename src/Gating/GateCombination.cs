@@ -19,12 +19,10 @@ namespace Microsoft.Omex.Gating
 			Gates = Array.FindAll(gates, gate => gate != null);
 		}
 
-
 		/// <summary>
 		/// Collection of gates used in the gate combination
 		/// </summary>
 		public IGate[] Gates { get; }
-
 
 		/// <summary>
 		/// Is the gate combination applicable

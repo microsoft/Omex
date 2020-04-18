@@ -27,7 +27,6 @@ namespace Microsoft.Omex.System.Data
 			LoadDelay = TimeSpan.FromMinutes(5);
 		}
 
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ResourceMonitor"/> class.
 		/// </summary>
@@ -43,7 +42,6 @@ namespace Microsoft.Omex.System.Data
 			m_resourceMonitoringData = new ConcurrentDictionary<ResourceUpdatedHandler, ResourceMonitoringData>();
 			m_exclusiveAction = new RunExclusiveAction();
 		}
-
 
 		/// <summary>
 		/// Start monitoring the resources.
@@ -84,7 +82,6 @@ namespace Microsoft.Omex.System.Data
 			return true;
 		}
 
-
 		/// <summary>
 		/// Stop monitoring the resources.
 		/// </summary>
@@ -97,7 +94,6 @@ namespace Microsoft.Omex.System.Data
 			}
 		}
 
-
 		/// <summary>
 		/// Releases resources.
 		/// </summary>
@@ -106,7 +102,6 @@ namespace Microsoft.Omex.System.Data
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
-
 
 		/// <summary>
 		/// Releases resources.
@@ -121,12 +116,10 @@ namespace Microsoft.Omex.System.Data
 			}
 		}
 
-
 		/// <summary>
 		/// Gets a value indicating whether the monitor is enabled.
 		/// </summary>
 		public bool IsEnabled => m_actionTimer != null;
-
 
 		/// <summary>
 		/// Perfroms initial load of the resources which are not yet known to the monitor
@@ -157,7 +150,6 @@ namespace Microsoft.Omex.System.Data
 
 			return true;
 		}
-
 
 		/// <summary>
 		/// Check resources for updates
@@ -201,7 +193,6 @@ namespace Microsoft.Omex.System.Data
 			NotifyHandlers(updatedResources, singleMonitoringData);
 		}
 
-
 		/// <summary>
 		/// Call all of the handlers who are initerested in any of the updated resources
 		/// or just the specified handler if it should be called
@@ -221,7 +212,6 @@ namespace Microsoft.Omex.System.Data
 				monitoringInstance.CallHandlerIfNecessary(m_resourceDetails, updatedResources);
 			}
 		}
-
 
 		/// <summary>
 		/// Get the file details for the specified resource
@@ -256,7 +246,6 @@ namespace Microsoft.Omex.System.Data
 			return finalStatus.Item2;
 		}
 
-
 		/// <summary>
 		/// Start the exclusive action in a timer.
 		/// </summary>
@@ -271,30 +260,25 @@ namespace Microsoft.Omex.System.Data
 			}
 		}
 
-
 		/// <summary>
 		/// Gets or sets the retry policy for loading the data sets.
 		/// </summary>
 		private RetryPolicy RetryPolicy { get; }
-
 
 		/// <summary>
 		/// Gets or sets the delay between each load.
 		/// </summary>
 		private TimeSpan LoadDelay { get; }
 
-
 		/// <summary>
 		/// All the resources in monitoring
 		/// </summary>
 		private ConcurrentDictionary<IResource, bool> m_monitoredResources;
 
-
 		/// <summary>
 		/// Current resource details
 		/// </summary>
 		private ConcurrentDictionary<IResource, IResourceDetails> m_resourceDetails;
-
 
 		/// <summary>
 		/// A list of ResourceMonitoringData instances that contain
@@ -302,12 +286,10 @@ namespace Microsoft.Omex.System.Data
 		/// </summary>
 		private ConcurrentDictionary<ResourceUpdatedHandler, ResourceMonitoringData> m_resourceMonitoringData;
 
-
 		/// <summary>
 		/// Timer used to run file checking every interval
 		/// </summary>
 		private Timer m_actionTimer;
-
 
 		/// <summary>
 		/// Exclusive action to check ressources for updates.

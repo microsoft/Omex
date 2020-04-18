@@ -16,14 +16,12 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// </summary>
 		IEnumerable<string> DefaultGroups { get; }
 
-
 		/// <summary>
 		/// Retrieves all groups for a given user email or deployment id
 		/// </summary>
 		/// <param name="user">User email or deployment id</param>
 		/// <returns>List of user groups</returns>
 		IEnumerable<string> GetUserGroups(string user);
-
 
 		/// <summary>
 		/// Get group users (email or deployment identifiers)

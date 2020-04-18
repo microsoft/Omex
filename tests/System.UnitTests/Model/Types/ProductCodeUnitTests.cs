@@ -40,7 +40,6 @@ namespace Microsoft.Omex.System.UnitTests.Model.Types
 			Assert.Equal("Excel", deserializedProductCode.Application);
 		}
 
-
 		[Fact]
 		public void ProductCode_WithLegacyCode_ShouldNotPreserveApplicationPlatform()
 		{
