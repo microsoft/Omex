@@ -65,7 +65,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		}
 
 
-		private class MockRunner : IOmexServiceRunner
+		private class MockRunner : IOmexServiceRegistrator
 		{
 			public CancellationToken Token { get; private set; }
 
@@ -73,7 +73,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			public bool IsStarted { get; private set; }
 
-			public Task RunServiceAsync(CancellationToken cancellationToken)
+			public Task RegisterServiceAsync(CancellationToken cancellationToken)
 			{
 				IsStarted = true;
 				Token = cancellationToken;

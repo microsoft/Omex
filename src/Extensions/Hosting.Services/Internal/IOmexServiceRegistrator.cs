@@ -9,8 +9,8 @@ using Microsoft.Extensions.Hosting;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal interface IOmexServiceRunner
+	internal interface IOmexServiceRegistrator
 	{
-		Task RunServiceAsync(CancellationToken cancellationToken);
+		Task RegisterServiceAsync(CancellationToken cancellationToken);
 	}
 }

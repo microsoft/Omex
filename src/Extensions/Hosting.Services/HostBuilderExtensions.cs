@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			this IHostBuilder builder,
 			string serviceName,
 			Action<ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext>> builderAction) =>
-				builder.BuildServiceFabricService<OmexStatelessServiceRunner, OmexStatelessService, StatelessServiceContext>(serviceName, builderAction);
+				builder.BuildServiceFabricService<OmexStatelessServiceRegistrator, OmexStatelessService, StatelessServiceContext>(serviceName, builderAction);
 
 		/// <summary>
 		/// Configures host to run service fabric stateful service with initializded Omex dependencies
@@ -38,7 +38,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			this IHostBuilder builder,
 			string serviceName,
 			Action<ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext>> builderAction) =>
-				builder.BuildServiceFabricService<OmexStatefulServiceRunner, OmexStatefulService, StatefulServiceContext>(serviceName, builderAction);
+				builder.BuildServiceFabricService<OmexStatefulServiceRegistrator, OmexStatefulService, StatefulServiceContext>(serviceName, builderAction);
 
 		/// <summary>
 		/// Registering Dependency Injection classes that will provide Service Fabric specific information for logging
@@ -65,7 +65,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			this IHostBuilder builder,
 			string serviceName,
 			Action<ServiceFabricHostBuilder<TService, TContext>> builderAction)
-				where TRunner : OmexServiceRunner<TService, TContext>
+				where TRunner : OmexServiceRegistrator<TService, TContext>
 				where TService : IServiceFabricService<TContext>
 				where TContext : ServiceContext
 		{
@@ -90,7 +90,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 					{
 						collection
 							.AddOmexServiceFabricDependencies<TContext>()
-							.AddSingleton<IOmexServiceRunner, TRunner>()
+							.AddSingleton<IOmexServiceRegistrator, TRunner>()
 							.AddHostedService<OmexHostedService>();
 					})
 					.UseDefaultServiceProvider(options =>

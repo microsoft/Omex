@@ -10,7 +10,7 @@ using Microsoft.Omex.Extensions.Abstractions.Accessors;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal abstract class OmexServiceRunner<TService, TContext> : IOmexServiceRunner
+	internal abstract class OmexServiceRegistrator<TService, TContext> : IOmexServiceRegistrator
 		where TService : IServiceFabricService<TContext>
 		where TContext : ServiceContext
 	{
@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 		public IEnumerable<IServiceAction<TService>> ServiceActions { get; }
 
-		public OmexServiceRunner(
+		public OmexServiceRegistrator(
 			IHostEnvironment environment,
 			IAccessorSetter<TContext> contextAccessor,
 			IEnumerable<IListenerBuilder<TService>> listenerBuilders,
@@ -34,6 +34,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			ServiceActions = serviceActions;
 		}
 
-		public abstract Task RunServiceAsync(CancellationToken cancellationToken);
+		public abstract Task RegisterServiceAsync(CancellationToken cancellationToken);
 	}
 }

@@ -16,10 +16,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// </summary>
 	public sealed class OmexStatefulService : StatefulService, IServiceFabricService<StatefulServiceContext>
 	{
-		private readonly OmexStatefulServiceRunner m_serviceParameters;
+		private readonly OmexStatefulServiceRegistrator m_serviceParameters;
 
 		internal OmexStatefulService(
-			OmexStatefulServiceRunner serviceRunner,
+			OmexStatefulServiceRegistrator serviceRunner,
 			StatefulServiceContext serviceContext)
 				: base(serviceContext) => m_serviceParameters = serviceRunner;
 

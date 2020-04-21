@@ -17,11 +17,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	internal sealed class OmexHostedService : IHostedService
 	{
 		private readonly IHostApplicationLifetime m_lifetime;
-		private readonly IOmexServiceRunner m_runner;
+		private readonly IOmexServiceRegistrator m_runner;
 		private readonly ILogger<OmexHostedService> m_logger;
 		private readonly CancellationTokenSource m_tokenSource;
 
-		public OmexHostedService(IOmexServiceRunner runner, IHostApplicationLifetime lifetime, ILogger<OmexHostedService> logger)
+		public OmexHostedService(IOmexServiceRegistrator runner, IHostApplicationLifetime lifetime, ILogger<OmexHostedService> logger)
 		{
 			m_runner = runner;
 			m_lifetime = lifetime;
@@ -38,23 +38,28 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 		public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
-		private void OnServiceStarted() => RunServiceAsync().ContinueWith(OnRunnerCompleted);
+		// would be triggered after for all hosted services StartAsync method completed
+		// this is important since there might be some initialization logic there (ex. register Activity listeners)
+		// and service should be started after all of them
+		private void OnServiceStarted() => RegisterServiceAsync().ContinueWith(OnRunnerCompleted);
 
 		private void OnServiceStopping()
 		{
+			// call to Cancel on canceled token source will throw
 			if (m_tokenSource.IsCancellationRequested)
 			{
 				return;
 			}
 
+			// cancel service initialization if host is stopping
 			m_tokenSource.Cancel();
 		}
 
-		private async Task RunServiceAsync()
+		private async Task RegisterServiceAsync()
 		{
 			try
 			{
-				await m_runner.RunServiceAsync(m_tokenSource.Token).ConfigureAwait(false);
+				await m_runner.RegisterServiceAsync(m_tokenSource.Token).ConfigureAwait(false);
 
 				m_logger.LogInformation(Tag.Create(), "ServiceFabricHost initialized");
 			}
@@ -62,6 +67,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			{
 				m_logger.LogCritical(Tag.Create(), e, "Exception during ServiceFabricHost initialization");
 
+				// stop host if initialization process failed
 				m_lifetime.StopApplication();
 
 				throw;
