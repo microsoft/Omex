@@ -6,7 +6,7 @@ using System;
 namespace Microsoft.Omex.Extensions.Logging
 {
 	/// <summary>
-	/// Interface with service context inforormation
+	/// Interface with service context information
 	/// </summary>
 	public interface IServiceContext
 	{

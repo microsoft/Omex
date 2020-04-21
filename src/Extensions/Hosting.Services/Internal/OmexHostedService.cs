@@ -78,7 +78,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		{
 			if (task.IsFaulted)
 			{
-				m_logger.LogCritical(Tag.Create(), task.Exception, "Service registration stoped due to exeption");
+				m_logger.LogCritical(Tag.Create(), task.Exception, "Service registration stopped due to exception");
 			}
 			else if (task.IsCanceled)
 			{

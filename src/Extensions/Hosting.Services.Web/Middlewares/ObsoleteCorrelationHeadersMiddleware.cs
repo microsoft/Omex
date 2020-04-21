@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	/// <remarks>
 	/// This middleware should be removed after all services moved to use <see cref="Activity"/>
 	/// </remarks>
-	[Obsolete("Use it only if you need to comunicate with services that use old correlation", false)]
+	[Obsolete("Use it only if you need to communicate with services that use old correlation", false)]
 	internal class ObsoleteCorrelationHeadersMiddleware : IMiddleware
 	{
 		Task IMiddleware.InvokeAsync(HttpContext context, RequestDelegate next)
@@ -95,7 +95,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		private static bool IsClientRequest(HttpRequest request) =>
 			request.Headers.ContainsKey(OfficeClientVersionHeader)
 				? true
-				: request.Query.Count == 0 // Don't check empty params
+				: request.Query.Count == 0 // Don't check empty parameters
 					? false
 					: s_officeClientQueryParameters.Any(p => request.Query.ContainsKey(p)); // Check if the request contains an Office client query parameter
 
