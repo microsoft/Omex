@@ -73,7 +73,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			public bool IsStarted { get; private set; }
 
-			public Task RegisterServiceAsync(CancellationToken cancellationToken)
+			public Task RegisterAsync(CancellationToken cancellationToken)
 			{
 				IsStarted = true;
 				Token = cancellationToken;

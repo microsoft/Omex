@@ -59,7 +59,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		{
 			try
 			{
-				await m_runner.RegisterServiceAsync(m_tokenSource.Token).ConfigureAwait(false);
+				await m_runner.RegisterAsync(m_tokenSource.Token).ConfigureAwait(false);
 
 				m_logger.LogInformation(Tag.Create(), "ServiceFabricHost initialized");
 			}

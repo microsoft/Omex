@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			m_stateAccessor = stateAccessor;
 		}
 
-		public override Task RegisterServiceAsync(CancellationToken cancellationToken) =>
+		public override Task RegisterAsync(CancellationToken cancellationToken) =>
 			ServiceRuntime.RegisterServiceAsync(ApplicationName, ServiceFactory, cancellationToken: cancellationToken);
 
 		private StatefulService ServiceFactory(StatefulServiceContext context)

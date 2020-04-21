@@ -34,6 +34,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			ServiceActions = serviceActions;
 		}
 
-		public abstract Task RegisterServiceAsync(CancellationToken cancellationToken);
+		public abstract Task RegisterAsync(CancellationToken cancellationToken);
 	}
 }

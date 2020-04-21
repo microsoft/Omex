@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			IEnumerable<IServiceAction<OmexStatelessService>> serviceActions)
 				: base(environment, contextAccessor, listenerBuilders, serviceActions) { }
 
-		public override Task RegisterServiceAsync(CancellationToken cancellationToken) =>
+		public override Task RegisterAsync(CancellationToken cancellationToken) =>
 			ServiceRuntime.RegisterServiceAsync(ApplicationName, ServiceFactory, cancellationToken: cancellationToken);
 
 		private StatelessService ServiceFactory(StatelessServiceContext context)

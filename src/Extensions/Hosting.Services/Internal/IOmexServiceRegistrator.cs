@@ -11,6 +11,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	internal interface IOmexServiceRegistrator
 	{
-		Task RegisterServiceAsync(CancellationToken cancellationToken);
+		Task RegisterAsync(CancellationToken cancellationToken);
 	}
 }
