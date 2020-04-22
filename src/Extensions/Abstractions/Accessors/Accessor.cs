@@ -9,7 +9,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 	/// <summary>
 	/// Type for accessing an object that is not available during dependency injection container creation
 	/// </summary>
-	/// <typeparam name="TValue">Type that will be accessable after dependency injection creation</typeparam>
+	/// <typeparam name="TValue">Type that will be accessible after dependency injection creation</typeparam>
 	public class Accessor<TValue> : IAccessor<TValue>, IAccessorSetter<TValue>
 		where TValue : class
 	{

@@ -12,9 +12,9 @@ using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal sealed class OmexStatefulServiceRunner : OmexServiceRunner<OmexStatefulService, StatefulServiceContext>
+	internal sealed class OmexStatefulServiceRegistrator : OmexServiceRegistrator<OmexStatefulService, StatefulServiceContext>
 	{
-		public OmexStatefulServiceRunner(
+		public OmexStatefulServiceRegistrator(
 			IHostEnvironment environment,
 			IAccessorSetter<StatefulServiceContext> contextAccessor,
 			IAccessorSetter<IReliableStateManager> stateAccessor,
@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			m_stateAccessor = stateAccessor;
 		}
 
-		public override Task RunServiceAsync(CancellationToken cancellationToken) =>
+		public override Task RegisterAsync(CancellationToken cancellationToken) =>
 			ServiceRuntime.RegisterServiceAsync(ApplicationName, ServiceFactory, cancellationToken: cancellationToken);
 
 		private StatefulService ServiceFactory(StatefulServiceContext context)

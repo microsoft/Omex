@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		/// Adds the default exception handling logic that will display a developer exception page in develop and a short message during deployment
 		/// </summary>
 		/// <param name="builder">Application builder</param>
-		/// <param name="environment">Enviroment information</param>
+		/// <param name="environment">Environment information</param>
 		/// <param name="enableCorrelationHeaderBackwardCompatibility">Set it to true if the service needs to accept a request with old style correlation</param>
 		public static IApplicationBuilder UseOmexMiddlewares(
 			this IApplicationBuilder builder,
@@ -90,7 +90,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 							{ "Message", "Internal Server Error" },
 							{ "ErrorMessage", contextFeature?.Error?.Message ?? string.Empty },
 							{ "RequestId", Activity.Current?.Id ?? context.TraceIdentifier },
-							{ "Suggestion", "For local debugging, set ASPNETCORE_ENVIRONMENT environment variable to 'Development' and restart the app" }
+							{ "Suggestion", "For local debugging, set ASPNETCORE_ENVIRONMENT environment variable to 'Development' and restart the application" }
 						};
 
 						return context.Response.WriteAsync(JsonSerializer.Serialize(errorDict));

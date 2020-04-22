@@ -6,7 +6,7 @@ using System.Net;
 namespace Microsoft.Omex.Extensions.Logging
 {
 	/// <summary>
-	/// Interface with information about the enviroment that executes code
+	/// Interface with information about the environment that executes code
 	/// </summary>
 	public interface IExecutionContext
 	{
@@ -41,7 +41,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		string Cluster { get; }
 
 		/// <summary>
-		/// The ip adress of the deployment cluster to which this machine belongs
+		/// The ip address of the deployment cluster to which this machine belongs
 		/// </summary>
 		IPAddress ClusterIpAddress { get; }
 
@@ -54,7 +54,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// Name of the application
 		/// </summary>
 		/// <remarks>
-		/// Could be the same as service name, but would be diffirent if you running ex. Service Fabric application with multiple services
+		/// Could be the same as service name, but would be different if you running ex. Service Fabric application with multiple services
 		/// </remarks>
 		string ApplicationName { get; }
 

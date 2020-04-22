@@ -14,12 +14,12 @@ using Microsoft.Omex.Extensions.Compatibility.Validation;
 namespace Microsoft.Omex.Extensions.Compatibility
 {
 	/// <summary>
-	/// Class to initialize static depdencies from this project
+	/// Class to initialize static dependencies from this project
 	/// </summary>
 	public static class OmexCompatibilityIntializer
 	{
 		/// <summary>
-		/// Initialize compatablitity classes with provided instances
+		/// Initialize compatibility classes with provided instances
 		/// </summary>
 		public static void Initialize(ILoggerFactory factory, ITimedScopeProvider scopeProvider)
 		{
@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Compatibility
 		}
 
 		/// <summary>
-		/// Initialize compatablitity classes with simple implementation that might be used for logging
+		/// Initialize compatibility classes with simple implementation that might be used for logging
 		/// </summary>
 		public static void InitializeWithStubs() =>
 			Initialize(new NullLoggerFactory(), new SimpleScopeProvider());

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace Microsoft.Omex.Extensions.Abstractions
 {
 	/// <summary>
-	/// Tagging utitilty class
+	/// Tagging utility class
 	/// </summary>
 	public static class Tag
 	{

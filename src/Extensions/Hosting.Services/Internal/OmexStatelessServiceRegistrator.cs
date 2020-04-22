@@ -11,16 +11,16 @@ using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal sealed class OmexStatelessServiceRunner : OmexServiceRunner<OmexStatelessService, StatelessServiceContext>
+	internal sealed class OmexStatelessServiceRegistrator : OmexServiceRegistrator<OmexStatelessService, StatelessServiceContext>
 	{
-		public OmexStatelessServiceRunner(
+		public OmexStatelessServiceRegistrator(
 			IHostEnvironment environment,
 			IAccessorSetter<StatelessServiceContext> contextAccessor,
 			IEnumerable<IListenerBuilder<OmexStatelessService>> listenerBuilders,
 			IEnumerable<IServiceAction<OmexStatelessService>> serviceActions)
 				: base(environment, contextAccessor, listenerBuilders, serviceActions) { }
 
-		public override Task RunServiceAsync(CancellationToken cancellationToken) =>
+		public override Task RegisterAsync(CancellationToken cancellationToken) =>
 			ServiceRuntime.RegisterServiceAsync(ApplicationName, ServiceFactory, cancellationToken: cancellationToken);
 
 		private StatelessService ServiceFactory(StatelessServiceContext context)
