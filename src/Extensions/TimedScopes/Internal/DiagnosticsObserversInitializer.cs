@@ -89,7 +89,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			m_observerLifetime = DiagnosticListener.AllListeners.Subscribe(this);
 			return Task.CompletedTask;
 		}
-		
+
 		public Task StopAsync(CancellationToken cancellationToken)
 		{
 			foreach (IDisposable disposable in m_disposables)
