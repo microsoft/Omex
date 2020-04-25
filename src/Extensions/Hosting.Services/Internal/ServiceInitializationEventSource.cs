@@ -10,7 +10,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// <summary>
 	/// Service Fabric event source
 	/// </summary>
-	[EventSource(Name = "Microsoft-OMEX-ServiceInitializationLogs")] //TODO: new event source should be registred GitHub Issue #187
+	[EventSource(Name = "Microsoft-OMEX-HostLogs")] //TODO: new event source should be registred GitHub Issue #187
 	internal sealed class ServiceInitializationEventSource : EventSource
 	{
 		/// <summary>
@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public static ServiceInitializationEventSource Instance { get; } = new ServiceInitializationEventSource();
 
 		/// <summary>
-		/// Logs a service type registered ETW event.
+		/// Logs a generic host build success
 		/// </summary>
 		/// <param name="hostProcessId">Host process id</param>
 		/// <param name="serviceType">Service type</param>
@@ -38,19 +38,19 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 		/// <summary>
-		/// Logs a service host initialization failed ETW event.
+		/// Logs a generic host failure
 		/// </summary>
 		/// <param name="exception">Exception</param>
 		/// <param name="serviceType">Service type</param>
 		[NonEvent]
-		public void LogHostBuildFailed(string exception, string serviceType)
+		public void LogHostFailed(string exception, string serviceType)
 		{
 			if (!IsEnabled())
 			{
 				return;
 			}
 
-			LogHostBuildFailed(
+			LogHostFailed(
 				exception,
 				serviceType,
 				FormattableString.Invariant($"Service host initialization failed for {serviceType} with exception {exception}"));
@@ -62,8 +62,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		private void LogHostBuildSucceeded(int hostProcessId, string serviceType, string message) =>
 			WriteEvent((int)EventSourcesEventIds.GenericHostBuildSucceded, hostProcessId, serviceType, message);
 
-		[Event((int)EventSourcesEventIds.GenericHostBuildFailed, Level = EventLevel.Error, Message = "{1}", Version = 1)]
-		private void LogHostBuildFailed(string exception, string serviceType, string message) =>
-			WriteEvent((int)EventSourcesEventIds.GenericHostBuildFailed, exception, serviceType, message);
+		[Event((int)EventSourcesEventIds.GenericHostFailed, Level = EventLevel.Error, Message = "{1}", Version = 1)]
+		private void LogHostFailed(string exception, string serviceType, string message) =>
+			WriteEvent((int)EventSourcesEventIds.GenericHostFailed, exception, serviceType, message);
 	}
 }

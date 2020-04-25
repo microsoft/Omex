@@ -79,6 +79,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.EventSources
 		/// <summary>
 		/// Event Id for generic host build failed
 		/// </summary>
-		GenericHostBuildFailed = 17
+		GenericHostFailed = 17
 	}
 }
