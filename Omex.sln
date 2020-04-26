@@ -90,7 +90,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.H
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Services.Remoting", "src\Extensions\Services.Remoting\Microsoft.Omex.Extensions.Services.Remoting.csproj", "{089B5170-815C-420D-B6BE-B5B3559B5AA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Omex.Extensions.Services.Remoting.UnitTests", "tests\Extensions\Services.Remoting.UnitTests\Microsoft.Omex.Extensions.Services.Remoting.UnitTests.csproj", "{BF122397-116D-4C0C-9261-37CF6476125E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Services.Remoting.UnitTests", "tests\Extensions\Services.Remoting.UnitTests\Microsoft.Omex.Extensions.Services.Remoting.UnitTests.csproj", "{BF122397-116D-4C0C-9261-37CF6476125E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Omex.Extensions.Diagnostics.HealthChecks", "src\Extensions\Diagnostics.HealthChecks\Microsoft.Omex.Extensions.Diagnostics.HealthChecks.csproj", "{4579B0AE-4949-4580-B245-2C9979D153FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -316,6 +318,14 @@ Global
 		{BF122397-116D-4C0C-9261-37CF6476125E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BF122397-116D-4C0C-9261-37CF6476125E}.Release|x64.ActiveCfg = Release|Any CPU
 		{BF122397-116D-4C0C-9261-37CF6476125E}.Release|x64.Build.0 = Release|Any CPU
+		{4579B0AE-4949-4580-B245-2C9979D153FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4579B0AE-4949-4580-B245-2C9979D153FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4579B0AE-4949-4580-B245-2C9979D153FF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4579B0AE-4949-4580-B245-2C9979D153FF}.Debug|x64.Build.0 = Debug|Any CPU
+		{4579B0AE-4949-4580-B245-2C9979D153FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4579B0AE-4949-4580-B245-2C9979D153FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4579B0AE-4949-4580-B245-2C9979D153FF}.Release|x64.ActiveCfg = Release|Any CPU
+		{4579B0AE-4949-4580-B245-2C9979D153FF}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -351,6 +361,7 @@ Global
 		{9DE57D70-EBFE-4AB2-A0B5-63638CAE83EF} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
 		{089B5170-815C-420D-B6BE-B5B3559B5AA9} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 		{BF122397-116D-4C0C-9261-37CF6476125E} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
+		{4579B0AE-4949-4580-B245-2C9979D153FF} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6FB7BCB-BF07-4F19-ACBA-457479D421BB}

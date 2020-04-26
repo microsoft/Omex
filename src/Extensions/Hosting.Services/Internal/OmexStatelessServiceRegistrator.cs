@@ -16,17 +16,17 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public OmexStatelessServiceRegistrator(
 			IHostEnvironment environment,
 			IAccessorSetter<StatelessServiceContext> contextAccessor,
+			IAccessorSetter<IStatelessServicePartition> partitionAccessor,
 			IEnumerable<IListenerBuilder<OmexStatelessService>> listenerBuilders,
 			IEnumerable<IServiceAction<OmexStatelessService>> serviceActions)
-				: base(environment, contextAccessor, listenerBuilders, serviceActions) { }
+				: base(environment, contextAccessor, listenerBuilders, serviceActions)
+		{
+			PartitionAccessor = partitionAccessor;
+		}
 
 		public override Task RegisterAsync(CancellationToken cancellationToken) =>
-			ServiceRuntime.RegisterServiceAsync(ApplicationName, ServiceFactory, cancellationToken: cancellationToken);
+			ServiceRuntime.RegisterServiceAsync(ApplicationName, context => new OmexStatelessService(this, context), cancellationToken: cancellationToken);
 
-		private StatelessService ServiceFactory(StatelessServiceContext context)
-		{
-			ContextAccessor.SetValue(context);
-			return new OmexStatelessService(this, context);
-		}
+		public IAccessorSetter<IStatelessServicePartition> PartitionAccessor { get; }
 	}
 }

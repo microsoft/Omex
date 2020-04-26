@@ -16,19 +16,26 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// </summary>
 	public sealed class OmexStatefulService : StatefulService, IServiceFabricService<StatefulServiceContext>
 	{
-		private readonly OmexStatefulServiceRegistrator m_serviceParameters;
+		private readonly OmexStatefulServiceRegistrator m_serviceRegistrator;
 
 		internal OmexStatefulService(
-			OmexStatefulServiceRegistrator serviceRunner,
+			OmexStatefulServiceRegistrator serviceRegistrator,
 			StatefulServiceContext serviceContext)
-				: base(serviceContext) => m_serviceParameters = serviceRunner;
+				: base(serviceContext)
+		{
+			serviceRegistrator.ContextAccessor.SetValue(serviceContext);
+			serviceRegistrator.StateAccessor.SetValue(StateManager);
+			serviceRegistrator.PartitionAccessor.SetValue(Partition);
+
+			m_serviceRegistrator = serviceRegistrator;
+		}
 
 		/// <inheritdoc />
 		protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners() =>
-			m_serviceParameters.ListenerBuilders.Select(b => new ServiceReplicaListener(c => b.Build(this), b.Name));
+			m_serviceRegistrator.ListenerBuilders.Select(b => new ServiceReplicaListener(c => b.Build(this), b.Name));
 
 		/// <inheritdoc />
 		protected override Task RunAsync(CancellationToken cancellationToken) =>
-			Task.WhenAll(m_serviceParameters.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
+			Task.WhenAll(m_serviceRegistrator.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
 	}
 }

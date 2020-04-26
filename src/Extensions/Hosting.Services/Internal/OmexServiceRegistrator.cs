@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	{
 		protected readonly string ApplicationName;
 
-		protected readonly IAccessorSetter<TContext> ContextAccessor;
+		public IAccessorSetter<TContext> ContextAccessor { get; }
 
 		public IEnumerable<IListenerBuilder<TService>> ListenerBuilders { get; }
 

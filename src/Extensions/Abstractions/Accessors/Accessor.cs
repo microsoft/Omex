@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 {
@@ -16,9 +17,11 @@ namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 		/// <summary>
 		/// Creates accessor for dependency injection, for values that not available during container creation
 		/// </summary>
+		/// <param name="logger">logger to write callback failures</param>
 		/// <param name="value">Value if it's immediately available from dependency injection</param>
-		public Accessor(TValue? value = null)
+		public Accessor(ILogger<Accessor<TValue>> logger, TValue? value = null)
 		{
+			m_logger = logger;
 			m_value = value;
 			m_actions = new LinkedList<WeakReference<Action<TValue>>>();
 		}
@@ -42,7 +45,14 @@ namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 		{
 			if (m_value != null)
 			{
-				action(m_value);
+				try
+				{
+					action(m_value);
+				}
+				catch (Exception ex)
+				{
+					m_logger.LogError(ex, "Exception in accessor callback execution");
+				}
 			}
 			else
 			{
@@ -54,6 +64,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 		TValue? IAccessor<TValue>.Value => m_value;
 
 		private readonly LinkedList<WeakReference<Action<TValue>>> m_actions;
+		private readonly ILogger<Accessor<TValue>> m_logger;
 		private TValue? m_value;
 	}
 }

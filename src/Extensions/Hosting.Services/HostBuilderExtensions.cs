@@ -51,10 +51,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			if (isStatefulService)
 			{
 				collection.TryAddAccessor<IReliableStateManager>();
+				collection.TryAddAccessor<IStatefulServicePartition, IServicePartition>();
+			}
+			else
+			{
+				collection.TryAddAccessor<IStatelessServicePartition, IServicePartition>();
 			}
 
-			collection.TryAddAccessor<TContext>();
-			collection.TryAddSingleton<IAccessor<ServiceContext>>(p => p.GetService<Accessor<TContext>>());
+			collection.TryAddAccessor<TContext, ServiceContext>();
 
 			collection.TryAddSingleton<IServiceContext, OmexServiceFabricContext>();
 			collection.TryAddSingleton<IExecutionContext, ServiceFabricExecutionContext>();
@@ -134,6 +138,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 							: applicationName)
 				});
 			});
+
+		internal static IServiceCollection TryAddAccessor<TValue, TBase>(this IServiceCollection collection)
+			where TValue : class, TBase
+			where TBase : class
+		{
+			collection.TryAddAccessor<TValue>();
+			collection.AddSingleton<IAccessor<TBase>>(p => p.GetRequiredService<Accessor<TValue>>());
+			return collection;
+		}
 
 		internal static IServiceCollection TryAddAccessor<TValue>(this IServiceCollection collection)
 			where TValue : class
