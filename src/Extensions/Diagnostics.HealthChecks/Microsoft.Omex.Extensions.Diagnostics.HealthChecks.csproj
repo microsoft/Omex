@@ -10,4 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
   </ItemGroup>
+  <ItemGroup Condition="$(IsNetFramework)">
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
 </Project>
