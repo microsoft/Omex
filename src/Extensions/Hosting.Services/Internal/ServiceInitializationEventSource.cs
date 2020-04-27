@@ -58,9 +58,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 		private ServiceInitializationEventSource() { }
 
-		[Event((int)EventSourcesEventIds.GenericHostBuildSucceded, Level = EventLevel.Informational, Message = "{2}", Version = 1)]
+		[Event((int)EventSourcesEventIds.GenericHostBuildSucceeded, Level = EventLevel.Informational, Message = "{2}", Version = 1)]
 		private void LogHostBuildSucceeded(int hostProcessId, string serviceType, string message) =>
-			WriteEvent((int)EventSourcesEventIds.GenericHostBuildSucceded, hostProcessId, serviceType, message);
+			WriteEvent((int)EventSourcesEventIds.GenericHostBuildSucceeded, hostProcessId, serviceType, message);
 
 		[Event((int)EventSourcesEventIds.GenericHostFailed, Level = EventLevel.Error, Message = "{1}", Version = 1)]
 		private void LogHostFailed(string exception, string serviceType, string message) =>
