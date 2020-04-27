@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		public void TestContextSet<TContext>(TContext serviceContext)
 			where TContext : ServiceContext
 		{
-			Accessor<TContext> accessor = new Accessor<TContext>(new NullLogger<Accessor<TContext>>());
+			Accessor<TContext> accessor = new Accessor<TContext>();
 			IAccessorSetter<TContext> setter = accessor;
 			IServiceContext context = new OmexServiceFabricContext(accessor);
 

@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 {
@@ -17,11 +16,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 		/// <summary>
 		/// Creates accessor for dependency injection, for values that not available during container creation
 		/// </summary>
-		/// <param name="logger">logger to write callback failures</param>
 		/// <param name="value">Value if it's immediately available from dependency injection</param>
-		public Accessor(ILogger<Accessor<TValue>> logger, TValue? value = null)
+		public Accessor(TValue? value = null)
 		{
-			m_logger = logger;
 			m_value = value;
 			m_actions = new LinkedList<WeakReference<Action<TValue>>>();
 		}
@@ -38,21 +35,16 @@ namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 					action(value);
 				}
 			}
+
+			m_actions.Clear();
 		}
 
 		/// <inheritdoc />
-		void IAccessor<TValue>.OnUpdated(Action<TValue> action)
+		void IAccessor<TValue>.OnFirstSet(Action<TValue> action)
 		{
 			if (m_value != null)
 			{
-				try
-				{
-					action(m_value);
-				}
-				catch (Exception ex)
-				{
-					m_logger.LogError(ex, "Exception in accessor callback execution");
-				}
+				action(m_value);
 			}
 			else
 			{
@@ -63,8 +55,12 @@ namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 		/// <inheritdoc />
 		TValue? IAccessor<TValue>.Value => m_value;
 
+		/// <inheritdoc />
+		TValue IAccessor<TValue>.GetValueOrThrow() =>
+			m_value ?? throw new InvalidOperationException(FormattableString.Invariant($"Accessor value of type '{typeof(TValue)}' currently not available"));
+
 		private readonly LinkedList<WeakReference<Action<TValue>>> m_actions;
-		private readonly ILogger<Accessor<TValue>> m_logger;
+
 		private TValue? m_value;
 	}
 }

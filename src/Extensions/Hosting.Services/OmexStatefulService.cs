@@ -24,9 +24,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				: base(serviceContext)
 		{
 			serviceRegistrator.ContextAccessor.SetValue(serviceContext);
-			serviceRegistrator.StateAccessor.SetValue(StateManager);
-			serviceRegistrator.PartitionAccessor.SetValue(Partition);
-
 			m_serviceRegistrator = serviceRegistrator;
 		}
 
@@ -35,7 +32,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			m_serviceRegistrator.ListenerBuilders.Select(b => new ServiceReplicaListener(c => b.Build(this), b.Name));
 
 		/// <inheritdoc />
-		protected override Task RunAsync(CancellationToken cancellationToken) =>
-			Task.WhenAll(m_serviceRegistrator.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
+		protected override Task RunAsync(CancellationToken cancellationToken)
+		{
+			m_serviceRegistrator.StateAccessor.SetValue(StateManager);
+			m_serviceRegistrator.PartitionAccessor.SetValue(Partition);
+
+			return Task.WhenAll(m_serviceRegistrator.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
+		}
 	}
 }

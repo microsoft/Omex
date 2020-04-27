@@ -16,12 +16,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		public void ValuePassedInConstructor_ProperlyHandlesActions()
 		{
 			object value = new object();
-			Accessor<object> accessor = new Accessor<object>(new NullLogger<Accessor<object>>(), value);
+			Accessor<object> accessor = new Accessor<object>(value);
 			IAccessor<object> publicAccessor = accessor;
 
 			Assert.AreEqual(value, publicAccessor.Value);
 			object? recivedContext = null;
-			publicAccessor.OnUpdated(c => recivedContext = c);
+			publicAccessor.OnFirstSet(c => recivedContext = c);
 
 			Assert.AreEqual(value, recivedContext);
 		}
@@ -30,12 +30,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		public void ValueAfterInitialization_ProperlyHandlesActions()
 		{
 			object value = new object();
-			Accessor<object> accessor = new Accessor<object>(new NullLogger<Accessor<object>>());
+			Accessor<object> accessor = new Accessor<object>();
 			IAccessor<object> publicAccessor = accessor;
 			IAccessorSetter<object> setter = accessor;
 
 			object? receivedContext = null;
-			publicAccessor.OnUpdated(c => receivedContext = c);
+			publicAccessor.OnFirstSet(c => receivedContext = c);
 			setter.SetValue(value);
 
 			Assert.AreEqual(value, receivedContext);

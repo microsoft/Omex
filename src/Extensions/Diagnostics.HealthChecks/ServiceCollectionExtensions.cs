@@ -26,7 +26,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				ServerCertificateCustomValidationCallback = (sender, x509Certificate, chain, errors) => true
 			};
 
-
 			serviceCollection
 				.AddHttpClient(HttpEndpointHealthCheck.HttpClientLogicalName)
 				.ConfigurePrimaryHttpMessageHandler(() => clientHandler);

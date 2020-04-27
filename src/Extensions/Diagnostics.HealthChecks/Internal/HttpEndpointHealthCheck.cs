@@ -22,24 +22,33 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private readonly HttpHealthCheckParameters m_parameters;
 
+		private readonly IAccessor<ServiceContext> m_accessor;
+
 		private Uri? m_uriToCheck;
 
 		public HttpEndpointHealthCheck(IHttpClientFactory httpClientFactory, HttpHealthCheckParameters parameters, IAccessor<ServiceContext> accessor)
 		{
 			m_httpClientFactory = httpClientFactory;
 			m_parameters = parameters;
-			accessor.OnUpdated(SetUri);
+			m_accessor = accessor;
 		}
 
 		public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken token = default)
 		{
-			if (m_uriToCheck == null)
+			if (m_accessor.Value == null)
 			{
 				return new HealthCheckResult(HealthStatus.Degraded, "Not initialized");
 			}
 
 			try
 			{
+				if (m_uriToCheck == null)
+				{
+					int port = m_accessor.Value.CodePackageActivationContext.GetEndpoint(m_parameters.EndpointName).Port;
+					UriBuilder builder = new UriBuilder(m_parameters.Scheme, Host, port, m_parameters.RelativeUri.ToString());
+					m_uriToCheck = builder.Uri;
+				}
+
 				HttpClient httpClient = m_httpClientFactory.CreateClient(HttpClientLogicalName);
 
 				HttpRequestMessage request = new HttpRequestMessage(m_parameters.Method, m_uriToCheck);
@@ -63,13 +72,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			{
 				return HealthCheckResult.Unhealthy("Request failed", exception);
 			}
-		}
-
-		private void SetUri(ServiceContext context)
-		{
-			int port = context.CodePackageActivationContext.GetEndpoint(m_parameters.EndpointName).Port;
-			UriBuilder builder = new UriBuilder(m_parameters.Scheme, Host, port, m_parameters.RelativeUri.ToString());
-			m_uriToCheck = builder.Uri;
 		}
 	}
 }
