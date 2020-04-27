@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Diagnostics;
 using System.Fabric;
 using System.Net;
 using System.Net.Http;
@@ -9,14 +10,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.Activities;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
-	internal class HttpEndpointHealthCheck : IHealthCheck
+	internal class HttpEndpointHealthCheck : AbstractHealthCheck
 	{
-		public static string HttpClientLogicalName { get; } = "HttpEndpointHealthCheckHttpClient";
-
 		private const string Host = "localhost";
+
+		public static string HttpClientLogicalName { get; } = "HttpEndpointHealthCheckHttpClient";
 
 		private readonly IHttpClientFactory m_httpClientFactory;
 
@@ -26,52 +28,50 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private Uri? m_uriToCheck;
 
-		public HttpEndpointHealthCheck(IHttpClientFactory httpClientFactory, HttpHealthCheckParameters parameters, IAccessor<ServiceContext> accessor)
+		public HttpEndpointHealthCheck(
+			IHttpClientFactory httpClientFactory,
+			HttpHealthCheckParameters parameters,
+			IAccessor<ServiceContext> accessor,
+			ITimedScopeProvider scopeProvider)
+				: base(scopeProvider)
 		{
 			m_httpClientFactory = httpClientFactory;
 			m_parameters = parameters;
 			m_accessor = accessor;
 		}
 
-		public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken token = default)
+		protected override async Task<HealthCheckResult> CheckHealthInternalAsync(HealthCheckContext context, CancellationToken token = default)
 		{
 			if (m_accessor.Value == null)
 			{
 				return new HealthCheckResult(HealthStatus.Degraded, "Not initialized");
 			}
 
-			try
+			if (m_uriToCheck == null)
 			{
-				if (m_uriToCheck == null)
-				{
-					int port = m_accessor.Value.CodePackageActivationContext.GetEndpoint(m_parameters.EndpointName).Port;
-					UriBuilder builder = new UriBuilder(m_parameters.Scheme, Host, port, m_parameters.RelativeUri.ToString());
-					m_uriToCheck = builder.Uri;
-				}
-
-				HttpClient httpClient = m_httpClientFactory.CreateClient(HttpClientLogicalName);
-
-				HttpRequestMessage request = new HttpRequestMessage(m_parameters.Method, m_uriToCheck);
-
-				HttpResponseMessage? response = await httpClient.SendAsync(request, token).ConfigureAwait(false);
-
-				HealthStatus healthStatus = response?.StatusCode == HttpStatusCode.OK
-					? HealthStatus.Healthy
-					: HealthStatus.Unhealthy;
-
-				HealthCheckResult result = new HealthCheckResult(healthStatus, data: m_parameters.ReportData);
-
-				if (m_parameters.AdditionalCheck != null && response != null)
-				{
-					m_parameters.AdditionalCheck(response, result);
-				}
-
-				return result;
+				int port = m_accessor.Value.CodePackageActivationContext.GetEndpoint(m_parameters.EndpointName).Port;
+				UriBuilder builder = new UriBuilder(m_parameters.Scheme, Host, port, m_parameters.RelativeUri.ToString());
+				m_uriToCheck = builder.Uri;
 			}
-			catch (Exception exception)
+
+			HttpClient httpClient = m_httpClientFactory.CreateClient(HttpClientLogicalName);
+
+			HttpRequestMessage request = new HttpRequestMessage(m_parameters.Method, m_uriToCheck);
+
+			HttpResponseMessage? response = await httpClient.SendAsync(request, token).ConfigureAwait(false);
+
+			HealthStatus healthStatus = response?.StatusCode == HttpStatusCode.OK
+				? HealthStatus.Healthy
+				: HealthStatus.Unhealthy;
+
+			HealthCheckResult result = new HealthCheckResult(healthStatus, data: m_parameters.ReportData);
+
+			if (m_parameters.AdditionalCheck != null && response != null)
 			{
-				return HealthCheckResult.Unhealthy("Request failed", exception);
+				m_parameters.AdditionalCheck(response, result);
 			}
+
+			return result;
 		}
 	}
 }

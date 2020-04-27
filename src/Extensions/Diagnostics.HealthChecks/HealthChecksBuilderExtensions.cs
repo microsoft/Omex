@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <param name="builder">health checks builder</param>
 		/// <param name="name">name of the health check</param>
 		/// <param name="endpointName">name of the endpoint to check</param>
-		/// <param name="relativeUri">relative uri with path to check, absolute uri not allowed</param>
+		/// <param name="relativePath">relative path to check, absolute path not allowed</param>
 		/// <param name="method">http method to use, defaults to HttpGet</param>
 		/// <param name="scheme">uri scheme, defaults to http</param>
 		/// <param name="additionalCheck">action that would be called after getting response, it allows modifying health check result</param>
@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			this IHealthChecksBuilder builder,
 			string name,
 			string endpointName,
-			Uri relativeUri,
+			string relativePath,
 			HttpMethod? method = null,
 			string? scheme = null,
 			Action<HttpResponseMessage, HealthCheckResult>? additionalCheck = null,
@@ -37,7 +37,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		{
 			return builder.AddTypeActivatedCheck<HttpEndpointHealthCheck>(
 				name,
-				new HttpHealthCheckParameters(endpointName, relativeUri, method, scheme, additionalCheck, reportData));
+				new HttpHealthCheckParameters(endpointName, new Uri(relativePath, UriKind.Relative), method, scheme, additionalCheck, reportData));
 		}
 	}
 }

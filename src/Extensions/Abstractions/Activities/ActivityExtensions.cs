@@ -22,10 +22,10 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <summary>
 		/// Returns true if activity is transaction
 		/// </summary>
-		public static bool IsTransaction(this Activity activity) =>
+		public static bool IsHealthCheck(this Activity activity) =>
 			string.Equals(
-				activity.GetBaggageItem(TransactionMarkerKey),
-				TransactionMarkerValue,
+				activity.GetBaggageItem(HealthCheckMarkerKey),
+				HealthCheckMarkerValue,
 				StringComparison.OrdinalIgnoreCase);
 
 		/// <summary>
@@ -36,11 +36,11 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 			activity.AddBaggage(UserHashKey, userHash);
 
 		/// <summary>
-		/// Mark activity as transaction
+		/// Mark as health check activity
 		/// </summary>
 		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
-		public static Activity MarkAsTransaction(this Activity activity) =>
-			activity.AddBaggage(TransactionMarkerKey, TransactionMarkerValue);
+		public static Activity MarkAsHealthCheck(this Activity activity) =>
+			activity.AddBaggage(HealthCheckMarkerKey, HealthCheckMarkerValue);
 
 		/// <summary>
 		/// Set result
@@ -98,8 +98,8 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 			activity.AddBaggage(ObsoleteTransactionId, transactionId.ToString(CultureInfo.InvariantCulture));
 
 		private const string UserHashKey = "UserHash";
-		private const string TransactionMarkerKey = "TransactionMarkerKey";
-		private const string TransactionMarkerValue = "true";
+		private const string HealthCheckMarkerKey = "HealthCheckMarker";
+		private const string HealthCheckMarkerValue = "true";
 		private const string ObsoleteCorrelationId = "ObsoleteCorrelationId";
 		private const string ObsoleteTransactionId = "ObsoleteTransactionId";
 		private const string CorrelationIdObsoleteMessage = "Please use Activity.Id for new services instead";

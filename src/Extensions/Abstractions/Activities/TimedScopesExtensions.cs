@@ -41,5 +41,15 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 			timedScope.Activity.SetMetadata(metadata);
 			return timedScope;
 		}
+
+		/// <summary>
+		/// Mark as health check activity
+		/// </summary>
+		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
+		public static TimedScope MarkAsHealthCheck(this TimedScope timedScope)
+		{
+			timedScope.Activity.MarkAsHealthCheck();
+			return timedScope;
+		}
 	}
 }
