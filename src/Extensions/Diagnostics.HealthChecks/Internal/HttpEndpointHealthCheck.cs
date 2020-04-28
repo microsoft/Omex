@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Diagnostics;
 using System.Fabric;
 using System.Net;
 using System.Net.Http;
@@ -20,23 +19,23 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		public static string HttpClientLogicalName { get; } = "HttpEndpointHealthCheckHttpClient";
 
-		private readonly IHttpClientFactory m_httpClientFactory;
+		internal HttpHealthCheckParameters Parameters { get; } // done internal for unit tests, please don't use it outside of class
 
-		private readonly HttpHealthCheckParameters m_parameters;
+		private readonly IHttpClientFactory m_httpClientFactory;
 
 		private readonly IAccessor<ServiceContext> m_accessor;
 
 		private Uri? m_uriToCheck;
 
 		public HttpEndpointHealthCheck(
-			IHttpClientFactory httpClientFactory,
 			HttpHealthCheckParameters parameters,
+			IHttpClientFactory httpClientFactory,
 			IAccessor<ServiceContext> accessor,
 			ITimedScopeProvider scopeProvider)
 				: base(scopeProvider)
 		{
+			Parameters = parameters;
 			m_httpClientFactory = httpClientFactory;
-			m_parameters = parameters;
 			m_accessor = accessor;
 		}
 
@@ -49,14 +48,14 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			if (m_uriToCheck == null)
 			{
-				int port = m_accessor.Value.CodePackageActivationContext.GetEndpoint(m_parameters.EndpointName).Port;
-				UriBuilder builder = new UriBuilder(m_parameters.Scheme, Host, port, m_parameters.RelativeUri.ToString());
+				int port = m_accessor.Value.CodePackageActivationContext.GetEndpoint(Parameters.EndpointName).Port;
+				UriBuilder builder = new UriBuilder(Parameters.Scheme, Host, port, Parameters.RelativeUri.ToString());
 				m_uriToCheck = builder.Uri;
 			}
 
 			HttpClient httpClient = m_httpClientFactory.CreateClient(HttpClientLogicalName);
 
-			HttpRequestMessage request = new HttpRequestMessage(m_parameters.Method, m_uriToCheck);
+			HttpRequestMessage request = new HttpRequestMessage(Parameters.Method, m_uriToCheck);
 
 			HttpResponseMessage? response = await httpClient.SendAsync(request, token).ConfigureAwait(false);
 
@@ -64,11 +63,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				? HealthStatus.Healthy
 				: HealthStatus.Unhealthy;
 
-			HealthCheckResult result = new HealthCheckResult(healthStatus, data: m_parameters.ReportData);
+			HealthCheckResult result = new HealthCheckResult(healthStatus, data: Parameters.ReportData);
 
-			if (m_parameters.AdditionalCheck != null && response != null)
+			if (Parameters.AdditionalCheck != null && response != null)
 			{
-				m_parameters.AdditionalCheck(response, result);
+				Parameters.AdditionalCheck(response, result);
 			}
 
 			return result;
