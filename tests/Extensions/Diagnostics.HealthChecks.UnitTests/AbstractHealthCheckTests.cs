@@ -68,7 +68,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				return HealthCheckResult.Healthy();
 			}).CheckHealthAsync(new HealthCheckContext());
 
-			Assert.AreEqual(actualResult.Status, HealthStatus.Unhealthy);
+			Assert.AreEqual(actualResult.Status, HealthStatus.Healthy);
 			Assert.IsNotNull(activity);
 			Assert.IsTrue(activity!.IsHealthCheck(), "Activity should be marked as HealthCheck activity");
 			activity!.AssertResult(TimedScopeResult.Success);

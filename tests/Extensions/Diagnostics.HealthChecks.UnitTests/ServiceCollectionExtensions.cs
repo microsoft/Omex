@@ -3,13 +3,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Fabric;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 {
@@ -39,6 +42,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			IHealthCheck check = new MockCheck();
 
 			IServiceProvider provider = new ServiceCollection()
+				.AddSingleton(new Mock<IAccessor<IServicePartition>>().Object)
 				.AddServiceFabricHealthChecks()
 				.AddCheck(checkName, check)
 				.Services
