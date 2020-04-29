@@ -144,7 +144,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			where TBase : class
 		{
 			collection.TryAddAccessor<TValue>();
-			collection.AddSingleton<IAccessor<TBase>>(p => p.GetRequiredService<Accessor<TValue>>());
+			collection.TryAddSingleton<IAccessor<TBase>>(p => p.GetRequiredService<Accessor<TValue>>());
 			return collection;
 		}
 

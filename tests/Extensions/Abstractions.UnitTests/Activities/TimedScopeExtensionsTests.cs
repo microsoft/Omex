@@ -53,6 +53,16 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			Assert.IsNull(scope2.Activity.GetTag(ActivityTagKeys.Metadata));
 		}
 
+		[TestMethod]
+		public void MarkAsHealthCheck_SetsValue()
+		{
+			TimedScope scope1 = CreateScope("MarkAsHealthCheckTest1").MarkAsHealthCheck();
+			TimedScope scope2 = CreateScope("MarkAsHealthCheckTest2");
+
+			Assert.IsTrue(scope1.Activity.IsHealthCheck());
+			Assert.IsFalse(scope2.Activity.IsHealthCheck());
+		}
+
 		private TimedScope CreateScope(string name) =>
 			new TimedScope(new Activity(name), TimedScopeResult.SystemError);
 	}
