@@ -3,7 +3,6 @@
 
 using System;
 using System.Fabric;
-using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,7 +38,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			m_accessor = accessor;
 		}
 
-		protected override async Task<HealthCheckResult> CheckHealthInternalAsync(HealthCheckContext context, CancellationToken token = default)
+		protected override async Task<HealthCheckResult> CheckHealthInternalAsync(HealthCheckContext context, CancellationToken token)
 		{
 			if (m_accessor.Value == null)
 			{
@@ -59,15 +58,27 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			HttpResponseMessage? response = await httpClient.SendAsync(request, token).ConfigureAwait(false);
 
-			HealthStatus healthStatus = response?.StatusCode == HttpStatusCode.OK
-				? HealthStatus.Healthy
-				: HealthStatus.Unhealthy;
+			HealthStatus healthStatus = HealthStatus.Unhealthy;
+			string description = string.Empty;
 
-			HealthCheckResult result = new HealthCheckResult(healthStatus, data: Parameters.ReportData);
+			if (response != null)
+			{
+				if (response.StatusCode == Parameters.ExpectedStatus)
+				{
+					healthStatus = HealthStatus.Healthy;
+				}
+				else
+				{
+					// attach response to description only if check is not healthy to improve performance
+					description = await response.Content.ReadAsStringAsync();
+				}
+			}
+
+			HealthCheckResult result = new HealthCheckResult(healthStatus, description, data: Parameters.ReportData);
 
 			if (Parameters.AdditionalCheck != null && response != null)
 			{
-				Parameters.AdditionalCheck(response, result);
+				result = Parameters.AdditionalCheck(response, result);
 			}
 
 			return result;

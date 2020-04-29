@@ -7,6 +7,9 @@
     <ProjectReference Include="..\..\..\src\Extensions\Diagnostics.HealthChecks\Microsoft.Omex.Extensions.Diagnostics.HealthChecks.csproj" />
     <ProjectReference Include="..\Abstractions.UnitTests\Microsoft.Omex.Extensions.Abstractions.UnitTests.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ServiceFabric.Mocks" Version="$(ServiceFabric_Mocks_Version)" />
+  </ItemGroup>
   <ItemGroup Condition="$(IsNetFramework)">
     <Reference Include="System.Net.Http" />
   </ItemGroup>

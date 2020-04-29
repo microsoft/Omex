@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Fabric;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -26,38 +27,27 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			string endpoitName = "MockEndpoitName";
 			string path = "MockPath";
 			HttpMethod method = HttpMethod.Post;
+			HttpStatusCode code = HttpStatusCode.HttpVersionNotSupported;
 			string scheme = Uri.UriSchemeGopher;
-			Action<HttpResponseMessage, HealthCheckResult> additionalCheck = (r, h) => { };
+			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult> additionalCheck = (r, h) => HealthCheckResult.Degraded();
 			KeyValuePair<string, object>[] reportData = new Dictionary<string, object>
 			{
 				{ "testKey1", new object() },
 				{ "testKey2", "value" }
 			}.ToArray();
 
-			IServiceProvider provider = new ServiceCollection()
-				.AddSingleton(new Mock<ITimedScopeProvider>().Object)
-				.AddSingleton(new Mock<IAccessor<IServicePartition>>().Object)
-				.AddSingleton(new Mock<IAccessor<ServiceContext>>().Object)
-				.AddServiceFabricHealthChecks()
-				.AddHttpEndpointCheck(checkName, endpoitName, path, method, scheme, additionalCheck, reportData)
+			IServiceProvider provider = GetBuilder()
+				.AddHttpEndpointCheck(checkName, endpoitName, path, method, scheme, code, additionalCheck, reportData)
 				.Services
 				.BuildServiceProvider();
 
-			IOptions<HealthCheckServiceOptions> options = provider.GetRequiredService<IOptions<HealthCheckServiceOptions>>();
-			HealthCheckRegistration registration = options.Value.Registrations.SingleOrDefault(r => string.Equals(checkName, r.Name, StringComparison.Ordinal));
-
-			Assert.IsNotNull(registration, "HealthCheck should be registered");
-
-			IHealthCheck check = registration.Factory(provider);
-
-			Assert.IsInstanceOfType(check, typeof(HttpEndpointHealthCheck));
-
-			HttpHealthCheckParameters parameters = ((HttpEndpointHealthCheck)check).Parameters;
+			HttpHealthCheckParameters parameters = GetParameters(provider, checkName);
 
 			Assert.AreEqual(endpoitName, parameters.EndpointName, nameof(HttpHealthCheckParameters.EndpointName));
 			Assert.AreEqual(path, parameters.RelativeUri.ToString(), nameof(HttpHealthCheckParameters.RelativeUri));
 			Assert.AreEqual(method, parameters.Method, nameof(HttpHealthCheckParameters.Method));
 			Assert.AreEqual(scheme, parameters.Scheme, nameof(HttpHealthCheckParameters.Scheme));
+			Assert.AreEqual(code, parameters.ExpectedStatus, nameof(HttpHealthCheckParameters.ExpectedStatus));
 			Assert.AreEqual(additionalCheck, parameters.AdditionalCheck, nameof(HttpHealthCheckParameters.AdditionalCheck));
 			CollectionAssert.AreEquivalent(reportData, parameters.ReportData.ToArray(), nameof(HttpHealthCheckParameters.ReportData));
 		}
@@ -67,9 +57,25 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public void AddServiceFabricHealthChecks_InvalidPath_ThrowException(string path)
 		{
 			Assert.ThrowsException<UriFormatException>(() =>
-				new ServiceCollection()
-					.AddServiceFabricHealthChecks()
-					.AddHttpEndpointCheck("CheKName", "EndpointName", path));
+				GetBuilder().AddHttpEndpointCheck("CheKName", "EndpointName", path));
+		}
+
+		private IHealthChecksBuilder GetBuilder() =>
+			new ServiceCollection()
+				.AddSingleton(new Mock<ITimedScopeProvider>().Object)
+				.AddSingleton(new Mock<IAccessor<IServicePartition>>().Object)
+				.AddSingleton(new Mock<IAccessor<ServiceContext>>().Object)
+				.AddServiceFabricHealthChecks();
+
+		private HttpHealthCheckParameters GetParameters(IServiceProvider provider, string checkName)
+		{
+			IOptions<HealthCheckServiceOptions> options = provider.GetRequiredService<IOptions<HealthCheckServiceOptions>>();
+			HealthCheckRegistration registration = options.Value.Registrations.SingleOrDefault(r => string.Equals(checkName, r.Name, StringComparison.Ordinal));
+			Assert.IsNotNull(registration, "HealthCheck should be registered");
+
+			IHealthCheck check = registration.Factory(provider);
+			Assert.IsInstanceOfType(check, typeof(HttpEndpointHealthCheck));
+			return ((HttpEndpointHealthCheck)check).Parameters;
 		}
 	}
 }

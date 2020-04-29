@@ -1,8 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using System.Fabric;
+using System.Globalization;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -38,11 +41,28 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 				partition.ReportPartitionHealth(new SfHealthInformation(SourceId, entryPair.Key, ConvertStatus(entry.Status))
 				{
-					Description = entry.Description
+					Description = CreateDescription(entry)
 				});
 			}
 
 			return Task.CompletedTask;
+		}
+
+		private string CreateDescription(HealthReportEntry entry)
+		{
+			// Healthy reports won't be displayed and most of the checks would be healthy,
+			// so we are creating detailed description only for failed checks and avoid allocations for healthy
+			if (entry.Status == HealthStatus.Healthy)
+			{
+				return entry.Description;
+			}
+
+			return new StringBuilder()
+				.Append("Exception:").AppendLine(entry.Exception?.ToString())
+				.Append("Description:").AppendLine(entry.Description)
+				.Append("Duration:").AppendLine(entry.Duration.ToString())
+				.Append("Tags:").AppendLine(string.Join(",", entry.Tags))
+				.ToString();
 		}
 
 		private SfHealthState ConvertStatus(HealthStatus state) =>

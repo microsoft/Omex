@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Net;
 using System.Net.Http;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
@@ -14,8 +15,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		public string EndpointName { get; }
 		public Uri RelativeUri { get; }
 		public HttpMethod Method { get; }
+		public HttpStatusCode ExpectedStatus { get; }
 		public string Scheme { get; }
-		public Action<HttpResponseMessage, HealthCheckResult>? AdditionalCheck { get; }
+		public Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? AdditionalCheck { get; }
 		public IReadOnlyDictionary<string, object> ReportData { get; }
 
 		public HttpHealthCheckParameters(
@@ -23,7 +25,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			Uri relatedUri,
 			HttpMethod? method,
 			string? scheme,
-			Action<HttpResponseMessage, HealthCheckResult>? additionalCheck,
+			HttpStatusCode? expectedStatus,
+			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? additionalCheck,
 			KeyValuePair<string, object>[] reportData)
 		{
 			EndpointName = string.IsNullOrWhiteSpace(endpointName)
@@ -41,6 +44,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				: Uri.CheckSchemeName(scheme)
 					? scheme
 					: throw new ArgumentException("Invalid uri scheme", nameof(scheme));
+
+			ExpectedStatus = expectedStatus ?? HttpStatusCode.OK;
 
 			AdditionalCheck = additionalCheck;
 
