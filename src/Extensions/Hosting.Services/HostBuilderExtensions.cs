@@ -113,7 +113,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			}
 			catch (Exception e)
 			{
-				ServiceInitializationEventSource.Instance.LogHostBuildFailed(e.ToString(), serviceNameForLogging);
+				ServiceInitializationEventSource.Instance.LogHostFailed(e.ToString(), serviceNameForLogging);
 				throw;
 			}
 		}
