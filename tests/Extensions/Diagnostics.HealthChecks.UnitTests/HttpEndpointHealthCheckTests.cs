@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -114,6 +115,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				parameters,
 				factoryMock.Object,
 				accessor,
+				new NullLogger<HttpEndpointHealthCheck>(),
 				new SimpleScopeProvider());
 
 			HealthCheckContext checkContext = new HealthCheckContext();

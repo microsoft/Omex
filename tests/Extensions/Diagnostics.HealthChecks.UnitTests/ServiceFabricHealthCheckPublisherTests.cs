@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Fabric;
 using System.Linq;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SfHealthInformation = System.Fabric.Health.HealthInformation;
@@ -33,7 +34,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			}, default);
 
 			Accessor<IServicePartition> accessor = new Accessor<IServicePartition>();
-			IHealthCheckPublisher publisher = new ServiceFabricHealthCheckPublisher(accessor);
+			IHealthCheckPublisher publisher = new ServiceFabricHealthCheckPublisher(accessor, new NullLogger<ServiceFabricHealthCheckPublisher>());
 
 			publisher.PublishAsync(report, default); // publish not failing if IServicePartition not available
 

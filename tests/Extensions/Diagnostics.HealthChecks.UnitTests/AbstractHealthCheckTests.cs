@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.TimedScopes.UnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -79,7 +80,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			private readonly Func<HealthCheckContext, CancellationToken, HealthCheckResult> m_internalFunction;
 
 			public TestHealthCheck(Func<HealthCheckContext, CancellationToken, HealthCheckResult> internalFunction)
-				: base(new SimpleScopeProvider()) =>
+				: base(new NullLogger<TestHealthCheck>(), new SimpleScopeProvider()) =>
 					m_internalFunction = internalFunction;
 
 			protected override Task<HealthCheckResult> CheckHealthInternalAsync(HealthCheckContext context, CancellationToken token = default) =>
