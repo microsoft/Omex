@@ -3,6 +3,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.TimedScopes.UnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 {
@@ -20,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task AbstractHealthCheck_PropagatesParametersAndResult()
 		{
 			HealthCheckResult expectedResult = HealthCheckResult.Healthy("test");
-			HealthCheckContext expectedContext = new HealthCheckContext();
+			HealthCheckContext expectedContext = HealthCheckContextHelper.CreateCheckContext();
 			CancellationToken expectedToken = new CancellationTokenSource().Token;
 
 			HealthCheckContext? actualContext = default;
@@ -49,7 +51,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				activity = Activity.Current;
 				throw exception;
 			}
-			).CheckHealthAsync(new HealthCheckContext());
+			).CheckHealthAsync(HealthCheckContextHelper.CreateCheckContext());
 
 			Assert.AreEqual(actualResult.Exception, exception);
 			Assert.AreEqual(actualResult.Status, HealthStatus.Unhealthy);
@@ -67,7 +69,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			{
 				activity = Activity.Current;
 				return HealthCheckResult.Healthy();
-			}).CheckHealthAsync(new HealthCheckContext());
+			}).CheckHealthAsync(HealthCheckContextHelper.CreateCheckContext());
 
 			Assert.AreEqual(actualResult.Status, HealthStatus.Healthy);
 			Assert.IsNotNull(activity);

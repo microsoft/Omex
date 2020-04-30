@@ -118,7 +118,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				new NullLogger<HttpEndpointHealthCheck>(),
 				new SimpleScopeProvider());
 
-			HealthCheckContext checkContext = new HealthCheckContext();
+			HealthCheckContext checkContext = HealthCheckContextHelper.CreateCheckContext();
 
 			HealthCheckResult uninitializedResult = await healthCheck.CheckHealthAsync(checkContext);
 
