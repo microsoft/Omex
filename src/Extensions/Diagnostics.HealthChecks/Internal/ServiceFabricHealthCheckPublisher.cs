@@ -50,8 +50,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private string CreateDescription(HealthReportEntry entry)
 		{
-			// Healthy reports won't be displayed and most of the checks would be healthy,
-			// so we are creating detailed description only for failed checks and avoid allocations for healthy
+			// Healthy reports won't be displayed and most of the checks will be healthy,
+			// so we are creating a detailed description only for failed checks and avoiding allocations for healthy
 			if (entry.Status == HealthStatus.Healthy)
 			{
 				return entry.Description;

@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		public static string HttpClientLogicalName { get; } = "HttpEndpointHealthCheckHttpClient";
 
-		internal HttpHealthCheckParameters Parameters { get; } // done internal for unit tests, please don't use it outside of class
+		internal HttpHealthCheckParameters Parameters { get; } // internal only to be used for unit tests
 
 		private readonly IHttpClientFactory m_httpClientFactory;
 

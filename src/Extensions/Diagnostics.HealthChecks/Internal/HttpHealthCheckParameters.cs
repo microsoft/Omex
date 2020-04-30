@@ -55,7 +55,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			}
 			else
 			{
-				// should be replaced by passing enumerable to constructor after we'll drop full framework support
+				// should be replaced by passing enumerable to constructor after we drop full framework support
 				Dictionary<string, object> dictionary = new Dictionary<string, object>(reportData.Length);
 				foreach (KeyValuePair<string, object> pair in reportData)
 				{
