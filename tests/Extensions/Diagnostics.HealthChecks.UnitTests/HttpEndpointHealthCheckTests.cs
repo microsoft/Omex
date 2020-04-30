@@ -70,9 +70,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
-		public async Task CheckHealthAsync_WithAdditionalCheck_ReturnsOverridedResult()
+		public async Task CheckHealthAsync_WithAdditionalCheck_ReturnsOverridenResult()
 		{
-			string contentText = nameof(CheckHealthAsync_WithAdditionalCheck_ReturnsOverridedResult);
+			string contentText = nameof(CheckHealthAsync_WithAdditionalCheck_ReturnsOverridenResult);
 			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
 			HttpResponseMessage expectedResponse = new HttpResponseMessage(HttpStatusCode.Ambiguous)
 			{
