@@ -13,13 +13,25 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	internal class HttpHealthCheckParameters
 	{
 		public string EndpointName { get; }
+
 		public Uri RelativeUri { get; }
+
 		public HttpMethod Method { get; }
+
 		public HttpStatusCode ExpectedStatus { get; }
+
 		public string Scheme { get; }
+
 		public Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? AdditionalCheck { get; }
+
 		public IReadOnlyDictionary<string, object> ReportData { get; }
 
+		/// <summary>
+		/// Creates HttpHealthCheckParameters instance
+		/// </summary>
+		/// <remarks>
+		///	Parameter description provided in a public method for creation of http health check <see cref="HealthChecksBuilderExtensions.AddHttpEndpointCheck"/>
+		/// </remarks>
 		public HttpHealthCheckParameters(
 			string endpointName,
 			Uri relatedUri,

@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <param name="method">http method to use, defaults to HttpGet</param>
 		/// <param name="scheme">uri scheme, defaults to http</param>
 		/// <param name="expectedStatus">response status code that considered healthy, default to 200(OK)</param>
-		/// <param name="additionalCheck">action that would be called after getting response, function should return new result object</param>
+		/// <param name="additionalCheck">action that would be called after getting response, function should return new result object that would be reported</param>
 		/// <param name="reportData">additional properties that will be attached to health check result, for example escalation info</param>
 		public static IHealthChecksBuilder AddHttpEndpointCheck(
 			this IHealthChecksBuilder builder,

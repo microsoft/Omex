@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 
@@ -30,8 +31,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			HttpHealthCheckParameters parameters,
 			IHttpClientFactory httpClientFactory,
 			IAccessor<ServiceContext> accessor,
+			ILogger<HttpEndpointHealthCheck> logger,
 			ITimedScopeProvider scopeProvider)
-				: base(scopeProvider)
+				: base(logger, scopeProvider)
 		{
 			Parameters = parameters;
 			m_httpClientFactory = httpClientFactory;
@@ -40,8 +42,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		protected override async Task<HealthCheckResult> CheckHealthInternalAsync(HealthCheckContext context, CancellationToken token)
 		{
+			string checkName = context.Registration.Name;
+
 			if (m_accessor.Value == null)
 			{
+				Logger.LogWarning(Tag.Create(), "'{0}' check executed before ServiceContext provided", checkName);
 				return new HealthCheckResult(HealthStatus.Degraded, "Not initialized");
 			}
 
@@ -69,6 +74,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				}
 				else
 				{
+					Logger.LogWarning(Tag.Create(), "'{0}' is unhealthy, expected request result {1}, actual {2}",
+						checkName, Parameters.ExpectedStatus, response.StatusCode);
+
 					// attach response to description only if check is not healthy to improve performance
 					description = await response.Content.ReadAsStringAsync();
 				}
@@ -78,6 +86,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			if (Parameters.AdditionalCheck != null && response != null)
 			{
+				Logger.LogInformation(Tag.Create(), "'{0}' check result will be overridden by {1}",
+					checkName, nameof(HttpHealthCheckParameters.AdditionalCheck));
+
 				result = Parameters.AdditionalCheck(response, result);
 			}
 

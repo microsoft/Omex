@@ -5,6 +5,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
@@ -19,10 +21,18 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		private readonly ITimedScopeProvider m_scopeProvider;
 
 		/// <summary>
+		/// Logger property
+		/// </summary>
+		protected ILogger Logger { get; }
+
+		/// <summary>
 		/// Base constructor with scope provider that would be removed after .NET 5 move
 		/// </summary>
-		protected AbstractHealthCheck(ITimedScopeProvider scopeProvider) =>
+		protected AbstractHealthCheck(ILogger logger, ITimedScopeProvider scopeProvider)
+		{
+			Logger = logger;
 			m_scopeProvider = scopeProvider;
+		}
 
 		/// <inheritdoc />
 		public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken token = default)
@@ -39,6 +49,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			}
 			catch (Exception exception)
 			{
+				Logger.LogError(Tag.Create(), exception, "'{0}' check failed with exception", context.Registration.Name);
 				return HealthCheckResult.Unhealthy("HealthCheck failed", exception);
 			}
 		}

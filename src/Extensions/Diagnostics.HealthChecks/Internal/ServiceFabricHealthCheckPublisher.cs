@@ -4,11 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Fabric;
-using System.Globalization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using SfHealthInformation = System.Fabric.Health.HealthInformation;
 using SfHealthState = System.Fabric.Health.HealthState;
@@ -21,8 +21,15 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private readonly IAccessor<IServicePartition> m_partitionAccessor;
 
-		public ServiceFabricHealthCheckPublisher(IAccessor<IServicePartition> partitionAccessor) =>
+		private readonly ILogger<ServiceFabricHealthCheckPublisher> m_logger;
+
+		public ServiceFabricHealthCheckPublisher(
+			IAccessor<IServicePartition> partitionAccessor,
+			ILogger<ServiceFabricHealthCheckPublisher> logger)
+		{
 			m_partitionAccessor = partitionAccessor;
+			m_logger = logger;
+		}
 
 		public Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
@@ -30,6 +37,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			if (partition == null)
 			{
+				m_logger.LogWarning(Tag.Create(), "Publisher run before partition provided");
+
 				return Task.CompletedTask;
 			}
 
@@ -38,11 +47,19 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			foreach(KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
 			{
 				HealthReportEntry entry = entryPair.Value;
-
-				partition.ReportPartitionHealth(new SfHealthInformation(SourceId, entryPair.Key, ConvertStatus(entry.Status))
+				SfHealthInformation sfHealthInformation = new SfHealthInformation(SourceId, entryPair.Key, ConvertStatus(entry.Status))
 				{
 					Description = CreateDescription(entry)
-				});
+				};
+
+				try
+				{
+					partition.ReportPartitionHealth(sfHealthInformation);
+				}
+				catch (Exception exception)
+				{
+					m_logger.LogError(Tag.Create(), exception, "Failed to report partition health");
+				}
 			}
 
 			return Task.CompletedTask;
@@ -71,7 +88,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				HealthStatus.Healthy => SfHealthState.Ok,
 				HealthStatus.Degraded => SfHealthState.Warning,
 				HealthStatus.Unhealthy => SfHealthState.Error,
-				_ => SfHealthState.Invalid,
+				_ => SfHealthState.Invalid
 			};
 	}
 }
