@@ -35,10 +35,12 @@ namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 					action(value);
 				}
 			}
+
+			m_actions.Clear();
 		}
 
 		/// <inheritdoc />
-		void IAccessor<TValue>.OnUpdated(Action<TValue> action)
+		void IAccessor<TValue>.OnFirstSet(Action<TValue> action)
 		{
 			if (m_value != null)
 			{
@@ -53,7 +55,12 @@ namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 		/// <inheritdoc />
 		TValue? IAccessor<TValue>.Value => m_value;
 
+		/// <inheritdoc />
+		TValue IAccessor<TValue>.GetValueOrThrow() =>
+			m_value ?? throw new InvalidOperationException(FormattableString.Invariant($"Accessor value of type '{typeof(TValue)}' currently not available"));
+
 		private readonly LinkedList<WeakReference<Action<TValue>>> m_actions;
+
 		private TValue? m_value;
 	}
 }

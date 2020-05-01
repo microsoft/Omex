@@ -33,10 +33,10 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			Activity activity1 = new Activity("TransactionTest1");
 			Activity activity2 = new Activity("TransactionTest2");
 
-			activity1.MarkAsTransaction();
+			activity1.MarkAsHealthCheck();
 
-			Assert.IsTrue(activity1.IsTransaction());
-			Assert.IsFalse(activity2.IsTransaction());
+			Assert.IsTrue(activity1.IsHealthCheck());
+			Assert.IsFalse(activity2.IsHealthCheck());
 		}
 
 		[TestMethod]

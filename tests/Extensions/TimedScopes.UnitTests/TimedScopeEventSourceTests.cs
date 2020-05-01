@@ -41,7 +41,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 				activity.SetUserHash("TestUserHash");
 				if (isTransaction)
 				{
-					activity.MarkAsTransaction();
+					activity.MarkAsHealthCheck();
 				}
 			}
 

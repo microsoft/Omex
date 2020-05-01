@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			EnvironmentName = hostEnvironment.EnvironmentName ?? DefaultEmptyValue;
 			IsPrivateDeployment = hostEnvironment.IsDevelopment();
 
-			accessor.OnUpdated(UpdateState);
+			accessor.OnFirstSet(UpdateState);
 		}
 
 		private string? GetRegionName() =>

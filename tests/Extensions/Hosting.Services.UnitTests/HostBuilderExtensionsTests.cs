@@ -59,6 +59,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[DataRow(typeof(IOmexServiceRegistrator), typeof(OmexStatelessServiceRegistrator))]
 		[DataRow(typeof(IAccessor<StatelessServiceContext>), typeof(Accessor<StatelessServiceContext>))]
 		[DataRow(typeof(IAccessor<ServiceContext>), typeof(Accessor<StatelessServiceContext>))]
+		[DataRow(typeof(IAccessor<IStatelessServicePartition>), typeof(Accessor<IStatelessServicePartition>))]
+		[DataRow(typeof(IAccessor<IServicePartition>), typeof(Accessor<IStatelessServicePartition>))]
 		public void BuildStatelessService_RegisterTypes(Type type, Type? expectedImplementationType)
 		{
 			object obj = new HostBuilder()
@@ -84,6 +86,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[DataRow(typeof(IAccessor<StatefulServiceContext>), typeof(Accessor<StatefulServiceContext>))]
 		[DataRow(typeof(IAccessor<ServiceContext>), typeof(Accessor<StatefulServiceContext>))]
 		[DataRow(typeof(IAccessor<IReliableStateManager>), typeof(Accessor<IReliableStateManager>))]
+		[DataRow(typeof(IAccessor<IStatefulServicePartition>), typeof(Accessor<IStatefulServicePartition>))]
+		[DataRow(typeof(IAccessor<IServicePartition>), typeof(Accessor<IStatefulServicePartition>))]
 		public void BuildStatefulService_RegiesterTypes(Type type, Type? expectedImplementationType)
 		{
 			object obj = new HostBuilder()
