@@ -4,6 +4,7 @@
 using System;
 using System.Fabric;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web
