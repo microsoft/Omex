@@ -46,6 +46,6 @@
     <Microsoft_ServiceFabric_Services_Version>4.1.409</Microsoft_ServiceFabric_Services_Version>
     <Microsoft_ServiceFabric_Services_Remoting_Version>4.1.409</Microsoft_ServiceFabric_Services_Remoting_Version>
     <Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>4.1.409</Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>
-    <ServiceFabric_Mocks_Version>4.1.3</ServiceFabric_Mocks_Version>
+    <ServiceFabric_Mocks_Version>4.1.4</ServiceFabric_Mocks_Version>
   </PropertyGroup>
 </Project>
