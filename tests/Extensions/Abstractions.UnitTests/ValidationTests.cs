@@ -34,8 +34,8 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 			=> Assert.ThrowsException<ArgumentNullException>(() => Validation.ThrowIfNull((int?)null));
 
 		[DataTestMethod]
-		[DataRow("asdsa")]
-		[DataRow("  a   ")]
+		[DataRow("apothem")]
+		[DataRow(" (⊙_☉)  ")]
 		[DataRow("-")]
 		public void ThrowIfNullOrWhiteSpace_WhenValueValid_ReturnsIt(string expected)
 		{
