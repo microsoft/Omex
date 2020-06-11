@@ -38,20 +38,17 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 		[DataRow(" (⊙_☉)  ")]
 		[DataRow("-")]
 		public void ThrowIfNullOrWhiteSpace_WhenValueValid_ReturnsIt(string expected)
-		{
-			string actual = Validation.ThrowIfNullOrWhiteSpace(expected);
-			Assert.AreEqual(expected, actual);
-		}
-
-		[TestMethod]
-		public void ThrowIfNullOrWhiteSpace_WhenValueNull_ThrowsException() =>
-			Assert.ThrowsException<ArgumentNullException>(() => Validation.ThrowIfNullOrWhiteSpace(null));
+			=> Assert.AreEqual(expected, Validation.ThrowIfNullOrWhiteSpace(expected));
 
 		[DataTestMethod]
 		[DataRow("")]
 		[DataRow("     ")]
 		[DataRow("\t\r\n")]
-		public void ThrowIfNullOrWhiteSpace_WhenValueEmptyOrWhiteSpace_ThrowsException(string value) =>
-			Assert.ThrowsException<ArgumentException>(() => Validation.ThrowIfNullOrWhiteSpace(value));
+		public void ThrowIfNullOrWhiteSpace_WhenValueEmptyOrWhiteSpace_ThrowsException(string value)
+			=> Assert.ThrowsException<ArgumentException>(() => Validation.ThrowIfNullOrWhiteSpace(value));
+
+		[TestMethod]
+		public void ThrowIfNullOrWhiteSpace_WhenValueNull_ThrowsException()
+			=> Assert.ThrowsException<ArgumentNullException>(() => Validation.ThrowIfNullOrWhiteSpace(null));
 	}
 }
