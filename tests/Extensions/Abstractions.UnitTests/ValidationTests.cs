@@ -9,30 +9,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 	[TestClass]
 	public class ValidationTests
 	{
-		[TestMethod]
-		public void ThrowIfNull_WhenValueValidRefType_ReturnsIt()
-		{
-			object expected = new object();
-			object actual = Validation.ThrowIfNull(expected);
-			Assert.AreEqual(expected, actual);
-		}
-
-		[TestMethod]
-		public void ThrowIfNull_WhenValueValidStruct_ReturnsIt()
-		{
-			int? expected = 1;
-			int actual = Validation.ThrowIfNull(expected);
-			Assert.AreEqual(expected, actual);
-		}
-
-		[TestMethod]
-		public void ThrowIfNull_WhenValueNull_ThrowsException()
-			=> Assert.ThrowsException<ArgumentNullException>(() => Validation.ThrowIfNull((object?)null));
-
-		[TestMethod]
-		public void ThrowIfNull_WhenValueNullableStruct_ThrowsException()
-			=> Assert.ThrowsException<ArgumentNullException>(() => Validation.ThrowIfNull((int?)null));
-
 		[DataTestMethod]
 		[DataRow("apothem")]
 		[DataRow(" (⊙_☉)  ")]

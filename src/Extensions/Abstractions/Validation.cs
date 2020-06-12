@@ -12,28 +12,6 @@ namespace Microsoft.Omex.Extensions.Abstractions
 	public static class Validation
 	{
 		/// <summary>
-		/// Throw exception if value is null, otherwise returns not-nullable value
-		/// </summary>
-		/// <typeparam name="T">type of the value</typeparam>
-		/// <param name="value">value to check</param>
-		/// <param name="name">name of the value for exception message</param>
-		/// <exception cref="ArgumentNullException">if value is null</exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T ThrowIfNull<T>(T? value, string? name = null) where T : class
-			=> value ?? throw new ArgumentNullException(name);
-
-		/// <summary>
-		/// Throw exception if value is null, otherwise returns not-nullable value
-		/// </summary>
-		/// <typeparam name="T">type of the value</typeparam>
-		/// <param name="value">value to check</param>
-		/// <param name="name">name of the value for exception message</param>
-		/// <exception cref="ArgumentNullException">if value is null</exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T ThrowIfNull<T>(T? value, string? name = null) where T : struct
-			=> value ?? throw new ArgumentNullException(name);
-
-		/// <summary>
 		/// Throw exception if string is null or empty or white space, otherwise returns not-nullable value
 		/// </summary>
 		/// <param name="value">value to check</param>
@@ -48,7 +26,9 @@ namespace Microsoft.Omex.Extensions.Abstractions
 				return value!; // `!` required because in net472 IsNullOrWhiteSpace does not have proper attributes
 			}
 
-			if (ThrowIfNull(value, name).Length == 0)
+			_ = value ?? throw new ArgumentNullException(name);
+
+			if (value.Length == 0)
 			{
 				throw new ArgumentException("String is empty", name);
 			}
