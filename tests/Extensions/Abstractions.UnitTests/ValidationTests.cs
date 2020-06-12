@@ -10,7 +10,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 	public class ValidationTests
 	{
 		[TestMethod]
-		public void ThrowIfNullOrWhiteSpace_WhenValueValidRefType_ReturnsIt()
+		public void ThrowIfNull_WhenValueValidRefType_ReturnsIt()
 		{
 			object expected = new object();
 			object actual = Validation.ThrowIfNull(expected);
@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 		}
 
 		[TestMethod]
-		public void ThrowIfNullOrWhiteSpace_WhenValueValidStruct_ReturnsIt()
+		public void ThrowIfNull_WhenValueValidStruct_ReturnsIt()
 		{
 			int? expected = 1;
 			int actual = Validation.ThrowIfNull(expected);
