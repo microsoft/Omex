@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(TargetFrameworksValue)</TargetFrameworks>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ServiceFabric" Version="$(Microsoft_ServiceFabric_Version)" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="$(Microsoft_Extensions_Http_Version)" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="$(Microsoft_Extensions_Diagnostics_HealthChecks_Version)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="$(IsNetFramework)">
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+</Project>

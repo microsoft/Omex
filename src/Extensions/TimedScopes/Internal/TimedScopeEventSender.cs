@@ -34,7 +34,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			string correlationId = activity.Id;
 			double durationMs = activity.Duration.TotalMilliseconds;
 			string userHash = activity.GetUserHash(); //TODO: We need add middleware that will set userhash in compliant way and IsTransaction GitHub Issue #166
-			bool isTransaction = activity.IsTransaction();
+			bool isTransaction = activity.IsHealthCheck();
 
 			string subtype = NullPlaceholder;
 			string metadata = NullPlaceholder;

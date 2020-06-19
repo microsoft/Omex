@@ -12,30 +12,26 @@ using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal sealed class OmexStatefulServiceRunner : OmexServiceRunner<OmexStatefulService, StatefulServiceContext>
+	internal sealed class OmexStatefulServiceRegistrator : OmexServiceRegistrator<OmexStatefulService, StatefulServiceContext>
 	{
-		public OmexStatefulServiceRunner(
+		public OmexStatefulServiceRegistrator(
 			IHostEnvironment environment,
 			IAccessorSetter<StatefulServiceContext> contextAccessor,
+			IAccessorSetter<IStatefulServicePartition> partitionAccessor,
 			IAccessorSetter<IReliableStateManager> stateAccessor,
 			IEnumerable<IListenerBuilder<OmexStatefulService>> listenerBuilders,
 			IEnumerable<IServiceAction<OmexStatefulService>> serviceActions)
 				: base(environment, contextAccessor, listenerBuilders, serviceActions)
 		{
-			m_stateAccessor = stateAccessor;
+			PartitionAccessor = partitionAccessor;
+			StateAccessor = stateAccessor;
 		}
 
-		public override Task RunServiceAsync(CancellationToken cancellationToken) =>
-			ServiceRuntime.RegisterServiceAsync(ApplicationName, ServiceFactory, cancellationToken: cancellationToken);
+		public override Task RegisterAsync(CancellationToken cancellationToken) =>
+			ServiceRuntime.RegisterServiceAsync(ApplicationName, context => new OmexStatefulService(this, context), cancellationToken: cancellationToken);
 
-		private StatefulService ServiceFactory(StatefulServiceContext context)
-		{
-			ContextAccessor.SetValue(context);
-			OmexStatefulService service = new OmexStatefulService(this, context);
-			m_stateAccessor.SetValue(service.StateManager);
-			return service;
-		}
+		public IAccessorSetter<IReliableStateManager> StateAccessor { get; }
 
-		private readonly IAccessorSetter<IReliableStateManager> m_stateAccessor;
+		public IAccessorSetter<IStatefulServicePartition> PartitionAccessor { get; }
 	}
 }

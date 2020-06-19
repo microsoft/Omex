@@ -18,12 +18,19 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		TValue? Value { get; }
 
 		/// <summary>
-		/// Execute function when value is available
+		/// Returns value from accessor or throws <see cref="InvalidOperationException" /> if it's null
+		/// </summary>
+		/// <exception cref="InvalidOperationException">If value is null</exception>
+		TValue GetValueOrThrow();
+
+		/// <summary>
+		/// Execute function when value is available (set in the first time)
 		/// </summary>
 		/// <remarks>
 		/// If value is not null, action will be executed immediately,
-		/// otherwise activity will be stored until it's available and then executed.
+		/// otherwise activity will be stored until it's available and then executed,
+		/// list of actions would be cleared after execution
 		/// </remarks>
-		void OnUpdated(Action<TValue> function);
+		void OnFirstSet(Action<TValue> function);
 	}
 }

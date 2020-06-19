@@ -4,9 +4,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
@@ -18,46 +18,54 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		public async Task StartAsync_ProperlyCanceled()
 		{
 			MockRunner runnerMock = new MockRunner(t => Task.Delay(int.MaxValue, t));
+			MockLifetime lifetimeMock = new MockLifetime();
 			ILogger<OmexHostedService> loggerMock = new NullLogger<OmexHostedService>();
-			OmexHostedService hostedService = new OmexHostedService(runnerMock, loggerMock);
+			OmexHostedService hostedService = new OmexHostedService(runnerMock, lifetimeMock, loggerMock);
 
 			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after constructor");
 
-			await hostedService.StartAsync(CancellationToken.None).ConfigureAwait(false);
-			Assert.IsTrue(runnerMock.IsStarted, "RunServiceAsync should be called after StartAsync");
+			await hostedService.StartAsync(CancellationToken.None);
+			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after StartAsync");
+
+			lifetimeMock.ApplicationStartedSource.Cancel();
+			Assert.IsTrue(runnerMock.IsStarted, "RunServiceAsync should not be called after StartAsync");
 
 			Task task = runnerMock.Task!;
 			Assert.IsFalse(task.IsCanceled, "Task should not be canceled");
 			Assert.IsFalse(runnerMock.Token.IsCancellationRequested, "CancelationToken should not be canceled");
 
-			await hostedService.StopAsync(CancellationToken.None).ConfigureAwait(false);
+			lifetimeMock.ApplicationStoppingSource.Cancel();
 			Assert.IsTrue(runnerMock.Token.IsCancellationRequested, "Task should be canceled");
 			Assert.IsTrue(task.IsCanceled, "CancelationToken should be canceled");
 		}
 
+
 		[TestMethod]
 		public async Task StartAsync_HandlesExceptions()
 		{
-			MockRunner runnerMock = new MockRunner(t => Task.Run(async () =>
-				{
-					await Task.Delay(5).ConfigureAwait(false);
-					throw new ArithmeticException("Totaly valid exeption");
-				}));
+			MockRunner runnerMock = new MockRunner(t => Task.Run(() => throw new Exception("Totaly valid exeption")));
+			MockLifetime lifetimeMock = new MockLifetime();
 			ILogger<OmexHostedService> loggerMock = new NullLogger<OmexHostedService>();
 
-			OmexHostedService hostedService = new OmexHostedService(runnerMock, loggerMock);
+			OmexHostedService hostedService = new OmexHostedService(runnerMock, lifetimeMock, loggerMock);
 			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after constructor");
 
-			await hostedService.StartAsync(CancellationToken.None).ConfigureAwait(false);
+			await hostedService.StartAsync(CancellationToken.None);
+			Assert.IsFalse(runnerMock.IsStarted, "RunServiceAsync should not be called after StartAsync");
+
+			lifetimeMock.ApplicationStartedSource.Cancel();
 			Assert.IsTrue(runnerMock.IsStarted, "RunServiceAsync should be called after StartAsync");
 			Assert.IsFalse(runnerMock.Token.IsCancellationRequested, "CancelationToken should not be canceled");
 
-			await hostedService.StopAsync(CancellationToken.None).ConfigureAwait(false);
+			await lifetimeMock.CompletionTask;
 			Assert.IsTrue(runnerMock.Task!.IsFaulted, "Task should be faulted");
+
+			lifetimeMock.ApplicationStoppingSource.Cancel();
 			Assert.IsTrue(runnerMock.Token.IsCancellationRequested, "Task should be canceled");
 		}
 
-		private class MockRunner : IOmexServiceRunner
+
+		private class MockRunner : IOmexServiceRegistrator
 		{
 			public CancellationToken Token { get; private set; }
 
@@ -65,7 +73,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			public bool IsStarted { get; private set; }
 
-			public Task RunServiceAsync(CancellationToken cancellationToken)
+			public Task RegisterAsync(CancellationToken cancellationToken)
 			{
 				IsStarted = true;
 				Token = cancellationToken;
@@ -75,6 +83,35 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			public MockRunner(Func<CancellationToken, Task> function) => m_function = function;
 
 			private readonly Func<CancellationToken, Task> m_function;
+		}
+
+		private class MockLifetime : IHostApplicationLifetime
+		{
+			public MockLifetime()
+			{
+				ApplicationStartedSource = new CancellationTokenSource();
+				ApplicationStoppingSource = new CancellationTokenSource();
+				ApplicationStoppedSource = new CancellationTokenSource();
+				m_completionSource = new TaskCompletionSource<bool>();
+			}
+
+			public CancellationTokenSource ApplicationStartedSource { get; }
+
+			public CancellationTokenSource ApplicationStoppingSource { get; }
+
+			public CancellationTokenSource ApplicationStoppedSource { get; }
+
+			public Task CompletionTask => m_completionSource.Task;
+
+			public CancellationToken ApplicationStarted => ApplicationStartedSource.Token;
+
+			public CancellationToken ApplicationStopping => ApplicationStoppingSource.Token;
+
+			public CancellationToken ApplicationStopped => ApplicationStoppedSource.Token;
+
+			public void StopApplication() => m_completionSource.SetResult(true);
+
+			private readonly TaskCompletionSource<bool> m_completionSource;
 		}
 	}
 }

@@ -6,7 +6,8 @@ using Microsoft.Omex.Extensions.Abstractions.EventSources;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
-	[EventSource(Name = "Microsoft-OMEX-TimedScopes")]
+	// Renamed from Microsoft-OMEX-TimedScopes to avoid conflict with sources in other libraries
+	[EventSource(Name = "Microsoft-OMEX-TimedScopes-Ext")] //TODO: new event source should be registered GitHub Issue #187
 	internal sealed class TimedScopeEventSource : EventSource
 	{
 		[Event((int)EventSourcesEventIds.LogTimedScope, Level = EventLevel.Informational, Version = 3)]
