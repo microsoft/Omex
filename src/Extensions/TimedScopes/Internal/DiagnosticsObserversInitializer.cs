@@ -2,17 +2,27 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
-	internal sealed class ActivityObserversIntializer : IHostedService, IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object>>
+	/// <summary>
+	/// Hosted service for listening to diagnostic events
+	/// </summary>
+	/// <remarks>
+	/// Should be changed after .NET 5 release https://github.com/dotnet/designs/pull/98
+	/// </remarks>
+	internal sealed class DiagnosticsObserversInitializer : IHostedService, IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object>>
 	{
 		/// <summary>
 		/// Ending of the Activity Start event
@@ -24,15 +34,21 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		/// </summary>
 		internal static readonly string ActivityStopEnding = ".Stop";
 
+		/// <summary>
+		/// Ending of the exception events
+		/// </summary>
+		internal static readonly string ExceptionEventEnding = "Exception";
+
 		private static readonly string[] s_eventEndMarkersToListen = new[] {
 			ActivityStartEnding,
 			ActivityStopEnding,
+			ExceptionEventEnding,
 			// We need to listen for the "Microsoft.AspNetCore.Hosting.HttpRequestIn" event in order to signal Kestrel to create an Activity for the incoming http request.
 			// Searching only for RequestIn, in case any other requests follow the same pattern
 			"RequestIn",
 			// We need to listen for the "System.Net.Http.HttpRequestOut" event in order to create an Activity for the outgoing http requests.
 			// Searching only for RequestOut, in case any other requests follow the same pattern
-			"RequestOut",
+			"RequestOut"
 		};
 
 		private static bool EventEndsWith(string eventName, string ending) => eventName.EndsWith(ending, StringComparison.Ordinal);
@@ -53,15 +69,18 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 
 		private readonly IActivityStartObserver[] m_activityStartObservers;
 		private readonly IActivityStopObserver[] m_activityStopObservers;
+		private readonly ILogger<DiagnosticsObserversInitializer> m_logger;
 		private readonly LinkedList<IDisposable> m_disposables;
 		private IDisposable? m_observerLifetime;
 
-		public ActivityObserversIntializer(
+		public DiagnosticsObserversInitializer(
 			IEnumerable<IActivityStartObserver> activityStartObservers,
-			IEnumerable<IActivityStopObserver> activityStopObservers)
+			IEnumerable<IActivityStopObserver> activityStopObservers,
+			ILogger<DiagnosticsObserversInitializer> logger)
 		{
 			m_activityStartObservers = activityStartObservers.ToArray();
 			m_activityStopObservers = activityStopObservers.ToArray();
+			m_logger = logger;
 			m_disposables = new LinkedList<IDisposable>();
 		}
 
@@ -70,7 +89,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			m_observerLifetime = DiagnosticListener.AllListeners.Subscribe(this);
 			return Task.CompletedTask;
 		}
-		
+
 		public Task StopAsync(CancellationToken cancellationToken)
 		{
 			foreach (IDisposable disposable in m_disposables)
@@ -82,11 +101,12 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			return Task.CompletedTask;
 		}
 
-		void IObserver<DiagnosticListener>.OnCompleted() { }
+		public void OnCompleted() { }
 
-		void IObserver<DiagnosticListener>.OnError(Exception error) { }
+		public void OnError(Exception error) =>
+			m_logger.LogError(Tag.Create(), error, "Exception in diagnostic events provider");
 
-		void IObserver<DiagnosticListener>.OnNext(DiagnosticListener value)
+		public void OnNext(DiagnosticListener value)
 		{
 			if (m_activityStartObservers.Length != 0 || m_activityStopObservers.Length != 0)
 			{
@@ -94,11 +114,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			}
 		}
 
-		void IObserver<KeyValuePair<string, object>>.OnCompleted() { }
-
-		void IObserver<KeyValuePair<string, object>>.OnError(Exception error) { }
-
-		void IObserver<KeyValuePair<string, object>>.OnNext(KeyValuePair<string, object> value)
+		public void OnNext(KeyValuePair<string, object> value)
 		{
 			Activity activity = Activity.Current;
 			string eventName = value.Key;
@@ -110,6 +126,10 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			else if (EventEndsWith(eventName, ActivityStopEnding))
 			{
 				OnActivityStopped(activity, value.Value);
+			}
+			else if (EventEndsWith(eventName, ExceptionEventEnding))
+			{
+				OnException(eventName, value.Value);
 			}
 		}
 
@@ -128,5 +148,47 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 				stopHandler.OnStop(activity, payload);
 			}
 		}
+
+		private void OnException(string eventName, object payload) =>
+			m_logger.LogError(
+				Tag.Create(),
+				ExtractExceptionFromPayload(payload),
+				"Exception diagnostic event '{0}' with payload '{1}'", eventName, payload);
+
+
+		// Made internal for unit testing
+		internal static Exception? ExtractExceptionFromPayload(object? payload)
+		{
+			if (payload == null)
+			{
+				return null;
+			}
+			else if (payload is Exception exception)
+			{
+				return exception;
+			}
+			else
+			{
+				// Attempting to find exception property since payload often use private classes,
+				// It would be completely removed after .NET 5 release.
+				// It's definitely not ideal identification
+				// DataAdapters doing it by parameter name https://github.com/aspnet/EventNotification/blob/28b77e7fb51b30797ce34adf86748c98c040985e/src/Microsoft.Extensions.DiagnosticAdapter/Internal/ProxyMethodEmitter.cs#L69
+				// Sample class with payload https://github.com/dotnet/runtime/blob/master/src/libraries/System.Net.Http/src/System/Net/Http/DiagnosticsHandler.cs#L181
+				Type payloadType = payload.GetType();
+				if (!s_exceptionProperties.TryGetValue(payloadType, out PropertyInfo? propertyInfo))
+				{
+					propertyInfo = payload.GetType()
+						.GetProperties()
+						.FirstOrDefault(p => typeof(Exception).IsAssignableFrom(p.PropertyType));
+
+					s_exceptionProperties.TryAdd(payloadType, propertyInfo);
+				}
+
+				return propertyInfo?.GetValue(payload) as Exception;
+			}
+		}
+
+		private static readonly ConcurrentDictionary<Type, PropertyInfo?> s_exceptionProperties =
+			new ConcurrentDictionary<Type, PropertyInfo?>();
 	}
 }

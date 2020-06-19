@@ -12,7 +12,7 @@ using Microsoft.ServiceFabric.Services.Communication.Runtime;
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	/// <summary>
-	/// Wrapper on top of IHostBuilder to propagete proper context type and avoid type registration mistakes
+	/// Wrapper on top of IHostBuilder to propagate proper context type and avoid type registration mistakes
 	/// </summary>
 	public sealed class ServiceFabricHostBuilder<TService, TContext>
 		where TService : IServiceFabricService<TContext>
@@ -26,7 +26,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// Method should be called only by extensions of this class
 		/// If you are creating a service please register dependencies before calling BuildService method and using this class
 		/// </summary>
-		internal ServiceFabricHostBuilder<TService, TContext> ConfigureServices(Action<HostBuilderContext, IServiceCollection> action)
+		public ServiceFabricHostBuilder<TService, TContext> ConfigureServices(Action<HostBuilderContext, IServiceCollection> action)
 		{
 			m_builder.ConfigureServices(action);
 			return this;

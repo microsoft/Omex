@@ -15,14 +15,18 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 	public static class HostBuilderExtensions
 	{
 		/// <summary>
-		/// Adds remote listener to statefull service
+		/// Adds remote listener to stateful service
 		/// </summary>
 		public static ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext> AddRemotingListener<TService>(
 			this ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext> builder,
 			string name,
 			FabricTransportRemotingListenerSettings? settings = null)
-				where TService : IService =>
-					builder.AddRemotingListener(name, (provider, _) => provider.GetService<TService>(), settings);
+				where TService : class, IService
+		{
+			return builder
+				.ConfigureServices((_, services) => services.AddTransient<TService>())
+				.AddRemotingListener(name, (provider, _) => provider.GetRequiredService<TService>(), settings);
+		}
 
 		/// <summary>
 		/// Adds remote listener to stateless service
@@ -35,7 +39,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 					builder.AddRemotingListener(name, (provider, _) => provider.GetService<TService>(), settings);
 
 		/// <summary>
-		/// Adds remote listener to statefull service
+		/// Adds remote listener to stateful service
 		/// </summary>
 		public static ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext> AddRemotingListener<TListener>(
 			this ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext> builder)

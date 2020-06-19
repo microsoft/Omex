@@ -7,7 +7,8 @@ using Microsoft.Omex.Extensions.Abstractions.EventSources;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
-	[EventSource(Name = "Microsoft-OMEX-Logs")]
+	// Renamed from Microsoft-OMEX-Logs to avoid conflict with sources in other libraries
+	[EventSource(Name = "Microsoft-OMEX-Logs-Ext")] //TODO: new event source should be registered GitHub Issue #187
 	internal sealed class OmexLogEventSource : EventSource
 	{
 		[Event((int)EventSourcesEventIds.LogError, Level = EventLevel.Error, Message = "{13}", Version = 6)]

@@ -10,7 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Logging;
+using Microsoft.ServiceFabric.Data;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
@@ -20,22 +23,22 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	public static class HostBuilderExtensions
 	{
 		/// <summary>
-		/// Configures host to run service fabric stateless service with initializded Omex dependencies
+		/// Configures host to run service fabric stateless service with initialized Omex dependencies
 		/// </summary>
 		public static IHost BuildStatelessService(
 			this IHostBuilder builder,
 			string serviceName,
 			Action<ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext>> builderAction) =>
-				builder.BuildServiceFabricService<OmexStatelessServiceRunner, OmexStatelessService, StatelessServiceContext>(serviceName, builderAction);
+				builder.BuildServiceFabricService<OmexStatelessServiceRegistrator, OmexStatelessService, StatelessServiceContext>(serviceName, builderAction);
 
 		/// <summary>
-		/// Configures host to run service fabric stateful service with initializded Omex dependencies
+		/// Configures host to run service fabric stateful service with initialized Omex dependencies
 		/// </summary>
 		public static IHost BuildStatefulService(
 			this IHostBuilder builder,
 			string serviceName,
 			Action<ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext>> builderAction) =>
-				builder.BuildServiceFabricService<OmexStatefulServiceRunner, OmexStatefulService, StatefulServiceContext>(serviceName, builderAction);
+				builder.BuildServiceFabricService<OmexStatefulServiceRegistrator, OmexStatefulService, StatefulServiceContext>(serviceName, builderAction);
 
 		/// <summary>
 		/// Registering Dependency Injection classes that will provide Service Fabric specific information for logging
@@ -43,10 +46,20 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public static IServiceCollection AddOmexServiceFabricDependencies<TContext>(this IServiceCollection collection)
 			where TContext : ServiceContext
 		{
-			collection.TryAddSingleton<Accessor<TContext>, Accessor<TContext>>();
-			collection.TryAddSingleton<IAccessorSetter<TContext>>(p => p.GetService<Accessor<TContext>>());
-			collection.TryAddSingleton<IAccessor<TContext>>(p => p.GetService<Accessor<TContext>>());
-			collection.TryAddSingleton<IAccessor<ServiceContext>>(p => p.GetService<Accessor<TContext>>());
+			bool isStatefulService = typeof(StatefulServiceContext).IsAssignableFrom(typeof(TContext));
+
+			if (isStatefulService)
+			{
+				collection.TryAddAccessor<IReliableStateManager>();
+				collection.TryAddAccessor<IStatefulServicePartition, IServicePartition>();
+			}
+			else
+			{
+				collection.TryAddAccessor<IStatelessServicePartition, IServicePartition>();
+			}
+
+			collection.TryAddAccessor<TContext, ServiceContext>();
+
 			collection.TryAddSingleton<IServiceContext, OmexServiceFabricContext>();
 			collection.TryAddSingleton<IExecutionContext, ServiceFabricExecutionContext>();
 			return collection.AddOmexServices();
@@ -56,32 +69,32 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			this IHostBuilder builder,
 			string serviceName,
 			Action<ServiceFabricHostBuilder<TService, TContext>> builderAction)
-				where TRunner : OmexServiceRunner<TService, TContext>
+				where TRunner : OmexServiceRegistrator<TService, TContext>
 				where TService : IServiceFabricService<TContext>
 				where TContext : ServiceContext
 		{
+			string serviceNameForLogging = serviceName;
+
 			try
 			{
-				builderAction(new ServiceFabricHostBuilder<TService, TContext>(builder));
-
 				if (string.IsNullOrWhiteSpace(serviceName))
 				{
-					// use executing asembly name for loggins since application name might be not available yet
-					serviceName = Assembly.GetExecutingAssembly().GetName().FullName;
+					// use executing assembly name for logging since application name not available
+					serviceNameForLogging = Assembly.GetExecutingAssembly().GetName().FullName;
+					throw new ArgumentException("Service type name is null of whitespace", nameof(serviceName));
 				}
-				else
-				{
-					// override default application name if it's provided explisitly
-					// for generic host application name is the name of the service that it's running (don't confuse with Sf application name)
-					builder.UseApplicationName(serviceName);
-				}
+
+				// for generic host application name is the name of the service that it's running (don't confuse with Sf application name)
+				builder.UseApplicationName(serviceName);
+
+				builderAction(new ServiceFabricHostBuilder<TService, TContext>(builder));
 
 				IHost host = builder
 					.ConfigureServices((context, collection) =>
 					{
 						collection
 							.AddOmexServiceFabricDependencies<TContext>()
-							.AddSingleton<IOmexServiceRunner, TRunner>()
+							.AddSingleton<IOmexServiceRegistrator, TRunner>()
 							.AddHostedService<OmexHostedService>();
 					})
 					.UseDefaultServiceProvider(options =>
@@ -94,19 +107,19 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				// get proper application name from host
 				serviceName = host.Services.GetService<IHostEnvironment>().ApplicationName;
 
-				ServiceInitializationEventSource.Instance.LogHostBuildSucceeded(Process.GetCurrentProcess().Id, serviceName);
+				ServiceInitializationEventSource.Instance.LogHostBuildSucceeded(Process.GetCurrentProcess().Id, serviceNameForLogging);
 
 				return host;
 			}
 			catch (Exception e)
 			{
-				ServiceInitializationEventSource.Instance.LogHostBuildFailed(e.ToString(), serviceName);
+				ServiceInitializationEventSource.Instance.LogHostFailed(e.ToString(), serviceNameForLogging);
 				throw;
 			}
 		}
 
 		/// <summary>
-		/// Overides ApplicationName in host configuration
+		/// Overrides ApplicationName in host configuration
 		/// </summary>
 		/// <remarks>
 		/// Method done internal instead of private to create unit tests for it,
@@ -125,5 +138,23 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 							: applicationName)
 				});
 			});
+
+		internal static IServiceCollection TryAddAccessor<TValue, TBase>(this IServiceCollection collection)
+			where TValue : class, TBase
+			where TBase : class
+		{
+			collection.TryAddAccessor<TValue>();
+			collection.TryAddSingleton<IAccessor<TBase>>(p => p.GetRequiredService<Accessor<TValue>>());
+			return collection;
+		}
+
+		internal static IServiceCollection TryAddAccessor<TValue>(this IServiceCollection collection)
+			where TValue : class
+		{
+			collection.TryAddSingleton<Accessor<TValue>, Accessor<TValue>>();
+			collection.TryAddSingleton<IAccessorSetter<TValue>>(p => p.GetService<Accessor<TValue>>());
+			collection.TryAddSingleton<IAccessor<TValue>>(p => p.GetService<Accessor<TValue>>());
+			return collection;
+		}
 	}
 }

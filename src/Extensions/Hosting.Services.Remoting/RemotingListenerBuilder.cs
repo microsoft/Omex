@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System.Fabric;
+using Microsoft.Omex.Extensions.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting;
 using Microsoft.ServiceFabric.Services.Remoting.FabricTransport.Runtime;
@@ -15,7 +16,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 	public abstract class RemotingListenerBuilder<TService> : IListenerBuilder<TService>
 		where TService : IServiceFabricService<ServiceContext>
 	{
-		private readonly FabricTransportRemotingListenerSettings? m_settings;
+		/// <inheritdoc />
+		public string Name { get; }
+
+		// done internal for unit tests
+		internal FabricTransportRemotingListenerSettings? Settings { get; }
 
 		/// <summary>
 		/// Constructor
@@ -25,7 +30,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 			FabricTransportRemotingListenerSettings? settings = null)
 		{
 			Name = name;
-			m_settings = settings;
+			Settings = settings;
 		}
 
 		/// <summary>
@@ -33,15 +38,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 		/// </summary>
 		public abstract IService BuildService(TService service);
 
-		/// <inheritdoc />
-		public string Name { get; }
-
 		ICommunicationListener IListenerBuilder<TService>.Build(TService service)
 		{
+			ServiceContext context = service.Context;
 			return new FabricTransportServiceRemotingListener(
-				service.Context,
-				BuildService(service),
-				m_settings);
+				context,
+				new OmexServiceRemotingDispatcher(context, BuildService(service)),
+				Settings);
 		}
 	}
 }

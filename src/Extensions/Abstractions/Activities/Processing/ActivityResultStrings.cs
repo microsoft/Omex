@@ -6,7 +6,7 @@ using System;
 namespace Microsoft.Omex.Extensions.Abstractions.Activities.Processing
 {
 	/// <summary>
-	/// Class with activity result enum string values to avoid alocations
+	/// Class with activity result enum string values to avoid allocations
 	/// </summary>
 	public static class ActivityResultStrings
 	{

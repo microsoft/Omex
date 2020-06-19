@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace Microsoft.Omex.Extensions.Hosting.Services
+namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 {
 	/// <summary>
 	/// Interface to provide value for accessor
@@ -15,6 +15,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <remarks>
 		/// Beside saving value it will also execute saved activities that were waiting for a value
 		/// </remarks>
-		void SetContext(TValue value);
+		void SetValue(TValue value);
 	}
 }

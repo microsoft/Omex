@@ -8,5 +8,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hosting.Services\Microsoft.Omex.Extensions.Hosting.Services.csproj" />
+    <ProjectReference Include="..\Services.Remoting\Microsoft.Omex.Extensions.Services.Remoting.csproj" />
   </ItemGroup>
 </Project>

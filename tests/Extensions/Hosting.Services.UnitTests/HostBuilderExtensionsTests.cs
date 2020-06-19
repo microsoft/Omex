@@ -9,9 +9,12 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.Omex.Extensions.Logging;
+using Microsoft.ServiceFabric.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -53,9 +56,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[DataRow(typeof(ITimedScopeProvider), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		[DataRow(typeof(IHostedService), typeof(OmexHostedService))]
-		[DataRow(typeof(IOmexServiceRunner), typeof(OmexStatelessServiceRunner))]
+		[DataRow(typeof(IOmexServiceRegistrator), typeof(OmexStatelessServiceRegistrator))]
 		[DataRow(typeof(IAccessor<StatelessServiceContext>), typeof(Accessor<StatelessServiceContext>))]
 		[DataRow(typeof(IAccessor<ServiceContext>), typeof(Accessor<StatelessServiceContext>))]
+		[DataRow(typeof(IAccessor<IStatelessServicePartition>), typeof(Accessor<IStatelessServicePartition>))]
+		[DataRow(typeof(IAccessor<IServicePartition>), typeof(Accessor<IStatelessServicePartition>))]
 		public void BuildStatelessService_RegisterTypes(Type type, Type? expectedImplementationType)
 		{
 			object obj = new HostBuilder()
@@ -77,9 +82,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[DataRow(typeof(ITimedScopeProvider), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		[DataRow(typeof(IHostedService), typeof(OmexHostedService))]
-		[DataRow(typeof(IOmexServiceRunner), typeof(OmexStatefulServiceRunner))]
+		[DataRow(typeof(IOmexServiceRegistrator), typeof(OmexStatefulServiceRegistrator))]
 		[DataRow(typeof(IAccessor<StatefulServiceContext>), typeof(Accessor<StatefulServiceContext>))]
 		[DataRow(typeof(IAccessor<ServiceContext>), typeof(Accessor<StatefulServiceContext>))]
+		[DataRow(typeof(IAccessor<IReliableStateManager>), typeof(Accessor<IReliableStateManager>))]
+		[DataRow(typeof(IAccessor<IStatefulServicePartition>), typeof(Accessor<IStatefulServicePartition>))]
+		[DataRow(typeof(IAccessor<IServicePartition>), typeof(Accessor<IStatefulServicePartition>))]
 		public void BuildStatefulService_RegiesterTypes(Type type, Type? expectedImplementationType)
 		{
 			object obj = new HostBuilder()
@@ -109,7 +117,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			bool hasErrorEvent = listener.EventsInformation.Any(e =>
 				serviceType == GetPayloadValue<string>(e, ServiceTypePayloadName)
-				&& e.EventId == (int)EventSourcesEventIds.GenericHostBuildFailed);
+				&& e.EventId == (int)EventSourcesEventIds.GenericHostFailed);
 
 			Assert.IsTrue(hasErrorEvent, "BuildStatelessService error should be logged");
 		}
@@ -128,7 +136,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			bool hasErrorEvent = listener.EventsInformation.Any(e =>
 				serviceType == GetPayloadValue<string>(e, ServiceTypePayloadName)
-				&& e.EventId == (int)EventSourcesEventIds.GenericHostBuildFailed);
+				&& e.EventId == (int)EventSourcesEventIds.GenericHostFailed);
 
 			Assert.IsTrue(hasErrorEvent, "BuildStatefulService error should be logged");
 		}

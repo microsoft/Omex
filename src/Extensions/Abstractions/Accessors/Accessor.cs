@@ -4,12 +4,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Omex.Extensions.Hosting.Services
+namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 {
 	/// <summary>
 	/// Type for accessing an object that is not available during dependency injection container creation
 	/// </summary>
-	/// <typeparam name="TValue">Type that will be accessable after dependency injection creation</typeparam>
+	/// <typeparam name="TValue">Type that will be accessible after dependency injection creation</typeparam>
 	public class Accessor<TValue> : IAccessor<TValue>, IAccessorSetter<TValue>
 		where TValue : class
 	{
@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 		/// <inheritdoc />
-		void IAccessorSetter<TValue>.SetContext(TValue value)
+		void IAccessorSetter<TValue>.SetValue(TValue value)
 		{
 			m_value = value;
 
@@ -40,7 +40,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 		/// <inheritdoc />
-		void IAccessor<TValue>.OnAvailable(Action<TValue> action)
+		void IAccessor<TValue>.OnFirstSet(Action<TValue> action)
 		{
 			if (m_value != null)
 			{
@@ -55,7 +55,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <inheritdoc />
 		TValue? IAccessor<TValue>.Value => m_value;
 
+		/// <inheritdoc />
+		TValue IAccessor<TValue>.GetValueOrThrow() =>
+			m_value ?? throw new InvalidOperationException(FormattableString.Invariant($"Accessor value of type '{typeof(TValue)}' currently not available"));
+
 		private readonly LinkedList<WeakReference<Action<TValue>>> m_actions;
+
 		private TValue? m_value;
 	}
 }

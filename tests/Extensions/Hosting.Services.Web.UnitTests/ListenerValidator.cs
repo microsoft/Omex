@@ -6,11 +6,13 @@ using System.Fabric;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 using Microsoft.Omex.Extensions.Logging;
+using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -50,13 +52,23 @@ namespace Hosting.Services.Web.UnitTests
 			Assert.AreEqual(ListenerName, builder.Name);
 
 			IWebHost host = builder.BuildWebHost(
-					context,
 					string.Empty,
 					new MockListener(context, (s, l) => new Mock<IWebHost>().Object));
 
-			Assert.AreEqual(context, ResolveType<ServiceContext>(host));
-			Assert.AreEqual(context, ResolveType<TContext>(host));
-			Assert.AreEqual(context, ResolveType<IAccessor<TContext>>(host).Value);
+			ResolveType<IAccessor<TContext>>(host);
+			ResolveType<IAccessor<ServiceContext>>(host);
+			ResolveType<IAccessor<IServicePartition>>(host);
+
+			bool isStatefulService = typeof(StatefulServiceContext).IsAssignableFrom(typeof(TContext));
+			if (isStatefulService)
+			{
+				ResolveType<IAccessor<IReliableStateManager>>(host);
+				ResolveType<IAccessor<IStatefulServicePartition>>(host);
+			}
+			else
+			{
+				ResolveType<IAccessor<IStatelessServicePartition>>(host);
+			}
 
 			ResolveType<TypeRegisteredInListenerExtension>(host);
 			ResolveType<MockStartup.TypeRegisteredInStartup>(host);

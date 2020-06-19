@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System.Fabric;
+using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ServiceFabric.Mocks;
@@ -29,7 +30,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			Assert.AreEqual(default, context.PartitionId);
 			Assert.AreEqual(default, context.ReplicaOrInstanceId);
 
-			setter.SetContext(serviceContext);
+			setter.SetValue(serviceContext);
 
 			Assert.AreEqual(serviceContext.PartitionId, context.PartitionId);
 			Assert.AreEqual(serviceContext.ReplicaOrInstanceId, context.ReplicaOrInstanceId);
