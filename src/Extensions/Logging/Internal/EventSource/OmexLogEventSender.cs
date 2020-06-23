@@ -110,7 +110,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			level switch
 			{
 				LogLevel.None => false,
-				_ => m_eventSource.IsEnabled()
+				_ => true
 			};
 
 		public bool IsReplayableMessage(LogLevel logLevel) =>
