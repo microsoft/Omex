@@ -41,7 +41,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			string buildVersion = m_executionContext.BuildVersion;
 			string machineId = m_executionContext.MachineId;
 
-			string tagName = eventId.Name;
+			string tagName = eventId.Name ?? string.Empty;
 			// In case if tag created using Tag.Create (line number and file in description) it's better to display decimal number
 			string tagId = string.IsNullOrWhiteSpace(eventId.Name)
 #pragma warning disable CS0618 // Need to be used for to process reserved tags from GitTagger
@@ -99,7 +99,7 @@ namespace Microsoft.Omex.Extensions.Logging
 				case LogLevel.Error:
 				case LogLevel.Critical:
 					m_eventSource.LogErrorServiceMessage(applicationName, serviceName, machineId, buildVersion, s_processName, partitionId, replicaId,
-						activityId, traceIdAsString, obsoleteCorrelationId, obsoleteTransactionId, "Error", category, tagId, eventId.Name, threadId, message);
+						activityId, traceIdAsString, obsoleteCorrelationId, obsoleteTransactionId, "Error", category, tagId, tagName, threadId, message);
 					break;
 				default:
 					throw new ArgumentException(FormattableString.Invariant($"Unknown EventLevel: {level}"));
