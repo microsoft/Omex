@@ -6,7 +6,7 @@ using System.Fabric;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
+using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
@@ -63,9 +63,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 
 		private void ConfigureServices(IServiceCollection services)
 		{
-			PropagateRequired<Accessor<TContext>>(services, m_serviceProvider);
-			PropagateOptional<Accessor<IReliableStateManager>>(services, m_serviceProvider);
-			AddMiddlewares(services);
+			services.AddOmexMiddleware()
+				.PropagateRequired<Accessor<TContext>>(m_serviceProvider)
+				.PropagateOptional<Accessor<IReliableStateManager>>(m_serviceProvider)
+				.PropagateOptional<Accessor<IStatefulServicePartition>>(m_serviceProvider)
+				.PropagateOptional<Accessor<IStatelessServicePartition>>(m_serviceProvider);
 		}
 
 		private readonly IServiceProvider m_serviceProvider;
@@ -73,30 +75,5 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		private readonly ServiceFabricIntegrationOptions m_options;
 
 		private readonly Action<IWebHostBuilder> m_builderExtension;
-
-		private static void PropagateRequired<TValue>(IServiceCollection services, IServiceProvider provider)
-			where TValue : class
-				=> services.AddSingleton(provider.GetRequiredService<TValue>());
-
-		private static void PropagateOptional<TValue>(IServiceCollection services, IServiceProvider provider)
-			where TValue : class
-		{
-			TValue? stateAccessors = provider.GetService<TValue>();
-			if (stateAccessors != null)
-			{
-				services.AddSingleton(stateAccessors);
-			}
-		}
-
-		private static void AddMiddlewares(IServiceCollection services)
-		{
-			services
-				.AddSingleton<ActivityEnrichmentMiddleware>()
-				.AddSingleton<ResponseHeadersMiddleware>();
-
-#pragma warning disable CS0618 // We need to register all middlewares, even if obsolete
-			services.AddSingleton<ObsoleteCorrelationHeadersMiddleware>();
-#pragma warning restore CS0618
-		}
 	}
 }

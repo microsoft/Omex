@@ -6,6 +6,7 @@ using System.Fabric;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
@@ -55,11 +56,18 @@ namespace Hosting.Services.Web.UnitTests
 					new MockListener(context, (s, l) => new Mock<IWebHost>().Object));
 
 			ResolveType<IAccessor<TContext>>(host);
+			ResolveType<IAccessor<ServiceContext>>(host);
+			ResolveType<IAccessor<IServicePartition>>(host);
 
 			bool isStatefulService = typeof(StatefulServiceContext).IsAssignableFrom(typeof(TContext));
 			if (isStatefulService)
 			{
 				ResolveType<IAccessor<IReliableStateManager>>(host);
+				ResolveType<IAccessor<IStatefulServicePartition>>(host);
+			}
+			else
+			{
+				ResolveType<IAccessor<IStatelessServicePartition>>(host);
 			}
 
 			ResolveType<TypeRegisteredInListenerExtension>(host);

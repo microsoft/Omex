@@ -5,6 +5,7 @@ using System;
 using System.Fabric;
 using System.Net;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Logging;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
@@ -19,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			EnvironmentName = hostEnvironment.EnvironmentName ?? DefaultEmptyValue;
 			IsPrivateDeployment = hostEnvironment.IsDevelopment();
 
-			accessor.OnUpdated(UpdateState);
+			accessor.OnFirstSet(UpdateState);
 		}
 
 		private string? GetRegionName() =>

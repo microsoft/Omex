@@ -12,7 +12,7 @@ using Microsoft.ServiceFabric.Services.Communication.Runtime;
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
 	/// <summary>
-	/// Wrapper on top of IHostBuilder to propagete proper context type and avoid type registration mistakes
+	/// Wrapper on top of IHostBuilder to propagate proper context type and avoid type registration mistakes
 	/// </summary>
 	public sealed class ServiceFabricHostBuilder<TService, TContext>
 		where TService : IServiceFabricService<TContext>

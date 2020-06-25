@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 	/// Hosted service for listening to diagnostic events
 	/// </summary>
 	/// <remarks>
-	/// Should be changed after .net 5 release https://github.com/dotnet/designs/pull/98
+	/// Should be changed after .NET 5 release https://github.com/dotnet/designs/pull/98
 	/// </remarks>
 	internal sealed class DiagnosticsObserversInitializer : IHostedService, IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object>>
 	{
@@ -89,7 +89,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			m_observerLifetime = DiagnosticListener.AllListeners.Subscribe(this);
 			return Task.CompletedTask;
 		}
-		
+
 		public Task StopAsync(CancellationToken cancellationToken)
 		{
 			foreach (IDisposable disposable in m_disposables)
@@ -170,7 +170,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			else
 			{
 				// Attempting to find exception property since payload often use private classes,
-				// It would be completely removed after .net 5 release.
+				// It would be completely removed after .NET 5 release.
 				// It's definitely not ideal identification
 				// DataAdapters doing it by parameter name https://github.com/aspnet/EventNotification/blob/28b77e7fb51b30797ce34adf86748c98c040985e/src/Microsoft.Extensions.DiagnosticAdapter/Internal/ProxyMethodEmitter.cs#L69
 				// Sample class with payload https://github.com/dotnet/runtime/blob/master/src/libraries/System.Net.Http/src/System/Net/Http/DiagnosticsHandler.cs#L181
