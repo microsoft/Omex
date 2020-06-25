@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 		public bool IsEnabled(LogLevel logLevel) => m_logsEventSender.IsEnabled(logLevel);
 
-		public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+		public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
 		{
 			if (!IsEnabled(logLevel))
 			{
@@ -30,6 +30,11 @@ namespace Microsoft.Omex.Extensions.Logging
 			}
 
 			string message = formatter(state, exception);
+			if (exception != null)
+			{
+				message = string.Concat(message, exception); // we need to concatenate with exception since default formatter ignore it https://github.com/aspnet/Logging/issues/442
+			}
+			
 			int threadId = Thread.CurrentThread.ManagedThreadId;
 			Activity? activity = Activity.Current;
 
