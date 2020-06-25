@@ -17,6 +17,8 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 	[TestClass]
 	public class OmexLoggerUnitTests
 	{
+		private static readonly Exception s_expectedPropagatedException = new Exception("Test exception");
+
 		[TestMethod]
 		public void LogMessage_PropagatedToEventSource()
 		{
@@ -81,8 +83,8 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			ReplayableActivity activity = CreateActivity(suffix);
 			activity.Start();
 			(ILogger logger, _) = LogMessage(eventSourceMock, eventId);
-			logger.LogDebug(replayMessage1);
-			logger.LogDebug(replayMessage2);
+			logger.LogDebug(s_expectedPropagatedException, replayMessage1);
+			logger.LogDebug(s_expectedPropagatedException, replayMessage2);
 			activity.Stop();
 
 			eventSourceMock.Verify(m_logExpression, Times.Exactly(3));
@@ -121,7 +123,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			Mock<IExternalScopeProvider> scopeProvicedMock = new Mock<IExternalScopeProvider>();
 			ILogger logger = new OmexLogger(eventSourceMock.Object, scopeProvicedMock.Object, GetLogCategory(suffix));
 
-			logger.LogError(CreateEventId(eventId, suffix), GetLogMessage(suffix));
+			logger.LogError(CreateEventId(eventId, suffix), s_expectedPropagatedException, GetLogMessage(suffix));
 
 			return (logger, scopeProvicedMock);
 		}
@@ -141,6 +143,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 				It.IsAny<LogLevel>(),
 				It.IsAny<EventId>(),
 				It.IsAny<int>(),
-				It.IsAny<string>());
+				It.IsAny<string>(),
+				s_expectedPropagatedException);
 	}
 }
