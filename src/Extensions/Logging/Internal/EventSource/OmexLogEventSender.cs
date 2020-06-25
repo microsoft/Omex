@@ -27,7 +27,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			m_options = options;
 		}
 
-		public void LogMessage(Activity? activity, string category, LogLevel level, EventId eventId, int threadId, string message, Exception exception)
+		public void LogMessage(Activity? activity, string category, LogLevel level, EventId eventId, int threadId, string message, Exception? exception)
 		{
 			if (!IsEnabled(level))
 			{
