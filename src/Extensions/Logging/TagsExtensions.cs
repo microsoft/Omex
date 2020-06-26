@@ -4,16 +4,21 @@
 using System;
 using System.Globalization;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
+	/// <summary>
+	/// Extensions for dealing with legacy Tag IDs.
+	/// </summary>
 	[Obsolete("Added for backward compatability, we are in a process of changing tagging system, please avoid using it if posible", false)]
-	internal static class TagsExtensions
+	public static class TagsExtensions
 	{
 		/// <summary>
-		/// Get the Tag id as a string, please avoid using this method if posible, it's added to support old tag scenario and made internal for unit tests
+		/// Get the Tag id as a string, from an <see cref="EventId"/>.
+		/// Please avoid using this method if posible, it's added to support old tag scenario and made internal for unit tests
 		/// </summary>
-		/// <param name="tagId">tag id</param>
+		/// <param name="eventId">The event ID.</param>
 		/// <returns>the tag as string</returns>
 		/// <remarks>
 		/// In terms of the conversion from integer tag value to equivalent string reprsentation, the following scheme is used:
@@ -25,8 +30,10 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// The conversion is done by treating each group of 6 bits as an index into the symbol space a,b,c,d, ... z, 0, 1, 2, ....9
 		/// eg. 0x000101D0 = 00 000000 000000 010000 000111 010000 2 = aaqhq
 		/// </remarks>
-		internal static string TagIdAsString(int tagId)
+		public static string ToTagId(this EventId eventId)
 		{
+			int tagId = eventId.Id;
+
 			if (tagId <= 0xFFFF)
 			{
 				// Use straight numeric values

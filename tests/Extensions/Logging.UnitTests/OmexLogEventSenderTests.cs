@@ -40,7 +40,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 				new EmptyServiceContext(),
 				Options.Create(new OmexLoggingOptions()));
 
-			logsSender.LogMessage(activity, category, logLevel, tagId, 0, message);
+			logsSender.LogMessage(activity, category, logLevel, tagId, 0, message, new Exception("Not expected to be part of the event"));
 
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
 

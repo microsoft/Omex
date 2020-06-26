@@ -33,11 +33,11 @@ namespace Microsoft.Omex.Extensions.Logging
 			int threadId = Thread.CurrentThread.ManagedThreadId;
 			Activity? activity = Activity.Current;
 
-			m_logsEventSender.LogMessage(activity, m_categoryName, logLevel, eventId, threadId, message);
+			m_logsEventSender.LogMessage(activity, m_categoryName, logLevel, eventId, threadId, message, exception);
 
 			if (m_logsEventSender.IsReplayableMessage(logLevel) && activity is ReplayableActivity replayableScope)
 			{
-				replayableScope.AddLogEvent(new LogMessageInformation(m_categoryName, eventId, threadId, message));
+				replayableScope.AddLogEvent(new LogMessageInformation(m_categoryName, eventId, threadId, message, exception));
 			}
 		}
 
