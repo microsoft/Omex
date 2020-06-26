@@ -12,10 +12,9 @@ namespace Microsoft.Omex.Extensions.Logging.Replayable
 		public EventId EventId { get; }
 		public int ThreadId { get; }
 		public string Message { get; }
+		public Exception? Exception { get; }
 
-		public Exception Exception { get; }
-
-		public LogMessageInformation(string category, EventId eventId, int threadId, string message, Exception exception)
+		public LogMessageInformation(string category, EventId eventId, int threadId, string message, Exception? exception)
 		{
 			Category = category;
 			EventId = eventId;
