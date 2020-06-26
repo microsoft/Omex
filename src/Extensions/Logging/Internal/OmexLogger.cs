@@ -34,7 +34,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			{
 				message = string.Concat(message, Environment.NewLine, exception); // we need to concatenate with exception since default formatter ignore it https://github.com/aspnet/Logging/issues/442
 			}
-			
+
 			int threadId = Thread.CurrentThread.ManagedThreadId;
 			Activity? activity = Activity.Current;
 
