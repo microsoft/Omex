@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.Logging.UnitTests
@@ -19,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		public void TagIdAsString_ConvertsProperly(int tagId, string expected)
 		{
 # pragma warning disable 618
-			Assert.AreEqual(expected, TagsExtensions.TagIdAsString(tagId));
+			Assert.AreEqual(expected, new EventId(tagId).ToTagId());
 #pragma warning restore 618
 		}
 	}
