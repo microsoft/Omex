@@ -27,12 +27,15 @@ namespace Microsoft.Omex.Extensions.Logging
 			m_options = options;
 		}
 
-		public void LogMessage(Activity? activity, string category, LogLevel level, EventId eventId, int threadId, string message)
+		public void LogMessage(Activity? activity, string category, LogLevel level, EventId eventId, int threadId, string message, Exception? exception)
 		{
 			if (!IsEnabled(level))
 			{
 				return;
 			}
+
+			// NOTE: Currently, we're not doing anything with the exception as the message when an exception is logged will already contain the exception details.
+			// However, in the future, it's possible we might want to log details, such as exception type or exception message, in separate columns.
 
 			Guid partitionId = m_serviceContext.PartitionId;
 			long replicaId = m_serviceContext.ReplicaOrInstanceId;
@@ -41,11 +44,11 @@ namespace Microsoft.Omex.Extensions.Logging
 			string buildVersion = m_executionContext.BuildVersion;
 			string machineId = m_executionContext.MachineId;
 
-			string tagName = eventId.Name;
+			string tagName = eventId.Name ?? string.Empty;
 			// In case if tag created using Tag.Create (line number and file in description) it's better to display decimal number
 			string tagId = string.IsNullOrWhiteSpace(eventId.Name)
 #pragma warning disable CS0618 // Need to be used for to process reserved tags from GitTagger
-				? TagsExtensions.TagIdAsString(eventId.Id)
+				? eventId.ToTagId()
 #pragma warning restore CS0618
 				: eventId.Id.ToString(CultureInfo.InvariantCulture);
 
@@ -99,7 +102,7 @@ namespace Microsoft.Omex.Extensions.Logging
 				case LogLevel.Error:
 				case LogLevel.Critical:
 					m_eventSource.LogErrorServiceMessage(applicationName, serviceName, machineId, buildVersion, s_processName, partitionId, replicaId,
-						activityId, traceIdAsString, obsoleteCorrelationId, obsoleteTransactionId, "Error", category, tagId, eventId.Name, threadId, message);
+						activityId, traceIdAsString, obsoleteCorrelationId, obsoleteTransactionId, "Error", category, tagId, tagName, threadId, message);
 					break;
 				default:
 					throw new ArgumentException(FormattableString.Invariant($"Unknown EventLevel: {level}"));
@@ -133,7 +136,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			{
 				foreach (LogMessageInformation log in replayableActivity.GetLogEvents())
 				{
-					LogMessage(activity, log.Category, LogLevel.Information, log.EventId, log.ThreadId, log.Message);
+					LogMessage(activity, log.Category, LogLevel.Information, log.EventId, log.ThreadId, log.Message, log.Exception);
 				}
 			}
 		}

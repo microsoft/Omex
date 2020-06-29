@@ -17,6 +17,8 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 	[TestClass]
 	public class OmexLoggerUnitTests
 	{
+		private static readonly Exception s_expectedPropagatedException = new Exception("Test exception");
+
 		[TestMethod]
 		public void LogMessage_PropagatedToEventSource()
 		{
@@ -49,9 +51,9 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		}
 
 		[TestMethod]
-		public void LogMessage_ReplayedMessageSaved()
+		public void LogMessage_ReplayedMessageAndExceptionSaved()
 		{
-			string suffix = nameof(LogMessage_ReplayedMessageSaved);
+			string suffix = nameof(LogMessage_ReplayedMessageAndExceptionSaved);
 			int eventId = 7;
 			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock(isReplayable: true);
 
@@ -64,33 +66,38 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			LogMessageInformation info = activity.GetLogEvents().Single();
 
 			Assert.AreEqual(GetLogCategory(suffix), info.Category);
-			Assert.AreEqual(GetLogMessage(suffix), info.Message);
 			Assert.AreEqual(CreateEventId(eventId, suffix), info.EventId);
+			StringAssert.Contains(info.Message, GetLogMessage(suffix));
+			StringAssert.Contains(info.Message, s_expectedPropagatedException.ToString());
 		}
 
 		[TestMethod]
 		public void LogMessage_ReplayedMessageSavedUnitilTheLimit()
 		{
 			string replayMessage1 = "ReplayMessage1";
+			Exception exception1 = new ArgumentException("Error");
 			string replayMessage2 = "ReplayMessage2";
+			Exception exception2 = new NullReferenceException("Error");
 
-			string suffix = nameof(LogMessage_ReplayedMessageSaved);
+			string suffix = nameof(LogMessage_ReplayedMessageSavedUnitilTheLimit);
 			int eventId = 7;
 			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock(isReplayable: true);
 
 			ReplayableActivity activity = CreateActivity(suffix);
 			activity.Start();
 			(ILogger logger, _) = LogMessage(eventSourceMock, eventId);
-			logger.LogDebug(replayMessage1);
-			logger.LogDebug(replayMessage2);
+			logger.LogDebug(exception1, replayMessage1);
+			logger.LogDebug(exception2, replayMessage2);
 			activity.Stop();
 
 			eventSourceMock.Verify(m_logExpression, Times.Exactly(3));
 			List<LogMessageInformation> info = activity.GetLogEvents().ToList();
 
 			Assert.AreEqual(2, info.Count);
-			Assert.AreEqual(replayMessage1, info[0].Message);
-			Assert.AreEqual(replayMessage2, info[1].Message);
+			StringAssert.Contains(info[0].Message, replayMessage1);
+			StringAssert.Contains(info[0].Message, exception1.ToString());
+			StringAssert.Contains(info[1].Message, replayMessage2);
+			StringAssert.Contains(info[1].Message, exception2.ToString());
 		}
 
 		[TestMethod]
@@ -121,7 +128,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			Mock<IExternalScopeProvider> scopeProvicedMock = new Mock<IExternalScopeProvider>();
 			ILogger logger = new OmexLogger(eventSourceMock.Object, scopeProvicedMock.Object, GetLogCategory(suffix));
 
-			logger.LogError(CreateEventId(eventId, suffix), GetLogMessage(suffix));
+			logger.LogError(CreateEventId(eventId, suffix), s_expectedPropagatedException, GetLogMessage(suffix));
 
 			return (logger, scopeProvicedMock);
 		}
@@ -141,6 +148,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 				It.IsAny<LogLevel>(),
 				It.IsAny<EventId>(),
 				It.IsAny<int>(),
-				It.IsAny<string>());
+				It.IsAny<string>(),
+				It.IsAny<Exception>());
 	}
 }

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 
@@ -30,6 +31,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <param name="eventId">event Id</param>
 		/// <param name="threadId">Id of the thread</param>
 		/// <param name="message">Log message</param>
-		void LogMessage(Activity? activity, string category, LogLevel level, EventId eventId, int threadId, string message);
+		/// <param name="exception">The exception, if any, associated with the log.</param>
+		void LogMessage(Activity? activity, string category, LogLevel level, EventId eventId, int threadId, string message, Exception? exception);
 	}
 }
