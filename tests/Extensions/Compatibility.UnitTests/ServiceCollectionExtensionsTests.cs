@@ -33,9 +33,9 @@ namespace Microsoft.Omex.Extensions.Compatibility.UnitTests
 				{
 					collection
 						.AddTimedScopes()
-						.AddSingleton(mockFactory.Object);
+						.AddSingleton(mockFactory.Object)
+						.AddOmexCompatibilityServices();
 				})
-				.AddOmexCompatibilityServices()
 				.Build()
 				.Start();
 
