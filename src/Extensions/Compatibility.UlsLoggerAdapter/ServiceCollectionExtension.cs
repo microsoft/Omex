@@ -6,7 +6,7 @@ using Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter;
 namespace Microsoft.Extensions.DependencyInjection
 {
 	/// <summary>
-	/// Extension methods for ServcieCollection
+	/// Extension methods for ServiceCollection
 	/// </summary>
 	public static class ServiceCollectionExtension
 	{
