@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Compatibility;
 
-namespace Microsoft.Omex.Extensions.Compatibility
+namespace Microsoft.Extensions.DependencyInjection
 {
 	/// <summary>
 	/// Class to register dependencies for Compatibility classes
@@ -14,10 +13,7 @@ namespace Microsoft.Omex.Extensions.Compatibility
 		/// <summary>
 		/// Initialize deprecated static classes like Code and ULSLogger
 		/// </summary>
-		public static IHostBuilder AddOmexCompatibilityServices(this IHostBuilder builder) =>
-			builder.ConfigureServices((context, collection) =>
-			{
-				collection.AddHostedService<OmexCompatibilityIntializerService>();
-			});
+		public static IServiceCollection AddOmexCompatibilityServices(this IServiceCollection services) =>
+			services.AddHostedService<OmexCompatibilityIntializerService>();
 	}
 }

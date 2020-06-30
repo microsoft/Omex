@@ -94,7 +94,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Diagnostics.HealthChecks", "src\Extensions\Diagnostics.HealthChecks\Microsoft.Omex.Extensions.Diagnostics.HealthChecks.csproj", "{4579B0AE-4949-4580-B245-2C9979D153FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests", "tests\Extensions\Diagnostics.HealthChecks.UnitTests\Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests.csproj", "{CDAA3EBA-02AE-41C6-B915-643A69A1BE57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests", "tests\Extensions\Diagnostics.HealthChecks.UnitTests\Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests.csproj", "{CDAA3EBA-02AE-41C6-B915-643A69A1BE57}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter", "src\Extensions\Compatibility.UlsLoggerAdapter\Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter.csproj", "{C7C334F5-6A26-4779-B02F-1EA0B1A02799}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter.UnitTests", "tests\Extensions\Compatibility.UlsLoggerAdapter.UnitTests\Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter.UnitTests.csproj", "{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -336,6 +340,22 @@ Global
 		{CDAA3EBA-02AE-41C6-B915-643A69A1BE57}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CDAA3EBA-02AE-41C6-B915-643A69A1BE57}.Release|x64.ActiveCfg = Release|Any CPU
 		{CDAA3EBA-02AE-41C6-B915-643A69A1BE57}.Release|x64.Build.0 = Release|Any CPU
+		{C7C334F5-6A26-4779-B02F-1EA0B1A02799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7C334F5-6A26-4779-B02F-1EA0B1A02799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7C334F5-6A26-4779-B02F-1EA0B1A02799}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C7C334F5-6A26-4779-B02F-1EA0B1A02799}.Debug|x64.Build.0 = Debug|Any CPU
+		{C7C334F5-6A26-4779-B02F-1EA0B1A02799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7C334F5-6A26-4779-B02F-1EA0B1A02799}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7C334F5-6A26-4779-B02F-1EA0B1A02799}.Release|x64.ActiveCfg = Release|Any CPU
+		{C7C334F5-6A26-4779-B02F-1EA0B1A02799}.Release|x64.Build.0 = Release|Any CPU
+		{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}.Debug|x64.Build.0 = Debug|Any CPU
+		{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}.Release|x64.ActiveCfg = Release|Any CPU
+		{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -373,6 +393,8 @@ Global
 		{BF122397-116D-4C0C-9261-37CF6476125E} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
 		{4579B0AE-4949-4580-B245-2C9979D153FF} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 		{CDAA3EBA-02AE-41C6-B915-643A69A1BE57} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
+		{C7C334F5-6A26-4779-B02F-1EA0B1A02799} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
+		{D24A349E-9C1D-4432-B5DC-82DD0BEB4446} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6FB7BCB-BF07-4F19-ACBA-457479D421BB}
