@@ -18,13 +18,11 @@ namespace Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter
 	{
 		private static readonly Func<string, Exception, string> s_formatter = (message, exception) => message; // emulating behavior of standard formatter to avoid duplicating exception stack trace
 		private readonly ILoggerFactory m_loggerFactory;
-		private readonly ILogger<UlsLogAddapter> m_logger;
 		private readonly ConcurrentDictionary<string, ILogger> m_loggersDictionary;
 
-		public UlsLogAddapter(ILoggerFactory loggerFactory, ILogger<UlsLogAddapter> logger)
+		public UlsLogAddapter(ILoggerFactory loggerFactory)
 		{
 			m_loggerFactory = loggerFactory;
-			m_logger = logger;
 			m_loggersDictionary = new ConcurrentDictionary<string, ILogger>(StringComparer.OrdinalIgnoreCase);
 		}
 
@@ -50,33 +48,15 @@ namespace Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter
 				s_formatter);
 		}
 
-		private LogLevel Convert(Level level)
-		{
-			if (Levels.Error == level)
+		private LogLevel Convert(Level level) =>
+			level.LogLevel switch
 			{
-				return LogLevel.Error;
-			}
-			else if (Levels.Warning == level)
-			{
-				return LogLevel.Warning;
-			}
-			else if (Levels.Info == level)
-			{
-				return LogLevel.Information;
-			}
-			else if (Levels.Verbose == level)
-			{
-				return LogLevel.Debug;
-			}
-			else if (Levels.Spam == level)
-			{
-				return LogLevel.Trace;
-			}
-			else
-			{
-				m_logger.LogError((int)TaggingUtilities.ReserveTag(0), "Unexpected log level '{0}'", level);
-				return LogLevel.Error;
-			}
-		}
+				Levels.LogLevel.Error => LogLevel.Error,
+				Levels.LogLevel.Warning => LogLevel.Warning,
+				Levels.LogLevel.Info => LogLevel.Information,
+				Levels.LogLevel.Verbose => LogLevel.Debug,
+				Levels.LogLevel.Spam => LogLevel.Trace,
+				_ => LogLevel.Error // treat unsupported levels as Error to ensure that they are not skipped
+			};
 	}
 }
