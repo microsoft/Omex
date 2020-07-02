@@ -24,17 +24,21 @@ namespace Microsoft.Omex.Extensions.Hosting.Certificates
 			m_certificatesCache = new ConcurrentDictionary<StoreName, CertificateInformation[]>();
 		}
 
-		public X509Certificate2? GetCertificateByThumbprint(string thumbprint, bool refreshCache = false, StoreName storeName = StoreName.My)
+		public X509Certificate2? GetCertificateByThumbprint(string thumbprint, bool refreshCache, StoreName storeName)
 		{
 			Validation.ThrowIfNullOrWhiteSpace(thumbprint, nameof(thumbprint));
 
-			IEnumerable<X509Certificate2> certificates = LoadCertificates(storeName, refreshCache)
-				.Where(info => string.Equals(info.Certificate.Thumbprint, thumbprint, StringComparison.OrdinalIgnoreCase))
-				.Select(info => info.Certificate);
+			X509Certificate2? matchingCertificate = null;
+			foreach (CertificateInformation info in LoadCertificates(storeName, refreshCache))
+			{
+				if (string.Equals(info.Certificate.Thumbprint, thumbprint, StringComparison.OrdinalIgnoreCase))
+				{
+					matchingCertificate = info.Certificate;
+					break;
+				}
+			}
 
-			X509Certificate2? bestCert = PickBestCertificate(certificates);
-
-			if (bestCert == null)
+			if (matchingCertificate == null)
 			{
 				m_logger.LogError(Tag.Create(), "Could not find certificate with {0} thumbprint.", thumbprint);
 			}
@@ -43,10 +47,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Certificates
 				m_logger.LogDebug(Tag.Create(), "Found certificate with {0} thumbprint.", thumbprint);
 			}
 
-			return bestCert;
+			return matchingCertificate;
 		}
 
-		public IEnumerable<X509Certificate2> GetCertificatesByCommonName(string commonName, bool refreshCache = false, StoreName storeName = StoreName.My)
+		public IEnumerable<X509Certificate2> GetCertificatesByCommonName(string commonName, bool refreshCache, StoreName storeName)
 		{
 			Validation.ThrowIfNullOrWhiteSpace(commonName, nameof(commonName));
 
@@ -69,6 +73,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Certificates
 				m_logger.LogError(Tag.Create(), "Could not find certificate with {0} as common name.", commonName);
 			}
 		}
+
+		public X509Certificate2? GetCertificateByCommonName(string commonName, bool refreshCache, StoreName storeName) =>
+			PickBestCertificate(GetCertificatesByCommonName(commonName, refreshCache, storeName));
 
 		private CertificateInformation[] LoadCertificates(StoreName storeName, bool refreshCache)
 		{
