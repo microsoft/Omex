@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
+using Microsoft.Omex.Extensions.Hosting.Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.Hosting.UnitTests
@@ -40,6 +41,22 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 				.Build().Services.GetService(type);
 
 			Assert.IsNotNull(hostObj, FormattableString.Invariant($"Type {type} was not resolved after AddOmexServices to HostBuilder"));
+		}
+
+		[TestMethod]
+		public void AddCertificateReader_TypesRegistered()
+		{
+			ICertificateReader collectionObj = new ServiceCollection()
+				.AddCertificateReader()
+				.AddLogging()
+				.BuildServiceProvider(new ServiceProviderOptions
+				{
+					ValidateOnBuild = true,
+					ValidateScopes = true
+				})
+				.GetService<ICertificateReader>();
+
+			Assert.IsNotNull(collectionObj, FormattableString.Invariant($"Type {nameof(ICertificateReader)} was not resolved after AddCertificateReader to ServiceCollection"));
 		}
 	}
 }

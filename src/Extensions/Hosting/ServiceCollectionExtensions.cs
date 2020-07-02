@@ -3,6 +3,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Hosting.Certificates;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.Omex.Extensions.TimedScopes;
 
@@ -11,7 +12,7 @@ namespace Microsoft.Omex.Extensions.Hosting
 	/// <summary>
 	/// Extension to add Omex dependencies to HostBuilder
 	/// </summary>
-	public static class HostBuilderExtensions
+	public static class ServiceCollectionExtensions
 	{
 		/// <summary>
 		/// Add Omex Logging and TimedScopes dependencies
@@ -27,5 +28,13 @@ namespace Microsoft.Omex.Extensions.Hosting
 			collection
 				.AddOmexLogging()
 				.AddTimedScopes();
+
+		/// <summary>
+		/// Add Omex Logging and TimedScopes dependencies
+		/// </summary>
+		public static IServiceCollection AddCertificateReader(this IServiceCollection collection) =>
+			collection
+				.AddSingleton<ICertificateStore, CertificateStore>()
+				.AddSingleton<ICertificateReader,CertificateReader>();
 	}
 }
