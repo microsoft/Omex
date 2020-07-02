@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 			X509Certificate2[] expected = new[]
 			{
 				CreateCert(commonName),
-				CreateCert(commonName)
+				CreateCert(commonName, notAfter: DateTimeOffset.Now.AddDays(-1)) // expired
 			};
 
 			(ICertificateReader reader, Action<Times, string> verify) = CreateReader(
@@ -60,6 +60,52 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 
 			bool hasAnyCerts = reader.GetCertificatesByCommonName("SomeName").Any();
 			Assert.IsFalse(hasAnyCerts, "GetCertificatesByCommonName should return empty sequence when there are no certificates");
+		}
+
+		[TestMethod]
+		public void GetCertificateByCommonName_WhenCertificatesNotFound_ReturnEmptySequence()
+		{
+			(ICertificateReader reader, _) = CreateReader();
+
+			X509Certificate2? result = reader.GetCertificateByCommonName("certName");
+			Assert.IsNull(result, "GetCertificateByCommonName should return null when there are no certificates");
+		}
+
+		[TestMethod]
+		public void GetCertificateByCommonName_WhenOthersNotValid_ReturnsTheMostSuitableCerts()
+		{
+			string commonName = "myCert";
+			StoreName storeName = StoreName.CertificateAuthority;
+			X509Certificate2 expected = CreateCert(commonName);
+
+			(ICertificateReader reader, _) = CreateReader(
+					storeName,
+					CreateCert(commonName, notBefore: DateTimeOffset.Now.AddDays(1)), // not active yet
+					CreateCert("dummyCert"),
+					expected,
+					CreateCert(commonName, notAfter: DateTimeOffset.Now.AddDays(-1)) // expired
+				);
+
+			X509Certificate2? actual = reader.GetCertificateByCommonName(commonName, storeName: storeName);
+			Assert.AreEqual(expected, actual, "Wrong certificate selected");
+		}
+
+		[TestMethod]
+		public void GetCertificateByCommonName_WhenOthersExpireEarlier_ReturnsTheMostSuitableCerts()
+		{
+			string commonName = "myCert";
+			StoreName storeName = StoreName.CertificateAuthority;
+			X509Certificate2 expected = CreateCert(commonName);
+
+			(ICertificateReader reader, _) = CreateReader(
+					storeName,
+					CreateCert(commonName, notAfter: expected.NotAfter.AddDays(-1)), // will expire earlier
+					expected,
+					CreateCert("anotherDummyCert")
+				);
+
+			X509Certificate2? actual = reader.GetCertificateByCommonName(commonName, storeName: storeName);
+			Assert.AreEqual(expected, actual, "Wrong certificate selected");
 		}
 
 		[TestMethod]
