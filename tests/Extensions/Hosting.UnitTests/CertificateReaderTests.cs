@@ -131,7 +131,5 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 					storeMock.Invocations.Clear();
 				});
 		}
-
-		private static ECDsa s_eCDsa = ECDsa.Create();
 	}
 }
