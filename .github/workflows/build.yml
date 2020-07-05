@@ -24,6 +24,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
+      with:
+        source-url: https://nuget.pkg.github.com/Microsoft/index.json	
       env:	
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}   
     - name: Build with dotnet
@@ -38,4 +40,4 @@ jobs:
       run: dotnet nuget push nuget\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate --no-symbols true
       env:	
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}   
-      if: matrix.configuration == 'Release' # && github.ref == 'refs/heads/master' && github.event == 'push'
+      if: matrix.configuration == 'Release' # && github.ref == 'refs/heads/master' && github.event == 'push' && !github.event.release.prerelease
