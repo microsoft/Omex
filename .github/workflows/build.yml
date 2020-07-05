@@ -33,7 +33,7 @@ jobs:
     - name: Create NuGet packages
       run: dotnet pack --no-build --configuration ${{ matrix.configuration }}
     - name: Add GitHub package source
-      run: dotnet nuget add source -name "github" -Source https://nuget.pkg.github.com/microsoft/index.json -Username NotUsed -Password ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet nuget add source https://nuget.pkg.github.com/microsoft/index.json --name "github" --username NotUsed --password ${{ secrets.GITHUB_TOKEN }}
     - name: Publish NuGet packages
       run: dotnet nuget push nuget\*.nupkg -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate --no-symbols true
       if: github.event == 'push' && github.ref == 'master' && ${{ matrix.configuration }} == 'Release'
