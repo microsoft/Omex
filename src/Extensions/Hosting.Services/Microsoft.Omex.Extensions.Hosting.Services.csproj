@@ -6,6 +6,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.ServiceFabric" Version="$(Microsoft_ServiceFabric_Version)" />
     <PackageReference Include="Microsoft.ServiceFabric.Services" Version="$(Microsoft_ServiceFabric_Services_Version)" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="$(Microsoft_Extensions_Hosting_Version)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hosting\Microsoft.Omex.Extensions.Hosting.csproj" />
