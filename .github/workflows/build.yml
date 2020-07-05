@@ -36,5 +36,5 @@ jobs:
       run: dotnet nuget add source https://nuget.pkg.github.com/microsoft/index.json --name "github" --username NotUsed --password ${{ secrets.GITHUB_TOKEN }}	
     - name: Publish NuGet packages
       run: dotnet nuget push nuget\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate --no-symbols true
-      if: matrix.configuration == 'Release'
+      if: github.event == 'push' && matrix.configuration == 'Release'
 #    matrix.configuration == 'Release' && github.ref == 'refs/heads/master'
