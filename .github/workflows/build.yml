@@ -22,7 +22,7 @@ jobs:
       with:
         nuget-api-key: ${{ secrets.GITHUB_TOKEN }}
         nuget-api-key-source: https://nuget.pkg.github.com/microsoft/index.json
-    - run: nuget sources update -name "github" -Source https://nuget.pkg.github.com/microsoft/index.json -Username NotUsed -Password ${{ secrets.GITHUB_TOKEN }}
+    - run: nuget sources add -name "github" -Source https://nuget.pkg.github.com/microsoft/index.json -Username NotUsed -Password ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
