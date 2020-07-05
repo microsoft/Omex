@@ -26,6 +26,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.301'
+        source-url: https://nuget.pkg.github.com/Microsoft/index.json
       env:	
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}   
     - name: Build with dotnet
@@ -38,5 +39,4 @@ jobs:
       run: dotnet nuget add source https://nuget.pkg.github.com/microsoft/index.json --name "github" --username NotUsed --password ${{ secrets.GITHUB_TOKEN }}	
     - name: Publish NuGet packages
       run: dotnet nuget push nuget\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate --no-symbols true
-      if: matrix.configuration == 'Release' 
-  # && github.ref == 'refs/heads/master' && github.event == 'push' && !github.event.release.prerelease
+      if: matrix.configuration == 'Release' # && github.ref == 'refs/heads/master' && github.event == 'push' && !github.event.release.prerelease
