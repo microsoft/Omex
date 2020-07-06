@@ -19,7 +19,7 @@ jobs:
         os: [windows-latest] # [ubuntu-latest, windows-latest, macOS-latest]
         configuration: [Release, Debug]
     env:
-      IsReleaseBuild: github.event_name == 'release' && !github.event.release.prerelease && github.ref == 'refs/heads/master' # matrix.configuration == 'Release' && 
+      IsReleaseBuild: false # matrix.configuration == 'Release' && github.event_name == 'release' && !github.event.release.prerelease && github.ref == 'refs/heads/master'
 
     steps:
     - uses: actions/checkout@v2
