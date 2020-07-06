@@ -26,11 +26,11 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
     - name: Build with dotnet
-      run: dotnet build --configuration ${{ matrix.configuration }}	
+      run: dotnet build --configuration ${{ matrix.configuration }}	-p:IsReleaseBuild=${{ env.IsReleaseBuild }}
     - name: Run Unit Tests
-      run: dotnet test --no-build --configuration ${{ matrix.configuration }}
+      run: dotnet test --no-build --configuration ${{ matrix.configuration }} -p:IsReleaseBuild=${{ env.IsReleaseBuild }}
     - name: Create NuGet packages
-      run: dotnet pack --no-build --configuration ${{ matrix.configuration }}
+      run: dotnet pack --no-build --configuration ${{ matrix.configuration }} -p:IsReleaseBuild=${{ env.IsReleaseBuild }}
     - name: Add GitHub package source	
       run: dotnet nuget add source https://nuget.pkg.github.com/microsoft/index.json --name "github" --username NotUsed --password ${{ secrets.GITHUB_TOKEN }}	
     - name: Publish NuGet packages
