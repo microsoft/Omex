@@ -13,25 +13,26 @@ on:
 
 jobs:
   build:
-
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [windows-latest] # [ubuntu-latest, windows-latest, macOS-latest]
         configuration: [Release, Debug]
+    env:
+      IsReleaseBuild: matrix.configuration == 'Release' && github.event_name == 'release' && !github.event.release.prerelease && github.ref == 'refs/heads/master'
 
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
     - name: Build with dotnet
-      run: dotnet build --configuration ${{ matrix.configuration }} -p:IsReleaseBuild=${{ matrix.configuration == 'Release' && github.event_name == 'release' && !github.event.release.prerelease }}	
+      run: dotnet build --configuration ${{ matrix.configuration }}	
     - name: Run Unit Tests
-      run: dotnet test --no-build --configuration ${{ matrix.configuration }} -p:IsReleaseBuild=${{ matrix.configuration == 'Release' && github.event_name == 'release' && !github.event.release.prerelease }}	
+      run: dotnet test --no-build --configuration ${{ matrix.configuration }}
     - name: Create NuGet packages
-      run: dotnet pack --no-build --configuration ${{ matrix.configuration }} -p:IsReleaseBuild=${{ matrix.configuration == 'Release' && github.event_name == 'release' && !github.event.release.prerelease }}	
+      run: dotnet pack --no-build --configuration ${{ matrix.configuration }}
     - name: Add GitHub package source	
       run: dotnet nuget add source https://nuget.pkg.github.com/microsoft/index.json --name "github" --username NotUsed --password ${{ secrets.GITHUB_TOKEN }}	
     - name: Publish NuGet packages
       run: dotnet nuget push nuget\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate --no-symbols true
-      if: github.ref == 'refs/heads/master' && matrix.configuration == 'Release' && github.event_name == 'release' && !github.event.release.prerelease
+      if: env:IsReleaseBuild
