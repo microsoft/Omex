@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Logging
 	[EventSource(Name = "Microsoft-OMEX-Logs-Ext")] //TODO: new event source should be registered GitHub Issue #187
 	internal sealed class OmexLogEventSource : EventSource
 	{
-		[Event((int)EventSourcesEventIds.LogError, Level = EventLevel.Error, Message = "{13}", Version = 6)]
+		[Event((int)EventSourcesEventIds.LogError, Level = EventLevel.Error, Message = "{12}:{13} {16}", Version = 6)]
 		public void LogErrorServiceMessage(
 			string applicationName,
 			string serviceName,
@@ -33,7 +33,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			WriteEvent((int)EventSourcesEventIds.LogError, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
 				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
-		[Event((int)EventSourcesEventIds.LogWarning, Level = EventLevel.Warning, Message = "{13}", Version = 6)]
+		[Event((int)EventSourcesEventIds.LogWarning, Level = EventLevel.Warning, Message = "{12}:{13} {16}", Version = 6)]
 		public void LogWarningServiceMessage(
 			string applicationName,
 			string serviceName,
@@ -55,7 +55,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			WriteEvent((int)EventSourcesEventIds.LogWarning, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
 				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
-		[Event((int)EventSourcesEventIds.LogInfo, Level = EventLevel.Informational, Message = "{13}", Version = 6)]
+		[Event((int)EventSourcesEventIds.LogInfo, Level = EventLevel.Informational, Message = "{12}:{13} {16}", Version = 6)]
 		public void LogInfoServiceMessage(
 			string applicationName,
 			string serviceName,
@@ -77,7 +77,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			WriteEvent((int)EventSourcesEventIds.LogInfo, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
 				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
-		[Event((int)EventSourcesEventIds.LogVerbose, Level = EventLevel.Verbose, Message = "{13}", Version = 6)]
+		[Event((int)EventSourcesEventIds.LogVerbose, Level = EventLevel.Verbose, Message = "{12}:{13} {16}", Version = 6)]
 		public void LogVerboseServiceMessage(
 			string applicationName,
 			string serviceName,
@@ -99,7 +99,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			WriteEvent((int)EventSourcesEventIds.LogVerbose, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
 				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
-		[Event((int)EventSourcesEventIds.LogSpam, Level = EventLevel.Verbose, Message = "{13}", Version = 6)]
+		[Event((int)EventSourcesEventIds.LogSpam, Level = EventLevel.Verbose, Message = "{12}:{13} {16}", Version = 6)]
 		public void LogSpamServiceMessage(
 			string applicationName,
 			string serviceName,
