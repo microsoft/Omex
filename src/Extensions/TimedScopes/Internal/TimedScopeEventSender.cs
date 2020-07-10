@@ -75,6 +75,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 					subType: subTypeAsString,
 					metadata: metaDataAsString,
 					serviceName: serviceNameAsString,
+					logCategory: s_logCategory,
 					result: resultAsString,
 					correlationId: correlationIdAsString,
 					activityId: activityIdAsString,
@@ -88,6 +89,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 					metadata: metaDataAsString,
 					userHash: userHashAsString,
 					serviceName: serviceNameAsString,
+					logCategory: s_logCategory,
 					result: resultAsString,
 					correlationId: correlationIdAsString,
 					activityId: activityIdAsString,
@@ -113,6 +115,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		private readonly TimedScopeEventSource m_eventSource;
 		private readonly string m_serviceName;
 		private readonly ILogger<TimedScopeEventSender> m_logger;
+		private static readonly string s_logCategory = typeof(TimedScopeEventSource).FullName ?? nameof(TimedScopeEventSource);
 		private const string NullPlaceholder = "null";
 	}
 }
