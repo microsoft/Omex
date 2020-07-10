@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		[DataTestMethod]
 		[DataRow(EventSourcesEventIds.LogTimedScopeTestContext, true)]
 		[DataRow(EventSourcesEventIds.LogTimedScope, false)]
-		public void LogTimedScopeEndEvent_CreatesEvent(EventSourcesEventIds eventId, bool isTransaction)
+		public void LogTimedScopeEndEvent_CreatesEvent(EventSourcesEventIds eventId, bool isHealthCheck)
 		{
 			CustomEventListener listener = new CustomEventListener();
 			listener.EnableEvents(TimedScopeEventSource.Instance, EventLevel.Informational);
@@ -33,13 +33,15 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 				new HostingEnvironment { ApplicationName = "TestApp" },
 				new NullLogger<TimedScopeEventSender>());
 
+			string expectedActivityId = string.Empty;
 			Activity activity = new Activity(name);
 			using (TimedScope scope = new TimedScope(activity, TimedScopeResult.Success).Start())
 			{
+				expectedActivityId = activity.Id;
 				scope.SetSubType(subType);
 				scope.SetMetadata(metaData);
 				activity.SetUserHash("TestUserHash");
-				if (isTransaction)
+				if (isHealthCheck)
 				{
 					activity.MarkAsHealthCheck();
 				}
@@ -52,6 +54,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			AssertPayload(eventInfo, "name", name);
 			AssertPayload(eventInfo, "subType", subType);
 			AssertPayload(eventInfo, "metadata", metaData);
+			AssertPayload(eventInfo, "activityId", expectedActivityId);
 		}
 
 		private class CustomEventListener : EventListener
