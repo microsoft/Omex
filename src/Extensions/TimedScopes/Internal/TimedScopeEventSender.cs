@@ -30,11 +30,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			}
 
 			string serviceName = m_serviceName;
+			string activityId = activity.Id;
 			string name = activity.OperationName;
-			string correlationId = activity.Id;
 			double durationMs = activity.Duration.TotalMilliseconds;
 			string userHash = activity.GetUserHash(); //TODO: We need add middleware that will set userhash in compliant way and IsTransaction GitHub Issue #166
-			bool isTransaction = activity.IsHealthCheck();
+			bool isHealthCheck = activity.IsHealthCheck();
 
 			string subtype = NullPlaceholder;
 			string metadata = NullPlaceholder;
@@ -55,36 +55,43 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 				}
 			}
 
+#pragma warning disable CS0618 // Until it's used we need to include correlationId into events
+			string correlationId = activity.GetObsolteteTransactionId()?.ToString("D") ?? NullPlaceholder;
+#pragma warning restore CS0618
+
 			string nameAsString = SanitizeString(name, nameof(name), name);
 			string subTypeAsString = SanitizeString(subtype, nameof(subtype), name);
 			string metaDataAsString = SanitizeString(metadata, nameof(metadata), name);
 			string userHashAsString = SanitizeString(userHash, nameof(userHash), name);
 			string serviceNameAsString = SanitizeString(serviceName, nameof(serviceName), name);
 			string correlationIdAsString = SanitizeString(correlationId, nameof(correlationId), name);
+			string activityIdAsString = SanitizeString(activityId, nameof(activityId), name);
 			long durationMsAsLong = Convert.ToInt64(durationMs, CultureInfo.InvariantCulture);
 
-			if (isTransaction)
+			if (isHealthCheck)
 			{
 				m_eventSource.WriteTimedScopeTestEvent(
-					nameAsString,
-					subTypeAsString,
-					metaDataAsString,
-					serviceNameAsString,
-					resultAsString,
-					correlationIdAsString,
-					durationMsAsLong);
+					name: nameAsString,
+					subType: subTypeAsString,
+					metadata: metaDataAsString,
+					serviceName: serviceNameAsString,
+					result: resultAsString,
+					correlationId: correlationIdAsString,
+					activityId: activityIdAsString,
+					durationMs: durationMsAsLong);
 			}
 			else
 			{
 				m_eventSource.WriteTimedScopeEvent(
-					nameAsString,
-					subTypeAsString,
-					metaDataAsString,
-					userHashAsString,
-					serviceNameAsString,
-					resultAsString,
-					correlationIdAsString,
-					durationMsAsLong);
+					name: nameAsString,
+					subType: subTypeAsString,
+					metadata: metaDataAsString,
+					userHash: userHashAsString,
+					serviceName: serviceNameAsString,
+					result: resultAsString,
+					correlationId: correlationIdAsString,
+					activityId: activityIdAsString,
+					durationMs: durationMsAsLong);
 			}
 		}
 
@@ -101,7 +108,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 		}
 
 		private const string StringLimitMessage =
-			"Log aggregator enforces a string length limit of {0} characters per dimension. Truncating length of dimension {1} on activity {2} from {3} chars in order to allow upload of the metric";
+			"Log aggregation enforces a string length limit of {0} characters per dimension. Truncating length of dimension {1} on activity {2} from {3} chars in order to allow upload of the metric";
 
 		private readonly TimedScopeEventSource m_eventSource;
 		private readonly string m_serviceName;
