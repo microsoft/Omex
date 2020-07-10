@@ -10,7 +10,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 	[EventSource(Name = "Microsoft-OMEX-TimedScopes-Ext")] //TODO: new event source should be registered GitHub Issue #187
 	internal sealed class TimedScopeEventSource : EventSource
 	{
-		[Event((int)EventSourcesEventIds.LogTimedScope, Level = EventLevel.Informational, Version = 3)]
+		[Event((int)EventSourcesEventIds.LogTimedScope, Level = EventLevel.Informational, Version = 4)]
 		public void WriteTimedScopeEvent(
 			string name,
 			string subType,
@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			long durationMs) =>
 			WriteEvent((int)EventSourcesEventIds.LogTimedScope, name, subType, metadata, userHash, serviceName, logCategory, result, correlationId, activityId, durationMs);
 
-		[Event((int)EventSourcesEventIds.LogTimedScopeTestContext, Level = EventLevel.Informational, Version = 3)]
+		[Event((int)EventSourcesEventIds.LogTimedScopeTestContext, Level = EventLevel.Informational, Version = 4)]
 		public void WriteTimedScopeTestEvent(
 			string name,
 			string subType,
