@@ -34,7 +34,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			IServiceProvider serviceProvider,
 			ServiceFabricIntegrationOptions options,
 			Action<IWebHostBuilder> builderExtension,
-			Action<KestrelServerOptions> kestrelOptions)
+			Action<WebHostBuilderContext, KestrelServerOptions> kestrelOptions)
 		{
 			Name = name;
 			m_serviceProvider = serviceProvider;
@@ -77,7 +77,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 
 		private readonly ServiceFabricIntegrationOptions m_options;
 
-		private readonly Action<KestrelServerOptions> m_kestrelOptions;
+		private readonly Action<WebHostBuilderContext, KestrelServerOptions> m_kestrelOptions;
 
 		private readonly Action<IWebHostBuilder> m_builderExtension;
 	}

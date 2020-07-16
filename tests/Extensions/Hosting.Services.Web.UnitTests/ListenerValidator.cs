@@ -43,7 +43,7 @@ namespace Hosting.Services.Web.UnitTests
 						.AddSingleton(m_logsEventSourceMock.Object);
 				});
 			};
-			KestrelOptionsAction = serverOptions =>
+			KestrelOptionsAction = (webHostBuilderContext, serverOptions) =>
 			{
 				serverOptions.AddServerHeader = false;
 				serverOptions.AllowSynchronousIO = true;
@@ -57,7 +57,7 @@ namespace Hosting.Services.Web.UnitTests
 
 		public Action<IWebHostBuilder> BuilderAction { get; }
 
-		public Action<KestrelServerOptions> KestrelOptionsAction { get; }
+		public Action<WebHostBuilderContext, KestrelServerOptions> KestrelOptionsAction { get; }
 
 		public IWebHost ValidateListenerBuilder(TContext context, KestrelListenerBuilder<MockStartup, TService, TContext> builder)
 		{
