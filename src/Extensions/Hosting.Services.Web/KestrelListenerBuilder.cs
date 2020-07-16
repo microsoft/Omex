@@ -5,6 +5,7 @@ using System;
 using System.Fabric;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.ServiceFabric.Data;
@@ -32,11 +33,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			string name,
 			IServiceProvider serviceProvider,
 			ServiceFabricIntegrationOptions options,
-			Action<IWebHostBuilder> builderExtension)
+			Action<IWebHostBuilder> builderExtension,
+			Action<KestrelServerOptions> kestrelOptions)
 		{
 			Name = name;
 			m_serviceProvider = serviceProvider;
 			m_options = options;
+			m_kestrelOptions = kestrelOptions;
 			m_builderExtension = builderExtension;
 		}
 
@@ -44,7 +47,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		internal IWebHost BuildWebHost(string url, AspNetCoreCommunicationListener listener)
 		{
 			IWebHostBuilder hostBuilder = new WebHostBuilder()
-				.UseKestrel()
+				.UseKestrel(m_kestrelOptions)
 				.ConfigureServices(collection => ConfigureServices(collection))
 				.UseContentRoot(Directory.GetCurrentDirectory())
 				.UseStartup<TStartup>()
@@ -73,6 +76,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		private readonly IServiceProvider m_serviceProvider;
 
 		private readonly ServiceFabricIntegrationOptions m_options;
+
+		private readonly Action<KestrelServerOptions> m_kestrelOptions;
 
 		private readonly Action<IWebHostBuilder> m_builderExtension;
 	}

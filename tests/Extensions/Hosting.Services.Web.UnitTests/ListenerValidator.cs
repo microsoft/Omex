@@ -3,9 +3,13 @@
 
 using System;
 using System.Fabric;
+using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Hosting.Services;
@@ -39,6 +43,12 @@ namespace Hosting.Services.Web.UnitTests
 						.AddSingleton(m_logsEventSourceMock.Object);
 				});
 			};
+			KestrelOptionsAction = serverOptions =>
+			{
+				serverOptions.AddServerHeader = false;
+				serverOptions.AllowSynchronousIO = true;
+				serverOptions.DisableStringReuse = true;
+			};
 		}
 
 		public string ListenerName { get; }
@@ -46,6 +56,8 @@ namespace Hosting.Services.Web.UnitTests
 		public ServiceFabricIntegrationOptions IntegrationOptions { get; }
 
 		public Action<IWebHostBuilder> BuilderAction { get; }
+
+		public Action<KestrelServerOptions> KestrelOptionsAction { get; }
 
 		public IWebHost ValidateListenerBuilder(TContext context, KestrelListenerBuilder<MockStartup, TService, TContext> builder)
 		{
@@ -97,6 +109,18 @@ namespace Hosting.Services.Web.UnitTests
 			ICommunicationListener listener = builder.Build(service);
 			Assert.IsNotNull(listener, "Listener should not be null");
 			return listener;
+		}
+
+		public IServer ValidateKestrelServerOptionsSet(IWebHost host)
+		{
+			IServer kestrelServer = ResolveType<IServer>(host);
+			KestrelServerOptions kestrelServerOptions = ((KestrelServer)kestrelServer).Options;
+
+			Assert.IsFalse(kestrelServerOptions.AddServerHeader, "AddServerHeader should be false");
+			Assert.IsTrue(kestrelServerOptions.AllowSynchronousIO, "AllowSynchronousIO should be true");
+			Assert.IsTrue(kestrelServerOptions.DisableStringReuse, "DisableStringReuse should be true");
+
+			return kestrelServer;
 		}
 
 		private Mock<ILogEventSender> m_logsEventSourceMock;
