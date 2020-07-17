@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(TargetFrameworks);$(NetStandardVersions)</TargetFrameworks>
+    <TargetFrameworks>$(NetFrameworkVersions);$(NetStandardVersions)</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersions)</TargetFrameworks>
     <Description>Contains common classes for Omex libraries.</Description>
   </PropertyGroup>
@@ -20,5 +20,5 @@
     <ReleaseNotes>Initial release.</ReleaseNotes>
     <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/System</PackageProjectUrl>
     <PackageTags>Microsoft;Omex;System</PackageTags>
-  </PropertyGroup> 
+  </PropertyGroup>
 </Project>
