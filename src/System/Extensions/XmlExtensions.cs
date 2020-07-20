@@ -117,7 +117,7 @@ namespace Microsoft.Omex.System.Extensions
 				}
 			}
 
-			XmlReaderSettings settings = new XmlReaderSettings() { XmlResolver = null };
+			XmlReaderSettings settings = new XmlReaderSettings { XmlResolver = null };
 			settings.ConformanceLevel = ConformanceLevel.Document;
 			settings.IgnoreWhitespace = true;
 			settings.IgnoreComments = true;
