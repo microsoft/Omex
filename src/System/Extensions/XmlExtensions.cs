@@ -226,7 +226,7 @@ namespace Microsoft.Omex.System.Extensions
 				using (XmlReader schemaReader = XmlReader.Create(schemaStream))
 				{
 					schemas.Add(schemaNamespace, schemaReader);
-					XmlReaderSettings settings = new XmlReaderSettings() { XmlResolver = null };
+					XmlReaderSettings settings = new XmlReaderSettings { XmlResolver = null };
 					settings.ValidationType = ValidationType.Schema;
 					settings.Schemas = schemas;
 
@@ -299,7 +299,7 @@ namespace Microsoft.Omex.System.Extensions
 				schemas.Add(schemaUri, reader);
 			}
 
-			XmlReaderSettings settings = new XmlReaderSettings() { XmlResolver = null };
+			XmlReaderSettings settings = new XmlReaderSettings { XmlResolver = null };
 			settings.ValidationType = ValidationType.Schema;
 			settings.Schemas = schemas;
 			return settings;
