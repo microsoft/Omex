@@ -2,11 +2,14 @@
 // Licensed under the MIT license.
 
 using System.Fabric;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Hosting.Services.UnitTests;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Hosting.Services.Web.UnitTests;
+using Moq;
 
 namespace Hosting.Services.Web.UnitTests
 {
@@ -30,16 +33,17 @@ namespace Hosting.Services.Web.UnitTests
 				.AddOmexServiceFabricDependencies<TContext>()
 				.BuildServiceProvider();
 
-
 			KestrelListenerBuilder<MockStartup, TService, TContext> builder =
 				new KestrelListenerBuilder<MockStartup, TService, TContext>(
 					validator.ListenerName,
 					serviceProvider,
 					validator.IntegrationOptions,
-					validator.BuilderAction);
+					validator.BuilderAction,
+					validator.KestrelOptionsAction);
 
-			validator.ValidateListenerBuilder(service.Context, builder);
+			IWebHost host = validator.ValidateListenerBuilder(service.Context, builder);
 			validator.ValidateBuildFunction(service, builder);
+			validator.ValidateKestrelServerOptionsSet(host);
 		}
 	}
 }
