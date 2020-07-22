@@ -39,7 +39,7 @@ namespace Services.Remoting
 		[TestMethod]
 		public async Task GetClientAsync_UsingUri_WrapsClient()
 		{
-			Uri serviceUri = new Uri("http://localhost");
+			Uri serviceUri = new Uri("https://localhost");
 			ServicePartitionKey partitionKey = new ServicePartitionKey();
 			TargetReplicaSelector targetReplicaSelector = TargetReplicaSelector.PrimaryReplica;
 			string listenerName = nameof(GetClientAsync_UsingUri_WrapsClient);
@@ -78,7 +78,7 @@ namespace Services.Remoting
 		public async Task GetClientAsync_UsingPreviousRsp_WrapsClient()
 		{
 			ResolvedServicePartition previousRsp = MockQueryPartitionFactory.CreateResolvedServicePartition(
-				new Uri("http://localhost"),
+				new Uri("https://localhost"),
 				new List<ResolvedServiceEndpoint>());
 			TargetReplicaSelector targetReplicaSelector = TargetReplicaSelector.PrimaryReplica;
 			string listenerName = nameof(GetClientAsync_UsingPreviousRsp_WrapsClient);

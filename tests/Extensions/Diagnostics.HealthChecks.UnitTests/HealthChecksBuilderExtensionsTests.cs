@@ -7,6 +7,7 @@ using System.Fabric;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.ServiceModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
@@ -53,11 +54,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[DataTestMethod]
-		[DataRow("http://localhost")]
+		[DataRow("https://localhost")]
 		public void AddServiceFabricHealthChecks_InvalidPath_ThrowException(string path)
 		{
 			Assert.ThrowsException<UriFormatException>(() =>
-				GetBuilder().AddHttpEndpointCheck("CheKName", "EndpointName", path));
+				GetBuilder().AddHttpEndpointCheck("CheKName", "EndpointName", path, scheme: Uri.UriSchemeHttps));
 		}
 
 		private IHealthChecksBuilder GetBuilder() =>

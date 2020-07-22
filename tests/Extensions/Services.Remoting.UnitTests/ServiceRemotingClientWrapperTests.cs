@@ -24,7 +24,7 @@ namespace Services.Remoting
 			string listenerName = nameof(Constructor_SetClientProperties);
 			ResolvedServiceEndpoint endpoint = MockQueryPartitionFactory.CreateResolvedServiceEndpoint(string.Empty);
 			ResolvedServicePartition partition = MockQueryPartitionFactory.CreateResolvedServicePartition(
-				new Uri("http://localhost"),
+				new Uri("https://localhost"),
 				new List<ResolvedServiceEndpoint>());
 			Mock<IServiceRemotingClient> clientMock = new Mock<IServiceRemotingClient>();
 			clientMock.SetupGet(c => c.ListenerName).Returns(listenerName);

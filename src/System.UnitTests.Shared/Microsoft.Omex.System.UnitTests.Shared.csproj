@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(TargetFrameworks);$(NetStandardVersions)</TargetFrameworks>
+    <TargetFrameworks>$(NetFrameworkVersions);$(NetStandardVersions)</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersions)</TargetFrameworks>
     <IsTestProject>false</IsTestProject>
   </PropertyGroup>
