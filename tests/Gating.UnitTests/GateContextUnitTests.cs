@@ -21,6 +21,11 @@ namespace Microsoft.Omex.Gating.UnitTests
 	/// </summary>
 	public sealed class GateContextUnitTests : UnitTestBase
 	{
+#pragma warning disable SM02239 // hard coded e-mail for unit tests
+		private const string UserIdentifierInGroup = "test1@microsoft.com";
+		private const string UserIdentifierNotInGroup = "test1@contoso.com";
+#pragma warning restore SM02239
+
 		[Fact]
 		public void RequestNoEnvironment_Specified()
 		{
@@ -490,7 +495,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 			{
 				Users = new[]
 				{
-					new GatedUser { IsDogfoodUser = false, UserIdentifier = "test1@microsoft.com"}
+					new GatedUser { IsDogfoodUser = false, UserIdentifier = UserIdentifierInGroup}
 				}
 			};
 
@@ -507,7 +512,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 			{
 				Users = new[]
 				{
-					new GatedUser { IsDogfoodUser = false, UserIdentifier = "test2@microsoft.com"}
+					new GatedUser { IsDogfoodUser = false, UserIdentifier = UserIdentifierInGroup}
 				}
 			};
 
@@ -524,7 +529,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 			{
 				Users = new[]
 				{
-					new GatedUser { IsDogfoodUser = false, UserIdentifier = "test1@apple.com"}
+					new GatedUser { IsDogfoodUser = false, UserIdentifier = UserIdentifierNotInGroup}
 				}
 			};
 

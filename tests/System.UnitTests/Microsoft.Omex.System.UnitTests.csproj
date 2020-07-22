@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(TargetFrameworks);$(NetCoreVersions)</TargetFrameworks>
+    <TargetFrameworks>$(NetFrameworkVersions);$(NetCoreVersions)</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions)</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup Condition="!$(IsNetCore)">

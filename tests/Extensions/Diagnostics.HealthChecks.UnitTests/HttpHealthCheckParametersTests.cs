@@ -76,7 +76,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		[TestMethod]
 		public void Constructor_AbsoluteUri_ThrowException()
 		{
-			Assert.ThrowsException<ArgumentException>(() => Create(relatedUri: new Uri("http://localhost")));
+			Assert.ThrowsException<ArgumentException>(() => Create(relatedUri: new Uri("https://localhost"), scheme: Uri.UriSchemeHttps));
 		}
 
 		[DataTestMethod]

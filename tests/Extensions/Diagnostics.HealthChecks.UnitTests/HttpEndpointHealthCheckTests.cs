@@ -127,7 +127,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 			Mock<ICodePackageActivationContext> mock = new Mock<ICodePackageActivationContext>();
 			mock.Setup(c => c.GetEndpoint(parameters.EndpointName)).Returns(new System.Fabric.Description.EndpointResourceDescription());
-			ServiceContext context = MockStatelessServiceContextFactory.Create(mock.Object, "", new Uri("http://localhost"), Guid.Empty, 0);
+			ServiceContext context = MockStatelessServiceContextFactory.Create(mock.Object, string.Empty, new Uri("https://localhost"), Guid.Empty, 0);
 
 			(accessor as IAccessorSetter<ServiceContext>).SetValue(context);
 
