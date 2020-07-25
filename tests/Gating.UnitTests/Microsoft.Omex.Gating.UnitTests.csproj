@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk" ToolsVersion="17.0">
   <PropertyGroup>
-    <TargetFrameworks>$(NetFrameworkVersions);$(NetCoreVersions)</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions)</TargetFrameworks>
+    <TargetFrameworks>$(ExecutableTargetFrameworks)</TargetFrameworks>
     <Description>Contains Omex Gating Unit Tests</Description>
     <RootNamespace>Microsoft.Omex.Gating.UnitTests</RootNamespace>
     <AssemblyName>Microsoft.Omex.Gating.UnitTests</AssemblyName>
