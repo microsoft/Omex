@@ -11,6 +11,9 @@
     <PublishTrimmed>true</PublishTrimmed>
     <PublishReadyToRun>true</PublishReadyToRun>
     <PublishSingleFile>true</PublishSingleFile>
+    <IsTool>True</IsTool>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
   </PropertyGroup>
   <PropertyGroup Label="NuGet Properties">
     <Title>Microsoft.Omex.CodeGenerators.GateGen</Title>
