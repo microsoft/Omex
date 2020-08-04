@@ -1,6 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<!--
-		Produce GatesGenerated.cs from OmexGates.xml before compilation 
+		Produce GatesGenerated.cs from OmexGates.xml before compilation
 		Usage :
 		<PropertyGroup>
 			<GatesXml>Path to OmexGates.xml</GatesXml>
@@ -21,15 +21,15 @@
 
 	<Target Name="GateGen" BeforeTargets="CoreCompile">
 		<Message Text="Running GateGen Target" />
-		
+
 		<Error Text="The GatesXml property is not defined." Condition="'$(GatesXml)' == ''" />
 		<Error Text="The TipXml property is not defined." Condition="'$(TipXml)' == ''" />
 		<Error Text="The GeneratedGates property is not defined." Condition="'$(GeneratedGates)' == ''" />
 
-		<Exec Command="$(MSBuildThisFileDirectory)..\lib\net472\Microsoft.Omex.CodeGenerators.GateGen.exe $(GatesXml) $(TipXml) $(GeneratedGates) $(OmexGatesNamespace)" />
-		
+		<Exec Command="$(MSBuildThisFileDirectory)..\tools\Microsoft.Omex.CodeGenerators.GateGen.exe $(GatesXml) $(TipXml) $(GeneratedGates) $(OmexGatesNamespace)" />
+
 		<CreateItem Include="$(GeneratedGates)">
 			<Output TaskParameter="Include" ItemName="Compile"/>
-		</CreateItem> 
+		</CreateItem>
 	</Target>
 </Project>

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 using System;
@@ -21,10 +21,10 @@ namespace Microsoft.Omex.Gating.UnitTests
 	/// </summary>
 	public sealed class GateContextUnitTests : UnitTestBase
 	{
-#pragma warning disable SM02239 // hard coded e-mail for unit tests
-		private const string UserIdentifierInGroup = "test1@microsoft.com";
-		private const string UserIdentifierNotInGroup = "test1@contoso.com";
-#pragma warning restore SM02239
+		// hard coded e-mails for unit tests
+		private const string FirstUserIdentifierInGroup = "test1@microsoft.com"; // lgtm[cs/hard-coded-id]
+		private const string SecondUserIdentifierInGroup = "test2@microsoft.com"; // lgtm[cs/hard-coded-id]
+		private const string UserIdentifierNotInGroup = "test1@contoso.com"; // lgtm[cs/hard-coded-id]
 
 		[Fact]
 		public void RequestNoEnvironment_Specified()
@@ -478,7 +478,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 			{
 				Users = new[]
 				{
-					new GatedUser { IsDogfoodUser = false, UserIdentifier = "test2@microsoft.com"}
+					new GatedUser { IsDogfoodUser = false, UserIdentifier = SecondUserIdentifierInGroup }
 				}
 			};
 
@@ -495,7 +495,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 			{
 				Users = new[]
 				{
-					new GatedUser { IsDogfoodUser = false, UserIdentifier = UserIdentifierInGroup}
+					new GatedUser { IsDogfoodUser = false, UserIdentifier = FirstUserIdentifierInGroup }
 				}
 			};
 
@@ -512,7 +512,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 			{
 				Users = new[]
 				{
-					new GatedUser { IsDogfoodUser = false, UserIdentifier = UserIdentifierInGroup}
+					new GatedUser { IsDogfoodUser = false, UserIdentifier = FirstUserIdentifierInGroup }
 				}
 			};
 
@@ -529,7 +529,7 @@ namespace Microsoft.Omex.Gating.UnitTests
 			{
 				Users = new[]
 				{
-					new GatedUser { IsDogfoodUser = false, UserIdentifier = UserIdentifierNotInGroup}
+					new GatedUser { IsDogfoodUser = false, UserIdentifier = UserIdentifierNotInGroup }
 				}
 			};
 
