@@ -4,7 +4,10 @@
     <NetCoreVersions>netcoreapp3.1</NetCoreVersions>
     <NetStandardVersions>netstandard2.0;netstandard2.1</NetStandardVersions>
     <NetFrameworkVersions>net472</NetFrameworkVersions> <!-- Framework version that should be targeted alongside with .net standard -->
-  </PropertyGroup>
+    <LibraryTargetFrameworks>$(NetFrameworkVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
+    <LibraryTargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersions)</LibraryTargetFrameworks>
+    <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
+</PropertyGroup>
   <PropertyGroup Label="Project Settings" >
     <Platforms>AnyCPU</Platforms>
     <TargetPlatform>AnyCPU</TargetPlatform>

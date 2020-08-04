@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(NetFrameworkVersions);$(NetStandardVersions)</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersions)</TargetFrameworks>
-    <Description>Contains common classes for Omex libraries.</Description>
+    <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup Condition="'$(IsNetStandard)' == 'false'">
     <PackageReference Include="Bond.Core.CSharp" Version="$(Bond_Core_CSharp_Version)" />
