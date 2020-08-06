@@ -2,18 +2,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
     <Description>Contains Omex Gating generator code</Description>
     <RootNamespace>Microsoft.Omex.CodeGenerators.GateGen</RootNamespace>
     <AssemblyName>Microsoft.Omex.CodeGenerators.GateGen</AssemblyName>
     <OutputType>Exe</OutputType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <PublishTrimmed>true</PublishTrimmed>
-    <PublishReadyToRun>true</PublishReadyToRun>
-    <PublishSingleFile>true</PublishSingleFile>
     <IsTool>True</IsTool>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
   </PropertyGroup>
   <PropertyGroup Label="NuGet Properties">
     <Title>Microsoft.Omex.CodeGenerators.GateGen</Title>
@@ -35,6 +30,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Microsoft.Omex.CodeGenerators.GateGen.targets" Pack="true" PackagePath="build" />
+    <Content Include="$(OutputPath)\**\Microsoft.Omex.Gating.*" Pack="true" PackagePath="tools" Visible="false" />
+    <Content Include="$(OutputPath)\**\Microsoft.Omex.System.*" Pack="true" PackagePath="tools" Visible="false" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
@@ -49,9 +46,4 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <Target Name="AddPublishedExecutable" DependsOnTargets="Publish" BeforeTargets="_GetPackageFiles">
-    <ItemGroup>
-      <Content Include="$(PublishDir)\*" Pack="true" PackagePath="tools" Visible="false" />
-    </ItemGroup>
-  </Target>
 </Project>
