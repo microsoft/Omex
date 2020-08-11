@@ -2,17 +2,13 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using System.Fabric;
-using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
-using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -107,38 +103,22 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		public void BuildStatelessService_LogsExceptions()
 		{
 			string serviceType = "StatelessFailedServiceName";
-			CustomEventListener listener = new CustomEventListener();
-			listener.EnableEvents(ServiceInitializationEventSource.Instance, EventLevel.Error);
 
 			Assert.ThrowsException<AggregateException>(() => new HostBuilder()
 				.ConfigureServices(c => c.AddTransient<TypeThatShouldNotBeResolvable>())
 				.BuildStatelessService(serviceType, c => { }),
 				"BuildStatelessService should fail in case of unresolvable dependencies");
-
-			bool hasErrorEvent = listener.EventsInformation.Any(e =>
-				serviceType == GetPayloadValue<string>(e, ServiceTypePayloadName)
-				&& e.EventId == (int)EventSourcesEventIds.GenericHostFailed);
-
-			Assert.IsTrue(hasErrorEvent, "BuildStatelessService error should be logged");
 		}
 
 		[TestMethod]
 		public void BuildStatefulService_LogsException()
 		{
 			string serviceType = "StatefulFailedServiceName";
-			CustomEventListener listener = new CustomEventListener();
-			listener.EnableEvents(ServiceInitializationEventSource.Instance, EventLevel.Error);
 
 			Assert.ThrowsException<AggregateException>(() => new HostBuilder()
 				.ConfigureServices(c => c.AddTransient<TypeThatShouldNotBeResolvable>())
 				.BuildStatefulService(serviceType, c => { }),
 				"BuildStatefulService should fail in case of unresolvable dependencies");
-
-			bool hasErrorEvent = listener.EventsInformation.Any(e =>
-				serviceType == GetPayloadValue<string>(e, ServiceTypePayloadName)
-				&& e.EventId == (int)EventSourcesEventIds.GenericHostFailed);
-
-			Assert.IsTrue(hasErrorEvent, "BuildStatefulService error should be logged");
 		}
 
 		[TestMethod]
@@ -159,26 +139,5 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			public class TypeThatIsNotRegistered { }
 		}
-
-		private class CustomEventListener : EventListener
-		{
-			public List<EventWrittenEventArgs> EventsInformation { get; } = new List<EventWrittenEventArgs>();
-
-			protected override void OnEventSourceCreated(EventSource eventSource)
-			{
-				base.OnEventSourceCreated(eventSource);
-			}
-
-			protected override void OnEventWritten(EventWrittenEventArgs eventData) => EventsInformation.Add(eventData);
-		}
-
-		private static TPayloadType? GetPayloadValue<TPayloadType>(EventWrittenEventArgs info, string name)
-			where TPayloadType : class
-		{
-			int index = info.PayloadNames?.IndexOf(name) ?? -1;
-			return (TPayloadType?)(index < 0 ? null : info.Payload?[index]);
-		}
-
-		private const string ServiceTypePayloadName = "serviceType";
 	}
 }

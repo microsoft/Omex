@@ -5,7 +5,7 @@ using System;
 using System.Diagnostics.Tracing;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 
-namespace Microsoft.Omex.Extensions.Hosting.Services
+namespace Microsoft.Omex.Extensions.Hosting
 {
 	/// <summary>
 	/// Service Fabric event source

@@ -3,9 +3,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Fabric;
-using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -73,49 +71,22 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				where TService : IServiceFabricService<TContext>
 				where TContext : ServiceContext
 		{
-			string serviceNameForLogging = serviceName;
+			Validation.ThrowIfNullOrWhiteSpace(serviceName, nameof(serviceName));
 
-			try
-			{
-				if (string.IsNullOrWhiteSpace(serviceName))
+			// for generic host application name is the name of the service that it's running (don't confuse with Sf application name)
+			builder.UseApplicationName(serviceName);
+
+			builderAction(new ServiceFabricHostBuilder<TService, TContext>(builder));
+
+			return builder
+				.ConfigureServices((context, collection) =>
 				{
-					// use executing assembly name for logging since application name not available
-					serviceNameForLogging = Assembly.GetExecutingAssembly().GetName().FullName;
-					throw new ArgumentException("Service type name is null of whitespace", nameof(serviceName));
-				}
-
-				// for generic host application name is the name of the service that it's running (don't confuse with Sf application name)
-				builder.UseApplicationName(serviceName);
-
-				builderAction(new ServiceFabricHostBuilder<TService, TContext>(builder));
-
-				IHost host = builder
-					.ConfigureServices((context, collection) =>
-					{
-						collection
-							.AddOmexServiceFabricDependencies<TContext>()
-							.AddSingleton<IOmexServiceRegistrator, TRunner>()
-							.AddHostedService<OmexHostedService>();
-					})
-					.UseDefaultServiceProvider(options =>
-					{
-						options.ValidateOnBuild = true;
-						options.ValidateScopes = true;
-					})
-					.Build();
-
-				// get proper application name from host
-				serviceName = host.Services.GetService<IHostEnvironment>().ApplicationName;
-
-				ServiceInitializationEventSource.Instance.LogHostBuildSucceeded(Process.GetCurrentProcess().Id, serviceNameForLogging);
-
-				return host;
-			}
-			catch (Exception e)
-			{
-				ServiceInitializationEventSource.Instance.LogHostFailed(e.ToString(), serviceNameForLogging);
-				throw;
-			}
+					collection
+						.AddOmexServiceFabricDependencies<TContext>()
+						.AddSingleton<IOmexServiceRegistrator, TRunner>()
+						.AddHostedService<OmexHostedService>();
+				})
+				.BuildWithErrorReporting();
 		}
 
 		/// <summary>

@@ -3,7 +3,7 @@
     <TargetFrameworks>$(TargetFrameworksValue)</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(Microsoft_Extensions_Hosting_Abstractions_Version)" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="$(Microsoft_Extensions_Hosting_Version)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Logging\Microsoft.Omex.Extensions.Logging.csproj" />
