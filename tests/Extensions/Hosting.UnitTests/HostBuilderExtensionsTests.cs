@@ -5,7 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
-using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.Omex.Extensions.Hosting.Certificates;
+using Microsoft.Omex.Extensions.Hosting.EventSources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.Hosting.UnitTests
@@ -67,7 +69,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 		[TestMethod]
 		public void BuildWithErrorReporting_LogsExceptions()
 		{
-			string serviceType = ServiceCollectionExtensions.GetHostName();
+			string serviceType = ServiceInitializationEventSource.GetHostName();
 			CustomEventListener listener = new CustomEventListener();
 			listener.EnableEvents(ServiceInitializationEventSource.Instance, EventLevel.Error);
 

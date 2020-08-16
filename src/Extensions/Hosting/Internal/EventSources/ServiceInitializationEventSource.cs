@@ -3,9 +3,10 @@
 
 using System;
 using System.Diagnostics.Tracing;
+using System.Reflection;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 
-namespace Microsoft.Omex.Extensions.Hosting
+namespace Microsoft.Omex.Extensions.Hosting.EventSources
 {
 	/// <summary>
 	/// Service Fabric event source
@@ -55,6 +56,9 @@ namespace Microsoft.Omex.Extensions.Hosting
 				serviceType,
 				FormattableString.Invariant($"Service host initialization failed for {serviceType} with exception {exception}"));
 		}
+
+		internal static string GetHostName()
+			=> Assembly.GetEntryAssembly()?.GetName().Name ?? "UnknownHostName";
 
 		private ServiceInitializationEventSource() { }
 
