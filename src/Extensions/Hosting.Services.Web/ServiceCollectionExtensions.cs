@@ -18,6 +18,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		public static IServiceCollection AddOmexMiddleware(this IServiceCollection services)
 		{
 			services
+				.AddSingleton<UserIdentiyMiddleware>()
 				.AddSingleton<ActivityEnrichmentMiddleware>()
 				.AddSingleton<ResponseHeadersMiddleware>();
 
