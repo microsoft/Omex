@@ -14,6 +14,19 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		[DataTestMethod]
 		[DynamicData(nameof(GetData), DynamicDataSourceType.Method)]
 		public void Constructor_SetsReportData(KeyValuePair<string, object>[] reportData)
+			=> AssertParameters(reportData);
+
+		public void DuplicatedKey_ThrowsException()
+			=> Assert.ThrowsException<ArgumentException>(()
+				=> AssertParameters(
+					new KeyValuePair<string, object>("test", new object()),
+					new KeyValuePair<string, object>("test", string.Empty)));
+
+		public void NullKey_ThrowsException()
+			=> Assert.ThrowsException<ArgumentNullException>(()
+				=> AssertParameters(new KeyValuePair<string, object>(null!, new object())));
+
+		public void AssertParameters(params KeyValuePair<string, object>[] reportData)
 		{
 			HealthCheckParameters parameters = new HealthCheckParameters(reportData);
 			CollectionAssert.AreEquivalent(reportData, parameters.ReportData.ToArray(), nameof(HttpHealthCheckParameters.ReportData));

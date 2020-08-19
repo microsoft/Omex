@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -31,7 +32,19 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				Dictionary<string, object> dictionary = new Dictionary<string, object>(reportData.Length);
 				foreach (KeyValuePair<string, object> pair in reportData)
 				{
-					dictionary.Add(pair.Key, pair.Value);
+					// could be replaced with TryAdd, after we drop full framework support
+					try
+					{
+						dictionary.Add(pair.Key, pair.Value);
+					}
+					catch (ArgumentNullException exception)
+					{
+						throw new ArgumentNullException("Null key in HealthCheckParameters", exception);
+					}
+					catch (ArgumentException exception)
+					{
+						throw new ArgumentException("Duplicated key in HealthCheckParameters", nameof(reportData), exception);
+					}
 				}
 
 				ReportData = new ReadOnlyDictionary<string, object>(dictionary);
