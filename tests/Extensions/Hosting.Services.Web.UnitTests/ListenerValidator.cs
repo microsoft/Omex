@@ -114,7 +114,7 @@ namespace Hosting.Services.Web.UnitTests
 		public IServer ValidateKestrelServerOptionsSet(IWebHost host)
 		{
 			IServer kestrelServer = ResolveType<IServer>(host);
-			KestrelServerOptions kestrelServerOptions = ResolveType<IOptions<KestrelServerOptions>>().Value;
+			KestrelServerOptions kestrelServerOptions = ResolveType<IOptions<KestrelServerOptions>>(host).Value;
 
 			Assert.IsFalse(kestrelServerOptions.AddServerHeader, "AddServerHeader should be false");
 			Assert.IsTrue(kestrelServerOptions.AllowSynchronousIO, "AllowSynchronousIO should be true");
