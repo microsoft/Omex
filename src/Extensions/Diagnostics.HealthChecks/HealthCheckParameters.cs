@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// Creates HealthCheckParameters instance
 		/// </summary>
-		public HealthCheckParameters(KeyValuePair<string, object>[] reportData)
+		public HealthCheckParameters(params KeyValuePair<string, object>[] reportData)
 		{
 			if (reportData.Length == 0)
 			{
