@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.Serialization;
 using Microsoft.Omex.System.Logging;
 using UntaggedLogging = Microsoft.Omex.System.Logging.ULSLogging;
 
@@ -445,7 +446,13 @@ namespace Microsoft.Omex.System.Validation
 		/// <param name="message">Message to report</param>
 		private static void ReportError<TException>(string message) where TException : Exception
 		{
-			throw (Exception)Activator.CreateInstance(typeof(TException), message);
+			Exception? exception = Activator.CreateInstance(typeof(TException), message) as Exception;
+			if (exception == null)
+			{
+				throw new ArgumentException($"Failed to create exception of type {typeof(TException)}", nameof(TException));
+			}
+
+			throw exception;
 		}
 
 		/// <summary>
