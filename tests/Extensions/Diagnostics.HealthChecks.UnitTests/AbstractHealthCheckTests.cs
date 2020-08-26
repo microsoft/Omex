@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -55,6 +56,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 			Assert.AreEqual(actualResult.Exception, exception);
 			Assert.AreEqual(actualResult.Status, HealthStatus.Unhealthy);
+			CollectionAssert.AreEquivalent(actualResult.Data.ToArray(), TestHealthCheck.TestParameters);
 			Assert.IsNotNull(activity);
 			Assert.IsTrue(activity!.IsHealthCheck(), "Activity should be marked as HealthCheck activity");
 			activity!.AssertResult(TimedScopeResult.SystemError);
@@ -77,16 +79,21 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			activity!.AssertResult(TimedScopeResult.Success);
 		}
 
-		private class TestHealthCheck : AbstractHealthCheck
+		private class TestHealthCheck : AbstractHealthCheck<HealthCheckParameters>
 		{
 			private readonly Func<HealthCheckContext, CancellationToken, HealthCheckResult> m_internalFunction;
 
 			public TestHealthCheck(Func<HealthCheckContext, CancellationToken, HealthCheckResult> internalFunction)
-				: base(new NullLogger<TestHealthCheck>(), new SimpleScopeProvider()) =>
+				: base(new HealthCheckParameters(TestParameters), new NullLogger<TestHealthCheck>(), new SimpleScopeProvider()) =>
 					m_internalFunction = internalFunction;
 
 			protected override Task<HealthCheckResult> CheckHealthInternalAsync(HealthCheckContext context, CancellationToken token = default) =>
 				Task.FromResult(m_internalFunction(context, token));
+
+			public static KeyValuePair<string, object>[] TestParameters = new KeyValuePair<string, object>[]
+				{
+					new KeyValuePair<string, object>("TestKey", "TestValue")
+				};
 		}
 	}
 }
