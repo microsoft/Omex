@@ -3,6 +3,8 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web
@@ -17,6 +19,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		/// </summary>
 		public static IServiceCollection AddOmexMiddleware(this IServiceCollection services)
 		{
+			static ISaltProvider getSaltProvider(IServiceProvider provider) =>
+				provider.GetRequiredService<IOptions<UserIdentiyMiddlewareOptions>>().Value.LoggingComlience switch
+				{
+					UserIdentiyComlienceLevel.LiveId => provider.GetRequiredService<EmptySaltProvider>(),
+					_ => provider.GetRequiredService<RotatingSaltProvider>()
+				};
+
+			services.TryAddTransient(getSaltProvider);
+
 			services
 				.AddSingleton<UserIdentiyMiddleware>()
 				.AddSingleton<ActivityEnrichmentMiddleware>()

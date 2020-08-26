@@ -146,4 +146,4 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	//	private static string GetUserSubject(HttpContext context) => context.User?.Claims?.FirstOrDefault(
 	//		c => string.Equals(c.Type, "sub", StringComparison.OrdinalIgnoreCase))?.Value;
 	//}
-}
+	}
