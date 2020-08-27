@@ -13,13 +13,11 @@ using Microsoft.Omex.Extensions.Abstractions.Activities;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
-	internal class HttpEndpointHealthCheck : AbstractHealthCheck
+	internal class HttpEndpointHealthCheck : AbstractHealthCheck<HttpHealthCheckParameters>
 	{
 		private const string Host = "localhost";
 
 		public static string HttpClientLogicalName { get; } = "HttpEndpointHealthCheckHttpClient";
-
-		internal HttpHealthCheckParameters Parameters { get; } // internal only to be used for unit tests
 
 		private readonly IHttpClientFactory m_httpClientFactory;
 
@@ -33,9 +31,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			IAccessor<ServiceContext> accessor,
 			ILogger<HttpEndpointHealthCheck> logger,
 			ITimedScopeProvider scopeProvider)
-				: base(logger, scopeProvider)
+				: base(parameters, logger, scopeProvider)
 		{
-			Parameters = parameters;
 			m_httpClientFactory = httpClientFactory;
 			m_accessor = accessor;
 		}

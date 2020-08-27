@@ -2,10 +2,10 @@
   <Import Project="$(MSBuildThisFileDirectory)\Dependencies.props" />
   <PropertyGroup Label="Target Platforms" >
     <NetCoreVersions>netcoreapp3.1</NetCoreVersions>
-    <NetStandardVersions>netstandard2.0;netstandard2.1</NetStandardVersions>
+    <NetStandardVersions>netstandard2.0</NetStandardVersions>
     <NetFrameworkVersions>net472</NetFrameworkVersions> <!-- Framework version that should be targeted alongside with .net standard -->
-    <LibraryTargetFrameworks>$(NetFrameworkVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
-    <LibraryTargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetStandardVersions)</LibraryTargetFrameworks>
+    <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions);$(NetFrameworkVersions)</LibraryTargetFrameworks>
+    <LibraryTargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
     <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
 </PropertyGroup>
   <PropertyGroup Label="Project Settings" >

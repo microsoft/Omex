@@ -14,7 +14,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	/// <summary>
 	/// Base health check that extracts logic of exception handling and wraps it into timed scope
 	/// </summary>
-	public abstract class AbstractHealthCheck : IHealthCheck
+	public abstract class AbstractHealthCheck<TParameters> : IHealthCheck
+		where TParameters : HealthCheckParameters
 	{
 		private static readonly TimedScopeDefinition s_scopeDefinition = new TimedScopeDefinition("HealthCheckScope");
 
@@ -26,10 +27,16 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		protected ILogger Logger { get; }
 
 		/// <summary>
+		/// Logger property
+		/// </summary>
+		protected internal TParameters Parameters { get; } // internal only to be used for unit tests
+
+		/// <summary>
 		/// Base constructor with scope provider that would be removed after .NET 5 move
 		/// </summary>
-		protected AbstractHealthCheck(ILogger logger, ITimedScopeProvider scopeProvider)
+		protected AbstractHealthCheck(TParameters parameters, ILogger logger, ITimedScopeProvider scopeProvider)
 		{
+			Parameters = parameters;
 			Logger = logger;
 			m_scopeProvider = scopeProvider;
 		}
@@ -50,7 +57,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			catch (Exception exception)
 			{
 				Logger.LogError(Tag.Create(), exception, "'{0}' check failed with exception", context.Registration.Name);
-				return HealthCheckResult.Unhealthy("HealthCheck failed", exception);
+				return HealthCheckResult.Unhealthy("HealthCheck failed", exception, Parameters.ReportData);
 			}
 		}
 
