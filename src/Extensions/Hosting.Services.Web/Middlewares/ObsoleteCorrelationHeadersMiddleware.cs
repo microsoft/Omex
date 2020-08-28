@@ -49,7 +49,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 				return;
 			}
 
-			Guid? oldCorrelation = ExtractCorrelationIdFromQuery(request) ?? ExtractCorrelationIdFromHeader(request);
+			Guid? oldCorrelation = ExtractCorrelationIdFromHeader(request) ?? ExtractCorrelationIdFromQuery(request);
 			if (oldCorrelation.HasValue)
 			{
 				activity.SetObsoleteCorrelationId(oldCorrelation.Value);
