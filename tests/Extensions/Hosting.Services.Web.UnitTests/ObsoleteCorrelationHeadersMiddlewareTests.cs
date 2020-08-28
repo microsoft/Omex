@@ -39,7 +39,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		public async Task SetsObsoleteCorrelationIdFromHeaderToActivity(string correlationName)
 		{
 			// Arrange
-			Guid obsoleteCorrelation = new Guid();
+			Guid obsoleteCorrelation = Guid.NewGuid();
 			TestHttpContext.Request.Headers.Add(correlationName, obsoleteCorrelation.ToString());
 
 			// Act
@@ -58,7 +58,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		public async Task SetsObsoleteCorrelationIdFromHeaderToHeader(string correlationName)
 		{
 			// Arrange
-			Guid obsoleteCorrelation = new Guid();
+			Guid obsoleteCorrelation = Guid.NewGuid();
 
 			// Mock the HttpResponse feature to test response header rewrite
 			Mock<IHttpResponseFeature> feature = new Mock<IHttpResponseFeature>();

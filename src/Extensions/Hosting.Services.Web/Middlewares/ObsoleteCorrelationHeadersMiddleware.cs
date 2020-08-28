@@ -99,7 +99,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		{
 			foreach (string name in names)
 			{
-				string? value = ExtractHeader(headers, name);
+				string? value = headers[name];
 				if (!string.IsNullOrWhiteSpace(value))
 				{
 					return value;
@@ -108,11 +108,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 
 			return null;
 		}
-
-		private static string? ExtractHeader(IHeaderDictionary headers, string name) =>
-			headers.TryGetValue(name, out StringValues value) && value.Count > 0
-				? value.FirstOrDefault(s => !string.IsNullOrWhiteSpace(s))
-				: null;
 
 		/// <summary>
 		/// Checks if the context is for a request that contains identifiers indicating that the request originated from an Office client
