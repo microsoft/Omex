@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Package Versions. AutoUpdate">
+    <Moq_Version>4.14.5</Moq_Version>
     <Microsoft_AspNetCore_Hosting_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Hosting_Abstractions_Version>
     <Microsoft_AspNetCore_Http_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Http_Abstractions_Version>
     <Microsoft_AspNetCore_Http_Version>2.2.2</Microsoft_AspNetCore_Http_Version>
     <Microsoft_Azure_DocumentDB_Version>2.11.0</Microsoft_Azure_DocumentDB_Version>
-    <Microsoft_Net_Test_Sdk_Version>16.6.1</Microsoft_Net_Test_Sdk_Version>
+    <Microsoft_Net_Test_Sdk_Version>16.7.1</Microsoft_Net_Test_Sdk_Version>
     <Microsoft_SourceLink_GitHub_Version>1.0.0</Microsoft_SourceLink_GitHub_Version>
     <Microsoft_SourceLink_AzureRepos_Git_Version>1.0.0</Microsoft_SourceLink_AzureRepos_Git_Version>
-    <MSTest_TestAdapter_Version>2.1.1</MSTest_TestAdapter_Version>
-    <MSTest_TestFramework_Version>2.1.1</MSTest_TestFramework_Version>
+    <MSTest_TestAdapter_Version>2.1.2</MSTest_TestAdapter_Version>
+    <MSTest_TestFramework_Version>2.1.2</MSTest_TestFramework_Version>
     <System_Configuration_ConfigurationManager_Version>4.7.0</System_Configuration_ConfigurationManager_Version>
     <System_ServiceModel_Primitives_Version>4.7.0</System_ServiceModel_Primitives_Version>
     <System_Threading_Tasks_Version>4.3.0</System_Threading_Tasks_Version>
-    <Xunit_Runner_VisualStudio_Version>2.4.2</Xunit_Runner_VisualStudio_Version>
+    <Xunit_Runner_VisualStudio_Version>2.4.3</Xunit_Runner_VisualStudio_Version>
   </PropertyGroup>
   <PropertyGroup Label="Package Versions Core. AutoUpdate">
     <Bond_Core_CSharp_Version_Core>9.0.0</Bond_Core_CSharp_Version_Core>
-    <Moq_Version_Core>4.14.3</Moq_Version_Core>
     <System_Collections_Immutable_Version_Core>1.7.1</System_Collections_Immutable_Version_Core>
   </PropertyGroup>
   <PropertyGroup Label="Package Versions. Pinned">
     <Bond_Core_CSharp_Version>6.0.0</Bond_Core_CSharp_Version>
     <Microsoft_Azure_DocumentDb_Version>2.5.1</Microsoft_Azure_DocumentDb_Version>
-    <Moq_Version>4.5.22</Moq_Version>
     <System_Collections_Immutable_Version>1.2.0</System_Collections_Immutable_Version>
     <Xunit_Assert_Version>2.4.1</Xunit_Assert_Version>
     <Xunit_Core_Version>2.4.1</Xunit_Core_Version>
