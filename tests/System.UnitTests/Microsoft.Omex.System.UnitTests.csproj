@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(UnitTestTargetValues)</TargetFrameworks>
+    <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup Condition="!$(IsNetCore)">
     <Reference Include="System.Runtime" />

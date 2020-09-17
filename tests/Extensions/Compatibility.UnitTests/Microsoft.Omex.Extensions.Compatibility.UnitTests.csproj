@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(UnitTestTargetValues)</TargetFrameworks>
+    <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
     <NoWarn>CS0618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
