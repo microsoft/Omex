@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Package Versions. AutoUpdate">
+    <Moq_Version>4.14.5</Moq_Version>
     <Microsoft_AspNetCore_Hosting_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Hosting_Abstractions_Version>
     <Microsoft_AspNetCore_Http_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Http_Abstractions_Version>
     <Microsoft_AspNetCore_Http_Version>2.2.2</Microsoft_AspNetCore_Http_Version>
@@ -14,7 +15,6 @@
     <System_ServiceModel_Primitives_Version>4.7.0</System_ServiceModel_Primitives_Version>
     <System_Threading_Tasks_Version>4.3.0</System_Threading_Tasks_Version>
     <Xunit_Runner_VisualStudio_Version>2.4.3</Xunit_Runner_VisualStudio_Version>
-    <Moq_Version>4.14.5</Moq_Version>
   </PropertyGroup>
   <PropertyGroup Label="Package Versions Core. AutoUpdate">
     <Bond_Core_CSharp_Version_Core>9.0.0</Bond_Core_CSharp_Version_Core>
