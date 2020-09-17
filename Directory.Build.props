@@ -5,7 +5,12 @@
     <NetStandardVersions>netstandard2.0</NetStandardVersions>
     <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
     <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
-</PropertyGroup>
+  </PropertyGroup>
+  <PropertyGroup Label="UnitTest Targets">
+    <NetFameworkVersion>net472</NetFameworkVersion>
+    <UnitTestTargetValues>$(NetCoreVersions);$(NetFameworkVersion)</UnitTestTargetValues>
+    <UnitTestTargetValues Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions)</UnitTestTargetValues>
+  </PropertyGroup>
   <PropertyGroup Label="Project Settings" >
     <Platforms>AnyCPU</Platforms>
     <TargetPlatform>AnyCPU</TargetPlatform>
@@ -19,7 +24,8 @@
   <PropertyGroup Label="Condition Variables" >
     <IsNetStandard>$(NetStandardVersions.Contains('$(TargetFramework)'))</IsNetStandard>
     <IsNetCore>$(NetCoreVersions.Contains('$(TargetFramework)'))</IsNetCore>
-    <IsNetFramework>$(NetFrameworkVersions.Contains('$(TargetFramework)'))</IsNetFramework>
+    <IsNetFramework>false</IsNetFramework>
+    <IsNetFramework Condition="!$(IsNetStandard) And !$(IsNetCore)">true</IsNetFramework>
   </PropertyGroup>
   <PropertyGroup Label="Signing" >
     <SignAssembly>true</SignAssembly>

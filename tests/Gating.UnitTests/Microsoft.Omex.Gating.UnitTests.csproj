@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk" ToolsVersion="17.0">
   <PropertyGroup>
-    <TargetFrameworks>$(ExecutableTargetFrameworks)</TargetFrameworks>
+    <TargetFrameworks>$(UnitTestTargetValues)</TargetFrameworks>
     <Description>Contains Omex Gating Unit Tests</Description>
     <RootNamespace>Microsoft.Omex.Gating.UnitTests</RootNamespace>
     <AssemblyName>Microsoft.Omex.Gating.UnitTests</AssemblyName>
@@ -15,10 +15,8 @@
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-    <PackageReference Include="System.Collections.Immutable" Version="$(System_Collections_Immutable_Version)" />
   </ItemGroup>
   <ItemGroup Condition="$(IsNetCore)">
-    <PackageReference Include="System.Collections.Immutable" Version="$(System_Collections_Immutable_Version_Core)" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(Microsoft_AspNetCore_Http_Abstractions_Version)" />
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-#if NETSTANDARD2_0 // This marker attribute only available starting from netstandard 2.1, so we need a replacement to build for full framework
+#if NETSTANDARD2_0 || NETFRAMEWORK // This marker attribute only available starting from netstandard 2.1, so we need a replacement to build for full framework
 namespace System.Diagnostics.CodeAnalysis
 {
 	/// <summary>

@@ -1,15 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(ExecutableTargetFrameworks)</TargetFrameworks>
+    <TargetFrameworks>$(UnitTestTargetValues)</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup Condition="!$(IsNetCore)">
     <Reference Include="System.Runtime" />
     <Reference Include="System.Threading.Tasks" />
-    <PackageReference Include="Moq" Version="$(Moq_Version)" />
   </ItemGroup>
-  <ItemGroup Condition="$(IsNetCore)">
-    <PackageReference Include="Moq" Version="$(Moq_Version_Core)" />
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="$(Moq_Version)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\System.UnitTests.Shared\Microsoft.Omex.System.UnitTests.Shared.csproj" />
