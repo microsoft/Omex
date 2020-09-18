@@ -79,7 +79,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Certificates
 
 		private CertificateInformation[] LoadCertificates(StoreName storeName, bool refreshCache)
 		{
-			if (refreshCache || !m_certificatesCache.TryGetValue(storeName, out CertificateInformation[] certificates))
+			if (refreshCache || !m_certificatesCache.TryGetValue(storeName, out CertificateInformation[]? certificates))
 			{
 				m_logger.LogInformation(Tag.Create(), "Updating certificates cache for store '{0}'.", storeName);
 
