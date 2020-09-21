@@ -16,14 +16,8 @@
     <System_Threading_Tasks_Version>4.3.0</System_Threading_Tasks_Version>
     <Xunit_Runner_VisualStudio_Version>2.4.3</Xunit_Runner_VisualStudio_Version>
   </PropertyGroup>
-  <PropertyGroup Label="Package Versions Core. AutoUpdate">
-    <Bond_Core_CSharp_Version_Core>9.0.0</Bond_Core_CSharp_Version_Core>
-    <System_Collections_Immutable_Version_Core>1.7.1</System_Collections_Immutable_Version_Core>
-  </PropertyGroup>
   <PropertyGroup Label="Package Versions. Pinned">
-    <Bond_Core_CSharp_Version>6.0.0</Bond_Core_CSharp_Version>
     <Microsoft_Azure_DocumentDb_Version>2.5.1</Microsoft_Azure_DocumentDb_Version>
-    <System_Collections_Immutable_Version>1.2.0</System_Collections_Immutable_Version>
     <Xunit_Assert_Version>2.4.1</Xunit_Assert_Version>
     <Xunit_Core_Version>2.4.1</Xunit_Core_Version>
   </PropertyGroup>
