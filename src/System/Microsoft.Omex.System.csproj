@@ -3,14 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup Condition="'$(IsNetStandard)' == 'false'">
-    <PackageReference Include="Bond.Core.CSharp" Version="$(Bond_Core_CSharp_Version)" />
-    <PackageReference Include="System.Collections.Immutable" Version="$(System_Collections_Immutable_Version)" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(IsNetStandard)' == 'true'">
-    <PackageReference Include="Bond.Core.CSharp" Version="$(Bond_Core_CSharp_Version_Core)" />
-    <PackageReference Include="System.Collections.Immutable" Version="$(System_Collections_Immutable_Version_Core)" />
-  </ItemGroup>
   <PropertyGroup Label="NuGet Properties">
     <Title>Microsoft.Omex.System</Title>
     <Summary>Microsoft Omex System Library</Summary>
