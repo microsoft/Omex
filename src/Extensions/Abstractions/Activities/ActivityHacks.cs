@@ -20,11 +20,14 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// </remarks>
 		internal static Activity SetBaggage(this Activity activity, string key, string value)
 		{
+			bool needToAddKey = true;
+
 			if (activity.GetBaggageItem(key) != null)
 			{
-				ReplaceBaggageValue(activity, key, value);
+				needToAddKey = !TryReplaceBaggageValue(activity, key, value);
 			}
-			else
+
+			if (needToAddKey)
 			{
 				activity.AddBaggage(key, value);
 			}
@@ -32,12 +35,12 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 			return activity;
 		}
 
-		private static void ReplaceBaggageValue(Activity activity, string key, string value)
+		private static bool TryReplaceBaggageValue(Activity activity, string key, string value)
 		{
 			s_baggageField ??= activity.GetType().GetField("_baggage", BindingFlags.NonPublic | BindingFlags.Instance);
 			if (s_baggageField == null)
 			{
-				return;
+				return false;
 			}
 
 			object? baggage = s_baggageField.GetValue(activity);
@@ -45,13 +48,13 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 			s_headField ??= s_baggageField.FieldType.GetField("_first", BindingFlags.NonPublic | BindingFlags.Instance);
 			if (s_headField == null)
 			{
-				return;
+				return false;
 			}
 
 			object? node = s_headField.GetValue(baggage);
 			if (node == null)
 			{
-				return;
+				return false;
 			}
 
 			s_listNodeType ??= node.GetType();
@@ -60,7 +63,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 
 			if (s_valueField == null || s_nextField == null)
 			{
-				return;
+				return false;
 			}
 
 			while (true)
@@ -74,11 +77,12 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 				node = s_nextField.GetValue(node);
 				if (node == null)
 				{
-					return;
+					return false;
 				}
 			}
 
 			s_valueField.SetValue(node, new KeyValuePair<string, string?>(key, value));
+			return true;
 		}
 
 		private static Type? s_listNodeType;
