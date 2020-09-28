@@ -124,15 +124,18 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 				if (EventEndsWith(eventName, ActivityStartEnding))
 				{
 					OnActivityStarted(activity, value.Value);
+					return;
 				}
 				else if (EventEndsWith(eventName, ActivityStopEnding))
 				{
 					OnActivityStopped(activity, value.Value);
+					return;
 				}
 			}
-			else if (EventEndsWith(eventName, ExceptionEventEnding))
+			if (EventEndsWith(eventName, ExceptionEventEnding))
 			{
 				OnException(eventName, value.Value);
+				return;
 			}
 		}
 
