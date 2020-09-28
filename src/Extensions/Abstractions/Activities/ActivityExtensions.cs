@@ -93,7 +93,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// Get transaction id that is used by old Omex services
 		/// </summary>
 		[Obsolete(TransactionIdObsoleteMessage, false)]
-		public static uint? GetObsolteteTransactionId(this Activity activity) =>
+		public static uint? GetObsoleteteTransactionId(this Activity activity) =>
 			uint.TryParse(activity.GetBaggageItem(ObsoleteTransactionId), out uint transactionId)
 				? transactionId
 				: (uint?)null;
@@ -112,6 +112,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		private const string ObsoleteCorrelationId = "ObsoleteCorrelationId";
 		private const string ObsoleteTransactionId = "ObsoleteTransactionId";
 		private const string CorrelationIdObsoleteMessage = "Please use Activity.Id or Activity.GetRootIdAsGuid() for new services instead";
-		private const string TransactionIdObsoleteMessage = "Please use Activity.IsHealthCheck() or Activity.TraceId for new services instead";
+		private const string TransactionIdObsoleteMessage = "Please use Activity.IsHealthCheck() for new services instead";
 	}
 }

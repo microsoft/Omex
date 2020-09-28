@@ -65,7 +65,7 @@ namespace Microsoft.Omex.Extensions.Logging
 				{
 #pragma warning disable CS0618 // We are using obsolete correlation to support logging correlation from old Omex services
 					obsoleteCorrelationId = activity.GetObsoleteCorrelationId() ?? activity.GetRootIdAsGuid() ?? Guid.Empty;
-					obsoleteTransactionId = activity.GetObsolteteTransactionId() ?? 0u;
+					obsoleteTransactionId = activity.GetObsoleteteTransactionId() ?? 0u;
 #pragma warning restore CS0618
 				}
 			}

@@ -71,15 +71,15 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		{
 			Activity activity1 = new Activity("CorrelationTest1");
 			Activity activity2 = new Activity("CorrelationTest2");
-			Guid intiallyCorrelation = Guid.NewGuid();
-			Guid udatedCorrelation = Guid.NewGuid();
+			Guid initialCorrelation = Guid.NewGuid();
+			Guid updatedCorrelation = Guid.NewGuid();
 
-			activity1.SetObsoleteCorrelationId(intiallyCorrelation);
-			activity1.SetObsoleteCorrelationId(udatedCorrelation);
+			activity1.SetObsoleteCorrelationId(initialCorrelation);
+			activity1.SetObsoleteCorrelationId(updatedCorrelation);
 			CheckThatKeyNotDuplicated(activity1.Baggage);
 
-			Assert.AreEqual(udatedCorrelation, activity1.GetObsoleteCorrelationId());
-			Assert.AreNotEqual(udatedCorrelation, activity2.GetObsoleteCorrelationId());
+			Assert.AreEqual(updatedCorrelation, activity1.GetObsoleteCorrelationId());
+			Assert.AreNotEqual(updatedCorrelation, activity2.GetObsoleteCorrelationId());
 		}
 
 		[TestMethod]
@@ -95,8 +95,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			activity1.SetObsoleteTransactionId(updatedId);
 			CheckThatKeyNotDuplicated(activity1.Baggage);
 
-			Assert.AreEqual(updatedId, activity1.GetObsolteteTransactionId());
-			Assert.AreNotEqual(updatedId, activity2.GetObsolteteTransactionId());
+			Assert.AreEqual(updatedId, activity1.GetObsoleteteTransactionId());
+			Assert.AreNotEqual(updatedId, activity2.GetObsoleteteTransactionId());
 		}
 
 		[DataTestMethod]
