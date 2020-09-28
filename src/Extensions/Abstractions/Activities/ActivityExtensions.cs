@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 	public static class ActivityExtensions
 	{
 		/// <summary>
-		/// Transforms RootId into Guid that might be used in places wheere old Correlation Id needed
+		/// Transforms RootId into Guid that might be used in places where old Correlation Id needed
 		/// </summary>
 		/// <remarks>RootId could be converted only for started Activity when W3C id format used, all other cases will return null</remarks>
 		public static Guid? GetRootIdAsGuid(this Activity activity) =>
