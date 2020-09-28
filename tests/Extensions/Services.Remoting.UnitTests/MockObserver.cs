@@ -10,13 +10,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Services.Remoting
 {
-	internal class MockObserver : IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object>>, IDisposable
+	internal class MockObserver : IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object?>>, IDisposable
 	{
 		private readonly string m_listenterName;
 
 		private IDisposable? m_unsubscribe;
 
-		public Dictionary<string, object> Events { get; } = new Dictionary<string, object>();
+		public Dictionary<string, object?> Events { get; } = new Dictionary<string, object?>();
 
 		public MockObserver(string listenterName)
 		{
@@ -35,14 +35,14 @@ namespace Services.Remoting
 			}
 		}
 
-		public void OnNext(KeyValuePair<string, object> pair)
+		public void OnNext(KeyValuePair<string, object?> pair)
 		{
 			Events.Add(pair.Key, pair.Value);
 		}
 
 		public void AssertException(Exception exception)
 		{
-			KeyValuePair<string, object> eventInfo = Events.Single(e => e.Key.EndsWith("Exception"));
+			KeyValuePair<string, object?> eventInfo = Events.Single(e => e.Key.EndsWith("Exception"));
 			Assert.IsInstanceOfType(eventInfo.Value, typeof(Exception));
 			Assert.AreEqual(exception, eventInfo.Value);
 		}
