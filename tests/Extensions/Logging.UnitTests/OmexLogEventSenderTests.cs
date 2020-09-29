@@ -46,7 +46,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			AssertPayload(eventInfo, "message", message);
 			AssertPayload(eventInfo, "category", category);
-			AssertPayload(eventInfo, "activityId", activity.Id);
+			AssertPayload(eventInfo, "activityId", activity.Id ?? string.Empty);
 			AssertPayload(eventInfo, "tagId", "fff9");
 		}
 

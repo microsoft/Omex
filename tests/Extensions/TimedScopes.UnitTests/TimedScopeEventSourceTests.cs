@@ -37,7 +37,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			Activity activity = new Activity(name);
 			using (TimedScope scope = new TimedScope(activity, TimedScopeResult.Success).Start())
 			{
-				expectedActivityId = activity.Id;
+				expectedActivityId = activity.Id ?? string.Empty;
 				scope.SetSubType(subType);
 				scope.SetMetadata(metaData);
 				activity.SetUserHash("TestUserHash");

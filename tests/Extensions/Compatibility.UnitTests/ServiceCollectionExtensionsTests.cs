@@ -71,7 +71,7 @@ namespace Microsoft.Omex.Extensions.Compatibility.UnitTests
 
 		private static void AssertResult(string expectedResult)
 		{
-			string value = Activity.Current.Tags.FirstOrDefault(p => string.Equals(p.Key, ActivityTagKeys.Result, StringComparison.Ordinal)).Value;
+			string? value = Activity.Current?.Tags.FirstOrDefault(p => string.Equals(p.Key, ActivityTagKeys.Result, StringComparison.Ordinal)).Value;
 			Assert.AreEqual(expectedResult, value);
 		}
 	}

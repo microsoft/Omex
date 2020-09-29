@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 	/// <remarks>
 	/// Should be changed after .NET 5 release https://github.com/dotnet/designs/pull/98
 	/// </remarks>
-	internal sealed class DiagnosticsObserversInitializer : IHostedService, IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object>>
+	internal sealed class DiagnosticsObserversInitializer : IHostedService, IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object?>>
 	{
 		/// <summary>
 		/// Ending of the Activity Start event
@@ -114,26 +114,32 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			}
 		}
 
-		public void OnNext(KeyValuePair<string, object> value)
+		public void OnNext(KeyValuePair<string, object?> value)
 		{
-			Activity activity = Activity.Current;
+			Activity? activity = Activity.Current;
 			string eventName = value.Key;
 
-			if (EventEndsWith(eventName, ActivityStartEnding))
+			if (activity != null)
 			{
-				OnActivityStarted(activity, value.Value);
+				if (EventEndsWith(eventName, ActivityStartEnding))
+				{
+					OnActivityStarted(activity, value.Value);
+					return;
+				}
+				else if (EventEndsWith(eventName, ActivityStopEnding))
+				{
+					OnActivityStopped(activity, value.Value);
+					return;
+				}
 			}
-			else if (EventEndsWith(eventName, ActivityStopEnding))
-			{
-				OnActivityStopped(activity, value.Value);
-			}
-			else if (EventEndsWith(eventName, ExceptionEventEnding))
+			if (EventEndsWith(eventName, ExceptionEventEnding))
 			{
 				OnException(eventName, value.Value);
+				return;
 			}
 		}
 
-		private void OnActivityStarted(Activity activity, object payload)
+		private void OnActivityStarted(Activity activity, object? payload)
 		{
 			foreach (IActivityStartObserver startHandler in m_activityStartObservers)
 			{
@@ -141,7 +147,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			}
 		}
 
-		private void OnActivityStopped(Activity activity, object payload)
+		private void OnActivityStopped(Activity activity, object? payload)
 		{
 			foreach (IActivityStopObserver stopHandler in m_activityStopObservers)
 			{
@@ -149,7 +155,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			}
 		}
 
-		private void OnException(string eventName, object payload) =>
+		private void OnException(string eventName, object? payload) =>
 			m_logger.LogError(
 				Tag.Create(),
 				ExtractExceptionFromPayload(payload),
