@@ -3,5 +3,10 @@
     <!-- Enforce nullability check and language version -->
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    <!-- 
+      Should be used due to issue https://github.com/NuGet/Home/issues/5740 and could be removed after switching to release version of System.Diagnostics.DiagnosticSource
+      Issue https://github.com/microsoft/Omex/issues/251
+    -->
+    <NoWarn>NU5104</NoWarn>
   </PropertyGroup>
 </Project>
