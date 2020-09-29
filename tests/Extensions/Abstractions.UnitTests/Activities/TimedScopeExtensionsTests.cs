@@ -32,11 +32,13 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		{
 			TimedScope scope1 = CreateScope("SetSubTypeTest1");
 			TimedScope scope2 = CreateScope("SetSubTypeTest2");
-			string value = "Some sub type";
+			string initialValue = "Initial sub type";
+			string updatedValue = "Updated sub type";
 
-			scope1.SetSubType(value);
+			scope1.SetSubType(initialValue);
+			scope1.SetSubType(updatedValue);
 
-			Assert.AreEqual(value, scope1.Activity.GetTag(ActivityTagKeys.SubType));
+			Assert.AreEqual(updatedValue, scope1.Activity.GetTag(ActivityTagKeys.SubType));
 			Assert.IsNull(scope2.Activity.GetTag(ActivityTagKeys.SubType));
 		}
 
@@ -45,11 +47,13 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		{
 			TimedScope scope1 = CreateScope("SetMetadataTest1");
 			TimedScope scope2 = CreateScope("SetMetadataTest2");
-			string value = "Some metadata";
+			string initialValue = "initial metadata";
+			string updatedValue = "Updated metadata";
 
-			scope1.SetMetadata(value);
+			scope1.SetMetadata(initialValue);
+			scope1.SetMetadata(updatedValue);
 
-			Assert.AreEqual(value, scope1.Activity.GetTag(ActivityTagKeys.Metadata));
+			Assert.AreEqual(updatedValue, scope1.Activity.GetTag(ActivityTagKeys.Metadata));
 			Assert.IsNull(scope2.Activity.GetTag(ActivityTagKeys.Metadata));
 		}
 

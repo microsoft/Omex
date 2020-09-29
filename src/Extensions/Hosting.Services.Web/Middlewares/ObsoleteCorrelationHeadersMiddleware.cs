@@ -25,20 +25,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		Task IMiddleware.InvokeAsync(HttpContext context, RequestDelegate next)
 		{
 			ExtractCorrelationFromRequest(context.Request);
-			context.Response.OnStarting(SetCorrelationHeadersToResponse, context.Response);
 			return next(context);
-		}
-
-		private Task SetCorrelationHeadersToResponse(object state)
-		{
-			HttpResponse response = (HttpResponse)state;
-			Guid? oldCorrelation = Activity.Current?.GetObsoleteCorrelationId();
-			if (oldCorrelation.HasValue)
-			{
-				response.Headers.Add(CorrelationHeader, oldCorrelation.ToString());
-			}
-
-			return Task.CompletedTask;
 		}
 
 		private void ExtractCorrelationFromRequest(HttpRequest request)
