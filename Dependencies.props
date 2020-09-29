@@ -32,7 +32,7 @@
     <Microsoft_Extensions_Diagnostics_HealthChecks_Version>3.1.7</Microsoft_Extensions_Diagnostics_HealthChecks_Version>
     <Microsoft_Extensions_Http_Version>3.1.7</Microsoft_Extensions_Http_Version>
     <System_Threading_Tasks_Extensions_Version>4.5.4</System_Threading_Tasks_Extensions_Version>
-    <System_Diagnostics_DiagnosticSource_Version>4.7.1</System_Diagnostics_DiagnosticSource_Version>
+    <System_Diagnostics_DiagnosticSource_Version>5.0.0-rc.1.20451.14</System_Diagnostics_DiagnosticSource_Version>
   </PropertyGroup>
   <PropertyGroup Label="ServiceFabric packages for Omex Extensions">
     <Microsoft_ServiceFabric_Version>7.1.456</Microsoft_ServiceFabric_Version>

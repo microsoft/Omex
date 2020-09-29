@@ -46,7 +46,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		/// </summary>
 		public static void AttachActivityToOutgoingRequest(this IServiceRemotingRequestMessage requestMessage, Activity? activity)
 		{
-			if (activity == null)
+			if (activity == null || string.IsNullOrWhiteSpace(activity.Id))
 			{
 				return;
 			}
@@ -82,7 +82,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 			}
 		}
 
-		private static byte[] SerializeBaggage(KeyValuePair<string, string>[] baggage)
+		private static byte[] SerializeBaggage(KeyValuePair<string, string?>[] baggage)
 		{
 			using MemoryStream stream = new MemoryStream();
 			s_serializer.WriteObject(stream, baggage);

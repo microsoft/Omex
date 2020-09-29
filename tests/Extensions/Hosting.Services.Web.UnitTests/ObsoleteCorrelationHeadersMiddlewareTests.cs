@@ -49,36 +49,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			Assert.AreEqual(obsoleteCorrelation.ToString(), TestActivity.GetBaggageItem("ObsoleteCorrelationId"));
 		}
 
-		[Obsolete]
-		[DataTestMethod]
-		[DataRow("MS-CorrelationId")]
-		[DataRow("ms-correlationid")]
-		[DataRow("corr")]
-		[DataRow("HTTP_X_CORRELATIONID")]
-		public async Task SetsObsoleteCorrelationIdFromHeaderToHeader(string correlationName)
-		{
-			// Arrange
-			Guid obsoleteCorrelation = Guid.NewGuid();
-
-			// Mock the HttpResponse feature to test response header rewrite
-			Mock<IHttpResponseFeature> feature = new Mock<IHttpResponseFeature>();
-			HeaderDictionary dict = new HeaderDictionary();
-			feature.Setup(x => x.Headers).Returns(dict);
-			feature
-				.Setup(x => x.OnStarting(It.IsAny<Func<object, Task>>(), It.IsAny<HttpResponse>()))
-				.Callback<Func<object, Task>, object>((callback, _) => callback(TestHttpContext.Response));
-			TestHttpContext.Features.Set(feature.Object);
-
-			TestHttpContext.Request.Headers.Add(correlationName, obsoleteCorrelation.ToString());
-
-			// Act
-			await TestMiddleware.InvokeAsync(TestHttpContext, DummyDelegate);
-
-			// Assert
-			TestHttpContext.Response.Headers.TryGetValue("X-CorrelationId", out StringValues value);
-			Assert.AreEqual(obsoleteCorrelation.ToString(), value.ToString());
-		}
-
 		private Activity TestActivity { get; set; } = new Activity("ObsoleteCorrelationHeadersMiddlewareTests");
 
 		[Obsolete]
