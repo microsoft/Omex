@@ -95,8 +95,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			activity1.SetObsoleteTransactionId(updatedId);
 			CheckThatKeyNotDuplicated(activity1.Baggage);
 
-			Assert.AreEqual(updatedId, activity1.GetObsoleteteTransactionId());
-			Assert.AreNotEqual(updatedId, activity2.GetObsoleteteTransactionId());
+			Assert.AreEqual(updatedId, activity1.GetObsoleteTransactionId());
+			Assert.AreNotEqual(updatedId, activity2.GetObsoleteTransactionId());
 		}
 
 		[DataTestMethod]
