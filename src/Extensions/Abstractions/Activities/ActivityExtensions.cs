@@ -49,7 +49,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// </summary>
 		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
 		public static Activity MarkAsHealthCheck(this Activity activity) =>
-			activity.SetBaggage(HealthCheckMarkerKey, HealthCheckMarkerValue);
+			activity.IsHealthCheck()
+				? activity
+				: activity.SetBaggage(HealthCheckMarkerKey, HealthCheckMarkerValue);
 
 		/// <summary>
 		/// Set result

@@ -44,6 +44,10 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 			}
 
 			object? baggage = s_baggageField.GetValue(activity);
+			if (baggage == null)
+			{
+				return false;
+			}
 
 			s_headField ??= s_baggageField.FieldType.GetField("_first", BindingFlags.NonPublic | BindingFlags.Instance);
 			if (s_headField == null)
