@@ -30,15 +30,15 @@ namespace Services.Remoting
 		}
 
 		[TestMethod]
-		public void OmexRemotingHeaders_WithoutBaggage_ProperlyTransferred()
+		public Task OmexRemotingHeaders_WithoutBaggage_ProperlyTransferred()
 		{
 			Activity outgoingActivity = new Activity(nameof(OmexRemotingHeaders_WithoutBaggage_ProperlyTransferred));
 
-			TestActivityTransfer(outgoingActivity);
+			return TestActivityTransfer(outgoingActivity);
 		}
 
 		[TestMethod]
-		public void OmexRemotingHeaders_WithBaggage_ProperlyTransferred()
+		public Task OmexRemotingHeaders_WithBaggage_ProperlyTransferred()
 		{
 			Activity outgoingActivity = new Activity(nameof(OmexRemotingHeaders_WithBaggage_ProperlyTransferred))
 				.AddBaggage("NullValue", null)
@@ -47,13 +47,25 @@ namespace Services.Remoting
 				.AddBaggage("QuotesValue", "value with \"quotes\" inside \" test ")
 				.AddBaggage("UnicodeValue", "☕☘☔ (┛ಠ_ಠ)┛彡┻━┻");
 
-			TestActivityTransfer(outgoingActivity);
+			return TestActivityTransfer(outgoingActivity);
 		}
 
-		private void TestActivityTransfer(Activity outgoingActivity)
+		[TestMethod]
+		public Task OmexRemotingHeaders_WithBaggage_KeepsOrder()
+		{
+			string key = "Key1";
+
+			Activity outgoingActivity = new Activity(nameof(OmexRemotingHeaders_WithBaggage_ProperlyTransferred))
+				.AddBaggage(key, "value1")
+				.AddBaggage(key, "value2");
+
+			return TestActivityTransfer(outgoingActivity);
+		}
+
+		private async Task TestActivityTransfer(Activity outgoingActivity)
 		{
 			// run in separate thread to avoid interference from other activities
-			Task.Run(() =>
+			await Task.Run(() =>
 			{
 				HeaderMock header = new HeaderMock();
 				Mock<IServiceRemotingRequestMessage> requestMock = new Mock<IServiceRemotingRequestMessage>();
@@ -68,7 +80,7 @@ namespace Services.Remoting
 				incomingActivity.Stop();
 
 				Assert.AreEqual(outgoingActivity.Id, incomingActivity.ParentId);
-				CollectionAssert.AreEquivalent(outgoingActivity.Baggage.ToArray(), incomingActivity.Baggage.ToArray());
+				CollectionAssert.AreEqual(outgoingActivity.Baggage.ToArray(), incomingActivity.Baggage.ToArray());
 			});
 		}
 

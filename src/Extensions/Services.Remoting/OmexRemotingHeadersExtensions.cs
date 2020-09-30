@@ -74,8 +74,13 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 
 				if (headers.TryGetHeaderValue(TraceStateHeaderName, out byte[] baggageBytes))
 				{
-					foreach (KeyValuePair<string, string> pair in DeserializeBaggage(baggageBytes))
+					KeyValuePair<string, string>[] baggage = DeserializeBaggage(baggageBytes);
+
+					// AddBaggage adds items at the beginning of the list, so we need to add them in reverse to keep the same order as the client
+					// An order could be important if baggage has two items with the same key (that is allowed by the contract)
+					for (int i = baggage.Length; i >= 0; i--)
 					{
+						KeyValuePair<string, string> pair = baggage[i];
 						activity.AddBaggage(pair.Key, pair.Value);
 					}
 				}
