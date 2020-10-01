@@ -41,8 +41,10 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained</returns>
 		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection)
 		{
-			serviceCollection.AddLogging();
-
+			serviceCollection.AddLogging(builder =>
+			{
+				builder.AddConsole();
+			});
 			serviceCollection.TryAddTransient<IServiceContext, EmptyServiceContext>();
 			serviceCollection.TryAddTransient<IExecutionContext, BasicMachineInformation>();
 			serviceCollection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
@@ -54,6 +56,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ReplayableActivityStopObserver>());
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
+
 			return serviceCollection;
 		}
 	}
