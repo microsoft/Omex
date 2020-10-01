@@ -49,7 +49,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// </summary>
 		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
 		public static Activity MarkAsHealthCheck(this Activity activity) =>
-			activity.SetBaggage(HealthCheckMarkerKey, HealthCheckMarkerValue);
+			activity.IsHealthCheck()
+				? activity
+				: activity.SetBaggage(HealthCheckMarkerKey, HealthCheckMarkerValue);
 
 		/// <summary>
 		/// Set result
@@ -93,7 +95,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// Get transaction id that is used by old Omex services
 		/// </summary>
 		[Obsolete(TransactionIdObsoleteMessage, false)]
-		public static uint? GetObsoleteteTransactionId(this Activity activity) =>
+		public static uint? GetObsoleteTransactionId(this Activity activity) =>
 			uint.TryParse(activity.GetBaggageItem(ObsoleteTransactionId), out uint transactionId)
 				? transactionId
 				: (uint?)null;
