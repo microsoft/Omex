@@ -61,7 +61,9 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			}
 
 #pragma warning disable CS0618 // Until it's used we need to include correlationId into events
-			string correlationId = activity.GetObsoleteteTransactionId()?.ToString("D") ?? NullPlaceholder;
+			string correlationId = activity.GetObsoleteCorrelationId()?.ToString()
+				?? activity.GetRootIdAsGuid()?.ToString()
+				?? NullPlaceholder;
 #pragma warning restore CS0618
 
 			string nameAsString = SanitizeString(name, nameof(name), name);
