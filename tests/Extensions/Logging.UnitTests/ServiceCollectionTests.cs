@@ -4,6 +4,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.Logging.UnitTests
@@ -46,6 +47,17 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		{
 			ILoggingBuilder builder = new MockLoggingBuilder().AddOmexLogging();
 			ValidateTypeRegistration<ILogger<ServiceCollectionTests>>(builder.Services);
+		}
+
+		[TestMethod]
+		public void AddOmexLoggerOnLoadInitialLogger_RegistersLogger()
+		{
+			ILoggerFactory factory = LoggerFactory.Create(builder => {
+				builder.LoadInitialLogger();
+			});
+
+			ILogger logger = factory.CreateLogger<OmexLogger>();
+			Assert.IsNotNull(logger);
 		}
 
 		private T ValidateTypeRegistration<T>(IServiceCollection collection)

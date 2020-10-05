@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			s_processName = string.Format(CultureInfo.InvariantCulture, "{0} (0x{1:X4})", process.ProcessName, process.Id);
 		}
 
-		public OmexLogEventSender(BaseEventSource eventSource, IExecutionContext executionContext, IServiceContext context, IOptions<OmexLoggingOptions> options)
+		public OmexLogEventSender(OmexLogEventSource eventSource, IExecutionContext executionContext, IServiceContext context, IOptions<OmexLoggingOptions> options)
 		{
 			m_eventSource = eventSource;
 			m_executionContext = executionContext;
@@ -141,7 +141,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			}
 		}
 
-		private readonly BaseEventSource m_eventSource;
+		private readonly OmexLogEventSource m_eventSource;
 		private readonly IServiceContext m_serviceContext;
 		private readonly IOptions<OmexLoggingOptions> m_options;
 		private readonly IExecutionContext m_executionContext;

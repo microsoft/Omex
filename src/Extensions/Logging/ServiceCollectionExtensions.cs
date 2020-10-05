@@ -35,6 +35,27 @@ namespace Microsoft.Omex.Extensions.Logging
 		}
 
 		/// <summary>
+		/// Load the initial logger
+		/// </summary>
+		/// <param name="builder">The extension method argument</param>
+		public static ILoggingBuilder LoadInitialLogger(this ILoggingBuilder builder)
+		{
+			builder.AddConsole();
+			builder.Services.TryAddTransient<IServiceContext, EmptyServiceContext>();
+			builder.Services.TryAddTransient<IExecutionContext, BasicMachineInformation>();
+			builder.Services.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
+			builder.Services.TryAddTransient<IActivityProvider, ReplayableActivityProvider>();
+
+			builder.Services.TryAddSingleton(p => OmexLogEventSource.Instance);
+			builder.Services.TryAddTransient<ILogEventReplayer, OmexLogEventSender>();
+			builder.Services.TryAddTransient<ILogEventSender, OmexLogEventSender>();
+
+			builder.Services.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ReplayableActivityStopObserver>());
+			builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
+			return builder;
+		}
+
+		/// <summary>
 		/// Adds Omex event logger to the factory
 		/// </summary>
 		/// <param name="serviceCollection">The extension method argument</param>
