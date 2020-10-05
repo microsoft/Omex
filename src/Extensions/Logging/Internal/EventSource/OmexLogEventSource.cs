@@ -13,25 +13,25 @@ namespace Microsoft.Omex.Extensions.Logging
 	{
 		[Event((int)EventSourcesEventIds.LogError, Level = EventLevel.Error, Message = "{12}:{13} {16}", Version = 6)]
 		public void LogErrorServiceMessage(
-	string applicationName,
-	string serviceName,
-	string agentName,
-	string buildVersion,
-	string processName,
-	Guid partitionId,
-	long replicaId,
-	string activityId,
-	string activityTraceId,
-	Guid correlationId,
-	uint transactionId,
-	string level,
-	string category,
-	string tagId,
-	string tagName,
-	int threadId,
-	string message) =>
-	WriteEvent((int)EventSourcesEventIds.LogError, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
-		activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+			string applicationName,
+			string serviceName,
+			string agentName,
+			string buildVersion,
+			string processName,
+			Guid partitionId,
+			long replicaId,
+			string activityId,
+			string activityTraceId,
+			Guid correlationId,
+			uint transactionId,
+			string level,
+			string category,
+			string tagId,
+			string tagName,
+			int threadId,
+			string message) =>
+			WriteEvent((int)EventSourcesEventIds.LogError, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
+				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
 
 		[Event((int)EventSourcesEventIds.LogWarning, Level = EventLevel.Warning, Message = "{12}:{13} {16}", Version = 6)]
 		public void LogWarningServiceMessage(
