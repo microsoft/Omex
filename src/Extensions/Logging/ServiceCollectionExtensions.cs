@@ -45,6 +45,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			{
 				builder.AddConsole();
 			});
+
 			serviceCollection.TryAddTransient<IServiceContext, EmptyServiceContext>();
 			serviceCollection.TryAddTransient<IExecutionContext, BasicMachineInformation>();
 			serviceCollection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
