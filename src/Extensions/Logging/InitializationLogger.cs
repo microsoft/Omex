@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Logging
 {
 	/// <summary>
 	/// InitStaticLogger is the logger to be used before the proper ILogger from DI is set
-	/// not to be used as main logger
+	/// Not to be used as main logger.
 	/// </summary>
 	public static class InitializationLogger
 	{
