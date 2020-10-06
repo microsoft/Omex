@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// </summary>
 		public static ILogger Instance { get; private set; } = LoggerFactory.Create(builder =>
 		 {
-			 builder.LoadInitializationLogger();
+			builder.LoadInitializationLogger();
 		 }).CreateLogger("Initial-Logging");
 
 		private static ILoggingBuilder LoadInitializationLogger(this ILoggingBuilder builder)
