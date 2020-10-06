@@ -27,7 +27,6 @@
     <Microsoft_Extensions_Logging_Abstractions_Version>3.1.7</Microsoft_Extensions_Logging_Abstractions_Version>
     <Microsoft_Extensions_DependencyInjection_Abstractions_Version>3.1.7</Microsoft_Extensions_DependencyInjection_Abstractions_Version>
     <Microsoft_Extensions_Logging_Version>3.1.7</Microsoft_Extensions_Logging_Version>
-    <Microsoft_Extensions_Logging_Console_Version>3.1.7</Microsoft_Extensions_Logging_Console_Version>
     <Microsoft_Extensions_DependencyInjection_Version>3.1.7</Microsoft_Extensions_DependencyInjection_Version>
     <Microsoft_Extensions_Options_Version>3.1.7</Microsoft_Extensions_Options_Version>
     <Microsoft_Extensions_Diagnostics_HealthChecks_Version>3.1.7</Microsoft_Extensions_Diagnostics_HealthChecks_Version>
