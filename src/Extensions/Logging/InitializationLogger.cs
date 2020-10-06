@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Logging;
 
-namespace Microsoft.Omex.Extensions.Hosting.Services
+namespace Microsoft.Omex.Extensions.Logging
 {
 	/// <summary>
 	/// InitStaticLogger is the logger to be used before the proper ILogger from DI is set
