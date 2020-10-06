@@ -27,6 +27,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		{
 			CustomEventListener listener = new CustomEventListener();
 			listener.EnableEvents(OmexLogEventSource.Instance, eventLevel);
+			listener.EnableEvents(ServiceInitializationEventSource.Instance, EventLevel.Informational);
 
 			string message = "Test message";
 			string category = "Test category";
@@ -48,6 +49,19 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			AssertPayload(eventInfo, "category", category);
 			AssertPayload(eventInfo, "activityId", activity.Id ?? string.Empty);
 			AssertPayload(eventInfo, "tagId", "fff9");
+
+			InitializationLogger.LogInitializationSucceed(category, message);
+
+
+			eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)EventSourcesEventIds.GenericHostBuildSucceeded);
+
+			AssertPayload(eventInfo, "message", "Initilization successful for Test category, Test message");
+
+			string newMessage = "New message";
+			InitializationLogger.LogInitializationFail(category, new Exception("Not expected to be part of the event"), newMessage);
+
+			eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)EventSourcesEventIds.GenericHostFailed);
+			AssertPayload(eventInfo, "message", newMessage);
 		}
 
 		private void AssertPayload<TPayloadType>(EventWrittenEventArgs info, string name, TPayloadType expected)
