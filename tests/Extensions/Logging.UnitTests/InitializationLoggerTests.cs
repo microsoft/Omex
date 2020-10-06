@@ -28,7 +28,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			InitializationLogger.InitilizationSucceed(category, message);
 
-
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)EventSourcesEventIds.GenericHostBuildSucceeded);
 
 			AssertPayload(eventInfo, "message", "Initilization successful for Test category, Test message");
