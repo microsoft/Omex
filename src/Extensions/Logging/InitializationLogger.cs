@@ -10,7 +10,7 @@ using Microsoft.Omex.Extensions.Logging;
 namespace Microsoft.Omex.Extensions.Logging
 {
 	/// <summary>
-	/// InitStaticLogger is the logger to be used before the proper ILogger from DI is set
+	/// InitStaticLogger is the logger to be used before the proper ILogger from DI is set.
 	/// Not to be used as main logger.
 	/// </summary>
 	public static class InitializationLogger
