@@ -21,10 +21,4 @@
     <ProjectReference Include="..\System.UnitTests.Shared\Microsoft.Omex.System.UnitTests.Shared.csproj" />
     <ProjectReference Include="..\System\Microsoft.Omex.System.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="!$(IsNetStandard)">
-    <PackageReference Include="System.Collections.Immutable" Version="$(System_Collections_Immutable_Version)" />
-  </ItemGroup>
-  <ItemGroup Condition="$(IsNetStandard)">
-    <PackageReference Include="System.Collections.Immutable" Version="$(System_Collections_Immutable_Version_Core)" />
-  </ItemGroup>
 </Project>

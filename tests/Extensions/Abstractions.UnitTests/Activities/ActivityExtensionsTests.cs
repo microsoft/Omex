@@ -2,7 +2,9 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,17 +16,39 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 	public class ActivityExtensionsTests
 	{
 		[TestMethod]
+		public void GetRootIdAsGuid_ReturnsProperGuid()
+		{
+			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+
+			Activity activty = new Activity("RootIdTest");
+
+			Guid? guidBeforeStart = activty.GetRootIdAsGuid();
+
+			Assert.IsFalse(guidBeforeStart.HasValue);
+
+			activty.Start();
+
+			Guid? guidAfterStart = activty.GetRootIdAsGuid();
+
+			Assert.IsTrue(guidAfterStart.HasValue);
+			Assert.AreEqual(activty.RootId, guidAfterStart.GetValueOrDefault().ToString().Replace("-", ""));
+		}
+
+		[TestMethod]
 		public void SetUserHash_SetsHash()
 		{
 			Activity activity1 = new Activity("UserHashTest1");
 			Activity activity2 = new Activity("UserHashTest2");
 
-			string userHash = "some hash value";
+			string initialUserHash = "intial hash value";
+			string updatedUserHash = "updated hash value";
 
-			activity1.SetUserHash(userHash);
+			activity1.SetUserHash(initialUserHash);
+			activity1.SetUserHash(updatedUserHash);
+			CheckThatKeyNotDuplicated(activity1.Baggage);
 
-			Assert.AreEqual(userHash, activity1.GetUserHash());
-			Assert.AreNotEqual(userHash, activity2.GetUserHash());
+			Assert.AreEqual(updatedUserHash, activity1.GetUserHash());
+			Assert.AreNotEqual(updatedUserHash, activity2.GetUserHash());
 		}
 
 		[TestMethod]
@@ -34,6 +58,8 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			Activity activity2 = new Activity("TransactionTest2");
 
 			activity1.MarkAsHealthCheck();
+			activity1.MarkAsHealthCheck();
+			CheckThatKeyNotDuplicated(activity1.Baggage);
 
 			Assert.IsTrue(activity1.IsHealthCheck());
 			Assert.IsFalse(activity2.IsHealthCheck());
@@ -45,12 +71,15 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		{
 			Activity activity1 = new Activity("CorrelationTest1");
 			Activity activity2 = new Activity("CorrelationTest2");
-			Guid correlation = Guid.NewGuid();
+			Guid initialCorrelation = Guid.NewGuid();
+			Guid updatedCorrelation = Guid.NewGuid();
 
-			activity1.SetObsoleteCorrelationId(correlation);
+			activity1.SetObsoleteCorrelationId(initialCorrelation);
+			activity1.SetObsoleteCorrelationId(updatedCorrelation);
+			CheckThatKeyNotDuplicated(activity1.Baggage);
 
-			Assert.AreEqual(correlation, activity1.GetObsoleteCorrelationId());
-			Assert.AreNotEqual(correlation, activity2.GetObsoleteCorrelationId());
+			Assert.AreEqual(updatedCorrelation, activity1.GetObsoleteCorrelationId());
+			Assert.AreNotEqual(updatedCorrelation, activity2.GetObsoleteCorrelationId());
 		}
 
 		[TestMethod]
@@ -59,12 +88,15 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		{
 			Activity activity1 = new Activity("TransactionIdTest1");
 			Activity activity2 = new Activity("TransactionIdTest2");
-			uint id = 117u;
+			uint initialId = 117u;
+			uint updatedId = 219u;
 
-			activity1.SetObsoleteTransactionId(id);
+			activity1.SetObsoleteTransactionId(initialId);
+			activity1.SetObsoleteTransactionId(updatedId);
+			CheckThatKeyNotDuplicated(activity1.Baggage);
 
-			Assert.AreEqual(id, activity1.GetObsolteteTransactionId());
-			Assert.AreNotEqual(id, activity2.GetObsolteteTransactionId());
+			Assert.AreEqual(updatedId, activity1.GetObsoleteTransactionId());
+			Assert.AreNotEqual(updatedId, activity2.GetObsoleteTransactionId());
 		}
 
 		[DataTestMethod]
@@ -76,7 +108,9 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			Activity activity1 = new Activity("SetResultTest1");
 			Activity activity2 = new Activity("SetResultTest2");
 
+			activity1.SetResult(TimedScopeResult.SystemError); // set some value intially to check that it could be updated
 			activity1.SetResult(result);
+			CheckThatKeyNotDuplicated(activity1.TagObjects);
 
 			activity1.AssertResult(result);
 			Assert.IsNull(activity2.GetTag(ActivityTagKeys.Result));
@@ -87,11 +121,14 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		{
 			Activity activity1 = new Activity("SetSubTypeTest1");
 			Activity activity2 = new Activity("SetSubTypeTest2");
-			string value = "Some sub type";
+			string initialValue = "Initial sub type";
+			string updatedValue = "Updated sub type";
 
-			activity1.SetSubType(value);
+			activity1.SetSubType(initialValue);
+			activity1.SetSubType(updatedValue);
+			CheckThatKeyNotDuplicated(activity1.TagObjects);
 
-			Assert.AreEqual(value, activity1.GetTag(ActivityTagKeys.SubType));
+			Assert.AreEqual(updatedValue, activity1.GetTag(ActivityTagKeys.SubType));
 			Assert.IsNull(activity2.GetTag(ActivityTagKeys.SubType));
 		}
 
@@ -100,12 +137,22 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		{
 			Activity activity1 = new Activity("SetMetadataTest1");
 			Activity activity2 = new Activity("SetMetadataTest2");
-			string value = "Some metadata";
+			string initialValue = "initial metadata";
+			string updatedValue = "Updated metadata";
 
-			activity1.SetMetadata(value);
+			activity1.SetMetadata(initialValue);
+			activity1.SetMetadata(updatedValue);
+			CheckThatKeyNotDuplicated(activity1.TagObjects);
 
-			Assert.AreEqual(value, activity1.GetTag(ActivityTagKeys.Metadata));
+			Assert.AreEqual(updatedValue, activity1.GetTag(ActivityTagKeys.Metadata));
 			Assert.IsNull(activity2.GetTag(ActivityTagKeys.Metadata));
+		}
+
+		private void CheckThatKeyNotDuplicated<T>(IEnumerable<KeyValuePair<string, T?>> collection)
+			where T : class
+		{
+			string[] keys = collection.GroupBy(c => c.Key).Where(g => g.Count() > 1).Select(g => g.Key).ToArray();
+			Assert.IsFalse(keys.Any(), "Duplicated keys found: " + string.Join(",", keys));
 		}
 	}
 }

@@ -3,11 +3,14 @@
   <PropertyGroup Label="Target Platforms" >
     <NetCoreVersions>netcoreapp3.1</NetCoreVersions>
     <NetStandardVersions>netstandard2.0</NetStandardVersions>
-    <NetFrameworkVersions>net472</NetFrameworkVersions> <!-- Framework version that should be targeted alongside with .net standard -->
-    <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions);$(NetFrameworkVersions)</LibraryTargetFrameworks>
-    <LibraryTargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
+    <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
     <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
-</PropertyGroup>
+  </PropertyGroup>
+  <PropertyGroup Label="UnitTest Targets">
+    <NetFrameworkVersion>net472</NetFrameworkVersion>
+    <UnitTestTargetFrameworks>$(NetCoreVersions);$(NetFrameworkVersion)</UnitTestTargetFrameworks>
+    <UnitTestTargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions)</UnitTestTargetFrameworks>
+  </PropertyGroup>
   <PropertyGroup Label="Project Settings" >
     <Platforms>AnyCPU</Platforms>
     <TargetPlatform>AnyCPU</TargetPlatform>
@@ -21,7 +24,8 @@
   <PropertyGroup Label="Condition Variables" >
     <IsNetStandard>$(NetStandardVersions.Contains('$(TargetFramework)'))</IsNetStandard>
     <IsNetCore>$(NetCoreVersions.Contains('$(TargetFramework)'))</IsNetCore>
-    <IsNetFramework>$(NetFrameworkVersions.Contains('$(TargetFramework)'))</IsNetFramework>
+    <IsNetFramework>false</IsNetFramework>
+    <IsNetFramework Condition="!$(IsNetStandard) And !$(IsNetCore)">true</IsNetFramework>
   </PropertyGroup>
   <PropertyGroup Label="Signing" >
     <SignAssembly>true</SignAssembly>

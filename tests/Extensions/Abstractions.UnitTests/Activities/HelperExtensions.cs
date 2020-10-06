@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		public static void AssertTag(this Activity activity, string tag, string expectedValue) =>
 			Assert.AreEqual(expectedValue, activity.GetTag(tag));
 
-		public static string GetTag(this Activity activity, string tag) =>
+		public static string? GetTag(this Activity activity, string tag) =>
 			activity.Tags.FirstOrDefault(p => string.Equals(p.Key, tag, StringComparison.Ordinal)).Value;
 	}
 }

@@ -14,6 +14,15 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 	public static class ActivityExtensions
 	{
 		/// <summary>
+		/// Transforms RootId into Guid that might be used in places where old Correlation Id needed
+		/// </summary>
+		/// <remarks>RootId could be converted only for started Activity when W3C id format used, all other cases will return null</remarks>
+		public static Guid? GetRootIdAsGuid(this Activity activity) =>
+			Guid.TryParse(activity.RootId, out Guid result)
+				? result
+				: (Guid?)null;
+
+		/// <summary>
 		/// Get user hash from activity
 		/// </summary>
 		public static string GetUserHash(this Activity activity) =>
@@ -33,35 +42,37 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// </summary>
 		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
 		public static Activity SetUserHash(this Activity activity, string userHash) =>
-			activity.AddBaggage(UserHashKey, userHash);
+			activity.SetBaggage(UserHashKey, userHash);
 
 		/// <summary>
 		/// Mark as health check activity
 		/// </summary>
 		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
 		public static Activity MarkAsHealthCheck(this Activity activity) =>
-			activity.AddBaggage(HealthCheckMarkerKey, HealthCheckMarkerValue);
+			activity.IsHealthCheck()
+				? activity
+				: activity.SetBaggage(HealthCheckMarkerKey, HealthCheckMarkerValue);
 
 		/// <summary>
 		/// Set result
 		/// </summary>
 		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
 		public static Activity SetResult(this Activity activity, TimedScopeResult result) =>
-			activity.AddTag(ActivityTagKeys.Result, ActivityResultStrings.ResultToString(result));
+			activity.SetTag(ActivityTagKeys.Result, ActivityResultStrings.ResultToString(result));
 
 		/// <summary>
 		/// Set sub type
 		/// </summary>
 		/// <remarks>This property won't be transfered to child activity or via web requests</remarks>
 		public static Activity SetSubType(this Activity activity, string subType) =>
-			activity.AddTag(ActivityTagKeys.SubType, subType);
+			activity.SetTag(ActivityTagKeys.SubType, subType);
 
 		/// <summary>
 		/// Set metadata
 		/// </summary>
 		/// <remarks>This property won't be transfered to child activity or via web requests</remarks>
 		public static Activity SetMetadata(this Activity activity, string metadata) =>
-			activity.AddTag(ActivityTagKeys.Metadata, metadata);
+			activity.SetTag(ActivityTagKeys.Metadata, metadata);
 
 		/// <summary>
 		/// Get correlation guid that is used by old Omex services
@@ -78,13 +89,13 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
 		[Obsolete(CorrelationIdObsoleteMessage, false)]
 		public static Activity SetObsoleteCorrelationId(this Activity activity, Guid correlation) =>
-			activity.AddBaggage(ObsoleteCorrelationId, correlation.ToString());
+			activity.SetBaggage(ObsoleteCorrelationId, correlation.ToString());
 
 		/// <summary>
 		/// Get transaction id that is used by old Omex services
 		/// </summary>
 		[Obsolete(TransactionIdObsoleteMessage, false)]
-		public static uint? GetObsolteteTransactionId(this Activity activity) =>
+		public static uint? GetObsoleteTransactionId(this Activity activity) =>
 			uint.TryParse(activity.GetBaggageItem(ObsoleteTransactionId), out uint transactionId)
 				? transactionId
 				: (uint?)null;
@@ -95,14 +106,14 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
 		[Obsolete(TransactionIdObsoleteMessage, false)]
 		public static Activity SetObsoleteTransactionId(this Activity activity, uint transactionId) =>
-			activity.AddBaggage(ObsoleteTransactionId, transactionId.ToString(CultureInfo.InvariantCulture));
+			activity.SetBaggage(ObsoleteTransactionId, transactionId.ToString(CultureInfo.InvariantCulture));
 
 		private const string UserHashKey = "UserHash";
 		private const string HealthCheckMarkerKey = "HealthCheckMarker";
 		private const string HealthCheckMarkerValue = "true";
 		private const string ObsoleteCorrelationId = "ObsoleteCorrelationId";
 		private const string ObsoleteTransactionId = "ObsoleteTransactionId";
-		private const string CorrelationIdObsoleteMessage = "Please use Activity.Id for new services instead";
-		private const string TransactionIdObsoleteMessage = "Please use Activity.TraceId for new services instead";
+		private const string CorrelationIdObsoleteMessage = "Please use Activity.Id or Activity.GetRootIdAsGuid() for new services instead";
+		private const string TransactionIdObsoleteMessage = "Please use Activity.IsHealthCheck() for new services instead";
 	}
 }

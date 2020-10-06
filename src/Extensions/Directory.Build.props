@@ -1,9 +1,6 @@
 <Project>
   <Import Project="$([MSBuild]::GetPathOfFileAbove('$(_DirectoryBuildPropsFile)', '$(MSBuildThisFileDirectory)../'))" />
   <PropertyGroup>
-    <NetStandardVersion>netstandard2.0</NetStandardVersion>
-    <NetCoreVersion>netcoreapp3.1</NetCoreVersion>
-    <TargetFrameworksValue>$(NetFameworkVersion);$(NetStandardVersion)</TargetFrameworksValue>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>

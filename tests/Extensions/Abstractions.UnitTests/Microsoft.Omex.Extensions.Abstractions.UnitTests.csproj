@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(TargetFrameworksValue)</TargetFrameworks>
+    <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Extensions\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />

@@ -25,20 +25,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		Task IMiddleware.InvokeAsync(HttpContext context, RequestDelegate next)
 		{
 			ExtractCorrelationFromRequest(context.Request);
-			context.Response.OnStarting(SetCorrelationHeadersToResponse, context.Response);
 			return next(context);
-		}
-
-		private Task SetCorrelationHeadersToResponse(object state)
-		{
-			HttpResponse response = (HttpResponse)state;
-			Guid? oldCorrelation = Activity.Current?.GetObsoleteCorrelationId();
-			if (oldCorrelation.HasValue)
-			{
-				response.Headers.Add(CorrelationHeader, oldCorrelation.ToString());
-			}
-
-			return Task.CompletedTask;
 		}
 
 		private void ExtractCorrelationFromRequest(HttpRequest request)
@@ -49,7 +36,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 				return;
 			}
 
-			Guid? oldCorrelation = ExtractCorrelationId(request);
+			Guid? oldCorrelation = ExtractCorrelationIdFromHeader(request) ?? ExtractCorrelationIdFromQuery(request);
 			if (oldCorrelation.HasValue)
 			{
 				activity.SetObsoleteCorrelationId(oldCorrelation.Value);
@@ -64,9 +51,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			}
 		}
 
-		private static Guid? ExtractCorrelationId(HttpRequest request) =>
+		private static Guid? ExtractCorrelationIdFromQuery(HttpRequest request) =>
 			!IsClientRequest(request)
 			&& Guid.TryParse(ExtractParameter(request.Query, s_correlationIdNames), out Guid correlation)
+				? correlation
+				: (Guid?)null;
+
+		private static Guid? ExtractCorrelationIdFromHeader(HttpRequest request) =>
+			!IsClientRequest(request)
+			&& Guid.TryParse(ExtractHeader(request.Headers, s_correlationIdNames), out Guid correlation)
 				? correlation
 				: (Guid?)null;
 
@@ -88,6 +81,20 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			dataSources.TryGetValue(name, out StringValues value) && value.Count > 0
 				? value.FirstOrDefault(s => !string.IsNullOrWhiteSpace(s))
 				: null;
+
+		private static string? ExtractHeader(IHeaderDictionary headers, IEnumerable<string> names)
+		{
+			foreach (string name in names)
+			{
+				string? value = headers[name];
+				if (!string.IsNullOrWhiteSpace(value))
+				{
+					return value;
+				}
+			}
+
+			return null;
+		}
 
 		/// <summary>
 		/// Checks if the context is for a request that contains identifiers indicating that the request originated from an Office client

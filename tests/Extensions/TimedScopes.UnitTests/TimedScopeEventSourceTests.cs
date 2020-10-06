@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
@@ -34,13 +35,17 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 				new NullLogger<TimedScopeEventSender>());
 
 			string expectedActivityId = string.Empty;
+			Guid correlationId = Guid.NewGuid();
 			Activity activity = new Activity(name);
 			using (TimedScope scope = new TimedScope(activity, TimedScopeResult.Success).Start())
 			{
-				expectedActivityId = activity.Id;
+				expectedActivityId = activity.Id ?? string.Empty;
 				scope.SetSubType(subType);
 				scope.SetMetadata(metaData);
 				activity.SetUserHash("TestUserHash");
+#pragma warning disable CS0618 // Type or member is obsolete
+				activity.SetObsoleteCorrelationId(correlationId);
+#pragma warning restore CS0618 // Type or member is obsolete
 				if (isHealthCheck)
 				{
 					activity.MarkAsHealthCheck();
@@ -55,6 +60,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			AssertPayload(eventInfo, "subType", subType);
 			AssertPayload(eventInfo, "metadata", metaData);
 			AssertPayload(eventInfo, "activityId", expectedActivityId);
+			AssertPayload(eventInfo, "correlationId", correlationId.ToString());
 		}
 
 		private class CustomEventListener : EventListener

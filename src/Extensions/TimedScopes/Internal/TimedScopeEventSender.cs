@@ -30,7 +30,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			}
 
 			string serviceName = m_serviceName;
-			string activityId = activity.Id;
+			string activityId = activity.Id ?? string.Empty;
 			string name = activity.OperationName;
 			double durationMs = activity.Duration.TotalMilliseconds;
 			string userHash = activity.GetUserHash(); //TODO: We need add middleware that will set userhash in compliant way and IsTransaction GitHub Issue #166
@@ -39,8 +39,13 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			string subtype = NullPlaceholder;
 			string metadata = NullPlaceholder;
 			string resultAsString = NullPlaceholder;
-			foreach (KeyValuePair<string, string> pair in activity.Tags)
+			foreach (KeyValuePair<string, string?> pair in activity.Tags)
 			{
+				if (pair.Value == null)
+				{
+					continue;
+				}
+
 				if (string.Equals(ActivityTagKeys.Result, pair.Key, StringComparison.Ordinal))
 				{
 					resultAsString = pair.Value;
@@ -56,7 +61,9 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			}
 
 #pragma warning disable CS0618 // Until it's used we need to include correlationId into events
-			string correlationId = activity.GetObsolteteTransactionId()?.ToString("D") ?? NullPlaceholder;
+			string correlationId = activity.GetObsoleteCorrelationId()?.ToString()
+				?? activity.GetRootIdAsGuid()?.ToString()
+				?? NullPlaceholder;
 #pragma warning restore CS0618
 
 			string nameAsString = SanitizeString(name, nameof(name), name);
