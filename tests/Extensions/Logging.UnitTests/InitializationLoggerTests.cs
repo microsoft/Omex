@@ -37,7 +37,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)EventSourcesEventIds.GenericHostFailed);
 			AssertPayload(eventInfo, "message", newMessage);
-
 		}
 
 		private void AssertPayload<TPayloadType>(EventWrittenEventArgs info, string name, TPayloadType expected)
