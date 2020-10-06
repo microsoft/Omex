@@ -50,6 +50,40 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			AssertPayload(eventInfo, "tagId", "fff9");
 		}
 
+		[DataTestMethod]
+		[DataRow(EventLevel.Informational)]
+		public void LogStatic_CreatesProperEvents(EventLevel eventLevel)
+		{
+			CustomEventListener listener = new CustomEventListener();
+			listener.EnableEvents(ServiceInitializationEventSource.Instance, eventLevel);
+			listener.EnableEvents(OmexLogEventSource.Instance, eventLevel);
+
+			string message = "Test message";
+			string category = "Test category";
+			string eventSourceName = "Microsoft-OMEX-Logs-Ext";
+			Activity activity = new Activity("Test activity");
+			activity.Start().Stop(); // start and stop activity to get correlation id
+
+			InitialisationLogger.InitilisationSucceed(category, message);
+
+
+			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)EventSourcesEventIds.GenericHostBuildSucceeded);
+
+			AssertPayload(eventInfo, "message", message);
+
+			eventInfo = listener.EventsInformation.Single(
+				e => string.Equals(e.EventSource.Name, eventSourceName, StringComparison.OrdinalIgnoreCase));
+
+			AssertPayload(eventInfo, "message", message);
+
+			string newMessage = "New message";
+			InitialisationLogger.InitilisationFail(category, new Exception("Not expected to be part of the event"), newMessage);
+
+			eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)EventSourcesEventIds.GenericHostFailed);
+			AssertPayload(eventInfo, "message", newMessage);
+
+		}
+
 		private void AssertPayload<TPayloadType>(EventWrittenEventArgs info, string name, TPayloadType expected)
 			where TPayloadType : class
 		{

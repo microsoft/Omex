@@ -53,7 +53,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		public void AddOmexLoggerOnLoadInitialLogger_RegistersLogger()
 		{
 			ILoggerFactory factory = LoggerFactory.Create(builder => {
-				builder.LoadInitialLogger();
+				builder.LoadInitialisationLogger();
 			});
 
 			ILogger logger = factory.CreateLogger<OmexLogger>();

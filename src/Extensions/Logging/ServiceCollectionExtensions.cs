@@ -38,20 +38,10 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// Load the initial logger
 		/// </summary>
 		/// <param name="builder">The extension method argument</param>
-		public static ILoggingBuilder LoadInitialLogger(this ILoggingBuilder builder)
+		public static ILoggingBuilder LoadInitialisationLogger(this ILoggingBuilder builder)
 		{
 			builder.AddConsole();
-			builder.Services.TryAddTransient<IServiceContext, EmptyServiceContext>();
-			builder.Services.TryAddTransient<IExecutionContext, BasicMachineInformation>();
-			builder.Services.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
-			builder.Services.TryAddTransient<IActivityProvider, ReplayableActivityProvider>();
-
-			builder.Services.TryAddSingleton(p => OmexLogEventSource.Instance);
-			builder.Services.TryAddTransient<ILogEventReplayer, OmexLogEventSender>();
-			builder.Services.TryAddTransient<ILogEventSender, OmexLogEventSender>();
-
-			builder.Services.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ReplayableActivityStopObserver>());
-			builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
+			builder.AddOmexLogging();
 			return builder;
 		}
 
@@ -62,10 +52,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained</returns>
 		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection)
 		{
-			serviceCollection.AddLogging(builder =>
-			{
-				builder.AddConsole();
-			});
+			serviceCollection.AddLogging();
 
 			serviceCollection.TryAddTransient<IServiceContext, EmptyServiceContext>();
 			serviceCollection.TryAddTransient<IExecutionContext, BasicMachineInformation>();

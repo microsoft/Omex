@@ -64,10 +64,9 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <param name="hostProcessId">Host process id</param>
 		/// <param name="serviceType">The service type</param>
 		/// <param name="message">The message to be logged</param>
-		/// <param name="args">Extra arguments</param>
 		[Event((int)EventSourcesEventIds.GenericHostBuildSucceeded, Level = EventLevel.Informational, Message = "{2}", Version = 1)]
-		public void LogHostBuildSucceeded(int hostProcessId, string serviceType, string message, params object[] args) =>
-			WriteEvent((int)EventSourcesEventIds.GenericHostBuildSucceeded, hostProcessId, serviceType, message, args);
+		public void LogHostBuildSucceeded(int hostProcessId, string serviceType, string message) =>
+			WriteEvent((int)EventSourcesEventIds.GenericHostBuildSucceeded, hostProcessId, serviceType, message);
 
 		/// <summary>
 		/// Log host build failed
@@ -75,9 +74,8 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <param name="exception">Exception to be logged</param>
 		/// <param name="serviceType">The service type</param>
 		/// <param name="message">The message to be logged</param>
-		/// <param name="args">Extra arguments</param>
 		[Event((int)EventSourcesEventIds.GenericHostFailed, Level = EventLevel.Error, Message = "{1}", Version = 1)]
-		public void LogHostFailed(string exception, string serviceType, string message, params object[] args) =>
-			WriteEvent((int)EventSourcesEventIds.GenericHostFailed, exception, serviceType, message, args);
+		public void LogHostFailed(string exception, string serviceType, string message) =>
+			WriteEvent((int)EventSourcesEventIds.GenericHostFailed, exception, serviceType, message);
 	}
 }
