@@ -35,17 +35,6 @@ namespace Microsoft.Omex.Extensions.Logging
 		}
 
 		/// <summary>
-		/// Load the initial logger
-		/// </summary>
-		/// <param name="builder">The extension method argument</param>
-		public static ILoggingBuilder LoadInitialisationLogger(this ILoggingBuilder builder)
-		{
-			builder.AddConsole();
-			builder.AddOmexLogging();
-			return builder;
-		}
-
-		/// <summary>
 		/// Adds Omex event logger to the factory
 		/// </summary>
 		/// <param name="serviceCollection">The extension method argument</param>

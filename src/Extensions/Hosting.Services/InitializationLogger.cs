@@ -4,46 +4,54 @@
 using System;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Logging;
 
-namespace Microsoft.Omex.Extensions.Logging
+namespace Microsoft.Omex.Extensions.Hosting
 {
 	/// <summary>
 	/// InitStaticLogger is the logger to be used before the proper ILogger from DI is set
 	/// not to be used as main logger
 	/// </summary>
-	public static class InitialisationLogger
+	public static class InitializationLogger
 	{
 		/// <summary>
 		/// Instance of logger
 		/// </summary>
 		public static ILogger Instance { get; private set; } = LoggerFactory.Create(builder =>
 		 {
-			 builder.LoadInitialisationLogger();
+			 builder.LoadInitializationLogger();
 		 }).CreateLogger("Initial-Logging");
 
-		/// <summary>
-		/// Log on success
-		/// </summary>
-		/// <param name="serviceNameForLogging">Service name for logging</param>
-		/// <param name="message">Message to log</param>
-		public static void InitilisationSucceed(string serviceNameForLogging, string message = "")
+		private static ILoggingBuilder LoadInitializationLogger(this ILoggingBuilder builder)
 		{
-			string logMessage = string.IsNullOrWhiteSpace(message) ?
-				$"Initilisation logger logging success to {serviceNameForLogging}" : message ;
-			ServiceInitializationEventSource.Instance.LogHostBuildSucceeded(Process.GetCurrentProcess().Id, serviceNameForLogging, logMessage);
-			Instance.LogInformation(logMessage);
+			builder.AddConsole();
+			builder.AddOmexLogging();
+			return builder;
 		}
 
 		/// <summary>
-		/// Log on failure
+		/// Log on successful building
+		/// </summary>
+		/// <param name="serviceNameForLogging">Service name for logging</param>
+		/// <param name="message">Message to log</param>
+		public static void InitilizationSucceed(string serviceNameForLogging, string message = "")
+		{
+			string logMessage = $"Initilization successful for {serviceNameForLogging}, {message}";
+			ServiceInitializationEventSource.Instance.LogHostBuildSucceeded(Process.GetCurrentProcess().Id, serviceNameForLogging, logMessage);
+			Instance.LogInformation(Tag.Create(), logMessage);
+		}
+
+		/// <summary>
+		/// Log on build failure
 		/// </summary>
 		/// <param name="serviceNameForLogging">Service name for logging</param>
 		/// <param name="ex">Exception to log</param>
 		/// <param name="message">Message to log</param>
-		public static void InitilisationFail(string serviceNameForLogging,  Exception? ex = null, string message = "")
+		public static void InitilizationFail(string serviceNameForLogging,  Exception? ex = null, string message = "")
 		{
-			ServiceInitializationEventSource.Instance.LogHostFailed(ex?.Message ?? string.Empty, serviceNameForLogging, message);
-			Instance.LogInformation(ex, message);
+			ServiceInitializationEventSource.Instance.LogHostFailed(ex?.ToString() ?? string.Empty, serviceNameForLogging, message);
+			Instance.LogError(Tag.Create(), ex, message);
 		}
 	}
 }

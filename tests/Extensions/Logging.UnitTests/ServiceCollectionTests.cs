@@ -49,17 +49,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			ValidateTypeRegistration<ILogger<ServiceCollectionTests>>(builder.Services);
 		}
 
-		[TestMethod]
-		public void AddOmexLoggerOnLoadInitialLogger_RegistersLogger()
-		{
-			ILoggerFactory factory = LoggerFactory.Create(builder => {
-				builder.LoadInitialisationLogger();
-			});
-
-			ILogger logger = factory.CreateLogger<OmexLogger>();
-			Assert.IsNotNull(logger);
-		}
-
 		private T ValidateTypeRegistration<T>(IServiceCollection collection)
 			where T : class
 		{

@@ -5,13 +5,13 @@ using System;
 using System.Diagnostics.Tracing;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 
-namespace Microsoft.Omex.Extensions.Logging
+namespace Microsoft.Omex.Extensions.Hosting
 {
 	/// <summary>
 	/// Service Fabric event source
 	/// </summary>
 	[EventSource(Name = "Microsoft-OMEX-HostLogs")] //TODO: new event source should be registred GitHub Issue #187
-	public sealed class ServiceInitializationEventSource : EventSource
+	internal sealed class ServiceInitializationEventSource : EventSource
 	{
 		/// <summary>
 		/// Instance of service fabric event source
