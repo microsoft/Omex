@@ -5,12 +5,11 @@ using System;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.Logging;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
 	/// <summary>
-	/// InitStaticLogger is the logger to be used before the proper ILogger from DI is set.
+	/// InitializationLogger is the logger to be used before the proper ILogger from DI is set.
 	/// Not to be used as main logger.
 	/// </summary>
 	public static class InitializationLogger
@@ -35,7 +34,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// </summary>
 		/// <param name="serviceNameForLogging">Service name for logging</param>
 		/// <param name="message">Message to log</param>
-		public static void InitilizationSucceed(string serviceNameForLogging, string message = "")
+		public static void LogInitializationSucceed(string serviceNameForLogging, string message = "")
 		{
 			string logMessage = $"Initilization successful for {serviceNameForLogging}, {message}";
 			ServiceInitializationEventSource.Instance.LogHostBuildSucceeded(Process.GetCurrentProcess().Id, serviceNameForLogging, logMessage);
@@ -48,7 +47,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <param name="serviceNameForLogging">Service name for logging</param>
 		/// <param name="ex">Exception to log</param>
 		/// <param name="message">Message to log</param>
-		public static void InitilizationFail(string serviceNameForLogging,  Exception? ex = null, string message = "")
+		public static void LogInitializationFail(string serviceNameForLogging,  Exception? ex = null, string message = "")
 		{
 			ServiceInitializationEventSource.Instance.LogHostFailed(ex?.ToString() ?? string.Empty, serviceNameForLogging, message);
 			Instance.LogError(Tag.Create(), ex, message);

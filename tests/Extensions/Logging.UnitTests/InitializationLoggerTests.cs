@@ -26,14 +26,14 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			Activity activity = new Activity("Test activity");
 			activity.Start().Stop(); // start and stop activity to get correlation id
 
-			InitializationLogger.InitilizationSucceed(category, message);
+			InitializationLogger.LogInitializationSucceed(category, message);
 
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)EventSourcesEventIds.GenericHostBuildSucceeded);
 
 			AssertPayload(eventInfo, "message", "Initilization successful for Test category, Test message");
 
 			string newMessage = "New message";
-			InitializationLogger.InitilizationFail(category, new Exception("Not expected to be part of the event"), newMessage);
+			InitializationLogger.LogInitializationFail(category, new Exception("Not expected to be part of the event"), newMessage);
 
 			eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)EventSourcesEventIds.GenericHostFailed);
 			AssertPayload(eventInfo, "message", newMessage);
