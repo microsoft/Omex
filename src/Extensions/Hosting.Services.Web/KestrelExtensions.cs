@@ -14,12 +14,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	public static class KestrelExtensions
 	{
 		/// <summary>
-		/// /
+		/// Specify Kestrel as the server to be used by the web host.
 		/// </summary>
-		/// <param name="hostBuilder"></param>
-		/// <param name="configureOptions"></param>
-		/// <param name="serviceProvider"></param>
-		/// <returns></returns>
+		/// <param name="hostBuilder">Host builder</param>
+		/// <param name="configureOptions">Configure options</param>
+		/// <param name="serviceProvider">Service provider</param>
+		/// <returns>Webhost builder object</returns>
 		public static IWebHostBuilder UseKestrel(this IWebHostBuilder hostBuilder, Action<WebHostBuilderContext, IServiceProvider, KestrelServerOptions> configureOptions,
 			IServiceProvider serviceProvider)
 		{
