@@ -34,7 +34,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			IServiceProvider serviceProvider,
 			ServiceFabricIntegrationOptions options,
 			Action<IWebHostBuilder> builderExtension,
-			Action<WebHostBuilderContext, KestrelServerOptions> kestrelOptions)
+			Action<WebHostBuilderContext, IServiceProvider, KestrelServerOptions> kestrelOptions)
 		{
 			Name = name;
 			m_serviceProvider = serviceProvider;
@@ -47,7 +47,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		internal IWebHost BuildWebHost(string url, AspNetCoreCommunicationListener listener)
 		{
 			IWebHostBuilder hostBuilder = new WebHostBuilder()
-				.UseKestrel(m_kestrelOptions)
+				.UseKestrel(m_kestrelOptions, m_serviceProvider)
 				.ConfigureServices(collection => ConfigureServices(collection))
 				.UseContentRoot(Directory.GetCurrentDirectory())
 				.UseStartup<TStartup>()
@@ -77,7 +77,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 
 		private readonly ServiceFabricIntegrationOptions m_options;
 
-		private readonly Action<WebHostBuilderContext, KestrelServerOptions> m_kestrelOptions;
+		private readonly Action<WebHostBuilderContext, IServiceProvider, KestrelServerOptions> m_kestrelOptions;
 
 		private readonly Action<IWebHostBuilder> m_builderExtension;
 	}

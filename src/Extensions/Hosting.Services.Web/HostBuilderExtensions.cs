@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			string name,
 			ServiceFabricIntegrationOptions options,
 			Action<IWebHostBuilder>? builderExtension = null,
-			Action<WebHostBuilderContext, KestrelServerOptions>? kestrelOptions = null)
+			Action<WebHostBuilderContext, IServiceProvider, KestrelServerOptions>? kestrelOptions = null)
 				where TStartup : class =>
 					builder.AddKestrelListener<TStartup, OmexStatelessService, StatelessServiceContext>(
 						name,
@@ -47,6 +47,34 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 						name,
 						options,
 						builderExtension,
+						NoServiceProvider(kestrelOptions));
+
+		private static Action<WebHostBuilderContext, IServiceProvider, KestrelServerOptions>? NoServiceProvider(
+			Action<WebHostBuilderContext, KestrelServerOptions>? kestrelOptions = null)
+		{
+			if (kestrelOptions is null)
+			{
+				return null;
+			}
+
+			return (context, provider, options) => kestrelOptions(context, options);
+		}
+
+		/// <summary>
+		/// Add Kestrel service listener to stateful service
+		/// </summary>
+		/// <typeparam name="TStartup">The type containing the startup methods for the web listener</typeparam>
+		public static ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext> AddKestrelListener<TStartup>(
+			this ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext> builder,
+			string name,
+			ServiceFabricIntegrationOptions options,
+			Action<WebHostBuilderContext, IServiceProvider, KestrelServerOptions> kestrelOptions,
+			Action<IWebHostBuilder>? builderExtension = null)
+				where TStartup : class =>
+					builder.AddKestrelListener<TStartup, OmexStatefulService, StatefulServiceContext>(
+						name,
+						options,
+						builderExtension,
 						kestrelOptions);
 
 		private static ServiceFabricHostBuilder<TService, TContext> AddKestrelListener<TStartup, TService, TContext>(
@@ -54,7 +82,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			string name,
 			ServiceFabricIntegrationOptions options,
 			Action<IWebHostBuilder>? builderExtension = null,
-			Action<WebHostBuilderContext, KestrelServerOptions>? kestrelOptions = null)
+			Action<WebHostBuilderContext, IServiceProvider, KestrelServerOptions>? kestrelOptions = null)
 				where TStartup : class
 				where TService : IServiceFabricService<TContext>
 				where TContext : ServiceContext =>
@@ -65,7 +93,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 						builder => builder.BuilderExtension<TContext>(builderExtension),
 						kestrelOptions ??= s_emptyKestrelOptions));
 
-		private static readonly Action<WebHostBuilderContext, KestrelServerOptions> s_emptyKestrelOptions = (webHostBuilderContext, kestrelServerOptions) => { };
+		private static readonly Action<WebHostBuilderContext, IServiceProvider, KestrelServerOptions> s_emptyKestrelOptions =
+			(webHostBuilderContext, context, kestrelServerOptions) => { };
 
 		private static void BuilderExtension<TContext>(this IWebHostBuilder builder, Action<IWebHostBuilder>? builderExtension)
 			where TContext : ServiceContext
