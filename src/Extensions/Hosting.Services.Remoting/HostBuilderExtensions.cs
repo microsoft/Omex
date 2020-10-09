@@ -36,7 +36,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 			string name,
 			FabricTransportRemotingListenerSettings? settings = null)
 				where TService : IService =>
-					builder.AddRemotingListener(name, (provider, _) => provider.GetService<TService>(), settings);
+					builder.AddRemotingListener(name, (provider, _) => provider.GetRequiredService<TService>(), settings);
 
 		/// <summary>
 		/// Adds remote listener to stateful service
