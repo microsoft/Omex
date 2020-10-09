@@ -19,16 +19,14 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// </summary>
 		public static IHealthChecksBuilder AddServiceFabricHealthChecks(this IServiceCollection serviceCollection)
 		{
-			HttpClientHandler clientHandler = new HttpClientHandler
-			{
-				AllowAutoRedirect = false,
-				Credentials = CredentialCache.DefaultCredentials,
-				ServerCertificateCustomValidationCallback = (sender, x509Certificate, chain, errors) => true
-			};
-
 			serviceCollection
 				.AddHttpClient(HttpEndpointHealthCheck.HttpClientLogicalName)
-				.ConfigurePrimaryHttpMessageHandler(() => clientHandler);
+				.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+				{
+					AllowAutoRedirect = false,
+					Credentials = CredentialCache.DefaultCredentials,
+					ServerCertificateCustomValidationCallback = (sender, x509Certificate, chain, errors) => true
+				});
 
 			return serviceCollection
 				.AddHealthCheckPublisher<ServiceFabricHealthCheckPublisher>()
