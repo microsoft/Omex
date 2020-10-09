@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 using System;
@@ -62,9 +62,9 @@ namespace Microsoft.Omex.Extensions.Hosting
 			{
 				await m_host.StopAsync(cancellationToken).ConfigureAwait(false);
 			}
-			catch (AggregateException aggragatedException)
+			catch (AggregateException aggregateException)
 			{
-				foreach (Exception exception in aggragatedException.InnerExceptions)
+				foreach (Exception exception in aggregateException.InnerExceptions)
 				{
 					switch (exception)
 					{
@@ -81,7 +81,7 @@ namespace Microsoft.Omex.Extensions.Hosting
 			}
 			catch (Exception exception)
 			{
-				m_logger.LogCritical(Tag.Create(), exception, "Unexpected failure in StopAsync that is not wrapped in AggragatedException");
+				m_logger.LogCritical(Tag.Create(), exception, "Unexpected failure in StopAsync that is not wrapped in AggregateException");
 				throw;
 			}
 		}
