@@ -7,16 +7,16 @@ using System.Collections.Generic;
 namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 {
 	/// <summary>
-	/// Type for accessing an object that is not available during dependency injection container creation
+	/// Type for accessing an object that is not available during dependency injection container creation.
 	/// </summary>
-	/// <typeparam name="TValue">Type that will be accessible after dependency injection creation</typeparam>
+	/// <typeparam name="TValue">Type that will be accessible after dependency injection creation.</typeparam>
 	public class Accessor<TValue> : IAccessor<TValue>, IAccessorSetter<TValue>
 		where TValue : class
 	{
 		/// <summary>
-		/// Creates accessor for dependency injection, for values that not available during container creation
+		/// Creates accessor for dependency injection, for values that not available during container creation.
 		/// </summary>
-		/// <param name="value">Value if it's immediately available from dependency injection</param>
+		/// <param name="value">Value if it's immediately available from dependency injection.</param>
 		public Accessor(TValue? value = null)
 		{
 			m_value = value;
@@ -57,7 +57,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Accessors
 
 		/// <inheritdoc />
 		TValue IAccessor<TValue>.GetValueOrThrow() =>
-			m_value ?? throw new InvalidOperationException(FormattableString.Invariant($"Accessor value of type '{typeof(TValue)}' currently not available"));
+			m_value ?? throw new InvalidOperationException(FormattableString.Invariant($"Value of type '{typeof(TValue)}' is currently not available."));
 
 		private readonly LinkedList<WeakReference<Action<TValue>>> m_actions;
 
