@@ -107,13 +107,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				// get proper application name from host
 				serviceName = host.Services.GetService<IHostEnvironment>().ApplicationName;
 
-				ServiceInitializationEventSource.Instance.LogHostBuildSucceeded(Process.GetCurrentProcess().Id, serviceNameForLogging);
+				InitializationLogger.LogInitializationSucceed(serviceNameForLogging);
 
 				return host;
 			}
 			catch (Exception e)
 			{
-				ServiceInitializationEventSource.Instance.LogHostFailed(e.ToString(), serviceNameForLogging);
+				InitializationLogger.LogInitializationFail(serviceNameForLogging, e);
 				throw;
 			}
 		}

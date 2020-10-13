@@ -95,7 +95,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// Get transaction id that is used by old Omex services
 		/// </summary>
 		[Obsolete(TransactionIdObsoleteMessage, false)]
-		public static uint? GetObsoleteteTransactionId(this Activity activity) =>
+		public static uint? GetObsoleteTransactionId(this Activity activity) =>
 			uint.TryParse(activity.GetBaggageItem(ObsoleteTransactionId), out uint transactionId)
 				? transactionId
 				: (uint?)null;
