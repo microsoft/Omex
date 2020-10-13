@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Fabric;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Hosting.Services.UnitTests;
+using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting.FabricTransport.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -73,6 +75,44 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatelessService>>();
 
 			Assert.IsInstanceOfType(value, typeof(GenericRemotingListenerBuilder<OmexStatelessService>));
+			Assert.AreEqual(expectedName, value.Name);
+			Assert.AreEqual(settings, GetSettings(value));
+		}
+
+		[TestMethod]
+		public void AddRemotingListener_ToStatelessServiceUsingIServiceTypeThatIsNotRegistered_BuildThrowsInvalidOperationException()
+		{
+			string expectedName = nameof(AddRemotingListener_ToStatelessServiceUsingIServiceType_RegisterType);
+			FabricTransportRemotingListenerSettings settings = new FabricTransportRemotingListenerSettings();
+			HostBuilder builder = new HostBuilder();
+			ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext> sfBuilder =
+				MockServiceFabricHostBuilder.CreateMockBuilder<OmexStatelessService, StatelessServiceContext>(builder);
+
+			sfBuilder.AddRemotingListener<MockService>(expectedName, settings);
+
+			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatelessService>>();
+
+			InvalidOperationException exception = Assert.ThrowsException<InvalidOperationException>(() => value.Build(MockServiceFabricServices.MockOmexStatelessService));
+			StringAssert.Contains(exception.Message, typeof(MockService).FullName);
+		}
+
+		[TestMethod]
+		public void AddRemotingListener_ToStatelessServiceUsingIServiceTypeThatIsRegistered_BuildDoesNotThrow()
+		{
+			string expectedName = nameof(AddRemotingListener_ToStatelessServiceUsingIServiceType_RegisterType);
+			FabricTransportRemotingListenerSettings settings = new FabricTransportRemotingListenerSettings();
+			HostBuilder builder = new HostBuilder();
+			ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext> sfBuilder =
+				MockServiceFabricHostBuilder.CreateMockBuilder<OmexStatelessService, StatelessServiceContext>(builder);
+
+			builder.ConfigureServices((_, container) => container.AddTransient<MockService>());
+			sfBuilder.AddRemotingListener<MockService>(expectedName, settings);
+
+			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatelessService>>();
+
+			ICommunicationListener service = value.Build(MockServiceFabricServices.MockOmexStatelessService);
+
+			Assert.IsNotNull(service);
 			Assert.AreEqual(expectedName, value.Name);
 			Assert.AreEqual(settings, GetSettings(value));
 		}
