@@ -39,7 +39,7 @@ namespace Microsoft.Omex.DocumentDb
 			IDocumentClient client = await GetDocumentClientAsync().ConfigureAwait(false);
 
 			StoredProcedure sproc = null;
-			var colUri = UriFactory.CreateDocumentCollectionUri(dbId, collectionId);
+			Uri colUri = UriFactory.CreateDocumentCollectionUri(dbId, collectionId);
 
 			return await DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0x2381b14d /* tag_961fn */),
 				async () =>
