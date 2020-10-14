@@ -4,6 +4,7 @@
 using System;
 using System.Fabric;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.ServiceFabric.Services.Remoting;
 using Microsoft.ServiceFabric.Services.Remoting.FabricTransport.Runtime;
 
@@ -23,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 			FabricTransportRemotingListenerSettings? settings = null)
 				where TService : class, IService =>
 					builder
-						.ConfigureServices((_, services) => services.AddTransient<TService>())
+						.ConfigureServices((_, services) => services.TryAddTransient<TService>())
 						.AddRemotingListener(name, (provider, _) => provider.GetRequiredService<TService>(), settings);
 
 		/// <summary>
@@ -35,7 +36,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 			FabricTransportRemotingListenerSettings? settings = null)
 				where TService : class, IService =>
 					builder
-						.ConfigureServices((_, services) => services.AddTransient<TService>())
+						.ConfigureServices((_, services) => services.TryAddTransient<TService>())
 						.AddRemotingListener(name, (provider, _) => provider.GetRequiredService<TService>(), settings);
 
 		/// <summary>
