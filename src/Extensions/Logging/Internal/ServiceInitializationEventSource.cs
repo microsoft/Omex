@@ -5,7 +5,7 @@ using System;
 using System.Diagnostics.Tracing;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 
-namespace Microsoft.Omex.Extensions.Hosting.Services
+namespace Microsoft.Omex.Extensions.Logging
 {
 	/// <summary>
 	/// Service Fabric event source
@@ -23,18 +23,22 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// </summary>
 		/// <param name="hostProcessId">Host process id</param>
 		/// <param name="serviceType">Service type</param>
+		/// <param name="message">Optional message</param>
 		[NonEvent]
-		public void LogHostBuildSucceeded(int hostProcessId, string serviceType)
+		public void LogHostBuildSucceeded(int hostProcessId, string serviceType, string message = "")
 		{
 			if (!IsEnabled())
 			{
 				return;
 			}
 
-			LogHostBuildSucceeded(
+			string logMessage = string.IsNullOrWhiteSpace(message) ?
+				FormattableString.Invariant($"Service host process {hostProcessId} registered service type {serviceType}") :
+				message;
+			LogHostBuildSucceededInternal(
 				hostProcessId,
 				serviceType,
-				FormattableString.Invariant($"Service host process {hostProcessId} registered service type {serviceType}"));
+				logMessage);
 		}
 
 		/// <summary>
@@ -42,28 +46,44 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// </summary>
 		/// <param name="exception">Exception</param>
 		/// <param name="serviceType">Service type</param>
+		/// <param name="message">Optional message</param>
 		[NonEvent]
-		public void LogHostFailed(string exception, string serviceType)
+		public void LogHostFailed(string exception, string serviceType, string message = "")
 		{
 			if (!IsEnabled())
 			{
 				return;
 			}
+			string logMessage = string.IsNullOrWhiteSpace(message) ?
+				FormattableString.Invariant($"Service host initialization failed for {serviceType} with exception {exception}") :
+				message;
 
-			LogHostFailed(
+			LogHostFailedInternal(
 				exception,
 				serviceType,
-				FormattableString.Invariant($"Service host initialization failed for {serviceType} with exception {exception}"));
+				message);
 		}
 
 		private ServiceInitializationEventSource() { }
 
+		/// <summary>
+		/// Log host build succeeded
+		/// </summary>
+		/// <param name="hostProcessId">Host process id</param>
+		/// <param name="serviceType">The service type</param>
+		/// <param name="message">The message to be logged</param>
 		[Event((int)EventSourcesEventIds.GenericHostBuildSucceeded, Level = EventLevel.Informational, Message = "{2}", Version = 1)]
-		private void LogHostBuildSucceeded(int hostProcessId, string serviceType, string message) =>
+		private void LogHostBuildSucceededInternal(int hostProcessId, string serviceType, string message) =>
 			WriteEvent((int)EventSourcesEventIds.GenericHostBuildSucceeded, hostProcessId, serviceType, message);
 
+		/// <summary>
+		/// Log host build failed
+		/// </summary>
+		/// <param name="exception">Exception to be logged</param>
+		/// <param name="serviceType">The service type</param>
+		/// <param name="message">The message to be logged</param>
 		[Event((int)EventSourcesEventIds.GenericHostFailed, Level = EventLevel.Error, Message = "{1}", Version = 1)]
-		private void LogHostFailed(string exception, string serviceType, string message) =>
+		private void LogHostFailedInternal(string exception, string serviceType, string message) =>
 			WriteEvent((int)EventSourcesEventIds.GenericHostFailed, exception, serviceType, message);
 	}
 }

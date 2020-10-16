@@ -54,6 +54,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ReplayableActivityStopObserver>());
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
+
 			return serviceCollection;
 		}
 	}

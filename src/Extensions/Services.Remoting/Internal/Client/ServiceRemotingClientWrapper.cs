@@ -58,7 +58,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 
 		public async Task<IServiceRemotingResponseMessage> RequestResponseAsync(IServiceRemotingRequestMessage requestMessage)
 		{
-			Activity? activity = m_diagnosticListener.CreateAndStartActivity(OneWayMessageActivityName);
+			Activity? activity = m_diagnosticListener.CreateAndStartActivity(RequestActivityName);
 			requestMessage.AttachActivityToOutgoingRequest(activity);
 			IServiceRemotingResponseMessage? responseMessage = null;
 
@@ -82,7 +82,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 
 		public void SendOneWay(IServiceRemotingRequestMessage requestMessage)
 		{
-			Activity? activity = m_diagnosticListener.CreateAndStartActivity(RequestActivityName);
+			Activity? activity = m_diagnosticListener.CreateAndStartActivity(OneWayMessageActivityName);
 			requestMessage.AttachActivityToOutgoingRequest(activity);
 
 			try
