@@ -3,7 +3,7 @@
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 {
-	internal class MockService : IMockService
+	internal class MockServiceDependency : IMockServiceDependency
 	{
 	}
 }
