@@ -14,6 +14,10 @@ root = true
 end_of_line = CRLF
 trim_trailing_whitespace = true
 
+# File headers
+[*.{cs,vb,ts,tsx,js}]
+file_header_template = Copyright (c) Microsoft Corporation. All rights reserved.\nLicensed under the MIT license.
+
 # Typescript and javascript files
 [*.{ts,js}]
 #indent_size = 4
