@@ -153,9 +153,9 @@ namespace Microsoft.Omex.System.Model.Types
 		/// <returns>True if v1 equals v2; false otherwise.</returns>
 		public static bool operator ==(ProductVersion v1, ProductVersion v2)
 		{
-			if (Object.ReferenceEquals(v1, null))
+			if (ReferenceEquals(v1, null))
 			{
-				return Object.ReferenceEquals(v2, null);
+				return ReferenceEquals(v2, null);
 			}
 
 			return v1.Equals(v2);
