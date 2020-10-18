@@ -73,11 +73,12 @@ namespace Services.Remoting
 
 				outgoingActivity.Start();
 				requestMock.Object.AttachActivityToOutgoingRequest(outgoingActivity);
-				outgoingActivity.Stop();
 
 				Activity incomingActivity = new Activity(outgoingActivity.OperationName + "_Out").Start();
 				requestMock.Object.ExtractActivityFromIncomingRequest(incomingActivity);
+
 				incomingActivity.Stop();
+				outgoingActivity.Stop();
 
 				Assert.AreEqual(outgoingActivity.Id, incomingActivity.ParentId);
 				CollectionAssert.AreEqual(outgoingActivity.Baggage.ToArray(), incomingActivity.Baggage.ToArray());
