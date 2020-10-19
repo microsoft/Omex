@@ -30,15 +30,15 @@ namespace Services.Remoting
 		}
 
 		[TestMethod]
-		public void OmexRemotingHeaders_WithoutBaggage_ProperlyTransferred()
+		public async Task OmexRemotingHeaders_WithoutBaggage_ProperlyTransferred()
 		{
 			Activity outgoingActivity = new Activity(nameof(OmexRemotingHeaders_WithoutBaggage_ProperlyTransferred));
 
-			TestActivityTransfer(outgoingActivity);
+			await TestActivityTransferAsync(outgoingActivity);
 		}
 
 		[TestMethod]
-		public void OmexRemotingHeaders_WithBaggage_ProperlyTransferred()
+		public async Task OmexRemotingHeaders_WithBaggage_ProperlyTransferred()
 		{
 			Activity outgoingActivity = new Activity(nameof(OmexRemotingHeaders_WithBaggage_ProperlyTransferred))
 				.AddBaggage("NullValue", null)
@@ -47,14 +47,16 @@ namespace Services.Remoting
 				.AddBaggage("QuotesValue", "value with \"quotes\" inside \" test ")
 				.AddBaggage("UnicodeValue", "☕☘☔ (┛ಠ_ಠ)┛彡┻━┻");
 
-			TestActivityTransfer(outgoingActivity);
+			await TestActivityTransferAsync(outgoingActivity);
 		}
 
-		private void TestActivityTransfer(Activity outgoingActivity)
+		private Task TestActivityTransferAsync(Activity outgoingActivity)
 		{
 			// run in separate thread to avoid interference from other activities
-			Task.Run(() =>
+			return Task.Run(() =>
 			{
+				Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+
 				HeaderMock header = new HeaderMock();
 				Mock<IServiceRemotingRequestMessage> requestMock = new Mock<IServiceRemotingRequestMessage>();
 				requestMock.Setup(m => m.GetHeader()).Returns(header);
