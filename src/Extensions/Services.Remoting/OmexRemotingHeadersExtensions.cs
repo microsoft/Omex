@@ -52,9 +52,13 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 			}
 
 			IServiceRemotingRequestMessageHeader header = requestMessage.GetHeader();
-			if (header.TryGetHeaderValue(TraceParentHeaderName, out byte[] _)) // header update not supported
+			if (!header.TryGetHeaderValue(TraceParentHeaderName, out byte[] _)) // header update not supported
 			{
 				header.AddHeader(TraceParentHeaderName, s_encoding.GetBytes(activity.Id));
+			}
+			
+			if (!header.TryGetHeaderValue(TraceStateHeaderName, out byte[] _)) // header update not supported
+			{
 				header.AddHeader(TraceStateHeaderName, SerializeBaggage(activity.Baggage.ToArray()));
 			}
 		}
