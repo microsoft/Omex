@@ -41,8 +41,6 @@ namespace Services.Remoting
 		public Task OmexRemotingHeaders_WithBaggage_ProperlyTransferred()
 		{
 			Activity outgoingActivity = new Activity(nameof(OmexRemotingHeaders_WithBaggage_ProperlyTransferred))
-				.AddBaggage("NullValue", null)
-				.AddBaggage("EmptyValue", string.Empty)
 				.AddBaggage("TestValue", "Value @+&")
 				.AddBaggage("QuotesValue", "value with \"quotes\" inside \" test ")
 				.AddBaggage("UnicodeValue", "☕☘☔ (┛ಠ_ಠ)┛彡┻━┻");
@@ -67,18 +65,19 @@ namespace Services.Remoting
 			// run in separate thread to avoid interference from other activities
 			await Task.Run(() =>
 			{
+				Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+
 				HeaderMock header = new HeaderMock();
 				Mock<IServiceRemotingRequestMessage> requestMock = new Mock<IServiceRemotingRequestMessage>();
 				requestMock.Setup(m => m.GetHeader()).Returns(header);
 
 				outgoingActivity.Start();
 				requestMock.Object.AttachActivityToOutgoingRequest(outgoingActivity);
+				outgoingActivity.Stop();
 
 				Activity incomingActivity = new Activity(outgoingActivity.OperationName + "_Out").Start();
 				requestMock.Object.ExtractActivityFromIncomingRequest(incomingActivity);
-
 				incomingActivity.Stop();
-				outgoingActivity.Stop();
 
 				Assert.AreEqual(outgoingActivity.Id, incomingActivity.ParentId);
 				CollectionAssert.AreEqual(outgoingActivity.Baggage.ToArray(), incomingActivity.Baggage.ToArray());

@@ -52,7 +52,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 			}
 
 			IServiceRemotingRequestMessageHeader header = requestMessage.GetHeader();
-			if (header.TryGetHeaderValue(TraceParentHeaderName, out byte[] _)) // header update not supported
+			if (!header.TryGetHeaderValue(TraceParentHeaderName, out byte[] _)) // header update not supported
 			{
 				header.AddHeader(TraceParentHeaderName, s_encoding.GetBytes(activity.Id));
 				header.AddHeader(TraceStateHeaderName, SerializeBaggage(activity.Baggage.ToArray()));
@@ -81,7 +81,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 
 					// AddBaggage adds items at the beginning of the list, so we need to add them in reverse to keep the same order as the client
 					// An order could be important if baggage has two items with the same key (that is allowed by the contract)
-					for (int i = baggage.Length; i >= 0; i--)
+					for (int i = baggage.Length - 1; i >= 0; i--)
 					{
 						KeyValuePair<string, string> pair = baggage[i];
 						activity.AddBaggage(pair.Key, pair.Value);
