@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	internal class ServiceFabricHealthCheckPublisher : IHealthCheckPublisher
 	{
-		private const string SourceId = nameof(ServiceFabricHealthCheckPublisher);
+		private const string SfHealthInformationSourceId = nameof(ServiceFabricHealthCheckPublisher);
 
 		private readonly IAccessor<IServicePartition> m_partitionAccessor;
 
@@ -34,61 +34,99 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		public Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
 			IServicePartition? partition = m_partitionAccessor.Value;
-
 			if (partition == null)
 			{
-				m_logger.LogWarning(Tag.Create(), "Publisher run before partition provided");
+				m_logger.LogWarning(Tag.Create(), "Publisher run before partition provided.");
 
 				return Task.CompletedTask;
 			}
 
-			partition.ReportPartitionHealth(new SfHealthInformation(SourceId, "Summary", ConvertStatus(report.Status)));
-
-			foreach(KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
+			// Avoiding repeated pattern matching for each report entry.
+			Action<SfHealthInformation> reportHealth = partition switch
 			{
-				HealthReportEntry entry = entryPair.Value;
-				SfHealthInformation sfHealthInformation = new SfHealthInformation(SourceId, entryPair.Key, ConvertStatus(entry.Status))
-				{
-					Description = CreateDescription(entry)
-				};
+				IStatefulServicePartition statefulPartition => statefulPartition.ReportReplicaHealth,
+				IStatelessServicePartition statelessPartition => statelessPartition.ReportInstanceHealth,
+				_ => (_) => { }, // NOOP, not going to happen, but we need a default case for the switch.
+			};
 
-				try
+			try
+			{
+				foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
 				{
-					partition.ReportPartitionHealth(sfHealthInformation);
+					cancellationToken.ThrowIfCancellationRequested();
+					reportHealth(BuildSfHealthInformation(entryPair.Key, entryPair.Value));
 				}
-				catch (Exception exception)
-				{
-					m_logger.LogError(Tag.Create(), exception, "Failed to report partition health");
-				}
+
+				cancellationToken.ThrowIfCancellationRequested();
+				reportHealth(BuildSfHealthInformation(report));
+			}
+			catch (FabricObjectClosedException)
+			{
+				// Ignore, the service instance is closing.
 			}
 
 			return Task.CompletedTask;
 		}
 
-		private string CreateDescription(HealthReportEntry entry)
+		private SfHealthInformation BuildSfHealthInformation(string healthCheckName, HealthReportEntry reportEntry)
 		{
-			// Healthy reports won't be displayed and most of the checks will be healthy,
-			// so we are creating a detailed description only for failed checks and avoiding allocations for healthy
-			if (entry.Status == HealthStatus.Healthy)
+			StringBuilder descriptionBuilder = new StringBuilder();
+			if (!string.IsNullOrWhiteSpace(reportEntry.Description))
 			{
-				return entry.Description;
+				descriptionBuilder.AppendLine($"Description: {reportEntry.Description}");
+			}
+			descriptionBuilder.AppendLine($"Duration: {reportEntry.Duration}.");
+			if (reportEntry.Exception != null)
+			{
+				descriptionBuilder.AppendLine($"Exception: {reportEntry.Exception}");
 			}
 
-			return new StringBuilder()
-				.Append("Exception:").AppendLine(entry.Exception?.ToString())
-				.Append("Description:").AppendLine(entry.Description)
-				.Append("Duration:").AppendLine(entry.Duration.ToString())
-				.Append("Tags:").AppendLine(string.Join(",", entry.Tags))
-				.ToString();
+			return new SfHealthInformation(SfHealthInformationSourceId, healthCheckName, ToSfHealthState(reportEntry.Status))
+			{
+				Description = descriptionBuilder.ToString(),
+			};
 		}
 
-		private SfHealthState ConvertStatus(HealthStatus state) =>
-			state switch
+		private SfHealthInformation BuildSfHealthInformation(HealthReport report)
+		{
+			int entriesCount = report.Entries.Count;
+			int healthyEntries = 0;
+			int degradedEntries = 0;
+			int unhealthyEntries = 0;
+			foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
+			{
+				switch (entryPair.Value.Status)
+				{
+					case HealthStatus.Healthy:
+						healthyEntries++;
+						break;
+					case HealthStatus.Degraded:
+						degradedEntries++;
+						break;
+					case HealthStatus.Unhealthy:
+					default:
+						unhealthyEntries++;
+						break;
+				}
+			}
+
+			StringBuilder descriptionBuilder = new StringBuilder()
+				.AppendLine($"Health checks executed: {entriesCount}. Healthy: {healthyEntries}/{entriesCount}. Degraded: {degradedEntries}/{entriesCount}. Unhealthy: {unhealthyEntries}/{entriesCount}.")
+				.AppendLine($"Total duration: {report.TotalDuration}.");
+
+			return new SfHealthInformation(SfHealthInformationSourceId, "HealthChecksSummary", ToSfHealthState(report.Status))
+			{
+				Description = descriptionBuilder.ToString(),
+			};
+		}
+
+		private SfHealthState ToSfHealthState(HealthStatus healthStatus) =>
+			healthStatus switch
 			{
 				HealthStatus.Healthy => SfHealthState.Ok,
 				HealthStatus.Degraded => SfHealthState.Warning,
 				HealthStatus.Unhealthy => SfHealthState.Error,
-				_ => SfHealthState.Invalid
+				_ => SfHealthState.Error, // Invalid health state can't be reported to SF.
 			};
 	}
 }
