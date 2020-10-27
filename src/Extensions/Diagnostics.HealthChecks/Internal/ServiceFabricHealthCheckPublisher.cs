@@ -46,11 +46,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			{
 				IStatefulServicePartition statefulPartition => statefulPartition.ReportReplicaHealth,
 				IStatelessServicePartition statelessPartition => statelessPartition.ReportInstanceHealth,
-				_ => (_) => { }, // NOOP, not going to happen, but we need a default case for the switch.
+				_ => throw new ArgumentException($"Service partition type '{partition.GetType()}' is not supported."),
 			};
 
 			try
 			{
+				// We trust the framework to ensure that the report is not null and doesn't contain null entries.
 				foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
 				{
 					cancellationToken.ThrowIfCancellationRequested();
@@ -73,12 +74,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			StringBuilder descriptionBuilder = new StringBuilder();
 			if (!string.IsNullOrWhiteSpace(reportEntry.Description))
 			{
-				descriptionBuilder.AppendLine($"Description: {reportEntry.Description}");
+				descriptionBuilder.Append("Description: ").Append(reportEntry.Description).AppendLine();
 			}
-			descriptionBuilder.AppendLine($"Duration: {reportEntry.Duration}.");
+			descriptionBuilder.Append("Duration: ").Append(reportEntry.Duration).Append('.').AppendLine();
 			if (reportEntry.Exception != null)
 			{
-				descriptionBuilder.AppendLine($"Exception: {reportEntry.Exception}");
+				descriptionBuilder.Append("Exception: ").Append(reportEntry.Exception).AppendLine();
 			}
 
 			return new SfHealthInformation(SfHealthInformationSourceId, healthCheckName, ToSfHealthState(reportEntry.Status))
@@ -111,8 +112,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			}
 
 			StringBuilder descriptionBuilder = new StringBuilder()
-				.AppendLine($"Health checks executed: {entriesCount}. Healthy: {healthyEntries}/{entriesCount}. Degraded: {degradedEntries}/{entriesCount}. Unhealthy: {unhealthyEntries}/{entriesCount}.")
-				.AppendLine($"Total duration: {report.TotalDuration}.");
+				.AppendFormat("Health checks executed: {0}. ", entriesCount)
+				.AppendFormat("Healthy: {0}/{1}. ", healthyEntries, entriesCount)
+				.AppendFormat("Degraded: {0}/{1}. ", degradedEntries, entriesCount)
+				.AppendFormat("Unhealthy: {0}/{1}.", unhealthyEntries, entriesCount)
+				.AppendLine()
+				.AppendFormat("Total duration: {0}.", report.TotalDuration)
+				.AppendLine();
 
 			return new SfHealthInformation(SfHealthInformationSourceId, "HealthChecksSummary", ToSfHealthState(report.Status))
 			{
@@ -126,7 +132,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				HealthStatus.Healthy => SfHealthState.Ok,
 				HealthStatus.Degraded => SfHealthState.Warning,
 				HealthStatus.Unhealthy => SfHealthState.Error,
-				_ => SfHealthState.Error, // Invalid health state can't be reported to SF.
+				_ => throw new ArgumentException($"'{healthStatus}' is not a valid health status."),
 			};
 	}
 }
