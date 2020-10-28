@@ -17,7 +17,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	internal class ServiceFabricHealthCheckPublisher : IHealthCheckPublisher
 	{
-		private const string SfHealthInformationSourceId = nameof(ServiceFabricHealthCheckPublisher);
+		internal const string HealthReportSourceId = nameof(ServiceFabricHealthCheckPublisher);
+
+		internal const string HealthReportSummaryProperty = "HealthChecksSummary";
 
 		private readonly IAccessor<IServicePartition> m_partitionAccessor;
 
@@ -82,7 +84,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				descriptionBuilder.Append("Exception: ").Append(reportEntry.Exception).AppendLine();
 			}
 
-			return new SfHealthInformation(SfHealthInformationSourceId, healthCheckName, ToSfHealthState(reportEntry.Status))
+			return new SfHealthInformation(HealthReportSourceId, healthCheckName, ToSfHealthState(reportEntry.Status))
 			{
 				Description = descriptionBuilder.ToString(),
 			};
@@ -120,7 +122,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				.AppendFormat("Total duration: {0}.", report.TotalDuration)
 				.AppendLine();
 
-			return new SfHealthInformation(SfHealthInformationSourceId, "HealthChecksSummary", ToSfHealthState(report.Status))
+			return new SfHealthInformation(HealthReportSourceId, HealthReportSummaryProperty, ToSfHealthState(report.Status))
 			{
 				Description = descriptionBuilder.ToString(),
 			};
