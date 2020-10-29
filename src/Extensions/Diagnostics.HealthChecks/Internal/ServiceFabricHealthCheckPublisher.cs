@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	{
 		internal const string HealthReportSourceId = nameof(ServiceFabricHealthCheckPublisher);
 
-		internal const string HealthReportSummaryProperty = "HealthChecksSummary";
+		internal const string HealthReportSummaryProperty = "HealthReportSummary";
 
 		private readonly IAccessor<IServicePartition> m_partitionAccessor;
 
