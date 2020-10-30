@@ -69,7 +69,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private static HealthCheckResult EnforceFailureStatus(HealthStatus failureStatus, HealthCheckResult result)
 		{
-			if (result.Status == HealthStatus.Healthy)
+			if (result.Status == HealthStatus.Healthy || result.Status == failureStatus)
 			{
 				return result;
 			}
