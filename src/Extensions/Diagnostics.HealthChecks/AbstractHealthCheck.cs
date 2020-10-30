@@ -49,6 +49,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			try
 			{
 				HealthCheckResult result = await CheckHealthInternalAsync(context, token).ConfigureAwait(false);
+				result = EnforceFailureStatus(context.Registration.FailureStatus, result);
 
 				scope.SetResult(TimedScopeResult.Success);
 
@@ -57,7 +58,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			catch (Exception exception)
 			{
 				Logger.LogError(Tag.Create(), exception, "'{0}' check failed with exception", context.Registration.Name);
-				return HealthCheckResult.Unhealthy("HealthCheck failed", exception, Parameters.ReportData);
+				return new HealthCheckResult(context.Registration.FailureStatus, "HealthCheck failed", exception, Parameters.ReportData);
 			}
 		}
 
@@ -65,5 +66,15 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// Health check logic without error handling and timed scope wrapping
 		/// </summary>
 		protected abstract Task<HealthCheckResult> CheckHealthInternalAsync(HealthCheckContext context, CancellationToken token);
+
+		private static HealthCheckResult EnforceFailureStatus(HealthStatus failureStatus, HealthCheckResult result)
+		{
+			if (result.Status == HealthStatus.Healthy)
+			{
+				return result;
+			}
+
+			return new HealthCheckResult(failureStatus, result.Description, result.Exception, result.Data);
+		}
 	}
 }
