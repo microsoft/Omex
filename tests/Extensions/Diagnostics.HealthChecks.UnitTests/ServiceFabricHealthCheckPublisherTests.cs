@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -315,7 +316,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			{
 				// Partition is not available by default.
 				Accessor<IServicePartition> partitionAccessor = new Accessor<IServicePartition>(null);
-				Publisher = new ServiceFabricHealthCheckPublisher(partitionAccessor, NullLogger);
+				Publisher = new ServiceFabricHealthCheckPublisher(partitionAccessor, NullLogger, ObjectPoolProvider);
 			}
 
 			public void ConfigureStatefulServicePartition(bool closed = false)
@@ -332,7 +333,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 						m_reportedSfHealthInformation[info.Property] = info;
 					});
 				Accessor<IServicePartition> partitionAccessor = new Accessor<IServicePartition>(MockStatefulServicePartition.Object);
-				Publisher = new ServiceFabricHealthCheckPublisher(partitionAccessor, NullLogger);
+				Publisher = new ServiceFabricHealthCheckPublisher(partitionAccessor, NullLogger, ObjectPoolProvider);
 			}
 
 			public void ConfigureStatelessServicePartition(bool closed = false)
@@ -349,14 +350,14 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 						m_reportedSfHealthInformation[info.Property] = info;
 					});
 				Accessor<IServicePartition> partitionAccessor = new Accessor<IServicePartition>(MockStatelessServicePartition.Object);
-				Publisher = new ServiceFabricHealthCheckPublisher(partitionAccessor, NullLogger);
+				Publisher = new ServiceFabricHealthCheckPublisher(partitionAccessor, NullLogger, ObjectPoolProvider);
 			}
 
 			public void ConfigureServicePartition()
 			{
 				MockServicePartition = new Mock<IServicePartition>();
 				Accessor<IServicePartition> partitionAccessor = new Accessor<IServicePartition>(MockServicePartition.Object);
-				Publisher = new ServiceFabricHealthCheckPublisher(partitionAccessor, NullLogger);
+				Publisher = new ServiceFabricHealthCheckPublisher(partitionAccessor, NullLogger, ObjectPoolProvider);
 			}
 
 			public Mock<IStatefulServicePartition>? MockStatefulServicePartition { get; private set; }
@@ -372,9 +373,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 					? m_reportedSfHealthInformation[propertyName]
 					: null;
 
-			private Dictionary<string, SfHealthInformation> m_reportedSfHealthInformation = new Dictionary<string, SfHealthInformation>();
+			private readonly Dictionary<string, SfHealthInformation> m_reportedSfHealthInformation = new Dictionary<string, SfHealthInformation>();
 
 			private static ILogger<ServiceFabricHealthCheckPublisher> NullLogger { get; } = new NullLogger<ServiceFabricHealthCheckPublisher>();
+
+			private static ObjectPoolProvider ObjectPoolProvider { get; } = new DefaultObjectPoolProvider();
 		}
 	}
 }
