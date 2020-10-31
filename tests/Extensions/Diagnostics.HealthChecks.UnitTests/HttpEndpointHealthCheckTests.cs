@@ -47,9 +47,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
-		public async Task CheckHealthAsync_WhenWrongStatus_ReturnsUnhealthy()
+		public async Task CheckHealthAsync_WhenWrongStatusAndDefaultRegistrationFailureStatus_ReturnsUnhealthy()
 		{
-			string contentText = nameof(CheckHealthAsync_WhenWrongStatus_ReturnsUnhealthy);
+			string contentText = nameof(CheckHealthAsync_WhenWrongStatusAndDefaultRegistrationFailureStatus_ReturnsUnhealthy);
 			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
 			HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
 			{
@@ -63,6 +63,29 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			(MockClient _, HealthCheckResult result) = await RunHealthCheckAsync(parameters, response);
 
 			Assert.AreEqual(HealthStatus.Unhealthy, result.Status,
+				FormattableString.Invariant($"Should return {HealthStatus.Unhealthy} for wrong status"));
+
+			Assert.AreEqual(contentText, result.Description, "Content should be in the description for unhealthy check");
+			CollectionAssert.AreEquivalent(reportData, result.Data.ToArray(), "Result should propagate reportData");
+		}
+
+		[TestMethod]
+		public async Task CheckHealthAsync_WhenWrongStatusAndExplicitRegistrationFailureStatus_ReturnsRegistrationFailureStatus()
+		{
+			string contentText = nameof(CheckHealthAsync_WhenWrongStatusAndExplicitRegistrationFailureStatus_ReturnsRegistrationFailureStatus);
+			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
+			HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+			{
+				Content = new StringContent(contentText)
+			};
+
+			HttpHealthCheckParameters parameters = HttpHealthCheckParametersTests.Create(
+				expectedStatus: HttpStatusCode.NotFound,
+				reportData: reportData);
+
+			(MockClient _, HealthCheckResult result) = await RunHealthCheckAsync(parameters, response, failureStatus: HealthStatus.Degraded);
+
+			Assert.AreEqual(HealthStatus.Degraded, result.Status,
 				FormattableString.Invariant($"Should return {HealthStatus.Unhealthy} for wrong status"));
 
 			Assert.AreEqual(contentText, result.Description, "Content should be in the description for unhealthy check");
@@ -102,7 +125,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			CollectionAssert.AreEquivalent(reportData, result.Data.ToArray(), "Provided result should have proper data");
 		}
 
-		private async Task<(MockClient, HealthCheckResult)> RunHealthCheckAsync(HttpHealthCheckParameters parameters, HttpResponseMessage response)
+		private async Task<(MockClient, HealthCheckResult)> RunHealthCheckAsync(
+			HttpHealthCheckParameters parameters, HttpResponseMessage response, HealthStatus failureStatus = HealthStatus.Unhealthy)
 		{
 			Accessor<ServiceContext> accessor = new Accessor<ServiceContext>();
 			Mock<IHttpClientFactory> factoryMock = new Mock<IHttpClientFactory>();
@@ -119,11 +143,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				new SimpleScopeProvider());
 
 			HealthCheckContext checkContext = HealthCheckContextHelper.CreateCheckContext();
+			checkContext.Registration.FailureStatus = failureStatus;
 
 			HealthCheckResult uninitializedResult = await healthCheck.CheckHealthAsync(checkContext);
 
-			Assert.AreEqual(HealthStatus.Degraded, uninitializedResult.Status,
-				FormattableString.Invariant($"Should return {HealthStatus.Degraded} if accessor not set"));
+			Assert.AreEqual(HealthStatus.Healthy, uninitializedResult.Status,
+				FormattableString.Invariant($"Should return {HealthStatus.Healthy} if accessor not set"));
 
 			Mock<ICodePackageActivationContext> mock = new Mock<ICodePackageActivationContext>();
 			mock.Setup(c => c.GetEndpoint(parameters.EndpointName)).Returns(new System.Fabric.Description.EndpointResourceDescription());

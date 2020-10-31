@@ -6,6 +6,7 @@ using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.ObjectPool;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
@@ -27,6 +28,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 					Credentials = CredentialCache.DefaultCredentials,
 					ServerCertificateCustomValidationCallback = (sender, x509Certificate, chain, errors) => true
 				});
+
+			serviceCollection.TryAddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
 
 			return serviceCollection
 				.AddHealthCheckPublisher<ServiceFabricHealthCheckPublisher>()

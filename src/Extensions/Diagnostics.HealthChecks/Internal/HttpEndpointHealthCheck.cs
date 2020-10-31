@@ -44,7 +44,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			if (m_accessor.Value == null)
 			{
 				Logger.LogWarning(Tag.Create(), "'{0}' check executed before ServiceContext provided", checkName);
-				return new HealthCheckResult(HealthStatus.Degraded, "Not initialized");
+				// Health check ran too early in the service lifecycle. Returning error here might force deployment rollback.
+				return HealthCheckResult.Healthy("Not initialized");
 			}
 
 			if (m_uriToCheck == null)

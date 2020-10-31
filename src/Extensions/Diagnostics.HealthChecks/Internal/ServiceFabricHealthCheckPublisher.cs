@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions;
 using SfHealthInformation = System.Fabric.Health.HealthInformation;
 using SfHealthState = System.Fabric.Health.HealthState;
@@ -25,12 +26,16 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private readonly ILogger<ServiceFabricHealthCheckPublisher> m_logger;
 
+		private readonly ObjectPool<StringBuilder> m_stringBuilderPool;
+
 		public ServiceFabricHealthCheckPublisher(
 			IAccessor<IServicePartition> partitionAccessor,
-			ILogger<ServiceFabricHealthCheckPublisher> logger)
+			ILogger<ServiceFabricHealthCheckPublisher> logger,
+			ObjectPoolProvider objectPoolProvider)
 		{
 			m_partitionAccessor = partitionAccessor;
 			m_logger = logger;
+			m_stringBuilderPool = objectPoolProvider.CreateStringBuilderPool();
 		}
 
 		public Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
@@ -73,7 +78,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private SfHealthInformation BuildSfHealthInformation(string healthCheckName, HealthReportEntry reportEntry)
 		{
-			StringBuilder descriptionBuilder = new StringBuilder();
+			StringBuilder descriptionBuilder = m_stringBuilderPool.Get();
+
 			if (!string.IsNullOrWhiteSpace(reportEntry.Description))
 			{
 				descriptionBuilder.Append("Description: ").Append(reportEntry.Description).AppendLine();
@@ -84,9 +90,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				descriptionBuilder.Append("Exception: ").Append(reportEntry.Exception).AppendLine();
 			}
 
+			string description = descriptionBuilder.ToString();
+			m_stringBuilderPool.Return(descriptionBuilder);
+
 			return new SfHealthInformation(HealthReportSourceId, healthCheckName, ToSfHealthState(reportEntry.Status))
 			{
-				Description = descriptionBuilder.ToString(),
+				Description = description,
 			};
 		}
 
@@ -113,7 +122,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				}
 			}
 
-			StringBuilder descriptionBuilder = new StringBuilder()
+			StringBuilder descriptionBuilder = m_stringBuilderPool.Get();
+
+			descriptionBuilder
 				.AppendFormat("Health checks executed: {0}. ", entriesCount)
 				.AppendFormat("Healthy: {0}/{1}. ", healthyEntries, entriesCount)
 				.AppendFormat("Degraded: {0}/{1}. ", degradedEntries, entriesCount)
@@ -122,9 +133,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				.AppendFormat("Total duration: {0}.", report.TotalDuration)
 				.AppendLine();
 
+			string description = descriptionBuilder.ToString();
+			m_stringBuilderPool.Return(descriptionBuilder);
+
 			return new SfHealthInformation(HealthReportSourceId, HealthReportSummaryProperty, ToSfHealthState(report.Status))
 			{
-				Description = descriptionBuilder.ToString(),
+				Description = description,
 			};
 		}
 
