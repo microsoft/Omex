@@ -117,6 +117,42 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		}
 
 		[TestMethod]
+		public void MarkAsSuccess_SetSuccess()
+		{
+			Activity activity1 = new Activity("SetMarkAsSuccessTest1");
+			
+			activity1.SetResult(TimedScopeResult.SystemError); // set some value intially to check that it could be updated
+			activity1.MarkAsSuccess();
+			CheckThatKeyNotDuplicated(activity1.TagObjects);
+
+			activity1.AssertResult(TimedScopeResult.Success);
+		}
+
+		[TestMethod]
+		public void MarkAsSystemError_SetSystemError()
+		{
+			Activity activity1 = new Activity("SetMarkAsSystemErrorTest1");
+
+			activity1.SetResult(TimedScopeResult.ExpectedError); // set some value intially to check that it could be updated
+			activity1.MarkAsSystemError();
+			CheckThatKeyNotDuplicated(activity1.TagObjects);
+
+			activity1.AssertResult(TimedScopeResult.SystemError);
+		}
+
+		[TestMethod]
+		public void MarkAsExpectedError_SetExpectedError()
+		{
+			Activity activity1 = new Activity("SetMarkAsExpectedErrorTest1");
+
+			activity1.SetResult(TimedScopeResult.Success); // set some value intially to check that it could be updated
+			activity1.MarkAsExpectedError();
+			CheckThatKeyNotDuplicated(activity1.TagObjects);
+
+			activity1.AssertResult(TimedScopeResult.ExpectedError);
+		}
+
+		[TestMethod]
 		public void SetSubType_SetsValue()
 		{
 			Activity activity1 = new Activity("SetSubTypeTest1");

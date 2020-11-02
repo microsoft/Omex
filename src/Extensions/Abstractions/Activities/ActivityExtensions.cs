@@ -61,6 +61,24 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 			activity.SetTag(ActivityTagKeys.Result, ActivityResultStrings.ResultToString(result));
 
 		/// <summary>
+		/// MarkAsSuccess
+		/// </summary>
+		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
+		public static Activity MarkAsSuccess(this Activity activity) => activity.SetResult(TimedScopeResult.Success);
+
+		/// <summary>
+		/// MarkAsSystemError
+		/// </summary>
+		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
+		public static Activity MarkAsSystemError(this Activity activity) => activity.SetResult(TimedScopeResult.SystemError);
+
+		/// <summary>
+		/// MarkAsExpectedError
+		/// </summary>
+		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
+		public static Activity MarkAsExpectedError(this Activity activity) => activity.SetResult(TimedScopeResult.ExpectedError);
+
+		/// <summary>
 		/// Set sub type
 		/// </summary>
 		/// <remarks>This property won't be transfered to child activity or via web requests</remarks>
