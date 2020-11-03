@@ -117,7 +117,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		}
 
 		[TestMethod]
-		public void MarkAsSuccess_SetSuccess()
+		public void MarkAsSuccess_SetsResultToSuccess()
 		{
 			Activity activity1 = new Activity("SetMarkAsSuccessTest1");
 			
@@ -129,7 +129,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		}
 
 		[TestMethod]
-		public void MarkAsSystemError_SetSystemError()
+		public void MarkAsSystemError_SetsResultToSystemError()
 		{
 			Activity activity1 = new Activity("SetMarkAsSystemErrorTest1");
 
@@ -141,7 +141,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		}
 
 		[TestMethod]
-		public void MarkAsExpectedError_SetExpectedError()
+		public void MarkAsExpectedError_SetsResultToExpectedError()
 		{
 			Activity activity1 = new Activity("SetMarkAsExpectedErrorTest1");
 
