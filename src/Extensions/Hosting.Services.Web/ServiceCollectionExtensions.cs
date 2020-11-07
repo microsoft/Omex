@@ -27,21 +27,5 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 
 			return services;
 		}
-
-		internal static IServiceCollection PropagateRequired<TValue>(this IServiceCollection services, IServiceProvider provider)
-			where TValue : class
-				=> services.AddSingleton(provider.GetRequiredService<TValue>());
-
-		internal static IServiceCollection PropagateOptional<TValue>(this IServiceCollection services, IServiceProvider provider)
-			where TValue : class
-		{
-			TValue? stateAccessors = provider.GetService<TValue>();
-			if (stateAccessors != null)
-			{
-				services.AddSingleton(stateAccessors);
-			}
-
-			return services;
-		}
 	}
 }
