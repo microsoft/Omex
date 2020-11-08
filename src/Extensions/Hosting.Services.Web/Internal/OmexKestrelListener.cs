@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
-using Microsoft.Extensions.Configuration;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web
@@ -15,32 +15,41 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 	{
 		private readonly IServer m_server;
 
-		private readonly WebListenerConfiguration m_configuration;
+		private readonly string m_publishAddress;
 
-		public OmexKestrelListener(IServer server, WebListenerConfiguration configuration)
+		private readonly int m_port;
+
+		public OmexKestrelListener(IServer server, string publishAddress, int port)
 		{
 			m_server = server;
-			m_configuration = configuration;
+			m_publishAddress = publishAddress;
+			m_port = port;
 		}
 
 		public Task<string> OpenAsync(CancellationToken cancellationToken)
 		{
 			// Listener already opened so just returning listener uri
-			string text = m_server.Features.Get<IServerAddressesFeature>().Addresses.FirstOrDefault();
+			string? address = m_server.Features.Get<IServerAddressesFeature>()
+				.Addresses.FirstOrDefault(a => a.EndsWith(":" + m_port));
 
-			string publishAddress = m_configuration.PublishAddress;
-			if (text.Contains("://+:"))
+			if (address == null)
 			{
-				text = text.Replace("://+:", "://" + publishAddress + ":");
-			}
-			else if (text.Contains("://[::]:"))
-			{
-				text = text.Replace("://[::]:", "://" + publishAddress + ":");
+				throw new ArgumentException($"Failed to find address for port '{m_port}'");
 			}
 
-			text = text.TrimEnd('/') + m_configuration.UrlSuffix;
+			string publishAddress = m_publishAddress;
+			if (address.Contains("://+:"))
+			{
+				address = address.Replace("://+:", "://" + publishAddress + ":");
+			}
+			else if (address.Contains("://[::]:"))
+			{
+				address = address.Replace("://[::]:", "://" + publishAddress + ":");
+			}
 
-			return Task.FromResult(text);
+			address = address.TrimEnd('/');
+
+			return Task.FromResult(address);
 		}
 
 		public Task CloseAsync(CancellationToken cancellationToken)

@@ -13,9 +13,11 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Hosting.Services;
+using Microsoft.Omex.Extensions.Hosting.Services.Web;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 
-namespace Microsoft.Omex.Extensions.Hosting.Services.Web
+namespace Microsoft.Extensions.Hosting
 {
 	/// <summary>
 	/// Extension to add Omex dependencies to HostBuilder
@@ -29,68 +31,53 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		/// </summary>
 		/// <param name="hostBuilder">Host builder</param>
 		/// <param name="serviceName">Name of Service Fabric stateless service</param>
-		/// <param name="webEndpointName">Name of the web listener</param>
-		/// <param name="options">Service Fabric integration options, default value is UseReverseProxyIntegration</param>
+		/// <param name="endpoint">Web listener endpoint name</param>
+		/// <param name="integrationOptions">Service Fabric integration options, default value is UseReverseProxyIntegration</param>
 		/// <param name="kestrelOptions">Action to configure Kestrel additional, for example witch to https</param>
 		/// <param name="serviceBuilder">Action to configure SF stateless service additional, for example to add more listeners or actions</param>
 		/// <typeparam name="TStartup">The type containing the startup methods for the web listener</typeparam>
-		internal static IHost BuildStatelessHttpService<TStartup>(
-			IHostBuilder hostBuilder,
+		public static IHost BuildStatelessWebService<TStartup>(
+			this IHostBuilder hostBuilder,
 			string serviceName,
-			string webEndpointName,
-			ServiceFabricIntegrationOptions options = DefaultServiceFabricIntegrationOptions,
+			WebEndpointInfo endpoint,
+			ServiceFabricIntegrationOptions integrationOptions = DefaultServiceFabricIntegrationOptions,
 			Action<WebHostBuilderContext, KestrelServerOptions>? kestrelOptions = null,
 			Action<ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext>>? serviceBuilder = null)
 				where TStartup : class =>
-					BuildStatelessWebService<TStartup>(
-						hostBuilder,
+					hostBuilder.BuildStatelessWebService<TStartup>(
 						serviceName,
-						webEndpointName,
-						options,
-						certificateCommonNameForHttps: null,
+						new[] { endpoint },
+						integrationOptions,
 						kestrelOptions,
 						serviceBuilder);
 
 		/// <summary>
-		/// Build stateless service with Kestrel service listener
+		/// Build stateless service with Kestrel service listeners
 		/// </summary>
 		/// <param name="hostBuilder">Host builder</param>
 		/// <param name="serviceName">Name of Service Fabric stateless service</param>
-		/// <param name="webEndpointName">Name of the web listener</param>
-		/// <param name="options">Service Fabric integration options, default value is UseReverseProxyIntegration</param>
-		/// <param name="certificateCommonNameForHttps">Name of the setting to get certificate common name for https, default value is 'Certificates:SslCertificateCommonName'</param>
+		/// <param name="endpoints">Name of the web listener</param>
+		/// <param name="integrationOptions">Service Fabric integration options, default value is UseReverseProxyIntegration</param>
 		/// <param name="kestrelOptions">Action to configure Kestrel additional, for example witch to https</param>
 		/// <param name="serviceBuilder">Action to configure SF stateless service additional, for example to add more listeners or actions</param>
 		/// <typeparam name="TStartup">The type containing the startup methods for the web listener</typeparam>
-		internal static IHost BuildStatelessHttpsService<TStartup>(
-			IHostBuilder hostBuilder,
+		public static IHost BuildStatelessWebService<TStartup>(
+			this IHostBuilder hostBuilder,
 			string serviceName,
-			string webEndpointName,
-			ServiceFabricIntegrationOptions options = DefaultServiceFabricIntegrationOptions,
-			string? certificateCommonNameForHttps = "Certificates:SslCertificateCommonName",
+			WebEndpointInfo[] endpoints,
+			ServiceFabricIntegrationOptions integrationOptions = DefaultServiceFabricIntegrationOptions,
 			Action<WebHostBuilderContext, KestrelServerOptions>? kestrelOptions = null,
 			Action<ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext>>? serviceBuilder = null)
-				where TStartup : class =>
-					BuildStatelessWebService<TStartup>(
-						hostBuilder,
-						serviceName,
-						webEndpointName,
-						options,
-						certificateCommonNameForHttps,
-						kestrelOptions,
-						serviceBuilder);
-
-		internal static IHost BuildStatelessWebService<TStartup>(
-			IHostBuilder hostBuilder,
-			string serviceName,
-			string webEndpointName,
-			ServiceFabricIntegrationOptions options,
-			string? certificateCommonNameForHttps,
-			Action<WebHostBuilderContext, KestrelServerOptions>? kestrelOptions,
-			Action<ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext>>? serviceBuilder)
 				where TStartup : class
 		{
-			WebListenerConfiguration sfConfig = new WebListenerConfiguration(webEndpointName, options, certificateCommonNameForHttps);
+			if (integrationOptions.HasFlag(ServiceFabricIntegrationOptions.UseUniqueServiceUrl))
+			{
+				// Supporting this options would require some hacks:
+				// * Creating UrlSuffix like PartitionId/InstanceId where PartitionId could be taken from Env variable 'Fabric_PartitionId', for InstanceId we might thy to use new guid instead
+				// * Adding this path to address returned by OmexKestrelListener
+				// * In OmexServiceFabricSetupFilter initially add app.UseServiceFabricMiddleware(UrlSuffix) or create new similar middleware that with work with list of suffixes
+				throw new ArgumentException("ServiceFabricIntegrationOptions.UseUniqueServiceUrl currently not supported");
+			}
 
 			return hostBuilder
 				.ConfigureServices(collection =>
@@ -98,19 +85,22 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 					collection
 						.AddHttpContextAccessor()
 						.AddOmexMiddleware()
-						.AddSingleton<IStartupFilter>(new OmexServiceFabricSetupFilter(sfConfig.UrlSuffix, options));
+						.AddSingleton<IStartupFilter>(new OmexServiceFabricSetupFilter(integrationOptions));
 				})
 				.ConfigureWebHost(webBuilder =>
 				{
 					webBuilder
 						.UseKestrel((WebHostBuilderContext context, KestrelServerOptions options) =>
 						{
-							if (sfConfig.UseHttps)
+							foreach (WebEndpointInfo endpoint in endpoints)
 							{
-								options.Listen(IPAddress.IPv6Any, sfConfig.EndpointPort, listenOptions =>
+								options.Listen(IPAddress.IPv6Any, endpoint.Port, listenOptions =>
 								{
-									string certificateSubject = context.Configuration.GetValue<string>(sfConfig.CertificateCommonNameForHttps);
-									listenOptions.UseHttps(StoreName.My, certificateSubject, true, StoreLocation.LocalMachine);
+									if (endpoint.UseHttps)
+									{
+										string certificateSubject = context.Configuration.GetValue<string>(endpoint.SettingForCertificateCommonName);
+										listenOptions.UseHttps(StoreName.My, certificateSubject, true, StoreLocation.LocalMachine);
+									}
 								});
 							}
 
@@ -118,13 +108,22 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 						})
 						.UseContentRoot(Directory.GetCurrentDirectory())
 						.UseStartup<TStartup>()
-						.UseUrls(sfConfig.ListenerUrl);
+						.UseUrls(endpoints.Select(e => e.GetListenerUrl()).ToArray());
 				})
 				.BuildStatelessService(
 					serviceName,
 					builder =>
 					{
-						builder.AddServiceListener(webEndpointName, (p, s) => new OmexKestrelListener(p.GetRequiredService<IServer>(), sfConfig));
+						string publisherAddress = SfConfigurationProvider.GetPublishAddress();
+						foreach (WebEndpointInfo endpoint in endpoints)
+						{
+							builder.AddServiceListener(endpoint.Name, (p, s) =>
+								new OmexKestrelListener(
+									p.GetRequiredService<IServer>(),
+									publisherAddress,
+									endpoint.Port));
+						}
+
 						serviceBuilder?.Invoke(builder);
 					});
 		}

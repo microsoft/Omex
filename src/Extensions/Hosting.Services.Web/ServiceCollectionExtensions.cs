@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 
-namespace Microsoft.Omex.Extensions.Hosting.Services.Web
+namespace Microsoft.Extensions.DependencyInjection
 {
 	/// <summary>
 	/// Extension to add Omex dependencies to IServiceCollection
