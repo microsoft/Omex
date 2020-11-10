@@ -33,7 +33,7 @@
     <Microsoft_Extensions_Logging_Console_Version>3.1.8</Microsoft_Extensions_Logging_Console_Version>
     <Microsoft_Extensions_ObjectPool_Version>3.1.8</Microsoft_Extensions_ObjectPool_Version>
     <Microsoft_Extensions_Options_Version>3.1.8</Microsoft_Extensions_Options_Version>
-    <System_Diagnostics_DiagnosticSource_Version>5.0.0-rc.1.20451.14</System_Diagnostics_DiagnosticSource_Version>
+    <System_Diagnostics_DiagnosticSource_Version>5.0.0</System_Diagnostics_DiagnosticSource_Version>
     <System_Threading_Tasks_Extensions_Version>4.5.4</System_Threading_Tasks_Extensions_Version>
   </PropertyGroup>
   <PropertyGroup Label="ServiceFabric packages for Omex Extensions">
