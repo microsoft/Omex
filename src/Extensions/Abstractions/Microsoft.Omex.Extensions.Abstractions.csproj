@@ -1,8 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
-    <!-- Should be removed after switching to release version of System.Diagnostics.DiagnosticSource -->
-    <NoWarn>NU5104</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="BuildTransitive\*" Pack="true" PackagePath="buildTransitive" />
