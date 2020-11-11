@@ -6,10 +6,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
+using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.Omex.Extensions.Logging.UnitTests
 {
@@ -37,7 +40,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			OmexLogEventSender logsSender = new OmexLogEventSender(
 				OmexLogEventSource.Instance,
-				new BasicMachineInformation(),
+				new Mock<IExecutionContext>().Object,
 				new EmptyServiceContext(),
 				Options.Create(new OmexLoggingOptions()));
 

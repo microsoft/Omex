@@ -5,20 +5,20 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
+using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
 	internal sealed class TimedScopeEventSender : ITimedScopeEventSender
 	{
-		public TimedScopeEventSender(TimedScopeEventSource eventSource, IHostEnvironment hostEnvironment, ILogger<TimedScopeEventSender> logger)
+		public TimedScopeEventSender(TimedScopeEventSource eventSource, IExecutionContext executionContext, ILogger<TimedScopeEventSender> logger)
 		{
 			m_eventSource = eventSource;
-			m_serviceName = hostEnvironment.ApplicationName;
+			m_serviceName = executionContext.ServiceName;
 			m_logger = logger;
 		}
 

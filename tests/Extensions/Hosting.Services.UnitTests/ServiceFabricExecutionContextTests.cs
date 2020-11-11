@@ -2,10 +2,9 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Fabric;
+using System.Net;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Omex.Extensions.Abstractions.Accessors;
-using Microsoft.Omex.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using ServiceFabric.Mocks;
@@ -18,26 +17,22 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[TestMethod]
 		public void Constructor_InitializesPropertiesProperly()
 		{
-			string appName = "SomeName";
-			string envirometnName = "SomeEnviroment";
-			string regionName = "SomeRegion";
-			string clusterName = "SomeClusterName";
+			string applicationName = "SomeApplicationName";
+			string serviceName = "SomeServiceName";
+			string nodeName = "SomeNodeName";
+			IPAddress nodeIPOrFQDN = IPAddress.Parse("192.0.0.1");
 
-			Environment.SetEnvironmentVariable("REGION_NAME", regionName);
-			Environment.SetEnvironmentVariable("CLUSTER_NAME", clusterName);
+			Environment.SetEnvironmentVariable(ServiceFabricExecutionContext.ApplicationNameVariableName, applicationName);
+			Environment.SetEnvironmentVariable(ServiceFabricExecutionContext.ServiceNameVariableName, serviceName);
+			Environment.SetEnvironmentVariable(ServiceFabricExecutionContext.NodeNameVariableName, nodeName);
+			Environment.SetEnvironmentVariable(ServiceFabricExecutionContext.NodeIPOrFQDNVariableName, nodeIPOrFQDN.ToString());
 
-			Mock<IHostEnvironment> enviromentMock = new Mock<IHostEnvironment>();
-			enviromentMock.SetupGet(e => e.ApplicationName).Returns(appName);
-			enviromentMock.SetupGet(e => e.EnvironmentName).Returns(envirometnName);
-			Accessor<StatelessServiceContext> accessor = new Accessor<StatelessServiceContext>();
-			IAccessorSetter<StatelessServiceContext> setter = accessor;
-			IExecutionContext info = new ServiceFabricExecutionContext(enviromentMock.Object, accessor);
-			setter.SetValue(MockStatelessServiceContextFactory.Default);
+			IExecutionContext info = new ServiceFabricExecutionContext(new Mock<IHostEnvironment>().Object);
 
-			Assert.AreEqual(appName, info.ServiceName);
-			Assert.AreEqual(envirometnName, info.EnvironmentName);
-			Assert.AreEqual(regionName, info.RegionName);
-			Assert.AreEqual(clusterName, info.Cluster);
+			Assert.AreEqual(applicationName, info.ApplicationName);
+			Assert.AreEqual(serviceName, info.ServiceName);
+			StringAssert.Contains(info.MachineId, nodeName);
+			Assert.AreEqual(nodeIPOrFQDN, info.ClusterIpAddress);
 		}
 	}
 }
