@@ -2,8 +2,11 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Fabric;
 using System.Net;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
@@ -16,7 +19,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		internal const string NodeNameVariableName = "Fabric_NodeName";
 		internal const string NodeIPOrFQDNVariableName = "Fabric_NodeIPOrFQDN";
 
-		public ServiceFabricExecutionContext(IHostEnvironment hostEnvironment) : base(hostEnvironment)
+		public ServiceFabricExecutionContext(IHostEnvironment hostEnvironment, IAccessor<ServiceContext> accessor)
+			: base(hostEnvironment)
 		{
 			ServiceName = GetVariable(ServiceNameVariableName) ?? DefaultEmptyValue;
 			ApplicationName = GetVariable(ApplicationNameVariableName) ?? DefaultEmptyValue;
@@ -31,10 +35,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				ClusterIpAddress = ipAddress;
 			}
 
-			if (string.IsNullOrEmpty(Cluster) || Cluster == DefaultEmptyValue)
+			if (Cluster == DefaultEmptyValue)
 			{
 				Cluster = nodeIPAddressOrFQDN ?? MachineId;
 			}
+
+			// TODO: should be removed after our services will set service executable version properly
+			accessor.OnFirstSet(UpdateState);
 		}
+
+		private void UpdateState(ServiceContext context) =>
+			BuildVersion = context.CodePackageActivationContext.CodePackageVersion;
 	}
 }

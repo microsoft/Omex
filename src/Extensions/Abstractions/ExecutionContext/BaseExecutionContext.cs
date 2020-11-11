@@ -112,8 +112,10 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		/// </summary>
 		protected static string GetBuildVersion()
 		{
-			FileVersionInfo buildVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
-			return string.Concat(buildVersion.FileBuildPart, ".", buildVersion.FilePrivatePart);
+			Assembly? assembly = Assembly.GetEntryAssembly();
+			return assembly != null
+				? FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion
+				: DefaultEmptyValue;
 		}
 
 		/// <summary>
