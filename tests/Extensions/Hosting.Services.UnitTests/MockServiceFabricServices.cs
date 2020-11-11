@@ -4,6 +4,7 @@
 using System.Fabric;
 using System.Linq;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.ServiceFabric.Data;
 using Moq;
@@ -16,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		public static OmexStatelessService MockOmexStatelessService { get; } =
 			new OmexStatelessService(
 				new OmexStatelessServiceRegistrator(
-					new Mock<IHostEnvironment>().Object,
+					Options.Create(new ServiceRegistratorOptions()),
 					new Accessor<StatelessServiceContext>(),
 					new Accessor<IStatelessServicePartition>(),
 					Enumerable.Empty<IListenerBuilder<OmexStatelessService>>(),
@@ -26,7 +27,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		public static OmexStatefulService MockOmexStatefulService { get; } =
 			new OmexStatefulService(
 				new OmexStatefulServiceRegistrator(
-					new Mock<IHostEnvironment>().Object,
+					Options.Create(new ServiceRegistratorOptions()),
 					new Accessor<StatefulServiceContext>(),
 					new Accessor<IStatefulServicePartition>(),
 					new Accessor<IReliableStateManager>(),
