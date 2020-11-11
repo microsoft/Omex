@@ -5,14 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Fabric;
-using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
-using Microsoft.Omex.Extensions.Abstractions.EventSources;
+using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -101,18 +100,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			{
 				Assert.IsInstanceOfType(obj, expectedImplementationType);
 			}
-		}
-
-		[TestMethod]
-		public void UseApplicationName_OverridesApplicationName()
-		{
-			string expectedName = "TestApplicationName";
-
-			string actualName = Host.CreateDefaultBuilder()
-				.UseApplicationName(expectedName)
-				.Build().Services.GetService<IHostEnvironment>().ApplicationName;
-
-			Assert.AreEqual(expectedName, actualName);
 		}
 
 		public class TypeThatShouldNotBeResolvable

@@ -6,11 +6,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
-using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
+using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
@@ -28,10 +29,12 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			string name = "TestName";
 			string subType = "TestSubType";
 			string metaData = "TestmetaData";
+			Mock<IExecutionContext> contextMock = new Mock<IExecutionContext>();
+			contextMock.Setup(c => c.ServiceName).Returns("TestService");
 
 			TimedScopeEventSender logEventSource = new TimedScopeEventSender(
 				TimedScopeEventSource.Instance,
-				new HostingEnvironment { ApplicationName = "TestApp" },
+				contextMock.Object,
 				new NullLogger<TimedScopeEventSender>());
 
 			string expectedActivityId = string.Empty;

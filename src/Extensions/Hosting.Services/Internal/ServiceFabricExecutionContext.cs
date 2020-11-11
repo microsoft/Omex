@@ -2,49 +2,39 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Fabric;
 using System.Net;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal sealed class ServiceFabricExecutionContext : EmptyExecutionContext
+	internal sealed class ServiceFabricExecutionContext : BaseExecutionContext
 	{
-		public ServiceFabricExecutionContext(IHostEnvironment hostEnvironment, IAccessor<ServiceContext> accessor)
+		// defined by SF https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-environment-variables-reference
+		internal const string ServiceNameVariableName = "Fabric_ServiceName";
+		internal const string ApplicationNameVariableName = "Fabric_ApplicationName";
+		internal const string NodeNameVariableName = "Fabric_NodeName";
+		internal const string NodeIPOrFQDNVariableName = "Fabric_NodeIPOrFQDN";
+
+		public ServiceFabricExecutionContext(IHostEnvironment hostEnvironment) : base(hostEnvironment)
 		{
-			MachineName = GetMachineName();
-			// In generic host context application is what it's running, Service Fabric service in this case, so it's application name is service fabric service name
-			ServiceName = hostEnvironment.ApplicationName;
-			EnvironmentName = hostEnvironment.EnvironmentName ?? DefaultEmptyValue;
-			IsPrivateDeployment = hostEnvironment.IsDevelopment();
+			ServiceName = GetVariable(ServiceNameVariableName) ?? DefaultEmptyValue;
+			ApplicationName = GetVariable(ApplicationNameVariableName) ?? DefaultEmptyValue;
 
-			accessor.OnFirstSet(UpdateState);
-		}
+			string nodeName = GetVariable(NodeNameVariableName) ?? DefaultEmptyValue;
+			MachineId = FormattableString.Invariant($"{MachineName}_{nodeName}");
 
-		private string? GetRegionName() =>
-			Environment.GetEnvironmentVariable("REGION_NAME"); // should be defined by Azure https://whatazurewebsiteenvironmentvariablesareavailable.azurewebsites.net/
+			string? nodeIPAddressOrFQDN = GetVariable(NodeIPOrFQDNVariableName);
 
-		private string? GetClusterName() =>
-			Environment.GetEnvironmentVariable("CLUSTER_NAME"); // We should define it
+			if (IPAddress.TryParse(nodeIPAddressOrFQDN, out IPAddress ipAddress))
+			{
+				ClusterIpAddress = ipAddress;
+			}
 
-		private void UpdateState(ServiceContext context)
-		{
-			ICodePackageActivationContext activationContext = context.CodePackageActivationContext;
-			ApplicationName = activationContext.ApplicationName ?? DefaultEmptyValue;
-			BuildVersion = activationContext.CodePackageVersion;
-
-			NodeContext nodeContext = context.NodeContext;
-			MachineId = FormattableString.Invariant($"{MachineName}_{nodeContext.NodeName}");
-			ClusterIpAddress = IPAddress.TryParse(nodeContext.IPAddressOrFQDN, out IPAddress ipAddress)
-				? ipAddress
-				: GetIpAddress(MachineName);
-
-			RegionName = GetRegionName() ?? DefaultEmptyValue;
-			Cluster = GetClusterName()
-				?? nodeContext.IPAddressOrFQDN
-				?? MachineId;
+			if (string.IsNullOrEmpty(Cluster) || Cluster == DefaultEmptyValue)
+			{
+				Cluster = nodeIPAddressOrFQDN ?? MachineId;
+			}
 		}
 	}
 }
