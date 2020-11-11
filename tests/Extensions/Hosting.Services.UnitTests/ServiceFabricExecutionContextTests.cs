@@ -2,8 +2,10 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Fabric;
 using System.Net;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -27,12 +29,17 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			Environment.SetEnvironmentVariable(ServiceFabricExecutionContext.NodeNameVariableName, nodeName);
 			Environment.SetEnvironmentVariable(ServiceFabricExecutionContext.NodeIPOrFQDNVariableName, nodeIPOrFQDN.ToString());
 
-			IExecutionContext info = new ServiceFabricExecutionContext(new Mock<IHostEnvironment>().Object);
+			ServiceContext context = MockStatelessServiceContextFactory.Default;
+			Accessor<ServiceContext> accessor = new Accessor<ServiceContext>();
+			((IAccessorSetter<ServiceContext>)accessor).SetValue(context);
+
+			IExecutionContext info = new ServiceFabricExecutionContext(new Mock<IHostEnvironment>().Object, accessor);
 
 			Assert.AreEqual(applicationName, info.ApplicationName);
 			Assert.AreEqual(serviceName, info.ServiceName);
 			StringAssert.Contains(info.MachineId, nodeName);
 			Assert.AreEqual(nodeIPOrFQDN, info.ClusterIpAddress);
+			Assert.AreEqual(context.CodePackageActivationContext.CodePackageVersion, info.BuildVersion);
 		}
 	}
 }
