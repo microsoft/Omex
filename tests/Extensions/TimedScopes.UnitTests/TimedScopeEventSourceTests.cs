@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -23,7 +24,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		[DataRow(EventSourcesEventIds.LogTimedScope, false)]
 		public void LogTimedScopeEndEvent_CreatesEvent(EventSourcesEventIds eventId, bool isHealthCheck)
 		{
-			CustomEventListener listener = new CustomEventListener();
+			TestEventListener listener = new TestEventListener();
 			listener.EnableEvents(TimedScopeEventSource.Instance, EventLevel.Informational);
 
 			string name = "TestName";
@@ -59,28 +60,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
 
-			AssertPayload(eventInfo, "name", name);
-			AssertPayload(eventInfo, "subType", subType);
-			AssertPayload(eventInfo, "metadata", metaData);
-			AssertPayload(eventInfo, "activityId", expectedActivityId);
-			AssertPayload(eventInfo, "correlationId", correlationId.ToString());
-		}
-
-		private class CustomEventListener : EventListener
-		{
-			public List<EventWrittenEventArgs> EventsInformation { get; } = new List<EventWrittenEventArgs>();
-
-			protected override void OnEventWritten(EventWrittenEventArgs eventData) => EventsInformation.Add(eventData);
-		}
-
-		private void AssertPayload<TPayloadType>(EventWrittenEventArgs info, string name, TPayloadType expected)
-			where TPayloadType : class
-		{
-			int index = info.PayloadNames?.IndexOf(name) ?? -1;
-
-			TPayloadType? value = (TPayloadType?)(index < 0 ? null : info.Payload?[index]);
-
-			Assert.AreEqual(expected, value, $"Wrong value for {name}");
+			eventInfo.AssertPayload("name", name);
+			eventInfo.AssertPayload("subType", subType);
+			eventInfo.AssertPayload("metadata", metaData);
+			eventInfo.AssertPayload("activityId", expectedActivityId);
+			eventInfo.AssertPayload("correlationId", correlationId.ToString());
 		}
 	}
 }

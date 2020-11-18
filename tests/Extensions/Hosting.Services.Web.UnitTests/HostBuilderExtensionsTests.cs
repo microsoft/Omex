@@ -48,7 +48,7 @@ namespace Hosting.Services.Web.UnitTests
 				});
 
 			IHost host = buildAction(validator, hostBuilder);
-			IListenerBuilder<TService> builder = host.Services.GetService<IListenerBuilder<TService>>();
+			IListenerBuilder<TService> builder = host.Services.GetRequiredService<IListenerBuilder<TService>>();
 
 			Assert.IsNotNull(builder);
 

@@ -2,8 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using System.Fabric;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -65,7 +63,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			object obj = new HostBuilder()
 				.BuildStatelessService("TestStatelessService", c => { })
 				.Services
-				.GetService(type);
+				.GetRequiredService(type);
 
 			Assert.IsNotNull(obj);
 
@@ -92,7 +90,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			object obj = new HostBuilder()
 				.BuildStatefulService("TestStatefulService", c => { })
 				.Services
-				.GetService(type);
+				.GetRequiredService(type);
 
 			Assert.IsNotNull(obj);
 
@@ -108,26 +106,5 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			public class TypeThatIsNotRegistered { }
 		}
-
-		private class CustomEventListener : EventListener
-		{
-			public List<EventWrittenEventArgs> EventsInformation { get; } = new List<EventWrittenEventArgs>();
-
-			protected override void OnEventSourceCreated(EventSource eventSource)
-			{
-				base.OnEventSourceCreated(eventSource);
-			}
-
-			protected override void OnEventWritten(EventWrittenEventArgs eventData) => EventsInformation.Add(eventData);
-		}
-
-		private static TPayloadType? GetPayloadValue<TPayloadType>(EventWrittenEventArgs info, string name)
-			where TPayloadType : class
-		{
-			int index = info.PayloadNames?.IndexOf(name) ?? -1;
-			return (TPayloadType?)(index < 0 ? null : info.Payload?[index]);
-		}
-
-		private const string ServiceTypePayloadName = "serviceType";
 	}
 }

@@ -8,16 +8,31 @@ using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
+namespace Microsoft.Omex.Extensions.Testing.Helpers
 {
-	public static class HelperExtensions
+	/// <summary>
+	/// Helper for getting information from Activity in unit tests
+	/// </summary>
+	public static class ActivityAssert
 	{
+		/// <summary>
+		/// Assert that Activity has expected result value
+		/// </summary>
 		public static void AssertResult(this Activity activity, TimedScopeResult expectedResult) =>
 			Assert.AreEqual(ActivityResultStrings.ResultToString(expectedResult), activity.GetTag(ActivityTagKeys.Result));
 
+		/// <summary>
+		/// Assert that Activity has expected tag value
+		/// </summary>
 		public static void AssertTag(this Activity activity, string tag, string expectedValue) =>
 			Assert.AreEqual(expectedValue, activity.GetTag(tag));
 
+		/// <summary>
+		/// Get tag value from Activity
+		/// </summary>
+		/// <remarks>
+		/// Done in inefficient way and should be used only in test scenarios
+		/// </remarks>
 		public static string? GetTag(this Activity activity, string tag) =>
 			activity.Tags.FirstOrDefault(p => string.Equals(p.Key, tag, StringComparison.Ordinal)).Value;
 	}

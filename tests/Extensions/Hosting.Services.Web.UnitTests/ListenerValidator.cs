@@ -127,7 +127,7 @@ namespace Hosting.Services.Web.UnitTests
 
 		private T ResolveType<T>(IWebHost host) where T : class
 		{
-			T obj = host.Services.GetService<T>();
+			T obj = host.Services.GetRequiredService<T>();
 			Assert.IsNotNull(obj, "Failed to resolve {0}", typeof(T));
 			return obj;
 		}

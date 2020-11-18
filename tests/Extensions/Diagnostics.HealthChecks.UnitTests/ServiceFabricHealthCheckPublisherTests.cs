@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
+using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SfHealthInformation = System.Fabric.Health.HealthInformation;
@@ -252,32 +253,40 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 			// Assert.
 			SfHealthInformation? healthyInfo = testContext.ReportedSfHealthInformation(healthyCheckName);
-			Assert.AreEqual(ServiceFabricHealthCheckPublisher.HealthReportSourceId, healthyInfo?.SourceId, "SourceId from healthy check is incorrect.");
-			Assert.AreEqual(healthyCheckName, healthyInfo?.Property, "Property from healthy check is incorrect.");
-			Assert.AreEqual(SfHealthState.Ok, healthyInfo?.HealthState, "HealthState from healthy check is incorrect.");
-			StringAssert.Contains(healthyInfo?.Description ?? string.Empty, healthyEntry.Description, "Description from healthy check is not included.");
-			StringAssert.Contains(healthyInfo?.Description ?? string.Empty, healthyEntry.Duration.ToString(), "Duration from healthy check is not included.");
+			NullableAssert.IsNotNull(healthyInfo);
+
+			Assert.AreEqual(ServiceFabricHealthCheckPublisher.HealthReportSourceId, healthyInfo.SourceId, "SourceId from healthy check is incorrect.");
+			Assert.AreEqual(healthyCheckName, healthyInfo.Property, "Property from healthy check is incorrect.");
+			Assert.AreEqual(SfHealthState.Ok, healthyInfo.HealthState, "HealthState from healthy check is incorrect.");
+			StringAssert.Contains(healthyInfo.Description, healthyEntry.Description, "Description from healthy check is not included.");
+			StringAssert.Contains(healthyInfo.Description, healthyEntry.Duration.ToString(), "Duration from healthy check is not included.");
 
 			SfHealthInformation? degradedInfo = testContext.ReportedSfHealthInformation(degradedCheckName);
-			Assert.AreEqual(ServiceFabricHealthCheckPublisher.HealthReportSourceId, degradedInfo?.SourceId, "SourceId from degraded check is incorrect.");
-			Assert.AreEqual(degradedCheckName, degradedInfo?.Property, "Property from degraded check is incorrect.");
-			Assert.AreEqual(SfHealthState.Warning, degradedInfo?.HealthState, "HealthState from degraded check is incorrect.");
-			StringAssert.Contains(degradedInfo?.Description ?? string.Empty, degradedEntry.Description, "Description from degraded check is not included.");
-			StringAssert.Contains(degradedInfo?.Description ?? string.Empty, degradedEntry.Duration.ToString(), "Duration from degraded check is not included.");
+			NullableAssert.IsNotNull(degradedInfo);
+
+			Assert.AreEqual(ServiceFabricHealthCheckPublisher.HealthReportSourceId, degradedInfo.SourceId, "SourceId from degraded check is incorrect.");
+			Assert.AreEqual(degradedCheckName, degradedInfo.Property, "Property from degraded check is incorrect.");
+			Assert.AreEqual(SfHealthState.Warning, degradedInfo.HealthState, "HealthState from degraded check is incorrect.");
+			StringAssert.Contains(degradedInfo.Description, degradedEntry.Description, "Description from degraded check is not included.");
+			StringAssert.Contains(degradedInfo.Description, degradedEntry.Duration.ToString(), "Duration from degraded check is not included.");
 
 			SfHealthInformation? unhealthyInfo = testContext.ReportedSfHealthInformation(unhealthyCheckName);
-			Assert.AreEqual(ServiceFabricHealthCheckPublisher.HealthReportSourceId, unhealthyInfo?.SourceId, "SourceId from unhealthy check is incorrect.");
-			Assert.AreEqual(unhealthyCheckName, unhealthyInfo?.Property, "Property from unhealthy check is incorrect.");
-			Assert.AreEqual(SfHealthState.Error, unhealthyInfo?.HealthState, "HealthState from unhealthy check is incorrect.");
-			StringAssert.Contains(unhealthyInfo?.Description ?? string.Empty, unhealthyEntry.Description, "Description from unhealthy check is not included.");
-			StringAssert.Contains(unhealthyInfo?.Description ?? string.Empty, unhealthyEntry.Duration.ToString(), "Duration from unhealthy check is not included.");
-			StringAssert.Contains(unhealthyInfo?.Description ?? string.Empty, unhealthyEntry.Exception.GetType().ToString(), "Exception from unhealthy check is not included.");
+			NullableAssert.IsNotNull(unhealthyInfo);
+
+			Assert.AreEqual(ServiceFabricHealthCheckPublisher.HealthReportSourceId, unhealthyInfo.SourceId, "SourceId from unhealthy check is incorrect.");
+			Assert.AreEqual(unhealthyCheckName, unhealthyInfo.Property, "Property from unhealthy check is incorrect.");
+			Assert.AreEqual(SfHealthState.Error, unhealthyInfo.HealthState, "HealthState from unhealthy check is incorrect.");
+			StringAssert.Contains(unhealthyInfo.Description, unhealthyEntry.Description, "Description from unhealthy check is not included.");
+			StringAssert.Contains(unhealthyInfo.Description, unhealthyEntry.Duration.ToString(), "Duration from unhealthy check is not included.");
+			StringAssert.Contains(unhealthyInfo.Description, unhealthyEntry.Exception?.GetType().ToString(), "Exception from unhealthy check is not included.");
 
 			SfHealthInformation? summaryInfo = testContext.ReportedSfHealthInformation(ServiceFabricHealthCheckPublisher.HealthReportSummaryProperty);
-			Assert.AreEqual(ServiceFabricHealthCheckPublisher.HealthReportSourceId, summaryInfo?.SourceId, "SourceId from report is incorrect.");
-			Assert.AreEqual(ServiceFabricHealthCheckPublisher.HealthReportSummaryProperty, summaryInfo?.Property, "Property from report is incorrect.");
-			Assert.AreEqual(SfHealthState.Error, summaryInfo?.HealthState, "HealthState from report is incorrect.");
-			StringAssert.Contains(summaryInfo?.Description ?? string.Empty, report.TotalDuration.ToString(), "TotalDuration from report is not included.");
+			NullableAssert.IsNotNull(summaryInfo);
+
+			Assert.AreEqual(ServiceFabricHealthCheckPublisher.HealthReportSourceId, summaryInfo.SourceId, "SourceId from report is incorrect.");
+			Assert.AreEqual(ServiceFabricHealthCheckPublisher.HealthReportSummaryProperty, summaryInfo.Property, "Property from report is incorrect.");
+			Assert.AreEqual(SfHealthState.Error, summaryInfo.HealthState, "HealthState from report is incorrect.");
+			StringAssert.Contains(summaryInfo.Description, report.TotalDuration.ToString(), "TotalDuration from report is not included.");
 		}
 
 		private class HealthReportBuilder

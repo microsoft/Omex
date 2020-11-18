@@ -38,7 +38,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 					options.ValidateOnBuild = true;
 					options.ValidateScopes = true;
 				})
-				.Build().Services.GetService(type);
+				.Build().Services.GetRequiredService(type);
 
 			Assert.IsNotNull(hostObj, FormattableString.Invariant($"Type {type} was not resolved after AddOmexServices to HostBuilder"));
 		}
@@ -46,7 +46,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 		[TestMethod]
 		public void AddCertificateReader_TypesRegistered()
 		{
-			ICertificateReader collectionObj = new ServiceCollection()
+			ICertificateReader? collectionObj = new ServiceCollection()
 				.AddCertificateReader()
 				.AddLogging()
 				.BuildServiceProvider(new ServiceProviderOptions
