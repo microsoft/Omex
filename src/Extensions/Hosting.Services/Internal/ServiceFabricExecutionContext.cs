@@ -30,7 +30,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 			string? nodeIPAddressOrFQDN = GetVariable(NodeIPOrFQDNVariableName);
 
-			if (IPAddress.TryParse(nodeIPAddressOrFQDN, out IPAddress ipAddress))
+			if (IPAddress.TryParse(nodeIPAddressOrFQDN, out IPAddress? ipAddress))
 			{
 				ClusterIpAddress = ipAddress;
 			}

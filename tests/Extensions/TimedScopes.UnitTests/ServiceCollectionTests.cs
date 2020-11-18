@@ -21,7 +21,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 				})
 				.Build()
 				.Services
-				.GetService<ITimedScopeProvider>();
+				.GetRequiredService<ITimedScopeProvider>();
 
 			Assert.IsNotNull(provider);
 			Assert.IsInstanceOfType(provider, typeof(TimedScopeProvider));

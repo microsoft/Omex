@@ -127,8 +127,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			where TValue : class
 		{
 			collection.TryAddSingleton<Accessor<TValue>, Accessor<TValue>>();
-			collection.TryAddSingleton<IAccessorSetter<TValue>>(p => p.GetService<Accessor<TValue>>());
-			collection.TryAddSingleton<IAccessor<TValue>>(p => p.GetService<Accessor<TValue>>());
+			collection.TryAddSingleton<IAccessorSetter<TValue>>(p => p.GetRequiredService<Accessor<TValue>>());
+			collection.TryAddSingleton<IAccessor<TValue>>(p => p.GetRequiredService<Accessor<TValue>>());
 			return collection;
 		}
 	}

@@ -57,7 +57,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 				{
 					ValidateOnBuild = true,
 					ValidateScopes = true
-				}).GetService<T>();
+				}).GetRequiredService<T>();
 
 			Assert.IsNotNull(obj);
 

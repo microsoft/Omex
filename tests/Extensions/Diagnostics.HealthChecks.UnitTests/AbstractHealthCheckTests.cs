@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
-using Microsoft.Omex.Extensions.TimedScopes.UnitTests;
+using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -57,9 +57,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			Assert.AreEqual(actualResult.Exception, exception);
 			Assert.AreEqual(actualResult.Status, HealthStatus.Unhealthy);
 			CollectionAssert.AreEquivalent(actualResult.Data.ToArray(), TestHealthCheck.TestParameters);
-			Assert.IsNotNull(activity);
-			Assert.IsTrue(activity!.IsHealthCheck(), "Activity should be marked as HealthCheck activity");
-			activity!.AssertResult(TimedScopeResult.SystemError);
+			NullableAssert.IsNotNull(activity);
+			Assert.IsTrue(activity.IsHealthCheck(), "Activity should be marked as HealthCheck activity");
+			activity.AssertResult(TimedScopeResult.SystemError);
 		}
 
 		[TestMethod]
@@ -74,9 +74,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			}).CheckHealthAsync(HealthCheckContextHelper.CreateCheckContext());
 
 			Assert.AreEqual(actualResult.Status, HealthStatus.Healthy);
-			Assert.IsNotNull(activity);
+			NullableAssert.IsNotNull(activity);
 			Assert.IsTrue(activity!.IsHealthCheck(), "Activity should be marked as HealthCheck activity");
-			activity!.AssertResult(TimedScopeResult.Success);
+			activity.AssertResult(TimedScopeResult.Success);
 		}
 
 		private class TestHealthCheck : AbstractHealthCheck<HealthCheckParameters>

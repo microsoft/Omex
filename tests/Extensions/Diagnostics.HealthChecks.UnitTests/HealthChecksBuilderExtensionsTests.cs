@@ -13,6 +13,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
+using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -71,8 +72,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		private HttpHealthCheckParameters GetParameters(IServiceProvider provider, string checkName)
 		{
 			IOptions<HealthCheckServiceOptions> options = provider.GetRequiredService<IOptions<HealthCheckServiceOptions>>();
-			HealthCheckRegistration registration = options.Value.Registrations.SingleOrDefault(r => string.Equals(checkName, r.Name, StringComparison.Ordinal));
-			Assert.IsNotNull(registration, "HealthCheck should be registered");
+			HealthCheckRegistration? registration = options.Value.Registrations.SingleOrDefault(r => string.Equals(checkName, r.Name, StringComparison.Ordinal));
+			NullableAssert.IsNotNull(registration, "HealthCheck should be registered");
 
 			IHealthCheck check = registration.Factory(provider);
 			Assert.IsInstanceOfType(check, typeof(HttpEndpointHealthCheck));
