@@ -23,16 +23,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
     - name: Build with dotnet
       run: dotnet build --configuration ${{ matrix.configuration }}
     - name: Run Unit Tests
       run: dotnet test --no-build --configuration ${{ matrix.configuration }}
     - name: Create NuGet packages
       run: dotnet pack --no-build --configuration ${{ matrix.configuration }}
-    - name: Add GitHub package source	
-      run: dotnet nuget add source https://nuget.pkg.github.com/microsoft/index.json --name "github" --username NotUsed --password ${{ secrets.GITHUB_TOKEN }}	
+    - name: Add GitHub package source
+      run: dotnet nuget add source https://nuget.pkg.github.com/microsoft/index.json --name "github" --username NotUsed --password ${{ secrets.GITHUB_TOKEN }}
     - name: Publish NuGet packages
       run: dotnet nuget push nuget\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate --no-symbols true
       if: matrix.configuration == 'Release' && github.event_name == 'release' && github.ref == 'refs/heads/master'

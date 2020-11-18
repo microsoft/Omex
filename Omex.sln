@@ -23,7 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		azure-pipelines.yml = azure-pipelines.yml
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
 		Dependencies.props = Dependencies.props
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
@@ -100,9 +101,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter.UnitTests", "tests\Extensions\Compatibility.UlsLoggerAdapter.UnitTests\Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter.UnitTests.csproj", "{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Omex.Extensions.Testing.Helpers", "src\Extensions\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj", "{EFAD23AA-943B-4056-9DEE-AC14B61A49C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Testing.Helpers", "src\Extensions\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj", "{EFAD23AA-943B-4056-9DEE-AC14B61A49C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Omex.Extensions.Testing.Helpers.UnitTests", "tests\Extensions\Testing.Helpers.UnitTests\Microsoft.Omex.Extensions.Testing.Helpers.UnitTests.csproj", "{501FF230-7D2C-44DB-A4CC-7EC30E892EBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Testing.Helpers.UnitTests", "tests\Extensions\Testing.Helpers.UnitTests\Microsoft.Omex.Extensions.Testing.Helpers.UnitTests.csproj", "{501FF230-7D2C-44DB-A4CC-7EC30E892EBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
