@@ -59,7 +59,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			CollectionAssert.AreEquivalent(actualResult.Data.ToArray(), TestHealthCheck.TestParameters);
 			NullableAssert.IsNotNull(activity);
 			Assert.IsTrue(activity.IsHealthCheck(), "Activity should be marked as HealthCheck activity");
-			activity.AssertResult(TimedScopeResult.SystemError);
+			activity.AssertResult(ActivityResult.SystemError);
 		}
 
 		[TestMethod]
@@ -76,7 +76,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			Assert.AreEqual(actualResult.Status, HealthStatus.Healthy);
 			NullableAssert.IsNotNull(activity);
 			Assert.IsTrue(activity!.IsHealthCheck(), "Activity should be marked as HealthCheck activity");
-			activity.AssertResult(TimedScopeResult.Success);
+			activity.AssertResult(ActivityResult.Success);
 		}
 
 		private class TestHealthCheck : AbstractHealthCheck<HealthCheckParameters>
@@ -84,7 +84,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			private readonly Func<HealthCheckContext, CancellationToken, HealthCheckResult> m_internalFunction;
 
 			public TestHealthCheck(Func<HealthCheckContext, CancellationToken, HealthCheckResult> internalFunction)
-				: base(new HealthCheckParameters(TestParameters), new NullLogger<TestHealthCheck>(), new SimpleScopeProvider()) =>
+				: base(new HealthCheckParameters(TestParameters), new NullLogger<TestHealthCheck>(), new ActivitySource("Test")) =>
 					m_internalFunction = internalFunction;
 
 			protected override Task<HealthCheckResult> CheckHealthInternalAsync(HealthCheckContext context, CancellationToken token = default) =>

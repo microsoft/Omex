@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -17,9 +18,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	public abstract class AbstractHealthCheck<TParameters> : IHealthCheck
 		where TParameters : HealthCheckParameters
 	{
-		private static readonly TimedScopeDefinition s_scopeDefinition = new TimedScopeDefinition("HealthCheckScope");
+		private static readonly string s_scopeDefinition = "HealthCheckScope";
 
-		private readonly ITimedScopeProvider m_scopeProvider;
+		private readonly ActivitySource m_scopeProvider;
 
 		/// <summary>
 		/// Logger property
@@ -32,9 +33,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		protected internal TParameters Parameters { get; } // internal only to be used for unit tests
 
 		/// <summary>
-		/// Base constructor with scope provider that would be removed after .NET 5 move
+		/// Base constructor
 		/// </summary>
-		protected AbstractHealthCheck(TParameters parameters, ILogger logger, ITimedScopeProvider scopeProvider)
+		protected AbstractHealthCheck(TParameters parameters, ILogger logger, ActivitySource scopeProvider)
 		{
 			Parameters = parameters;
 			Logger = logger;
@@ -44,14 +45,16 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <inheritdoc />
 		public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken token = default)
 		{
-			using TimedScope scope = m_scopeProvider.CreateAndStart(s_scopeDefinition).MarkAsHealthCheck();
+			using Activity? scope = m_scopeProvider.StartActivity(s_scopeDefinition)
+				?.MarkAsSystemError()
+				.MarkAsHealthCheck();
 
 			try
 			{
 				HealthCheckResult result = await CheckHealthInternalAsync(context, token).ConfigureAwait(false);
 				result = EnforceFailureStatus(context.Registration.FailureStatus, result);
 
-				scope.SetResult(TimedScopeResult.Success);
+				scope?.MarkAsSuccess();
 
 				return result;
 			}

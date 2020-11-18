@@ -11,11 +11,16 @@ namespace Microsoft.Omex.Extensions.Logging
 {
 	internal class OmexLogger : ILogger
 	{
-		public OmexLogger(ILogEventSender logsEventSource, IExternalScopeProvider externalScopeProvider, string categoryName)
+		public OmexLogger(
+			ILogEventSender logsEventSource,
+			IExternalScopeProvider externalScopeProvider,
+			string categoryName,
+			ILogEventReplayer? replayer = null)
 		{
 			m_logsEventSender = logsEventSource;
 			m_externalScopeProvider = externalScopeProvider;
 			m_categoryName = categoryName;
+			m_replayer = replayer;
 		}
 
 		public IDisposable BeginScope<TState>(TState state) => m_externalScopeProvider.Push(state);
@@ -40,14 +45,17 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			m_logsEventSender.LogMessage(activity, m_categoryName, logLevel, eventId, threadId, message, exception);
 
-			if (m_logsEventSender.IsReplayableMessage(logLevel) && activity is ReplayableActivity replayableScope)
+			if (activity != null
+				&& m_replayer != null
+				&& m_replayer.IsReplayableMessage(logLevel))
 			{
-				replayableScope.AddLogEvent(new LogMessageInformation(m_categoryName, eventId, threadId, message, exception));
+				m_replayer.AddReplayLog(activity, new LogMessageInformation(m_categoryName, eventId, threadId, message, exception));
 			}
 		}
 
 		private readonly IExternalScopeProvider m_externalScopeProvider;
 		private readonly ILogEventSender m_logsEventSender;
 		private readonly string m_categoryName;
+		private readonly ILogEventReplayer? m_replayer;
 	}
 }

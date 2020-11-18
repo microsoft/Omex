@@ -21,7 +21,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 		private void CreateAndValidateActivity(string activityName)
 		{
-			TimedScopeResult result = TimedScopeResult.ExpectedError;
+			ActivityResult result = ActivityResult.ExpectedError;
 
 			Mock<IActivityProvider> activityProviderMock = new Mock<IActivityProvider>();
 			Mock<Activity> activityMock = new Mock<Activity>(activityName);

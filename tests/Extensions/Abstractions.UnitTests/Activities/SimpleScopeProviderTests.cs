@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		[TestCategory(nameof(Activity))]
 		public void CreateAndStart_TimedScopeCreated()
 		{
-			TimedScopeResult result = TimedScopeResult.ExpectedError;
+			ActivityResult result = ActivityResult.ExpectedError;
 			TimedScopeDefinition definition = new TimedScopeDefinition(nameof(CreateAndStart_TimedScopeCreated));
 			SimpleScopeProvider provider = new SimpleScopeProvider();
 			TimedScope scope = provider.CreateAndStart(definition, result);

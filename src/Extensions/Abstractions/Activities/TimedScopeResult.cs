@@ -14,16 +14,8 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 	/// If values are added or removed, TimedScopeResultExtensions should be updated as well.
 	/// </remarks>
 	[DataContract]
-	public enum TimedScopeResult : int
+	public enum ActivityResult : int
 	{
-		/// <summary>
-		/// Result is unknown (default)
-		/// </summary>
-		/// <remarks>Result should always be set to one of the other values explicitly. Unknown causes an error to be logged, and the scope is assumed failed.</remarks>
-		[EnumMember]
-		[Obsolete("Default value, not to be used explicitly", error: false)]
-		Unknown = 0,
-
 		/// <summary>
 		/// Success
 		/// </summary>

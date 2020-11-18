@@ -41,7 +41,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			string expectedActivityId = string.Empty;
 			Guid correlationId = Guid.NewGuid();
 			Activity activity = new Activity(name);
-			using (TimedScope scope = new TimedScope(activity, TimedScopeResult.Success).Start())
+			using (TimedScope scope = new TimedScope(activity, ActivityResult.Success).Start())
 			{
 				expectedActivityId = activity.Id ?? string.Empty;
 				scope.SetSubType(subType);

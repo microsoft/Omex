@@ -12,7 +12,6 @@ using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Compatibility.Logger;
 using Microsoft.Omex.Extensions.Compatibility.TimedScopes;
 using Microsoft.Omex.Extensions.Compatibility.Validation;
-using Microsoft.Omex.Extensions.TimedScopes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -32,9 +31,9 @@ namespace Microsoft.Omex.Extensions.Compatibility.UnitTests
 				.ConfigureServices(collection =>
 				{
 					collection
-						.AddTimedScopes()
 						.AddSingleton(mockFactory.Object)
-						.AddOmexCompatibilityServices();
+						.AddOmexCompatibilityServices()
+						.AddOmexActivitySource();
 				})
 				.Build()
 				.Start();
@@ -57,15 +56,9 @@ namespace Microsoft.Omex.Extensions.Compatibility.UnitTests
 			Code.Validate(false, logMessage, eventId);
 			Assert.AreEqual(1, mockLogger.Invocations.Count, "Code.Validate not calling ILogger");
 
-			using (TimedScope startedTimedScope = new TimedScopeDefinition("TestStartedTimedScope").Create(TimedScopeResult.SystemError))
+			using (Activity? startedTimedScope = TimedScope.CreateAndStart("TestStartedTimedScope", ActivityResult.SystemError))
 			{
 				AssertResult(ActivityResultStrings.SystemError);
-			}
-
-			using (TimedScope notStartedTimedScope = new TimedScopeDefinition("TestNotStartedTimedScope").Create(TimedScopeResult.ExpectedError, false))
-			{
-				notStartedTimedScope.Start();
-				AssertResult(ActivityResultStrings.ExpectedError);
 			}
 		}
 

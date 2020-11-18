@@ -7,6 +7,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Extensions\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj" />
-    <ProjectReference Include="..\..\..\src\Extensions\TimedScopes\Microsoft.Omex.Extensions.TimedScopes.csproj" />
   </ItemGroup>
 </Project>

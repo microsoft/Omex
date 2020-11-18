@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Diagnostics;
 using System.Fabric;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Hosting;
@@ -90,7 +91,7 @@ namespace Hosting.Services.Web.UnitTests
 
 		public void ValidateOmexTypesRegistered(IWebHost host)
 		{
-			ResolveType<ITimedScopeProvider>(host);
+			ResolveType<ActivitySource>(host);
 			ILogger logger = ResolveType<ILogger<ListenerValidator<TService, TContext>>>(host);
 			m_logsEventSourceMock.Invocations.Clear();
 			logger.LogError("TestMessage");

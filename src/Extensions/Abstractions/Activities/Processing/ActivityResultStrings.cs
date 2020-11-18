@@ -33,12 +33,12 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities.Processing
 		/// <summary>
 		/// Returns corresponding to enum string value with creating new string
 		/// </summary>
-		public static string ResultToString(TimedScopeResult result) =>
+		public static string ResultToString(ActivityResult result) =>
 			result switch
 			{
-				TimedScopeResult.SystemError => SystemError,
-				TimedScopeResult.ExpectedError => ExpectedError,
-				TimedScopeResult.Success => Success,
+				ActivityResult.SystemError => SystemError,
+				ActivityResult.ExpectedError => ExpectedError,
+				ActivityResult.Success => Success,
 				_ => throw new ArgumentException(FormattableString.Invariant($"Unsupported enum value '{result}'"))
 			};
 	}

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Logging.Internal.Replayable;
 using Microsoft.Omex.Extensions.Logging.Replayable;
 
 namespace Microsoft.Omex.Extensions.Logging
@@ -120,8 +121,8 @@ namespace Microsoft.Omex.Extensions.Logging
 		public bool IsReplayableMessage(LogLevel logLevel) =>
 			logLevel switch
 			{
-				LogLevel.Trace => true,
-				LogLevel.Debug => true,
+				LogLevel.Trace => m_options.Value.ReplayLogsInCaseOfError,
+				LogLevel.Debug => m_options.Value.ReplayLogsInCaseOfError,
 				_ => false
 			};
 
@@ -133,13 +134,15 @@ namespace Microsoft.Omex.Extensions.Logging
 				ReplayLogs(activity.Parent);
 			}
 
-			if (activity is ReplayableActivity replayableActivity)
+			foreach (LogMessageInformation log in activity.GetReplayableLogs())
 			{
-				foreach (LogMessageInformation log in replayableActivity.GetLogEvents())
-				{
-					LogMessage(activity, log.Category, LogLevel.Information, log.EventId, log.ThreadId, log.Message, log.Exception);
-				}
+				LogMessage(activity, log.Category, LogLevel.Information, log.EventId, log.ThreadId, log.Message, log.Exception);
 			}
+		}
+
+		public void AddReplayLog(Activity activity, LogMessageInformation logMessage)
+		{
+			activity.AddReplayLog(logMessage, m_options.Value.MaxReplayedEventsPerActivity);
 		}
 
 		private readonly OmexLogEventSource m_eventSource;
