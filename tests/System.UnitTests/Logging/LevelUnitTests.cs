@@ -36,12 +36,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Logging
 		}
 
 		[Fact]
-		public void ComparingLevelUsingEqualOperator_WithNull_ShouldReturnFalse()
-		{
-			Assert.False(Levels.Error == null);
-		}
-
-		[Fact]
 		public void ComparingLevelUsingEqualOperator_WithDifferentLevel_ShouldReturnFalse()
 		{
 			Assert.False(Levels.Error == Levels.Warning);
@@ -52,12 +46,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Logging
 		{
 			Level expectedLevel = Levels.Error;
 			Assert.True(Levels.Error == expectedLevel);
-		}
-
-		[Fact]
-		public void ComparingLevelUsingInequalityOperator_WithNull_ShouldReturnTrue()
-		{
-			Assert.True(Levels.Error != null);
 		}
 
 		[Fact]

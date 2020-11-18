@@ -23,10 +23,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		azure-pipelines.yml = azure-pipelines.yml
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
 		Dependencies.props = Dependencies.props
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
+		global.json = global.json
 		NuGet.Config = NuGet.Config
 		README.md = README.md
 		ship.snk = ship.snk
@@ -98,7 +100,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter", "src\Extensions\Compatibility.UlsLoggerAdapter\Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter.csproj", "{C7C334F5-6A26-4779-B02F-1EA0B1A02799}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter.UnitTests", "tests\Extensions\Compatibility.UlsLoggerAdapter.UnitTests\Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter.UnitTests.csproj", "{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter.UnitTests", "tests\Extensions\Compatibility.UlsLoggerAdapter.UnitTests\Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter.UnitTests.csproj", "{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Testing.Helpers", "src\Extensions\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj", "{EFAD23AA-943B-4056-9DEE-AC14B61A49C7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Testing.Helpers.UnitTests", "tests\Extensions\Testing.Helpers.UnitTests\Microsoft.Omex.Extensions.Testing.Helpers.UnitTests.csproj", "{501FF230-7D2C-44DB-A4CC-7EC30E892EBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -356,6 +362,22 @@ Global
 		{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}.Release|x64.ActiveCfg = Release|Any CPU
 		{D24A349E-9C1D-4432-B5DC-82DD0BEB4446}.Release|x64.Build.0 = Release|Any CPU
+		{EFAD23AA-943B-4056-9DEE-AC14B61A49C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFAD23AA-943B-4056-9DEE-AC14B61A49C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFAD23AA-943B-4056-9DEE-AC14B61A49C7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EFAD23AA-943B-4056-9DEE-AC14B61A49C7}.Debug|x64.Build.0 = Debug|Any CPU
+		{EFAD23AA-943B-4056-9DEE-AC14B61A49C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFAD23AA-943B-4056-9DEE-AC14B61A49C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFAD23AA-943B-4056-9DEE-AC14B61A49C7}.Release|x64.ActiveCfg = Release|Any CPU
+		{EFAD23AA-943B-4056-9DEE-AC14B61A49C7}.Release|x64.Build.0 = Release|Any CPU
+		{501FF230-7D2C-44DB-A4CC-7EC30E892EBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{501FF230-7D2C-44DB-A4CC-7EC30E892EBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{501FF230-7D2C-44DB-A4CC-7EC30E892EBD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{501FF230-7D2C-44DB-A4CC-7EC30E892EBD}.Debug|x64.Build.0 = Debug|Any CPU
+		{501FF230-7D2C-44DB-A4CC-7EC30E892EBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{501FF230-7D2C-44DB-A4CC-7EC30E892EBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{501FF230-7D2C-44DB-A4CC-7EC30E892EBD}.Release|x64.ActiveCfg = Release|Any CPU
+		{501FF230-7D2C-44DB-A4CC-7EC30E892EBD}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -395,6 +417,8 @@ Global
 		{CDAA3EBA-02AE-41C6-B915-643A69A1BE57} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
 		{C7C334F5-6A26-4779-B02F-1EA0B1A02799} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 		{D24A349E-9C1D-4432-B5DC-82DD0BEB4446} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
+		{EFAD23AA-943B-4056-9DEE-AC14B61A49C7} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
+		{501FF230-7D2C-44DB-A4CC-7EC30E892EBD} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6FB7BCB-BF07-4F19-ACBA-457479D421BB}

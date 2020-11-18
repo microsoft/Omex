@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
+using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
@@ -120,7 +121,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		public void MarkAsSuccess_SetsResultToSuccess()
 		{
 			Activity activity1 = new Activity("SetMarkAsSuccessTest1");
-			
+
 			activity1.SetResult(TimedScopeResult.SystemError); // set some value intially to check that it could be updated
 			activity1.MarkAsSuccess();
 			CheckThatKeyNotDuplicated(activity1.TagObjects);

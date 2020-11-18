@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
-using Microsoft.Omex.Extensions.TimedScopes.UnitTests;
+using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Hosting.Services.Web.UnitTests
