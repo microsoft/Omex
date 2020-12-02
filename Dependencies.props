@@ -37,10 +37,10 @@
     <System_Threading_Tasks_Extensions_Version>4.5.4</System_Threading_Tasks_Extensions_Version>
   </PropertyGroup>
   <PropertyGroup Label="ServiceFabric packages for Omex Extensions">
-    <Microsoft_ServiceFabric_Version>7.2.434</Microsoft_ServiceFabric_Version>
-    <Microsoft_ServiceFabric_Services_Version>4.2.434</Microsoft_ServiceFabric_Services_Version>
-    <Microsoft_ServiceFabric_Services_Remoting_Version>4.2.434</Microsoft_ServiceFabric_Services_Remoting_Version>
-    <Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>4.2.434</Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>
-    <ServiceFabric_Mocks_Version>4.2.6</ServiceFabric_Mocks_Version>
+    <Microsoft_ServiceFabric_Version>7.1.456</Microsoft_ServiceFabric_Version>
+    <Microsoft_ServiceFabric_Services_Version>4.1.456</Microsoft_ServiceFabric_Services_Version>
+    <Microsoft_ServiceFabric_Services_Remoting_Version>4.1.456</Microsoft_ServiceFabric_Services_Remoting_Version>
+    <Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>4.1.456</Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>
+    <ServiceFabric_Mocks_Version>4.2.3</ServiceFabric_Mocks_Version>
   </PropertyGroup>
 </Project>
