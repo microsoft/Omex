@@ -34,6 +34,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			};
 
 			HttpHealthCheckParameters parameters = HttpHealthCheckParametersTests.Create(
+				headers: new Dictionary<string, string>
+				{
+					{ "testHeader", "value" }
+				},
 				expectedStatus: status,
 				reportData: reportData);
 

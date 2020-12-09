@@ -38,8 +38,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				{ "testKey2", "value" }
 			}.ToArray();
 
+			Dictionary<string, string> headers = new Dictionary<string, string>
+			{
+				{ "testHeader", "value" }
+			};
+
 			IServiceProvider provider = GetBuilder()
-				.AddHttpEndpointCheck(checkName, endpoitName, path, method, scheme, code, additionalCheck, reportData)
+				.AddHttpEndpointCheck(checkName, endpoitName, path, method, scheme, headers, code, additionalCheck, reportData)
 				.Services
 				.BuildServiceProvider();
 

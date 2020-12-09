@@ -21,6 +21,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		public string Scheme { get; }
 
+		public IDictionary<string, string> Headers { get; }
+
 		public Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? AdditionalCheck { get; }
 
 		/// <summary>
@@ -34,6 +36,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			Uri relatedUri,
 			HttpMethod? method,
 			string? scheme,
+			IDictionary<string, string>? headers,
 			HttpStatusCode? expectedStatus,
 			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? additionalCheck,
 			KeyValuePair<string, object>[] reportData)
@@ -54,6 +57,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				: Uri.CheckSchemeName(scheme)
 					? scheme
 					: throw new ArgumentException("Invalid uri scheme", nameof(scheme));
+
+			Headers = headers == null
+				? new Dictionary<string, string>()
+				: headers;
 
 			ExpectedStatus = expectedStatus ?? HttpStatusCode.OK;
 

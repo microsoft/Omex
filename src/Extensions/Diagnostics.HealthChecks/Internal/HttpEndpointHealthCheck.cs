@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Fabric;
 using System.Net.Http;
 using System.Threading;
@@ -58,6 +59,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			HttpClient httpClient = m_httpClientFactory.CreateClient(HttpClientLogicalName);
 
 			HttpRequestMessage request = new HttpRequestMessage(Parameters.Method, m_uriToCheck);
+
+			foreach(KeyValuePair<string, string> pair in Parameters.Headers)
+			{
+				request.Headers.Add(pair.Key, pair.Value);
+			}
 
 			HttpResponseMessage? response = await httpClient.SendAsync(request, token).ConfigureAwait(false);
 
