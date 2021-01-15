@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -95,7 +96,8 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		private static KeyValuePair<string, string>[] DeserializeBaggage(byte[] bytes)
 		{
 			using MemoryStream stream = new MemoryStream(bytes);
-			return (KeyValuePair<string, string>[])s_serializer.ReadObject(stream);
+			return s_serializer.ReadObject(stream) as KeyValuePair<string, string>[]
+				?? Array.Empty<KeyValuePair<string, string>>();
 		}
 
 		private static readonly DataContractSerializer s_serializer = new DataContractSerializer(typeof(KeyValuePair<string, string>[]));

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Package Versions. AutoUpdate">
-    <Moq_Version>4.14.5</Moq_Version>
+    <Moq_Version>4.15.2</Moq_Version>
     <Microsoft_AspNetCore_Hosting_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Hosting_Abstractions_Version>
     <Microsoft_AspNetCore_Hosting_Version>2.2.7</Microsoft_AspNetCore_Hosting_Version>
     <Microsoft_AspNetCore_Http_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Http_Abstractions_Version>
     <Microsoft_AspNetCore_Http_Version>2.2.2</Microsoft_AspNetCore_Http_Version>
-    <Microsoft_Azure_DocumentDB_Version>2.11.0</Microsoft_Azure_DocumentDB_Version>
-    <Microsoft_Net_Test_Sdk_Version>16.7.1</Microsoft_Net_Test_Sdk_Version>
+    <Microsoft_Azure_DocumentDB_Version>2.13.1</Microsoft_Azure_DocumentDB_Version>
+    <Microsoft_Net_Test_Sdk_Version>16.8.3</Microsoft_Net_Test_Sdk_Version>
     <Microsoft_SourceLink_GitHub_Version>1.0.0</Microsoft_SourceLink_GitHub_Version>
     <Microsoft_SourceLink_AzureRepos_Git_Version>1.0.0</Microsoft_SourceLink_AzureRepos_Git_Version>
     <MSTest_TestAdapter_Version>2.1.2</MSTest_TestAdapter_Version>
     <MSTest_TestFramework_Version>2.1.2</MSTest_TestFramework_Version>
-    <System_Configuration_ConfigurationManager_Version>4.7.0</System_Configuration_ConfigurationManager_Version>
-    <System_ServiceModel_Primitives_Version>4.7.0</System_ServiceModel_Primitives_Version>
+    <System_Configuration_ConfigurationManager_Version>5.0.0</System_Configuration_ConfigurationManager_Version>
+    <System_ServiceModel_Primitives_Version>4.8.0</System_ServiceModel_Primitives_Version>
     <System_Threading_Tasks_Version>4.3.0</System_Threading_Tasks_Version>
     <Xunit_Runner_VisualStudio_Version>2.4.3</Xunit_Runner_VisualStudio_Version>
   </PropertyGroup>
@@ -23,25 +23,25 @@
     <Xunit_Core_Version>2.4.1</Xunit_Core_Version>
   </PropertyGroup>
   <PropertyGroup Label="Packages for Omex Extensions. AutoUpdate">
-    <Microsoft_Extensions_DependencyInjection_Version>3.1.8</Microsoft_Extensions_DependencyInjection_Version>
-    <Microsoft_Extensions_DependencyInjection_Abstractions_Version>3.1.8</Microsoft_Extensions_DependencyInjection_Abstractions_Version>
-    <Microsoft_Extensions_Diagnostics_HealthChecks_Version>3.1.8</Microsoft_Extensions_Diagnostics_HealthChecks_Version>
-    <Microsoft_Extensions_Hosting_Version>3.1.8</Microsoft_Extensions_Hosting_Version>
-    <Microsoft_Extensions_Hosting_Abstractions_Version>3.1.8</Microsoft_Extensions_Hosting_Abstractions_Version>
-    <Microsoft_Extensions_Http_Version>3.1.8</Microsoft_Extensions_Http_Version>
-    <Microsoft_Extensions_Logging_Version>3.1.8</Microsoft_Extensions_Logging_Version>
-    <Microsoft_Extensions_Logging_Abstractions_Version>3.1.8</Microsoft_Extensions_Logging_Abstractions_Version>
-    <Microsoft_Extensions_Logging_Console_Version>3.1.8</Microsoft_Extensions_Logging_Console_Version>
-    <Microsoft_Extensions_ObjectPool_Version>3.1.8</Microsoft_Extensions_ObjectPool_Version>
-    <Microsoft_Extensions_Options_Version>3.1.8</Microsoft_Extensions_Options_Version>
-    <System_Diagnostics_DiagnosticSource_Version>5.0.0</System_Diagnostics_DiagnosticSource_Version>
+    <Microsoft_Extensions_DependencyInjection_Version>5.0.1</Microsoft_Extensions_DependencyInjection_Version>
+    <Microsoft_Extensions_DependencyInjection_Abstractions_Version>5.0.0</Microsoft_Extensions_DependencyInjection_Abstractions_Version>
+    <Microsoft_Extensions_Diagnostics_HealthChecks_Version>5.0.2</Microsoft_Extensions_Diagnostics_HealthChecks_Version>
+    <Microsoft_Extensions_Hosting_Version>5.0.0</Microsoft_Extensions_Hosting_Version>
+    <Microsoft_Extensions_Hosting_Abstractions_Version>5.0.0</Microsoft_Extensions_Hosting_Abstractions_Version>
+    <Microsoft_Extensions_Http_Version>5.0.0</Microsoft_Extensions_Http_Version>
+    <Microsoft_Extensions_Logging_Version>5.0.0</Microsoft_Extensions_Logging_Version>
+    <Microsoft_Extensions_Logging_Abstractions_Version>5.0.0</Microsoft_Extensions_Logging_Abstractions_Version>
+    <Microsoft_Extensions_Logging_Console_Version>5.0.0</Microsoft_Extensions_Logging_Console_Version>
+    <Microsoft_Extensions_ObjectPool_Version>5.0.2</Microsoft_Extensions_ObjectPool_Version>
+    <Microsoft_Extensions_Options_Version>5.0.0</Microsoft_Extensions_Options_Version>
+    <System_Diagnostics_DiagnosticSource_Version>5.0.1</System_Diagnostics_DiagnosticSource_Version>
     <System_Threading_Tasks_Extensions_Version>4.5.4</System_Threading_Tasks_Extensions_Version>
   </PropertyGroup>
   <PropertyGroup Label="ServiceFabric packages for Omex Extensions">
-    <Microsoft_ServiceFabric_Version>7.1.456</Microsoft_ServiceFabric_Version>
-    <Microsoft_ServiceFabric_Services_Version>4.1.456</Microsoft_ServiceFabric_Services_Version>
-    <Microsoft_ServiceFabric_Services_Remoting_Version>4.1.456</Microsoft_ServiceFabric_Services_Remoting_Version>
-    <Microsoft_ServiceFabric_AspNetCore_Abstractions_Version>4.1.456</Microsoft_ServiceFabric_AspNetCore_Abstractions_Version>
-    <ServiceFabric_Mocks_Version>4.2.3</ServiceFabric_Mocks_Version>
+    <Microsoft_ServiceFabric_Version>7.2.434</Microsoft_ServiceFabric_Version>
+    <Microsoft_ServiceFabric_Services_Version>4.2.434</Microsoft_ServiceFabric_Services_Version>
+    <Microsoft_ServiceFabric_Services_Remoting_Version>4.2.434</Microsoft_ServiceFabric_Services_Remoting_Version>
+    <Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>4.2.434</Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>
+    <ServiceFabric_Mocks_Version>4.2.6</ServiceFabric_Mocks_Version>
   </PropertyGroup>
 </Project>

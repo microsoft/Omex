@@ -114,7 +114,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		{
 			Assembly? assembly = Assembly.GetEntryAssembly();
 			return assembly != null
-				? FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion
+				? FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion ?? DefaultEmptyValue
 				: DefaultEmptyValue;
 		}
 

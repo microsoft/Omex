@@ -9,5 +9,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Extensions\Logging\Microsoft.Omex.Extensions.Logging.csproj" />
+    <ProjectReference Include="..\..\..\src\Extensions\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj" />
   </ItemGroup>
 </Project>

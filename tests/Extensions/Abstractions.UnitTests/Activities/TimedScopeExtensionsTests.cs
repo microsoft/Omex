@@ -4,6 +4,7 @@
 using System.Diagnostics;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
+using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests

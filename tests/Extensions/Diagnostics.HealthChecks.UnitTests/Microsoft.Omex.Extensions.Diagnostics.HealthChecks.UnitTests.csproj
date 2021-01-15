@@ -5,7 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Extensions\Diagnostics.HealthChecks\Microsoft.Omex.Extensions.Diagnostics.HealthChecks.csproj" />
-    <ProjectReference Include="..\Abstractions.UnitTests\Microsoft.Omex.Extensions.Abstractions.UnitTests.csproj" />
+    <ProjectReference Include="..\..\..\src\Extensions\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ServiceFabric.Mocks" Version="$(ServiceFabric_Mocks_Version)" />
