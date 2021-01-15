@@ -3,8 +3,10 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 {
@@ -15,6 +17,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 		public void AddOmexMiddleware_RegisterTypes()
 		{
 			IServiceProvider provider = new ServiceCollection()
+				.AddSingleton(new Mock<IExecutionContext>().Object)
 				.AddOmexMiddleware()
 				.BuildServiceProvider();
 
