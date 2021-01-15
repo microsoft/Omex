@@ -7,9 +7,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 {
 	internal class SfConfigurationProvider
 	{
-		private const string PublishAddressEvnVariableName = "Fabric_NodeIPOrFQDN";
+		internal const string PublishAddressEvnVariableName = "Fabric_NodeIPOrFQDN";
 
-		private const string EndpointPortEvnVariableSuffix = "Fabric_Endpoint_";
+		internal const string EndpointPortEvnVariableSuffix = "Fabric_Endpoint_";
 
 		private static string? GetSfVariable(string name) =>
 			Environment.GetEnvironmentVariable(name); // Environment variables should be provided by SF

@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System.Globalization;
+using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 {
@@ -32,7 +33,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 
 		private WebEndpointInfo(string endpointName, string? settingForCertificateCommonName)
 		{
-			Name = endpointName;
+			Name = Validation.ThrowIfNullOrWhiteSpace(endpointName);
 			SettingForCertificateCommonName = settingForCertificateCommonName;
 			UseHttps = settingForCertificateCommonName != null;
 			Port = SfConfigurationProvider.GetEndpointPort(endpointName);

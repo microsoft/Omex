@@ -30,7 +30,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		{
 			// Listener already opened so just returning listener uri
 			string? address = m_server.Features.Get<IServerAddressesFeature>()
-				.Addresses.FirstOrDefault(a => a.EndsWith(":" + m_port));
+				.Addresses.FirstOrDefault(a => a.Contains(":" + m_port));
 
 			if (address == null)
 			{
