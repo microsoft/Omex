@@ -7,7 +7,6 @@ using System.Fabric;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.ServiceModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
@@ -38,9 +37,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				{ "testKey2", "value" }
 			}.ToArray();
 
-			Dictionary<string, string> headers = new Dictionary<string, string>
+			IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string, IEnumerable<string>>
 			{
-				{ "testHeader", "value" }
+				{ "testHeader", new List<string> { "value" } }
 			};
 
 			IServiceProvider provider = GetBuilder()

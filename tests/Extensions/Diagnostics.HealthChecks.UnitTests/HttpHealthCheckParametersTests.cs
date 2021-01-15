@@ -50,9 +50,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				{ "testKey2", "value" }
 			}.ToArray();
 
-			Dictionary<string, string> headers = new Dictionary<string, string>
+			IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string, IEnumerable<string>>
 			{
-				{ "testHeader", "value" }
+				{ "testHeader", new List<string> { "value" } }
 			};
 
 			HttpHealthCheckParameters parameters =
@@ -95,13 +95,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			Assert.ThrowsException<ArgumentException>(() => Create(endpointName: endpoint));
 		}
 
-
 		internal static HttpHealthCheckParameters Create(
 			string endpointName = "EndpointName",
 			Uri? relatedUri = null,
 			HttpMethod? method = null,
 			string? scheme = null,
-			Dictionary<string, string>? headers = null,
+			IReadOnlyDictionary<string, IEnumerable<string>>? headers = null,
 			HttpStatusCode expectedStatus = HttpStatusCode.OK,
 			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? additionalCheck = null,
 			KeyValuePair<string, object>[]? reportData = null) =>

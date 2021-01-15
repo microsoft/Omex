@@ -11,6 +11,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	internal class HttpHealthCheckParameters : HealthCheckParameters
 	{
+		private static IReadOnlyDictionary<string, IEnumerable<string>> s_emptyHeaders = new Dictionary<string, IEnumerable<string>>(0);
+
 		public string EndpointName { get; }
 
 		public Uri RelativeUri { get; }
@@ -21,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		public string Scheme { get; }
 
-		public IDictionary<string, string> Headers { get; }
+		public IReadOnlyDictionary<string, IEnumerable<string>> Headers { get; }
 
 		public Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? AdditionalCheck { get; }
 
@@ -36,7 +38,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			Uri relatedUri,
 			HttpMethod? method,
 			string? scheme,
-			IDictionary<string, string>? headers,
+			IReadOnlyDictionary<string, IEnumerable<string>>? headers,
 			HttpStatusCode? expectedStatus,
 			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? additionalCheck,
 			KeyValuePair<string, object>[] reportData)
@@ -59,7 +61,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 					: throw new ArgumentException("Invalid uri scheme", nameof(scheme));
 
 			Headers = headers == null
-				? new Dictionary<string, string>()
+				? s_emptyHeaders
 				: headers;
 
 			ExpectedStatus = expectedStatus ?? HttpStatusCode.OK;

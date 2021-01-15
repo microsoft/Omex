@@ -35,7 +35,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			string relativePath,
 			HttpMethod? method = null,
 			string? scheme = null,
-			IDictionary<string, string>? headers = null,
+			IReadOnlyDictionary<string, IEnumerable<string>>? headers = null,
 			HttpStatusCode? expectedStatus = null,
 			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? additionalCheck = null,
 			params KeyValuePair<string, object>[] reportData)

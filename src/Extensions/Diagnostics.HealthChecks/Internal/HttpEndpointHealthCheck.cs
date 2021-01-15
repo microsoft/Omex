@@ -60,9 +60,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			HttpRequestMessage request = new HttpRequestMessage(Parameters.Method, m_uriToCheck);
 
-			foreach(KeyValuePair<string, string> pair in Parameters.Headers)
+			foreach (KeyValuePair<string, IEnumerable<string>> pair in Parameters.Headers)
 			{
-				request.Headers.Add(pair.Key, pair.Value);
+				if (!request.Headers.TryAddWithoutValidation(pair.Key, pair.Value))
+				{
+					Logger.LogWarning(Tag.Create(), "Cannot add request header with name '{0}' value '{1}' for health check '{2}'.",
+						pair.Key, pair.Value, checkName);
+				}
 			}
 
 			HttpResponseMessage? response = await httpClient.SendAsync(request, token).ConfigureAwait(false);
