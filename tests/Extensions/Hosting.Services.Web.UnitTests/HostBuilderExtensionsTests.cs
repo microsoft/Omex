@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
