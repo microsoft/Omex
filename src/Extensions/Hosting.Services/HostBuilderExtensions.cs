@@ -2,16 +2,14 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Fabric;
 using System.Reflection;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
+using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Data;
 
@@ -84,15 +82,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 					throw new ArgumentException("Service type name is null of whitespace", nameof(serviceName));
 				}
 
-				// for generic host application name is the name of the service that it's running (don't confuse with Sf application name)
-				builder.UseApplicationName(serviceName);
-
 				builderAction(new ServiceFabricHostBuilder<TService, TContext>(builder));
 
 				IHost host = builder
 					.ConfigureServices((context, collection) =>
 					{
 						collection
+							.Configure<ServiceRegistratorOptions>(options =>
+							{
+								options.ServiceTypeName = serviceName;
+							})
 							.AddOmexServiceFabricDependencies<TContext>()
 							.AddSingleton<IOmexServiceRegistrator, TRunner>()
 							.AddHostedService<OmexHostedService>();
@@ -104,40 +103,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 					})
 					.Build();
 
-				// get proper application name from host
-				serviceName = host.Services.GetService<IHostEnvironment>().ApplicationName;
-
-				ServiceInitializationEventSource.Instance.LogHostBuildSucceeded(Process.GetCurrentProcess().Id, serviceNameForLogging);
+				InitializationLogger.LogInitializationSucceed(serviceNameForLogging);
 
 				return host;
 			}
 			catch (Exception e)
 			{
-				ServiceInitializationEventSource.Instance.LogHostFailed(e.ToString(), serviceNameForLogging);
+				InitializationLogger.LogInitializationFail(serviceNameForLogging, e);
 				throw;
 			}
 		}
-
-		/// <summary>
-		/// Overrides ApplicationName in host configuration
-		/// </summary>
-		/// <remarks>
-		/// Method done internal instead of private to create unit tests for it,
-		/// since failure to set proper application name could cause Service Fabric error that is hard to debug:
-		///    System.Fabric.FabricException: Invalid Service Type
-		/// </remarks>
-		internal static IHostBuilder UseApplicationName(this IHostBuilder builder, string applicationName) =>
-			builder.ConfigureHostConfiguration(configuration =>
-			{
-				configuration.AddInMemoryCollection(new[]
-				{
-					new KeyValuePair<string, string>(
-						HostDefaults.ApplicationKey,
-						string.IsNullOrWhiteSpace(applicationName)
-							? throw new ArgumentNullException(nameof(applicationName))
-							: applicationName)
-				});
-			});
 
 		internal static IServiceCollection TryAddAccessor<TValue, TBase>(this IServiceCollection collection)
 			where TValue : class, TBase
@@ -152,8 +127,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			where TValue : class
 		{
 			collection.TryAddSingleton<Accessor<TValue>, Accessor<TValue>>();
-			collection.TryAddSingleton<IAccessorSetter<TValue>>(p => p.GetService<Accessor<TValue>>());
-			collection.TryAddSingleton<IAccessor<TValue>>(p => p.GetService<Accessor<TValue>>());
+			collection.TryAddSingleton<IAccessorSetter<TValue>>(p => p.GetRequiredService<Accessor<TValue>>());
+			collection.TryAddSingleton<IAccessor<TValue>>(p => p.GetRequiredService<Accessor<TValue>>());
 			return collection;
 		}
 	}

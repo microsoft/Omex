@@ -38,7 +38,7 @@ namespace Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter
 			return Task.CompletedTask;
 		}
 
-		private void LogEvent(object sender, LogEventArgs e)
+		private void LogEvent(object? sender, LogEventArgs e)
 		{
 			m_loggersDictionary.GetOrAdd(e.CategoryId.Name, m_loggerFactory.CreateLogger).Log(
 				Convert(e.Level),

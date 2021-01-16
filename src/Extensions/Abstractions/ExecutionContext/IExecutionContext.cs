@@ -3,7 +3,7 @@
 
 using System.Net;
 
-namespace Microsoft.Omex.Extensions.Logging
+namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 {
 	/// <summary>
 	/// Interface with information about the environment that executes code

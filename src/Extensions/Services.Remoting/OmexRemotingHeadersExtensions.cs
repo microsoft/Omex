@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -46,14 +47,17 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		/// </summary>
 		public static void AttachActivityToOutgoingRequest(this IServiceRemotingRequestMessage requestMessage, Activity? activity)
 		{
-			if (activity == null)
+			if (activity == null || string.IsNullOrWhiteSpace(activity.Id))
 			{
 				return;
 			}
 
 			IServiceRemotingRequestMessageHeader header = requestMessage.GetHeader();
-			header.AddHeader(TraceParentHeaderName, s_encoding.GetBytes(activity.Id));
-			header.AddHeader(TraceStateHeaderName, SerializeBaggage(activity.Baggage.ToArray()));
+			if (header.TryGetHeaderValue(TraceParentHeaderName, out byte[] _)) // header update not supported
+			{
+				header.AddHeader(TraceParentHeaderName, s_encoding.GetBytes(activity.Id));
+				header.AddHeader(TraceStateHeaderName, SerializeBaggage(activity.Baggage.ToArray()));
+			}
 		}
 
 		/// <summary>
@@ -82,7 +86,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 			}
 		}
 
-		private static byte[] SerializeBaggage(KeyValuePair<string, string>[] baggage)
+		private static byte[] SerializeBaggage(KeyValuePair<string, string?>[] baggage)
 		{
 			using MemoryStream stream = new MemoryStream();
 			s_serializer.WriteObject(stream, baggage);
@@ -92,7 +96,8 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		private static KeyValuePair<string, string>[] DeserializeBaggage(byte[] bytes)
 		{
 			using MemoryStream stream = new MemoryStream(bytes);
-			return (KeyValuePair<string, string>[])s_serializer.ReadObject(stream);
+			return s_serializer.ReadObject(stream) as KeyValuePair<string, string>[]
+				?? Array.Empty<KeyValuePair<string, string>>();
 		}
 
 		private static readonly DataContractSerializer s_serializer = new DataContractSerializer(typeof(KeyValuePair<string, string>[]));

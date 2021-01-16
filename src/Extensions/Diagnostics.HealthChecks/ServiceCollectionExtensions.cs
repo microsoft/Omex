@@ -6,6 +6,7 @@ using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.ObjectPool;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
@@ -19,16 +20,16 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// </summary>
 		public static IHealthChecksBuilder AddServiceFabricHealthChecks(this IServiceCollection serviceCollection)
 		{
-			HttpClientHandler clientHandler = new HttpClientHandler
-			{
-				AllowAutoRedirect = false,
-				Credentials = CredentialCache.DefaultCredentials,
-				ServerCertificateCustomValidationCallback = (sender, x509Certificate, chain, errors) => true
-			};
-
 			serviceCollection
 				.AddHttpClient(HttpEndpointHealthCheck.HttpClientLogicalName)
-				.ConfigurePrimaryHttpMessageHandler(() => clientHandler);
+				.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+				{
+					AllowAutoRedirect = false,
+					Credentials = CredentialCache.DefaultCredentials,
+					ServerCertificateCustomValidationCallback = (sender, x509Certificate, chain, errors) => true
+				});
+
+			serviceCollection.TryAddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
 
 			return serviceCollection
 				.AddHealthCheckPublisher<ServiceFabricHealthCheckPublisher>()

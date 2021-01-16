@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(NetCoreVersion)</TargetFrameworks>
+    <TargetFrameworks>$(NetCoreVersions)</TargetFrameworks>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
@@ -8,7 +8,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Extensions\Hosting.Services.Web\Microsoft.Omex.Extensions.Hosting.Services.Web.csproj" />
-    <ProjectReference Include="..\Abstractions.UnitTests\Microsoft.Omex.Extensions.Abstractions.UnitTests.csproj" />
+    <ProjectReference Include="..\..\..\src\Extensions\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj" />
     <ProjectReference Include="..\Hosting.Services.UnitTests\Microsoft.Omex.Extensions.Hosting.Services.UnitTests.csproj" />
   </ItemGroup>
 </Project>

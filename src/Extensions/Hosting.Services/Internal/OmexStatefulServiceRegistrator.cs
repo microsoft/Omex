@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Runtime;
@@ -15,20 +15,20 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	internal sealed class OmexStatefulServiceRegistrator : OmexServiceRegistrator<OmexStatefulService, StatefulServiceContext>
 	{
 		public OmexStatefulServiceRegistrator(
-			IHostEnvironment environment,
+			IOptions<ServiceRegistratorOptions> options,
 			IAccessorSetter<StatefulServiceContext> contextAccessor,
 			IAccessorSetter<IStatefulServicePartition> partitionAccessor,
 			IAccessorSetter<IReliableStateManager> stateAccessor,
 			IEnumerable<IListenerBuilder<OmexStatefulService>> listenerBuilders,
 			IEnumerable<IServiceAction<OmexStatefulService>> serviceActions)
-				: base(environment, contextAccessor, listenerBuilders, serviceActions)
+				: base(options, contextAccessor, listenerBuilders, serviceActions)
 		{
 			PartitionAccessor = partitionAccessor;
 			StateAccessor = stateAccessor;
 		}
 
 		public override Task RegisterAsync(CancellationToken cancellationToken) =>
-			ServiceRuntime.RegisterServiceAsync(ApplicationName, context => new OmexStatefulService(this, context), cancellationToken: cancellationToken);
+			ServiceRuntime.RegisterServiceAsync(Options.ServiceTypeName, context => new OmexStatefulService(this, context), cancellationToken: cancellationToken);
 
 		public IAccessorSetter<IReliableStateManager> StateAccessor { get; }
 

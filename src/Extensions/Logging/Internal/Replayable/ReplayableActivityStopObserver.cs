@@ -30,7 +30,7 @@ namespace Microsoft.Omex.Extensions.Logging.Replayable
 
 		private bool ShouldReplayEvents(Activity activity)
 		{
-			string resultTagValue = activity.Tags.FirstOrDefault(p => string.Equals(p.Key, ActivityTagKeys.Result, StringComparison.Ordinal)).Value;
+			string? resultTagValue = activity.Tags.FirstOrDefault(p => string.Equals(p.Key, ActivityTagKeys.Result, StringComparison.Ordinal)).Value;
 			return string.Equals(ActivityResultStrings.SystemError, resultTagValue, StringComparison.Ordinal);
 		}
 	}
