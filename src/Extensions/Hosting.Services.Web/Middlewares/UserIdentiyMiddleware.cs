@@ -36,7 +36,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			if (activity != null && string.IsNullOrEmpty(activity.GetUserHash()))
 			{
 				string userHash = GetUserHash(context);
-				if (string.IsNullOrWhiteSpace(userHash))
+				if (!string.IsNullOrWhiteSpace(userHash))
 				{
 					activity.SetUserHash(userHash);
 				}
@@ -45,7 +45,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			return next(context);
 		}
 
-		private string GetUserHash(HttpContext context)
+		internal string GetUserHash(HttpContext context)
 		{
 			IHttpConnectionFeature connection = context.Features.Get<IHttpConnectionFeature>();
 			IPAddress? remoteIpAddress = connection.RemoteIpAddress;
@@ -57,7 +57,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			return CreateHash(remoteIpAddress);
 		}
 
-		public string CreateHash(IPAddress ip)
+		internal string CreateHash(IPAddress ip)
 		{
 			Span<byte> saltSpan = m_saltProvider.GetSalt();
 

@@ -10,7 +10,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 {
 	internal class RotatingSaltProvider : ISaltProvider
 	{
-		private const int SaltLength = 48; // currently recomended salt size 32
+		private const int SaltLength = 48; // currently recommended salt size 32
 		private const int HoursToKeepSalt = 40; // should not be more then 48 hours
 		private readonly RandomNumberGenerator m_random;
 		private readonly IMemoryOwner<byte> m_currentSaltMemory;
