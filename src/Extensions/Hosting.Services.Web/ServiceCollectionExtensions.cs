@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			static ISaltProvider getSaltProvider(IServiceProvider provider) =>
 				provider.GetRequiredService<IOptions<UserIdentiyMiddlewareOptions>>().Value.LoggingComlience switch
 				{
-					UserIdentiyComlienceLevel.LiveId => provider.GetRequiredService<EmptySaltProvider>(),
+					UserIdentiyComplianceLevel.LiveId => provider.GetRequiredService<EmptySaltProvider>(),
 					_ => provider.GetRequiredService<RotatingSaltProvider>()
 				};
 

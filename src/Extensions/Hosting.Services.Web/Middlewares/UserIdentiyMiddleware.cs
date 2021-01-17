@@ -77,8 +77,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 				return string.Empty;
 			}
 
-			// TODO: Should be replaced by Convert.ToHexStringUpper after Net 5 release, https://github.com/dotnet/runtime/issues/17837#issuecomment-639018813
+#if NETCOREAPP3_1
 			return BitConverter.ToString(hashSpan.ToArray()).Replace("-", "");
+#else
+			return Convert.ToHexString(hashSpan);
+#endif
 		}
 
 		public void Dispose()
