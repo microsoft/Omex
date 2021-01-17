@@ -38,7 +38,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 				return activity.GetUserHash();
 			}
 
-
 			string hash1 = GetActivityUserHash(address1);
 			string hash2 = GetActivityUserHash(address2);
 
