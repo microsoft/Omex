@@ -8,7 +8,7 @@ using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 
-namespace Microsoft.Omex.Extensions.Hosting.Services.Web
+namespace Microsoft.Extensions.DependencyInjection
 {
 	/// <summary>
 	/// Extension to add Omex dependencies to IServiceCollection
@@ -41,22 +41,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 #pragma warning disable CS0618 // We need to register all middlewares, even if obsolete
 			services.AddSingleton<ObsoleteCorrelationHeadersMiddleware>();
 #pragma warning restore CS0618
-
-			return services;
-		}
-
-		internal static IServiceCollection PropagateRequired<TValue>(this IServiceCollection services, IServiceProvider provider)
-			where TValue : class
-				=> services.AddSingleton(provider.GetRequiredService<TValue>());
-
-		internal static IServiceCollection PropagateOptional<TValue>(this IServiceCollection services, IServiceProvider provider)
-			where TValue : class
-		{
-			TValue? stateAccessors = provider.GetService<TValue>();
-			if (stateAccessors != null)
-			{
-				services.AddSingleton(stateAccessors);
-			}
 
 			return services;
 		}
