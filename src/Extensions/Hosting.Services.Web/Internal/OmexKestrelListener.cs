@@ -38,6 +38,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 			}
 
 			string publishAddress = m_publishAddress;
+
+			// Replace `+` or `[::]` with publish address, since SF require it in thins format.
+			// Logic taken from AspNetCoreCommunicationListener.
+			// It looks like only `+` format used by Kestrel, but we are keeping both options to be sure.
 			if (address.Contains("://+:"))
 			{
 				address = address.Replace("://+:", "://" + publishAddress + ":");

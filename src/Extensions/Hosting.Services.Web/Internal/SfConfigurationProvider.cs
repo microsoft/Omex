@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Globalization;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 {
@@ -14,15 +15,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		private static string? GetSfVariable(string name) =>
 			Environment.GetEnvironmentVariable(name); // Environment variables should be provided by SF
 
-		private static Exception CreateException(string value) =>
-			new ArgumentException($"Failed to get {value} from environment variables");
-
 		public static string GetPublishAddress() =>
-			GetSfVariable(PublishAddressEvnVariableName) ?? throw CreateException("PublishAddress");
+			GetSfVariable(PublishAddressEvnVariableName) ?? throw new SfConfigurationException(PublishAddressEvnVariableName);
 
-		public static int GetEndpointPort(string endpointName) =>
-			int.TryParse(GetSfVariable(EndpointPortEvnVariableSuffix + endpointName), out int parseResult)
+		public static int GetEndpointPort(string endpointName)
+		{
+			string variableName = EndpointPortEvnVariableSuffix + endpointName;
+			return int.TryParse(GetSfVariable(variableName), out int parseResult)
 				? parseResult
-				: throw CreateException("EndpointPort");
+				: throw new SfConfigurationException(variableName);
+		}
 	}
 }
