@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
-using Microsoft.Omex.Extensions.TimedScopes;
+using Microsoft.Omex.Extensions.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

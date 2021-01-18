@@ -3,8 +3,8 @@
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
@@ -14,17 +14,16 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		[TestMethod]
 		public void AddTimedScopes_TypesRegistered()
 		{
-			ITimedScopeProvider provider = new HostBuilder()
+			ActivitySource provider = new HostBuilder()
 				.ConfigureServices(collection =>
 				{
-					collection.AddTimedScopes();
+					collection.AddOmexActivitySource();
 				})
 				.Build()
 				.Services
-				.GetRequiredService<ITimedScopeProvider>();
+				.GetRequiredService<ActivitySource>();
 
 			Assert.IsNotNull(provider);
-			Assert.IsInstanceOfType(provider, typeof(TimedScopeProvider));
 		}
 	}
 }
