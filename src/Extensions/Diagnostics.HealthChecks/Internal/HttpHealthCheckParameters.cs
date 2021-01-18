@@ -60,9 +60,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 					? scheme
 					: throw new ArgumentException("Invalid uri scheme", nameof(scheme));
 
-			Headers = headers == null
-				? s_emptyHeaders
-				: headers;
+			Headers = headers ?? s_emptyHeaders;
 
 			ExpectedStatus = expectedStatus ?? HttpStatusCode.OK;
 
