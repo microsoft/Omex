@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	internal class HttpHealthCheckParameters : HealthCheckParameters
 	{
-		private static IReadOnlyDictionary<string, IEnumerable<string>> s_emptyHeaders = new Dictionary<string, IEnumerable<string>>(0);
+		private static IReadOnlyDictionary<string, IEnumerable<string>> s_emptyHeaders = new ReadOnlyDictionary<string, IEnumerable<string>>(new Dictionary<string, IEnumerable<string>>(0));
 
 		public string EndpointName { get; }
 
