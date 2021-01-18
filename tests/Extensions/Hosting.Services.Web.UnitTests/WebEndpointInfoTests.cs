@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 			Assert.IsNull(info.SettingForCertificateCommonName);
 			Assert.IsFalse(info.UseHttps);
 			Assert.AreEqual(port, info.Port);
-			Assert.AreEqual($"http://+:{port}", info.GetListenerUrl());
+			Assert.AreEqual($"http://+:{port}", info.GetListenerUrl()); // lgtm[cs/non-https-url]
 		}
 
 		[TestMethod]
