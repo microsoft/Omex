@@ -7,9 +7,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Internal;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -121,86 +118,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 
 			public void Dispose() { }
 			public Span<byte> GetSalt() => Salt.AsSpan();
-		}
-	}
-
-	[TestClass]
-	public class RotatingSaltProviderTests
-	{
-		[TestMethod]
-		public void GetSalt_RotatesEarlierThen48Hours()
-		{
-			Mock<ISystemClock> systemClock = new Mock<ISystemClock>();
-			systemClock
-				.SetupGet(c => c.UtcNow)
-				.Returns(DateTimeOffset.Now);
-
-			ISaltProvider provider = new RotatingSaltProvider(systemClock.Object);
-
-			byte[] intialSalt = provider.GetSalt().ToArray();
-
-			systemClock
-				.SetupGet(c => c.UtcNow)
-				.Returns(DateTimeOffset.Now.AddHours(20));
-
-			CollectionAssert.AreEqual(intialSalt, provider.GetSalt().ToArray());
-
-			systemClock
-				.SetupGet(c => c.UtcNow)
-				.Returns(DateTimeOffset.Now.AddHours(47));
-
-			CollectionAssert.AreNotEqual(intialSalt, provider.GetSalt().ToArray());
-		}
-	}
-
-	[TestClass]
-	public class ServiceCollectionTests
-	{
-		[TestMethod]
-		public void AddMiddlewares_RegisterUserIdentiyMiddleware()
-		{
-			UserIdentiyMiddleware middleware = new HostBuilder()
-				.ConfigureServices((context, collection) =>
-				{
-					collection.AddOmexMiddleware();
-				})
-				.Build().Services
-				.GetRequiredService<UserIdentiyMiddleware>();
-
-			Assert.IsNotNull(middleware);
-		}
-
-		[TestMethod]
-		public void AddMiddlewares_RegistersRotatedSaltProviderByDefault()
-		{
-			ISaltProvider saltProvider = new HostBuilder()
-				.ConfigureServices((context, collection) =>
-				{
-					collection.AddOmexMiddleware();
-				})
-				.Build().Services
-				.GetRequiredService<ISaltProvider>();
-
-			Assert.IsInstanceOfType(saltProvider, typeof(RotatingSaltProvider));
-		}
-
-		[TestMethod]
-		public void AddMiddlewares_RegistersEmptySaltProviderForLiveId()
-		{
-			ISaltProvider saltProvider = new HostBuilder()
-				.ConfigureServices((context, collection) =>
-				{
-					collection
-					.Configure<UserIdentiyMiddlewareOptions>(options =>
-					{
-						options.LoggingComlience = UserIdentiyComplianceLevel.LiveId;
-					})
-					.AddOmexMiddleware();
-				})
-				.Build().Services
-				.GetRequiredService<ISaltProvider>();
-
-			Assert.IsInstanceOfType(saltProvider, typeof(EmptySaltProvider));
 		}
 	}
 }
