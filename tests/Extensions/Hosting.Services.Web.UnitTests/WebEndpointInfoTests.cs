@@ -49,6 +49,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 		public void CreateHttps_WithEmptyEndpointName_Throws() => Assert.ThrowsException<ArgumentException>(() => WebEndpointInfo.CreateHttps(string.Empty));
 
 		[TestMethod]
-		public void CreateHttp_WithWrongEndpointName_Throws() => Assert.ThrowsException<ArgumentException>(() => WebEndpointInfo.CreateHttp("UnexistingEndpoint"));
+		public void CreateHttp_WithWrongEndpointName_Throws() => Assert.ThrowsException<SfConfigurationException>(() => WebEndpointInfo.CreateHttp("UnexistingEndpoint"));
+
+		[TestMethod]
+		public void CreateHttps_WithoutCertSettings_Throws()
+		{
+			string someEndpoint = "SomeTestEndpoint";
+			SfConfigurationProviderHelper.SetPortVariable(someEndpoint, 8080);
+			Assert.ThrowsException<ArgumentException>(() => WebEndpointInfo.CreateHttps(someEndpoint, string.Empty));
+		}
 	}
 }

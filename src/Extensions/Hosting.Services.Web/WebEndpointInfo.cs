@@ -34,9 +34,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		private WebEndpointInfo(string endpointName, string? settingForCertificateCommonName)
 		{
 			Name = Validation.ThrowIfNullOrWhiteSpace(endpointName);
-			SettingForCertificateCommonName = settingForCertificateCommonName;
-			UseHttps = settingForCertificateCommonName != null;
 			Port = SfConfigurationProvider.GetEndpointPort(endpointName);
+
+			UseHttps = settingForCertificateCommonName != null;
+			if (UseHttps)
+			{
+				SettingForCertificateCommonName = Validation.ThrowIfNullOrWhiteSpace(settingForCertificateCommonName);
+			}
 		}
 
 		internal string GetListenerUrl() =>
