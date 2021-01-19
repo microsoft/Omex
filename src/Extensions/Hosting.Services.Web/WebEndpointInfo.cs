@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Globalization;
 using Microsoft.Omex.Extensions.Abstractions;
 
@@ -31,7 +32,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		/// </summary>
 		public bool UseHttps { get; }
 
-		private WebEndpointInfo(string endpointName, string? settingForCertificateCommonName)
+		internal WebEndpointInfo(string endpointName, string? settingForCertificateCommonName)
 		{
 			Name = Validation.ThrowIfNullOrWhiteSpace(endpointName);
 			Port = SfConfigurationProvider.GetEndpointPort(endpointName);
@@ -50,6 +51,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		/// Create http endpoint information
 		/// </summary>
 		/// <param name="endpointName">Endpoint name from ServiceManifest.xml</param>
+		[Obsolete("Services must have transport-level encryption. Consider using CreateHttps instead", false)]
 		public static WebEndpointInfo CreateHttp(string endpointName) =>
 			new WebEndpointInfo(endpointName, null);
 
