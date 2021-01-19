@@ -11,6 +11,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Testing.Helpers;
+using Microsoft.Omex.Extensions.Testing.Helpers.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -44,6 +45,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		[TestMethod]
 		public async Task AbstractHealthCheck_WhenExceptionThrown_ReturnsUnhealtyState()
 		{
+			using TestActivityListener listener = new TestActivityListener();
 			Activity? activity = null;
 			Exception exception = new ArrayTypeMismatchException();
 
@@ -65,6 +67,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		[TestMethod]
 		public async Task AbstractHealthCheck_MarksActivityWithHealthCheckFlag()
 		{
+			using TestActivityListener listener = new TestActivityListener();
 			Activity? activity = null;
 
 			HealthCheckResult actualResult = await new TestHealthCheck((c, t) =>

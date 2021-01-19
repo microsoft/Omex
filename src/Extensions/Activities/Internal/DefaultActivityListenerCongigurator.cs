@@ -13,10 +13,13 @@ namespace Microsoft.Omex.Extensions.Activities
 		public DefaultActivityListenerCongigurator(IOptionsMonitor<OmexActivityListenerOptions> optionMonitor) =>
 			m_optionMonitor = optionMonitor;
 
-		public ActivitySamplingResult Sample(ref ActivityCreationOptions<ActivityContext> options) => true;
+		public ActivitySamplingResult Sample(ref ActivityCreationOptions<ActivityContext> options) =>
+			m_optionMonitor.CurrentValue.Sample;
 
-		public ActivitySamplingResult SampleUsingParentId(ref ActivityCreationOptions<string> options) => ActivitySamplingResult.AllDataAndRecorded;
+		public ActivitySamplingResult SampleUsingParentId(ref ActivityCreationOptions<string> options) =>
+			m_optionMonitor.CurrentValue.SampleUsingParentId;
 
-		public bool ShouldListenTo(ActivitySource activity) => true;
+		public bool ShouldListenTo(ActivitySource activity) =>
+			m_optionMonitor.CurrentValue.ShouldListenTo;
 	}
 }

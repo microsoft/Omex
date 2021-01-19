@@ -25,7 +25,8 @@ namespace Microsoft.Extensions.DependencyInjection
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IActivityStopObserver, ActivityStopObserver>());
 
 			serviceCollection.TryAddSingleton<IExecutionContext, BaseExecutionContext>();
-			serviceCollection.TryAddTransient<IActivitiesEventSender, ActivityEventSender>();
+			serviceCollection.TryAddSingleton<IActivitiesEventSender, ActivityEventSender>();
+			serviceCollection.TryAddSingleton<IActivityListenerConfigurator, DefaultActivityListenerCongigurator>();
 			serviceCollection.TryAddSingleton(p => new ActivitySource("OmexActivitySource", "1.0.0.0"));
 			serviceCollection.TryAddSingleton(p => ActivityEventSource.Instance);
 			return serviceCollection;

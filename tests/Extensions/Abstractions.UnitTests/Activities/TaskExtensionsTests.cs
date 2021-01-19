@@ -3,12 +3,13 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Testing.Helpers;
+using Microsoft.Omex.Extensions.Testing.Helpers.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
@@ -17,28 +18,28 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 	public class TaskExtensionsTests
 	{
 		[TestMethod]
-		public void WithTimedScopeWithTaskOfT_Success() => TestSuccessfulExecution(s_wrapTaskOfTAction);
+		public void WithActivityWithTaskOfT_Success() => TestSuccessfulExecution(s_wrapTaskOfTAction);
 
 		[TestMethod]
-		public void WithTimedScopeUsingTask_Success() => TestSuccessfulExecution(s_wrapTaskAction);
+		public void WithActivityUsingTask_Success() => TestSuccessfulExecution(s_wrapTaskAction);
 
 		[TestMethod]
-		public void WithTimedScopeUsingValueTaskOfT_Success() => TestSuccessfulExecution(s_wrapValueTaskOfTAction);
+		public void WithActivityUsingValueTaskOfT_Success() => TestSuccessfulExecution(s_wrapValueTaskOfTAction);
 
 		[TestMethod]
-		public void WithTimedScopeUsingValueTask_Success() => TestSuccessfulExecution(s_wrapValueTaskAction);
+		public void WithActivityUsingValueTask_Success() => TestSuccessfulExecution(s_wrapValueTaskAction);
 
 		[TestMethod]
-		public void WithTimedScopeUsingTaskOfT_Failed() => TestFailedExecution(s_wrapTaskOfTAction);
+		public void WithActivityUsingTaskOfT_Failed() => TestFailedExecution(s_wrapTaskOfTAction);
 
 		[TestMethod]
-		public void WithTimedScopeUsingTask_Failed() => TestFailedExecution(s_wrapTaskAction);
+		public void WithActivityUsingTask_Failed() => TestFailedExecution(s_wrapTaskAction);
 
 		[TestMethod]
-		public void WithTimedScopeUsingValueTaskOfT_Failed() => TestFailedExecution(s_wrapValueTaskOfTAction);
+		public void WithActivityUsingValueTaskOfT_Failed() => TestFailedExecution(s_wrapValueTaskOfTAction);
 
 		[TestMethod]
-		public void WithTimedScopeUsingValueTask_Failed() => TestFailedExecution(s_wrapValueTaskAction);
+		public void WithActivityUsingValueTask_Failed() => TestFailedExecution(s_wrapValueTaskAction);
 
 		private void TestSuccessfulExecution(Action<Task<bool>, ActivitySource, string> wrapTask, [CallerMemberName] string scopeName = "") =>
 			TestExecution(scopeName, wrapTask, tcs => tcs.SetResult(true), ActivityResult.Success);
@@ -52,16 +53,17 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 			Action<TaskCompletionSource<bool>> finishTask,
 			ActivityResult expectedResult)
 		{
-			Mock<ActivitySource> providerMock = new Mock<ActivitySource>();
-			Activity activity = new Activity(scopeName).MarkAsSystemError();
-
-			providerMock.Setup(p => p.StartActivity(scopeName, ActivityKind.Internal)).Returns(activity);
+			using TestActivityListener listener = new TestActivityListener(scopeName);
+			ActivitySource source = new ActivitySource(scopeName);
 
 			TaskCompletionSource<bool> taskCompletionSource = new TaskCompletionSource<bool>();
 
-			createTask(taskCompletionSource.Task, providerMock.Object, scopeName);
+			createTask(taskCompletionSource.Task, source, scopeName);
 
-			providerMock.Verify(p => p.StartActivity(scopeName, ActivityKind.Internal), Times.Once);
+			Activity? activity = listener.Activities.Single();
+
+			NullableAssert.IsNotNull(activity);
+
 			activity.AssertResult(ActivityResult.SystemError);
 
 			finishTask(taskCompletionSource);
@@ -70,15 +72,15 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		}
 
 		private static Action<Task<bool>, ActivitySource, string> s_wrapTaskOfTAction =
-			(task, provider, name) => task.WithTimedScope(provider, name).ConfigureAwait(false);
+			(task, provider, name) => task.WithActivity(provider, name).ConfigureAwait(false);
 
 		private static Action<Task<bool>, ActivitySource, string> s_wrapTaskAction =
-			(task, provider, name) => ((Task)task).WithTimedScope(provider, name).ConfigureAwait(false);
+			(task, provider, name) => ((Task)task).WithActivity(provider, name).ConfigureAwait(false);
 
 		private static Action<Task<bool>, ActivitySource, string> s_wrapValueTaskOfTAction =
-			async (task, provider, name) => await new ValueTask<bool>(task).WithTimedScope(provider, name).ConfigureAwait(false);
+			async (task, provider, name) => await new ValueTask<bool>(task).WithActivity(provider, name).ConfigureAwait(false);
 
 		private static Action<Task<bool>, ActivitySource, string> s_wrapValueTaskAction =
-			async (task, provider, name) => await new ValueTask(task).WithTimedScope(provider, name).ConfigureAwait(false);
+			async (task, provider, name) => await new ValueTask(task).WithActivity(provider, name).ConfigureAwait(false);
 	}
 }

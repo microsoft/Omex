@@ -36,6 +36,9 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_listener.Sample += Sample;
 			m_listener.SampleUsingParentId += SampleUsingParentId;
 			m_listener.ShouldListenTo += ShouldListenTo;
+
+			ActivitySource.AddActivityListener(m_listener);
+
 			return Task.CompletedTask;
 		}
 

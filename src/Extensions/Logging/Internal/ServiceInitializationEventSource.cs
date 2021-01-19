@@ -61,7 +61,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			LogHostFailedInternal(
 				exception,
 				serviceType,
-				message);
+				logMessage);
 		}
 
 		private ServiceInitializationEventSource() { }

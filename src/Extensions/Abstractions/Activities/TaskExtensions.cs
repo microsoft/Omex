@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <summary>
 		/// Starts TimedScopes before task execution and finish after it's completion
 		/// </summary>
-		public static async ValueTask<TResult> WithTimedScope<TResult>(this ValueTask<TResult> task, ActivitySource provider, string name)
+		public static async ValueTask<TResult> WithActivity<TResult>(this ValueTask<TResult> task, ActivitySource provider, string name)
 		{
 			using Activity? activity = provider.StartActivity(name);
 			activity?.MarkAsSystemError();
@@ -26,21 +26,21 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <summary>
 		/// Starts TimedScopes before task execution and finish after it's completion
 		/// </summary>
-		public static async ValueTask WithTimedScope(this ValueTask task, ActivitySource provider, string definition) =>
+		public static async ValueTask WithActivity(this ValueTask task, ActivitySource provider, string definition) =>
 			// await required to convert ValueTask<T> to ValueTask https://github.com/microsoft/Omex/pull/153#discussion_r389761929
-			await ConvertToTaskWithResultValue(task).WithTimedScope(provider, definition).ConfigureAwait(false);
+			await ConvertToTaskWithResultValue(task).WithActivity(provider, definition).ConfigureAwait(false);
 
 		/// <summary>
 		/// Starts TimedScopes before task execution and finish after it's completion
 		/// </summary>
-		public static ValueTask<TResult> WithTimedScope<TResult>(this Task<TResult> task, ActivitySource provider, string name) =>
-			new ValueTask<TResult>(task).WithTimedScope(provider, name);
+		public static ValueTask<TResult> WithActivity<TResult>(this Task<TResult> task, ActivitySource provider, string name) =>
+			new ValueTask<TResult>(task).WithActivity(provider, name);
 
 		/// <summary>
 		/// Starts TimedScopes before task execution and finish after it's completion
 		/// </summary>
-		public static ValueTask WithTimedScope(this Task task, ActivitySource provider, string name) =>
-			new ValueTask(task).WithTimedScope(provider, name);
+		public static ValueTask WithActivity(this Task task, ActivitySource provider, string name) =>
+			new ValueTask(task).WithActivity(provider, name);
 
 		private static async ValueTask<bool> ConvertToTaskWithResultValue(ValueTask task)
 		{
