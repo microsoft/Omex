@@ -44,8 +44,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 				"someService2",
 				new WebEndpointInfo[]
 				{
-					new WebEndpointInfo(httpListener1.name, null),
-					new WebEndpointInfo(httpListener2.name, null)
+					new WebEndpointInfo(httpListener1.name, settingForCertificateCommonName: null),
+					new WebEndpointInfo(httpListener2.name, settingForCertificateCommonName: null)
 				});
 
 			IListenerBuilder<OmexStatelessService>[] builders = host.Services.GetRequiredService<IEnumerable<IListenerBuilder<OmexStatelessService>>>().ToArray();
