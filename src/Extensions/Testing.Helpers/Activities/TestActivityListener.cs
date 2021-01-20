@@ -22,8 +22,8 @@ namespace Microsoft.Omex.Extensions.Testing.Helpers.Activities
 			Activities = new List<Activity>();
 			m_listener = new ActivityListener();
 			m_listener.ShouldListenTo += source => sourceName == null || source.Name.Equals(sourceName, StringComparison.Ordinal);
-			m_listener.Sample += (ref ActivityCreationOptions<ActivityContext> options) => ActivitySamplingResult.AllData;
-			m_listener.SampleUsingParentId += (ref ActivityCreationOptions<string> options) => ActivitySamplingResult.AllData;
+			m_listener.Sample += (ref ActivityCreationOptions<ActivityContext> options) => ActivitySamplingResult.AllDataAndRecorded;
+			m_listener.SampleUsingParentId += (ref ActivityCreationOptions<string> options) => ActivitySamplingResult.AllDataAndRecorded;
 			m_listener.ActivityStarted += activity => Activities.Add(activity);
 			ActivitySource.AddActivityListener(m_listener);
 		}

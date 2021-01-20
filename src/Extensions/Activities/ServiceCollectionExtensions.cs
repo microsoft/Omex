@@ -14,6 +14,9 @@ namespace Microsoft.Extensions.DependencyInjection
 	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
+		private const string ActivitySourceName = "OmexActivitySource";
+		private const string ActivitySourceVersion = "1.0.0.0";
+
 		/// <summary>
 		/// Add ActivitySource to ServiceCollection
 		/// </summary>
@@ -26,8 +29,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
 			serviceCollection.TryAddSingleton<IExecutionContext, BaseExecutionContext>();
 			serviceCollection.TryAddSingleton<IActivitiesEventSender, ActivityEventSender>();
-			serviceCollection.TryAddSingleton<IActivityListenerConfigurator, DefaultActivityListenerCongigurator>();
-			serviceCollection.TryAddSingleton(p => new ActivitySource("OmexActivitySource", "1.0.0.0"));
+			serviceCollection.TryAddSingleton<IActivityListenerConfigurator, DefaultActivityListenerConfigurator>();
+			serviceCollection.TryAddSingleton(p => new ActivitySource(ActivitySourceName, ActivitySourceVersion));
 			serviceCollection.TryAddSingleton(p => ActivityEventSource.Instance);
 			return serviceCollection;
 		}

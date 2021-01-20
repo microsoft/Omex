@@ -6,11 +6,11 @@ using Microsoft.Extensions.Options;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
-	internal sealed class DefaultActivityListenerCongigurator : IActivityListenerConfigurator
+	internal sealed class DefaultActivityListenerConfigurator : IActivityListenerConfigurator
 	{
 		private readonly IOptionsMonitor<OmexActivityListenerOptions> m_optionMonitor;
 
-		public DefaultActivityListenerCongigurator(IOptionsMonitor<OmexActivityListenerOptions> optionMonitor) =>
+		public DefaultActivityListenerConfigurator(IOptionsMonitor<OmexActivityListenerOptions> optionMonitor) =>
 			m_optionMonitor = optionMonitor;
 
 		public ActivitySamplingResult Sample(ref ActivityCreationOptions<ActivityContext> options) =>

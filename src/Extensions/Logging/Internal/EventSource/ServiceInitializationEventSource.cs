@@ -10,7 +10,7 @@ namespace Microsoft.Omex.Extensions.Logging
 	/// <summary>
 	/// Service Fabric event source
 	/// </summary>
-	[EventSource(Name = "Microsoft-OMEX-HostLogs")] //TODO: new event source should be registred GitHub Issue #187
+	[EventSource(Name = "Microsoft-OMEX-HostLogs")]
 	internal sealed class ServiceInitializationEventSource : EventSource
 	{
 		/// <summary>

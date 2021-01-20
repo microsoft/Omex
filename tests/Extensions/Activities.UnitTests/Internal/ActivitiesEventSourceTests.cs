@@ -18,7 +18,7 @@ using Moq;
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 {
 	[TestClass]
-	public class TimedScopeEventSourceTests
+	public class ActivitiesEventSourceTests
 	{
 		[DataTestMethod]
 		[DataRow(EventSourcesEventIds.LogTimedScopeTestContext, true)]

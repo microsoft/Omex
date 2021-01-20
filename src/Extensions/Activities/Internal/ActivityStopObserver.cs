@@ -10,8 +10,8 @@ namespace Microsoft.Omex.Extensions.Activities
 	{
 		private readonly IActivitiesEventSender m_eventSender;
 
-		public ActivityStopObserver(IActivitiesEventSender timedScopeEventSender) =>
-			m_eventSender = timedScopeEventSender;
+		public ActivityStopObserver(IActivitiesEventSender eventSender) =>
+			m_eventSender = eventSender;
 
 		public void OnStop(Activity activity, object? payload) =>
 			m_eventSender.LogActivityStop(activity);
