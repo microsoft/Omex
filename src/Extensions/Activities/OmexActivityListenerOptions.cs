@@ -20,6 +20,7 @@ namespace Microsoft.Omex.Extensions.Activities
 
 		/// <summary>
 		/// Decides if creating System.Diagnostics.Activity objects with a specific data state is allowed
+		/// Used when parentId specified
 		/// </summary>
 		public ActivitySamplingResult SampleUsingParentId { get; set; } = ActivitySamplingResult.AllDataAndRecorded;
 

@@ -17,6 +17,7 @@ namespace Microsoft.Omex.Extensions.Activities
 
 		/// <summary>
 		/// Decides if creating System.Diagnostics.Activity objects with a specific data state is allowed
+		/// Used when parentId specified
 		/// </summary>
 		ActivitySamplingResult SampleUsingParentId(ref ActivityCreationOptions<string> options);
 
