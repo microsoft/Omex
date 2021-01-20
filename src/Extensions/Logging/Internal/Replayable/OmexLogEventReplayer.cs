@@ -40,7 +40,8 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			foreach (LogMessageInformation log in activity.GetReplayableLogs())
 			{
-				m_sender.LogMessage(activity, log.Category, LogLevel.Information, log.EventId, log.ThreadId, log.Message, log.Exception);
+				string message = "[Replay] " + log.Message; // add prefix to mark log as replay
+				m_sender.LogMessage(activity, log.Category, LogLevel.Information, log.EventId, log.ThreadId, message, log.Exception);
 			}
 		}
 	}
