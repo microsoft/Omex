@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Activities
 	/// Hosted service for listening to diagnostic events
 	/// </summary>
 	/// <remarks>
-	/// Should be deleted after ASP .NET Core would support new approach
+	/// Should be deleted after ASP .NET Core would support new approach, issue #300
 	/// </remarks>
 	internal sealed class DiagnosticsObserversInitializer : IHostedService, IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object?>>
 	{
