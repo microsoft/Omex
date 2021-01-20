@@ -10,7 +10,7 @@ namespace Microsoft.Omex.Extensions.Activities
 	[EventSource(Name = "Microsoft-OMEX-TimedScopes-Ext")]
 	internal sealed class ActivityEventSource : EventSource
 	{
-		[Event((int)EventSourcesEventIds.LogTimedScope, Level = EventLevel.Informational, Version = 4)]
+		[Event((int)EventSourcesEventIds.LogActivity, Level = EventLevel.Informational, Version = 4)]
 		public void WriteTimedScopeEvent(
 			string name,
 			string subType,
@@ -22,9 +22,9 @@ namespace Microsoft.Omex.Extensions.Activities
 			string correlationId,
 			string activityId,
 			long durationMs) =>
-			WriteEvent((int)EventSourcesEventIds.LogTimedScope, name, subType, metadata, userHash, serviceName, logCategory, result, correlationId, activityId, durationMs);
+			WriteEvent((int)EventSourcesEventIds.LogActivity, name, subType, metadata, userHash, serviceName, logCategory, result, correlationId, activityId, durationMs);
 
-		[Event((int)EventSourcesEventIds.LogTimedScopeTestContext, Level = EventLevel.Informational, Version = 4)]
+		[Event((int)EventSourcesEventIds.LogActivityTestContext, Level = EventLevel.Informational, Version = 4)]
 		public void WriteTimedScopeTestEvent(
 			string name,
 			string subType,
@@ -35,7 +35,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			string correlationId,
 			string activityId,
 			long durationMs) =>
-			WriteEvent((int)EventSourcesEventIds.LogTimedScopeTestContext, name, subType, metadata, serviceName, logCategory, result, correlationId, activityId, durationMs);
+			WriteEvent((int)EventSourcesEventIds.LogActivityTestContext, name, subType, metadata, serviceName, logCategory, result, correlationId, activityId, durationMs);
 
 		public static ActivityEventSource Instance { get; } = new ActivityEventSource();
 	}

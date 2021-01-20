@@ -11,7 +11,7 @@ using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.Omex.Extensions.Testing.Helpers.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
+namespace Microsoft.Omex.Extensions.Activities.UnitTests
 {
 	[TestClass]
 	[TestCategory(nameof(Activity))]

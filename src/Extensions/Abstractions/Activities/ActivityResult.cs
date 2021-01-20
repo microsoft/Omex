@@ -10,7 +10,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 	/// </summary>
 	/// <remarks>
 	/// This enum is essential to OMEX monitoring solutions and generally should not change.
-	/// If values are added or removed, TimedScopeResultExtensions should be updated as well.
+	/// If values are added or removed, ActivityResultStrings should be updated as well.
 	/// </remarks>
 	[DataContract]
 	public enum ActivityResult : int

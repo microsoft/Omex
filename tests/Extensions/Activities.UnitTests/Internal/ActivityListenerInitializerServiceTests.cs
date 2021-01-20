@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.Omex.Extensions.Testing.Helpers;
 
-namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
+namespace Microsoft.Omex.Extensions.Activities.UnitTests
 {
 	[TestClass]
 	public class ActivityListenerInitializerServiceTests

@@ -15,7 +15,7 @@ using Microsoft.Omex.Extensions.Testing.Helpers;
 using Moq;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
+namespace Microsoft.Omex.Extensions.Activities.UnitTests
 {
 	[TestClass]
 	public class ServiceCollectionTests

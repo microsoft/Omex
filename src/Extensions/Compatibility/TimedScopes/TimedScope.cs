@@ -5,20 +5,20 @@ using System;
 using System.Diagnostics;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 
-namespace Microsoft.Omex.Extensions.Compatibility.TimedScopes
+namespace Microsoft.Omex.Extensions.Compatibility
 {
 	/// <summary>
-	/// Extension for TimedScopeDefinition
+	/// Extension for string to start Activity
 	/// </summary>
 	public static class TimedScope
 	{
 		/// <summary>
-		/// Creates a scope (and starts by default)
+		/// Creates Activity and starts it
 		/// </summary>
-		/// <param name="name">TimedScopeDefinition to use</param>
+		/// <param name="name">Activity name</param>
 		/// <param name="initialResult">Initial result to use</param>
-		[Obsolete("Please consider using ITimedScopeProvider directly by injecting it", false)]
-		public static Activity? CreateAndStart(this string name, ActivityResult initialResult)
+		[Obsolete("Please consider using ActivitySource directly by injecting it", false)]
+		public static Activity? CreateAndStart(string name, ActivityResult initialResult)
 		{
 			if (s_activitySource == null)
 			{

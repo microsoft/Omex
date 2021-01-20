@@ -15,15 +15,15 @@ using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
+namespace Microsoft.Omex.Extensions.Activities.UnitTests
 {
 	[TestClass]
 	public class ActivitiesEventSourceTests
 	{
 		[DataTestMethod]
-		[DataRow(EventSourcesEventIds.LogTimedScopeTestContext, true)]
-		[DataRow(EventSourcesEventIds.LogTimedScope, false)]
-		public void LogTimedScopeEndEvent_CreatesEvent(EventSourcesEventIds eventId, bool isHealthCheck)
+		[DataRow(EventSourcesEventIds.LogActivityTestContext, true)]
+		[DataRow(EventSourcesEventIds.LogActivity, false)]
+		public void LogActivityEndEvent_CreatesEvent(EventSourcesEventIds eventId, bool isHealthCheck)
 		{
 			TestEventListener listener = new TestEventListener();
 			listener.EnableEvents(ActivityEventSource.Instance, EventLevel.Informational);

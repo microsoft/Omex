@@ -5,7 +5,6 @@ using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Compatibility.Logger;
-using Microsoft.Omex.Extensions.Compatibility.TimedScopes;
 using Microsoft.Omex.Extensions.Compatibility.Validation;
 
 namespace Microsoft.Omex.Extensions.Compatibility

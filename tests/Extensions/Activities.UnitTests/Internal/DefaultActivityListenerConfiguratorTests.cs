@@ -7,7 +7,7 @@ using Microsoft.Omex.Extensions.Activities;
 using Moq;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
+namespace Microsoft.Omex.Extensions.Activities.UnitTests
 {
 	[TestClass]
 	public class DefaultActivityListenerConfiguratorTests
