@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.ServiceFabric.Data;
@@ -15,13 +16,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	internal sealed class OmexStatefulServiceRegistrator : OmexServiceRegistrator<OmexStatefulService, StatefulServiceContext>
 	{
 		public OmexStatefulServiceRegistrator(
+			IHostLifetime hostLifetime,
 			IOptions<ServiceRegistratorOptions> options,
 			IAccessorSetter<StatefulServiceContext> contextAccessor,
 			IAccessorSetter<IStatefulServicePartition> partitionAccessor,
 			IAccessorSetter<IReliableStateManager> stateAccessor,
 			IEnumerable<IListenerBuilder<OmexStatefulService>> listenerBuilders,
 			IEnumerable<IServiceAction<OmexStatefulService>> serviceActions)
-				: base(options, contextAccessor, listenerBuilders, serviceActions)
+				: base(hostLifetime, options, contextAccessor, listenerBuilders, serviceActions)
 		{
 			PartitionAccessor = partitionAccessor;
 			StateAccessor = stateAccessor;
