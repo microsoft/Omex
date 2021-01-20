@@ -2,62 +2,63 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Fabric;
-using Microsoft.AspNetCore.Hosting;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Hosting.Services.Web.UnitTests;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Omex.Extensions.Hosting.Services;
-using Microsoft.Omex.Extensions.Hosting.Services.UnitTests;
-using Microsoft.Omex.Extensions.Hosting.Services.Web;
+using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Hosting.Services.Web.UnitTests
+namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 {
 	[TestClass]
 	public class HostBuilderExtensionsTests
 	{
 		[TestMethod]
-		public void BuildStatelessService_TypesRegisteredStateless() =>
-			CheckTypeRegistration<OmexStatelessService, StatelessServiceContext>(
-				MockServiceFabricServices.MockOmexStatelessService,
-				(v, h) => h.BuildStatelessService(
-					"StatelessServiceName",
-					b => b.AddKestrelListener<MockStartup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
+		public void BuildStatelessWebService_UseUniqueServiceUrl_Failing()
+		{
+			Assert.ThrowsException<ArgumentException>(() =>
+			{
+				new HostBuilder().BuildStatelessWebService<MockStartup>(
+					"someService1",
+					new WebEndpointInfo[0],
+					ServiceFabricIntegrationOptions.UseUniqueServiceUrl | ServiceFabricIntegrationOptions.UseReverseProxyIntegration);
+			});
+		}
 
 		[TestMethod]
-		public void BuildStateful_BuildStatelessService_TypesRegistered() =>
-			CheckTypeRegistration<OmexStatefulService, StatefulServiceContext>(
-				MockServiceFabricServices.MockOmexStatefulService,
-				(v, h) => h.BuildStatefulService(
-					"StatefulServiceName",
-					b => b.AddKestrelListener<MockStartup>(v.ListenerName, v.IntegrationOptions, v.BuilderAction)));
-
-		private void CheckTypeRegistration<TService, TContext>(
-			TService service,
-			Func<ListenerValidator<TService, TContext>, IHostBuilder, IHost> buildAction)
-			where TService : IServiceFabricService<TContext>
-			where TContext : ServiceContext
+		public async Task BuildStatelessWebService_RegisterListeners()
 		{
-			ListenerValidator<TService, TContext> validator = new ListenerValidator<TService, TContext>();
+			(string name, int port) httpListener1 = ("httpListener", 20080);
+			(string name, int port) httpListener2 = ("httpsListener", 20443);
 
-			IHostBuilder hostBuilder = new HostBuilder()
-				.UseDefaultServiceProvider(options =>
+			SfConfigurationProviderHelper.SetPublishAddress();
+			SfConfigurationProviderHelper.SetPortVariable(httpListener1.name, httpListener1.port);
+			SfConfigurationProviderHelper.SetPortVariable(httpListener2.name, httpListener2.port);
+
+			IHost host = new HostBuilder().BuildStatelessWebService<MockStartup>(
+				"someService2",
+				new WebEndpointInfo[]
 				{
-					options.ValidateOnBuild = true;
-					options.ValidateScopes = true;
+					new WebEndpointInfo(httpListener1.name, settingForCertificateCommonName: null),
+					new WebEndpointInfo(httpListener2.name, settingForCertificateCommonName: null)
 				});
 
-			IHost host = buildAction(validator, hostBuilder);
-			IListenerBuilder<TService> builder = host.Services.GetRequiredService<IListenerBuilder<TService>>();
+			IListenerBuilder<OmexStatelessService>[] builders = host.Services.GetRequiredService<IEnumerable<IListenerBuilder<OmexStatelessService>>>().ToArray();
+			Assert.AreEqual(2, builders.Length, "Two endpoints should be registered as listeners");
+			Assert.IsTrue(builders.Any(b => b.Name == httpListener1.name), $"Listener builder for {httpListener1.name} not found");
+			Assert.IsTrue(builders.Any(b => b.Name == httpListener2.name), $"Listener builder for {httpListener2.name} not found");
 
-			Assert.IsNotNull(builder);
+			await host.StartAsync();
 
-			KestrelListenerBuilder<MockStartup, TService, TContext> kestrelBuilder
-				= (KestrelListenerBuilder<MockStartup, TService, TContext>)builder;
-
-			IWebHost webHost = validator.ValidateListenerBuilder(service.Context, kestrelBuilder);
-			validator.ValidateOmexTypesRegistered(webHost);
-			validator.ValidateBuildFunction(service, kestrelBuilder);
+			ICollection<string> addresses = host.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>().Addresses;
+			Assert.AreEqual(2, builders.Length, "Two addresses should be registered");
+			Assert.IsTrue(addresses.Any(address => address.EndsWith($":{httpListener1.port}")), $"Address for {httpListener1.name} not found");
+			Assert.IsTrue(addresses.Any(address => address.EndsWith($":{httpListener2.port}")), $"Address for {httpListener2.name} not found");
 		}
 	}
 }
