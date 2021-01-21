@@ -10,6 +10,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	{
 		/// <summary>
 		/// User identity would be changed after some period (usually 40 hours not more then 48 hours) to avoid tracking of user information
+		/// Also could be applied for LiveId users
 		/// </summary>
 		OrgId,
 

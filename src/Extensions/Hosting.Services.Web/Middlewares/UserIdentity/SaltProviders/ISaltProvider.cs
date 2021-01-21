@@ -5,10 +5,8 @@ using System;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 {
-	internal class EmptySaltProvider : ISaltProvider
+	internal interface ISaltProvider : IDisposable
 	{
-		public Span<byte> GetSalt() => Span<byte>.Empty;
-
-		public void Dispose() { }
+		ReadOnlySpan<byte> GetSalt();
 	}
 }

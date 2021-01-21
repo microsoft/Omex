@@ -11,6 +11,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		/// <summary>
 		/// Set required compliance level for logging user identity
 		/// </summary>
-		public UserIdentiyComplianceLevel LoggingComlience { get; set; } = UserIdentiyComplianceLevel.OrgId;
+		public UserIdentiyComplianceLevel LoggingCompliance { get; set; } = UserIdentiyComplianceLevel.OrgId;
 	}
 }

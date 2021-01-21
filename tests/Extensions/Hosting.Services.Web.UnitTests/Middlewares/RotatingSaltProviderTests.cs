@@ -3,6 +3,7 @@
 
 using System;
 using Microsoft.Extensions.Internal;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -20,7 +21,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 				.SetupGet(c => c.UtcNow)
 				.Returns(DateTimeOffset.Now);
 
-			ISaltProvider provider = new RotatingSaltProvider(systemClock.Object);
+			ISaltProvider provider = new RotatingSaltProvider(systemClock.Object, new NullLogger<RotatingSaltProvider>());
 
 			byte[] intialSalt = provider.GetSalt().ToArray();
 

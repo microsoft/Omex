@@ -5,6 +5,8 @@ using System;
 using System.Buffers;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Internal;
+using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 {
@@ -15,17 +17,19 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		private readonly RandomNumberGenerator m_random;
 		private readonly IMemoryOwner<byte> m_currentSaltMemory;
 		private readonly ISystemClock m_systemClock;
+		private readonly ILogger<RotatingSaltProvider> m_logger;
 		private DateTimeOffset m_saltGenerationTime;
 
-		public RotatingSaltProvider(ISystemClock systemClock)
+		public RotatingSaltProvider(ISystemClock systemClock, ILogger<RotatingSaltProvider> logger)
 		{
 			m_random = new RNGCryptoServiceProvider();
 			m_currentSaltMemory = MemoryPool<byte>.Shared.Rent(SaltLength);
 			m_saltGenerationTime = DateTime.MinValue;
 			m_systemClock = systemClock;
+			m_logger = logger;
 		}
 
-		public Span<byte> GetSalt()
+		public ReadOnlySpan<byte> GetSalt()
 		{
 			DateTimeOffset currentTime = m_systemClock.UtcNow;
 			Span<byte> saltSpan = m_currentSaltMemory.Memory.Span;
@@ -34,6 +38,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			{
 				m_random.GetNonZeroBytes(saltSpan);
 				m_saltGenerationTime = currentTime;
+
+				// DO NOT ADD THE SALT TO THIS LOG STATEMENT. Doing so may violate compliance guarantees.
+				m_logger.LogInformation(Tag.Create(), "New salt generated for UserIdentityMiddelware");
 			}
 
 			return saltSpan;

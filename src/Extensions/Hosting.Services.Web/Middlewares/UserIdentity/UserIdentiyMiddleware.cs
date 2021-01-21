@@ -4,11 +4,9 @@
 using System;
 using System.Buffers;
 using System.Diagnostics;
-using System.Net;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
@@ -19,12 +17,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	internal class UserIdentiyMiddleware : IMiddleware, IDisposable
 	{
 		private const int HashSize = 32; // sha256 hash size, from here https://github.com/dotnet/runtime/blob/26a71f95b708721065f974fd43ba82a1dcb3e8f0/src/libraries/System.Security.Cryptography.Algorithms/src/Internal/Cryptography/HashProviderDispenser.Windows.cs#L85
-		private const int MaxIpByteSize = 16; // IPv6 size, from here https://github.com/dotnet/runtime/blob/26a71f95b708721065f974fd43ba82a1dcb3e8f0/src/libraries/Common/src/System/Net/IPAddressParserStatics.cs#L9
-		private readonly HashAlgorithm m_hashAlgorithm;
+		private readonly IUserIdentityProvider m_userIdentityProvider;
 		private readonly ISaltProvider m_saltProvider;
+		private readonly HashAlgorithm m_hashAlgorithm;
 
-		public UserIdentiyMiddleware(ISaltProvider saltProvider)
+		public UserIdentiyMiddleware(IUserIdentityProvider userIdentityProvider, ISaltProvider saltProvider)
 		{
+			m_userIdentityProvider = userIdentityProvider;
 			m_saltProvider = saltProvider;
 			m_hashAlgorithm = new SHA256Managed();
 		}
@@ -35,7 +34,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 
 			if (activity != null && string.IsNullOrEmpty(activity.GetUserHash()))
 			{
-				string userHash = GetUserHash(context);
+				string userHash = CreateUserHash(context);
 				if (!string.IsNullOrWhiteSpace(userHash))
 				{
 					activity.SetUserHash(userHash);
@@ -45,30 +44,19 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			return next(context);
 		}
 
-		internal string GetUserHash(HttpContext context)
+		internal string CreateUserHash(HttpContext context)
 		{
-			IHttpConnectionFeature connection = context.Features.Get<IHttpConnectionFeature>();
-			IPAddress? remoteIpAddress = connection.RemoteIpAddress;
-			if (remoteIpAddress == null)
-			{
-				return string.Empty;
-			}
+			int identitySize = m_userIdentityProvider.MaxBytesInIdentity;
+			ReadOnlySpan<byte> saltSpan = m_saltProvider.GetSalt();
 
-			return CreateHash(remoteIpAddress);
-		}
-
-		internal string CreateHash(IPAddress ip)
-		{
-			Span<byte> saltSpan = m_saltProvider.GetSalt();
-
-			using IMemoryOwner<byte> uidMemoryOwner = MemoryPool<byte>.Shared.Rent(MaxIpByteSize + saltSpan.Length);
+			using IMemoryOwner<byte> uidMemoryOwner = MemoryPool<byte>.Shared.Rent(identitySize + saltSpan.Length);
 			Span<byte> uidSpan = uidMemoryOwner.Memory.Span;
-			if (!ip.TryWriteBytes(uidSpan.Slice(0, MaxIpByteSize), out int ipBytesWritten))
+			if (!m_userIdentityProvider.TryWriteBytes(context, uidSpan.Slice(0, identitySize), out int identityBytesWritten))
 			{
 				return string.Empty;
 			}
 
-			saltSpan.CopyTo(uidSpan.Slice(ipBytesWritten));
+			saltSpan.CopyTo(uidSpan.Slice(identityBytesWritten));
 
 			using IMemoryOwner<byte> hashMemoryOwner = MemoryPool<byte>.Shared.Rent(HashSize);
 			Span<byte> hashSpan = hashMemoryOwner.Memory.Span;

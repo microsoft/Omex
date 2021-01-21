@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Options;
@@ -21,11 +20,12 @@ namespace Microsoft.Extensions.DependencyInjection
 		public static IServiceCollection AddOmexMiddleware(this IServiceCollection services)
 		{
 			services.TryAddSingleton<ISystemClock, SystemClock>();
+			services.TryAddSingleton<IUserIdentityProvider, IpBasedUserIdentityProvider>();
 			services.TryAddSingleton<EmptySaltProvider>();
 			services.TryAddSingleton<RotatingSaltProvider>();
 
 			static ISaltProvider getSaltProvider(IServiceProvider provider) =>
-				provider.GetRequiredService<IOptions<UserIdentiyMiddlewareOptions>>().Value.LoggingComlience switch
+				provider.GetRequiredService<IOptions<UserIdentiyMiddlewareOptions>>().Value.LoggingCompliance switch
 				{
 					UserIdentiyComplianceLevel.LiveId => provider.GetRequiredService<EmptySaltProvider>(),
 					_ => provider.GetRequiredService<RotatingSaltProvider>()

@@ -20,104 +20,53 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		[TestMethod]
 		public void InvokeAsync_SetsActivityPropetry()
 		{
-			IPAddress address1 = IPAddress.Parse("192.168.0.4");
-			IPAddress address2 = IPAddress.Parse("127.0.0.4");
+			HttpContext context1 = HttpContextHelper.GetContextWithIp("192.168.0.4");
+			HttpContext context2 = HttpContextHelper.GetContextWithIp("127.0.0.4");
 
-			(HttpContext context, HttpConnectionFeature feature) = CreateHttpContext();
-			IMiddleware middleware = new UserIdentiyMiddleware(new EmptySaltProvider());
+			IMiddleware middleware = GetMiddelware();
 
-			string GetActivityUserHash(IPAddress address)
+			string GetActivityUserHash(HttpContext context)
 			{
-				feature.RemoteIpAddress = address;
-				Activity activity = new Activity("Test" + address).Start();
+				Activity activity = new Activity(nameof(InvokeAsync_SetsActivityPropetry)).Start();
 				middleware.InvokeAsync(context, c => Task.CompletedTask);
 				activity.Stop();
 				return activity.GetUserHash();
 			}
 
-			string hash1 = GetActivityUserHash(address1);
-			string hash2 = GetActivityUserHash(address2);
+			string hash1 = GetActivityUserHash(context1);
+			string hash2 = GetActivityUserHash(context2);
 
 			Assert.AreNotEqual(hash1, hash2);
-			Assert.AreEqual(hash1, GetActivityUserHash(address1));
-			Assert.AreEqual(hash2, GetActivityUserHash(address2));
+			Assert.AreEqual(hash1, GetActivityUserHash(context1));
+			Assert.AreEqual(hash2, GetActivityUserHash(context2));
 		}
 
 		[TestMethod]
-		public void GetUserHash_UseIpAddress()
-		{
-			IPAddress address1 = IPAddress.Parse("192.168.0.3");
-			IPAddress address2 = IPAddress.Parse("127.0.0.3");
-
-			(HttpContext context, HttpConnectionFeature feature) = CreateHttpContext();
-			UserIdentiyMiddleware middleware = new UserIdentiyMiddleware(new EmptySaltProvider());
-
-			string GetUserHash(IPAddress address)
-			{
-				feature.RemoteIpAddress = address;
-				return middleware.GetUserHash(context);
-			}
-
-			string hash1 = GetUserHash(address1);
-			string hash2 = GetUserHash(address2);
-
-			Assert.AreNotEqual(hash1, hash2);
-			Assert.AreEqual(hash1, GetUserHash(address1));
-			Assert.AreEqual(hash2, GetUserHash(address2));
-		}
-
-		[TestMethod]
-		public void CreateHash_ChangedBaseOnIpAddress()
-		{
-			UserIdentiyMiddleware middleware = new UserIdentiyMiddleware(new EmptySaltProvider());
-
-			IPAddress address1 = IPAddress.Parse("192.168.0.2");
-			IPAddress address2 = IPAddress.Parse("127.0.0.2");
-
-			string hash1 = middleware.CreateHash(address1);
-			string hash2 = middleware.CreateHash(address2);
-
-			Assert.AreNotEqual(hash1, hash2);
-			Assert.AreEqual(hash1, middleware.CreateHash(address1));
-			Assert.AreEqual(hash2, middleware.CreateHash(address2));
-		}
-
-		[TestMethod]
-		public void CreateHash_UseSalt()
+		public void CreateUserHash_UseSalt()
 		{
 			Random random = new Random();
 			TestSaltProvider saltProvider = new TestSaltProvider();
 			random.NextBytes(saltProvider.Salt);
-			UserIdentiyMiddleware middleware = new UserIdentiyMiddleware(saltProvider);
+			UserIdentiyMiddleware middleware = GetMiddelware(saltProvider);
 
-			IPAddress address = IPAddress.Parse("192.168.100.1");
-			string initialHash = middleware.CreateHash(address);
+			HttpContext context = HttpContextHelper.GetContextWithIp("192.168.100.1");
+			string initialHash = middleware.CreateUserHash(context);
 
 			random.NextBytes(saltProvider.Salt);
-			string changedHash = middleware.CreateHash(address);
+			string changedHash = middleware.CreateUserHash(context);
 
 			Assert.AreNotEqual(changedHash, initialHash);
 		}
 
-		private static (HttpContext context, HttpConnectionFeature feature) CreateHttpContext()
-		{
-			HttpConnectionFeature feature = new HttpConnectionFeature();
-
-			FeatureCollection features = new FeatureCollection();
-			features.Set<IHttpConnectionFeature>(feature);
-
-			Mock<HttpContext> contextMock = new Mock<HttpContext>();
-			contextMock.SetupGet(c => c.Features).Returns(features);
-
-			return (contextMock.Object, feature);
-		}
+		private static UserIdentiyMiddleware GetMiddelware(ISaltProvider? saltProvider = null) =>
+			new UserIdentiyMiddleware(new IpBasedUserIdentityProvider(), saltProvider ?? new EmptySaltProvider());
 
 		private class TestSaltProvider : ISaltProvider
 		{
 			public byte[] Salt { get; } = new byte[128];
 
 			public void Dispose() { }
-			public Span<byte> GetSalt() => Salt.AsSpan();
+			public ReadOnlySpan<byte> GetSalt() => Salt.AsSpan();
 		}
 	}
 }

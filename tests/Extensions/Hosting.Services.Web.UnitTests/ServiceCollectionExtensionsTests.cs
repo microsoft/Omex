@@ -63,7 +63,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 					collection
 					.Configure<UserIdentiyMiddlewareOptions>(options =>
 					{
-						options.LoggingComlience = UserIdentiyComplianceLevel.LiveId;
+						options.LoggingCompliance = UserIdentiyComplianceLevel.LiveId;
 					})
 					.AddOmexMiddleware();
 				})
