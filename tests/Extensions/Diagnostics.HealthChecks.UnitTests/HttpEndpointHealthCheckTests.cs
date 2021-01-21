@@ -51,6 +51,91 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
+		public async Task CheckHealthAsync_HeaderKeyIsWhiteSpace_ReturnsHealthy()
+		{
+			string contentText = nameof(CheckHealthAsync_WhenExpectedStatus_ReturnsHealthy);
+			HttpStatusCode status = HttpStatusCode.Found;
+			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
+			HttpResponseMessage response = new HttpResponseMessage(status)
+			{
+				Content = new StringContent(contentText)
+			};
+
+			HttpHealthCheckParameters parameters = HttpHealthCheckParametersTests.Create(
+				headers: new Dictionary<string, IEnumerable<string>>
+				{
+					{ string.Empty, new List<string> { "value" } }
+				},
+				expectedStatus: status,
+				reportData: reportData);
+
+			(MockClient _, HealthCheckResult result) = await RunHealthCheckAsync(parameters, response);
+
+			Assert.AreEqual(HealthStatus.Healthy, result.Status,
+				FormattableString.Invariant($"Should return {HealthStatus.Healthy} for expected status"));
+
+			Assert.AreEqual(string.Empty, result.Description, "Content should not be in the description for unhealthy check");
+			CollectionAssert.AreEquivalent(reportData, result.Data.ToArray(), "Result should propagate reportData");
+		}
+
+		[TestMethod]
+		public async Task CheckHealthAsync_HeaderValueIsEmpty_ReturnsHealthy()
+		{
+			string contentText = nameof(CheckHealthAsync_WhenExpectedStatus_ReturnsHealthy);
+			HttpStatusCode status = HttpStatusCode.Found;
+			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
+			HttpResponseMessage response = new HttpResponseMessage(status)
+			{
+				Content = new StringContent(contentText)
+			};
+
+			HttpHealthCheckParameters parameters = HttpHealthCheckParametersTests.Create(
+				headers: new Dictionary<string, IEnumerable<string>>
+				{
+					{ "testheader", new List<string>() }
+				},
+				expectedStatus: status,
+				reportData: reportData);
+
+			(MockClient _, HealthCheckResult result) = await RunHealthCheckAsync(parameters, response);
+
+			Assert.AreEqual(HealthStatus.Healthy, result.Status,
+				FormattableString.Invariant($"Should return {HealthStatus.Healthy} for expected status"));
+
+			Assert.AreEqual(string.Empty, result.Description, "Content should not be in the description for unhealthy check");
+			CollectionAssert.AreEquivalent(reportData, result.Data.ToArray(), "Result should propagate reportData");
+		}
+
+		[TestMethod]
+		public async Task CheckHealthAsync_MultipleHeaderValues_ReturnsHealthy()
+		{
+			string contentText = nameof(CheckHealthAsync_WhenExpectedStatus_ReturnsHealthy);
+			HttpStatusCode status = HttpStatusCode.Found;
+			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
+			HttpResponseMessage response = new HttpResponseMessage(status)
+			{
+				Content = new StringContent(contentText)
+			};
+
+			HttpHealthCheckParameters parameters = HttpHealthCheckParametersTests.Create(
+				headers: new Dictionary<string, IEnumerable<string>>
+				{
+					{ "testheader", new List<string> { "value1", "value2" } },
+					{ "testheader2", new List<string> { "value1", "value2" } }
+				},
+				expectedStatus: status,
+				reportData: reportData);
+
+			(MockClient _, HealthCheckResult result) = await RunHealthCheckAsync(parameters, response);
+
+			Assert.AreEqual(HealthStatus.Healthy, result.Status,
+				FormattableString.Invariant($"Should return {HealthStatus.Healthy} for expected status"));
+
+			Assert.AreEqual(string.Empty, result.Description, "Content should not be in the description for unhealthy check");
+			CollectionAssert.AreEquivalent(reportData, result.Data.ToArray(), "Result should propagate reportData");
+		}
+
+		[TestMethod]
 		public async Task CheckHealthAsync_WhenWrongStatusAndDefaultRegistrationFailureStatus_ReturnsUnhealthy()
 		{
 			string contentText = nameof(CheckHealthAsync_WhenWrongStatusAndDefaultRegistrationFailureStatus_ReturnsUnhealthy);
