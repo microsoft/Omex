@@ -10,6 +10,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 	public class WebEndpointInfoTests
 	{
 		[TestMethod]
+		[Obsolete]
 		public void CreateHttp_SetsProperties()
 		{
 			string endpointName = "TestHttpEndpointName";
@@ -22,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 			Assert.IsNull(info.SettingForCertificateCommonName);
 			Assert.IsFalse(info.UseHttps);
 			Assert.AreEqual(port, info.Port);
-			Assert.AreEqual($"http://+:{port}", info.GetListenerUrl());
+			Assert.AreEqual($"http://+:{port}", info.GetListenerUrl()); // lgtm[cs/non-https-url]
 		}
 
 		[TestMethod]
@@ -43,13 +44,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 		}
 
 		[TestMethod]
+		[Obsolete]
 		public void CreateHttp_WithEmptyEndpointName_Throws() => Assert.ThrowsException<ArgumentException>(() => WebEndpointInfo.CreateHttp(string.Empty));
 
 		[TestMethod]
-		public void CreateHttps_WithEmptyEndpointName_Throws() => Assert.ThrowsException<ArgumentException>(() => WebEndpointInfo.CreateHttps(string.Empty));
+		[Obsolete]
+		public void CreateHttp_WithWrongEndpointName_Throws() => Assert.ThrowsException<SfConfigurationException>(() => WebEndpointInfo.CreateHttp("UnexistingEndpoint"));
 
 		[TestMethod]
-		public void CreateHttp_WithWrongEndpointName_Throws() => Assert.ThrowsException<SfConfigurationException>(() => WebEndpointInfo.CreateHttp("UnexistingEndpoint"));
+		public void CreateHttps_WithEmptyEndpointName_Throws() => Assert.ThrowsException<ArgumentException>(() => WebEndpointInfo.CreateHttps(string.Empty));
 
 		[TestMethod]
 		public void CreateHttps_WithoutCertSettings_Throws()
