@@ -5,12 +5,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using Microsoft.Omex.Extensions.Logging.Replayable;
 
 namespace Microsoft.Omex.Extensions.Logging.Internal.Replayable
 {
-	internal static class ReplayableActivityExtensions
+	internal static class ReplayebleActivityExtensions
 	{
 		private const string ReplayableLogKey = "ReplayableLogKey";
 
@@ -25,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Logging.Internal.Replayable
 			ConcurrentQueue<LogMessageInformation>? queue = activity.GetReplayableLogsInternal();
 			if (queue == null)
 			{
-				Interlocked.CompareExchange(ref queue, new ConcurrentQueue<LogMessageInformation>(), null);
+				queue = new ConcurrentQueue<LogMessageInformation>();
 				activity.SetCustomProperty(ReplayableLogKey, queue);
 			}
 
