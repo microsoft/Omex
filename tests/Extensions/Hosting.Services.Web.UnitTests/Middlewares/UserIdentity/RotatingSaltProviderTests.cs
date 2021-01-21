@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Linq;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
@@ -36,6 +37,24 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 				.Returns(DateTimeOffset.Now.AddHours(47));
 
 			CollectionAssert.AreNotEqual(intialSalt, provider.GetSalt().ToArray());
+		}
+
+		[TestMethod]
+		public void GetSalt_ReturnsConsistentResult()
+		{
+			ISaltProvider provider = new RotatingSaltProvider(new SystemClock(), new NullLogger<RotatingSaltProvider>());
+
+			byte[][] salts = Enumerable.Range(0, 12)
+				.AsParallel()
+				.Select(i => provider.GetSalt().ToArray())
+				.ToArray();
+
+			byte[] sample = provider.GetSalt().ToArray();
+
+			foreach (byte[] salt in salts)
+			{
+				CollectionAssert.AreEqual(sample, salt);
+			}
 		}
 	}
 }
