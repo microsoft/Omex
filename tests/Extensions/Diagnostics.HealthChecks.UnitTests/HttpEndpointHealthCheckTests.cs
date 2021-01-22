@@ -46,7 +46,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			Assert.AreEqual(HealthStatus.Healthy, result.Status,
 				FormattableString.Invariant($"Should return {HealthStatus.Healthy} for expected status"));
 
-			Assert.AreEqual(string.Empty, result.Description, "Content should not be in the description for unhealthy check");
+			Assert.AreEqual(string.Empty, result.Description, "Content should not be in the description for healthy check");
 			CollectionAssert.AreEquivalent(reportData, result.Data.ToArray(), "Result should propagate reportData");
 		}
 
