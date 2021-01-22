@@ -35,7 +35,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// Base constructor
 		/// </summary>
-		protected AbstractHealthCheck(TParameters parameters, ILogger logger, ActivitySource scopeProvider)
+		protected AbstractHealthCheck(TParameters parameters, ILogger logger, ActivitySource activityProvider)
 		{
 			Parameters = parameters;
 			Logger = logger;
