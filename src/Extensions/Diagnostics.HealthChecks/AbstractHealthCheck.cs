@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	{
 		private static readonly string s_scopeDefinition = "HealthCheckScope";
 
-		private readonly ActivitySource m_scopeProvider;
+		private readonly ActivitySource m_activityProvider;
 
 		/// <summary>
 		/// Logger property
