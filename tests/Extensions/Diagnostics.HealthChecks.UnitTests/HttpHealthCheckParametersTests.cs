@@ -69,7 +69,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			Assert.AreEqual(path, parameters.RelativeUri.ToString(), nameof(HttpHealthCheckParameters.RelativeUri));
 			Assert.AreEqual(method, parameters.Method, nameof(HttpHealthCheckParameters.Method));
 			Assert.AreEqual(scheme, parameters.Scheme, nameof(HttpHealthCheckParameters.Scheme));
-			CollectionAssert.AreEqual(headers, parameters.Headers, nameof(HttpHealthCheckParameters.Headers));
+			CollectionAssert.AreEqual((System.Collections.ICollection)headers, (System.Collections.ICollection)parameters.Headers, nameof(HttpHealthCheckParameters.Headers));
 			Assert.AreEqual(status, parameters.ExpectedStatus, nameof(HttpHealthCheckParameters.ExpectedStatus));
 			Assert.AreEqual(additionalCheck, parameters.AdditionalCheck, nameof(HttpHealthCheckParameters.AdditionalCheck));
 			CollectionAssert.AreEquivalent(reportData, parameters.ReportData.ToArray(), nameof(HttpHealthCheckParameters.ReportData));
