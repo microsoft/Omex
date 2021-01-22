@@ -55,7 +55,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		{
 			string contentText = nameof(CheckHealthAsync_WhenExpectedStatus_ReturnsHealthy);
 			HttpStatusCode status = HttpStatusCode.Found;
-			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
+			KeyValuePair<string, object>[] reportData = Array.Empty<KeyValuePair<string, object>>();
 			HttpResponseMessage response = new HttpResponseMessage(status)
 			{
 				Content = new StringContent(contentText)
