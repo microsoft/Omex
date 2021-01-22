@@ -60,8 +60,8 @@ namespace Microsoft.AspNetCore.Builder
 		/// <summary>
 		/// Add middleware user identity middleware to add user hash to correlation
 		/// </summary>
-		public static IApplicationBuilder UseUserIdentiyMiddleware(this IApplicationBuilder builder) =>
-			builder.UseMiddleware<UserIdentiyMiddleware>();
+		public static IApplicationBuilder UseUserHashIdentiyMiddleware(this IApplicationBuilder builder) =>
+			builder.UseMiddleware<UserHashIdentityMiddleware>();
 
 		/// <summary>
 		/// Add middleware that adds Omex headers to responses, like MachineId and BuildVersion

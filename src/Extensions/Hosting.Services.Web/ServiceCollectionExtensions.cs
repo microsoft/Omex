@@ -20,9 +20,9 @@ namespace Microsoft.Extensions.DependencyInjection
 		public static IServiceCollection AddOmexMiddleware(this IServiceCollection services)
 		{
 			services.TryAddSingleton<ISystemClock, SystemClock>();
-			services.TryAddSingleton<IUserIdentityProvider, IpBasedUserIdentityProvider>();
 			services.TryAddSingleton<EmptySaltProvider>();
 			services.TryAddSingleton<RotatingSaltProvider>();
+			services.TryAddEnumerable(ServiceDescriptor.Singleton<IUserIdentityProvider, IpBasedUserIdentityProvider>());
 
 			static ISaltProvider getSaltProvider(IServiceProvider provider) =>
 				provider.GetRequiredService<IOptions<UserIdentiyMiddlewareOptions>>().Value.LoggingCompliance switch
@@ -34,7 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
 			services.TryAddTransient(getSaltProvider);
 
 			services
-				.AddSingleton<UserIdentiyMiddleware>()
+				.AddSingleton<UserHashIdentityMiddleware>()
 				.AddSingleton<ActivityEnrichmentMiddleware>()
 				.AddSingleton<ResponseHeadersMiddleware>();
 

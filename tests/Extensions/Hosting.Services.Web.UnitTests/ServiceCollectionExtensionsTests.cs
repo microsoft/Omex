@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 		[DataTestMethod]
 		[DataRow(typeof(ActivityEnrichmentMiddleware))]
 		[DataRow(typeof(ResponseHeadersMiddleware))]
-		[DataRow(typeof(UserIdentiyMiddleware))]
+		[DataRow(typeof(UserHashIdentityMiddleware))]
 #pragma warning disable CS0618
 		[DataRow(typeof(ObsoleteCorrelationHeadersMiddleware))]
 #pragma warning restore CS0618
