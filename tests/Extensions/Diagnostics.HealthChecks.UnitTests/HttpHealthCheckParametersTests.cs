@@ -109,7 +109,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 					relatedUri ?? new Uri("path", UriKind.Relative),
 					method ?? HttpMethod.Get,
 					scheme ?? Uri.UriSchemeHttp,
-					headers ?? null,
+					headers,
 					expectedStatus,
 					additionalCheck,
 					reportData ?? Array.Empty<KeyValuePair<string, object>>());
