@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Fabric;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -64,8 +65,15 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			{
 				if (!request.Headers.TryAddWithoutValidation(pair.Key, pair.Value))
 				{
-					Logger.LogWarning(Tag.Create(), "Cannot add request header with name '{0}' value '{1}' for health check '{2}'.",
-						pair.Key, pair.Value, checkName);
+					string logMessage = string.Format(
+						CultureInfo.InvariantCulture,
+						"Cannot add request header with name '{0}' value '{1}' for health check '{2}'.",
+						pair.Key,
+						pair.Value,
+						checkName);
+					Logger.LogWarning(Tag.Create(), logMessage);
+
+					return new HealthCheckResult(HealthStatus.Unhealthy, logMessage, data: Parameters.ReportData);
 				}
 			}
 

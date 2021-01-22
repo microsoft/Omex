@@ -51,7 +51,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
-		public async Task CheckHealthAsync_HeaderKeyIsWhiteSpace_ReturnsHealthy()
+		public async Task CheckHealthAsync_HeaderKeyIsWhiteSpace_ReturnsUnhealthy()
 		{
 			string contentText = nameof(CheckHealthAsync_WhenExpectedStatus_ReturnsHealthy);
 			HttpStatusCode status = HttpStatusCode.Found;
@@ -71,11 +71,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 			(MockClient _, HealthCheckResult result) = await RunHealthCheckAsync(parameters, response);
 
-			Assert.AreEqual(HealthStatus.Healthy, result.Status,
-				FormattableString.Invariant($"Should return {HealthStatus.Healthy} for expected status"));
-
-			Assert.AreEqual(string.Empty, result.Description, "Content should not be in the description for unhealthy check");
-			CollectionAssert.AreEquivalent(reportData, result.Data.ToArray(), "Result should propagate reportData");
+			Assert.AreEqual(HealthStatus.Unhealthy, result.Status,
+				FormattableString.Invariant($"Should return {HealthStatus.Unhealthy} for expected status"));
 		}
 
 		[TestMethod]
