@@ -59,8 +59,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", 
 		src\Extensions\Directory.Build.props = src\Extensions\Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Compatibility", "src\Extensions\Compatibility\Microsoft.Omex.Extensions.Compatibility.csproj", "{61191795-F683-4A3A-AD61-E9C3E8C5930A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Hosting", "src\Extensions\Hosting\Microsoft.Omex.Extensions.Hosting.csproj", "{66A0783A-0D5A-4EA5-A91C-DCAA8EB6D819}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Hosting.Services", "src\Extensions\Hosting.Services\Microsoft.Omex.Extensions.Hosting.Services.csproj", "{6AB76625-BB07-4181-B8DC-AB8259E5E9B6}"
@@ -75,8 +73,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Logging.UnitTests", "tests\Extensions\Logging.UnitTests\Microsoft.Omex.Extensions.Logging.UnitTests.csproj", "{CF41D8D4-813D-4B83-873E-77AC8A459A8C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Hosting.UnitTests", "tests\Extensions\Hosting.UnitTests\Microsoft.Omex.Extensions.Hosting.UnitTests.csproj", "{D832BED8-0845-4EC5-AA22-D79E20CAA772}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Compatibility.UnitTests", "tests\Extensions\Compatibility.UnitTests\Microsoft.Omex.Extensions.Compatibility.UnitTests.csproj", "{54F6D9DC-D2CE-484E-BF1F-8DF54BA5D198}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Hosting.Services.UnitTests", "tests\Extensions\Hosting.Services.UnitTests\Microsoft.Omex.Extensions.Hosting.Services.UnitTests.csproj", "{92DC3A06-6BDE-4213-9D29-7C1C10A9D325}"
 EndProject
@@ -104,7 +100,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Activities", "src\Extensions\Activities\Microsoft.Omex.Extensions.Activities.csproj", "{8520AA74-FDA7-4EC0-B60D-C9A786574443}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Omex.Extensions.Activities.UnitTests", "tests\Extensions\Activities.UnitTests\Microsoft.Omex.Extensions.Activities.UnitTests.csproj", "{E9123DDF-3D31-48A5-8442-F1DAD516E1A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Activities.UnitTests", "tests\Extensions\Activities.UnitTests\Microsoft.Omex.Extensions.Activities.UnitTests.csproj", "{E9123DDF-3D31-48A5-8442-F1DAD516E1A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -210,14 +206,6 @@ Global
 		{BA452FDC-1C9B-45EE-BC75-8493FF618437}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA452FDC-1C9B-45EE-BC75-8493FF618437}.Release|x64.ActiveCfg = Release|Any CPU
 		{BA452FDC-1C9B-45EE-BC75-8493FF618437}.Release|x64.Build.0 = Release|Any CPU
-		{61191795-F683-4A3A-AD61-E9C3E8C5930A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61191795-F683-4A3A-AD61-E9C3E8C5930A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61191795-F683-4A3A-AD61-E9C3E8C5930A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{61191795-F683-4A3A-AD61-E9C3E8C5930A}.Debug|x64.Build.0 = Debug|Any CPU
-		{61191795-F683-4A3A-AD61-E9C3E8C5930A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61191795-F683-4A3A-AD61-E9C3E8C5930A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61191795-F683-4A3A-AD61-E9C3E8C5930A}.Release|x64.ActiveCfg = Release|Any CPU
-		{61191795-F683-4A3A-AD61-E9C3E8C5930A}.Release|x64.Build.0 = Release|Any CPU
 		{66A0783A-0D5A-4EA5-A91C-DCAA8EB6D819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{66A0783A-0D5A-4EA5-A91C-DCAA8EB6D819}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66A0783A-0D5A-4EA5-A91C-DCAA8EB6D819}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -258,14 +246,6 @@ Global
 		{D832BED8-0845-4EC5-AA22-D79E20CAA772}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D832BED8-0845-4EC5-AA22-D79E20CAA772}.Release|x64.ActiveCfg = Release|Any CPU
 		{D832BED8-0845-4EC5-AA22-D79E20CAA772}.Release|x64.Build.0 = Release|Any CPU
-		{54F6D9DC-D2CE-484E-BF1F-8DF54BA5D198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{54F6D9DC-D2CE-484E-BF1F-8DF54BA5D198}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{54F6D9DC-D2CE-484E-BF1F-8DF54BA5D198}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{54F6D9DC-D2CE-484E-BF1F-8DF54BA5D198}.Debug|x64.Build.0 = Debug|Any CPU
-		{54F6D9DC-D2CE-484E-BF1F-8DF54BA5D198}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{54F6D9DC-D2CE-484E-BF1F-8DF54BA5D198}.Release|Any CPU.Build.0 = Release|Any CPU
-		{54F6D9DC-D2CE-484E-BF1F-8DF54BA5D198}.Release|x64.ActiveCfg = Release|Any CPU
-		{54F6D9DC-D2CE-484E-BF1F-8DF54BA5D198}.Release|x64.Build.0 = Release|Any CPU
 		{92DC3A06-6BDE-4213-9D29-7C1C10A9D325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{92DC3A06-6BDE-4213-9D29-7C1C10A9D325}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92DC3A06-6BDE-4213-9D29-7C1C10A9D325}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -397,14 +377,12 @@ Global
 		{82242741-FC4D-493C-97F9-75413BC4CFAA} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 		{BA452FDC-1C9B-45EE-BC75-8493FF618437} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 		{366F11E6-7175-4E87-AFD4-D4860F03EE1E} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
-		{61191795-F683-4A3A-AD61-E9C3E8C5930A} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 		{66A0783A-0D5A-4EA5-A91C-DCAA8EB6D819} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 		{6AB76625-BB07-4181-B8DC-AB8259E5E9B6} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 		{167E9B15-D185-4E08-990E-DB01FD5811DD} = {551C93F8-6E89-4954-8905-7F5AC7173285}
 		{26D00BFD-64DE-4998-9D35-8BF0E9116A6A} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
 		{CF41D8D4-813D-4B83-873E-77AC8A459A8C} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
 		{D832BED8-0845-4EC5-AA22-D79E20CAA772} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
-		{54F6D9DC-D2CE-484E-BF1F-8DF54BA5D198} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
 		{92DC3A06-6BDE-4213-9D29-7C1C10A9D325} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
 		{2D51316B-9B0D-4B54-B5E5-FB0CEDD8E791} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
 		{4F6590D4-925E-4865-A19E-6AC4FEDF2A9F} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
