@@ -9,6 +9,9 @@ using Microsoft.Omex.Extensions.Logging.Replayable;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
+	/// <summary>
+	/// Replays Trace and Debug logs with Info level if Activity marked as failed
+	/// </summary>
 	internal class OmexLogEventReplayer : ILogEventReplayer
 	{
 		private readonly ILogEventSender m_sender;

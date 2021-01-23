@@ -18,9 +18,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	public abstract class AbstractHealthCheck<TParameters> : IHealthCheck
 		where TParameters : HealthCheckParameters
 	{
-		private static readonly string s_scopeDefinition = "HealthCheckScope";
-
-		private readonly ActivitySource m_scopeProvider;
+		private readonly ActivitySource m_activitySource;
 
 		/// <summary>
 		/// Logger property
@@ -39,13 +37,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		{
 			Parameters = parameters;
 			Logger = logger;
-			m_scopeProvider = scopeProvider;
+			m_activitySource = scopeProvider;
 		}
 
 		/// <inheritdoc />
 		public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken token = default)
 		{
-			using Activity? scope = m_scopeProvider.StartActivity(s_scopeDefinition)
+			using Activity? activity = m_activitySource.StartActivity("HealthCheckActivity")
 				?.MarkAsSystemError()
 				.MarkAsHealthCheck();
 
@@ -54,7 +52,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				HealthCheckResult result = await CheckHealthInternalAsync(context, token).ConfigureAwait(false);
 				result = EnforceFailureStatus(context.Registration.FailureStatus, result);
 
-				scope?.MarkAsSuccess();
+				activity?.MarkAsSuccess();
 
 				return result;
 			}
