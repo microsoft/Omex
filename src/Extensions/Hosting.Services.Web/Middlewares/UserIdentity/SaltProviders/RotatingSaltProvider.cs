@@ -22,6 +22,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		private readonly IMemoryOwner<byte> m_currentSaltMemory;
 		private readonly ISystemClock m_systemClock;
 		private readonly ILogger<RotatingSaltProvider> m_logger;
+		private readonly object m_lock;
 		private DateTimeOffset m_saltGenerationTime;
 
 		public RotatingSaltProvider(ISystemClock systemClock, ILogger<RotatingSaltProvider> logger)
@@ -31,6 +32,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			m_saltGenerationTime = DateTime.MinValue;
 			m_systemClock = systemClock;
 			m_logger = logger;
+			m_lock = new object();
 		}
 
 		public ReadOnlySpan<byte> GetSalt()
@@ -38,13 +40,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			DateTimeOffset currentTime = m_systemClock.UtcNow;
 			Span<byte> saltSpan = m_currentSaltMemory.Memory.Span;
 
-			if ((currentTime - m_saltGenerationTime).TotalHours > HoursToKeepSalt)
+			if (IsSaltOutdated(currentTime))
 			{
-				m_random.GetNonZeroBytes(saltSpan);
-				m_saltGenerationTime = currentTime;
-
-				// DO NOT ADD THE SALT TO THIS LOG STATEMENT. Doing so may violate compliance guarantees.
-				m_logger.LogInformation(Tag.Create(), "New salt generated for UserIdentityMiddelware");
+				lock (m_lock)
+				{
+					if (IsSaltOutdated(currentTime))
+					{
+						RotateSalt(saltSpan, currentTime);
+					}
+				}
 			}
 
 			return saltSpan;
@@ -54,6 +58,17 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		{
 			m_currentSaltMemory.Dispose();
 			m_random.Dispose();
+		}
+
+		private bool IsSaltOutdated(DateTimeOffset currentTime) => (currentTime - m_saltGenerationTime).TotalHours > HoursToKeepSalt;
+
+		private void RotateSalt(Span<byte> saltSpan, DateTimeOffset currentTime)
+		{
+			m_random.GetNonZeroBytes(saltSpan);
+			m_saltGenerationTime = currentTime;
+
+			// DO NOT ADD THE SALT TO THIS LOG STATEMENT. Doing so may violate compliance guarantees.
+			m_logger.LogInformation(Tag.Create(), "New salt generated for UserIdentityMiddelware");
 		}
 	}
 }
