@@ -6,14 +6,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 
-namespace Microsoft.Omex.Extensions.Hosting.Services.Web
+namespace Microsoft.AspNetCore.Builder
 {
 	/// <summary>
 	/// Extension to add Omex dependencies to ApplicationBuilder

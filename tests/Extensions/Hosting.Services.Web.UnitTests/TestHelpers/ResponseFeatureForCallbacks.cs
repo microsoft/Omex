@@ -17,7 +17,7 @@ namespace Hosting.Services.Web.UnitTests
 
 		public IHeaderDictionary Headers { get; set; }
 
-		public string ReasonPhrase { get; set; }
+		public string? ReasonPhrase { get; set; }
 
 		public int StatusCode { get; set; }
 

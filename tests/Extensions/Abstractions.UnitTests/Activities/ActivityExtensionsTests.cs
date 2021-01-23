@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
+using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
@@ -114,6 +115,42 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 
 			activity1.AssertResult(result);
 			Assert.IsNull(activity2.GetTag(ActivityTagKeys.Result));
+		}
+
+		[TestMethod]
+		public void MarkAsSuccess_SetsResultToSuccess()
+		{
+			Activity activity1 = new Activity("SetMarkAsSuccessTest1");
+
+			activity1.SetResult(TimedScopeResult.SystemError); // set some value intially to check that it could be updated
+			activity1.MarkAsSuccess();
+			CheckThatKeyNotDuplicated(activity1.TagObjects);
+
+			activity1.AssertResult(TimedScopeResult.Success);
+		}
+
+		[TestMethod]
+		public void MarkAsSystemError_SetsResultToSystemError()
+		{
+			Activity activity1 = new Activity("SetMarkAsSystemErrorTest1");
+
+			activity1.SetResult(TimedScopeResult.ExpectedError); // set some value intially to check that it could be updated
+			activity1.MarkAsSystemError();
+			CheckThatKeyNotDuplicated(activity1.TagObjects);
+
+			activity1.AssertResult(TimedScopeResult.SystemError);
+		}
+
+		[TestMethod]
+		public void MarkAsExpectedError_SetsResultToExpectedError()
+		{
+			Activity activity1 = new Activity("SetMarkAsExpectedErrorTest1");
+
+			activity1.SetResult(TimedScopeResult.Success); // set some value intially to check that it could be updated
+			activity1.MarkAsExpectedError();
+			CheckThatKeyNotDuplicated(activity1.TagObjects);
+
+			activity1.AssertResult(TimedScopeResult.ExpectedError);
 		}
 
 		[TestMethod]

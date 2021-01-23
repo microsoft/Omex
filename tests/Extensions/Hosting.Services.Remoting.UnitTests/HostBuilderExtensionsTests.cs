@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 
 			sfBuilder.AddRemotingListener<MockRemoteListenerBuilder<OmexStatefulService>>();
 
-			IListenerBuilder<OmexStatefulService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatefulService>>();
+			IListenerBuilder<OmexStatefulService> value = builder.Build().Services.GetRequiredService<IListenerBuilder<OmexStatefulService>>();
 
 			Assert.IsInstanceOfType(value, typeof(MockRemoteListenerBuilder<OmexStatefulService>));
 		}
@@ -38,7 +38,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 
 			sfBuilder.AddRemotingListener<MockRemoteListenerBuilder<OmexStatelessService>>();
 
-			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatelessService>>();
+			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetRequiredService<IListenerBuilder<OmexStatelessService>>();
 
 			Assert.IsInstanceOfType(value, typeof(MockRemoteListenerBuilder<OmexStatelessService>));
 		}
@@ -54,7 +54,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 
 			sfBuilder.AddRemotingListener(expectedName, (p, s) => new MockService(), settings);
 
-			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatelessService>>();
+			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetRequiredService<IListenerBuilder<OmexStatelessService>>();
 
 			Assert.IsNotNull(value);
 			Assert.AreEqual(expectedName, value.Name);
@@ -72,7 +72,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 
 			sfBuilder.AddRemotingListener<MockService>(expectedName, settings);
 
-			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatelessService>>();
+			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetRequiredService<IListenerBuilder<OmexStatelessService>>();
 
 			Assert.IsInstanceOfType(value, typeof(GenericRemotingListenerBuilder<OmexStatelessService>));
 			Assert.AreEqual(expectedName, value.Name);
@@ -90,7 +90,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 
 			sfBuilder.AddRemotingListener<MockServiceWithDependencies>(expectedName, settings);
 
-			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatelessService>>();
+			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetRequiredService<IListenerBuilder<OmexStatelessService>>();
 
 			InvalidOperationException exception = Assert.ThrowsException<InvalidOperationException>(() => value.Build(MockServiceFabricServices.MockOmexStatelessService));
 			StringAssert.Contains(exception.Message, typeof(MockServiceWithDependencies).FullName);
@@ -109,7 +109,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 			sfBuilder.ConfigureServices((_, services) => services.AddTransient<IMockServiceDependency, MockServiceDependency>());
 			sfBuilder.AddRemotingListener<MockServiceWithDependencies>(expectedName, settings);
 
-			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatelessService>>();
+			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetRequiredService<IListenerBuilder<OmexStatelessService>>();
 
 			ICommunicationListener service = value.Build(MockServiceFabricServices.MockOmexStatelessService);
 
@@ -129,7 +129,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 
 			sfBuilder.AddRemotingListener<MockService>(expectedName, settings);
 
-			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatelessService>>();
+			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetRequiredService<IListenerBuilder<OmexStatelessService>>();
 
 			ICommunicationListener service = value.Build(MockServiceFabricServices.MockOmexStatelessService);
 
@@ -149,7 +149,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 
 			sfBuilder.AddRemotingListener<MockService>(expectedName, settings);
 
-			IListenerBuilder<OmexStatefulService> value = builder.Build().Services.GetService<IListenerBuilder<OmexStatefulService>>();
+			IListenerBuilder<OmexStatefulService> value = builder.Build().Services.GetRequiredService<IListenerBuilder<OmexStatefulService>>();
 
 			Assert.IsInstanceOfType(value, typeof(GenericRemotingListenerBuilder<OmexStatefulService>));
 			Assert.AreEqual(expectedName, value.Name);
