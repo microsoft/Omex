@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			IServiceAction<OmexStatelessService> resolvedAction = hostBuilder
 				.Build()
-				.Services.GetService<IServiceAction<OmexStatelessService>>();
+				.Services.GetRequiredService<IServiceAction<OmexStatelessService>>();
 
 			Assert.IsNotNull(resolvedAction);
 		}
@@ -39,7 +39,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			IServiceAction<OmexStatefulService> resolvedAction = hostBuilder
 				.Build()
-				.Services.GetService<IServiceAction<OmexStatefulService>>();
+				.Services.GetRequiredService<IServiceAction<OmexStatefulService>>();
 
 			Assert.IsNotNull(resolvedAction);
 		}
@@ -53,7 +53,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			new ServiceFabricHostBuilder<IServiceFabricService<ServiceContext>, ServiceContext>(hostBuilder).AddServiceAction(p => serviceAction);
 			IServiceAction<IServiceFabricService<ServiceContext>> resolvedAction = hostBuilder
 				.Build()
-				.Services.GetService<IServiceAction<IServiceFabricService<ServiceContext>>>();
+				.Services.GetRequiredService<IServiceAction<IServiceFabricService<ServiceContext>>>();
 
 			Assert.AreEqual(serviceAction, resolvedAction);
 		}
@@ -74,7 +74,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			IServiceAction<IServiceFabricService<ServiceContext>> resolvedAction = hostBuilder
 				.Build()
-				.Services.GetService<IServiceAction<IServiceFabricService<ServiceContext>>>();
+				.Services.GetRequiredService<IServiceAction<IServiceFabricService<ServiceContext>>>();
 
 			IServiceFabricService<ServiceContext> mockService = new Mock<IServiceFabricService<ServiceContext>>().Object;
 			await resolvedAction.RunAsync(mockService, CancellationToken.None).ConfigureAwait(false);
@@ -91,7 +91,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			IListenerBuilder<OmexStatelessService> resolvedAction = hostBuilder
 				.Build()
-				.Services.GetService<IListenerBuilder<OmexStatelessService>>();
+				.Services.GetRequiredService<IListenerBuilder<OmexStatelessService>>();
 
 			Assert.IsNotNull(resolvedAction);
 		}
@@ -105,7 +105,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			IListenerBuilder<OmexStatelessService> resolvedAction = hostBuilder
 				.Build()
-				.Services.GetService<IListenerBuilder<OmexStatelessService>>();
+				.Services.GetRequiredService<IListenerBuilder<OmexStatelessService>>();
 
 			Assert.IsNotNull(resolvedAction);
 		}
@@ -121,7 +121,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			IListenerBuilder<IServiceFabricService<ServiceContext>> resolvedAction = hostBuilder
 				.Build()
-				.Services.GetService<IListenerBuilder<IServiceFabricService<ServiceContext>>>();
+				.Services.GetRequiredService<IListenerBuilder<IServiceFabricService<ServiceContext>>>();
 
 			ReferenceEquals(listenerBuilder, resolvedAction);
 		}
@@ -137,8 +137,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 				.AddServiceListener("testName", listenerBuilder);
 
 			IListenerBuilder<IServiceFabricService<ServiceContext>> resolvedBuilder = hostBuilder
-				.Build().Services
-				.GetService<IListenerBuilder<IServiceFabricService<ServiceContext>>>();
+				.Build()
+				.Services.GetRequiredService<IListenerBuilder<IServiceFabricService<ServiceContext>>>();
 
 			IServiceFabricService<ServiceContext> mockService = new Mock<IServiceFabricService<ServiceContext>>().Object;
 			ICommunicationListener resultedListener = resolvedBuilder.Build(mockService);
@@ -157,7 +157,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 					collection.AddTransient<TestTypeToResolve>();
 				});
 
-			TestTypeToResolve obj = hostBuilder.Build().Services.GetService<TestTypeToResolve>();
+			TestTypeToResolve obj = hostBuilder.Build().Services.GetRequiredService<TestTypeToResolve>();
 
 			Assert.IsNotNull(obj);
 		}

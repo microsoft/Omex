@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
+using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 
 namespace Microsoft.Omex.Extensions.TimedScopes
 {
@@ -23,6 +24,7 @@ namespace Microsoft.Omex.Extensions.TimedScopes
 			serviceCollection.AddHostedService<DiagnosticsObserversInitializer>();
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ActivityStopObserver>());
 
+			serviceCollection.TryAddSingleton<IExecutionContext, BaseExecutionContext>();
 			serviceCollection.TryAddTransient<IActivityProvider, SimpleActivityProvider>();
 			serviceCollection.TryAddTransient<ITimedScopeProvider,TimedScopeProvider>();
 			serviceCollection.TryAddTransient<ITimedScopeEventSender, TimedScopeEventSender>();

@@ -2,17 +2,14 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using System.Fabric;
-using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
-using Microsoft.Omex.Extensions.Abstractions.EventSources;
+using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -66,7 +63,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			object obj = new HostBuilder()
 				.BuildStatelessService("TestStatelessService", c => { })
 				.Services
-				.GetService(type);
+				.GetRequiredService(type);
 
 			Assert.IsNotNull(obj);
 
@@ -93,7 +90,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			object obj = new HostBuilder()
 				.BuildStatefulService("TestStatefulService", c => { })
 				.Services
-				.GetService(type);
+				.GetRequiredService(type);
 
 			Assert.IsNotNull(obj);
 
@@ -103,44 +100,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			}
 		}
 
-		[TestMethod]
-		public void UseApplicationName_OverridesApplicationName()
-		{
-			string expectedName = "TestApplicationName";
-
-			string actualName = Host.CreateDefaultBuilder()
-				.UseApplicationName(expectedName)
-				.Build().Services.GetService<IHostEnvironment>().ApplicationName;
-
-			Assert.AreEqual(expectedName, actualName);
-		}
-
 		public class TypeThatShouldNotBeResolvable
 		{
 			public TypeThatShouldNotBeResolvable(TypeThatIsNotRegistered value) { }
 
 			public class TypeThatIsNotRegistered { }
 		}
-
-		private class CustomEventListener : EventListener
-		{
-			public List<EventWrittenEventArgs> EventsInformation { get; } = new List<EventWrittenEventArgs>();
-
-			protected override void OnEventSourceCreated(EventSource eventSource)
-			{
-				base.OnEventSourceCreated(eventSource);
-			}
-
-			protected override void OnEventWritten(EventWrittenEventArgs eventData) => EventsInformation.Add(eventData);
-		}
-
-		private static TPayloadType? GetPayloadValue<TPayloadType>(EventWrittenEventArgs info, string name)
-			where TPayloadType : class
-		{
-			int index = info.PayloadNames?.IndexOf(name) ?? -1;
-			return (TPayloadType?)(index < 0 ? null : info.Payload?[index]);
-		}
-
-		private const string ServiceTypePayloadName = "serviceType";
 	}
 }
