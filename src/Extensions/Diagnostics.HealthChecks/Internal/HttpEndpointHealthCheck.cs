@@ -30,8 +30,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			IHttpClientFactory httpClientFactory,
 			IAccessor<ServiceContext> accessor,
 			ILogger<HttpEndpointHealthCheck> logger,
-			ActivitySource scopeProvider)
-				: base(parameters, logger, scopeProvider)
+			ActivitySource activitySource)
+				: base(parameters, logger, activitySource)
 		{
 			m_httpClientFactory = httpClientFactory;
 			m_accessor = accessor;

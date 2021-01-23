@@ -13,7 +13,7 @@ using Microsoft.Omex.Extensions.Abstractions.Activities;
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	/// <summary>
-	/// Base health check that extracts logic of exception handling and wraps it into timed scope
+	/// Base health check that extracts logic of exception handling and wraps it into activity
 	/// </summary>
 	public abstract class AbstractHealthCheck<TParameters> : IHealthCheck
 		where TParameters : HealthCheckParameters
@@ -33,11 +33,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// Base constructor
 		/// </summary>
-		protected AbstractHealthCheck(TParameters parameters, ILogger logger, ActivitySource scopeProvider)
+		protected AbstractHealthCheck(TParameters parameters, ILogger logger, ActivitySource activitySource)
 		{
 			Parameters = parameters;
 			Logger = logger;
-			m_activitySource = scopeProvider;
+			m_activitySource = activitySource;
 		}
 
 		/// <inheritdoc />
@@ -64,7 +64,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		}
 
 		/// <summary>
-		/// Health check logic without error handling and timed scope wrapping
+		/// Health check logic without error handling and activity wrapping
 		/// </summary>
 		protected abstract Task<HealthCheckResult> CheckHealthInternalAsync(HealthCheckContext context, CancellationToken token);
 

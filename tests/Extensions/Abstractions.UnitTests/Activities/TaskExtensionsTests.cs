@@ -41,24 +41,24 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void WithActivityUsingValueTask_Failed() => TestFailedExecution(s_wrapValueTaskAction);
 
-		private void TestSuccessfulExecution(Action<Task<bool>, ActivitySource, string> wrapTask, [CallerMemberName] string scopeName = "") =>
-			TestExecution(scopeName, wrapTask, tcs => tcs.SetResult(true), ActivityResult.Success);
+		private void TestSuccessfulExecution(Action<Task<bool>, ActivitySource, string> wrapTask, [CallerMemberName] string activityName = "") =>
+			TestExecution(activityName, wrapTask, tcs => tcs.SetResult(true), ActivityResult.Success);
 
-		private void TestFailedExecution(Action<Task<bool>, ActivitySource, string> wrapTask, [CallerMemberName] string scopeName = "") =>
-			TestExecution(scopeName, wrapTask, tcs => tcs.SetException(new Exception("Some failure")), ActivityResult.SystemError);
+		private void TestFailedExecution(Action<Task<bool>, ActivitySource, string> wrapTask, [CallerMemberName] string activityName = "") =>
+			TestExecution(activityName, wrapTask, tcs => tcs.SetException(new Exception("Some failure")), ActivityResult.SystemError);
 
 		private void TestExecution(
-			string scopeName,
+			string activityName,
 			Action<Task<bool>, ActivitySource, string> createTask,
 			Action<TaskCompletionSource<bool>> finishTask,
 			ActivityResult expectedResult)
 		{
-			using TestActivityListener listener = new TestActivityListener(scopeName);
-			ActivitySource source = new ActivitySource(scopeName);
+			using TestActivityListener listener = new TestActivityListener(activityName);
+			ActivitySource source = new ActivitySource(activityName);
 
 			TaskCompletionSource<bool> taskCompletionSource = new TaskCompletionSource<bool>();
 
-			createTask(taskCompletionSource.Task, source, scopeName);
+			createTask(taskCompletionSource.Task, source, activityName);
 
 			Activity? activity = listener.Activities.Single();
 

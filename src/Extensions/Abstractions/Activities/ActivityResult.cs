@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Microsoft.Omex.Extensions.Abstractions.Activities
 {
 	/// <summary>
-	/// Defines the possible scope results
+	/// Defines the possible activity results
 	/// </summary>
 	/// <remarks>
 	/// This enum is essential to OMEX monitoring solutions and generally should not change.

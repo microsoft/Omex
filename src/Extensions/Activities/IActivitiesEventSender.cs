@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace Microsoft.Omex.Extensions.Activities
 {
 	/// <summary>
-	/// Timed scope event source
+	/// Activity event source
 	/// </summary>
 	public interface IActivitiesEventSender
 	{
