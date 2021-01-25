@@ -8,11 +8,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Logging.Replayable;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
-	internal sealed class OmexLogEventSender : ILogEventSender, ILogEventReplayer
+	internal sealed class OmexLogEventSender : ILogEventSender
 	{
 		static OmexLogEventSender()
 		{
@@ -20,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			s_processName = string.Format(CultureInfo.InvariantCulture, "{0} (0x{1:X4})", process.ProcessName, process.Id);
 		}
 
-		public OmexLogEventSender(OmexLogEventSource eventSource, IExecutionContext executionContext, IServiceContext context, IOptions<OmexLoggingOptions> options)
+		public OmexLogEventSender(OmexLogEventSource eventSource, IExecutionContext executionContext, IServiceContext context, IOptionsMonitor<OmexLoggingOptions> options)
 		{
 			m_eventSource = eventSource;
 			m_executionContext = executionContext;
@@ -48,9 +47,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			string tagName = eventId.Name ?? string.Empty;
 			// In case if tag created using Tag.Create (line number and file in description) it's better to display decimal number
 			string tagId = string.IsNullOrWhiteSpace(eventId.Name)
-#pragma warning disable CS0618 // Need to be used for to process reserved tags from GitTagger
 				? eventId.ToTagId()
-#pragma warning restore CS0618
 				: eventId.Id.ToString(CultureInfo.InvariantCulture);
 
 			string activityId = string.Empty;
@@ -62,7 +59,7 @@ namespace Microsoft.Omex.Extensions.Logging
 				activityId = activity.Id ?? string.Empty;
 				activityTraceId = activity.TraceId;
 
-				if (m_options.Value.AddObsoleteCorrelationToActivity)
+				if (m_options.CurrentValue.AddObsoleteCorrelationToActivity)
 				{
 #pragma warning disable CS0618 // We are using obsolete correlation to support logging correlation from old Omex services
 					obsoleteCorrelationId = activity.GetObsoleteCorrelationId() ?? activity.GetRootIdAsGuid() ?? Guid.Empty;
@@ -74,9 +71,9 @@ namespace Microsoft.Omex.Extensions.Logging
 			string traceIdAsString = activityTraceId.ToHexString();
 
 			//Event methods should have all information as parameters so we are passing them each time
-			// Posible Breaking changes:
+			// Possible Breaking changes:
 			// 1. ThreadId type Changed from string to avoid useless string creation
-			// 2. New fileds added:
+			// 2. New fields added:
 			//  a. tagName to events since it will have more useful information
 			//  b. activityId required for tracking net core activity
 			//  c. activityTraceId required for tracking net core activity
@@ -117,34 +114,9 @@ namespace Microsoft.Omex.Extensions.Logging
 				_ => m_eventSource.IsEnabled()
 			};
 
-		public bool IsReplayableMessage(LogLevel logLevel) =>
-			logLevel switch
-			{
-				LogLevel.Trace => true,
-				LogLevel.Debug => true,
-				_ => false
-			};
-
-		public void ReplayLogs(Activity activity)
-		{
-			// Replay parent activity
-			if (activity.Parent != null)
-			{
-				ReplayLogs(activity.Parent);
-			}
-
-			if (activity is ReplayableActivity replayableActivity)
-			{
-				foreach (LogMessageInformation log in replayableActivity.GetLogEvents())
-				{
-					LogMessage(activity, log.Category, LogLevel.Information, log.EventId, log.ThreadId, log.Message, log.Exception);
-				}
-			}
-		}
-
 		private readonly OmexLogEventSource m_eventSource;
 		private readonly IServiceContext m_serviceContext;
-		private readonly IOptions<OmexLoggingOptions> m_options;
+		private readonly IOptionsMonitor<OmexLoggingOptions> m_options;
 		private readonly IExecutionContext m_executionContext;
 		private static readonly string s_processName;
 	}

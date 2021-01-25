@@ -6,7 +6,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(Microsoft_Extensions_Hosting_Abstractions_Version)" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Activities\Microsoft.Omex.Extensions.Activities.csproj" />
     <ProjectReference Include="..\Logging\Microsoft.Omex.Extensions.Logging.csproj" />
-    <ProjectReference Include="..\TimedScopes\Microsoft.Omex.Extensions.TimedScopes.csproj" />
   </ItemGroup>
 </Project>

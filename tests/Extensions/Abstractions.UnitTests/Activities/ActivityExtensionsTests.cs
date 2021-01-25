@@ -10,7 +10,7 @@ using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
+namespace Microsoft.Omex.Extensions.Activities.UnitTests
 {
 	[TestClass]
 	[TestCategory(nameof(Activity))]
@@ -101,15 +101,15 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		}
 
 		[DataTestMethod]
-		[DataRow(TimedScopeResult.SystemError)]
-		[DataRow(TimedScopeResult.ExpectedError)]
-		[DataRow(TimedScopeResult.Success)]
-		public void SetResult_SetsValue(TimedScopeResult result)
+		[DataRow(ActivityResult.SystemError)]
+		[DataRow(ActivityResult.ExpectedError)]
+		[DataRow(ActivityResult.Success)]
+		public void SetResult_SetsValue(ActivityResult result)
 		{
 			Activity activity1 = new Activity("SetResultTest1");
 			Activity activity2 = new Activity("SetResultTest2");
 
-			activity1.SetResult(TimedScopeResult.SystemError); // set some value intially to check that it could be updated
+			activity1.SetResult(ActivityResult.SystemError); // set some value intially to check that it could be updated
 			activity1.SetResult(result);
 			CheckThatKeyNotDuplicated(activity1.TagObjects);
 
@@ -122,11 +122,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		{
 			Activity activity1 = new Activity("SetMarkAsSuccessTest1");
 
-			activity1.SetResult(TimedScopeResult.SystemError); // set some value intially to check that it could be updated
+			activity1.SetResult(ActivityResult.SystemError); // set some value intially to check that it could be updated
 			activity1.MarkAsSuccess();
 			CheckThatKeyNotDuplicated(activity1.TagObjects);
 
-			activity1.AssertResult(TimedScopeResult.Success);
+			activity1.AssertResult(ActivityResult.Success);
 		}
 
 		[TestMethod]
@@ -134,11 +134,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		{
 			Activity activity1 = new Activity("SetMarkAsSystemErrorTest1");
 
-			activity1.SetResult(TimedScopeResult.ExpectedError); // set some value intially to check that it could be updated
+			activity1.SetResult(ActivityResult.ExpectedError); // set some value intially to check that it could be updated
 			activity1.MarkAsSystemError();
 			CheckThatKeyNotDuplicated(activity1.TagObjects);
 
-			activity1.AssertResult(TimedScopeResult.SystemError);
+			activity1.AssertResult(ActivityResult.SystemError);
 		}
 
 		[TestMethod]
@@ -146,11 +146,11 @@ namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
 		{
 			Activity activity1 = new Activity("SetMarkAsExpectedErrorTest1");
 
-			activity1.SetResult(TimedScopeResult.Success); // set some value intially to check that it could be updated
+			activity1.SetResult(ActivityResult.Success); // set some value intially to check that it could be updated
 			activity1.MarkAsExpectedError();
 			CheckThatKeyNotDuplicated(activity1.TagObjects);
 
-			activity1.AssertResult(TimedScopeResult.ExpectedError);
+			activity1.AssertResult(ActivityResult.ExpectedError);
 		}
 
 		[TestMethod]
