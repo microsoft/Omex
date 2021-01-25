@@ -36,6 +36,7 @@
     <Microsoft_Extensions_Options_Version>5.0.0</Microsoft_Extensions_Options_Version>
     <System_Diagnostics_DiagnosticSource_Version>5.0.1</System_Diagnostics_DiagnosticSource_Version>
     <System_Threading_Tasks_Extensions_Version>4.5.4</System_Threading_Tasks_Extensions_Version>
+    <System_Diagnostics_DiagnosticSource_Version>5.0.0</System_Diagnostics_DiagnosticSource_Version>
   </PropertyGroup>
   <PropertyGroup Label="ServiceFabric packages for Omex Extensions">
     <Microsoft_ServiceFabric_Version>7.2.434</Microsoft_ServiceFabric_Version>
