@@ -37,11 +37,14 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			Activity activity = new Activity("Test activity");
 			activity.Start().Stop(); // start and stop activity to get correlation id
 
+			Mock<IOptionsMonitor<OmexLoggingOptions>> mockOptions = new Mock<IOptionsMonitor<OmexLoggingOptions>>();
+			mockOptions.Setup(m => m.CurrentValue).Returns(new OmexLoggingOptions());
+
 			OmexLogEventSender logsSender = new OmexLogEventSender(
 				OmexLogEventSource.Instance,
 				new Mock<IExecutionContext>().Object,
 				new EmptyServiceContext(),
-				Options.Create(new OmexLoggingOptions()));
+				mockOptions.Object);
 
 			logsSender.LogMessage(activity, category, logLevel, tagId, 0, message, new Exception("Not expected to be part of the event"));
 

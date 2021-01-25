@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Fabric;
 using System.Linq;
 using System.Net;
@@ -226,7 +227,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				factoryMock.Object,
 				accessor,
 				new NullLogger<HttpEndpointHealthCheck>(),
-				new SimpleScopeProvider());
+				new ActivitySource("Test"));
 
 			HealthCheckContext checkContext = HealthCheckContextHelper.CreateCheckContext();
 			checkContext.Registration.FailureStatus = failureStatus;

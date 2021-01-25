@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.Testing.Helpers
 		/// <summary>
 		/// Assert that Activity has expected result value
 		/// </summary>
-		public static void AssertResult(this Activity activity, TimedScopeResult expectedResult) =>
+		public static void AssertResult(this Activity activity, ActivityResult expectedResult) =>
 			Assert.AreEqual(ActivityResultStrings.ResultToString(expectedResult), activity.GetTag(ActivityTagKeys.Result));
 
 		/// <summary>

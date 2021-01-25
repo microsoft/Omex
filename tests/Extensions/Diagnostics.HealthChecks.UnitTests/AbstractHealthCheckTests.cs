@@ -11,6 +11,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Testing.Helpers;
+using Microsoft.Omex.Extensions.Testing.Helpers.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -44,6 +45,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		[TestMethod]
 		public async Task AbstractHealthCheck_WhenExceptionThrown_ReturnsUnhealtyState()
 		{
+			using TestActivityListener listener = new TestActivityListener();
 			Activity? activity = null;
 			Exception exception = new ArrayTypeMismatchException();
 
@@ -59,12 +61,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			CollectionAssert.AreEquivalent(actualResult.Data.ToArray(), TestHealthCheck.TestParameters);
 			NullableAssert.IsNotNull(activity);
 			Assert.IsTrue(activity.IsHealthCheck(), "Activity should be marked as HealthCheck activity");
-			activity.AssertResult(TimedScopeResult.SystemError);
+			activity.AssertResult(ActivityResult.SystemError);
 		}
 
 		[TestMethod]
 		public async Task AbstractHealthCheck_MarksActivityWithHealthCheckFlag()
 		{
+			using TestActivityListener listener = new TestActivityListener();
 			Activity? activity = null;
 
 			HealthCheckResult actualResult = await new TestHealthCheck((c, t) =>
@@ -76,7 +79,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			Assert.AreEqual(actualResult.Status, HealthStatus.Healthy);
 			NullableAssert.IsNotNull(activity);
 			Assert.IsTrue(activity!.IsHealthCheck(), "Activity should be marked as HealthCheck activity");
-			activity.AssertResult(TimedScopeResult.Success);
+			activity.AssertResult(ActivityResult.Success);
 		}
 
 		private class TestHealthCheck : AbstractHealthCheck<HealthCheckParameters>
@@ -84,7 +87,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			private readonly Func<HealthCheckContext, CancellationToken, HealthCheckResult> m_internalFunction;
 
 			public TestHealthCheck(Func<HealthCheckContext, CancellationToken, HealthCheckResult> internalFunction)
-				: base(new HealthCheckParameters(TestParameters), new NullLogger<TestHealthCheck>(), new SimpleScopeProvider()) =>
+				: base(new HealthCheckParameters(TestParameters), new NullLogger<TestHealthCheck>(), new ActivitySource("Test")) =>
 					m_internalFunction = internalFunction;
 
 			protected override Task<HealthCheckResult> CheckHealthInternalAsync(HealthCheckContext context, CancellationToken token = default) =>
