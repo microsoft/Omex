@@ -47,7 +47,7 @@ namespace Microsoft.Omex.Extensions.Logging
 				for (int i = 4; i >= 0; i--)
 				{
 					int charVal = tagId & 0x3F;
-					tagId = tagId >> 6;
+					tagId >>= 6;
 					if (charVal > 25)
 					{
 						if (charVal > 35)

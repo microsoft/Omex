@@ -17,15 +17,15 @@ namespace Hosting.Services.Web.UnitTests
 	public class ActivityEnrichmentMiddlewareTests
 	{
 		[DataTestMethod]
-		[DataRow(99, TimedScopeResult.SystemError)]
-		[DataRow(100, TimedScopeResult.Success)]
-		[DataRow(101, TimedScopeResult.Success)]
-		[DataRow(399, TimedScopeResult.Success)]
-		[DataRow(400, TimedScopeResult.ExpectedError)]
-		[DataRow(401, TimedScopeResult.ExpectedError)]
-		[DataRow(499, TimedScopeResult.ExpectedError)]
-		[DataRow(500, TimedScopeResult.SystemError)]
-		public async Task InvokeAsync_SetsActivityProperties(int statusCode, TimedScopeResult result)
+		[DataRow(99, ActivityResult.SystemError)]
+		[DataRow(100, ActivityResult.Success)]
+		[DataRow(101, ActivityResult.Success)]
+		[DataRow(399, ActivityResult.Success)]
+		[DataRow(400, ActivityResult.ExpectedError)]
+		[DataRow(401, ActivityResult.ExpectedError)]
+		[DataRow(499, ActivityResult.ExpectedError)]
+		[DataRow(500, ActivityResult.SystemError)]
+		public async Task InvokeAsync_SetsActivityProperties(int statusCode, ActivityResult result)
 		{
 			string scheme = "https";
 			int localPort = 8080;

@@ -13,6 +13,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities.Processing
 		/// <summary>
 		/// Method will be called after activity start
 		/// </summary>
-		void OnStart(Activity activity, object? payload);
+		void OnStart(Activity activity, object? payload = null);
 	}
 }

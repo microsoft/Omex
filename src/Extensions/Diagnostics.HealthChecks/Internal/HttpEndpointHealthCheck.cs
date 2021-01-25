@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Diagnostics;
 using System.Fabric;
 using System.Net.Http;
 using System.Threading;
@@ -9,7 +10,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.Abstractions.Activities;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
@@ -30,8 +30,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			IHttpClientFactory httpClientFactory,
 			IAccessor<ServiceContext> accessor,
 			ILogger<HttpEndpointHealthCheck> logger,
-			ITimedScopeProvider scopeProvider)
-				: base(parameters, logger, scopeProvider)
+			ActivitySource activitySource)
+				: base(parameters, logger, activitySource)
 		{
 			m_httpClientFactory = httpClientFactory;
 			m_accessor = accessor;

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Fabric;
 using System.Linq;
 using System.Net;
@@ -64,7 +65,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 		private IHealthChecksBuilder GetBuilder() =>
 			new ServiceCollection()
-				.AddSingleton(new Mock<ITimedScopeProvider>().Object)
+				.AddSingleton(new ActivitySource(nameof(HealthChecksBuilderExtensionsTests)))
 				.AddSingleton(new Mock<IAccessor<IServicePartition>>().Object)
 				.AddSingleton(new Mock<IAccessor<ServiceContext>>().Object)
 				.AddServiceFabricHealthChecks();
