@@ -26,7 +26,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 
 		public static DiagnosticListener DefaultListener { get; } = new DiagnosticListener(DiagnosticListenerName);
 
-		public static Activity? CreateAndStartActivity(this DiagnosticListener listener, string name)
+		public static Activity? CreateAndStartActivity(this DiagnosticListener listener, string name, string parentId = "")
 		{
 			if (!listener.IsEnabled(name))
 			{
@@ -34,6 +34,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 			}
 
 			Activity activity = new Activity(name);
+			activity.SetParentId(parentId);
 			return listener.StartActivity(activity, null);
 		}
 
