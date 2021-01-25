@@ -53,7 +53,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 			}
 
 			IServiceRemotingRequestMessageHeader header = requestMessage.GetHeader();
-			if (header.TryGetHeaderValue(TraceParentHeaderName, out byte[] _)) // header update not supported
+			if (!header.TryGetHeaderValue(TraceParentHeaderName, out byte[] _)) // header update not supported
 			{
 				header.AddHeader(TraceParentHeaderName, s_encoding.GetBytes(activity.Id));
 				header.AddHeader(TraceStateHeaderName, SerializeBaggage(activity.Baggage.ToArray()));
@@ -61,29 +61,44 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		}
 
 		/// <summary>
-		/// Extract activity information from incoming remoting request headers
+		/// Creates activity with parent id and baggage from incoming remoting request headers
 		/// </summary>
-		public static void ExtractActivityFromIncomingRequest(this IServiceRemotingRequestMessage requestMessage, Activity? activity)
+		public static Activity? StartActivityFromIncomingRequest(this IServiceRemotingRequestMessage requestMessage, DiagnosticListener listener, string name)
 		{
-			if (activity == null)
+			if (!listener.IsEnabled(name))
 			{
-				return;
+				return null;
 			}
 
 			IServiceRemotingRequestMessageHeader headers = requestMessage.GetHeader();
 
+			string parentId = string.Empty;
 			if (headers.TryGetHeaderValue(TraceParentHeaderName, out byte[] idBytes))
 			{
-				activity.SetParentId(s_encoding.GetString(idBytes));
+				parentId = s_encoding.GetString(idBytes);
+			}
 
-				if (headers.TryGetHeaderValue(TraceStateHeaderName, out byte[] baggageBytes))
+			Activity? activity = listener.CreateAndStartActivity(name, parentId);
+
+			if (activity == null)
+			{
+				return null;
+			}
+
+			if (headers.TryGetHeaderValue(TraceStateHeaderName, out byte[] baggageBytes))
+			{
+				KeyValuePair<string, string>[] baggage = DeserializeBaggage(baggageBytes);
+
+				// AddBaggage adds items at the beginning of the list, so we need to add them in reverse to keep the same order as the client
+				// An order could be important if baggage has two items with the same key (that is allowed by the contract)
+				for (int i = baggage.Length - 1; i >= 0; i--)
 				{
-					foreach (KeyValuePair<string, string> pair in DeserializeBaggage(baggageBytes))
-					{
-						activity.AddBaggage(pair.Key, pair.Value);
-					}
+					KeyValuePair<string, string> pair = baggage[i];
+					activity.AddBaggage(pair.Key, pair.Value);
 				}
 			}
+
+			return activity;
 		}
 
 		private static byte[] SerializeBaggage(KeyValuePair<string, string?>[] baggage)
