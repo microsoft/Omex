@@ -9,7 +9,7 @@ namespace Microsoft.Omex.Extensions.Logging
 	public class OmexLoggingOptions
 	{
 		/// <summary>
-		/// Should logs wrapped by the TimedScope be stored and replayed at a higher severity, in the event of an error.
+		/// Should logs wrapped by the Activity be stored and replayed at a higher severity, in the event of an error.
 		/// Setting this to true will impact the performance of logging
 		/// </summary>
 		public bool ReplayLogsInCaseOfError { get; set; } = false;

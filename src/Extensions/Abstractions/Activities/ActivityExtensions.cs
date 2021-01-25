@@ -57,26 +57,26 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// Set result
 		/// </summary>
 		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
-		public static Activity SetResult(this Activity activity, TimedScopeResult result) =>
+		public static Activity SetResult(this Activity activity, ActivityResult result) =>
 			activity.SetTag(ActivityTagKeys.Result, ActivityResultStrings.ResultToString(result));
 
 		/// <summary>
 		/// Set activity result to Success
 		/// </summary>
 		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
-		public static Activity MarkAsSuccess(this Activity activity) => activity.SetResult(TimedScopeResult.Success);
+		public static Activity MarkAsSuccess(this Activity activity) => activity.SetResult(ActivityResult.Success);
 
 		/// <summary>
 		/// Set activity result to SystemError
 		/// </summary>
 		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
-		public static Activity MarkAsSystemError(this Activity activity) => activity.SetResult(TimedScopeResult.SystemError);
+		public static Activity MarkAsSystemError(this Activity activity) => activity.SetResult(ActivityResult.SystemError);
 
 		/// <summary>
 		/// Set activity result to ExpectedError
 		/// </summary>
 		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
-		public static Activity MarkAsExpectedError(this Activity activity) => activity.SetResult(TimedScopeResult.ExpectedError);
+		public static Activity MarkAsExpectedError(this Activity activity) => activity.SetResult(ActivityResult.ExpectedError);
 
 		/// <summary>
 		/// Set sub type

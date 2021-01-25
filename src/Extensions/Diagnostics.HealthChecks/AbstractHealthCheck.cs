@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -12,14 +13,12 @@ using Microsoft.Omex.Extensions.Abstractions.Activities;
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	/// <summary>
-	/// Base health check that extracts logic of exception handling and wraps it into timed scope
+	/// Base health check that extracts logic of exception handling and wraps it into activity
 	/// </summary>
 	public abstract class AbstractHealthCheck<TParameters> : IHealthCheck
 		where TParameters : HealthCheckParameters
 	{
-		private static readonly TimedScopeDefinition s_scopeDefinition = new TimedScopeDefinition("HealthCheckScope");
-
-		private readonly ITimedScopeProvider m_scopeProvider;
+		private readonly ActivitySource m_activitySource;
 
 		/// <summary>
 		/// Logger property
@@ -32,26 +31,28 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		protected internal TParameters Parameters { get; } // internal only to be used for unit tests
 
 		/// <summary>
-		/// Base constructor with scope provider that would be removed after .NET 5 move
+		/// Base constructor
 		/// </summary>
-		protected AbstractHealthCheck(TParameters parameters, ILogger logger, ITimedScopeProvider scopeProvider)
+		protected AbstractHealthCheck(TParameters parameters, ILogger logger, ActivitySource activitySource)
 		{
 			Parameters = parameters;
 			Logger = logger;
-			m_scopeProvider = scopeProvider;
+			m_activitySource = activitySource;
 		}
 
 		/// <inheritdoc />
 		public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken token = default)
 		{
-			using TimedScope scope = m_scopeProvider.CreateAndStart(s_scopeDefinition).MarkAsHealthCheck();
+			using Activity? activity = m_activitySource.StartActivity("HealthCheckActivity")
+				?.MarkAsSystemError()
+				.MarkAsHealthCheck();
 
 			try
 			{
 				HealthCheckResult result = await CheckHealthInternalAsync(context, token).ConfigureAwait(false);
 				result = EnforceFailureStatus(context.Registration.FailureStatus, result);
 
-				scope.SetResult(TimedScopeResult.Success);
+				activity?.MarkAsSuccess();
 
 				return result;
 			}
@@ -63,7 +64,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		}
 
 		/// <summary>
-		/// Health check logic without error handling and timed scope wrapping
+		/// Health check logic without error handling and activity wrapping
 		/// </summary>
 		protected abstract Task<HealthCheckResult> CheckHealthInternalAsync(HealthCheckContext context, CancellationToken token);
 
