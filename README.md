@@ -25,7 +25,6 @@ argument validation, resource management, caching and more.
 * [__Gating.UnitTests.Shared__](https://github.com/microsoft/Omex/tree/master/src/Gating.UnitTests.Shared) - This library provides classes used in unit tests for Gating library.
 * [__Gating.Example__](https://github.com/microsoft/Omex/tree/master/src/Gating.Example) - This is a small console application that uses the Gating library to showcase some of its features.
 * [__GateGen__](https://github.com/microsoft/Omex/tree/master/src/CodeGenerators/GateGen) - This is a code generator tool that produces strongly typed gates (C# file) from the gates xml files. Should be used as a dependency in another project.
-* [__TimedScopeGen__](https://github.com/microsoft/Omex/tree/master/src/CodeGenerators/TimedScopeGen) - This is a code generator tool that produces strongly typed timed scopes (C# file) from the timedscopes xml files. Should be used as a dependency in another project.
 
 Please contribute to this repository via [pull requests](https://github.com/Microsoft/Omex/pulls) against the __master__ branch.
 

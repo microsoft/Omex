@@ -65,7 +65,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 			try
 			{
 				responseMessage = await Client.RequestResponseAsync(requestMessage).ConfigureAwait(false);
-				activity?.SetResult(TimedScopeResult.Success);
+				activity?.SetResult(ActivityResult.Success);
 			}
 			catch (Exception ex)
 			{
@@ -88,7 +88,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 			try
 			{
 				Client.SendOneWay(requestMessage);
-				activity?.SetResult(TimedScopeResult.Success);
+				activity?.SetResult(ActivityResult.Success);
 			}
 			catch (Exception ex)
 			{

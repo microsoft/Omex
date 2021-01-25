@@ -2,13 +2,13 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Diagnostics;
 using System.Fabric;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
-using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Data;
@@ -23,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[DataTestMethod]
 		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
-		[DataRow(typeof(ITimedScopeProvider), null)]
+		[DataRow(typeof(ActivitySource), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		public void AddOmexServiceFabricDependencies_TypesRegistered(Type typeToResolver, Type? expectedImplementationType)
 		{
@@ -50,7 +50,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[DataTestMethod]
 		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
-		[DataRow(typeof(ITimedScopeProvider), null)]
+		[DataRow(typeof(ActivitySource), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		[DataRow(typeof(IHostedService), typeof(OmexHostedService))]
 		[DataRow(typeof(IOmexServiceRegistrator), typeof(OmexStatelessServiceRegistrator))]
@@ -76,7 +76,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[DataTestMethod]
 		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
-		[DataRow(typeof(ITimedScopeProvider), null)]
+		[DataRow(typeof(ActivitySource), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		[DataRow(typeof(IHostedService), typeof(OmexHostedService))]
 		[DataRow(typeof(IOmexServiceRegistrator), typeof(OmexStatefulServiceRegistrator))]

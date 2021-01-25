@@ -31,11 +31,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 				.SetMetadata(statusCode.ToString());
 		}
 
-		private TimedScopeResult GetResult(int statusCode) =>
+		private ActivityResult GetResult(int statusCode) =>
 			statusCode >= 100 && statusCode < 400
-				? TimedScopeResult.Success
+				? ActivityResult.Success
 				: statusCode >= 400 && statusCode < 500
-					? TimedScopeResult.ExpectedError
-					: TimedScopeResult.SystemError;
+					? ActivityResult.ExpectedError
+					: ActivityResult.SystemError;
 	}
 }

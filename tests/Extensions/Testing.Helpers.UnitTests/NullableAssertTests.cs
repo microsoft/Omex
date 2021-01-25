@@ -6,10 +6,10 @@ using System.Globalization;
 using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Omex.Extensions.TimedScopes.UnitTests
+namespace Microsoft.Omex.Extensions.Activities.UnitTests
 {
 	[TestClass]
-	public class TimedScopeProviderTests
+	public class NullableAssertTests
 	{
 		[TestMethod]
 		public void IsNotNull_IfNotNull_NotThrows()
