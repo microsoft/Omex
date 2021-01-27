@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Internal;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -15,7 +19,22 @@ namespace Microsoft.Extensions.DependencyInjection
 		/// </summary>
 		public static IServiceCollection AddOmexMiddleware(this IServiceCollection services)
 		{
+			services.TryAddSingleton<ISystemClock, SystemClock>();
+			services.TryAddSingleton<EmptySaltProvider>();
+			services.TryAddSingleton<RotatingSaltProvider>();
+			services.TryAddEnumerable(ServiceDescriptor.Singleton<IUserIdentityProvider, IpBasedUserIdentityProvider>());
+
+			static ISaltProvider getSaltProvider(IServiceProvider provider) =>
+				provider.GetRequiredService<IOptions<UserIdentiyMiddlewareOptions>>().Value.LoggingCompliance switch
+				{
+					UserIdentiyComplianceLevel.LiveId => provider.GetRequiredService<EmptySaltProvider>(),
+					_ => provider.GetRequiredService<RotatingSaltProvider>()
+				};
+
+			services.TryAddTransient(getSaltProvider);
+
 			services
+				.AddSingleton<UserHashIdentityMiddleware>()
 				.AddSingleton<ActivityEnrichmentMiddleware>()
 				.AddSingleton<ResponseHeadersMiddleware>();
 

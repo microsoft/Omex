@@ -58,6 +58,12 @@ namespace Microsoft.AspNetCore.Builder
 			builder.UseMiddleware<ResponseHeadersMiddleware>();
 
 		/// <summary>
+		/// Add middleware user identity middleware to add user hash to correlation
+		/// </summary>
+		public static IApplicationBuilder UseUserHashIdentiyMiddleware(this IApplicationBuilder builder) =>
+			builder.UseMiddleware<UserHashIdentityMiddleware>();
+
+		/// <summary>
 		/// Add middleware that adds Omex headers to responses, like MachineId and BuildVersion
 		/// </summary>
 		[Obsolete("Use it only if you need to communicate with services that use old correlation", false)]
