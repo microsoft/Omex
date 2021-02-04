@@ -2,11 +2,11 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging;
-using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Hosting.Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 	{
 		[DataTestMethod]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>))]
-		[DataRow(typeof(ITimedScopeProvider))]
+		[DataRow(typeof(ActivitySource))]
 		public void AddOmexServices_TypesRegistered(Type type)
 		{
 			object collectionObj = new ServiceCollection()

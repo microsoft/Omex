@@ -13,7 +13,7 @@
     <MSTest_TestAdapter_Version>2.1.2</MSTest_TestAdapter_Version>
     <MSTest_TestFramework_Version>2.1.2</MSTest_TestFramework_Version>
     <System_Configuration_ConfigurationManager_Version>5.0.0</System_Configuration_ConfigurationManager_Version>
-    <System_ServiceModel_Primitives_Version>4.8.0</System_ServiceModel_Primitives_Version>
+    <System_ServiceModel_Primitives_Version>4.8.1</System_ServiceModel_Primitives_Version>
     <System_Threading_Tasks_Version>4.3.0</System_Threading_Tasks_Version>
     <Xunit_Runner_VisualStudio_Version>2.4.3</Xunit_Runner_VisualStudio_Version>
   </PropertyGroup>
@@ -36,6 +36,7 @@
     <Microsoft_Extensions_Options_Version>5.0.0</Microsoft_Extensions_Options_Version>
     <System_Diagnostics_DiagnosticSource_Version>5.0.1</System_Diagnostics_DiagnosticSource_Version>
     <System_Threading_Tasks_Extensions_Version>4.5.4</System_Threading_Tasks_Extensions_Version>
+    <System_Diagnostics_DiagnosticSource_Version>5.0.1</System_Diagnostics_DiagnosticSource_Version>
   </PropertyGroup>
   <PropertyGroup Label="ServiceFabric packages for Omex Extensions">
     <Microsoft_ServiceFabric_Version>7.2.434</Microsoft_ServiceFabric_Version>

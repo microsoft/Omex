@@ -12,9 +12,9 @@ namespace Microsoft.Omex.Extensions.Logging.Replayable
 	internal class ReplayableActivityStopObserver : IActivityStopObserver
 	{
 		private readonly ILogEventReplayer m_logReplayer;
-		private readonly IOptions<OmexLoggingOptions> m_options;
+		private readonly IOptionsMonitor<OmexLoggingOptions> m_options;
 
-		public ReplayableActivityStopObserver(ILogEventReplayer logReplayer, IOptions<OmexLoggingOptions> options)
+		public ReplayableActivityStopObserver(ILogEventReplayer logReplayer, IOptionsMonitor<OmexLoggingOptions> options)
 		{
 			m_logReplayer = logReplayer;
 			m_options = options;
@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Logging.Replayable
 
 		public void OnStop(Activity activity, object? payload)
 		{
-			if (m_options.Value.ReplayLogsInCaseOfError && ShouldReplayEvents(activity))
+			if (ShouldReplayEvents(activity))
 			{
 				m_logReplayer.ReplayLogs(activity);
 			}
@@ -30,6 +30,11 @@ namespace Microsoft.Omex.Extensions.Logging.Replayable
 
 		private bool ShouldReplayEvents(Activity activity)
 		{
+			if (!m_options.CurrentValue.ReplayLogsInCaseOfError)
+			{
+				return false;
+			}
+
 			string? resultTagValue = activity.Tags.FirstOrDefault(p => string.Equals(p.Key, ActivityTagKeys.Result, StringComparison.Ordinal)).Value;
 			return string.Equals(ActivityResultStrings.SystemError, resultTagValue, StringComparison.Ordinal);
 		}

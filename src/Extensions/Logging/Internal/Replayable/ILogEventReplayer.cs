@@ -2,18 +2,19 @@
 // Licensed under the MIT license.
 
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Omex.Extensions.Logging.Replayable
 {
 	/// <summary>
-	/// Replays activity logs if activity collects them
+	/// Replays activity logs
 	/// </summary>
 	internal interface ILogEventReplayer
 	{
-		/// <summary>
-		/// Replays activity logs if activity supports it
-		/// </summary>
-		/// <param name="activity">Activity that should contain logs to replay</param>
 		void ReplayLogs(Activity activity);
+
+		bool IsReplayableMessage(LogLevel logLevel);
+
+		void AddReplayLog(Activity activity, LogMessageInformation logMessage);
 	}
 }

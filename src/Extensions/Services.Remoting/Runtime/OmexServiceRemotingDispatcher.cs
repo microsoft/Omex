@@ -45,13 +45,13 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Runtime
 		/// <inheritdoc />
 		public override void HandleOneWayMessage(IServiceRemotingRequestMessage requestMessage)
 		{
-			Activity? activity = m_diagnosticListener.CreateAndStartActivity(OneWayMessageActivityName);
+			Activity? activity = null;
 
 			try
 			{
-				requestMessage.ExtractActivityFromIncomingRequest(activity);
+				activity = requestMessage.StartActivityFromIncomingRequest(m_diagnosticListener, OneWayMessageActivityName);
 				base.HandleOneWayMessage(requestMessage);
-				activity?.SetResult(TimedScopeResult.Success);
+				activity?.SetResult(ActivityResult.Success);
 			}
 			catch (Exception ex)
 			{
@@ -70,14 +70,14 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Runtime
 			IServiceRemotingRequestContext requestContext,
 			IServiceRemotingRequestMessage requestMessage)
 		{
-			Activity? activity = m_diagnosticListener.CreateAndStartActivity(RequestActivityName);
+			Activity? activity = null;
 			IServiceRemotingResponseMessage? responseMessage = null;
 
 			try
 			{
-				requestMessage.ExtractActivityFromIncomingRequest(activity);
+				activity = requestMessage.StartActivityFromIncomingRequest(m_diagnosticListener, RequestActivityName);
 				responseMessage = await base.HandleRequestResponseAsync(requestContext, requestMessage).ConfigureAwait(false);
-				activity?.SetResult(TimedScopeResult.Success);
+				activity?.SetResult(ActivityResult.Success);
 			}
 			catch (Exception ex)
 			{

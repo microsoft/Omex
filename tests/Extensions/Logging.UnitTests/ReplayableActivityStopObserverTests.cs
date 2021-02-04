@@ -2,11 +2,13 @@
 // Licensed under the MIT license.
 
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.Omex.Extensions.Logging.Replayable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Hosting.Services.UnitTests
 {
@@ -14,16 +16,22 @@ namespace Hosting.Services.UnitTests
 	public class ReplayableActivityStopObserverTests
 	{
 		[DataTestMethod]
-		[DataRow(TimedScopeResult.SystemError, true, true)]
-		[DataRow(TimedScopeResult.SystemError, false, false)]
-		[DataRow(TimedScopeResult.ExpectedError, true, false)]
-		public void OnStop_UsingReplaySettingsAndResult_CallesLogReplayIfNeeded(TimedScopeResult result, bool replayLog, bool shouldBeCalled)
+		[DataRow(ActivityResult.SystemError, true, true)]
+		[DataRow(ActivityResult.SystemError, false, false)]
+		[DataRow(ActivityResult.ExpectedError, true, false)]
+		public void OnStop_UsingReplaySettingsAndResult_CallesLogReplayIfNeeded(ActivityResult result, bool replayLog, bool shouldBeCalled)
 		{
-			Activity activity = new Activity(nameof(OnStop_UsingReplaySettingsAndResult_CallesLogReplayIfNeeded));
-			TimedScope timedScope = new TimedScope(activity, result);
+			Activity activity = new Activity(nameof(OnStop_UsingReplaySettingsAndResult_CallesLogReplayIfNeeded)).SetResult(result);
+
+			Mock<IOptionsMonitor<OmexLoggingOptions>> mockOptions = new Mock<IOptionsMonitor<OmexLoggingOptions>>();
+			mockOptions.Setup(m => m.CurrentValue).Returns(new OmexLoggingOptions()
+			{
+				ReplayLogsInCaseOfError = shouldBeCalled,
+			});
+
 			IOptions<OmexLoggingOptions> options = Options.Create(new OmexLoggingOptions { ReplayLogsInCaseOfError = replayLog });
 			LogEventReplayerMock replayerMock = new LogEventReplayerMock();
-			ReplayableActivityStopObserver observer = new ReplayableActivityStopObserver(replayerMock, options);
+			ReplayableActivityStopObserver observer = new ReplayableActivityStopObserver(replayerMock, mockOptions.Object);
 			observer.OnStop(activity, null);
 
 			if (shouldBeCalled)
@@ -39,6 +47,10 @@ namespace Hosting.Services.UnitTests
 		private class LogEventReplayerMock : ILogEventReplayer
 		{
 			public Activity? Activity { get; private set; }
+
+			public void AddReplayLog(Activity activity, LogMessageInformation logMessage) { }
+
+			public bool IsReplayableMessage(LogLevel logLevel) => true;
 
 			public void ReplayLogs(Activity activity) => Activity = activity;
 		}

@@ -37,14 +37,14 @@ namespace Microsoft.Omex.Extensions.Abstractions.EventSources
 		LogSpam = 5,
 
 		/// <summary>
-		/// Event Id for logging timed scopes
+		/// Event Id for logging activities
 		/// </summary>
-		LogTimedScope = 6,
+		LogActivity = 6,
 
 		/// <summary>
-		/// Event Id for logging timed scopes traces
+		/// Event Id for logging test activities
 		/// </summary>
-		LogTimedScopeTestContext = 7,
+		LogActivityTestContext = 7,
 
 		/// <summary>
 		/// Event Id for service type registered

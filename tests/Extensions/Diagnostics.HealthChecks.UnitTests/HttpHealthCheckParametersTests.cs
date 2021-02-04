@@ -25,6 +25,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 					null,
 					null,
 					null,
+					null,
 					Array.Empty<KeyValuePair<string, object>>());
 
 			Assert.AreEqual(HttpMethod.Get, parameters.Method, nameof(HttpHealthCheckParameters.Method));
@@ -49,12 +50,18 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				{ "testKey2", "value" }
 			}.ToArray();
 
+			IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string, IEnumerable<string>>
+			{
+				{ "testHeader", new List<string> { "value" } }
+			};
+
 			HttpHealthCheckParameters parameters =
 				new HttpHealthCheckParameters(
 					endpoitName,
 					path,
 					method,
 					scheme,
+					headers,
 					status,
 					additionalCheck,
 					reportData);
@@ -62,6 +69,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			Assert.AreEqual(path, parameters.RelativeUri.ToString(), nameof(HttpHealthCheckParameters.RelativeUri));
 			Assert.AreEqual(method, parameters.Method, nameof(HttpHealthCheckParameters.Method));
 			Assert.AreEqual(scheme, parameters.Scheme, nameof(HttpHealthCheckParameters.Scheme));
+			CollectionAssert.AreEqual((System.Collections.ICollection)headers, (System.Collections.ICollection)parameters.Headers, nameof(HttpHealthCheckParameters.Headers));
 			Assert.AreEqual(status, parameters.ExpectedStatus, nameof(HttpHealthCheckParameters.ExpectedStatus));
 			Assert.AreEqual(additionalCheck, parameters.AdditionalCheck, nameof(HttpHealthCheckParameters.AdditionalCheck));
 			CollectionAssert.AreEquivalent(reportData, parameters.ReportData.ToArray(), nameof(HttpHealthCheckParameters.ReportData));
@@ -87,12 +95,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			Assert.ThrowsException<ArgumentException>(() => Create(endpointName: endpoint));
 		}
 
-
 		internal static HttpHealthCheckParameters Create(
 			string endpointName = "EndpointName",
 			Uri? relatedUri = null,
 			HttpMethod? method = null,
 			string? scheme = null,
+			IReadOnlyDictionary<string, IEnumerable<string>>? headers = null,
 			HttpStatusCode expectedStatus = HttpStatusCode.OK,
 			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? additionalCheck = null,
 			KeyValuePair<string, object>[]? reportData = null) =>
@@ -101,6 +109,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 					relatedUri ?? new Uri("path", UriKind.Relative),
 					method ?? HttpMethod.Get,
 					scheme ?? Uri.UriSchemeHttp,
+					headers,
 					expectedStatus,
 					additionalCheck,
 					reportData ?? Array.Empty<KeyValuePair<string, object>>());

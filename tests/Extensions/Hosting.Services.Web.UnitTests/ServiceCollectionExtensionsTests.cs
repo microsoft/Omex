@@ -3,6 +3,7 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,19 +14,63 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 	[TestClass]
 	public class ServiceCollectionExtensionsTests
 	{
-		[TestMethod]
-		public void AddOmexMiddleware_RegisterTypes()
-		{
-			IServiceProvider provider = new ServiceCollection()
-				.AddSingleton(new Mock<IExecutionContext>().Object)
-				.AddOmexMiddleware()
-				.BuildServiceProvider();
-
-			Assert.IsNotNull(provider.GetRequiredService<ActivityEnrichmentMiddleware>());
-			Assert.IsNotNull(provider.GetRequiredService<ResponseHeadersMiddleware>());
+		[DataTestMethod]
+		[DataRow(typeof(ActivityEnrichmentMiddleware))]
+		[DataRow(typeof(ResponseHeadersMiddleware))]
+		[DataRow(typeof(UserHashIdentityMiddleware))]
 #pragma warning disable CS0618
-			Assert.IsNotNull(provider.GetRequiredService<ObsoleteCorrelationHeadersMiddleware>());
+		[DataRow(typeof(ObsoleteCorrelationHeadersMiddleware))]
 #pragma warning restore CS0618
+		public void AddOmexMiddleware_RegisterTypes(Type type)
+		{
+			IServiceProvider provider = new HostBuilder()
+				.ConfigureServices((context, collection) =>
+				{
+					collection
+						.AddSingleton(new Mock<IExecutionContext>().Object)
+						.AddOmexMiddleware();
+				})
+				.UseDefaultServiceProvider(configure =>
+				{
+					configure.ValidateOnBuild = true;
+					configure.ValidateScopes = true;
+				})
+				.Build().Services;
+
+			Assert.IsNotNull(provider.GetRequiredService(type));
+		}
+
+		[TestMethod]
+		public void AddMiddlewares_RegistersRotatedSaltProviderByDefault()
+		{
+			ISaltProvider saltProvider = new HostBuilder()
+				.ConfigureServices((context, collection) =>
+				{
+					collection.AddOmexMiddleware();
+				})
+				.Build().Services
+				.GetRequiredService<ISaltProvider>();
+
+			Assert.IsInstanceOfType(saltProvider, typeof(RotatingSaltProvider));
+		}
+
+		[TestMethod]
+		public void AddMiddlewares_RegistersEmptySaltProviderForLiveId()
+		{
+			ISaltProvider saltProvider = new HostBuilder()
+				.ConfigureServices((context, collection) =>
+				{
+					collection
+					.Configure<UserIdentiyMiddlewareOptions>(options =>
+					{
+						options.LoggingCompliance = UserIdentiyComplianceLevel.LiveId;
+					})
+					.AddOmexMiddleware();
+				})
+				.Build().Services
+				.GetRequiredService<ISaltProvider>();
+
+			Assert.IsInstanceOfType(saltProvider, typeof(EmptySaltProvider));
 		}
 	}
 }
