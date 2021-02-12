@@ -23,6 +23,12 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		internal const string SliceNameVariableName = "SLICE_NAME";
 		internal const string EnviromentVariableName = "DOTNET_ENVIRONMENT"; // getting environment directly only if we don't have IHostEnvironment ex. InitializationLogger
 
+		// defined by Service Fabric https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-environment-variables-reference
+		internal const string ServiceNameVariableName = "Fabric_ServiceName";
+		internal const string ApplicationNameVariableName = "Fabric_ApplicationName";
+		internal const string NodeNameVariableName = "Fabric_NodeName";
+		internal const string NodeIPOrFQDNVariableName = "Fabric_NodeIPOrFQDN";
+
 		/// <summary>
 		/// Create instance of execution context
 		/// Inherit from this class to populate defined properties with proper values
@@ -30,13 +36,10 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		public BaseExecutionContext(IHostEnvironment? hostEnvironment = null)
 		{
 			MachineName = GetMachineName();
-			MachineId = MachineName;
-			ApplicationName = DefaultEmptyValue;
-			ServiceName = DefaultEmptyValue;
 			BuildVersion = GetBuildVersion();
 
 			ClusterIpAddress = GetIpAddress(MachineName);
-			Cluster = Cluster = GetVariable(ClusterNameVariableName) ?? DefaultEmptyValue;
+			
 			RegionName = GetVariable(RegionNameVariableName) ?? DefaultEmptyValue;
 			DeploymentSlice = GetVariable(SliceNameVariableName) ?? DefaultEmptyValue;
 
@@ -52,6 +55,22 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 			}
 
 			IsCanary = false;
+
+			// Service Fabric specific values
+			ServiceName = GetVariable(ServiceNameVariableName) ?? DefaultEmptyValue;
+			ApplicationName = GetVariable(ApplicationNameVariableName) ?? DefaultEmptyValue;
+
+			string nodeName = GetVariable(NodeNameVariableName) ?? DefaultEmptyValue;
+			MachineId = FormattableString.Invariant($"{MachineName}_{nodeName}");
+
+			string? nodeIPAddressOrFQDN = GetVariable(NodeIPOrFQDNVariableName);
+
+			if (IPAddress.TryParse(nodeIPAddressOrFQDN, out IPAddress? ipAddress))
+			{
+				ClusterIpAddress = ipAddress;
+			}
+
+			Cluster = GetVariable(ClusterNameVariableName) ?? nodeIPAddressOrFQDN ?? MachineId;
 		}
 
 		/// <inheritdoc/>
