@@ -3,10 +3,8 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
-using Microsoft.Omex.Extensions.Activities;
 using Moq;
 using Microsoft.Extensions.Options;
-using System;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using System.Threading.Tasks;
 using System.Threading;
@@ -20,8 +18,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public async Task ActivityListeners_ControlsActivityCreation()
 		{
-			Mock<IActivityStartObserver> mockStartObserver = new Mock<IActivityStartObserver>();
-			Mock<IActivityStopObserver> mockStopObserver = new Mock<IActivityStopObserver>();
+			Mock<IActivityStartObserver> mockStartObserver = new();
+			Mock<IActivityStopObserver> mockStopObserver = new();
 
 			IOptionsMonitor<OmexActivityListenerOptions>? optionsMonitor = DefaultActivityListenerConfiguratorTests.CreateOptionsMonitor();
 			OmexActivityListenerOptions options = optionsMonitor.CurrentValue;
@@ -30,12 +28,12 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			options.Sample = ActivitySamplingResult.AllDataAndRecorded;
 			options.SampleUsingParentId = ActivitySamplingResult.AllDataAndRecorded;
 
-			ActivityListenerInitializerService service = new ActivityListenerInitializerService(
+			ActivityListenerInitializerService service = new(
 				new IActivityStartObserver[] { mockStartObserver.Object },
 				new IActivityStopObserver[] { mockStopObserver.Object },
 				new DefaultActivityListenerConfigurator(optionsMonitor));
 
-			ActivitySource source = new ActivitySource(nameof(ActivityListeners_ControlsActivityCreation));
+			ActivitySource source = new(nameof(ActivityListeners_ControlsActivityCreation));
 
 			Assert.IsNull(source.StartActivity("ActivityBeforeStart"));
 
@@ -51,6 +49,20 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 
 			AssertActivityReporting(source.StartActivity("ActivityWhenConfigEnable"), mockStartObserver, mockStopObserver);
 
+			// check that Activity from Diagnostic listener also captured
+			using (DiagnosticListener listener = new(nameof(ActivityListeners_ControlsActivityCreation)))
+			{
+				Activity activity = new("DiagnosticsListenerActivity");
+
+				listener.StartActivity(activity, null);
+				mockStartObserver.Verify(s => s.OnStart(activity, null), Times.Once);
+				mockStartObserver.Reset();
+
+				listener.StopActivity(activity, null);
+				mockStopObserver.Verify(s => s.OnStop(activity, null), Times.Once);
+				mockStopObserver.Reset();
+			}
+
 			await service.StopAsync(CancellationToken.None);
 
 			Assert.IsNull(source.StartActivity("ActivityAfterStop"));
@@ -62,12 +74,12 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			Mock<IActivityStopObserver> mockStopObserver)
 		{
 			NullableAssert.IsNotNull(activity);
-			mockStartObserver.Verify(s => s.OnStart(It.IsAny<Activity>(), null), Times.Once);
+			mockStartObserver.Verify(s => s.OnStart(activity, null), Times.Once);
 			mockStartObserver.Reset();
 
 			activity.Dispose();
 
-			mockStopObserver.Verify(s => s.OnStop(It.IsAny<Activity>(), null), Times.Once);
+			mockStopObserver.Verify(s => s.OnStop(activity, null), Times.Once);
 			mockStopObserver.Reset();
 		}
 	}

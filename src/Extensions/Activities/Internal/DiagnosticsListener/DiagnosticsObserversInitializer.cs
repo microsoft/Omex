@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
@@ -25,23 +24,11 @@ namespace Microsoft.Omex.Extensions.Activities
 	internal sealed class DiagnosticsObserversInitializer : IHostedService, IObserver<DiagnosticListener>, IObserver<KeyValuePair<string, object?>>
 	{
 		/// <summary>
-		/// Ending of the Activity Start event
-		/// </summary>
-		internal static readonly string ActivityStartEnding = ".Start";
-
-		/// <summary>
-		/// Ending of the Activity Stop event
-		/// </summary>
-		internal static readonly string ActivityStopEnding = ".Stop";
-
-		/// <summary>
 		/// Ending of the exception events
 		/// </summary>
 		internal static readonly string ExceptionEventEnding = "Exception";
 
 		private static readonly string[] s_eventEndMarkersToListen = new[] {
-			ActivityStartEnding,
-			ActivityStopEnding,
 			ExceptionEventEnding,
 			// We need to listen for the "Microsoft.AspNetCore.Hosting.HttpRequestIn" event in order to signal Kestrel to create an Activity for the incoming http request.
 			// Searching only for RequestIn, in case any other requests follow the same pattern
@@ -67,19 +54,12 @@ namespace Microsoft.Omex.Extensions.Activities
 			return false;
 		}
 
-		private readonly IActivityStartObserver[] m_activityStartObservers;
-		private readonly IActivityStopObserver[] m_activityStopObservers;
 		private readonly ILogger<DiagnosticsObserversInitializer> m_logger;
 		private readonly LinkedList<IDisposable> m_disposables;
 		private IDisposable? m_observerLifetime;
 
-		public DiagnosticsObserversInitializer(
-			IEnumerable<IActivityStartObserver> activityStartObservers,
-			IEnumerable<IActivityStopObserver> activityStopObservers,
-			ILogger<DiagnosticsObserversInitializer> logger)
+		public DiagnosticsObserversInitializer(ILogger<DiagnosticsObserversInitializer> logger)
 		{
-			m_activityStartObservers = activityStartObservers.ToArray();
-			m_activityStopObservers = activityStopObservers.ToArray();
 			m_logger = logger;
 			m_disposables = new LinkedList<IDisposable>();
 		}
@@ -106,52 +86,16 @@ namespace Microsoft.Omex.Extensions.Activities
 		public void OnError(Exception error) =>
 			m_logger.LogError(Tag.Create(), error, "Exception in diagnostic events provider");
 
-		public void OnNext(DiagnosticListener value)
-		{
-			if (m_activityStartObservers.Length != 0 || m_activityStopObservers.Length != 0)
-			{
-				m_disposables.AddLast(value.Subscribe(this, IsEnabled));
-			}
-		}
+		public void OnNext(DiagnosticListener value) => m_disposables.AddLast(value.Subscribe(this, IsEnabled));
 
 		public void OnNext(KeyValuePair<string, object?> value)
 		{
-			Activity? activity = Activity.Current;
 			string eventName = value.Key;
 
-			if (activity != null)
-			{
-				if (EventEndsWith(eventName, ActivityStartEnding))
-				{
-					OnActivityStarted(activity, value.Value);
-					return;
-				}
-				else if (EventEndsWith(eventName, ActivityStopEnding))
-				{
-					OnActivityStopped(activity, value.Value);
-					return;
-				}
-			}
 			if (EventEndsWith(eventName, ExceptionEventEnding))
 			{
 				OnException(eventName, value.Value);
 				return;
-			}
-		}
-
-		private void OnActivityStarted(Activity activity, object? payload)
-		{
-			foreach (IActivityStartObserver startHandler in m_activityStartObservers)
-			{
-				startHandler.OnStart(activity, payload);
-			}
-		}
-
-		private void OnActivityStopped(Activity activity, object? payload)
-		{
-			foreach (IActivityStopObserver stopHandler in m_activityStopObservers)
-			{
-				stopHandler.OnStop(activity, payload);
 			}
 		}
 
@@ -194,7 +138,6 @@ namespace Microsoft.Omex.Extensions.Activities
 			}
 		}
 
-		private static readonly ConcurrentDictionary<Type, PropertyInfo?> s_exceptionProperties =
-			new ConcurrentDictionary<Type, PropertyInfo?>();
+		private static readonly ConcurrentDictionary<Type, PropertyInfo?> s_exceptionProperties = new();
 	}
 }
