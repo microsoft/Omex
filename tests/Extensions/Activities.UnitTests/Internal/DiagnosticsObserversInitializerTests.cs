@@ -7,8 +7,10 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Activities;
+using Microsoft.Omex.Extensions.Activities.UnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -44,17 +46,12 @@ namespace Hosting.Services.UnitTests
 		public async Task DiagnosticsObserversInitializer_InvokedProperly()
 		{
 			string name = nameof(DiagnosticsObserversInitializer_InvokedProperly);
-			MockLogger logger = new MockLogger();
-			Mock<IActivityStartObserver> startObserver = new Mock<IActivityStartObserver>();
-			Mock<IActivityStopObserver> stopObserver = new Mock<IActivityStopObserver>();
-			DiagnosticsObserversInitializer initializer = new DiagnosticsObserversInitializer(
-				new[] { startObserver.Object },
-				new[] { stopObserver.Object },
-				logger);
+			MockLogger logger = new();
+			DiagnosticsObserversInitializer diagnosticsInitializer = new(logger);
 
 			try
 			{
-				await initializer.StartAsync(CancellationToken.None).ConfigureAwait(false);
+				await diagnosticsInitializer.StartAsync(CancellationToken.None).ConfigureAwait(false);
 
 				using DiagnosticListener listener = new DiagnosticListener(name);
 
@@ -62,19 +59,7 @@ namespace Hosting.Services.UnitTests
 				AssertEnabledFor(listener, HttpRequestInEventName);
 				AssertEnabledFor(listener, ExceptionEventName);
 
-				AssertEnabledFor(listener, MakeStartName(name));
-				AssertEnabledFor(listener, MakeStopName(name));
-
 				Assert.IsFalse(listener.IsEnabled(name, "Should be disabled for other events"));
-
-				Activity activity = new Activity(name);
-				object obj = new object();
-
-				listener.StartActivity(activity, obj);
-				startObserver.Verify(obs => obs.OnStart(activity, obj), Times.Once);
-
-				listener.StopActivity(activity, obj);
-				stopObserver.Verify(obs => obs.OnStop(activity, obj), Times.Once);
 
 				Exception exception = new ArithmeticException();
 				listener.Write(ExceptionEventName, exception);
@@ -82,17 +67,13 @@ namespace Hosting.Services.UnitTests
 			}
 			catch
 			{
-				await initializer.StopAsync(CancellationToken.None).ConfigureAwait(false);
+				await diagnosticsInitializer.StopAsync(CancellationToken.None).ConfigureAwait(false);
 				throw;
 			}
 		}
 
 		private void AssertEnabledFor(DiagnosticListener listener, string eventName) =>
 			Assert.IsTrue(listener.IsEnabled(eventName), "Should be enabled for '{0}'", eventName);
-
-		private string MakeStartName(string name) => name + DiagnosticsObserversInitializer.ActivityStartEnding;
-
-		private string MakeStopName(string name) => name + DiagnosticsObserversInitializer.ActivityStopEnding;
 
 		private const string ExceptionEventName = "System.Net.Http.Exception";
 
@@ -102,7 +83,7 @@ namespace Hosting.Services.UnitTests
 
 		private class MockLogger : ILogger<DiagnosticsObserversInitializer>
 		{
-			public List<Exception> Exceptions { get; } = new List<Exception>();
+			public List<Exception> Exceptions { get; } = new();
 
 			public IDisposable BeginScope<TState>(TState state) => throw new NotImplementedException();
 
