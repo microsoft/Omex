@@ -12,6 +12,38 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 	public class IpBasedUserIdentityProviderTests
 	{
 		[TestMethod]
+		public void GetUserIdentity_ReturnEmptyUserIfNoIpAddress()
+		{
+			IUserIdentityProvider provider = new IpBasedUserIdentityProvider();
+			(HttpContext context, _) = HttpContextHelper.CreateHttpContext();
+
+			UserIdentity result = provider.GetUserIdentity(context);
+			Assert.AreEqual(result.User, string.Empty);
+			Assert.AreEqual(result.UserHashType, UserIdentifierType.IpAddress);
+		}
+
+		[TestMethod]
+		public void GetUserIdentity_ChangedBaseOnIpAddress()
+		{
+			const string ipAddr1 = "192.168.0.2";
+			const string ipAddr2 = "127.0.0.2";
+
+			IUserIdentityProvider provider = new IpBasedUserIdentityProvider();
+
+			HttpContext context1 = HttpContextHelper.GetContextWithIp(ipAddr1);
+			HttpContext context2 = HttpContextHelper.GetContextWithIp(ipAddr2);
+
+			UserIdentity user1 = provider.GetUserIdentity(context1);
+			UserIdentity user2 = provider.GetUserIdentity(context2);
+
+			Assert.AreNotEqual(user1.User, user2.User);
+			Assert.AreEqual(user1.User, ipAddr1);
+			Assert.AreEqual(user1.UserHashType, UserIdentifierType.IpAddress);
+			Assert.AreEqual(user2.User, ipAddr2);
+			Assert.AreEqual(user2.UserHashType, UserIdentifierType.IpAddress);
+		}
+
+		[TestMethod]
 		public void TryWriteBytes_ReturnFalseIfNoIpAddress()
 		{
 			IUserIdentityProvider provider = new IpBasedUserIdentityProvider();

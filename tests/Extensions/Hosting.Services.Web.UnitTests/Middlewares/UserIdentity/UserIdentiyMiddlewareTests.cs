@@ -102,6 +102,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 				IsApplicable = true;
 			}
 
+			public UserIdentity GetUserIdentity(HttpContext httpContext)
+			{
+				return new UserIdentity();
+			}
+
 			public bool TryWriteBytes(HttpContext context, Span<byte> span, out int bytesWritten)
 			{
 				Assert.IsTrue(span.Length >= MaxBytesInIdentity, "Provided span size is too small");

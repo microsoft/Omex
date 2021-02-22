@@ -12,6 +12,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	public interface IUserIdentityProvider
 	{
 		/// <summary>
+		/// Extracts user identity from the http context
+		/// </summary>
+		UserIdentity GetUserIdentity(HttpContext httpContext);
+
+		/// <summary>
 		/// Max bytes that user identity could take
 		/// </summary>
 		public int MaxBytesInIdentity { get; }
