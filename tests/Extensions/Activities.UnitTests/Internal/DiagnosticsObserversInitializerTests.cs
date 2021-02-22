@@ -55,6 +55,7 @@ namespace Hosting.Services.UnitTests
 
 				using DiagnosticListener listener = new DiagnosticListener(name);
 
+				AssertEnabledFor(listener, HttpClientListenerName);
 				AssertEnabledFor(listener, HttpRequestOutEventName);
 				AssertEnabledFor(listener, HttpRequestInEventName);
 				AssertEnabledFor(listener, ExceptionEventName);
@@ -76,6 +77,8 @@ namespace Hosting.Services.UnitTests
 			Assert.IsTrue(listener.IsEnabled(eventName), "Should be enabled for '{0}'", eventName);
 
 		private const string ExceptionEventName = "System.Net.Http.Exception";
+
+		private const string HttpClientListenerName = "HttpHandlerDiagnosticListener";
 
 		private const string HttpRequestOutEventName = "System.Net.Http.HttpRequestOut";
 

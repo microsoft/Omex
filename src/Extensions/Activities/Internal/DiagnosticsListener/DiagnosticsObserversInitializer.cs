@@ -31,11 +31,14 @@ namespace Microsoft.Omex.Extensions.Activities
 		private static readonly string[] s_eventEndMarkersToListen = new[] {
 			ExceptionEventEnding,
 			// We need to listen for the "Microsoft.AspNetCore.Hosting.HttpRequestIn" event in order to signal Kestrel to create an Activity for the incoming http request.
-			// Searching only for RequestIn, in case any other requests follow the same pattern
+			// Searching only for RequestIn, in case any other requests follow the same pattern (ex. Omex Remoting)
 			"RequestIn",
 			// We need to listen for the "System.Net.Http.HttpRequestOut" event in order to create an Activity for the outgoing http requests.
-			// Searching only for RequestOut, in case any other requests follow the same pattern
-			"RequestOut"
+			// Searching only for RequestOut, in case any other requests follow the same pattern (ex. Omex Remoting)
+			"RequestOut",
+			// Subscribe to ask HttpClient to create Activity on outgoing request
+			// https://github.com/dotnet/runtime/blob/1d9e50cb4735df46d3de0cee5791e97295eaf588/src/libraries/System.Net.Http/src/HttpDiagnosticsGuide.md#subscription
+			"HttpHandlerDiagnosticListener"
 		};
 
 		private static bool EventEndsWith(string eventName, string ending) => eventName.EndsWith(ending, StringComparison.Ordinal);
