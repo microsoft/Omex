@@ -35,11 +35,6 @@ namespace Microsoft.Omex.Extensions.Logging
 				return;
 			}
 
-			//m_externalScopeProvider.ForEachScope((obj, state) =>
-			//{
-			//	//TODO: log scopes
-			//}, state);
-
 			string message = formatter(state, exception);
 			if (exception != null)
 			{
