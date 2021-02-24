@@ -32,8 +32,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
 			serviceCollection.TryAddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
 			serviceCollection.TryAddSingleton<ActivityObserver>();
-			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IActivityStartObserver>(p => p.GetRequiredService<ActivityObserver>()));
-			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IActivityStopObserver>(p => p.GetRequiredService<ActivityObserver>()));
+			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IActivityStartObserver, ActivityObserver>(p => p.GetRequiredService<ActivityObserver>()));
+			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IActivityStopObserver, ActivityObserver>(p => p.GetRequiredService<ActivityObserver>()));
 
 			serviceCollection.TryAddSingleton<IExecutionContext, BaseExecutionContext>();
 			serviceCollection.TryAddSingleton<IActivitiesEventSender, ActivityEventSender>();
