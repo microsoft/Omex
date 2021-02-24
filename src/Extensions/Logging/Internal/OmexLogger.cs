@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Logging.Replayable;
 
 namespace Microsoft.Omex.Extensions.Logging
@@ -33,6 +34,11 @@ namespace Microsoft.Omex.Extensions.Logging
 			{
 				return;
 			}
+
+			//m_externalScopeProvider.ForEachScope((obj, state) =>
+			//{
+			//	//TODO: log scopes
+			//}, state);
 
 			string message = formatter(state, exception);
 			if (exception != null)
