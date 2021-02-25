@@ -6,14 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using System;
-using Microsoft.Omex.Extensions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Omex.Extensions.Testing.Helpers;
-using Moq;
-using Microsoft.Extensions.Options;
 
 namespace Microsoft.Omex.Extensions.Activities.UnitTests
 {
@@ -22,15 +19,11 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 	{
 		[DataTestMethod]
 		[DataRow(typeof(ActivitySource), typeof(ActivitySource))]
-		[DataRow(typeof(IActivityStopObserver), typeof(ActivityStopObserver))]
+		[DataRow(typeof(IActivityStartObserver), typeof(ActivityObserver))]
+		[DataRow(typeof(IActivityStopObserver), typeof(ActivityObserver))]
 		public void AddOmexActivitySource_TypesRegistered(Type typeToResolve, Type implementinType)
 		{
-			object obj = new HostBuilder()
-				.ConfigureServices(collection =>
-				{
-					collection.AddOmexActivitySource();
-				})
-				.Build()
+			object obj = CreateHost()
 				.Services
 				.GetRequiredService(typeToResolve);
 
@@ -41,16 +34,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void AddOmexActivitySource_HostedServicesRegiestered()
 		{
-			Type[] types = new HostBuilder()
-				.ConfigureServices(collection =>
-				{
-					collection.AddOmexActivitySource();
-				})
-				.Build()
-				.Services
-				.GetRequiredService<IEnumerable<IHostedService>>()
-				.Select(s => s.GetType())
-				.ToArray();
+			Type[] types = GetRegisteredServices<IHostedService>();
 
 			Assert.AreEqual(2, types.Length);
 			CollectionAssert.Contains(types, typeof(ActivityListenerInitializerService));
@@ -60,18 +44,27 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void AddOmexActivitySource_ActivityCreationEnabled()
 		{
-			Task task = new HostBuilder()
-				.ConfigureServices(collection =>
-				{
-					collection.AddOmexActivitySource();
-				})
-				.Build()
-				.RunAsync();
+			Task task = CreateHost().RunAsync();
 
 			Activity? activity = new ActivitySource("Source")
 				.StartActivity(nameof(AddOmexActivitySource_HostedServicesRegiestered));
 
 			NullableAssert.IsNotNull(activity, "Activity creation enabled after host started");
 		}
+
+		private IHost CreateHost() =>
+			new HostBuilder().ConfigureServices(collection =>
+			{
+				collection.AddOmexActivitySource();
+			})
+			.Build();
+
+		private Type[] GetRegisteredServices<T>()
+			where T : class =>
+				CreateHost()
+					.Services
+					.GetRequiredService<IEnumerable<T>>()
+					.Select(s => s.GetType())
+					.ToArray();
 	}
 }

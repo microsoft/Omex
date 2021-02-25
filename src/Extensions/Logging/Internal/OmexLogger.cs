@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Logging.Replayable;
 
 namespace Microsoft.Omex.Extensions.Logging
