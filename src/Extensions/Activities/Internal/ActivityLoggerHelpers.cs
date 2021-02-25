@@ -21,6 +21,7 @@ namespace Microsoft.Omex.Extensions.Activities
 		public static StringBuilder AppendParamName(this StringBuilder builder, string name) =>
 			builder.Append(name).Append(':');
 
+		/// TODO: should be replaced by AppendJoin when we remove netstandard target
 		public static StringBuilder AppendPairs<T>(this StringBuilder builder, IEnumerable<KeyValuePair<string, T>> pairs)
 		{
 			builder.AppendArrayStart();

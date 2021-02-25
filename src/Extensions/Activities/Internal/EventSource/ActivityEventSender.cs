@@ -13,7 +13,7 @@ using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
-	internal sealed class ActivityEventSender : IActivitiesEventSender, IActivityStopObserver
+	internal sealed class ActivityEventSender : IActivitiesEventSender
 	{
 		public ActivityEventSender(ActivityEventSource eventSource, IExecutionContext executionContext, ILogger<ActivityEventSender> logger)
 		{
@@ -115,8 +115,6 @@ namespace Microsoft.Omex.Extensions.Activities
 
 			return value;
 		}
-
-		public void OnStop(Activity activity, object? payload = null) => throw new NotImplementedException();
 
 		private const string StringLimitMessage =
 			"Log aggregation enforces a string length limit of {0} characters per dimension. Truncating length of dimension {1} on activity {2} from {3} chars in order to allow upload of the metric";
