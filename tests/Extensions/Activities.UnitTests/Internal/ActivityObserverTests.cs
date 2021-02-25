@@ -27,7 +27,7 @@ namespace Hosting.Services.UnitTests
 
 			observer.OnStop(activity, null);
 
-			senderMock.Verify(s => s.LogActivityStop(activity), Times.Once);
+			senderMock.Verify(s => s.SendActivityMetric(activity), Times.Once);
 		}
 
 		[TestMethod]

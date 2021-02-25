@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_logger = logger;
 		}
 
-		public void LogActivityStop(Activity activity)
+		public void SendActivityMetric(Activity activity)
 		{
 			if (!m_eventSource.IsEnabled())
 			{

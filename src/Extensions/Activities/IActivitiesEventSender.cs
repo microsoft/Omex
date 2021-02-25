@@ -11,8 +11,8 @@ namespace Microsoft.Omex.Extensions.Activities
 	public interface IActivitiesEventSender
 	{
 		/// <summary>
-		/// Log information about activity stop
+		/// Send information about activity stop
 		/// </summary>
-		void LogActivityStop(Activity activity);
+		void SendActivityMetric(Activity activity);
 	}
 }

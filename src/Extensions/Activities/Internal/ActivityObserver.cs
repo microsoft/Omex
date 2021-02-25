@@ -28,7 +28,7 @@ namespace Microsoft.Omex.Extensions.Activities
 
 		public void OnStop(Activity activity, object? payload = null)
 		{
-			m_eventSender.LogActivityStop(activity);
+			m_eventSender.SendActivityMetric(activity);
 
 			bool isSuccessful = true;
 			foreach (KeyValuePair<string, string?> pair in activity.Tags)

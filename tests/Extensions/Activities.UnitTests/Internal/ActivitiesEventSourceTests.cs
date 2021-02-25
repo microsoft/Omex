@@ -57,7 +57,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 				}
 			}
 
-			logEventSource.LogActivityStop(activity);
+			logEventSource.SendActivityMetric(activity);
 
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
 
