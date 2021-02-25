@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Options" Version="$(Microsoft_Extensions_Options_Version)" />
+    <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="$(Microsoft_Extensions_ObjectPool_Version)" />
     <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
   </ItemGroup>
 
