@@ -21,7 +21,12 @@ namespace Microsoft.Omex.Extensions.Activities
 		public static StringBuilder AppendParamName(this StringBuilder builder, string name) =>
 			builder.Append(name).Append(':');
 
-		/// TODO: should be replaced by AppendJoin when we remove netstandard target
+		/// <summary>
+		/// Appends collection of key value pairs to StringBuilder, by calling ToSting on key and value
+		/// </summary>
+		/// <remarks>
+		/// TODO: should be replaced by AppendJoin when we remove netstandard target, since KeyValuePair also overrides ToString
+		/// </remarks>
 		public static StringBuilder AppendPairs<T>(this StringBuilder builder, IEnumerable<KeyValuePair<string, T>> pairs)
 		{
 			builder.AppendArrayStart();
