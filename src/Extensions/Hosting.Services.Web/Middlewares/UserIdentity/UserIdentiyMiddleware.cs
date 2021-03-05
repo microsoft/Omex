@@ -21,14 +21,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		private const int HashSize = 32; // sha256 hash size, from here https://github.com/dotnet/runtime/blob/26a71f95b708721065f974fd43ba82a1dcb3e8f0/src/libraries/System.Security.Cryptography.Algorithms/src/Internal/Cryptography/HashProviderDispenser.Windows.cs#L85
 		private readonly IUserIdentityProvider[] m_userIdentityProviders;
 		private readonly ISaltProvider m_saltProvider;
-		private readonly HashAlgorithm m_hashAlgorithm;
 		private readonly int m_maxIdentitySize;
 
 		public UserHashIdentityMiddleware(IEnumerable<IUserIdentityProvider> userIdentityProviders, ISaltProvider saltProvider)
 		{
 			m_userIdentityProviders = userIdentityProviders.ToArray();
 			m_saltProvider = saltProvider;
-			m_hashAlgorithm = new SHA256Managed();
 			m_maxIdentitySize = m_userIdentityProviders.Max(p => p.MaxBytesInIdentity);
 		}
 
@@ -54,12 +52,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 
 			using IMemoryOwner<byte> uidMemoryOwner = MemoryPool<byte>.Shared.Rent(m_maxIdentitySize + saltSpan.Length);
 			Span<byte> uidSpan = uidMemoryOwner.Memory.Span;
+			uidSpan.Fill(0);
 
 			int identityBytesWritten = -1;
-			Span<byte> identitySpan = uidSpan.Slice(0, m_maxIdentitySize);
 			foreach (IUserIdentityProvider provider in m_userIdentityProviders)
 			{
-				if (provider.TryWriteBytes(context, identitySpan, out identityBytesWritten))
+				if (provider.TryWriteBytes(context, uidSpan.Slice(0, provider.MaxBytesInIdentity), out identityBytesWritten))
 				{
 					break;
 				}
@@ -74,22 +72,23 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 
 			using IMemoryOwner<byte> hashMemoryOwner = MemoryPool<byte>.Shared.Rent(HashSize);
 			Span<byte> hashSpan = hashMemoryOwner.Memory.Span;
-			if (!m_hashAlgorithm.TryComputeHash(uidSpan, hashSpan, out int hashBytesWritten))
+
+#if NETCOREAPP3_1
+			using HashAlgorithm hashAlgorithm = new SHA256Managed(); // need to have new instance each time since its not thread-safe
+
+			if (!hashAlgorithm.TryComputeHash(uidSpan, hashSpan, out _))
 			{
 				return string.Empty;
 			}
 
-#if NETCOREAPP3_1
 			return BitConverter.ToString(hashSpan.ToArray()).Replace("-", "");
 #else
+			SHA256.HashData(uidSpan, hashSpan);
+
 			return Convert.ToHexString(hashSpan);
 #endif
 		}
 
-		public void Dispose()
-		{
-			m_hashAlgorithm.Dispose();
-			m_saltProvider.Dispose();
-		}
+		public void Dispose() => m_saltProvider.Dispose();
 	}
 }

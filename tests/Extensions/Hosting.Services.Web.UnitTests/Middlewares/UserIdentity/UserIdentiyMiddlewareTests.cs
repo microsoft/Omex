@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Linq;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -56,6 +57,33 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			Assert.AreNotEqual(changedHash, initialHash);
 		}
 
+		[TestMethod]
+		public void CreateUserHash_HandleConcurrentRequestProperly()
+		{
+			HttpContext[] contexts = new []
+			{
+				HttpContextHelper.GetContextWithIp("192.168.132.17"),
+				HttpContextHelper.GetContextWithIp("192.168.132.18"),
+				HttpContextHelper.GetContextWithIp("192.168.132.19")
+			};
+
+			TestIdentityProvider provider = new ("ProviderWrapper", new IpBasedUserIdentityProvider());
+			UserHashIdentityMiddleware middleware = GetMiddelware(saltProvider: null, provider);
+
+			Enumerable.Range(0, 100).AsParallel()
+				.Select(index =>
+				{
+					int contextIndex = index % contexts.Length;
+					string hash = middleware.CreateUserHash(contexts[contextIndex]);
+					return (contextIndex, hash);
+				})
+				.GroupBy(hashIndexPair => hashIndexPair.contextIndex)
+				.Select(hashesPerContext => hashesPerContext.Distinct().Count())
+				.ForAll(uniquHashesPerContext => {
+					Assert.AreEqual(1, uniquHashesPerContext, "Hashes for the same context should be identical");
+				});
+		}
+
 		[DataTestMethod]
 		[DataRow(true, true, true, false)]
 		[DataRow(false, true, true, true)]
@@ -63,8 +91,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		public void CreateUserHash_CallProvidersInOrder(bool firstApplicable, bool secondApplicable, bool firstShouldBeCalled, bool secondShouldBeCalled)
 		{
 			HttpContext context = HttpContextHelper.GetContextWithIp("192.168.201.1");
-			TestIdentityProvider mock1 = new TestIdentityProvider("Provider1", 10) { IsApplicable = firstApplicable };
-			TestIdentityProvider mock2 = new TestIdentityProvider("Procider2", 15) { IsApplicable = secondApplicable };
+			TestIdentityProvider mock1 = new ("Provider1", 15) { IsApplicable = firstApplicable };
+			TestIdentityProvider mock2 = new ("Procider2", 10) { IsApplicable = secondApplicable };
 			UserHashIdentityMiddleware middleware = GetMiddelware(saltProvider: null, mock1, mock2);
 
 			string hash = middleware.CreateUserHash(context);
@@ -88,25 +116,46 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		{
 			private readonly string m_name;
 
+			private readonly IUserIdentityProvider? m_provider;
+
 			private int m_calls;
 
 			public int MaxBytesInIdentity { get; set; }
 
 			public bool IsApplicable { get; set; }
 
-			public TestIdentityProvider(string name, int maxSize = 10)
+			public TestIdentityProvider(string name, IUserIdentityProvider provider)
+				: this(name, provider.MaxBytesInIdentity) =>
+					m_provider = provider;
+
+			public TestIdentityProvider(string name, int maxSize = 10, IUserIdentityProvider? provider = null)
 			{
 				m_name = name;
 				m_calls = 0;
 				MaxBytesInIdentity = maxSize;
+				m_provider = provider;
 				IsApplicable = true;
 			}
 
 			public bool TryWriteBytes(HttpContext context, Span<byte> span, out int bytesWritten)
 			{
-				Assert.IsTrue(span.Length >= MaxBytesInIdentity, "Provided span size is too small");
+				Assert.AreEqual(MaxBytesInIdentity, span.Length, "Wrond span size provided");
 				m_calls++;
 				bytesWritten = IsApplicable ? MaxBytesInIdentity : 0;
+
+				foreach (byte val in span)
+				{
+					if (val != 0)
+					{
+						Assert.Fail($"Non zero byte value was passed into {nameof(TryWriteBytes)}");
+					}
+				}
+
+				if (m_provider != null)
+				{
+					return m_provider.TryWriteBytes(context, span, out bytesWritten);
+				}
+
 				return IsApplicable;
 			}
 
