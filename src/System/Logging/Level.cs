@@ -18,12 +18,10 @@ namespace Microsoft.Omex.System.Logging
 			LogLevel = level;
 		}
 
-
 		/// <summary>
 		/// Level value
 		/// </summary>
 		public Levels.LogLevel LogLevel { get; }
-
 
 		/// <summary>
 		/// Override equals
@@ -41,7 +39,6 @@ namespace Microsoft.Omex.System.Logging
 			return level.LogLevel == LogLevel;
 		}
 
-
 		/// <summary>
 		/// Get hash code
 		/// </summary>
@@ -50,7 +47,6 @@ namespace Microsoft.Omex.System.Logging
 		{
 			return LogLevel.GetHashCode();
 		}
-
 
 		/// <summary>
 		/// Override == operator
@@ -63,7 +59,6 @@ namespace Microsoft.Omex.System.Logging
 			return l1.Equals(l2);
 		}
 
-
 		/// <summary>
 		/// Override != operator
 		/// </summary>
@@ -74,7 +69,6 @@ namespace Microsoft.Omex.System.Logging
 		{
 			return !l1.Equals(l2);
 		}
-
 
 		/// <summary>
 		/// String representaion of the level

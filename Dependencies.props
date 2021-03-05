@@ -1,50 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup Label="Package Versions">
-    <MicrosoftNetTestSdkVersion>15.9.0</MicrosoftNetTestSdkVersion>
-    <MicrosoftOfficeMarketplaceTimedScopeGenVersion>1.0.589</MicrosoftOfficeMarketplaceTimedScopeGenVersion>
-    <XunitRunnerVisualStudioVersion>2.4.1</XunitRunnerVisualStudioVersion>
-    <MicrosoftSourceLinkVstsGitVersion>1.0.0-beta-63127-02</MicrosoftSourceLinkVstsGitVersion>
-    <MicrosoftSourceLinkGitHubVersion>1.0.0-beta2-18618-05</MicrosoftSourceLinkGitHubVersion>
+  <PropertyGroup Label="Package Versions. AutoUpdate">
+    <Moq_Version>4.16.1</Moq_Version>
+    <Microsoft_AspNetCore_Hosting_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Hosting_Abstractions_Version>
+    <Microsoft_AspNetCore_Hosting_Version>2.2.7</Microsoft_AspNetCore_Hosting_Version>
+    <Microsoft_AspNetCore_Http_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Http_Abstractions_Version>
+    <Microsoft_AspNetCore_Http_Version>2.2.2</Microsoft_AspNetCore_Http_Version>
+    <Microsoft_Azure_DocumentDB_Version>2.13.1</Microsoft_Azure_DocumentDB_Version>
+    <Microsoft_Net_Test_Sdk_Version>16.9.1</Microsoft_Net_Test_Sdk_Version>
+    <Microsoft_SourceLink_GitHub_Version>1.0.0</Microsoft_SourceLink_GitHub_Version>
+    <Microsoft_SourceLink_AzureRepos_Git_Version>1.0.0</Microsoft_SourceLink_AzureRepos_Git_Version>
+    <MSTest_TestAdapter_Version>2.2.1</MSTest_TestAdapter_Version>
+    <MSTest_TestFramework_Version>2.2.1</MSTest_TestFramework_Version>
+    <System_Configuration_ConfigurationManager_Version>5.0.0</System_Configuration_ConfigurationManager_Version>
+    <System_ServiceModel_Primitives_Version>4.8.1</System_ServiceModel_Primitives_Version>
+    <System_Threading_Tasks_Version>4.3.0</System_Threading_Tasks_Version>
+    <Xunit_Runner_VisualStudio_Version>2.4.3</Xunit_Runner_VisualStudio_Version>
   </PropertyGroup>
-  <PropertyGroup Label="Package Versions: Pinned">
-    <BondCoreCSharpVersion>6.0.0</BondCoreCSharpVersion>
-    <MicrosoftAspNetMvcVersion>5.2.3</MicrosoftAspNetMvcVersion>
-    <MicrosoftAspNetWebApiCoreVersion>5.2.3</MicrosoftAspNetWebApiCoreVersion>
-    <MicrosoftAspNetWebApiCorsVersion>5.2.3</MicrosoftAspNetWebApiCorsVersion>
-    <MicrosoftAspNetWebApiWebHostVersion>5.2.3</MicrosoftAspNetWebApiWebHostVersion>
-    <MicrosoftAzureDataLakeStoreVersion>1.1.3</MicrosoftAzureDataLakeStoreVersion>
-    <MicrosoftAzureDocumentDbVersion>2.5.1</MicrosoftAzureDocumentDbVersion>
-    <MicrosoftGraphVersion>1.15.0</MicrosoftGraphVersion>
-    <MicrosoftIdentityClientVersion>2.1.0-preview</MicrosoftIdentityClientVersion>
-    <MicrosoftIdentityModelClientsActiveDirectoryVersion>3.13.8</MicrosoftIdentityModelClientsActiveDirectoryVersion>
-    <MicrosoftOfficeMSOTagUtilsVersion>16.0.7412.5176-preview</MicrosoftOfficeMSOTagUtilsVersion>
-    <MoqVersion>4.5.22</MoqVersion>
-    <PollySignedVersion>4.3.0</PollySignedVersion>
-    <StackExchangeRedisStrongNameVersion>1.2.6</StackExchangeRedisStrongNameVersion>
-    <SystemCollectionsImmutableVersion>1.2.0</SystemCollectionsImmutableVersion>
-    <SystemConfigurationConfigurationManager>4.5.0</SystemConfigurationConfigurationManager>
-    <XunitAssertVersion>2.4.1</XunitAssertVersion>
-    <XunitCoreVersion>2.4.1</XunitCoreVersion>
+  <PropertyGroup Label="Package Versions. Pinned">
+    <Microsoft_Azure_DocumentDb_Version>2.5.1</Microsoft_Azure_DocumentDb_Version>
+    <Xunit_Assert_Version>2.4.1</Xunit_Assert_Version>
+    <Xunit_Core_Version>2.4.1</Xunit_Core_Version>
   </PropertyGroup>
-  <PropertyGroup Label="Package Versions Core">
-    <MoqVersionCore>4.10.1</MoqVersionCore>
-    <SystemServiceModelPrimitivesVersionCore>4.5.3</SystemServiceModelPrimitivesVersionCore>
-    <SystemServiceModelHttpVersionCore>4.5.3</SystemServiceModelHttpVersionCore>
-    <SystemServiceModelNetTcpVersionCore>4.5.3</SystemServiceModelNetTcpVersionCore>
-    <SystemCollectionsImmutableVersionCore>1.5.0</SystemCollectionsImmutableVersionCore>
-    <MicrosoftAspNetCoreMvcAbstractionsVersionCore>2.2.0</MicrosoftAspNetCoreMvcAbstractionsVersionCore>
-    <MicrosoftAspNetCoreHttpAbstractionsVersionCore>2.2.0</MicrosoftAspNetCoreHttpAbstractionsVersionCore>
-    <MicrosoftAzureDocumentDbVersionCore>2.5.1</MicrosoftAzureDocumentDbVersionCore>
-    <NewtonsoftJsonVersionCore>12.0.2</NewtonsoftJsonVersionCore>
-    <XunitAssertVersionCore>2.4.1</XunitAssertVersionCore>
-    <XunitCoreVersionCore>2.4.1</XunitCoreVersionCore>
-    <MicrosoftNetHttpHeadersVersionCore>2.2.0</MicrosoftNetHttpHeadersVersionCore>
-    <MicrosoftAspNetCoreHttpVersionCore>2.2.0</MicrosoftAspNetCoreHttpVersionCore>
-    <MicrosoftAzureCosmosDBBulkExecutorVersionCore>2.2.0-preview2</MicrosoftAzureCosmosDBBulkExecutorVersionCore>
-    <WindowsAzureStorageVersionCore>9.3.3</WindowsAzureStorageVersionCore>
-    <SystemThreadingTasks>4.0.11</SystemThreadingTasks>
-    <MSTestAdapterVersion>1.4.0</MSTestAdapterVersion>
-    <MSTestFrameworkVersion>1.4.0</MSTestFrameworkVersion>
+  <PropertyGroup Label="Packages for Omex Extensions. AutoUpdate">
+    <Microsoft_Extensions_DependencyInjection_Version>5.0.1</Microsoft_Extensions_DependencyInjection_Version>
+    <Microsoft_Extensions_DependencyInjection_Abstractions_Version>5.0.0</Microsoft_Extensions_DependencyInjection_Abstractions_Version>
+    <Microsoft_Extensions_Diagnostics_HealthChecks_Version>5.0.3</Microsoft_Extensions_Diagnostics_HealthChecks_Version>
+    <Microsoft_Extensions_Hosting_Version>5.0.0</Microsoft_Extensions_Hosting_Version>
+    <Microsoft_Extensions_Hosting_Abstractions_Version>5.0.0</Microsoft_Extensions_Hosting_Abstractions_Version>
+    <Microsoft_Extensions_Http_Version>5.0.0</Microsoft_Extensions_Http_Version>
+    <Microsoft_Extensions_Logging_Version>5.0.0</Microsoft_Extensions_Logging_Version>
+    <Microsoft_Extensions_Logging_Abstractions_Version>5.0.0</Microsoft_Extensions_Logging_Abstractions_Version>
+    <Microsoft_Extensions_Logging_Console_Version>5.0.0</Microsoft_Extensions_Logging_Console_Version>
+    <Microsoft_Extensions_ObjectPool_Version>5.0.3</Microsoft_Extensions_ObjectPool_Version>
+    <Microsoft_Extensions_Options_Version>5.0.0</Microsoft_Extensions_Options_Version>
+    <System_Diagnostics_DiagnosticSource_Version>5.0.1</System_Diagnostics_DiagnosticSource_Version>
+    <System_Threading_Tasks_Extensions_Version>4.5.4</System_Threading_Tasks_Extensions_Version>
+    <System_Diagnostics_DiagnosticSource_Version>5.0.1</System_Diagnostics_DiagnosticSource_Version>
+  </PropertyGroup>
+  <PropertyGroup Label="ServiceFabric packages for Omex Extensions">
+    <Microsoft_ServiceFabric_Version>7.2.434</Microsoft_ServiceFabric_Version>
+    <Microsoft_ServiceFabric_Services_Version>4.2.434</Microsoft_ServiceFabric_Services_Version>
+    <Microsoft_ServiceFabric_Services_Remoting_Version>4.2.434</Microsoft_ServiceFabric_Services_Remoting_Version>
+    <Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>4.2.434</Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>
+    <Microsoft_ServiceFabric_AspNetCore_Abstractions_Version>4.2.434</Microsoft_ServiceFabric_AspNetCore_Abstractions_Version>
+    <ServiceFabric_Mocks_Version>4.2.6</ServiceFabric_Mocks_Version>
   </PropertyGroup>
 </Project>

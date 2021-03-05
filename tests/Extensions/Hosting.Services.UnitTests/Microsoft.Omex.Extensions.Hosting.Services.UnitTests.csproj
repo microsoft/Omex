@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="ServiceFabric.Mocks" Version="$(ServiceFabric_Mocks_Version)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Extensions\Hosting.Services\Microsoft.Omex.Extensions.Hosting.Services.csproj" />
+  </ItemGroup>
+</Project>

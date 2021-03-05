@@ -16,7 +16,6 @@ namespace Microsoft.Omex.Gating
 		/// <remarks>Creates a baseline gated code</remarks>
 		public GatedCode() => IsBaselineCode = true;
 
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GatedCode"/> class.
 		/// </summary>
@@ -48,7 +47,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -59,18 +57,15 @@ namespace Microsoft.Omex.Gating
 			Gates = combination ?? new GatesNone();
 		}
 
-
 		/// <summary>
 		/// Does this code snippet belong outside gates, i.e. is baseline code
 		/// </summary>
 		public bool IsBaselineCode { get; }
 
-
 		/// <summary>
 		/// Gate(s) the code snippet belongs to
 		/// </summary>
 		public GateCombination Gates { get; }
-
 
 		/// <summary>
 		/// Mode that the gated code should be ran in
@@ -85,18 +80,15 @@ namespace Microsoft.Omex.Gating
 			/// gate context about the code being run</remarks>
 			None = 0,
 
-
 			/// <summary>
 			/// Enter a gated context scope before running the code
 			/// </summary>
 			EnterScope,
 
-
 			/// <summary>
 			/// Exit a gated context scope after running the code
 			/// </summary>
 			ExitScope,
-
 
 			/// <summary>
 			/// Run the gated code inside a gate context scope

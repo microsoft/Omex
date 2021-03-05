@@ -20,7 +20,6 @@ namespace Microsoft.Omex.Gating
 		/// <remarks>Creates a baseline gated function</remarks>
 		public GatedAsyncFunc(Func<Task<TOut>> func) => Func = func;
 
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GatedAsyncFunc{TOut}"/> class.
 		/// </summary>
@@ -28,7 +27,6 @@ namespace Microsoft.Omex.Gating
 		/// <param name="func">the function to perform</param>
 		public GatedAsyncFunc(IGate gate, Func<Task<TOut>> func)
 			: base(gate) => Func = func;
-
 
 		/// <summary>
 		/// Constructor
@@ -38,13 +36,11 @@ namespace Microsoft.Omex.Gating
 		public GatedAsyncFunc(GateCombination combination, Func<Task<TOut>> func)
 			: base(combination) => Func = func;
 
-
 		/// <summary>
 		/// The function to perform
 		/// </summary>
 		public Func<Task<TOut>> Func { get; }
 	}
-
 
 	/// <summary>
 	/// A gated function, allows for conditionally executing code depending on the gate it
@@ -61,7 +57,6 @@ namespace Microsoft.Omex.Gating
 		/// <remarks>Creates a baseline gated function</remarks>
 		public GatedAsyncFunc(Func<TIn, Task<TOut>> func) => Func = func;
 
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GatedAsyncFunc{TIn, TOut}"/> class.
 		/// </summary>
@@ -69,7 +64,6 @@ namespace Microsoft.Omex.Gating
 		/// <param name="func">The function to perform</param>
 		public GatedAsyncFunc(IGate gate, Func<TIn, Task<TOut>> func)
 			: base(gate) => Func = func;
-
 
 		/// <summary>
 		/// The function to perform

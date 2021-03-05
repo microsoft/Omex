@@ -19,18 +19,15 @@ namespace Microsoft.Omex.CodeGenerators.GateGen
 			Gates = new SortedDictionary<string, GateItem>(StringComparer.OrdinalIgnoreCase);
 		}
 
-
 		/// <summary>
 		/// Gate name
 		/// </summary>
 		public string Name { get; set; }
 
-
 		/// <summary>
 		/// Name of the gate group (or section), used to group gates
 		/// </summary>
 		public string GateGroupName { get; set; }
-
 
 		/// <summary>
 		/// Set of gates that should be listed below the gate group

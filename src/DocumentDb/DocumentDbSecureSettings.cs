@@ -30,12 +30,10 @@ namespace Microsoft.Omex.DocumentDb
 			m_lazyKey = new Lazy<string>(() => SecureKey.ToPlainText(), LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 
-
 		/// <summary>
 		/// Document db key.
 		/// </summary>
 		public override string Key => m_lazyKey.Value;
-
 
 		/// <summary>
 		/// Document db key in secure string.

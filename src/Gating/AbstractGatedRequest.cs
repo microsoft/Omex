@@ -19,42 +19,35 @@ namespace Microsoft.Omex.Gating
 		{
 		}
 
-
 		/// <summary>
 		/// The calling client (if any)
 		/// </summary>
 		public virtual GatedClient CallingClient { get; set; }
-
 
 		/// <summary>
 		/// The current market
 		/// </summary>
 		public virtual string Market { get; set; }
 
-
 		/// <summary>
 		/// Current users
 		/// </summary>
 		public virtual IEnumerable<GatedUser> Users { get; set; }
-
 
 		/// <summary>
 		/// The current environment
 		/// </summary>
 		public virtual string Environment { get; set; }
 
-
 		/// <summary>
 		/// The current query parameters
 		/// </summary>
 		public virtual IDictionary<string, HashSet<string>> QueryParameters { get; set; }
 
-
 		/// <summary>
 		/// The cloud contexts
 		/// </summary>
 		public virtual HashSet<string> CloudContexts { get; set; }
-
 
 		/// <summary>
 		/// Update the gate request based on the set of expected clients
@@ -64,13 +57,11 @@ namespace Microsoft.Omex.Gating
 		{
 		}
 
-
 		/// <summary>
 		/// Gets the browser's type and browser's version.
 		/// </summary>
 		/// <returns>A Tuple(pair) of Browser and its version.</returns>
 		public virtual Tuple<string, int> GetUserAgentBrowser() => null;
-
 
 		/// <summary>
 		/// Is the gate request part of a known ip range
@@ -80,18 +71,15 @@ namespace Microsoft.Omex.Gating
 		/// <returns>true if part of a known ip range, false otherwise</returns>
 		public abstract bool IsPartOfKnownIPRange(INamedIPAddresses knownIpAddresses, string ipRange);
 
-
 		/// <summary>
 		/// Set of requested gate ids
 		/// </summary>
 		public virtual HashSet<string> RequestedGateIds { get; set; }
 
-
 		/// <summary>
 		/// Set of blocked gate ids.
 		/// </summary>
 		public virtual HashSet<string> BlockedGateIds { get; set; }
-
 
 		/// <summary>
 		/// Dictionary of ip ranges the request is part of

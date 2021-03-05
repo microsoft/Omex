@@ -28,7 +28,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration
 			return new FileResource(new UnitTestTextFile(true, true, GetEmbeddedResourceAsString(resourceName, type)), "TestFolder", resourceName);
 		}
 
-
 		/// <summary>
 		/// Loads embedded resource
 		/// </summary>
@@ -53,7 +52,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Loads embedded resource as a byte array.
@@ -85,7 +83,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration
 			return result.ToArray();
 		}
 
-
 		/// <summary>
 		/// Loads an embedded resource as a FileResourceDetails object.
 		/// </summary>
@@ -97,7 +94,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration
 			return CreateResourceDetails(GetEmbeddedResourceAsByteArray(resourceName, type));
 		}
 
-
 		/// <summary>
 		/// Creates the blob resource details.
 		/// </summary>
@@ -107,7 +103,6 @@ namespace Microsoft.Omex.System.UnitTests.Shared.Configuration
 		{
 			return CreateResourceDetails(Encoding.UTF8.GetBytes(contents));
 		}
-
 
 		/// <summary>
 		/// Creates the file resource details.

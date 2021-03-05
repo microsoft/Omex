@@ -17,7 +17,6 @@ namespace Microsoft.Omex.System.Caching
 		/// <returns>The object value.</returns>
 		object Get(Type type);
 
-
 		/// <summary>
 		/// Gets or adds a new cache entry.
 		/// </summary>
@@ -26,7 +25,6 @@ namespace Microsoft.Omex.System.Caching
 		/// <param name="wasAdded"><c>true</c> if the entry was added to the cache; <c>false</c> otherwise.</param>
 		/// <returns>The entry value.</returns>
 		object GetOrAdd(Type type, Func<object> value, out bool wasAdded);
-
 
 		/// <summary>
 		/// Gets or updates a cache entry.

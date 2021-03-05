@@ -25,12 +25,10 @@ namespace Microsoft.Omex.System.Monads
 			TimeLimit = timeLimit;
 		}
 
-
 		/// <summary>
 		/// Backoff Policy
 		/// </summary>
 		public virtual IBackoffPolicy BackoffPolicy { get; }
-
 
 		/// <summary>
 		/// Parameter used to calculate backoff. Usually plays role as a factor in delay calculation expression.
@@ -42,18 +40,15 @@ namespace Microsoft.Omex.System.Monads
 		/// </remarks>
 		public virtual int Factor { get; }
 
-
 		/// <summary>
 		/// Number of attempts allowed
 		/// </summary>
 		public virtual int RetryLimit { get; }
 
-
 		/// <summary>
 		/// Total time allowed for retrying
 		/// </summary>
 		public virtual TimeSpan? TimeLimit { get; }
-
 
 		/// <summary>
 		/// Don't use a retry policy

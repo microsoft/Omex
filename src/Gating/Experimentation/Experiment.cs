@@ -21,7 +21,6 @@ namespace Microsoft.Omex.Gating.Experimentation
 
 		#endregion
 
-
 		/// <summary>
 		/// Adds a gate
 		/// </summary>
@@ -43,14 +42,12 @@ namespace Microsoft.Omex.Gating.Experimentation
 			return true;
 		}
 
-
 		#region Member variables
 
 		/// <summary>
 		/// All gates in the DataSet
 		/// </summary>
 		public IEnumerable<IGate> Gates => m_gates;
-
 
 		/// <summary>
 		/// All gates in the DataSet

@@ -21,14 +21,12 @@ namespace Microsoft.Omex.Gating
 		/// <param name="loader">GateDataSet loader</param>
 		public Gates(IConfigurationDataSetLoader<GateDataSet> loader) => m_gateDataSetLoader = loader;
 
-
 		#region Gates retrieval
 
 		/// <summary>
 		/// All gate names
 		/// </summary>
 		public IEnumerable<string> GateNames => GateDataSet?.GateNames ?? Enumerable.Empty<string>();
-
 
 		/// <summary>
 		/// Get a gate by name
@@ -47,7 +45,6 @@ namespace Microsoft.Omex.Gating
 			return GateDataSet?.GetGate(gateName);
 		}
 
-
 		/// <summary>
 		/// Lookup a gate based on its key.
 		/// </summary>
@@ -55,25 +52,21 @@ namespace Microsoft.Omex.Gating
 		/// <returns>Gate instance if found, otherwise null.</returns>
 		public IGate GetGateByKey(int key) => GateDataSet?.GetGateByKey(key);
 
-
 		/// <summary>
 		/// Gate DataSet loader
 		/// </summary>
 		private readonly IConfigurationDataSetLoader<GateDataSet> m_gateDataSetLoader;
-
 
 		/// <summary>
 		/// Instance of the gate DataSet
 		/// </summary>
 		public IGateDataSet GateDataSet => m_gateDataSetLoader?.LoadedDataSet;
 
-
 		/// <summary>
 		/// Sets the data set retriever for cached gate
 		/// </summary>
 		public static void SetDataSetRetrieverForCachedGate(Func<IGateDataSet> retriever) => CachedGate.DataSetRetriever = retriever;
 		#endregion
-
 
 		#region Protected classes
 
@@ -88,12 +81,10 @@ namespace Microsoft.Omex.Gating
 			/// <param name="name">name of the gate</param>
 			public CachedGate(string name) => Name = name;
 
-
 			/// <summary>
 			/// Data set retriever, used to update the gate when the data set is re-loaded
 			/// </summary>
 			public static Func<IGateDataSet> DataSetRetriever { get; set; }
-
 
 			/// <summary>
 			/// Get the gate from the DataSet
@@ -130,18 +121,15 @@ namespace Microsoft.Omex.Gating
 				}
 			}
 
-
 			/// <summary>
 			/// The instance of the gate from the DataSet
 			/// </summary>
 			private IGate m_dataSetGate;
 
-
 			/// <summary>
 			/// The last time the gate was loaded into the DataSet
 			/// </summary>
 			private DateTime m_lastReload = DateTime.MinValue;
-
 
 			#region IGate Members
 			/// <summary>
@@ -149,60 +137,50 @@ namespace Microsoft.Omex.Gating
 			/// </summary>
 			public IDictionary<string, RequiredClient> ClientVersions => Gate.ClientVersions;
 
-
 			/// <summary>
 			/// Set of markets that apply for this gate
 			/// </summary>
 			public HashSet<string> Markets => Gate.Markets;
-
 
 			/// <summary>
 			/// Set of query parameters that apply for this gate
 			/// </summary>
 			public IDictionary<string, HashSet<string>> BlockedQueryParameters => Gate.BlockedQueryParameters;
 
-
 			/// <summary>
 			/// Set of environments that apply for this gate
 			/// </summary>
 			public HashSet<string> Environments => Gate.Environments;
-
 
 			/// <summary>
 			/// The name of the current gate
 			/// </summary>
 			public string Name { get; }
 
-
 			/// <summary>
 			/// Fully qualified name, including parent Gate and Experiment information if applicable.
 			/// </summary>
 			public string FullyQualifiedName => Gate.FullyQualifiedName;
-
 
 			/// <summary>
 			/// Unique lookup key for this gate.
 			/// </summary>
 			public int Key => Gate.Key;
 
-
 			/// <summary>
 			/// Any parent gate this gate inherits from
 			/// </summary>
 			public IGate ParentGate => Gate.ParentGate;
-
 
 			/// <summary>
 			/// Set of applicable users for the gate
 			/// </summary>
 			public HashSet<string> Users => Gate.Users;
 
-
 			/// <summary>
 			/// Set of user group types applicable to the gate
 			/// </summary>
 			public UserGroupTypes UserTypes => Gate.UserTypes;
-
 
 			/// <summary>
 			/// A secure gate is a gate that cannot be requested using
@@ -210,54 +188,45 @@ namespace Microsoft.Omex.Gating
 			/// </summary>
 			public bool IsSecureGate => Gate.IsSecureGate;
 
-
 			/// <summary>
 			/// A toggle that enables/disables a gate.
 			/// </summary>
 			public bool IsGateEnabled => Gate.IsGateEnabled;
-
 
 			/// <summary>
 			/// Set of host environments (CommonEnvironmentName) that apply for this gate
 			/// </summary>
 			public HashSet<string> HostEnvironments => Gate.HostEnvironments;
 
-
 			/// <summary>
 			/// Set of services and corresponding service flag.
 			/// </summary>
 			public IDictionary<string, GatedServiceTypes> Services => Gate.Services;
-
 
 			/// <summary>
 			/// Set of known IP ranges that apply for this gate
 			/// </summary>
 			public HashSet<string> KnownIPRanges => Gate.KnownIPRanges;
 
-
 			/// <summary>
 			/// Set of browsers and corresponding versions that are allowed for this gate.
 			/// </summary>
 			public IDictionary<string, HashSet<int>> AllowedBrowsers => Gate.AllowedBrowsers;
-
 
 			/// <summary>
 			/// Set of browsers and corresponding versions for which this gate will be blocked.
 			/// </summary>
 			public IDictionary<string, HashSet<int>> BlockedBrowsers => Gate.BlockedBrowsers;
 
-
 			/// <summary>
 			/// Gets all the release gates for a release plan.
 			/// </summary>
 			public IGate[] ReleasePlan => Gate.ReleasePlan;
 
-
 			/// <summary>
 			/// If the gate is a release gate, name of the gate with the release plan containing this gate.
 			/// </summary>
 			public string RepleasePlanGateName => Gate.RepleasePlanGateName;
-
 
 			/// <summary>
 			/// Returns true if any of the markets includes a specified region.
@@ -266,25 +235,21 @@ namespace Microsoft.Omex.Gating
 			/// <returns>True if any of the markets includes a specified region; false otherwise.</returns>
 			public bool IncludesRegion(string region) => Gate.IncludesRegion(region);
 
-
 			/// <summary>
 			/// Start Date of the gate
 			/// </summary>
 			public DateTime? StartDate => Gate.StartDate;
-
 
 			/// <summary>
 			/// End Date of the gate
 			/// </summary>
 			public DateTime? EndDate => Gate.EndDate;
 
-
 			/// <summary>
 			/// Information about the experiment
 			/// </summary>
 			/// <remarks> it is null for the non experimental gate</remarks>
 			public IExperimentInfo ExperimentInfo => Gate.ExperimentInfo;
-
 
 			/// <summary>
 			/// Set of cloud contexts of the gate

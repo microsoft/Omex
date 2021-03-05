@@ -19,7 +19,6 @@ namespace Microsoft.Omex.Gating
 		/// <remarks>Creates a baseline gated function</remarks>
 		public GatedFunc(Func<T> func) => Func = func;
 
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GatedFunc{T}"/> class.
 		/// </summary>
@@ -27,7 +26,6 @@ namespace Microsoft.Omex.Gating
 		/// <param name="func">the function to perform</param>
 		public GatedFunc(IGate gate, Func<T> func)
 			: base(gate) => Func = func;
-
 
 		/// <summary>
 		/// Constructor
@@ -37,13 +35,11 @@ namespace Microsoft.Omex.Gating
 		public GatedFunc(GateCombination combination, Func<T> func)
 			: base(combination) => Func = func;
 
-
 		/// <summary>
 		/// The function to perform
 		/// </summary>
 		public Func<T> Func { get; }
 	}
-
 
 	/// <summary>
 	/// A gated function, allows for conditionally executing code depending on the gate it
@@ -59,7 +55,6 @@ namespace Microsoft.Omex.Gating
 		/// <param name="func">the function to perform</param>
 		public GatedFunc(Func<T1, T2> func) => Func = func;
 
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GatedFunc{T1, T2}"/> class.
 		/// </summary>
@@ -67,7 +62,6 @@ namespace Microsoft.Omex.Gating
 		/// <param name="func">The function to perform</param>
 		public GatedFunc(IGate gate, Func<T1, T2> func)
 			: base(gate) => Func = func;
-
 
 		/// <summary>
 		/// The function to perform

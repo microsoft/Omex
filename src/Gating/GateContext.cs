@@ -57,42 +57,35 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		public IGatedRequest Request { get; protected set; }
 
-
 		/// <summary>
 		/// The machine information
 		/// </summary>
 		protected IMachineInformation MachineInformation { get; set; }
-
 
 		/// <summary>
 		/// The experiment context
 		/// </summary>
 		protected IExperimentContext ExperimentContext { get; set; }
 
-
 		/// <summary>
 		/// The experiment context
 		/// </summary>
 		protected INamedIPAddresses KnownIpAddresses { get; set; }
-
 
 		/// <summary>
 		/// Known applicable gates
 		/// </summary>
 		private ConcurrentDictionary<string, byte> KnownApplicableGates { get; set; }
 
-
 		/// <summary>
 		/// Known blocked gates
 		/// </summary>
 		private ConcurrentDictionary<string, byte> KnownBlockedGates { get; set; }
 
-
 		/// <summary>
 		/// All gates
 		/// </summary>
 		private Gates AllGates { get; }
-
 
 		/// <summary>
 		/// Is the gate applicable for the current context
@@ -130,7 +123,6 @@ namespace Microsoft.Omex.Gating
 			return grantAccess;
 		}
 
-
 		/// <summary>
 		/// Is this a known applicable gate
 		/// </summary>
@@ -160,7 +152,6 @@ namespace Microsoft.Omex.Gating
 
 			return false;
 		}
-
 
 		/// <summary>
 		/// Is this a known blocked gate
@@ -192,7 +183,6 @@ namespace Microsoft.Omex.Gating
 			return false;
 		}
 
-
 		/// <summary>
 		/// Update dictionary containing gates
 		/// </summary>
@@ -210,7 +200,6 @@ namespace Microsoft.Omex.Gating
 				dictionary.AddOrUpdate(gate, _ => 0, (_, __) => 0);
 			}
 		}
-
 
 		/// <summary>
 		/// Is the gate applicable for the current context
@@ -249,7 +238,6 @@ namespace Microsoft.Omex.Gating
 			return grantAccess;
 		}
 
-
 		/// <summary>
 		/// Enter a scope of code that is gated if it is applicable
 		/// </summary>
@@ -265,7 +253,6 @@ namespace Microsoft.Omex.Gating
 			InstanceCount count = m_gates.GetOrAdd(gate.Name, s => new InstanceCount(gate));
 			count.Increment();
 		}
-
 
 		/// <summary>
 		/// Exit a scope of code that is gateed
@@ -295,7 +282,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// The current active gates for the context
 		/// </summary>
@@ -314,14 +300,12 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// The collection of all gates that have been used for the current context
 		/// </summary>
 		/// <returns>collection of all gates that have been used</returns>
 		public IEnumerable<IGate> ActivatedGates => m_gates.Values.Select(instance => instance.Gate);
 		#endregion
-
 
 		#region Determine access
 
@@ -390,7 +374,6 @@ namespace Microsoft.Omex.Gating
 			return grantAccess;
 		}
 
-
 		/// <summary>
 		/// Is the host environment part of the gate criteria
 		/// </summary>
@@ -415,7 +398,6 @@ namespace Microsoft.Omex.Gating
 
 			return grantAccess;
 		}
-
 
 		/// <summary>
 		/// Does the service have access.
@@ -475,7 +457,6 @@ namespace Microsoft.Omex.Gating
 			return grantAccess;
 		}
 
-
 		/// <summary>
 		/// Is the ip address of the request part of the gate criteria
 		/// </summary>
@@ -509,7 +490,6 @@ namespace Microsoft.Omex.Gating
 			return grantAccess;
 		}
 
-
 		/// <summary>
 		/// Is the market of the request part of the gate criteria
 		/// </summary>
@@ -535,7 +515,6 @@ namespace Microsoft.Omex.Gating
 			return grantAccess;
 		}
 
-
 		/// <summary>
 		/// Is the environment of the request part of the gate criteria
 		/// </summary>
@@ -560,7 +539,6 @@ namespace Microsoft.Omex.Gating
 
 			return grantAccess;
 		}
-
 
 		/// <summary>
 		/// Does the requesting client have access to the gate
@@ -590,7 +568,6 @@ namespace Microsoft.Omex.Gating
 
 			return grantAccess;
 		}
-
 
 		/// <summary>
 		/// Is the requesting client version in range?
@@ -660,7 +637,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Is the requesting in the audience group?
 		/// </summary>
@@ -706,7 +682,6 @@ namespace Microsoft.Omex.Gating
 			}
 		}
 
-
 		/// <summary>
 		/// Does the browser have access.
 		/// </summary>
@@ -730,7 +705,6 @@ namespace Microsoft.Omex.Gating
 			return true;
 		}
 
-
 		private bool DoesCloudContextHaveAccess(IGate gate)
 		{
 			bool grantAccess = true;
@@ -750,7 +724,6 @@ namespace Microsoft.Omex.Gating
 
 			return grantAccess;
 		}
-
 
 		/// <summary>
 		/// Checks the gate's applicability based on the user agent browser. This is a common method which checks gate's applicability for
@@ -809,7 +782,6 @@ namespace Microsoft.Omex.Gating
 			return true;
 		}
 
-
 		/// <summary>
 		/// Get the gated client as a string for logging purposes
 		/// </summary>
@@ -824,7 +796,6 @@ namespace Microsoft.Omex.Gating
 
 			return string.Format(CultureInfo.InvariantCulture, "{0},{1}", client.Name ?? "<NULL>", client.Version != null ? client.Version.ToString() : "<NONE>");
 		}
-
 
 		/// <summary>
 		/// Get the list of allowed clients as a string for logging purposes
@@ -854,7 +825,6 @@ namespace Microsoft.Omex.Gating
 
 			return builder.ToString();
 		}
-
 
 		/// <summary>
 		/// Does the user have access to the gate
@@ -940,7 +910,6 @@ namespace Microsoft.Omex.Gating
 			return grantAccess;
 		}
 
-
 		/// <summary>
 		/// Is the current part of the gate criteria
 		/// </summary>
@@ -968,7 +937,6 @@ namespace Microsoft.Omex.Gating
 		}
 		#endregion
 
-
 		#region Member variables
 		/// <summary>
 		/// Dictionary of gates that are or have been executed during the use of the gate context.
@@ -976,7 +944,6 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		private readonly ConcurrentDictionary<string, InstanceCount> m_gates = new ConcurrentDictionary<string, InstanceCount>();
 		#endregion
-
 
 		#region GateScopes
 		/// <summary>
@@ -989,18 +956,15 @@ namespace Microsoft.Omex.Gating
 			/// </summary>
 			private int m_value;
 
-
 			/// <summary>
 			/// The actual integer value
 			/// </summary>
 			public int Value => m_value;
 
-
 			/// <summary>
 			/// The gate.
 			/// </summary>
 			public IGate Gate { get; }
-
 
 			/// <summary>
 			/// Increment the value
@@ -1008,13 +972,11 @@ namespace Microsoft.Omex.Gating
 			/// <returns>the incremented value</returns>
 			public int Increment() => Interlocked.Increment(ref m_value);
 
-
 			/// <summary>
 			/// Decrement the value
 			/// </summary>
 			/// <returns>the decremented value</returns>
 			public int Decrement() => Interlocked.Decrement(ref m_value);
-
 
 			/// <summary>
 			/// Constructor.

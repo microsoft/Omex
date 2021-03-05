@@ -91,7 +91,6 @@ namespace Microsoft.Omex.CodeGenerators.GateGen
 			return 0;
 		}
 
-
 		/// <summary>
 		/// Build up the tree structure of the gates from the gate cache
 		/// </summary>
@@ -122,7 +121,6 @@ namespace Microsoft.Omex.CodeGenerators.GateGen
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Output tree of gates to settings file
@@ -165,7 +163,6 @@ namespace Microsoft.Omex.CodeGenerators.GateGen
 
 			return builder.ToString();
 		}
-
 
 		/// <summary>
 		/// Loads GateDataSet from file

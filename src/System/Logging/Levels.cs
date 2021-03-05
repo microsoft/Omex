@@ -13,30 +13,25 @@ namespace Microsoft.Omex.System.Logging
 		/// </summary>
 		public static readonly Level Error = new Level(LogLevel.Error);
 
-
 		/// <summary>
 		/// Info level
 		/// </summary>
 		public static readonly Level Info = new Level(LogLevel.Info);
-
 
 		/// <summary>
 		/// Spam level
 		/// </summary>
 		public static readonly Level Spam = new Level(LogLevel.Spam);
 
-
 		/// <summary>
 		/// Verbose level
 		/// </summary>
 		public static readonly Level Verbose = new Level(LogLevel.Verbose);
 
-
 		/// <summary>
 		/// Warning level
 		/// </summary>
 		public static readonly Level Warning = new Level(LogLevel.Warning);
-
 
 		/// <summary>
 		/// Enum defining the log levels
@@ -54,7 +49,6 @@ namespace Microsoft.Omex.System.Logging
 			/// <summary> The Warning log level </summary>
 			Warning = 4,
 		}
-
 
 		/// <summary>
 		/// Convert LogLevel to Level

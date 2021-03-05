@@ -1,46 +1,67 @@
 ﻿<Project>
   <Import Project="$(MSBuildThisFileDirectory)\Dependencies.props" />
-  <PropertyGroup>
-    <NetCoreVersion>netcoreapp2.1</NetCoreVersion>
-    <NetStandardVersion>netstandard2.0</NetStandardVersion>
-    <NetFrameworkVersion>net461</NetFrameworkVersion> <!-- Framework version that should be targeted alongside with .net standard -->
-    <LegacyTargetFrameworks>net452;net45</LegacyTargetFrameworks> <!-- Legacy version, required by internal consumers of packages -->
-    <TargetFrameworks>$(LegacyTargetFrameworks)</TargetFrameworks>
+  <PropertyGroup Label="Target Platforms" >
+    <NetCoreVersions>netcoreapp3.1;net5.0</NetCoreVersions>
+    <NetStandardVersions>netstandard2.0</NetStandardVersions>
+    <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
+    <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup Label="UnitTest Targets">
+    <NetFrameworkVersion>net472</NetFrameworkVersion>
+    <UnitTestTargetFrameworks>$(NetCoreVersions);$(NetFrameworkVersion)</UnitTestTargetFrameworks>
+    <UnitTestTargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions)</UnitTestTargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup Label="Project Settings" >
     <Platforms>AnyCPU</Platforms>
     <TargetPlatform>AnyCPU</TargetPlatform>
-    <PackageOutputPath>$(MSBuildThisFileDirectory)\nuget</PackageOutputPath>
-    <DocumentationFileValue>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFileValue>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(SignAssemblies)' == 'true'">
-    <SignAssembly>true</SignAssembly>
-    <DelaySign>true</DelaySign>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\ship.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <BaseOutputPath>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <!-- The release version should get updated on every new release -->
-    <Version>20.0.2</Version>
-    <PreReleaseSuffix Condition="'$(PreReleaseSuffix)' == ''">local</PreReleaseSuffix>
-    <PackageVersion Condition="'$(IsReleaseBuild)' == 'true'">$(Version)</PackageVersion>
-    <!-- Continuous integration version, which is updated on every build of the dev branch -->
-    <PackageVersion Condition="'$(IsReleaseBuild)' != 'true'">$(Version)-CI-$(PreReleaseSuffix)</PackageVersion>
-    <Authors>Microsoft Omex</Authors>
-    <Owners>Microsoft Omex</Owners>
-    <Company>Microsoft</Company>
-    <Copyright>Copyright © Microsoft</Copyright>
-    <Tags>Omex</Tags>
-    <Description>$(MSBuildProjectName)</Description>
-  </PropertyGroup>
-  <PropertyGroup>
     <ErrorReport>prompt</ErrorReport>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Label="Condition Variables" >
+    <IsNetStandard>$(NetStandardVersions.Contains('$(TargetFramework)'))</IsNetStandard>
+    <IsNetCore>$(NetCoreVersions.Contains('$(TargetFramework)'))</IsNetCore>
+    <IsNetFramework>false</IsNetFramework>
+    <IsNetFramework Condition="!$(IsNetStandard) And !$(IsNetCore)">true</IsNetFramework>
+  </PropertyGroup>
+  <PropertyGroup Label="Signing" >
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\OmexOpenSource.snk</AssemblyOriginatorKeyFile>
+    <StrongNameSuffix>, PublicKey=00240000048000009400000006020000002400005253413100040000010001004d77aff3ec12650e8979fb873e4b409556a1a650482e6d4dfcf9fea3c87dc334dc2f08ab4820ad3555b949a172553484f5f8fecd302db2907a5d8e3c33d394276c05e18865c5776e0c1f04bba8c4d3e4b12bc44b70e70dc076cc69611b04368d7eff2e83f5b016db366f9d572dad24f09adc6ae732802958048b69727561d1bd</StrongNameSuffix>
+  </PropertyGroup>
+  <PropertyGroup Label="Build Output" >
+    <BaseOutputPath>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)\nuget</PackageOutputPath>
+    <DocumentationFileValue>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFileValue>
+  </PropertyGroup>
+  <PropertyGroup Label="Versioning">
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- The release version should get updated on every new release -->
+    <Version>20.0.3</Version>
+    <PreReleaseSuffix Condition="'$(PreReleaseSuffix)' == ''">$([System.DateTime]::UtcNow.ToString(yyyyMMdd-HHmmss))</PreReleaseSuffix>
+    <PackageVersion Condition="'$(IsReleaseBuild)' == 'true'">$(Version)</PackageVersion>
+    <!-- Continuous integration version, which is updated on every build of the dev branch -->
+    <PackageVersion Condition="'$(IsReleaseBuild)' != 'true'">$(Version)-CI-$(PreReleaseSuffix)</PackageVersion>
+  </PropertyGroup>
+  <PropertyGroup Label="NuGet Properties">
+    <Authors>Microsoft</Authors>
+    <Company>Microsoft</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <Description>$(MSBuildProjectName)</Description>
+    <Tags>Omex</Tags>
+  </PropertyGroup>
+  <PropertyGroup Label="Debug Information" >
+    <EnableSourceControlManagerQueries Condition="'$(CommitSha)' != ''">false</EnableSourceControlManagerQueries>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
+    <RevisionId>$(CommitSha)</RevisionId>
     <!-- Don't need them due to source linking -->
     <IncludeSource>false</IncludeSource>
     <IncludeSymbols>true</IncludeSymbols>
@@ -51,9 +72,6 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <!-- Optional: Include the PDB in the built .nupkg -->
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-  </PropertyGroup>
-  <!-- Bad properties from old projects to make them work -->
-  <PropertyGroup>
-    <NoWarn>1591;NU5104</NoWarn>
+    <SourceRootLocation>$(MSBuildThisFileDirectory)</SourceRootLocation>
   </PropertyGroup>
 </Project>

@@ -20,7 +20,6 @@ namespace Microsoft.Omex.System.UnitTests.Diagnostics
 			Assert.Equal<string>(EmptyValue, machineInformation.AgentName);
 		}
 
-
 		[Fact]
 		public void BuildVersion_ShouldNotBeEmpty()
 		{
@@ -28,7 +27,6 @@ namespace Microsoft.Omex.System.UnitTests.Diagnostics
 
 			Assert.False(string.IsNullOrWhiteSpace(machineInformation.BuildVersion));
 		}
-
 
 		[Fact]
 		public void DeploymentSlice_ShouldBeEmpty()
@@ -38,7 +36,6 @@ namespace Microsoft.Omex.System.UnitTests.Diagnostics
 			Assert.Equal<string>(EmptyValue, machineInformation.DeploymentSlice);
 		}
 
-
 		[Fact]
 		public void EnvironmentName_ShouldBeEmpty()
 		{
@@ -46,7 +43,6 @@ namespace Microsoft.Omex.System.UnitTests.Diagnostics
 
 			Assert.Equal<string>(EmptyValue, machineInformation.EnvironmentName);
 		}
-
 
 		[Fact]
 		public void IsCanary_ShouldBeFalse()
@@ -56,7 +52,6 @@ namespace Microsoft.Omex.System.UnitTests.Diagnostics
 			Assert.Equal<bool>(false, machineInformation.IsCanary);
 		}
 
-
 		[Fact]
 		public void IsDevFabric_ShouldBeFalse()
 		{
@@ -64,7 +59,6 @@ namespace Microsoft.Omex.System.UnitTests.Diagnostics
 
 			Assert.Equal<bool>(false, machineInformation.IsDevFabric);
 		}
-
 
 		[Fact]
 		public void IsPrivateDeployment_ShouldBeTrue()
@@ -74,7 +68,6 @@ namespace Microsoft.Omex.System.UnitTests.Diagnostics
 			Assert.Equal<bool>(true, machineInformation.IsPrivateDeployment);
 		}
 
-
 		[Fact]
 		public void MachineCount_ShouldBeOne()
 		{
@@ -82,7 +75,6 @@ namespace Microsoft.Omex.System.UnitTests.Diagnostics
 
 			Assert.Equal<int>(1, machineInformation.MachineCount);
 		}
-
 
 		[Fact]
 		public void MachineCluster_ShouldNotBeEmpty()
@@ -92,7 +84,6 @@ namespace Microsoft.Omex.System.UnitTests.Diagnostics
 			Assert.False(string.IsNullOrWhiteSpace(machineInformation.MachineCluster));
 		}
 
-
 		[Fact]
 		public void MachineClusterIpAddress_ShouldNotBeNone()
 		{
@@ -100,7 +91,6 @@ namespace Microsoft.Omex.System.UnitTests.Diagnostics
 
 			Assert.NotEqual<IPAddress>(IPAddress.None, machineInformation.MachineClusterIpAddress);
 		}
-
 
 		[Fact]
 		public void MachineId_ShouldNotBeEmpty()
@@ -110,7 +100,6 @@ namespace Microsoft.Omex.System.UnitTests.Diagnostics
 			Assert.False(string.IsNullOrWhiteSpace(machineInformation.MachineId));
 		}
 
-
 		[Fact]
 		public void MachineRole_ShouldBeEmpty()
 		{
@@ -118,7 +107,6 @@ namespace Microsoft.Omex.System.UnitTests.Diagnostics
 
 			Assert.Equal<string>(EmptyValue, machineInformation.MachineRole);
 		}
-
 
 		[Fact]
 		public void RegionName_ShouldBeEmpty()
@@ -128,7 +116,6 @@ namespace Microsoft.Omex.System.UnitTests.Diagnostics
 			Assert.Equal<string>(EmptyValue, machineInformation.RegionName);
 		}
 
-
 		[Fact]
 		public void ServiceName_ShouldBeEmpty()
 		{
@@ -136,7 +123,6 @@ namespace Microsoft.Omex.System.UnitTests.Diagnostics
 
 			Assert.Equal<string>(EmptyValue, machineInformation.ServiceName);
 		}
-
 
 		private const string EmptyValue = "None";
 	}

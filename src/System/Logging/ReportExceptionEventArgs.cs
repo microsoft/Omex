@@ -19,11 +19,10 @@ namespace Microsoft.Omex.System.Logging
 		/// <param name="message">message to log</param>
 		/// <param name="parameters">additional parameters</param>
 		public ReportExceptionEventArgs(uint tagid, Category category, Exception exception, string message, params object[] parameters)
-			: base(null, false, tagid, category, Levels.Error, message, string.Empty, parameters)
+			: base(false, tagid, category, Levels.Error, message, string.Empty, parameters)
 		{
 			Exception = exception;
 		}
-
 
 		/// <summary>
 		/// Exception to log

@@ -51,7 +51,6 @@ namespace Microsoft.Omex.System.Extensions
 			return attribute != null ? attribute.Value : null;
 		}
 
-
 		/// <summary>
 		/// Creates an untyped object containing the XML data. This object
 		/// can be cast to the type passed in parameter "type" by the caller.
@@ -65,7 +64,6 @@ namespace Microsoft.Omex.System.Extensions
 		{
 			return Read(stream, CompressionType.NoCompression, type, schema, schemaUri, null, null, null);
 		}
-
 
 		/// <summary>
 		/// Creates an untyped object containing the XML data. This object
@@ -81,7 +79,6 @@ namespace Microsoft.Omex.System.Extensions
 			return Read(stream, CompressionType.NoCompression, typeof(T), schema, schemaUri, null, null, null) as T;
 		}
 
-
 		/// <summary>
 		/// Deserialise stream using provided xml parser objects.
 		/// Use this method if you perform multiple deserialisations of the same type to improve performance
@@ -96,7 +93,6 @@ namespace Microsoft.Omex.System.Extensions
 		{
 			return Read(stream, compressionType, null, null, null, context, settings, serialiser);
 		}
-
 
 		/// <summary>
 		/// Verifies that given xml file stream is a well formed xml document
@@ -121,7 +117,7 @@ namespace Microsoft.Omex.System.Extensions
 				}
 			}
 
-			XmlReaderSettings settings = new XmlReaderSettings();
+			XmlReaderSettings settings = new XmlReaderSettings { XmlResolver = null };
 			settings.ConformanceLevel = ConformanceLevel.Document;
 			settings.IgnoreWhitespace = true;
 			settings.IgnoreComments = true;
@@ -145,7 +141,6 @@ namespace Microsoft.Omex.System.Extensions
 				return false;
 			}
 		}
-
 
 		/// <summary>
 		/// Validate xml document against the schema
@@ -194,7 +189,6 @@ namespace Microsoft.Omex.System.Extensions
 			return validationErrors.Count == 0;
 		}
 
-
 		/// <summary>
 		/// Verifies if given xml file is valid as specified by the given xml schema
 		/// </summary>
@@ -232,7 +226,7 @@ namespace Microsoft.Omex.System.Extensions
 				using (XmlReader schemaReader = XmlReader.Create(schemaStream))
 				{
 					schemas.Add(schemaNamespace, schemaReader);
-					XmlReaderSettings settings = new XmlReaderSettings();
+					XmlReaderSettings settings = new XmlReaderSettings { XmlResolver = null };
 					settings.ValidationType = ValidationType.Schema;
 					settings.Schemas = schemas;
 
@@ -258,7 +252,6 @@ namespace Microsoft.Omex.System.Extensions
 			}
 		}
 
-
 		/// <summary>
 		/// Creates XmlParserContext
 		/// </summary>
@@ -275,7 +268,6 @@ namespace Microsoft.Omex.System.Extensions
 
 			return context;
 		}
-
 
 		/// <summary>
 		/// Retrieves the XML reader settings.
@@ -307,7 +299,7 @@ namespace Microsoft.Omex.System.Extensions
 				schemas.Add(schemaUri, reader);
 			}
 
-			XmlReaderSettings settings = new XmlReaderSettings();
+			XmlReaderSettings settings = new XmlReaderSettings { XmlResolver = null };
 			settings.ValidationType = ValidationType.Schema;
 			settings.Schemas = schemas;
 			return settings;

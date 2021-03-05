@@ -22,24 +22,20 @@ namespace Microsoft.Omex.System.Model.Types
 		/// </summary>
 		public static readonly string StandardizedMinVersion = "00000000.00000000.00000000.00000000";
 
-
 		/// <summary>
 		/// Maximum number of digits in major
 		/// </summary>
 		public static readonly int MaximumLengthOfMajor = 8;
-
 
 		/// <summary>
 		/// Maximum number of digits in minor
 		/// </summary>
 		public static readonly int MaximumLengthOfMinor = 8;
 
-
 		/// <summary>
 		/// Maximum number of digits in build
 		/// </summary>
 		public static readonly int MaximumLengthOfBuild = 8;
-
 
 		/// <summary>
 		/// Maximum number of digits in revision
@@ -48,19 +44,16 @@ namespace Microsoft.Omex.System.Model.Types
 
 		#endregion
 
-
 		/// <summary>
 		/// Minimum version
 		/// </summary>
 		public static readonly ProductVersion MinVersion = new ProductVersion(0, 0, 0, 0);
-
 
 		/// <summary>
 		/// Maximum version
 		/// </summary>
 		public static readonly ProductVersion MaxVersion = new ProductVersion((int)Math.Pow(10, MaximumLengthOfMajor) - 1,
 			(int)Math.Pow(10, MaximumLengthOfMinor) - 1, (int)Math.Pow(10, MaximumLengthOfBuild) - 1, (int)Math.Pow(10, MaximumLengthOfRevision) - 1);
-
 
 		/// <summary>
 		/// Initializes a new instance of the ProductVersion class using the specified
@@ -76,7 +69,6 @@ namespace Microsoft.Omex.System.Model.Types
 			Major = major;
 			Minor = minor;
 		}
-
 
 		/// <summary>
 		/// Initializes a new instance of the ProductVersion class using the specified
@@ -95,7 +87,6 @@ namespace Microsoft.Omex.System.Model.Types
 			Minor = minor;
 			Build = build;
 		}
-
 
 		/// <summary>
 		/// Initializes a new instance of the ProductVersion class using the specified
@@ -118,7 +109,6 @@ namespace Microsoft.Omex.System.Model.Types
 			Revision = revision;
 		}
 
-
 		/// <summary>
 		/// Determines whether two specified objects are not equal.
 		/// </summary>
@@ -126,7 +116,6 @@ namespace Microsoft.Omex.System.Model.Types
 		/// <param name="v2">The second object.</param>
 		/// <returns>True if v1 does not equals v2; false otherwise.</returns>
 		public static bool operator !=(ProductVersion v1, ProductVersion v2) => !(v1 == v2);
-
 
 		/// <summary>
 		/// Determines whether the first specified object is less than
@@ -142,7 +131,6 @@ namespace Microsoft.Omex.System.Model.Types
 			return (v1.CompareTo(v2) < 0);
 		}
 
-
 		/// <summary>
 		/// Determines whether the first specified object is less than or equal
 		/// to the second specified object.
@@ -157,7 +145,6 @@ namespace Microsoft.Omex.System.Model.Types
 			return (v1.CompareTo(v2) <= 0);
 		}
 
-
 		/// <summary>
 		/// Determines whether two specified objects are equal.
 		/// </summary>
@@ -166,14 +153,13 @@ namespace Microsoft.Omex.System.Model.Types
 		/// <returns>True if v1 equals v2; false otherwise.</returns>
 		public static bool operator ==(ProductVersion v1, ProductVersion v2)
 		{
-			if (Object.ReferenceEquals(v1, null))
+			if (ReferenceEquals(v1, null))
 			{
-				return Object.ReferenceEquals(v2, null);
+				return ReferenceEquals(v2, null);
 			}
 
 			return v1.Equals(v2);
 		}
-
 
 		/// <summary>
 		/// Determines whether the first specified object is greater than
@@ -184,7 +170,6 @@ namespace Microsoft.Omex.System.Model.Types
 		/// <returns>True if v1 is greater than v2; false otherwise.</returns>
 		public static bool operator >(ProductVersion v1, ProductVersion v2) => (v2 < v1);
 
-
 		/// <summary>
 		/// Determines whether the first specified object is greater than or equal
 		/// to the second specified object.
@@ -194,13 +179,11 @@ namespace Microsoft.Omex.System.Model.Types
 		/// <returns>True if v1 is greater than or equal to v2; false otherwise.</returns>
 		public static bool operator >=(ProductVersion v1, ProductVersion v2) => (v2 <= v1);
 
-
 		/// <summary>
 		/// The build number
 		/// </summary>
 		[DataMember]
 		public int? Build { get; private set; }
-
 
 		/// <summary>
 		/// The major version number
@@ -208,20 +191,17 @@ namespace Microsoft.Omex.System.Model.Types
 		[DataMember]
 		public int Major { get; private set; }
 
-
 		/// <summary>
 		/// The minor version number
 		/// </summary>
 		[DataMember]
 		public int Minor { get; private set; }
 
-
 		/// <summary>
 		/// The revision number
 		/// </summary>
 		[DataMember]
 		public int? Revision { get; private set; }
-
 
 		/// <summary>
 		/// Compares the current object to a specified object and returns
@@ -234,7 +214,6 @@ namespace Microsoft.Omex.System.Model.Types
 		/// Greater than zero: The current object is a version subsequent to version,
 		/// or version is null.</returns>
 		public int CompareTo(object version) => CompareTo(version as ProductVersion);
-
 
 		/// <summary>
 		/// Compares the current object to a specified object and returns
@@ -280,7 +259,6 @@ namespace Microsoft.Omex.System.Model.Types
 			return 0;
 		}
 
-
 		/// <summary>
 		/// Returns a value indicating whether the current object and
 		/// a specified object represent the same value.
@@ -289,7 +267,6 @@ namespace Microsoft.Omex.System.Model.Types
 		/// <returns>True if every component of the current object matches
 		/// the corresponding component of the obj parameter; otherwise, false</returns>
 		public override bool Equals(object obj) => Equals(obj as ProductVersion);
-
 
 		/// <summary>
 		/// Returns a value indicating whether the current object and
@@ -317,7 +294,6 @@ namespace Microsoft.Omex.System.Model.Types
 			return true;
 		}
 
-
 		/// <summary>
 		/// Returns a hash code for the current object.
 		/// </summary>
@@ -336,7 +312,6 @@ namespace Microsoft.Omex.System.Model.Types
 
 			return accumulator;
 		}
-
 
 		/// <summary>
 		/// Converts the value of the current object to its equivalent string representation.
@@ -360,7 +335,6 @@ namespace Microsoft.Omex.System.Model.Types
 			}
 		}
 
-
 		/// <summary>
 		/// Parse specified string into ProductVersion instance.
 		/// </summary>
@@ -376,7 +350,6 @@ namespace Microsoft.Omex.System.Model.Types
 
 			return null;
 		}
-
 
 		/// <summary>
 		/// Tries to convert the string representation of a version number to an equivalent

@@ -12,6 +12,9 @@ namespace Microsoft.Omex.DocumentDb
 	/// </summary>
 	public class DocumentDbSettings
 	{
+		/// <summary>
+		/// Document db settings class.
+		/// </summary>
 		protected DocumentDbSettings(string endpoint, DocumentDbSettingsConfig config = null)
 		{
 			Code.ExpectsNotNullOrWhiteSpaceArgument(endpoint, nameof(endpoint), TaggingUtilities.ReserveTag(0x2381b146 /* tag_961fg */));
@@ -19,7 +22,6 @@ namespace Microsoft.Omex.DocumentDb
 			Endpoint = new Uri(endpoint);
 			Config = config;
 		}
-
 
 		/// <summary>
 		/// Constructor.
@@ -37,18 +39,15 @@ namespace Microsoft.Omex.DocumentDb
 			Config = config;
 		}
 
-
 		/// <summary>
 		/// Document db endpoint.
 		/// </summary>
 		public Uri Endpoint { get; }
 
-
 		/// <summary>
 		/// Document db key.
 		/// </summary>
 		public virtual string Key { get; }
-
 
 		/// <summary>
 		/// Document db settings configuration.

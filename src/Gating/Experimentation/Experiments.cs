@@ -25,7 +25,6 @@ namespace Microsoft.Omex.Gating.Experimentation
 			ExperimentsDictionary = experiments;
 		}
 
-
 		/// <summary>
 		/// Is experiment valid
 		/// </summary>
@@ -49,7 +48,6 @@ namespace Microsoft.Omex.Gating.Experimentation
 
 			return temporaryReadDictionary.ContainsKey(experimentName);
 		}
-
 
 		/// <summary>
 		/// Gets the experiment corresponding to the experimentName
@@ -82,7 +80,6 @@ namespace Microsoft.Omex.Gating.Experimentation
 
 			return temporaryReadDictionary[experimentName];
 		}
-
 
 		#region Member variables
 

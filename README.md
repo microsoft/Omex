@@ -1,12 +1,19 @@
 # Microsoft Omex
 
-This repository contains source code for shared components used by the Omex team at Microsoft to build scalable and highly available distributed systems.
+This repository contains source code for shared components used by the Omex team, which is part of the Office organization, at Microsoft to build scalable and highly available distributed systems.
 
 The code is released under the [MIT license](https://github.com/microsoft/Omex/blob/master/LICENSE).
 
 The pre-release NuGet packages are available to download from the MyGet feed
 
     https://www.myget.org/F/omex/api/v3/index.json
+
+
+The release NuGet packages are available for download from Nuget.org
+
+    https://www.nuget.org/packages?q=omex
+
+Additional source code from the Omex team, related to a collection of Azure DevOps Extensions, can be located at <https://github.com/microsoft/OMEX-Azure-DevOps-Extensions>.
 
 ### Projects in this repository
 
@@ -27,8 +34,8 @@ Please contribute to this repository via [pull requests](https://github.com/Micr
 
 To build the solution you will need
 
-* .NET Core 2.1 SDK
-* Visual Studio 2017 or newer (optional)
+* .NET Core 3.0 SDK or newer
+* Visual Studio 2019 (16.3) or newer
 
 Building in Visual Studio is straightforward. If you use .NET Core CLI then invoke
 
@@ -83,6 +90,8 @@ The pre-release NuGet packages which are built from the master branch are availa
     https://www.myget.org/F/omex/api/v3/index.json
 
 
-Soon, the release packages will be available for download from NuGet.org.
+The release packages are available for download from NuGet.org
+
+    https://www.nuget.org/packages?q=omex
 
 

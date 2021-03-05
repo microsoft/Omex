@@ -23,7 +23,6 @@ namespace Microsoft.Omex.DocumentDb
 		/// </summary>
 		private readonly Lazy<Task<IDocumentClient>> m_DocumentClient;
 
-
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -40,7 +39,6 @@ namespace Microsoft.Omex.DocumentDb
 				LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 
-
 		/// <summary>
 		/// Overloaded Constructor that uses the specified document db client instead of creating one.
 		/// </summary>
@@ -54,13 +52,11 @@ namespace Microsoft.Omex.DocumentDb
 				LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 
-
 		/// <summary>
 		/// Gets document client factory.
 		/// </summary>
 		/// <returns>The IDocumentClientFactory interface.</returns>
 		private IDocumentClientFactory DocumentClientFactory { get; }
-
 
 		/// <summary>
 		/// Gets IDocumentClient. The underlying tak is lazy initialized.
@@ -71,7 +67,6 @@ namespace Microsoft.Omex.DocumentDb
 		{
 			return DocumentDbAdapter.ExecuteAndLogAsync(TaggingUtilities.ReserveTag(0x2381b1de /* tag_961h4 */), () => m_DocumentClient.Value);
 		}
-
 
 		/// <summary>
 		/// Executes the async document db call and logs document db specific information to ULS.
@@ -103,7 +98,6 @@ namespace Microsoft.Omex.DocumentDb
 				},
 				caller);
 		}
-
 
 		/// <summary>
 		/// Executes the async call and logs errors to ULS.
@@ -139,7 +133,6 @@ namespace Microsoft.Omex.DocumentDb
 			}
 		}
 
-
 		/// <summary>
 		/// Executes the async call and logs errors to ULS.
 		/// </summary>
@@ -173,7 +166,6 @@ namespace Microsoft.Omex.DocumentDb
 				throw;
 			}
 		}
-
 
 		/// <summary>
 		/// Logs document db response info to ULS.

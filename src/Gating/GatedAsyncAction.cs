@@ -18,7 +18,6 @@ namespace Microsoft.Omex.Gating
 		/// <remarks>Creates a baseline gated action</remarks>
 		public GatedAsyncAction(Func<Task> action) => Action = action;
 
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GatedAsyncAction"/> class.
 		/// </summary>
@@ -27,7 +26,6 @@ namespace Microsoft.Omex.Gating
 		public GatedAsyncAction(IGate gate, Func<Task> action)
 			: base(gate) => Action = action;
 
-
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -35,7 +33,6 @@ namespace Microsoft.Omex.Gating
 		/// <param name="action">The action to perform.</param>
 		public GatedAsyncAction(GateCombination combination, Func<Task> action)
 			: base(combination) => Action = action;
-
 
 		/// <summary>
 		/// The action to perform

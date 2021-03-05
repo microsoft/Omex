@@ -16,12 +16,10 @@ namespace Microsoft.Omex.DocumentDb
 		/// </summary>
 		public List<Trigger> Triggers { get; set; }
 
-		
 		/// <summary>
 		/// Stored procedures to get or create.
 		/// </summary>
 		public List<StoredProcedure> StoredProcedures { get; set; }
-
 
 		/// <summary>
 		/// Indicator to delete existing scripts before creating new ones.

@@ -17,48 +17,40 @@ namespace Microsoft.Omex.Gating
 		/// </summary>
 		GatedClient CallingClient { get; }
 
-
 		/// <summary>
 		/// The current market
 		/// </summary>
 		string Market { get; }
-
 
 		/// <summary>
 		/// The current users
 		/// </summary>
 		IEnumerable<GatedUser> Users { get; }
 
-
 		/// <summary>
 		/// Set of requested gate ids
 		/// </summary>
 		HashSet<string> RequestedGateIds { get; }
-
 
 		/// <summary>
 		/// Set of gates that are to be blocked.
 		/// </summary>
 		HashSet<string> BlockedGateIds { get; }
 
-
 		/// <summary>
 		/// The current environment
 		/// </summary>
 		string Environment { get; }
-
 
 		/// <summary>
 		/// The requests query parameters
 		/// </summary>
 		IDictionary<string, HashSet<string>> QueryParameters { get; }
 
-
 		/// <summary>
 		/// The cloud contexts
 		/// </summary>
 		HashSet<string> CloudContexts { get; }
-
 
 		/// <summary>
 		/// Update the gating request based on the set of expected clients
@@ -66,13 +58,11 @@ namespace Microsoft.Omex.Gating
 		/// <param name="clients">expected clients</param>
 		void UpdateExpectedClients(GatedClient[] clients);
 
-
 		/// <summary>
 		/// Gets the UserAgentBrowser from the http request.
 		/// </summary>
 		/// <returns>Requesting Browser and Version</returns>
 		Tuple<string, int> GetUserAgentBrowser();
-
 
 		/// <summary>
 		/// Is the gate request part of a known ip range

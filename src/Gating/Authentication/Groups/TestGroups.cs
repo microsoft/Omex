@@ -22,9 +22,8 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 		/// <param name="testGroupsLoader">TestGroups DataSet loader</param>
 		public TestGroups(IConfigurationDataSetLoader<ITestGroupsDataSet> testGroupsLoader)
 		{
-			m_testGroupsDataSetLoader = Code.ExpectsArgument(testGroupsLoader, nameof(testGroupsLoader), TaggingUtilities.ReserveTag(0x2382109b /* tag_967c1 */));
+			m_testGroupsDataSetLoader = Code.ExpectsArgument(testGroupsLoader, nameof(testGroupsLoader), TaggingUtilities.ReserveTag(0x2380b693 /* tag_96l0t */));
 		}
-
 
 		/// <summary>
 		/// Is one or more of the groups specified equal to a default?
@@ -53,7 +52,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 
 			return false;
 		}
-
 
 		/// <summary>
 		/// Retrieves all groups for the currently logged-in user.
@@ -92,7 +90,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			return result;
 		}
 
-
 		/// <summary>
 		/// Retrieves all groups for a user
 		/// </summary>
@@ -114,14 +111,12 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			return testGroupsDataSet.GetUserGroups(userEmail);
 		}
 
-
 		/// <summary>
 		/// Retrieves all groups for a deployment id
 		/// </summary>
 		/// <param name="deploymentId">Deployment id. This value cannot be null.</param>
 		/// <returns>List of user groups</returns>
 		public IEnumerable<string> GetDeploymentIdGroups(string deploymentId) => GetUserGroups(deploymentId);
-
 
 		/// <summary>
 		/// Retrieves all users for a group
@@ -144,7 +139,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 
 			return testGroupsDataSet.GetGroupUsers(groupName);
 		}
-
 
 		/// <summary>
 		/// Checks if the logged-in user with the specified identity is in one or more of the
@@ -179,7 +173,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			return false;
 		}
 
-
 		/// <summary>
 		/// Checks if user is in one or more of the specified groups
 		/// </summary>
@@ -203,7 +196,6 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			return false;
 		}
 
-
 		/// <summary>
 		/// Retrieves currently loaded TestGroups DataSet
 		/// </summary>
@@ -225,12 +217,10 @@ namespace Microsoft.Omex.Gating.Authentication.Groups
 			return dataSet;
 		}
 
-
 		/// <summary>
 		/// TestGroups DataSet loader
 		/// </summary>
 		private readonly IConfigurationDataSetLoader<ITestGroupsDataSet> m_testGroupsDataSetLoader;
-
 
 		/// <summary>
 		/// The array of characters separating elements in a list stored within an asset field.

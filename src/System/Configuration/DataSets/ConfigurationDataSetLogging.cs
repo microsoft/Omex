@@ -37,7 +37,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			}
 		}
 
-
 		/// <summary>
 		/// Log trace tag. This raises a LogEvent of a specified level.
 		/// </summary>
@@ -58,7 +57,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 			}
 		}
 
-
 		/// <summary>
 		/// Log a code error. This raises a ShipAssert event
 		/// </summary>
@@ -77,7 +75,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 				LogError(message, parameters);
 			}
 		}
-
 
 		/// <summary>
 		/// Log a verbose message for debugging / informational purposes. This raises a
@@ -100,7 +97,6 @@ namespace Microsoft.Omex.System.Configuration.DataSets
 		/// Loading errors
 		/// </summary>
 		public IList<string> Errors { get; private set; }
-
 
 		/// <summary>
 		/// Log a data set loading error

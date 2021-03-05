@@ -19,7 +19,6 @@ namespace Microsoft.Omex.Gating
 		{
 		}
 
-
 		/// <summary>
 		/// Is the gate combination applicable
 		/// </summary>

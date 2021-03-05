@@ -11,7 +11,6 @@ namespace Microsoft.Omex.System.Data
 	/// <param name="details">Details</param>
 	public delegate void ResourceUpdatedHandler(ResourceUpdatedEventArgs details);
 
-
 	/// <summary>
 	/// An interface for monitoring resource updates.
 	/// </summary>
@@ -25,12 +24,10 @@ namespace Microsoft.Omex.System.Data
 		/// <returns><c>true</c> if the operation succeeded; <c>false</c> otherwise.</returns>
 		bool TryStartMonitoring(IEnumerable<IResource> resourcesToMonitor, ResourceUpdatedHandler callbackAction);
 
-
 		/// <summary>
 		/// Stop monitoring the resources.
 		/// </summary>
 		void StopMonitoring(ResourceUpdatedHandler callbackAction);
-
 
 		/// <summary>
 		/// Gets a value indicating whether the monitor is enabled.
