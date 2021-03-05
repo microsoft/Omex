@@ -69,7 +69,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			}
 
 			saltSpan.CopyTo(uidSpan.Slice(identityBytesWritten));
-			
+
 			using IMemoryOwner<byte> hashMemoryOwner = MemoryPool<byte>.Shared.Rent(HashSize);
 			Span<byte> hashSpan = hashMemoryOwner.Memory.Span;
 
