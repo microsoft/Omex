@@ -15,7 +15,7 @@
     <System_Threading_Tasks_Version>4.3.0</System_Threading_Tasks_Version>
     <Xunit_Runner_VisualStudio_Version>2.4.3</Xunit_Runner_VisualStudio_Version>
   </PropertyGroup>
-  <PropertyGroup Label="MSTest Versions. Temporarty Pinned">
+  <PropertyGroup Label="MSTest Versions. Temporary Pinned">
     <MSTest_TestAdapter_Version>2.1.2</MSTest_TestAdapter_Version>
     <MSTest_TestFramework_Version>2.1.2</MSTest_TestFramework_Version>
   </PropertyGroup>
