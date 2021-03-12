@@ -10,12 +10,14 @@
     <Microsoft_Net_Test_Sdk_Version>16.9.1</Microsoft_Net_Test_Sdk_Version>
     <Microsoft_SourceLink_GitHub_Version>1.0.0</Microsoft_SourceLink_GitHub_Version>
     <Microsoft_SourceLink_AzureRepos_Git_Version>1.0.0</Microsoft_SourceLink_AzureRepos_Git_Version>
-    <MSTest_TestAdapter_Version>2.2.1</MSTest_TestAdapter_Version>
-    <MSTest_TestFramework_Version>2.2.1</MSTest_TestFramework_Version>
     <System_Configuration_ConfigurationManager_Version>5.0.0</System_Configuration_ConfigurationManager_Version>
     <System_ServiceModel_Primitives_Version>4.8.1</System_ServiceModel_Primitives_Version>
     <System_Threading_Tasks_Version>4.3.0</System_Threading_Tasks_Version>
     <Xunit_Runner_VisualStudio_Version>2.4.3</Xunit_Runner_VisualStudio_Version>
+  </PropertyGroup>
+  <PropertyGroup Label="MSTest Versions. Temporary Pinned">
+    <MSTest_TestAdapter_Version>2.1.2</MSTest_TestAdapter_Version>
+    <MSTest_TestFramework_Version>2.1.2</MSTest_TestFramework_Version>
   </PropertyGroup>
   <PropertyGroup Label="Package Versions. Pinned">
     <Microsoft_Azure_DocumentDb_Version>2.5.1</Microsoft_Azure_DocumentDb_Version>
