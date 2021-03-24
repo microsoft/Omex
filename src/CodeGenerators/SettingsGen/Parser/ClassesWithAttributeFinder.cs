@@ -5,16 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Omex.CodeGenerators.SettingsGen.Models;
 using Microsoft.Omex.CodeGenerators.SettingsGen.Models.Attributes;
-using Microsoft.Omex.CodeGenerators.SettingsGen.Parser;
 
-namespace Microsoft.Omex.CodeGenerators.SettingsGen
+namespace Microsoft.Omex.CodeGenerators.SettingsGen.Parser
 {
 	/// <summary>
 	/// Finds classes 
@@ -24,12 +21,12 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		/// <summary>
 		/// List of attributes to find
 		/// </summary>
-		public ISet<string> ClassAttributes { get; init; }
+		public ISet<string> ClassAttributes { get; private set; }
 
 		/// <summary>
 		/// Property Attributes to look for
 		/// </summary>
-		public ISet<string> PropertyAttributes { get; init; }
+		public ISet<string> PropertyAttributes { get; private set; }
 
 		/// <summary>
 		/// List of section classes and the corresponding with their section name
@@ -52,7 +49,6 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 				AttributeNames.Ignore,
 				AttributeNames.Parameter,
 				AttributeNames.Required,
-				AttributeNames.Section
 			};
 		}
 
@@ -75,11 +71,12 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 						// Get the name value of the attribute
 						string name = classSymbol.Name;
 						ImmutableArray<KeyValuePair<string, TypedConstant>> namedArgs = attribute.NamedArguments;
-						foreach ((string key, TypedConstant value) in namedArgs)
+
+						foreach (KeyValuePair<string, TypedConstant> keyValue in namedArgs)
 						{
-							if (string.Equals(key, "Name", StringComparison.OrdinalIgnoreCase))
+							if (string.Equals(keyValue.Key, "Name", StringComparison.OrdinalIgnoreCase))
 							{
-								name = (value.Value as string) ?? name;
+								name = (keyValue.Value.Value as string) ?? name;
 								break;
 							}
 						}
@@ -95,12 +92,14 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		{
 			SettingsXmlModel settings = new();
 
-			foreach ((string name, INamedTypeSymbol classSymbol) in Classes)
+			foreach ((string name, INamedTypeSymbol classSymbol) in Classes.OrderBy(x => x.sectionName))
 			{
 				SectionModel sectionModel = new()
 				{
 					Name = name
 				};
+
+				// Get properties for a given class
 				IEnumerable<IPropertySymbol> properties = classSymbol.GetMembers()
 					.Where(m => m.Kind == SymbolKind.Property).Cast<IPropertySymbol>();
 
@@ -109,12 +108,13 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 					// Only get attributes we care about
 					IEnumerable<AttributeData> attrs = property.GetAttributes()
 						.Where(x => x.AttributeClass != null && PropertyAttributes.Contains(x.AttributeClass.Name));
-
 					if (TryCreateParameter(property.Name, attrs, out ParameterModel parameterModel))
 					{
 						sectionModel.Parameters.Add(parameterModel);
 					}
 				}
+
+				settings.Sections.Add(sectionModel);
 			}
 
 			return settings;
@@ -125,7 +125,8 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 			parameterModel = new ParameterModel();
 
 			// If it has the ignore attribute don't generate it
-			if (attributes.Any(x => string.Equals(x.AttributeClass?.Name, AttributeNames.Ignore, StringComparison.OrdinalIgnoreCase)))
+			if (attributes.Any(x => string.Equals(x.AttributeClass?.Name, AttributeNames.Ignore, StringComparison.OrdinalIgnoreCase)
+			|| string.Equals(x.AttributeClass?.Name, AttributeNames.Ignore, StringComparison.OrdinalIgnoreCase)))
 			{
 				return false;
 			}
@@ -151,30 +152,32 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		{
 			parameterModel.Name = name;
 
-			foreach ((string key, TypedConstant value) in attributeData.NamedArguments)
+			foreach (KeyValuePair<string, TypedConstant> keyValue in attributeData.NamedArguments)
 			{
 				// Ignore value if it is null
-				if (value.IsNull)
+				if (keyValue.Value.IsNull)
 				{
 					continue;
 				}
+				string key = keyValue.Key;
+				TypedConstant value = keyValue.Value;
 
 				// Get the Name value of the field
-				if (string.Equals(key, nameof(ParameterModel.Name), StringComparison.OrdinalIgnoreCase))
+				if (string.Equals(keyValue.Key, nameof(ParameterModel.Name), StringComparison.OrdinalIgnoreCase))
 				{
-					parameterModel.Name = (value.Value as string) ?? name;
+					parameterModel.Name = (keyValue.Value.Value as string) ?? name;
 				}
 
 				// Set must override property
-				if (string.Equals(key, nameof(ParameterAttribute.MustOverride), StringComparison.OrdinalIgnoreCase))
+				if (string.Equals(keyValue.Key, nameof(ParameterAttribute.MustOverride), StringComparison.OrdinalIgnoreCase))
 				{
-					parameterModel.MustOverride = (bool?)value.Value;
+					parameterModel.MustOverride = value.Value as string ?? string.Empty;
 				}
 
 				// Set is encrypted property
 				if (string.Equals(key, nameof(ParameterAttribute.IsEncrypted), StringComparison.OrdinalIgnoreCase))
 				{
-					parameterModel.IsEncrypted = (bool?)value.Value;
+					parameterModel.IsEncrypted = value.Value as string ?? string.Empty;
 				}
 
 				// Set value property

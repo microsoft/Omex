@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SettingsGen\Microsoft.Omex.CodeGenerators.SettingsGen.csproj"  OutputItemType="Analyzer"  ReferenceOutputAssembly="false"  />
+    <ProjectReference Include="..\SettingsGen\Microsoft.Omex.CodeGenerators.SettingsGen.csproj" />
+    <AdditionalFiles Include="Settings.xml"  Generate="true" />
+  </ItemGroup>
+
+  <!-- Manually reference the generator props because we locally reference the generator. When added via NuGet this happens automatically -->
+  <Import Project="..\SettingsGen\Microsoft.Omex.CodeGenerators.SettingsGen.props" />
+</Project>

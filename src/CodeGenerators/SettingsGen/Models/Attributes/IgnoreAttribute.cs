@@ -2,21 +2,17 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models.Attributes
 {
 	/// <summary>
-	/// 
+	/// Ignore attribute which indicates the property should not be generated to settings file or used in validation
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property)]
 	public class IgnoreAttribute : Attribute
 	{
 		/// <summary>
-		/// 
+		/// Reason for it to be ignored
 		/// </summary>
 		public string? Reason { get; set; }
 	}

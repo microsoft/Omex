@@ -7,17 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models.Attributes
+namespace SettingsGen.Example
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, Inherited = true)]
-	public class SectionAttribute : Attribute
+	public class DontGenerate
 	{
-		/// <summary>
-		/// 
-		/// </summary>
-		public string? Name { get; set; }
 	}
 }

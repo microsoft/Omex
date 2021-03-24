@@ -2,41 +2,37 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models.Attributes
 {
 	/// <summary>
-	/// 
+	/// Attribute representing a parameter in the Settings.xml file
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 	public class ParameterAttribute : Attribute
 	{
 		/// <summary>
-		/// 
+		/// Name of the parameter
 		/// </summary>
 		public string Name { get; set; } = string.Empty;
 
 		/// <summary>
-		/// 
+		/// Value of the parameter
 		/// </summary>
 		public string Value { get; set; } = string.Empty;
 
 		/// <summary>
-		/// 
+		/// MustOverride field of the Parameter element
 		/// </summary>
-		public bool? MustOverride { get; set; }
+		public string? MustOverride { get; set; }
 
 		/// <summary>
-		/// 
+		/// IsEncrypted field of the Parameter element
 		/// </summary>
-		public bool? IsEncrypted { get; set; }
+		public string? IsEncrypted { get; set; }
 
 		/// <summary>
-		/// 
+		/// Type field of the Parameter element
 		/// </summary>
 		public string? Type { get; set; }
 	}
