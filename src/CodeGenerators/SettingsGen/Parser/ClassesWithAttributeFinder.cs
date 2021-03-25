@@ -59,7 +59,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Parser
 			if (context.Node is ClassDeclarationSyntax classDeclaration
 				&& classDeclaration.AttributeLists.Count > 0)
 			{
-				// Named type symvbol should not be null
+				// Named type symbol should not be null
 				INamedTypeSymbol classSymbol = (context.SemanticModel.GetDeclaredSymbol(classDeclaration))!;
 				ImmutableArray<AttributeData> attrs = classSymbol.GetAttributes();
 
