@@ -108,7 +108,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGenerators", "CodeGener
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingsGen.UnitTests", "tests\CodeGenerators\SettingsGen.UnitTests\SettingsGen.UnitTests.csproj", "{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingsGen.Example", "src\CodeGenerators\SettingsGen.Example\SettingsGen.Example.csproj", "{618DCDA0-595C-4F35-820D-A6D82E91B6EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingsGen.Example", "src\CodeGenerators\SettingsGen.Example\Microsoft.Omex.CodeGenerators.SettingsGen.Example.csproj", "{618DCDA0-595C-4F35-820D-A6D82E91B6EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
