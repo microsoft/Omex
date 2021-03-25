@@ -87,7 +87,6 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		/// </summary>
 		protected virtual IValidation<TSettingModel>? Validator => null;
 
-
 		/// <summary>
 		/// Whether or not to generate file
 		/// </summary>

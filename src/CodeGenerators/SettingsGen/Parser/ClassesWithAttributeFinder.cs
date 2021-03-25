@@ -83,7 +83,6 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Parser
 						Classes.Add((name, classSymbol));
 					}
 				}
-
 			}
 		}
 

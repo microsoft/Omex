@@ -57,7 +57,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Validation
 		{
 			System.Xml.XmlAttribute attr = e.Attr;
 			Console.WriteLine("Unknown attribute " +
-			attr.Name + "='" + attr.Value + "'");
+				attr.Name + "='" + attr.Value + "'");
 		}
 	}
 }
