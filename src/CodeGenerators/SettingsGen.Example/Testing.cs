@@ -22,7 +22,7 @@ namespace Microsoft.Omex.SettingsGen.Example
 
 
 		/// <summary>
-		/// 
+		/// Parameter
 		/// </summary>
 		[Parameter(Name = "TestingThis", Value = "Hmmmm")]
 		public string DiffName { get; set; } = string.Empty;
@@ -34,7 +34,7 @@ namespace Microsoft.Omex.SettingsGen.Example
 		public int Hello { get; set; }
 
 		/// <summary>
-		/// 
+		/// Parameter
 		/// </summary>
 		[Parameter(IsEncrypted ="true", MustOverride = "true")]
 		public string? Overriding { get; set; }
