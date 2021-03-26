@@ -10,7 +10,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 	/// <summary>
 	/// Parmaeter element used for service fabric settings
 	/// </summary>
-	public class ParameterModel : IEqualityComparer<ParameterModel>, IEquatable<ParameterModel>
+	public sealed class ParameterModel : IEqualityComparer<ParameterModel>, IEquatable<ParameterModel>
 	{
 		/// <summary>
 		/// Parameterless constructor for the Xml serialising

@@ -5,12 +5,12 @@ using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
-namespace Microsoft.Omex.CodeGenerators.SettingsGen.Validation
+namespace Microsoft.Omex.CodeGenerators.SettingsGen.Comparing
 {
 	/// <summary>
-	/// Validation interface used to determine if new settings and exsiting settings in file are the same
+	/// Comparison interface used to determine if new settings and exsiting settings in file are the same
 	/// </summary>
-	public interface IValidation<TSetting> where TSetting: class, IEqualityComparer<TSetting>, IEquatable<TSetting>
+	public interface IComparison<TSetting> where TSetting: class, IEqualityComparer<TSetting>, IEquatable<TSetting>
 	{
 		/// <summary>
 		/// Determine whether new settings and existing settings are the same.

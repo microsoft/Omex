@@ -9,7 +9,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models.Attributes
 	/// Attribute representing a parameter in the Settings.xml file
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-	public class ParameterAttribute : Attribute
+	public sealed class ParameterAttribute : Attribute
 	{
 		/// <summary>
 		/// Name of the parameter

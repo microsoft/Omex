@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
+using Microsoft.Omex.CodeGenerators.SettingsGen.Comparing;
 using Microsoft.Omex.CodeGenerators.SettingsGen.FileGeneration;
 using Microsoft.Omex.CodeGenerators.SettingsGen.Parser;
-using Microsoft.Omex.CodeGenerators.SettingsGen.Validation;
 
 namespace Microsoft.Omex.CodeGenerators.SettingsGen
 {
@@ -38,10 +38,10 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 
 				if (settingsFile == null)
 				{
-					throw new Exception("No file to compare or generate given");
+					throw new Exception("No file to compare given");
 				}
 
-				if (Validator?.AreExistingSettingsEqual(settings, settingsFile) == true)
+				if (Comparer?.AreExistingSettingsEqual(settings, settingsFile) == true)
 				{
 					context.ReportDiagnostic(Diagnostic.Create(s_matchingSettings, null));
 					return;
@@ -59,17 +59,13 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 			catch (Exception ex)
 			{
 				context.ReportDiagnostic(Diagnostic.Create(s_failedGeneration, null, ex.Message));
-				throw;
 			}
 		}
 
 		/// <inheritdoc />
 		public void Initialize(GeneratorInitializationContext context)
 		{
-			if (Parser != null)
-			{
-				context.RegisterForSyntaxNotifications(() => Parser);
-			}
+			context.RegisterForSyntaxNotifications(() => Parser);
 		}
 
 		/// <summary>
@@ -83,9 +79,9 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		protected virtual IFileGenerator<TSettingModel>? Filegenerator => null;
 
 		/// <summary>
-		///	Validator determines whether or not the new and existing settings match
+		///	Comparer determines whether or not the new and existing settings match
 		/// </summary>
-		protected virtual IValidation<TSettingModel>? Validator => null;
+		protected virtual IComparison<TSettingModel>? Comparer => null;
 
 		/// <summary>
 		/// Whether or not to generate file
@@ -99,28 +95,28 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 			return false;
 		}
 
-		private static readonly DiagnosticDescriptor s_writingToFile = new DiagnosticDescriptor(id: "SETTINGSGEN001",
+		private static readonly DiagnosticDescriptor s_writingToFile = new(id: "SETTINGSGEN001",
 			title: "Writing to settings file",
 			messageFormat: "Writing to file '{0}'.",
 			category: "SettingsGenerator",
 			DiagnosticSeverity.Warning,
 			isEnabledByDefault: true);
 
-		private static readonly DiagnosticDescriptor s_dontGen = new DiagnosticDescriptor(id: "SETTINGSGEN002",
+		private static readonly DiagnosticDescriptor s_dontGen = new(id: "SETTINGSGEN002",
 			title: "Not generating",
 			messageFormat: "Not generating/updating settings file.",
 			category: "SettingsGenerator",
 			DiagnosticSeverity.Warning,
 			isEnabledByDefault: true);
 
-		private static readonly DiagnosticDescriptor s_matchingSettings = new DiagnosticDescriptor(id: "SETTINGSGEN003",
+		private static readonly DiagnosticDescriptor s_matchingSettings = new(id: "SETTINGSGEN003",
 			title: "Existing settings match",
 			messageFormat: "No new settings or updated settings so don't need to generate",
 			category: "SettingsGenerator",
 			DiagnosticSeverity.Warning,
 			isEnabledByDefault: true);
 
-		private static readonly DiagnosticDescriptor s_failedGeneration = new DiagnosticDescriptor(id: "SETTINGSGEN004",
+		private static readonly DiagnosticDescriptor s_failedGeneration = new(id: "SETTINGSGEN004",
 			title: "Failed with exception",
 			messageFormat: "Failed to write settings generator with error {0}",
 			category: "SettingsGenerator",

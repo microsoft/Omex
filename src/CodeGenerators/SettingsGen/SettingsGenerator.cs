@@ -6,10 +6,12 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.Omex.CodeGenerators.SettingsGen.Comparing;
 using Microsoft.Omex.CodeGenerators.SettingsGen.FileGeneration;
 using Microsoft.Omex.CodeGenerators.SettingsGen.Models;
+using Microsoft.Omex.CodeGenerators.SettingsGen.Models.Attributes;
 using Microsoft.Omex.CodeGenerators.SettingsGen.Parser;
-using Microsoft.Omex.CodeGenerators.SettingsGen.Validation;
+using Microsoft.Omex.CodeGenerators.SettingsGen.Wrappers;
 
 namespace Microsoft.Omex.CodeGenerators.SettingsGen
 {
@@ -19,18 +21,14 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 	[Generator]
 	public class SettingsGenerator : BaseGenerator<SettingsXmlModel>
 	{
-		/// <summary>
-		/// Parser which parses syntax into a given model format to be used by file generator
-		/// </summary>
-		protected override IParser<SettingsXmlModel>? Parser => new ClassesWithAttributeFinder(DefaultAttributes);
+		/// <inheritdoc />
+		protected override IParser<SettingsXmlModel>? Parser => new SettingsFromAttributeParser(DefaultAttributes, new GeneratorSyntaxContextWrapper());
 
-		/// <summary>
-		/// FileGenerator which takes a given model and generates a file from it
-		/// </summary>
+		/// <inheritdoc />
 		protected override IFileGenerator<SettingsXmlModel>? Filegenerator => new XmlFileGeneration<SettingsXmlModel>();
 
 		/// <inheritdoc />
-		protected override IValidation<SettingsXmlModel>? Validator => new XmlValidation<SettingsXmlModel>();
+		protected override IComparison<SettingsXmlModel>? Comparer => new XmlComparison<SettingsXmlModel>();
 
 		/// <inheritdoc/>
 		protected override bool ShouldGenerateFile(GeneratorExecutionContext context, out AdditionalText? settingsFile)
@@ -67,15 +65,15 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		}
 
 		/// <summary>
-		/// 
+		/// Default attributes to look for.
 		/// </summary>
 		public static ISet<string> DefaultAttributes => new HashSet<string>
 		{
-			"SectionAttribute",
+			AttributeNames.Section,
 		};
 
 		/// <summary>
-		/// 
+		/// Default filename the settings are in.
 		/// </summary>
 		public static readonly string Filename = "Settings.xml";
 	}

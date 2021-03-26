@@ -13,7 +13,9 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.FileGeneration
 	public class JsonGeneration<TSetting> : IFileGenerator<TSetting>
 		where TSetting : class
 	{
-		/// <inheritdoc/>
+		/// <summary>
+		/// Produces a JSON file
+		/// </summary>
 		public string FileType => "JSON";
 
 		/// <inheritdoc/>

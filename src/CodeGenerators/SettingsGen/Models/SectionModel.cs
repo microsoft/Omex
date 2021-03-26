@@ -11,7 +11,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 	/// <summary>
 	/// Xml Model representing the section in Settings.xml
 	/// </summary>
-	public class SectionModel : IEqualityComparer<SectionModel>, IEquatable<SectionModel>
+	public sealed class SectionModel : IEqualityComparer<SectionModel>, IEquatable<SectionModel>
 	{
 		/// <summary>
 		/// Parameterless constructor for the Xml serialising

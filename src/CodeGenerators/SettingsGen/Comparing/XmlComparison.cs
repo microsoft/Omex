@@ -7,12 +7,12 @@ using System.IO;
 using System.Xml.Serialization;
 using Microsoft.CodeAnalysis;
 
-namespace Microsoft.Omex.CodeGenerators.SettingsGen.Validation
+namespace Microsoft.Omex.CodeGenerators.SettingsGen.Comparing
 {
 	/// <summary>
 	/// Validate whether new settings match settings in XML file
 	/// </summary>
-	public class XmlValidation<TSettingModel> : IValidation<TSettingModel>
+	public sealed class XmlComparison<TSettingModel> : IComparison<TSettingModel>
 		where TSettingModel : class, IEqualityComparer<TSettingModel>, IEquatable<TSettingModel>
 	{
 		/// <inheritdoc/>
@@ -31,7 +31,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Validation
 			}
 
 			// A FileStream is needed to read the XML document.
-			using StringReader stringReader = new(filename.GetText()?.ToString());
+			using StringReader stringReader = new(fileContent);
 			// Declares an object variable of the type to be deserialized.
 			TSettingModel model = (TSettingModel)serializer.Deserialize(stringReader);
 
@@ -43,7 +43,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Validation
 		/// </summary>
 		/// <param name="sender">Sender object</param>
 		/// <param name="e">Xml node event args</param>
-		protected void SerializerUnknownNode(object sender, XmlNodeEventArgs e)
+		private void SerializerUnknownNode(object sender, XmlNodeEventArgs e)
 		{
 			Console.WriteLine("Unknown Node:" + e.Name + "\t" + e.Text);
 		}
@@ -53,7 +53,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Validation
 		/// </summary>
 		/// <param name="sender">Sender object</param>
 		/// <param name="e">Xml attribute event arguments</param>
-		protected void SerializerUnknownAttribute(object sender, XmlAttributeEventArgs e)
+		private void SerializerUnknownAttribute(object sender, XmlAttributeEventArgs e)
 		{
 			System.Xml.XmlAttribute attr = e.Attr;
 			Console.WriteLine("Unknown attribute " +

@@ -12,7 +12,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 	/// Application class which represents the Application xml Element in local node deployment files
 	/// </summary>
 	[XmlRoot("Settings", Namespace = "http://schemas.microsoft.com/2011/01/fabric", IsNullable = false)]
-	public class SettingsXmlModel : IEqualityComparer<SettingsXmlModel>, IEquatable<SettingsXmlModel>
+	public sealed class SettingsXmlModel : IEqualityComparer<SettingsXmlModel>, IEquatable<SettingsXmlModel>
 	{
 		/// <summary>
 		/// Parameterless constructor for the Xml serialising
@@ -32,7 +32,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 		
 		/// <inheritdoc/>
 		public bool Equals(SettingsXmlModel x, SettingsXmlModel y) =>
-			x.Sections.Count == y.Sections.Count && x.Sections.All(param => y.Sections.Contains(param));
+			x.Sections.Count == y.Sections.Count && x.Sections.All(param => y.Sections.Any(paramTwo => paramTwo.Equals(param)));
 
 		/// <inheritdoc/>
 		public int GetHashCode(SettingsXmlModel obj) => obj.Sections.GetHashCode();

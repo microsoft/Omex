@@ -9,7 +9,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models.Attributes
 	/// Attribute representing Section element in Settings.xml
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-	public class SectionAttribute : Attribute
+	public sealed class SectionAttribute : Attribute
 	{
 		/// <summary>
 		/// Name of the section
