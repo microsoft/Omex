@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 {
 	/// <summary>
-	/// Parmaeter element used for service fabric settings
+	/// Parameter element used for service fabric settings
 	/// </summary>
 	public sealed class ParameterModel : IEqualityComparer<ParameterModel>, IEquatable<ParameterModel>
 	{
