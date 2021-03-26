@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>$(NetStandardVersions)</TargetFramework>
-
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
