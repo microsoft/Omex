@@ -24,7 +24,7 @@ namespace Microsoft.Omex.SettingsGen.Example
 		/// <summary>
 		/// Parameter
 		/// </summary>
-		[Parameter(MustOverride = "true")]
+		[Parameter(MustOverride = true)]
 		public string SomethingElse { get; } = string.Empty;
 	}
 }

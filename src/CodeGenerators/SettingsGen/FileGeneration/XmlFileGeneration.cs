@@ -14,9 +14,6 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.FileGeneration
 	/// <typeparam name="TSettings">Settings model type</typeparam>
 	public class XmlFileGeneration<TSettings> : IFileGenerator<TSettings> where TSettings : class
 	{
-		/// <inheritdoc/>
-		public string FileType => "XML";
-
 		/// <inheritdoc />
 		public void GenerateFile(TSettings settings, string filename)
 		{
@@ -24,7 +21,6 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.FileGeneration
 
 			// Serializing the xml file creates a different format of the second line in the file as Service Fabric.
 			// SF changes the header when the application project gets build and creates changes to the file if these are not swapped.
-			content = content.Replace("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
 			File.WriteAllText(filename, content);
 		}
 

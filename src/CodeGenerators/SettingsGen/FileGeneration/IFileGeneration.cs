@@ -16,10 +16,5 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.FileGeneration
 		/// <param name="settings">Settings to write to a file</param>
 		/// <param name="filename">Name of the file to write to</param>
 		void GenerateFile(TSettings settings, string filename);
-
-		/// <summary>
-		/// File type that is being written
-		/// </summary>
-		string FileType { get; }
 	}
 }

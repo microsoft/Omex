@@ -32,7 +32,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 
 				if (!shouldGen)
 				{
-					context.ReportDiagnostic(Diagnostic.Create(s_dontGen, null));
+					context.ReportDiagnostic(Diagnostic.Create(DontGen, null));
 					return;
 				}
 
@@ -43,7 +43,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 
 				if (Comparer?.AreExistingSettingsEqual(settings, settingsFile) == true)
 				{
-					context.ReportDiagnostic(Diagnostic.Create(s_matchingSettings, null));
+					context.ReportDiagnostic(Diagnostic.Create(MatchingSettings, null));
 					return;
 				}
 
@@ -52,13 +52,13 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 					throw new Exception($"No file generator set for class {GetType().Name}");
 				}
 
-				context.ReportDiagnostic(Diagnostic.Create(s_writingToFile, null, settingsFile.Path));
+				context.ReportDiagnostic(Diagnostic.Create(WritingToFile, null, settingsFile.Path));
 
 				Filegenerator.GenerateFile(settings, settingsFile.Path);
 			}
 			catch (Exception ex)
 			{
-				context.ReportDiagnostic(Diagnostic.Create(s_failedGeneration, null, ex.Message));
+				context.ReportDiagnostic(Diagnostic.Create(FailedGeneration, null, ex.Message));
 			}
 		}
 
@@ -95,30 +95,52 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 			return false;
 		}
 
-		private static readonly DiagnosticDescriptor s_writingToFile = new(id: "SETTINGSGEN001",
+		/// <summary>
+		/// Writing to a file
+		/// </summary>
+		protected static readonly DiagnosticDescriptor WritingToFile = new(id: "SETTINGSGEN001",
 			title: "Writing to settings file",
 			messageFormat: "Writing to file '{0}'.",
 			category: "SettingsGenerator",
 			DiagnosticSeverity.Warning,
 			isEnabledByDefault: true);
 
-		private static readonly DiagnosticDescriptor s_dontGen = new(id: "SETTINGSGEN002",
+		/// <summary>
+		/// Don't generate
+		/// </summary>
+		protected static readonly DiagnosticDescriptor DontGen = new(id: "SETTINGSGEN002",
 			title: "Not generating",
 			messageFormat: "Not generating/updating settings file.",
 			category: "SettingsGenerator",
 			DiagnosticSeverity.Warning,
 			isEnabledByDefault: true);
 
-		private static readonly DiagnosticDescriptor s_matchingSettings = new(id: "SETTINGSGEN003",
+		/// <summary>
+		/// Matching settings
+		/// </summary>
+		protected static readonly DiagnosticDescriptor MatchingSettings = new(id: "SETTINGSGEN003",
 			title: "Existing settings match",
 			messageFormat: "No new settings or updated settings so don't need to generate",
 			category: "SettingsGenerator",
 			DiagnosticSeverity.Warning,
 			isEnabledByDefault: true);
 
-		private static readonly DiagnosticDescriptor s_failedGeneration = new(id: "SETTINGSGEN004",
+		/// <summary>
+		/// Failed to generate
+		/// </summary>
+		protected static readonly DiagnosticDescriptor FailedGeneration = new(id: "SETTINGSGEN004",
 			title: "Failed with exception",
 			messageFormat: "Failed to write settings generator with error {0}",
+			category: "SettingsGenerator",
+			DiagnosticSeverity.Error,
+			isEnabledByDefault: true);
+
+		/// <summary>
+		/// Encoutered error in settings gen
+		/// </summary>
+		protected static readonly DiagnosticDescriptor EncounteredError = new(id: "SETTINGSGEN005",
+			title: "Error encountered",
+			messageFormat: "Encountered error {0} when running settings gen",
 			category: "SettingsGenerator",
 			DiagnosticSeverity.Error,
 			isEnabledByDefault: true);

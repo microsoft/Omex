@@ -36,7 +36,7 @@ namespace Microsoft.Omex.SettingsGen.Example
 		/// <summary>
 		/// Parameter
 		/// </summary>
-		[Parameter(IsEncrypted ="true", MustOverride = "true")]
+		[Parameter(IsEncrypted =true, MustOverride = true)]
 		public string? Overriding { get; set; }
 	}
 }

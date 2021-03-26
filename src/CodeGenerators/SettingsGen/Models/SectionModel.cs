@@ -11,7 +11,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 	/// <summary>
 	/// Xml Model representing the section in Settings.xml
 	/// </summary>
-	public sealed class SectionModel : IEqualityComparer<SectionModel>, IEquatable<SectionModel>
+	public sealed record SectionModel : IEqualityComparer<SectionModel>, IEquatable<SectionModel>
 	{
 		/// <summary>
 		/// Parameterless constructor for the Xml serialising
@@ -53,19 +53,6 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 		}
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj switch
-		{
-			SectionModel model => Equals(model),
-			_ => false
-		};
-
-		/// <inheritdoc/>
 		public override int GetHashCode() => GetHashCode(this);
-
-		/// <inheritdoc/>
-		public static bool operator ==(SectionModel x, SectionModel y) => x.Equals(y);
-
-		/// <inheritdoc/>
-		public static bool operator !=(SectionModel x, SectionModel y) => !x.Equals(y);
 	}
 }

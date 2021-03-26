@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Omex.CodeGenerators.SettingsGen.Models.Attributes;
 
 namespace Microsoft.Omex.CodeGenerators.SettingsGen.Wrappers
 {
@@ -52,7 +54,16 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Wrappers
 					{
 						continue;
 					}
-					attributeWrapper.Arguments.Add(arg.Key, (arg.Value.Value as string) ?? string.Empty);
+
+					string valueString = arg.Value.Value?.ToString() ?? string.Empty;
+
+					if (string.Equals(arg.Key, nameof(ParameterAttribute.MustOverride), StringComparison.OrdinalIgnoreCase) ||
+						string.Equals(arg.Key, nameof(ParameterAttribute.IsEncrypted), StringComparison.OrdinalIgnoreCase))
+					{
+						valueString = valueString.ToLowerInvariant();
+					}
+
+					attributeWrapper.Arguments.Add(arg.Key, valueString);
 				}
 				attributeWrappers.Add(attributeWrapper);
 			}

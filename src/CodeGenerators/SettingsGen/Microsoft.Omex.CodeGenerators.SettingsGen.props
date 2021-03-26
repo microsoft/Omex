@@ -2,5 +2,7 @@
 <Project>
   <ItemGroup>
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="Generate" />
+    <CompilerVisibleProperty Include="SettingsFile" />
+    <CompilerVisibleProperty Include="GenerateSettingsFile" />
   </ItemGroup>
 </Project>

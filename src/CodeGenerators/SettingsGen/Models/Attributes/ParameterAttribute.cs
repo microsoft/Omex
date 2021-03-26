@@ -24,12 +24,12 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models.Attributes
 		/// <summary>
 		/// MustOverride field of the Parameter element
 		/// </summary>
-		public string? MustOverride { get; set; }
+		public bool MustOverride { get; set; } = false;
 
 		/// <summary>
 		/// IsEncrypted field of the Parameter element
 		/// </summary>
-		public string? IsEncrypted { get; set; }
+		public bool IsEncrypted { get; set; } = false;
 
 		/// <summary>
 		/// Type field of the Parameter element

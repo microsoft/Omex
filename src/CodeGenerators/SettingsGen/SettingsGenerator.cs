@@ -35,6 +35,23 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		{
 			try
 			{
+				// Load settings from file provided via property in csproj
+				if (context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.GenerateSettingsFile", out string? value) &&
+					bool.TryParse(value ?? string.Empty, out bool shouldGen))
+				{
+					if (context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.SettingsFile", out value))
+					{
+						settingsFile = new SettingsAdditionalText(value);
+					}
+					else
+					{
+						settingsFile = null;
+					}
+					return shouldGen;
+
+				}
+
+				// Load settings from additional files
 				foreach (AdditionalText file in context.AdditionalFiles)
 				{
 					if (string.Equals(Path.GetFileName(file.Path), Filename, StringComparison.OrdinalIgnoreCase))
@@ -49,7 +66,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"Encountered exception {ex.Message} when getting settings xml");
+				context.ReportDiagnostic(Diagnostic.Create(EncounteredError, null, ex.Message));
 				throw;
 			}
 		}

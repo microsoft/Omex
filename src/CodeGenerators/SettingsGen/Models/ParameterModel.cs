@@ -10,7 +10,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 	/// <summary>
 	/// Parameter element used for service fabric settings
 	/// </summary>
-	public sealed class ParameterModel : IEqualityComparer<ParameterModel>, IEquatable<ParameterModel>
+	public sealed record ParameterModel : IEqualityComparer<ParameterModel>, IEquatable<ParameterModel>
 	{
 		/// <summary>
 		/// Parameterless constructor for the Xml serialising
@@ -75,19 +75,6 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 		}
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj switch
-		{
-			ParameterModel model => Equals(model),
-			_ => false
-		};
-
-		/// <inheritdoc/>
 		public override int GetHashCode() => GetHashCode(this);
-
-		/// <inheritdoc/>
-		public static bool operator ==(ParameterModel x, ParameterModel y) => x.Equals(y);
-
-		/// <inheritdoc/>
-		public static bool operator !=(ParameterModel x, ParameterModel y) => !x.Equals(y);
 	}
 }

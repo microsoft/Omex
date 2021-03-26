@@ -19,9 +19,6 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Comparing
 		public bool AreExistingSettingsEqual(TSettingModel newSettings, AdditionalText filename)
 		{
 			XmlSerializer serializer = new(typeof(TSettingModel));
-			serializer.UnknownNode += new XmlNodeEventHandler(SerializerUnknownNode);
-			serializer.UnknownAttribute += new
-			XmlAttributeEventHandler(SerializerUnknownAttribute);
 
 			string? fileContent = filename.GetText()?.ToString();
 
@@ -36,28 +33,6 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Comparing
 			TSettingModel model = (TSettingModel)serializer.Deserialize(stringReader);
 
 			return newSettings.Equals(model);
-		}
-
-		/// <summary>
-		/// Serialize unknown node
-		/// </summary>
-		/// <param name="sender">Sender object</param>
-		/// <param name="e">Xml node event args</param>
-		private void SerializerUnknownNode(object sender, XmlNodeEventArgs e)
-		{
-			Console.WriteLine("Unknown Node:" + e.Name + "\t" + e.Text);
-		}
-
-		/// <summary>
-		/// Seriliaze unknown attribute
-		/// </summary>
-		/// <param name="sender">Sender object</param>
-		/// <param name="e">Xml attribute event arguments</param>
-		private void SerializerUnknownAttribute(object sender, XmlAttributeEventArgs e)
-		{
-			System.Xml.XmlAttribute attr = e.Attr;
-			Console.WriteLine("Unknown attribute " +
-				attr.Name + "='" + attr.Value + "'");
 		}
 	}
 }

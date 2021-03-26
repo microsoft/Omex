@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <SettingsFile>$(SolutionDir)\src\CodeGenerators\SettingsGen.Example\Settings.xml</SettingsFile>
+    <GenerateSettingsFile>True</GenerateSettingsFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SettingsGen\Microsoft.Omex.CodeGenerators.SettingsGen.csproj"  OutputItemType="Analyzer"  ReferenceOutputAssembly="false"  />
-    <ProjectReference Include="..\SettingsGen\Microsoft.Omex.CodeGenerators.SettingsGen.csproj"  PrivateAssets="all"/>
-    <AdditionalFiles Include="Settings.xml"  Generate="true" />
+    <ProjectReference Include="..\SettingsGen\Microsoft.Omex.CodeGenerators.SettingsGen.csproj" OutputItemType="Analyzer" />
   </ItemGroup>
 
   <!-- Manually reference the generator props because we locally reference the generator. When added via NuGet this happens automatically -->
