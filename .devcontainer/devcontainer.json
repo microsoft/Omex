@@ -1,0 +1,19 @@
+{
+  // image info here https://github.com/microsoft/vscode-dev-containers/tree/master/containers/dotnet
+  "image": "mcr.microsoft.com/vscode/devcontainers/dotnet:5.0",
+	
+  // Use this environment variable if you need to bind mount your local source code into a new container.
+	// "remoteEnv": { },
+	
+	// Set *default* container specific settings.json values on container create.
+	// "settings": { },
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"ms-azuretools.vscode-docker",
+		"ms-dotnettools.csharp"
+	],
+
+	// Ensure Dapr is running on opening the container
+	//"postCreateCommand": "dotnet install ...",
+}
