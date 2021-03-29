@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="$(Microsoft_ServiceFabric_AspNetCore_Abstractions_Version)" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="$(Microsoft_AspNetCore_Hosting_Version)" /> <!-- Override due to CG vulnerability -->
+    <PackageReference Include="System.Text.Encodings.Web" Version="$(System_Text_Encodings_Web_Version)" /> <!-- Override due to CG vulnerability -->
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hosting.Services\Microsoft.Omex.Extensions.Hosting.Services.csproj" />
