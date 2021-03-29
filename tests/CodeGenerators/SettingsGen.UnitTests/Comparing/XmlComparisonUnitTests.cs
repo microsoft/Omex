@@ -73,7 +73,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.Comparing
 			});
 
 			AdditionalText additionalText = new MockAdditionalText(invalidXml);
-			Assert.Throws<InvalidOperationException>(() => xmlComparison.AreExistingSettingsEqual(settingsXmlModel, additionalText));
+			Assert.False(xmlComparison.AreExistingSettingsEqual(settingsXmlModel, additionalText));
 		}
 
 		public readonly SectionModel SectionModel = new SectionModel

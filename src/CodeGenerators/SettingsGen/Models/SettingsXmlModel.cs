@@ -12,7 +12,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 	/// Application class which represents the Application xml Element in local node deployment files
 	/// </summary>
 	[XmlRoot("Settings", Namespace = "http://schemas.microsoft.com/2011/01/fabric", IsNullable = false)]
-	public sealed record SettingsXmlModel : IEqualityComparer<SettingsXmlModel>, IEquatable<SettingsXmlModel>
+	public sealed record SettingsXmlModel
 	{
 		/// <summary>
 		/// Parameterless constructor for the Xml serialising

@@ -36,7 +36,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Parser
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public SettingsFromAttributeParser(ISet<string> attributesToFind, IContextWrapper contextWrapper)
+		internal SettingsFromAttributeParser(ISet<string> attributesToFind, IContextWrapper contextWrapper)
 		{
 
 			if (attributesToFind.Count == 0)
@@ -150,7 +150,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Parser
 			if (attributeData.Arguments.TryGetValue(nameof(ParameterModel.MustOverride), out value))
 			{
 				parameterModel.MustOverride = value;
-				}
+			}
 
 			// Set is encrypted property
 			if (attributeData.Arguments.TryGetValue(nameof(ParameterModel.IsEncrypted), out value))

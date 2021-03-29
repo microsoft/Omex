@@ -45,6 +45,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Gating.UnitTests", "tests\Gating.UnitTests\Microsoft.Omex.Gating.UnitTests.csproj", "{60BE8066-9FD8-4E69-AC31-5FE0FBD665C8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGenerators", "CodeGenerators", "{C5BA6376-60EB-43E5-A9EF-AD2792C8D2A8}"
+	ProjectSection(SolutionItems) = preProject
+		src\CodeGenerators\Directory.Build.props = src\CodeGenerators\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.CodeGenerators.GateGen", "src\CodeGenerators\gategen\Microsoft.Omex.CodeGenerators.GateGen.csproj", "{D3B05497-4540-4D95-A829-E6CD42EE09D3}"
 EndProject
@@ -105,6 +108,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.CodeGenerators.SettingsGen", "src\CodeGenerators\SettingsGen\Microsoft.Omex.CodeGenerators.SettingsGen.csproj", "{905C495E-43DE-48AC-8768-4F9C75C8DDE9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGenerators", "CodeGenerators", "{62EEDB72-E231-477E-9AEE-D75E6B68DF47}"
+	ProjectSection(SolutionItems) = preProject
+		tests\Extensions\Directory.Build.props = tests\Extensions\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests", "tests\CodeGenerators\SettingsGen.UnitTests\Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.csproj", "{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}"
 EndProject

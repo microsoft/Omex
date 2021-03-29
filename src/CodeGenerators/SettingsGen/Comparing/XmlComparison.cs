@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using Microsoft.CodeAnalysis;
@@ -13,7 +12,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Comparing
 	/// Validate whether new settings match settings in XML file
 	/// </summary>
 	public sealed class XmlComparison<TSettingModel> : IComparison<TSettingModel>
-		where TSettingModel : class, IEqualityComparer<TSettingModel>, IEquatable<TSettingModel>
+		where TSettingModel : class, IEquatable<TSettingModel>
 	{
 		/// <inheritdoc/>
 		public bool AreExistingSettingsEqual(TSettingModel newSettings, AdditionalText filename)
@@ -27,12 +26,19 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Comparing
 				return false;
 			}
 
-			// A FileStream is needed to read the XML document.
-			using StringReader stringReader = new(fileContent);
-			// Declares an object variable of the type to be deserialized.
-			TSettingModel model = (TSettingModel)serializer.Deserialize(stringReader);
+			try
+			{
+				// A FileStream is needed to read the XML document.
+				using StringReader stringReader = new(fileContent);
+				// Declares an object variable of the type to be deserialized.
+				TSettingModel model = (TSettingModel)serializer.Deserialize(stringReader);
 
-			return newSettings.Equals(model);
+				return newSettings.Equals(model);
+			}
+			catch
+			{
+				return false;
+			}
 		}
 	}
 }

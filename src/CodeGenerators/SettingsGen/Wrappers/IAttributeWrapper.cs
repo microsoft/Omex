@@ -8,7 +8,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Wrappers
 	/// <summary>
 	/// Wrapper for attribute syntax
 	/// </summary>
-	public interface IAttributeWrapper
+	internal interface IAttributeWrapper
 	{
 		/// <summary>
 		/// Name of the attribute class

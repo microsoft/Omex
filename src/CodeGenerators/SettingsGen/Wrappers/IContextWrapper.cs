@@ -9,7 +9,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Wrappers
 	/// <summary>
 	/// Context wrapper to remove references to struct to make testing easier.
 	/// </summary>
-	public interface IContextWrapper
+	internal interface IContextWrapper
 	{
 		/// <summary>
 		/// Get attributes and the class INamedTypeSymbol they are in.

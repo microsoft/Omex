@@ -10,7 +10,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 	/// <summary>
 	/// Parameter element used for service fabric settings
 	/// </summary>
-	public sealed record ParameterModel : IEqualityComparer<ParameterModel>, IEquatable<ParameterModel>
+	public sealed record ParameterModel
 	{
 		/// <summary>
 		/// Parameterless constructor for the Xml serialising
@@ -50,9 +50,6 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 		public string? Type { get; set;}
 
 		/// <inheritdoc/>
-		public bool Equals(ParameterModel other) => Equals(this, other);
-
-		/// <inheritdoc/>
 		public bool Equals(ParameterModel x, ParameterModel y) =>
 			string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase) &&
 			string.Equals(x.Value, y.Value, StringComparison.OrdinalIgnoreCase) &&
@@ -73,8 +70,5 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 				return hashCode;
 			}
 		}
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => GetHashCode(this);
 	}
 }

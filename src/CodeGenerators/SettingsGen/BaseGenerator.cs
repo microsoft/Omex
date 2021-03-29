@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.Omex.CodeGenerators.SettingsGen.Comparing;
 using Microsoft.Omex.CodeGenerators.SettingsGen.FileGeneration;
@@ -15,7 +14,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 	/// </summary>
 	/// <typeparam name="TSettingModel">Settings model type</typeparam>
 	public abstract class BaseGenerator<TSettingModel> : ISourceGenerator
-		where TSettingModel : class, IEqualityComparer<TSettingModel>, IEquatable<TSettingModel>
+		where TSettingModel : class, IEquatable<TSettingModel>
 	{
 		/// <inheritdoc />
 		public void Execute(GeneratorExecutionContext context)

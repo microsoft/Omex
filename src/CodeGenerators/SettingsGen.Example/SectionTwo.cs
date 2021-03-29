@@ -14,17 +14,17 @@ namespace Microsoft.Omex.SettingsGen.Example
 		/// <summary>
 		/// Parameter in section 2
 		/// </summary>
-		public int TestingSectionTwo { get; } = 0;
+		public int TestingParamOne { get; } = 0;
 
 		/// <summary>
 		/// Parameter
 		/// </summary>
-		public int TestingSectionThree { get; } = 0;
+		public int TestingParamTwo { get; } = 0;
 
 		/// <summary>
 		/// Parameter
 		/// </summary>
-		[Parameter(MustOverride = true)]
-		public string SomethingElse { get; } = string.Empty;
+		[Parameter(MustOverride = true, Value = "TestThis")]
+		public string SomethingElseMaybe { get; } = string.Empty;
 	}
 }

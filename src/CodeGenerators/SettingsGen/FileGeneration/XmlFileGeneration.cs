@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -22,6 +23,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.FileGeneration
 			// Serializing the xml file creates a different format of the second line in the file as Service Fabric.
 			// SF changes the header when the application project gets build and creates changes to the file if these are not swapped.
 			File.WriteAllText(filename, content);
+			File.AppendAllLines(filename, new List<string>());
 		}
 
 		/// <summary>

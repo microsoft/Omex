@@ -10,7 +10,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Comparing
 	/// <summary>
 	/// Comparison interface used to determine if new settings and exsiting settings in file are the same
 	/// </summary>
-	public interface IComparison<TSetting> where TSetting: class, IEqualityComparer<TSetting>, IEquatable<TSetting>
+	public interface IComparison<TSetting> where TSetting: class
 	{
 		/// <summary>
 		/// Determine whether new settings and existing settings are the same.
