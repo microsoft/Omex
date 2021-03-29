@@ -62,7 +62,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Parser
 			{
 				foreach (IAttributeWrapper attribute in attributes)
 				{
-					if (ClassAttributes.Any(x => string.Equals(attribute.Name, x, StringComparison.OrdinalIgnoreCase)))
+					if (ClassAttributes.Contains(attribute.Name))
 					{
 						// Get the name value of the class
 						string name = classSymbol.Name;
@@ -120,11 +120,10 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Parser
 			}
 
 			// Handle parameter attribute present
-			IEnumerable<IAttributeWrapper> parameters = attributes.Where(
-				x => string.Equals(x.Name, AttributeNames.Parameter, StringComparison.OrdinalIgnoreCase)).ToList();
-			if (parameters.Count() > 0)
+			IAttributeWrapper? parameterAttr = attributes.FirstOrDefault(
+				x => string.Equals(x.Name, AttributeNames.Parameter, StringComparison.OrdinalIgnoreCase));
+			if (parameterAttr is not null)
 			{
-				IAttributeWrapper parameterAttr = parameters.First();
 				LoadParameterFromAttribute(parameterModel, parameterAttr, propertyName);
 				return true;
 			}

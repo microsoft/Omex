@@ -48,27 +48,5 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 		/// </summary>
 		[XmlAttribute]
 		public string? Type { get; set;}
-
-		/// <inheritdoc/>
-		public bool Equals(ParameterModel x, ParameterModel y) =>
-			string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase) &&
-			string.Equals(x.Value, y.Value, StringComparison.OrdinalIgnoreCase) &&
-			string.Equals(x.MustOverride, y.MustOverride, StringComparison.OrdinalIgnoreCase) &&
-			string.Equals(x.IsEncrypted, y.IsEncrypted, StringComparison.OrdinalIgnoreCase) &&
-			string.Equals(x.Type, y.Type, StringComparison.OrdinalIgnoreCase);
-
-		/// <inheritdoc/>
-		public int GetHashCode(ParameterModel obj)
-		{
-			unchecked
-			{
-				int hashCode = Name.GetHashCode();
-				hashCode = (hashCode * 397) ^ (Value.GetHashCode());
-				hashCode = (hashCode * 397) ^ (MustOverride?.GetHashCode() ?? 0);
-				hashCode = (hashCode * 397) ^ (IsEncrypted?.GetHashCode() ?? 0);
-				hashCode = (hashCode * 397) ^ (Type?.GetHashCode() ?? 0);
-				return hashCode;
-			}
-		}
 	}
 }

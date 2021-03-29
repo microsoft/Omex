@@ -109,7 +109,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.CodeGenerato
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGenerators", "CodeGenerators", "{62EEDB72-E231-477E-9AEE-D75E6B68DF47}"
 	ProjectSection(SolutionItems) = preProject
-		tests\Extensions\Directory.Build.props = tests\Extensions\Directory.Build.props
+		tests\CodeGenerators\Directory.Build.props = tests\CodeGenerators\Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests", "tests\CodeGenerators\SettingsGen.UnitTests\Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.csproj", "{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}"

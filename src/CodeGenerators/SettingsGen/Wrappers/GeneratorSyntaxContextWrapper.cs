@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Omex.CodeGenerators.SettingsGen.Models.Attributes;
+using TypeKind = Microsoft.Omex.CodeGenerators.SettingsGen.Models.Attributes.TypeKind;
 
 namespace Microsoft.Omex.CodeGenerators.SettingsGen.Wrappers
 {
@@ -61,6 +62,12 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Wrappers
 						string.Equals(arg.Key, nameof(ParameterAttribute.IsEncrypted), StringComparison.OrdinalIgnoreCase))
 					{
 						valueString = valueString.ToLowerInvariant();
+					}
+
+					if (string.Equals(arg.Key, nameof(ParameterAttribute.Type), StringComparison.OrdinalIgnoreCase)
+						&& Enum.TryParse(arg.Value.Value?.ToString() ?? string.Empty, out TypeKind typeKind))
+					{
+						valueString = typeKind.ToString("g");
 					}
 
 					attributeWrapper.Arguments.Add(arg.Key, valueString);

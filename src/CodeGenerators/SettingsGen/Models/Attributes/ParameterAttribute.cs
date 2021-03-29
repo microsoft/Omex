@@ -34,6 +34,6 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models.Attributes
 		/// <summary>
 		/// Type field of the Parameter element
 		/// </summary>
-		public string? Type { get; set; }
+		public TypeKind Type { get; set; }
 	}
 }

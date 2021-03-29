@@ -124,7 +124,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.Comparing
 			/// </summary>
 			/// <param name="cancellationToken"></param>
 			/// <returns></returns>
-			public override SourceText GetText(CancellationToken cancellationToken = default)
+			public override SourceText? GetText(CancellationToken cancellationToken = default)
 			{
 				return string.IsNullOrEmpty(Text) ? null : SourceText.From(Text);
 			}

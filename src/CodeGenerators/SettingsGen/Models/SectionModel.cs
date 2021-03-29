@@ -38,8 +38,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 		/// <inheritdoc/>
 		public bool Equals(SectionModel x, SectionModel y) =>
 			string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase) &&
-			x.Parameters.Count == y.Parameters.Count &&
-			x.Parameters.All(param => y.Parameters.Contains(param));
+			Enumerable.SequenceEqual(x.Parameters, y.Parameters);
 
 		/// <inheritdoc/>
 		public int GetHashCode(SectionModel obj)

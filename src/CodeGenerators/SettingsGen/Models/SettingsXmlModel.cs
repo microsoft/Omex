@@ -32,7 +32,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 		
 		/// <inheritdoc/>
 		public bool Equals(SettingsXmlModel x, SettingsXmlModel y) =>
-			x.Sections.Count == y.Sections.Count && x.Sections.All(param => y.Sections.Any(paramTwo => paramTwo.Equals(param)));
+			Enumerable.SequenceEqual(x.Sections, y.Sections);
 
 		/// <inheritdoc/>
 		public int GetHashCode(SettingsXmlModel obj) => obj.Sections.GetHashCode();
