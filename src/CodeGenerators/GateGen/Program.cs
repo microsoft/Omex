@@ -35,6 +35,16 @@ namespace Microsoft.Omex.CodeGenerators.GateGen
 					return 1;
 				}
 
+				// Check if UseGateGen value is provided
+				if (arguments.Length >= 4)
+				{
+					if (bool.TryParse(arguments[3], out bool useGateGen) && !useGateGen)
+					{
+						Console.WriteLine("UseGateGen set to false, not generating gates");
+						return 0;
+					}
+				}
+
 				GateDataSet gateDataSet = null;
 				try
 				{
