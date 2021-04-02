@@ -36,9 +36,9 @@ namespace Microsoft.Omex.CodeGenerators.GateGen
 				}
 
 				// Check if UseGateGen value is provided
-				if (arguments.Length >= 4)
+				if (arguments.Length >= 5)
 				{
-					if (bool.TryParse(arguments[3], out bool useGateGen) && !useGateGen)
+					if (bool.TryParse(arguments[4], out bool useGateGen) && !useGateGen)
 					{
 						Console.WriteLine("UseGateGen set to false, not generating gates");
 						return 0;
