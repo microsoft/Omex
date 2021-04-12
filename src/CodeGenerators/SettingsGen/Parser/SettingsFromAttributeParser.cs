@@ -128,7 +128,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Parser
 				return true;
 			}
 
-			// Handle no parameter tag present just assume property name is the setting name
+			// Handle no parameter tag present: just assume property name is the setting name
 			// and then return successful creation
 			parameterModel.Name = propertyName;
 

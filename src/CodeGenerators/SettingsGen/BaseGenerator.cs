@@ -78,7 +78,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		protected virtual IFileGenerator<TSettingModel>? Filegenerator => null;
 
 		/// <summary>
-		///	Comparer determines whether or not the new and existing settings match
+		/// Comparer determines whether or not the new and existing settings match
 		/// </summary>
 		protected virtual IComparison<TSettingModel>? Comparer => null;
 
