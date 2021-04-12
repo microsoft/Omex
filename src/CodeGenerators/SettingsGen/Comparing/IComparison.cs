@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis;
 namespace Microsoft.Omex.CodeGenerators.SettingsGen.Comparing
 {
 	/// <summary>
-	/// Comparison interface used to determine if new settings and exsiting settings in file are the same
+	/// Comparison interface used to determine if new settings and existing settings in file are the same
 	/// </summary>
 	public interface IComparison<TSetting> where TSetting: class
 	{
