@@ -38,7 +38,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Models
 		public string? MustOverride { get; set; }
 
 		/// <summary>
-		/// IsEncrypted attribute of the Parmater element
+		/// IsEncrypted attribute of the Parameter element
 		/// </summary>
 		[XmlAttribute]
 		public string? IsEncrypted { get; set; }
