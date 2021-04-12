@@ -25,7 +25,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		protected override IParser<SettingsXmlModel>? Parser => new SettingsFromAttributeParser(DefaultAttributes, new GeneratorSyntaxContextWrapper());
 
 		/// <inheritdoc />
-		protected override IFileGenerator<SettingsXmlModel>? Filegenerator => new XmlFileGeneration<SettingsXmlModel>();
+		protected override IFileGenerator<SettingsXmlModel>? FileGenerator => new XmlFileGeneration<SettingsXmlModel>();
 
 		/// <inheritdoc />
 		protected override IComparison<SettingsXmlModel>? Comparer => new XmlComparison<SettingsXmlModel>();

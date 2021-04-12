@@ -38,7 +38,6 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Parser
 		/// </summary>
 		internal SettingsFromAttributeParser(ISet<string> attributesToFind, IContextWrapper contextWrapper)
 		{
-
 			if (attributesToFind.Count == 0)
 			{
 				throw new ArgumentException("Attributes to find list has no elements");

@@ -46,14 +46,14 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 					return;
 				}
 
-				if (Filegenerator is null)
+				if (FileGenerator is null)
 				{
 					throw new Exception($"No file generator set for class {GetType().Name}");
 				}
 
 				context.ReportDiagnostic(Diagnostic.Create(WritingToFile, null, settingsFile.Path));
 
-				Filegenerator.GenerateFile(settings, settingsFile.Path);
+				FileGenerator.GenerateFile(settings, settingsFile.Path);
 			}
 			catch (Exception ex)
 			{
@@ -75,7 +75,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		/// <summary>
 		/// FileGenerator which takes a given model and generates a file from it
 		/// </summary>
-		protected virtual IFileGenerator<TSettingModel>? Filegenerator => null;
+		protected virtual IFileGenerator<TSettingModel>? FileGenerator => null;
 
 		/// <summary>
 		/// Comparer determines whether or not the new and existing settings match

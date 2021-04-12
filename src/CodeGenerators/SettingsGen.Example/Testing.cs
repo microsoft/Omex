@@ -20,7 +20,6 @@ namespace Microsoft.Omex.SettingsGen.Example
 		/// </summary>
 		public string Whatever { get; set; } = string.Empty;
 
-
 		/// <summary>
 		/// Parameter
 		/// </summary>

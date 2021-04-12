@@ -5,7 +5,6 @@
     <!--
     <SettingsFile>$(SolutionDir)\src\CodeGenerators\SettingsGen.Example\Settings.xml</SettingsFile>
     <GenerateSettingsFile>True</GenerateSettingsFile>    -->
-
   </PropertyGroup>
 
   <ItemGroup>
