@@ -41,7 +41,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		}
 
 		[TestMethod]
-		public void CreateUserHash_UseSalt()
+		public async Task CreateUserHash_UseSalt()
 		{
 			Random random = new Random();
 			TestSaltProvider saltProvider = new TestSaltProvider();
@@ -49,10 +49,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			UserHashIdentityMiddleware middleware = GetMiddelware(saltProvider: saltProvider);
 
 			HttpContext context = HttpContextHelper.GetContextWithIp("192.168.100.1");
-			string initialHash = middleware.CreateUserHash(context);
+			string initialHash = await middleware.CreateUserHash(context).ConfigureAwait(false);
 
 			random.NextBytes(saltProvider.Salt);
-			string changedHash = middleware.CreateUserHash(context);
+			string changedHash = await middleware.CreateUserHash(context).ConfigureAwait(false);
 
 			Assert.AreNotEqual(changedHash, initialHash);
 		}
@@ -71,13 +71,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			UserHashIdentityMiddleware middleware = GetMiddelware(saltProvider: null, provider);
 
 			Enumerable.Range(0, 100).AsParallel()
-				.Select(index =>
+				.Select(async index =>
 				{
 					int contextIndex = index % contexts.Length;
-					string hash = middleware.CreateUserHash(contexts[contextIndex]);
+					string hash = await middleware.CreateUserHash(contexts[contextIndex]).ConfigureAwait(false);
 					return (contextIndex, hash);
 				})
-				.GroupBy(hashIndexPair => hashIndexPair.contextIndex)
+				.GroupBy(async hashIndexPair => (await hashIndexPair.ConfigureAwait(false)).contextIndex)
 				.Select(hashesPerContext => hashesPerContext.Distinct().Count())
 				.ForAll(uniquHashesPerContext => {
 					Assert.AreEqual(1, uniquHashesPerContext, "Hashes for the same context should be identical");
@@ -88,14 +88,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		[DataRow(true, true, true, false)]
 		[DataRow(false, true, true, true)]
 		[DataRow(false, false, true, true)]
-		public void CreateUserHash_CallProvidersInOrder(bool firstApplicable, bool secondApplicable, bool firstShouldBeCalled, bool secondShouldBeCalled)
+		public async Task CreateUserHash_CallProvidersInOrder(bool firstApplicable, bool secondApplicable, bool firstShouldBeCalled, bool secondShouldBeCalled)
 		{
 			HttpContext context = HttpContextHelper.GetContextWithIp("192.168.201.1");
 			TestIdentityProvider mock1 = new ("Provider1", 15) { IsApplicable = firstApplicable };
 			TestIdentityProvider mock2 = new ("Procider2", 10) { IsApplicable = secondApplicable };
 			UserHashIdentityMiddleware middleware = GetMiddelware(saltProvider: null, mock1, mock2);
 
-			string hash = middleware.CreateUserHash(context);
+			string hash = await middleware.CreateUserHash(context).ConfigureAwait(false);
 			mock1.AssertCallsAndReset(firstShouldBeCalled);
 			mock2.AssertCallsAndReset(secondShouldBeCalled);
 
@@ -137,7 +137,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 				IsApplicable = true;
 			}
 
-			public bool TryWriteBytes(HttpContext context, Span<byte> span, out int bytesWritten)
+			public Task<bool> TryWriteBytesAsync(HttpContext context, Span<byte> span, out int bytesWritten)
 			{
 				Assert.AreEqual(MaxBytesInIdentity, span.Length, "Wrond span size provided");
 				m_calls++;
@@ -147,16 +147,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 				{
 					if (val != 0)
 					{
-						Assert.Fail($"Non zero byte value was passed into {nameof(TryWriteBytes)}");
+						Assert.Fail($"Non zero byte value was passed into {nameof(TryWriteBytesAsync)}");
 					}
 				}
 
 				if (m_provider != null)
 				{
-					return m_provider.TryWriteBytes(context, span, out bytesWritten);
+					return m_provider.TryWriteBytesAsync(context, span, out bytesWritten);
 				}
 
-				return IsApplicable;
+				return Task.FromResult(IsApplicable);
 			}
 
 			public void AssertCallsAndReset(bool shouldBeCalled)

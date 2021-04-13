@@ -30,39 +30,47 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			m_maxIdentitySize = m_userIdentityProviders.Max(p => p.MaxBytesInIdentity);
 		}
 
-		Task IMiddleware.InvokeAsync(HttpContext context, RequestDelegate next)
+		async Task IMiddleware.InvokeAsync(HttpContext context, RequestDelegate next)
 		{
 			Activity? activity = Activity.Current;
 
 			if (activity != null && string.IsNullOrEmpty(activity.GetUserHash()))
 			{
-				string userHash = CreateUserHash(context);
+				string userHash = await CreateUserHash(context).ConfigureAwait(false);
 				if (!string.IsNullOrWhiteSpace(userHash))
 				{
 					activity.SetUserHash(userHash);
 				}
 			}
 
-			return next(context);
+			await next(context);
 		}
 
-		internal string CreateUserHash(HttpContext context)
+		internal async Task<string> CreateUserHash(HttpContext context)
 		{
-			ReadOnlySpan<byte> saltSpan = m_saltProvider.GetSalt();
+			using IMemoryOwner<byte> uidMemoryOwner = MemoryPool<byte>.Shared.Rent(m_maxIdentitySize + m_saltProvider.GetSalt().Length);
 
-			using IMemoryOwner<byte> uidMemoryOwner = MemoryPool<byte>.Shared.Rent(m_maxIdentitySize + saltSpan.Length);
-			Span<byte> uidSpan = uidMemoryOwner.Memory.Span;
-			uidSpan.Fill(0);
+			// Done because span cannot be declared in an async function
+			uidMemoryOwner.Memory.Span.Fill(0);
 
 			int identityBytesWritten = -1;
 			foreach (IUserIdentityProvider provider in m_userIdentityProviders)
 			{
-				if (provider.TryWriteBytes(context, uidSpan.Slice(0, provider.MaxBytesInIdentity), out identityBytesWritten))
+				if (await provider.TryWriteBytesAsync(context, uidMemoryOwner.Memory.Span.Slice(0, provider.MaxBytesInIdentity), out identityBytesWritten)
+					.ConfigureAwait(false))
 				{
 					break;
 				}
 			}
 
+			return GetHashString(m_saltProvider.GetSalt(), uidMemoryOwner.Memory.Span, identityBytesWritten);
+		}
+
+		/// <summary>
+		/// This method was made because span byte cannot be declared in async or lambda functions
+		/// </summary>
+		private string GetHashString(ReadOnlySpan<byte> saltSpan, Span<byte> uidSpan, int identityBytesWritten)
+		{
 			if (identityBytesWritten <= 0)
 			{
 				return string.Empty;
