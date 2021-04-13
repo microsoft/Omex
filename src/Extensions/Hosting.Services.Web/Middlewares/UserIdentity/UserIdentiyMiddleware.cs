@@ -36,7 +36,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 
 			if (activity != null && string.IsNullOrEmpty(activity.GetUserHash()))
 			{
-				string userHash = await CreateUserHash(context).ConfigureAwait(false);
+				string userHash = await CreateUserHashAsync(context).ConfigureAwait(false);
 				if (!string.IsNullOrWhiteSpace(userHash))
 				{
 					activity.SetUserHash(userHash);
@@ -46,7 +46,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			await next(context);
 		}
 
-		internal async Task<string> CreateUserHash(HttpContext context)
+		internal async Task<string> CreateUserHashAsync(HttpContext context)
 		{
 			using IMemoryOwner<byte> uidMemoryOwner = MemoryPool<byte>.Shared.Rent(m_maxIdentitySize + m_saltProvider.GetSalt().Length);
 

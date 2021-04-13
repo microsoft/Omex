@@ -49,10 +49,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			UserHashIdentityMiddleware middleware = GetMiddelware(saltProvider: saltProvider);
 
 			HttpContext context = HttpContextHelper.GetContextWithIp("192.168.100.1");
-			string initialHash = await middleware.CreateUserHash(context).ConfigureAwait(false);
+			string initialHash = await middleware.CreateUserHashAsync(context).ConfigureAwait(false);
 
 			random.NextBytes(saltProvider.Salt);
-			string changedHash = await middleware.CreateUserHash(context).ConfigureAwait(false);
+			string changedHash = await middleware.CreateUserHashAsync(context).ConfigureAwait(false);
 
 			Assert.AreNotEqual(changedHash, initialHash);
 		}
@@ -74,7 +74,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 				.Select(async index =>
 				{
 					int contextIndex = index % contexts.Length;
-					string hash = await middleware.CreateUserHash(contexts[contextIndex]).ConfigureAwait(false);
+					string hash = await middleware.CreateUserHashAsync(contexts[contextIndex]).ConfigureAwait(false);
 					return (contextIndex, hash);
 				});
 			(int contextIndex, string hash)[] tupleList = await Task.WhenAll(result).ConfigureAwait(false);
@@ -98,7 +98,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			TestIdentityProvider mock2 = new ("Procider2", 10) { IsApplicable = secondApplicable };
 			UserHashIdentityMiddleware middleware = GetMiddelware(saltProvider: null, mock1, mock2);
 
-			string hash = await middleware.CreateUserHash(context).ConfigureAwait(false);
+			string hash = await middleware.CreateUserHashAsync(context).ConfigureAwait(false);
 			mock1.AssertCallsAndReset(firstShouldBeCalled);
 			mock2.AssertCallsAndReset(secondShouldBeCalled);
 
