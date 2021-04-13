@@ -10,6 +10,7 @@ using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Generic;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 {
@@ -58,7 +59,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		}
 
 		[TestMethod]
-		public void CreateUserHash_HandleConcurrentRequestProperly()
+		public async Task CreateUserHash_HandleConcurrentRequestProperly()
 		{
 			HttpContext[] contexts = new []
 			{
@@ -70,18 +71,21 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			TestIdentityProvider provider = new ("ProviderWrapper", new IpBasedUserIdentityProvider());
 			UserHashIdentityMiddleware middleware = GetMiddelware(saltProvider: null, provider);
 
-			Enumerable.Range(0, 100).AsParallel()
+			ParallelQuery<Task<(int contextIndex, string hash)>> result = Enumerable.Range(0, 100).AsParallel()
 				.Select(async index =>
 				{
 					int contextIndex = index % contexts.Length;
 					string hash = await middleware.CreateUserHash(contexts[contextIndex]).ConfigureAwait(false);
 					return (contextIndex, hash);
-				})
-				.GroupBy(async hashIndexPair => (await hashIndexPair.ConfigureAwait(false)).contextIndex)
-				.Select(hashesPerContext => hashesPerContext.Distinct().Count())
-				.ForAll(uniquHashesPerContext => {
-					Assert.AreEqual(1, uniquHashesPerContext, "Hashes for the same context should be identical");
 				});
+			(int contextIndex, string hash)[] tupleList = await Task.WhenAll(result).ConfigureAwait(false);
+			IEnumerable<int> uniqueHases = tupleList.GroupBy(hashIndexPair =>
+				hashIndexPair.contextIndex)
+				.Select(hashesPerContext => hashesPerContext.Distinct().Count());
+			foreach (int uniquHashesPerContext in uniqueHases)
+			{
+				Assert.AreEqual(1, uniquHashesPerContext, "Hashes for the same context should be identical");
+			}
 		}
 
 		[DataTestMethod]
