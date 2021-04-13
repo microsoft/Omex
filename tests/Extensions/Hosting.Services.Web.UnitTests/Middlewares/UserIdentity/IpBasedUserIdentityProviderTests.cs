@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,12 +13,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 	public class IpBasedUserIdentityProviderTests
 	{
 		[TestMethod]
-		public void TryWriteBytes_ReturnFalseIfNoIpAddress()
+		public async Task TryWriteBytes_ReturnFalseIfNoIpAddress()
 		{
 			IUserIdentityProvider provider = new IpBasedUserIdentityProvider();
 			(HttpContext context, _) = HttpContextHelper.CreateHttpContext();
 
-			bool result = provider.TryWriteBytes(context, new byte[provider.MaxBytesInIdentity].AsSpan(), out int bytesWritten);
+			bool result = await provider.TryWriteBytesAsync(context, new byte[provider.MaxBytesInIdentity].AsSpan(), out int bytesWritten).ConfigureAwait(false);
 			Assert.IsFalse(result);
 			Assert.AreEqual(-1, bytesWritten);
 		}
@@ -41,7 +42,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		private static byte[] GetIdentity(IUserIdentityProvider provider, HttpContext context)
 		{
 			byte[] array = new byte[provider.MaxBytesInIdentity];
-			provider.TryWriteBytes(context, array.AsSpan(), out int bytes);
+			provider.TryWriteBytesAsync(context, array.AsSpan(), out int bytes);
 			Assert.IsTrue(provider.MaxBytesInIdentity >= bytes, "Written size bigger then max size");
 			return array;
 		}
