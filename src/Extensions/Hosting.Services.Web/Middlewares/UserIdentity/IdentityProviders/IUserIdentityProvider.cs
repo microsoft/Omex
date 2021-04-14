@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
@@ -19,6 +20,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		/// <summary>
 		/// Tries to extract user information for HttpContext to create user hash
 		/// </summary>
-		public bool TryWriteBytes(HttpContext context, Span<byte> span, out int bytesWritten);
+		public Task<bool> TryWriteBytesAsync(HttpContext context, Span<byte> span, out int bytesWritten);
 	}
 }
