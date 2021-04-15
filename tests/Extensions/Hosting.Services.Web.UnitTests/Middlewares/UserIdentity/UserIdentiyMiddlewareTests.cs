@@ -140,11 +140,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 				IsApplicable = true;
 			}
 
-			public Task<bool> TryWriteBytesAsync(HttpContext context, Span<byte> span, out int bytesWritten)
+			public Task<(bool success, int bytesWritten)> TryWriteBytesAsync(HttpContext context, Span<byte> span)
 			{
 				Assert.AreEqual(MaxBytesInIdentity, span.Length, "Wrond span size provided");
 				m_calls++;
-				bytesWritten = IsApplicable ? MaxBytesInIdentity : 0;
+				int bytesWritten = IsApplicable ? MaxBytesInIdentity : 0;
 
 				foreach (byte val in span)
 				{
@@ -156,10 +156,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 
 				if (m_provider != null)
 				{
-					return m_provider.TryWriteBytesAsync(context, span, out bytesWritten);
+					return m_provider.TryWriteBytesAsync(context, span);
 				}
 
-				return Task.FromResult(IsApplicable);
+				return Task.FromResult((IsApplicable, bytesWritten));
 			}
 
 			public void AssertCallsAndReset(bool shouldBeCalled)
