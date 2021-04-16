@@ -20,6 +20,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		/// <summary>
 		/// Tries to extract user information for HttpContext to create user hash
 		/// </summary>
-		public Task<bool> TryWriteBytesAsync(HttpContext context, Span<byte> span, out int bytesWritten);
+		public Task<(bool success, int bytesWritten)> TryWriteBytesAsync(HttpContext context, Span<byte> span);
 	}
 }
