@@ -56,8 +56,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			int identityBytesWritten = -1;
 			foreach (IUserIdentityProvider provider in m_userIdentityProviders)
 			{
-				if (await provider.TryWriteBytesAsync(context, uidMemoryOwner.Memory.Span.Slice(0, provider.MaxBytesInIdentity), out identityBytesWritten)
-					.ConfigureAwait(false))
+				bool success;
+				(success, identityBytesWritten) = await provider.TryWriteBytesAsync(context, uidMemoryOwner.Memory.Span.Slice(0, provider.MaxBytesInIdentity))
+					.ConfigureAwait(false);
+				if (success)
 				{
 					break;
 				}
