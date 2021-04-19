@@ -19,7 +19,7 @@
 		<QCustomInput Include="@(CustomTargetInputs)" />
 	</ItemGroup>
 
-	<Target Name="GateGen" BeforeTargets="CoreCompile">
+	<Target Name="GateGen" BeforeTargets="CoreCompile" Condition="'$(UseGate)' == '' OR '$(UseGateGen)' == 'True'">
 		<Message Text="Running GateGen Target" />
 
 		<Error Text="The GatesXml property is not defined." Condition="'$(GatesXml)' == ''" />
