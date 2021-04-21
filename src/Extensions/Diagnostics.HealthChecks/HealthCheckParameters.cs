@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 {
 	/// <summary>
 	/// Additional parameters to configure health check

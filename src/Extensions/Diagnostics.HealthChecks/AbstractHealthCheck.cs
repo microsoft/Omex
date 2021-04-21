@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 
-namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 {
 	/// <summary>
 	/// Base health check that extracts logic of exception handling and wraps it into activity

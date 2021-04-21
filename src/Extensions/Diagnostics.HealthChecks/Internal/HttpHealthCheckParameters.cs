@@ -8,7 +8,7 @@ using System.Net;
 using System.Net.Http;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 {
 	internal class HttpHealthCheckParameters : HealthCheckParameters
 	{

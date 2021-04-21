@@ -14,7 +14,7 @@ using Microsoft.Omex.Extensions.Abstractions;
 using SfHealthInformation = System.Fabric.Health.HealthInformation;
 using SfHealthState = System.Fabric.Health.HealthState;
 
-namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 {
 	internal class ServiceFabricHealthCheckPublisher : IHealthCheckPublisher
 	{

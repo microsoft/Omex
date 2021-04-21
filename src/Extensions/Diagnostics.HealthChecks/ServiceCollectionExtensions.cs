@@ -1,24 +1,26 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Net;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.ObjectPool;
+using Microsoft.Extensions.Options;
 
-namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 {
 	/// <summary>
 	/// Extension to add Omex dependencies to IServiceCollection
 	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
-		/// <summary>
-		/// Register types required for Omex health check
-		/// </summary>
-		public static IHealthChecksBuilder AddServiceFabricHealthChecks(this IServiceCollection serviceCollection)
+
+		private const string ArgumentsFailure = "Wrong arguments for the publisher";
+
+		private static void ConfigureService(this IServiceCollection serviceCollection)
 		{
 			serviceCollection
 				.AddHttpClient(HttpEndpointHealthCheck.HttpClientLogicalName)
@@ -30,12 +32,30 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				});
 
 			serviceCollection.TryAddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
-
-			return serviceCollection
-				.AddHealthCheckPublisher<ServiceFabricHealthCheckPublisher>()
-				.AddHealthChecks();
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="serviceCollection"></param>
+		/// <returns></returns>
+		public static IHealthChecksBuilder AddServiceFabricHealthChecks<TPublisher>(this IServiceCollection serviceCollection)
+				where TPublisher : class, IHealthCheckPublisher
+		{
+			serviceCollection.ConfigureService();
+			Type publisherType = typeof(TPublisher);
+			if(publisherType == typeof(MockHealthPublisher))
+			{
+				return serviceCollection.AddRestHealthCheckPublisher().AddHealthChecks();
+				
+			}
+
+			return serviceCollection.AddHealthCheckPublisher<TPublisher>().AddHealthChecks();
+		}
+
+		/// <summary>
+		/// Register publisher for processing health check results
+		/// </summary>
 		/// <summary>
 		/// Register publisher for processing health check results
 		/// </summary>
@@ -43,6 +63,31 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			where TPublisher : class, IHealthCheckPublisher
 		{
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IHealthCheckPublisher, TPublisher>());
+			return serviceCollection;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="serviceCollection"></param>
+		/// <returns></returns>
+		public static IServiceCollection AddRestHealthCheckPublisher(this IServiceCollection serviceCollection)
+		{
+			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IHealthCheckPublisher, MockHealthPublisher>(
+				(serviceProvider) =>
+				{
+					return new MockHealthPublisher(
+						clusterEndpoints: new Uri(serviceProvider
+													.GetRequiredService<IOptions<RestHealthPublisherOptions>>()
+													.Value
+													.RestHealthPublisherClusterEndpoint),
+						serviceId: serviceProvider
+													.GetRequiredService<IOptions<RestHealthPublisherOptions>>()
+													.Value
+													.RestHealthPublisherServiceId
+					);
+				}
+				));
 			return serviceCollection;
 		}
 	}
