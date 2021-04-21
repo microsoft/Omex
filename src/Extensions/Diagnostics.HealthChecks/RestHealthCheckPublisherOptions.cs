@@ -3,7 +3,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	/// <summary>
 	/// 

@@ -10,7 +10,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	/// <summary>
 	/// Extension to add Omex dependencies to IServiceCollection

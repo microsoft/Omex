@@ -8,7 +8,7 @@ using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	/// <summary>
 	/// Extension to add health checks into IHealthChecksBuilder

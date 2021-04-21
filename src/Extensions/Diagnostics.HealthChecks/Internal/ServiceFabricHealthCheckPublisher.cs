@@ -13,7 +13,7 @@ using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions;
 using SfHealthInformation = System.Fabric.Health.HealthInformation;
 
-namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	/// <summary>
 	/// 

@@ -13,7 +13,7 @@ using Microsoft.ServiceFabric.Client.Http;
 using sfc = Microsoft.ServiceFabric.Common;
 using sfh = System.Fabric.Health;
 
-namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	/// <summary>
 	/// Just mock

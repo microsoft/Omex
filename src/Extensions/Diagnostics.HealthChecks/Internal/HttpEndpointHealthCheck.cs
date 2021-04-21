@@ -13,7 +13,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 
-namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	internal class HttpEndpointHealthCheck : AbstractHealthCheck<HttpHealthCheckParameters>
 	{
