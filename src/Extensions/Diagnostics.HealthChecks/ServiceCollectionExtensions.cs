@@ -44,7 +44,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 		{
 			serviceCollection.ConfigureService();
 			Type publisherType = typeof(TPublisher);
-			if(publisherType == typeof(MockHealthPublisher))
+			if(publisherType == typeof(RestHealthCheckPublisher))
 			{
 				return serviceCollection.AddRestHealthCheckPublisher().AddHealthChecks();
 				
@@ -73,16 +73,16 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 		/// <returns></returns>
 		public static IServiceCollection AddRestHealthCheckPublisher(this IServiceCollection serviceCollection)
 		{
-			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IHealthCheckPublisher, MockHealthPublisher>(
+			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IHealthCheckPublisher, RestHealthCheckPublisher>(
 				(serviceProvider) =>
 				{
-					return new MockHealthPublisher(
+					return new RestHealthCheckPublisher(
 						clusterEndpoints: new Uri(serviceProvider
-													.GetRequiredService<IOptions<RestHealthPublisherOptions>>()
+													.GetRequiredService<IOptions<RestHealthCheckPublisherOptions>>()
 													.Value
 													.RestHealthPublisherClusterEndpoint),
 						serviceId: serviceProvider
-													.GetRequiredService<IOptions<RestHealthPublisherOptions>>()
+													.GetRequiredService<IOptions<RestHealthCheckPublisherOptions>>()
 													.Value
 													.RestHealthPublisherServiceId
 					);

@@ -1,4 +1,5 @@
-﻿// Copyright (C) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
 using System;
 using System.Collections.Generic;
@@ -18,19 +19,19 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 	/// <summary>
 	/// Just mock
 	/// </summary>
-	public class MockHealthPublisher : IHealthCheckPublisher
+	public class RestHealthPublisher : IHealthCheckPublisher
 	{
 		private readonly ServiceFabricHttpClient m_client;
 		private readonly StringBuilder m_descriptionBuilder;
 		private readonly string m_serviceId;
-		internal const string HealthReportSourceId = nameof(MockHealthPublisher);
+		internal const string HealthReportSourceId = nameof(RestHealthPublisher);
 		internal const string HealthReportSummaryProperty = "HealthReportSummary";
 
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public MockHealthPublisher(Uri clusterEndpoints, string serviceId)
+		public RestHealthPublisher(Uri clusterEndpoints, string serviceId)
 		{
 			m_serviceId = serviceId;
 			m_descriptionBuilder = new();
