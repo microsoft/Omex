@@ -41,10 +41,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		{
 			serviceCollection.ConfigureService();
 			Type publisherType = typeof(TPublisher);
-			if(publisherType == typeof(RestHealthCheckPublisher))
+			if (publisherType == typeof(RestHealthCheckPublisher))
 			{
 				return serviceCollection.AddRestHealthCheckPublisher().AddHealthChecks();
-				
+
 			}
 
 			return serviceCollection.AddHealthCheckPublisher<TPublisher>().AddHealthChecks();

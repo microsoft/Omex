@@ -3,15 +3,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.ServiceFabric.Client;
-using Microsoft.ServiceFabric.Client.Http;
-using sfc = Microsoft.ServiceFabric.Common;
 using sfh = System.Fabric.Health;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
@@ -34,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// 
 		/// </summary>
-		protected abstract  string HealthReportSourceIdImpl { get; }
+		protected abstract string HealthReportSourceIdImpl { get; }
 
 		/// <summary>
 		/// 
@@ -48,7 +43,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		{
 			m_descriptionBuilder = new();
 		}
-
 
 		/// <summary>
 		/// 
