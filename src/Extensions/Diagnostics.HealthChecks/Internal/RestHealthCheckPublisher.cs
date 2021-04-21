@@ -19,112 +19,27 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 	/// <summary>
 	/// Just mock
 	/// </summary>
-	public class RestHealthPublisher : IHealthCheckPublisher
+	public class RestHealthCheckPublisher : HealthCheckPublisher
 	{
 		private readonly ServiceFabricHttpClient m_client;
-		private readonly StringBuilder m_descriptionBuilder;
 		private readonly string m_serviceId;
-		internal const string HealthReportSourceId = nameof(RestHealthPublisher);
-		internal const string HealthReportSummaryProperty = "HealthReportSummary";
-
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public RestHealthPublisher(Uri clusterEndpoints, string serviceId)
+		protected override string HealthReportSourceIdImpl => nameof(RestHealthCheckPublisher);
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public RestHealthCheckPublisher(Uri clusterEndpoints, string serviceId)
 		{
 			m_serviceId = serviceId;
-			m_descriptionBuilder = new();
 			m_client = (ServiceFabricHttpClient)new ServiceFabricClientBuilder()
 				.UseEndpoints(clusterEndpoints)
 				.BuildAsync().GetAwaiter().GetResult();
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="healthCheckName"></param>
-		/// <param name="reportEntry"></param>
-		/// <returns></returns>
-		private sfh.HealthInformation BuildSfHealthInformation(string healthCheckName, HealthReportEntry reportEntry)
-		{
-			m_descriptionBuilder.Clear();
-			if (!string.IsNullOrWhiteSpace(reportEntry.Description))
-			{
-				m_descriptionBuilder.Append("Description: ").Append(reportEntry.Description).AppendLine();
-			}
-			m_descriptionBuilder.Append("Duration: ").Append(reportEntry.Duration).Append('.').AppendLine();
-			if (reportEntry.Exception != null)
-			{
-				m_descriptionBuilder.Append("Exception: ").Append(reportEntry.Exception).AppendLine();
-			}
-
-			string description = m_descriptionBuilder.ToString();
-
-			return new sfh.HealthInformation(HealthReportSourceId, healthCheckName, ToSfHealthState(reportEntry.Status))
-			{
-				Description = description,
-			};
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="report"></param>
-		/// <returns></returns>
-		private sfh.HealthInformation BuildSfHealthInformation(HealthReport report)
-		{
-			int entriesCount = report.Entries.Count;
-			int healthyEntries = 0;
-			int degradedEntries = 0;
-			int unhealthyEntries = 0;
-			foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
-			{
-				switch (entryPair.Value.Status)
-				{
-					case HealthStatus.Healthy:
-						healthyEntries++;
-						break;
-					case HealthStatus.Degraded:
-						degradedEntries++;
-						break;
-					case HealthStatus.Unhealthy:
-					default:
-						unhealthyEntries++;
-						break;
-				}
-			}
-
-			m_descriptionBuilder
-				.AppendFormat("Health checks executed: {0}. ", entriesCount)
-				.AppendFormat("Healthy: {0}/{1}. ", healthyEntries, entriesCount)
-				.AppendFormat("Degraded: {0}/{1}. ", degradedEntries, entriesCount)
-				.AppendFormat("Unhealthy: {0}/{1}.", unhealthyEntries, entriesCount)
-				.AppendLine()
-				.AppendFormat("Total duration: {0}.", report.TotalDuration)
-				.AppendLine();
-
-			string description = m_descriptionBuilder.ToString();
-
-			return new sfh.HealthInformation(HealthReportSourceId, HealthReportSummaryProperty, ToSfHealthState(report.Status))
-			{
-				Description = description,
-			};
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="healthStatus"></param>
-		/// <returns></returns>
-		private sfh.HealthState ToSfHealthState(HealthStatus healthStatus) =>
-			healthStatus switch
-			{
-				HealthStatus.Healthy => sfh.HealthState.Ok,
-				HealthStatus.Degraded => sfh.HealthState.Warning,
-				HealthStatus.Unhealthy => sfh.HealthState.Error,
-				_ => throw new ArgumentException($"'{healthStatus}' is not a valid health status."),
-			};
 
 		/// <summary>
 		/// 
@@ -175,7 +90,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 		/// <param name="report"></param>
 		/// <param name="cancellationToken"></param>
 		/// <returns></returns>
-		public async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
+		public override async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
 			try
 			{
@@ -194,5 +109,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 				// Ignore, the service instance is closing.
 			}
 		}
+
+		public override Task PublishAsync(HealthReport report, CancellationToken cancellationToken) => throw new NotImplementedException();
 	}
 }
