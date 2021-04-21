@@ -12,11 +12,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions;
 using SfHealthInformation = System.Fabric.Health.HealthInformation;
-using SfHealthState = System.Fabric.Health.HealthState;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 {
-	internal class ServiceFabricHealthCheckPublisher : HealthCheckPublisher
+	/// <summary>
+	/// 
+	/// </summary>
+	public class ServiceFabricHealthCheckPublisher : HealthCheckPublisher
 	{
 
 		private readonly IAccessor<IServicePartition> m_partitionAccessor;
@@ -25,6 +27,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 
 		private readonly ObjectPool<StringBuilder> m_stringBuilderPool;
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="partitionAccessor"></param>
+		/// <param name="logger"></param>
+		/// <param name="objectPoolProvider"></param>
 		public ServiceFabricHealthCheckPublisher(
 			IAccessor<IServicePartition> partitionAccessor,
 			ILogger<ServiceFabricHealthCheckPublisher> logger,
@@ -35,8 +43,17 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 			m_stringBuilderPool = objectPoolProvider.CreateStringBuilderPool();
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
 		protected override string HealthReportSourceIdImpl => nameof(ServiceFabricHealthCheckPublisher);
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="report"></param>
+		/// <param name="cancellationToken"></param>
+		/// <returns></returns>
 		public override Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
 			IServicePartition? partition = m_partitionAccessor.Value;
