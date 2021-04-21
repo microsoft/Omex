@@ -17,9 +17,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
-
-		private const string ArgumentsFailure = "Wrong arguments for the publisher";
-
 		private static void ConfigureService(this IServiceCollection serviceCollection)
 		{
 			serviceCollection

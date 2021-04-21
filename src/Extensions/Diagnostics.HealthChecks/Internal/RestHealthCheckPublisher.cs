@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -32,7 +31,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 		/// <summary>
 		/// 
 		/// </summary>
-		public RestHealthCheckPublisher(Uri clusterEndpoints, string serviceId)
+		public RestHealthCheckPublisher(Uri clusterEndpoints, string serviceId) : base()
 		{
 			m_serviceId = serviceId;
 			m_client = (ServiceFabricHttpClient)new ServiceFabricClientBuilder()
@@ -109,7 +108,5 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Mtyrolski
 				// Ignore, the service instance is closing.
 			}
 		}
-
-		public override Task PublishAsync(HealthReport report, CancellationToken cancellationToken) => throw new NotImplementedException();
 	}
 }
