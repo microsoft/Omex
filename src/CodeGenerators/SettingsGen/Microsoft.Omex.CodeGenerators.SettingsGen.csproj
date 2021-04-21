@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetStandardVersions)</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="$(Microsoft_CodeAnalysis_Common)" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(Microsoft_CodeAnalysis_CSharp)" PrivateAssets="all" />
+    <PackageReference Include="System.Text.Json" Version="$(System_Text_Json_Version)" PrivateAssets="all" />
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+      <None Include="Microsoft.Omex.CodeGenerators.SettingsGen.props" Pack="true" PackagePath="build" Visible="false" />
+  </ItemGroup>
+</Project>
