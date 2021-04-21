@@ -23,7 +23,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	{
 		private readonly ServiceFabricHttpClient m_client;
 		private readonly string m_serviceId;
-		private StringBuilder m_descriptionBuilder;
 		/// <summary>
 		/// 
 		/// </summary>
@@ -32,9 +31,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// 
 		/// </summary>
-		public RestHealthCheckPublisher(Uri clusterEndpoints, string serviceId)
+		public RestHealthCheckPublisher(Uri clusterEndpoints, string serviceId) : base()
 		{
-			m_descriptionBuilder = new();
 			m_serviceId = serviceId;
 			m_client = (ServiceFabricHttpClient)new ServiceFabricClientBuilder()
 				.UseEndpoints(clusterEndpoints)

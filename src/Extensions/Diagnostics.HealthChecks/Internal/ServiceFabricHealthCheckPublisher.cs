@@ -25,22 +25,17 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private readonly ILogger<ServiceFabricHealthCheckPublisher> m_logger;
 
-		private readonly ObjectPool<StringBuilder> m_stringBuilderPool;
-
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="partitionAccessor"></param>
 		/// <param name="logger"></param>
-		/// <param name="objectPoolProvider"></param>
 		public ServiceFabricHealthCheckPublisher(
 			IAccessor<IServicePartition> partitionAccessor,
-			ILogger<ServiceFabricHealthCheckPublisher> logger,
-			ObjectPoolProvider objectPoolProvider) : base()
+			ILogger<ServiceFabricHealthCheckPublisher> logger) : base()
 		{
 			m_partitionAccessor = partitionAccessor;
 			m_logger = logger;
-			m_stringBuilderPool = objectPoolProvider.CreateStringBuilderPool();
 		}
 
 		/// <summary>
