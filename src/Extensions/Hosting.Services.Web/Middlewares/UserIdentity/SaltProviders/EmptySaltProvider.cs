@@ -9,6 +9,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	{
 		public ReadOnlySpan<byte> GetSalt() => Span<byte>.Empty;
 
+		public int MaxBytesInSalt => 0;
+
 		public void Dispose() { }
 	}
 }

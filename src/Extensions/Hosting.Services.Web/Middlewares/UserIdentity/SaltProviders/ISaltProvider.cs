@@ -8,5 +8,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	internal interface ISaltProvider : IDisposable
 	{
 		ReadOnlySpan<byte> GetSalt();
+
+		int MaxBytesInSalt { get; }
 	}
 }
