@@ -3,61 +3,69 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Text;
+using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.ServiceFabric.Client;
 using Microsoft.ServiceFabric.Client.Http;
-using sfc = Microsoft.ServiceFabric.Common;
-using sfh = System.Fabric.Health;
+using ServiceFabricCommon = Microsoft.ServiceFabric.Common;
+using ServiceFabricHealth = System.Fabric.Health;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
-	/// <summary>
-	/// Just mock
-	/// </summary>
-	public class RestHealthCheckPublisher : HealthCheckPublisher
+	internal class RestHealthCheckPublisher : HealthCheckPublisher
 	{
 		private readonly ServiceFabricHttpClient m_client;
-		private readonly string m_serviceId;
-		/// <summary>
-		/// 
-		/// </summary>
+
 		protected override string HealthReportSourceIdImpl => nameof(RestHealthCheckPublisher);
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public RestHealthCheckPublisher(Uri clusterEndpoints, string serviceId) : base()
+		// Taken from https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-environment-variables-reference
+		internal static string FabricNodeNameEnv = "Fabric_NodeName";
+
+		public RestHealthCheckPublisher(ILogger<ServiceFabricHealthCheckPublisher> logger,
+										RestHealthCheckPublisherOptions options) : base()
 		{
-			m_serviceId = serviceId;
 			m_client = (ServiceFabricHttpClient)new ServiceFabricClientBuilder()
-				.UseEndpoints(clusterEndpoints)
+				.UseEndpoints(new Uri(options.RestHealthPublisherClusterEndpoint))
 				.BuildAsync().GetAwaiter().GetResult();
 		}
 
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="healthInfo"></param>
-		/// <returns></returns>
-		private sfc.HealthInformation fromSfHealthInformation(sfh.HealthInformation healthInfo)
+		public override async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
-			sfc.HealthState healthState = healthInfo.HealthState switch
+			try
 			{
-				sfh.HealthState.Invalid => sfc.HealthState.Invalid,
-				sfh.HealthState.Ok => sfc.HealthState.Ok,
-				sfh.HealthState.Warning => sfc.HealthState.Warning,
-				sfh.HealthState.Error => sfc.HealthState.Error,
-				sfh.HealthState.Unknown => sfc.HealthState.Unknown,
+				// We trust the framework to ensure that the report is not null and doesn't contain null entries.
+				foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
+				{
+					cancellationToken.ThrowIfCancellationRequested();
+					await PublishHealthInfoAsync(BuildSfHealthInformation(entryPair.Key, entryPair.Value), cancellationToken);
+				}
+
+				cancellationToken.ThrowIfCancellationRequested();
+				await PublishHealthInfoAsync(BuildSfHealthInformation(report), cancellationToken);
+			}
+			catch (Exception)
+			{
+				// Ignore, the service instance is closing.
+			}
+		}
+
+		internal ServiceFabricCommon.HealthInformation FromSfHealthInformation(ServiceFabricHealth.HealthInformation healthInfo)
+		{
+			ServiceFabricCommon.HealthState healthState = healthInfo.HealthState switch
+			{
+				ServiceFabricHealth.HealthState.Invalid => ServiceFabricCommon.HealthState.Invalid,
+				ServiceFabricHealth.HealthState.Ok => ServiceFabricCommon.HealthState.Ok,
+				ServiceFabricHealth.HealthState.Warning => ServiceFabricCommon.HealthState.Warning,
+				ServiceFabricHealth.HealthState.Error => ServiceFabricCommon.HealthState.Error,
+				ServiceFabricHealth.HealthState.Unknown => ServiceFabricCommon.HealthState.Unknown,
 				_ => throw new ArgumentException($"'{healthInfo.HealthState}' is not a valid health status."),
 			};
 
-			sfc.HealthInformation sfcHealthInfo = new(
+			ServiceFabricCommon.HealthInformation sfcHealthInfo = new(
 				   sourceId: healthInfo.SourceId,
 				   property: healthInfo.Property,
 				   healthState: healthState,
@@ -71,42 +79,19 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			return sfcHealthInfo;
 		}
 
-		private async Task PublishHealthInfo(sfh.HealthInformation healthInfo, CancellationToken cancellationToken)
+		internal async Task PublishHealthInfoAsync(ServiceFabricHealth.HealthInformation healthInfo, CancellationToken cancellationToken)
 		{
-			IExecutionContext ctx = new BaseExecutionContext();
-			IPAddress addr = ctx.ClusterIpAddress;
-
-			sfc.HealthInformation sfcHealthInfo = fromSfHealthInformation(healthInfo);
-			await m_client.Services.ReportServiceHealthAsync(
-					serviceId: m_serviceId,
-					healthInformation: sfcHealthInfo
-				).ConfigureAwait(false);
-		}
-
-		/// <summary>
-		/// Just mock
-		/// </summary>
-		/// <param name="report"></param>
-		/// <param name="cancellationToken"></param>
-		/// <returns></returns>
-		public override async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
-		{
-			try
+			ServiceFabricCommon.HealthInformation sfcHealthInfo = FromSfHealthInformation(healthInfo);
+			string? nodeName = Environment.GetEnvironmentVariable(FabricNodeNameEnv);
+			if(nodeName == null)
 			{
-				// We trust the framework to ensure that the report is not null and doesn't contain null entries.
-				foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
-				{
-					cancellationToken.ThrowIfCancellationRequested();
-					await PublishHealthInfo(BuildSfHealthInformation(entryPair.Key, entryPair.Value), cancellationToken);
-				}
+				// TODO logger
+				return;
+			}
 
-				cancellationToken.ThrowIfCancellationRequested();
-				await PublishHealthInfo(BuildSfHealthInformation(report), cancellationToken);
-			}
-			catch (Exception)
-			{
-				// Ignore, the service instance is closing.
-			}
+			await m_client.Nodes.ReportNodeHealthAsync(
+				nodeName: nodeName,
+				healthInformation: sfcHealthInfo);
 		}
 	}
 }

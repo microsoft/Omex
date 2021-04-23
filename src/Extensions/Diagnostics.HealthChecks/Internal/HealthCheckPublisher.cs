@@ -11,52 +11,23 @@ using sfh = System.Fabric.Health;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
-	/// <summary>
-	/// 
-	/// </summary>
-	public abstract class HealthCheckPublisher : IHealthCheckPublisher
+	internal abstract class HealthCheckPublisher : IHealthCheckPublisher
 	{
-		/// <summary>
-		/// 
-		/// </summary>
 		protected StringBuilder m_descriptionBuilder;
 
-		/// <summary>
-		/// 
-		/// </summary>
 		protected string HealthReportSourceId { get { return HealthReportSourceIdImpl; } }
 
-		/// <summary>
-		/// 
-		/// </summary>
 		protected abstract string HealthReportSourceIdImpl { get; }
 
-		/// <summary>
-		/// 
-		/// </summary>
 		protected const string HealthReportSummaryProperty = "HealthReportSummary";
 
-		/// <summary>
-		/// 
-		/// </summary>
 		public HealthCheckPublisher()
 		{
 			m_descriptionBuilder = new();
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="report"></param>
-		/// <param name="cancellationToken"></param>
-		/// <returns></returns>
 		public abstract Task PublishAsync(HealthReport report, CancellationToken cancellationToken);
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="report"></param>
-		/// <returns></returns>
 		protected sfh.HealthInformation BuildSfHealthInformation(HealthReport report)
 		{
 			int entriesCount = report.Entries.Count;
@@ -97,11 +68,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			};
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="healthStatus"></param>
-		/// <returns></returns>
 		protected sfh.HealthState ToSfHealthState(HealthStatus healthStatus) =>
 			healthStatus switch
 			{
@@ -111,12 +77,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				_ => throw new ArgumentException($"'{healthStatus}' is not a valid health status."),
 			};
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="healthCheckName"></param>
-		/// <param name="reportEntry"></param>
-		/// <returns></returns>
 		protected sfh.HealthInformation BuildSfHealthInformation(string healthCheckName, HealthReportEntry reportEntry)
 		{
 			m_descriptionBuilder.Clear();

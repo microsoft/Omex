@@ -4,51 +4,33 @@
 using System;
 using System.Collections.Generic;
 using System.Fabric;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions;
 using SfHealthInformation = System.Fabric.Health.HealthInformation;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
-	/// <summary>
-	/// 
-	/// </summary>
-	public class ServiceFabricHealthCheckPublisher : HealthCheckPublisher
+	internal class ServiceFabricHealthCheckPublisher : HealthCheckPublisher
 	{
-
 		private readonly IAccessor<IServicePartition> m_partitionAccessor;
-
+		private readonly IAccessor<StatelessServiceContext> m_serviceCtx;
 		private readonly ILogger<ServiceFabricHealthCheckPublisher> m_logger;
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="partitionAccessor"></param>
-		/// <param name="logger"></param>
 		public ServiceFabricHealthCheckPublisher(
 			IAccessor<IServicePartition> partitionAccessor,
+			IAccessor<StatelessServiceContext> serviceCtx,
 			ILogger<ServiceFabricHealthCheckPublisher> logger) : base()
 		{
 			m_partitionAccessor = partitionAccessor;
 			m_logger = logger;
+			m_serviceCtx = serviceCtx;
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
 		protected override string HealthReportSourceIdImpl => nameof(ServiceFabricHealthCheckPublisher);
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="report"></param>
-		/// <param name="cancellationToken"></param>
-		/// <returns></returns>
 		public override Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
 			IServicePartition? partition = m_partitionAccessor.Value;

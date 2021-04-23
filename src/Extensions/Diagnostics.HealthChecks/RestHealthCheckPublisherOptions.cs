@@ -6,16 +6,10 @@ using System.ComponentModel.DataAnnotations;
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	/// <summary>
-	/// 
+	/// Option for the REST Health publisher
 	/// </summary>
 	public class RestHealthCheckPublisherOptions
 	{
-		/// <summary>
-		/// Settings definition for Service ID
-		/// </summary>
-		[Required(AllowEmptyStrings = false)]
-		public string RestHealthPublisherServiceId { get; set; } = string.Empty;
-
 		/// <summary>
 		/// Settings definition for Cluster Endpoint
 		/// </summary>
