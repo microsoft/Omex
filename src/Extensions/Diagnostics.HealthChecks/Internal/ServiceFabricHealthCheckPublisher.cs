@@ -4,10 +4,12 @@
 using System;
 using System.Collections.Generic;
 using System.Fabric;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions;
 using SfHealthInformation = System.Fabric.Health.HealthInformation;
 
@@ -16,13 +18,16 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	internal class ServiceFabricHealthCheckPublisher : HealthCheckPublisher
 	{
 		private readonly IAccessor<IServicePartition> m_partitionAccessor;
+
 		private readonly IAccessor<StatelessServiceContext> m_serviceCtx;
+
 		private readonly ILogger<ServiceFabricHealthCheckPublisher> m_logger;
 
 		public ServiceFabricHealthCheckPublisher(
 			IAccessor<IServicePartition> partitionAccessor,
 			IAccessor<StatelessServiceContext> serviceCtx,
-			ILogger<ServiceFabricHealthCheckPublisher> logger) : base()
+			ILogger<ServiceFabricHealthCheckPublisher> logger,
+			ObjectPoolProvider objectPoolProvider) : base(objectPoolProvider)
 		{
 			m_partitionAccessor = partitionAccessor;
 			m_logger = logger;

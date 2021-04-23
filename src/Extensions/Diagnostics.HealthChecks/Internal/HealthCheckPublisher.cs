@@ -7,13 +7,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using sfh = System.Fabric.Health;
+using Microsoft.Extensions.ObjectPool;
+using ServiceFabricHealth = System.Fabric.Health;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	internal abstract class HealthCheckPublisher : IHealthCheckPublisher
 	{
-		protected StringBuilder m_descriptionBuilder;
+		protected readonly ObjectPool<StringBuilder> StringBuilderPool;
 
 		protected string HealthReportSourceId { get { return HealthReportSourceIdImpl; } }
 
@@ -21,14 +22,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		protected const string HealthReportSummaryProperty = "HealthReportSummary";
 
-		public HealthCheckPublisher()
-		{
-			m_descriptionBuilder = new();
-		}
+		public HealthCheckPublisher(ObjectPoolProvider objectPoolProvider) => StringBuilderPool = objectPoolProvider.CreateStringBuilderPool();
 
 		public abstract Task PublishAsync(HealthReport report, CancellationToken cancellationToken);
 
-		protected sfh.HealthInformation BuildSfHealthInformation(HealthReport report)
+		protected ServiceFabricHealth.HealthInformation BuildSfHealthInformation(HealthReport report)
 		{
 			int entriesCount = report.Entries.Count;
 			int healthyEntries = 0;
@@ -51,7 +49,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				}
 			}
 
-			m_descriptionBuilder
+			StringBuilder descriptionBuilder = StringBuilderPool.Get();
+
+			descriptionBuilder
 				.AppendFormat("Health checks executed: {0}. ", entriesCount)
 				.AppendFormat("Healthy: {0}/{1}. ", healthyEntries, entriesCount)
 				.AppendFormat("Degraded: {0}/{1}. ", degradedEntries, entriesCount)
@@ -60,39 +60,40 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				.AppendFormat("Total duration: {0}.", report.TotalDuration)
 				.AppendLine();
 
-			string description = m_descriptionBuilder.ToString();
+			string description = descriptionBuilder.ToString();
 
-			return new sfh.HealthInformation(HealthReportSourceId, HealthReportSummaryProperty, ToSfHealthState(report.Status))
+			return new ServiceFabricHealth.HealthInformation(HealthReportSourceId, HealthReportSummaryProperty, ToSfHealthState(report.Status))
 			{
 				Description = description,
 			};
 		}
 
-		protected sfh.HealthState ToSfHealthState(HealthStatus healthStatus) =>
+		protected ServiceFabricHealth.HealthState ToSfHealthState(HealthStatus healthStatus) =>
 			healthStatus switch
 			{
-				HealthStatus.Healthy => sfh.HealthState.Ok,
-				HealthStatus.Degraded => sfh.HealthState.Warning,
-				HealthStatus.Unhealthy => sfh.HealthState.Error,
+				HealthStatus.Healthy => ServiceFabricHealth.HealthState.Ok,
+				HealthStatus.Degraded => ServiceFabricHealth.HealthState.Warning,
+				HealthStatus.Unhealthy => ServiceFabricHealth.HealthState.Error,
 				_ => throw new ArgumentException($"'{healthStatus}' is not a valid health status."),
 			};
 
-		protected sfh.HealthInformation BuildSfHealthInformation(string healthCheckName, HealthReportEntry reportEntry)
+		protected ServiceFabricHealth.HealthInformation BuildSfHealthInformation(string healthCheckName, HealthReportEntry reportEntry)
 		{
-			m_descriptionBuilder.Clear();
+			StringBuilder descriptionBuilder = StringBuilderPool.Get();
+
 			if (!string.IsNullOrWhiteSpace(reportEntry.Description))
 			{
-				m_descriptionBuilder.Append("Description: ").Append(reportEntry.Description).AppendLine();
+				descriptionBuilder.Append("Description: ").Append(reportEntry.Description).AppendLine();
 			}
-			m_descriptionBuilder.Append("Duration: ").Append(reportEntry.Duration).Append('.').AppendLine();
+			descriptionBuilder.Append("Duration: ").Append(reportEntry.Duration).Append('.').AppendLine();
 			if (reportEntry.Exception != null)
 			{
-				m_descriptionBuilder.Append("Exception: ").Append(reportEntry.Exception).AppendLine();
+				descriptionBuilder.Append("Exception: ").Append(reportEntry.Exception).AppendLine();
 			}
 
-			string description = m_descriptionBuilder.ToString();
+			string description = descriptionBuilder.ToString();
 
-			return new sfh.HealthInformation(HealthReportSourceId, healthCheckName, ToSfHealthState(reportEntry.Status))
+			return new ServiceFabricHealth.HealthInformation(HealthReportSourceId, healthCheckName, ToSfHealthState(reportEntry.Status))
 			{
 				Description = description,
 			};

@@ -4,10 +4,12 @@
 using System;
 using System.Collections.Generic;
 using System.Fabric;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.ServiceFabric.Client;
 using Microsoft.ServiceFabric.Client.Http;
@@ -28,7 +30,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		internal static string FabricNodeNameEnv = "Fabric_NodeName";
 
 		public RestHealthCheckPublisher(ILogger<ServiceFabricHealthCheckPublisher> logger,
-										RestHealthCheckPublisherOptions options) : base()
+										RestHealthCheckPublisherOptions options,
+										ObjectPoolProvider objectPoolProvider) : base(objectPoolProvider)
 		{
 			m_logger = logger;
 			m_client = (ServiceFabricHttpClient)new ServiceFabricClientBuilder()
@@ -56,7 +59,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			}
 		}
 
-		internal ServiceFabricCommon.HealthInformation FromSfHealthInformation(ServiceFabricHealth.HealthInformation healthInfo)
+		internal static ServiceFabricCommon.HealthInformation FromSfHealthInformation(ServiceFabricHealth.HealthInformation healthInfo)
 		{
 			ServiceFabricCommon.HealthState healthState = healthInfo.HealthState switch
 			{
