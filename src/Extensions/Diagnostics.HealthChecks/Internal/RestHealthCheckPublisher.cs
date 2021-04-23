@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	internal class RestHealthCheckPublisher : HealthCheckPublisher
 	{
 		private readonly ServiceFabricHttpClient m_client;
-
+		private readonly ILogger<ServiceFabricHealthCheckPublisher> m_logger;
 		protected override string HealthReportSourceIdImpl => nameof(RestHealthCheckPublisher);
 
 		// Taken from https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-environment-variables-reference
@@ -28,6 +28,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		public RestHealthCheckPublisher(ILogger<ServiceFabricHealthCheckPublisher> logger,
 										RestHealthCheckPublisherOptions options) : base()
 		{
+			m_logger = logger;
 			m_client = (ServiceFabricHttpClient)new ServiceFabricClientBuilder()
 				.UseEndpoints(new Uri(options.RestHealthPublisherClusterEndpoint))
 				.BuildAsync().GetAwaiter().GetResult();
@@ -85,13 +86,14 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			string? nodeName = Environment.GetEnvironmentVariable(FabricNodeNameEnv);
 			if(nodeName == null)
 			{
-				// TODO logger
+				m_logger.LogError(Tag.Create(), "Can't find node name.");
 				return;
 			}
 
 			await m_client.Nodes.ReportNodeHealthAsync(
 				nodeName: nodeName,
-				healthInformation: sfcHealthInfo);
+				healthInformation: sfcHealthInfo,
+				cancellationToken: cancellationToken);
 		}
 	}
 }

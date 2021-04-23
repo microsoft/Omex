@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System;
 using System.Net;
-using System.Fabric;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -19,9 +17,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	public static class ServiceCollectionExtensions
 	{
 		/// <summary>
-		/// 
+		/// Configures service for HTTP communication
 		/// </summary>
-		/// <param name="serviceCollection"></param>
 		private static void ConfigureService(this IServiceCollection serviceCollection)
 		{
 			serviceCollection
@@ -37,23 +34,18 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		}
 
 		/// <summary>
-		/// 
+		/// Register publisher for processing health check results directly to replicas
 		/// </summary>
-		/// <param name="serviceCollection"></param>
-		/// <returns></returns>
 		public static IHealthChecksBuilder AddServiceFabricHealthChecks(this IServiceCollection serviceCollection)
 		{
 			return serviceCollection.AddServiceFabricHealthChecks<ServiceFabricHealthCheckPublisher>();
 		}
 
 		/// <summary>
-		/// 
+		/// Register publisher for processing health check results directly to nodes using REST api
 		/// </summary>
-		/// <param name="serviceCollection"></param>
-		/// <returns></returns>
 		public static IHealthChecksBuilder AddRestHealthChecks(this IServiceCollection serviceCollection)
 		{
-			//TODO: remove
 			serviceCollection.TryAddSingleton(
 				provider =>
 				{
@@ -63,10 +55,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		}
 
 		/// <summary>
-		/// 
+		/// Register publisher for processing health check results
 		/// </summary>
-		/// <param name="serviceCollection"></param>
-		/// <returns></returns>
 		public static IHealthChecksBuilder AddServiceFabricHealthChecks<TPublisher>(this IServiceCollection serviceCollection)
 				where TPublisher : class, IHealthCheckPublisher
 		{
@@ -75,7 +65,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		}
 
 		/// <summary>
-		/// Register publisher for processing health check results
+		/// Register publisher using Dependency Injection
 		/// </summary>
 		public static IServiceCollection AddHealthCheckPublisher<TPublisher>(this IServiceCollection serviceCollection)
 			where TPublisher : class, IHealthCheckPublisher
