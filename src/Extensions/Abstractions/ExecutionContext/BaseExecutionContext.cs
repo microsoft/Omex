@@ -148,7 +148,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		/// </summary>
 		/// <param name="serviceManifestName"> Service manifest name defined in ApplicationManifest.xml </param>
 		/// <returns></returns>
-		public static string? GetBuildVersionFromServiceManifest(string serviceManifestName)
+		protected static string? GetBuildVersionFromServiceManifest(string serviceManifestName)
 		{
 			string? serviceManifestPath = GetServiceManifestPath(serviceManifestName);
 			if (serviceManifestPath == null)
@@ -163,7 +163,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		/// Get build version from the current running service's manifest file
 		/// </summary>
 		/// <returns></returns>
-		public static string? GetBuildVersionFromServiceManifest()
+		protected static string? GetBuildVersionFromServiceManifest()
 		{
 			string? applicationDir = GetVariable(FarbicFolderApplication);
 			string? serviceName = GetVariable(ServiceNameVariableName);
