@@ -19,7 +19,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	internal class RestHealthCheckPublisher : HealthCheckPublisher
 	{
 		private readonly ServiceFabricHttpClient m_client;
+
 		private readonly ILogger<ServiceFabricHealthCheckPublisher> m_logger;
+
 		protected override string HealthReportSourceIdImpl => nameof(RestHealthCheckPublisher);
 
 		// Taken from https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-environment-variables-reference
