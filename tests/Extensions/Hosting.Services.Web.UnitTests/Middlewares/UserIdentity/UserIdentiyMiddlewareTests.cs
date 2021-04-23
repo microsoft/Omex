@@ -179,7 +179,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 
 		private class TestSaltProvider : ISaltProvider
 		{
-			public byte[] Salt { get; } = new byte[128];
+			private const int SaltSize = 128;
+
+			public byte[] Salt { get; } = new byte[SaltSize];
+
+			public int MaxBytesInSalt => SaltSize;
 
 			public void Dispose() { }
 			public ReadOnlySpan<byte> GetSalt() => Salt.AsSpan();
