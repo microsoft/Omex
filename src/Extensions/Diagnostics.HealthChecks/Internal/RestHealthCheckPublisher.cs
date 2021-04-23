@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	internal class RestHealthCheckPublisher : HealthCheckPublisher
 	{
-		private readonly ServiceFabricHttpClient m_client;
+		private readonly RestClientWrapper m_clientWrapper;
 
 		private readonly ILogger<ServiceFabricHealthCheckPublisher> m_logger;
 
@@ -33,25 +33,24 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 										RestHealthCheckPublisherOptions options,
 										ObjectPoolProvider objectPoolProvider) : base(objectPoolProvider)
 		{
+			m_clientWrapper = new(new Uri(options.RestHealthPublisherClusterEndpoint));
 			m_logger = logger;
-			m_client = (ServiceFabricHttpClient)new ServiceFabricClientBuilder()
-				.UseEndpoints(new Uri(options.RestHealthPublisherClusterEndpoint))
-				.BuildAsync().GetAwaiter().GetResult();
 		}
 
 		public override async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
+			ServiceFabricHttpClient httpClient = m_clientWrapper.Get();
 			try
 			{
 				// We trust the framework to ensure that the report is not null and doesn't contain null entries.
 				foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
 				{
 					cancellationToken.ThrowIfCancellationRequested();
-					await PublishHealthInfoAsync(BuildSfHealthInformation(entryPair.Key, entryPair.Value), cancellationToken);
+					await PublishHealthInfoAsync(BuildSfHealthInformation(entryPair.Key, entryPair.Value), cancellationToken, httpClient);
 				}
 
 				cancellationToken.ThrowIfCancellationRequested();
-				await PublishHealthInfoAsync(BuildSfHealthInformation(report), cancellationToken);
+				await PublishHealthInfoAsync(BuildSfHealthInformation(report), cancellationToken, httpClient);
 			}
 			catch (Exception)
 			{
@@ -85,7 +84,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			return sfcHealthInfo;
 		}
 
-		internal async Task PublishHealthInfoAsync(ServiceFabricHealth.HealthInformation healthInfo, CancellationToken cancellationToken)
+		internal async Task PublishHealthInfoAsync(ServiceFabricHealth.HealthInformation healthInfo, CancellationToken cancellationToken,
+			ServiceFabricHttpClient httpClient)
 		{
 			ServiceFabricCommon.HealthInformation sfcHealthInfo = FromSfHealthInformation(healthInfo);
 			string? nodeName = Environment.GetEnvironmentVariable(FabricNodeNameEnv);
@@ -95,7 +95,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				return;
 			}
 
-			await m_client.Nodes.ReportNodeHealthAsync(
+			await httpClient.Nodes.ReportNodeHealthAsync(
 				nodeName: nodeName,
 				healthInformation: sfcHealthInfo,
 				cancellationToken: cancellationToken);
