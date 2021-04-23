@@ -48,8 +48,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 
 		internal async Task<string> CreateUserHashAsync(HttpContext context)
 		{
-			int len = m_saltProvider.GetSalt().Length;
-			using IMemoryOwner<byte> uidMemoryOwner = MemoryPool<byte>.Shared.Rent((m_maxIdentitySize + m_saltProvider.GetSalt().Length));
+			using IMemoryOwner<byte> uidMemoryOwner = MemoryPool<byte>.Shared.Rent(m_maxIdentitySize + m_salt.Length);
 
 			// Done because span cannot be declared in an async function
 			uidMemoryOwner.Memory.Span.Fill(0);
@@ -64,10 +63,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 				{
 					break;
 				}
+				else
+				{
+					uidMemoryOwner.Memory.Span.Fill(0);
+				}
 			}
 
-			return GetHashString(m_saltProvider.GetSalt(), uidMemoryOwner.Memory.Span, identityBytesWritten);
+			return GetHashString(m_salt, uidMemoryOwner.Memory.Span, identityBytesWritten);
 		}
+
+		private ReadOnlySpan<byte> m_salt => m_saltProvider.GetSalt();
 
 		/// <summary>
 		/// This method was made because span byte cannot be declared in async or lambda functions
