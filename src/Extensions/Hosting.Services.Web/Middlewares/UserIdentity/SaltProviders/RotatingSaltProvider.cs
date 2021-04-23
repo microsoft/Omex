@@ -54,6 +54,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			return saltSpan;
 		}
 
+		public int MaxBytesInSalt => SaltLength;
+
 		public void Dispose()
 		{
 			m_currentSaltMemory.Dispose();
