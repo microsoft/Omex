@@ -17,8 +17,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		{
 			IUserIdentityProvider provider = new IpBasedUserIdentityProvider();
 			(HttpContext context, _) = HttpContextHelper.CreateHttpContext();
-
-			(bool result, int bytesWritten) = await provider.TryWriteBytesAsync(context, new byte[provider.MaxBytesInIdentity].AsSpan()).ConfigureAwait(false);
+			Memory<byte> memory = new byte[provider.MaxBytesInIdentity];
+			(bool result, int bytesWritten) = await provider.TryWriteBytesAsync(context, memory).ConfigureAwait(false);
 			Assert.IsFalse(result);
 			Assert.AreEqual(-1, bytesWritten);
 		}
@@ -41,10 +41,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 
 		private async Task<byte[]> GetIdentityAsync(IUserIdentityProvider provider, HttpContext context)
 		{
-			byte[] array = new byte[provider.MaxBytesInIdentity];
-			(bool success, int bytes) = await provider.TryWriteBytesAsync(context, array.AsSpan()).ConfigureAwait(false);
+			Memory<byte> memory = new byte[provider.MaxBytesInIdentity];
+			(_, int bytes) = await provider.TryWriteBytesAsync(context, memory).ConfigureAwait(false);
 			Assert.IsTrue(provider.MaxBytesInIdentity >= bytes, "Written size bigger then max size");
-			return array;
+			return memory.Span.ToArray();
 		}
 	}
 }

@@ -48,7 +48,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 
 		internal async Task<string> CreateUserHashAsync(HttpContext context)
 		{
-			using IMemoryOwner<byte> uidMemoryOwner = MemoryPool<byte>.Shared.Rent(m_maxIdentitySize + m_saltProvider.GetSalt().Length);
+			using IMemoryOwner<byte> uidMemoryOwner = MemoryPool<byte>.Shared.Rent(m_maxIdentitySize + m_saltProvider.MaxBytesInSalt);
 
 			// Done because span cannot be declared in an async function
 			uidMemoryOwner.Memory.Span.Fill(0);
@@ -57,11 +57,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			foreach (IUserIdentityProvider provider in m_userIdentityProviders)
 			{
 				bool success;
-				(success, identityBytesWritten) = await provider.TryWriteBytesAsync(context, uidMemoryOwner.Memory.Span.Slice(0, provider.MaxBytesInIdentity))
+				(success, identityBytesWritten) = await provider.TryWriteBytesAsync(context, uidMemoryOwner.Memory)
 					.ConfigureAwait(false);
 				if (success)
 				{
 					break;
+				}
+				else
+				{
+					uidMemoryOwner.Memory.Span.Fill(0);
 				}
 			}
 
