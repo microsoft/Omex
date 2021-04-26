@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.ServiceFabric.Client;
 using Microsoft.ServiceFabric.Client.Http;
@@ -30,10 +31,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		internal static string FabricNodeNameEnv = "Fabric_NodeName";
 
 		public RestHealthCheckPublisher(ILogger<ServiceFabricHealthCheckPublisher> logger,
-										RestHealthCheckPublisherOptions options,
+										IOptions<RestHealthCheckPublisherOptions> options,
 										ObjectPoolProvider objectPoolProvider) : base(objectPoolProvider)
 		{
-			m_clientWrapper = new(new Uri(options.RestHealthPublisherClusterEndpoint));
+			m_clientWrapper = new(new Uri(options.Value.RestHealthPublisherClusterEndpoint));
 			m_logger = logger;
 		}
 

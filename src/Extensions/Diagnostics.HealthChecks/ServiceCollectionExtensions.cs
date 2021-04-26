@@ -46,11 +46,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// </summary>
 		public static IHealthChecksBuilder AddRestHealthChecks(this IServiceCollection serviceCollection)
 		{
-			serviceCollection.TryAddSingleton(
-				provider =>
-				{
-					return provider.GetRequiredService<IOptions<RestHealthCheckPublisherOptions>>().Value;
-				});
 			return serviceCollection.AddServiceFabricHealthChecks<RestHealthCheckPublisher>();
 		}
 
