@@ -19,6 +19,7 @@
     <System_Text_Encodings_Web_Version>5.0.1</System_Text_Encodings_Web_Version>
     <System_Threading_Tasks_Version>4.3.0</System_Threading_Tasks_Version>
     <System_Text_Json_Version>5.0.1</System_Text_Json_Version>
+    <System_ComponentModel_Annotations>5.0.0</System_ComponentModel_Annotations>
     <Xunit_Runner_VisualStudio_Version>2.4.3</Xunit_Runner_VisualStudio_Version>
   </PropertyGroup>
   <PropertyGroup Label="Package Versions. Pinned">
