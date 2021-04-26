@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Fabric;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				cancellationToken.ThrowIfCancellationRequested();
 				publishFunc(BuildSfHealthInformation(report));
 			}
-			catch (Exception)
+			catch (FabricObjectClosedException)
 			{
 				// Ignore, the service instance is closing.
 			}
