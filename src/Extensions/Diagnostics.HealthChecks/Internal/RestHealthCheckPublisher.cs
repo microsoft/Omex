@@ -26,7 +26,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private string? m_nodeName;
 
-		protected override string HealthReportSourceId => nameof(RestHealthCheckPublisher);
+		internal static new string? HealthReportSourceId => nameof(RestHealthCheckPublisher);
 
 		internal const string NodeNameVariableName = "Fabric_NodeName";
 
@@ -54,6 +54,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				m_logger.LogInformation(Tag.Create(), "HTTP Client isn't ready yet.");
 				return;
 			}
+
 			Action<ServiceFabricHealth.HealthInformation> reportHealth =
 				async (sfHealthInfo) => await PublishHealthInfoAsync(sfHealthInfo);
 
