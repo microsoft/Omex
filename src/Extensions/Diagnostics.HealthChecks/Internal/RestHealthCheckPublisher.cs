@@ -3,8 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Fabric;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -12,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.ServiceFabric.Client;
+using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.ServiceFabric.Client.Http;
 using ServiceFabricCommon = Microsoft.ServiceFabric.Common;
 using ServiceFabricHealth = System.Fabric.Health;
@@ -25,21 +23,29 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private readonly ILogger<ServiceFabricHealthCheckPublisher> m_logger;
 
+		private string? m_nodeName;
+
 		protected override string HealthReportSourceIdImpl => nameof(RestHealthCheckPublisher);
 
-		// Taken from https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-environment-variables-reference
-		internal static string FabricNodeNameEnv = "Fabric_NodeName";
+		internal const string NodeNameVariableName = "Fabric_NodeName";
 
 		public RestHealthCheckPublisher(ILogger<ServiceFabricHealthCheckPublisher> logger,
 										IOptions<RestHealthCheckPublisherOptions> options,
 										ObjectPoolProvider objectPoolProvider) : base(objectPoolProvider)
 		{
+			m_nodeName = FindNodeName();
 			m_clientWrapper = new(new Uri(options.Value.RestHealthPublisherClusterEndpoint));
 			m_logger = logger;
 		}
 
 		public override async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
+			if(m_nodeName == null)
+			{
+				m_logger.LogError(Tag.Create(), "Can't find node name.");
+				return;
+			}
+
 			ServiceFabricHttpClient httpClient = await m_clientWrapper.GetAsync();
 			try
 			{
@@ -89,17 +95,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			ServiceFabricHttpClient httpClient)
 		{
 			ServiceFabricCommon.HealthInformation sfcHealthInfo = FromSfHealthInformation(healthInfo);
-			string? nodeName = Environment.GetEnvironmentVariable(FabricNodeNameEnv);
-			if(nodeName == null)
-			{
-				m_logger.LogError(Tag.Create(), "Can't find node name.");
-				return;
-			}
 
 			await httpClient.Nodes.ReportNodeHealthAsync(
-				nodeName: nodeName,
+				nodeName: m_nodeName,
 				healthInformation: sfcHealthInfo,
 				cancellationToken: cancellationToken);
 		}
+
+		internal string? FindNodeName() => Environment.GetEnvironmentVariable(NodeNameVariableName);
 	}
 }

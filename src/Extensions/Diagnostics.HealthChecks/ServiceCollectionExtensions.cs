@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.ObjectPool;
-using Microsoft.Extensions.Options;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
@@ -17,9 +16,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	public static class ServiceCollectionExtensions
 	{
 		/// <summary>
-		/// Configures service for HTTP communication
+		/// Add fdependencies for a publisher
 		/// </summary>
-		private static void ConfigureService(this IServiceCollection serviceCollection)
+		private static void AddPublisherDependencies(this IServiceCollection serviceCollection)
 		{
 			serviceCollection
 				.AddHttpClient(HttpEndpointHealthCheck.HttpClientLogicalName)
@@ -55,7 +54,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		public static IHealthChecksBuilder AddServiceFabricHealthChecks<TPublisher>(this IServiceCollection serviceCollection)
 				where TPublisher : class, IHealthCheckPublisher
 		{
-			serviceCollection.ConfigureService();
+			serviceCollection.AddPublisherDependencies();
 			return serviceCollection.AddHealthCheckPublisher<TPublisher>().AddHealthChecks();
 		}
 

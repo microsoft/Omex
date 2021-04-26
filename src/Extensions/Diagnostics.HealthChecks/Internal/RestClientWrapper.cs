@@ -34,6 +34,5 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			return m_client!;
 		}
-
 	}
 }
