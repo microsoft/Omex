@@ -2,6 +2,8 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Client;
 using Microsoft.ServiceFabric.Client.Http;
 
@@ -9,33 +11,28 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	internal class RestClientWrapper
 	{
-		private ServiceFabricHttpClient m_client;
+		private ServiceFabricHttpClient? m_client;
 
 		private readonly Uri m_clusterEndpoint;
 
-		private bool m_ready;
-
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 		public RestClientWrapper(Uri clusterEndpoint)
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 		{
 			// m_client is initialized during first publish async in order to avoid possible deadlocks
 			m_clusterEndpoint = clusterEndpoint;
-			m_ready = false;
 		}
 
-		public ServiceFabricHttpClient Get()
+		public async Task<ServiceFabricHttpClient> GetAsync()
 		{
-			if (!m_ready)
+			if (m_client == null)
 			{
-				m_client = (ServiceFabricHttpClient)new ServiceFabricClientBuilder()
-				.UseEndpoints(m_clusterEndpoint)
-				.BuildAsync().GetAwaiter().GetResult();
+				ConfiguredTaskAwaitable < IServiceFabricClient > result = new ServiceFabricClientBuilder()
+					.UseEndpoints(m_clusterEndpoint)
+					.BuildAsync().ConfigureAwait(false);
 
-				m_ready = true;
+				m_client = (ServiceFabricHttpClient?)await result;
 			}
 
-			return m_client;
+			return m_client!;
 		}
 
 	}

@@ -40,7 +40,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		public override async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
-			ServiceFabricHttpClient httpClient = m_clientWrapper.Get();
+			ServiceFabricHttpClient httpClient = await m_clientWrapper.GetAsync();
 			try
 			{
 				// We trust the framework to ensure that the report is not null and doesn't contain null entries.
