@@ -67,6 +67,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		{
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IHealthCheckPublisher, TPublisher>());
 			return serviceCollection;
-		}	
+		}
 	}
 }
