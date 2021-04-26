@@ -16,15 +16,35 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	{
 		protected readonly ObjectPool<StringBuilder> StringBuilderPool;
 
-		protected string HealthReportSourceId { get { return HealthReportSourceIdImpl; } }
-
-		protected abstract string HealthReportSourceIdImpl { get; }
+		protected abstract string? HealthReportSourceId { get; }
 
 		protected const string HealthReportSummaryProperty = "HealthReportSummary";
 
 		public HealthCheckPublisher(ObjectPoolProvider objectPoolProvider) => StringBuilderPool = objectPoolProvider.CreateStringBuilderPool();
 
 		public abstract Task PublishAsync(HealthReport report, CancellationToken cancellationToken);
+
+		protected void PublishAllEntries(HealthReport report, Action<ServiceFabricHealth.HealthInformation> publishFunc,
+			 CancellationToken cancellationToken)
+		{
+			try
+			{
+				// We trust the framework to ensure that the report is not null and doesn't contain null entries.
+				foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
+				{
+					cancellationToken.ThrowIfCancellationRequested();
+					publishFunc(BuildSfHealthInformation(entryPair.Key, entryPair.Value));
+				}
+
+				cancellationToken.ThrowIfCancellationRequested();
+				publishFunc(BuildSfHealthInformation(report));
+			}
+			catch (Exception)
+			{
+				// Ignore, the service instance is closing.
+			}
+		}
+
 
 		protected ServiceFabricHealth.HealthInformation BuildSfHealthInformation(HealthReport report)
 		{

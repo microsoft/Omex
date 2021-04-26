@@ -30,7 +30,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			m_logger = logger;
 		}
 
-		protected override string HealthReportSourceIdImpl => nameof(ServiceFabricHealthCheckPublisher);
+		protected override string HealthReportSourceId => nameof(ServiceFabricHealthCheckPublisher);
 
 		public override Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
@@ -50,22 +50,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				_ => throw new ArgumentException($"Service partition type '{partition.GetType()}' is not supported."),
 			};
 
-			try
-			{
-				// We trust the framework to ensure that the report is not null and doesn't contain null entries.
-				foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
-				{
-					cancellationToken.ThrowIfCancellationRequested();
-					reportHealth(BuildSfHealthInformation(entryPair.Key, entryPair.Value));
-				}
-
-				cancellationToken.ThrowIfCancellationRequested();
-				reportHealth(BuildSfHealthInformation(report));
-			}
-			catch (FabricObjectClosedException)
-			{
-				// Ignore, the service instance is closing.
-			}
+			PublishAllEntries(report, reportHealth, cancellationToken);
 
 			return Task.CompletedTask;
 		}
