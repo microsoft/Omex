@@ -2,10 +2,8 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Client;
-using Microsoft.ServiceFabric.Client.Http;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {

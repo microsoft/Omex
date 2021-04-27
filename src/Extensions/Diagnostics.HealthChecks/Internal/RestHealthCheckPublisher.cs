@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -11,7 +10,6 @@ using Microsoft.Extensions.ObjectPool;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.ServiceFabric.Client;
-using Microsoft.ServiceFabric.Client.Http;
 using ServiceFabricCommon = Microsoft.ServiceFabric.Common;
 using ServiceFabricHealth = System.Fabric.Health;
 
@@ -42,7 +40,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		public override async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
-			if(m_nodeName == null)
+			if (m_nodeName == null)
 			{
 				m_logger.LogError(Tag.Create(), "Can't find node name.");
 				return;
@@ -50,7 +48,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			m_client = await m_clientWrapper.GetAsync();
 
-			if(m_client == null)
+			if (m_client == null)
 			{
 				m_logger.LogInformation(Tag.Create(), "HTTP Client isn't ready yet.");
 				return;
