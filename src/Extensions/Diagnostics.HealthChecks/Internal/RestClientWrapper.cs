@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	internal class RestClientWrapper
 	{
-		private ServiceFabricHttpClient? m_client;
+		private IServiceFabricClient? m_client;
 
 		private readonly Uri m_clusterEndpoint;
 
@@ -25,14 +25,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		{
 			if (m_client == null)
 			{
-				ConfiguredTaskAwaitable < IServiceFabricClient > result = new ServiceFabricClientBuilder()
+				m_client = await new ServiceFabricClientBuilder()
 					.UseEndpoints(m_clusterEndpoint)
-					.BuildAsync().ConfigureAwait(false);
-
-				m_client = (ServiceFabricHttpClient?)await result;
+					.BuildAsync()
+					.ConfigureAwait(false);
 			}
 
-			return m_client!;
+			return m_client;
 		}
 	}
 }
