@@ -48,12 +48,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			m_client = await m_clientWrapper.GetAsync();
 
-			if (m_client == null)
-			{
-				m_logger.LogInformation(Tag.Create(), "HTTP Client isn't ready yet.");
-				return;
-			}
-
 			Action<ServiceFabricHealth.HealthInformation> reportHealth =
 				async (sfHealthInfo) => await PublishHealthInfoAsync(sfHealthInfo);
 
@@ -90,8 +84,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		{
 			ServiceFabricCommon.HealthInformation sfcHealthInfo = FromSfHealthInformation(healthInfo);
 
-			// We know that during this call m_client is not null
-			await m_client!.Nodes.ReportNodeHealthAsync(
+			if (m_client == null)
+			{
+				m_logger.LogInformation(Tag.Create(), "HTTP Client isn't ready yet.");
+				return;
+			}
+
+			await m_client.Nodes.ReportNodeHealthAsync(
 				nodeName: m_nodeName,
 				healthInformation: sfcHealthInfo);
 		}
