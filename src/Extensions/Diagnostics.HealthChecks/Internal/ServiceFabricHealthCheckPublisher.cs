@@ -30,7 +30,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			m_logger = logger;
 		}
 
-		internal static new string? HealthReportSourceId => nameof(ServiceFabricHealthCheckPublisher);
+		internal static new string HealthReportSourceId => nameof(ServiceFabricHealthCheckPublisher);
 
 		public override Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
@@ -53,6 +53,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			PublishAllEntries(report, reportHealth, cancellationToken);
 
 			return Task.CompletedTask;
+		}
+
+		protected override SfHealthInformation FinalizeHealthReport(string healthReportSummaryProperty, System.Fabric.Health.HealthState healthState)
+		{
+			return new SfHealthInformation(HealthReportSourceId, healthReportSummaryProperty, healthState);
 		}
 	}
 }

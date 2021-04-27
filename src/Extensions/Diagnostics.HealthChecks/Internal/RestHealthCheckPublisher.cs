@@ -98,5 +98,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		}
 
 		internal string? FindNodeName() => Environment.GetEnvironmentVariable(NodeNameVariableName);
+
+		protected override ServiceFabricHealth.HealthInformation FinalizeHealthReport(string healthReportSummaryProperty, System.Fabric.Health.HealthState healthState)
+		{
+			return new ServiceFabricHealth.HealthInformation(HealthReportSourceId, healthReportSummaryProperty, healthState);
+		}
 	}
 }

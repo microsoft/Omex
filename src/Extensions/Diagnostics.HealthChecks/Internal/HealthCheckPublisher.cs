@@ -17,13 +17,15 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	{
 		protected readonly ObjectPool<StringBuilder> StringBuilderPool;
 
-		internal static string? HealthReportSourceId => nameof(HealthCheckPublisher);
+		internal static string HealthReportSourceId => nameof(HealthCheckPublisher);
 
 		internal const string HealthReportSummaryProperty = "HealthReportSummary";
 
 		public HealthCheckPublisher(ObjectPoolProvider objectPoolProvider) => StringBuilderPool = objectPoolProvider.CreateStringBuilderPool();
 
 		public abstract Task PublishAsync(HealthReport report, CancellationToken cancellationToken);
+
+		protected abstract ServiceFabricHealth.HealthInformation FinalizeHealthReport(string healthReportSummaryProperty, ServiceFabricHealth.HealthState healthState);
 
 		protected void PublishAllEntries(HealthReport report, Action<ServiceFabricHealth.HealthInformation> publishFunc,
 			 CancellationToken cancellationToken)
@@ -83,10 +85,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			string description = descriptionBuilder.ToString();
 
-			return new ServiceFabricHealth.HealthInformation(HealthReportSourceId, HealthReportSummaryProperty, ToSfHealthState(report.Status))
-			{
-				Description = description,
-			};
+			ServiceFabricHealth.HealthInformation healthInfo = FinalizeHealthReport(HealthReportSummaryProperty, ToSfHealthState(report.Status));
+			healthInfo.Description = description;
+			return healthInfo;
 		}
 
 		protected ServiceFabricHealth.HealthState ToSfHealthState(HealthStatus healthStatus) =>
@@ -114,10 +115,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			string description = descriptionBuilder.ToString();
 
-			return new ServiceFabricHealth.HealthInformation(HealthReportSourceId, healthCheckName, ToSfHealthState(reportEntry.Status))
-			{
-				Description = description,
-			};
+			ServiceFabricHealth.HealthInformation healthInfo = FinalizeHealthReport(healthCheckName, ToSfHealthState(reportEntry.Status));
+			healthInfo.Description = description;
+			return healthInfo;
 		}
 	}
 }
