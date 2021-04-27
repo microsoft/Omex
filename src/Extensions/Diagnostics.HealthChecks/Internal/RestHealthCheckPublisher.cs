@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.ServiceFabric.Client;
 using Microsoft.ServiceFabric.Client.Http;
 using ServiceFabricCommon = Microsoft.ServiceFabric.Common;
 using ServiceFabricHealth = System.Fabric.Health;
@@ -20,7 +21,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	{
 		private readonly RestClientWrapper m_clientWrapper;
 
-		private ServiceFabricHttpClient? m_client;
+		private IServiceFabricClient? m_client;
 
 		private readonly ILogger<ServiceFabricHealthCheckPublisher> m_logger;
 

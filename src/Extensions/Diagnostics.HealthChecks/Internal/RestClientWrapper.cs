@@ -21,7 +21,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			m_clusterEndpoint = clusterEndpoint;
 		}
 
-		public async Task<ServiceFabricHttpClient> GetAsync()
+		public async Task<IServiceFabricClient> GetAsync()
 		{
 			if (m_client == null)
 			{
