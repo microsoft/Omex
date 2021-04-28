@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	{
 		protected readonly ObjectPool<StringBuilder> StringBuilderPool;
 
-		internal static string HealthReportSourceId => nameof(HealthCheckPublisher);
+		internal abstract string HealthReportSourceId { get; }
 
 		internal const string HealthReportSummaryProperty = "HealthReportSummary";
 

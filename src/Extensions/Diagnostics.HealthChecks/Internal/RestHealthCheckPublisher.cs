@@ -21,20 +21,32 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private IServiceFabricClient? m_client;
 
-		private readonly ILogger<ServiceFabricHealthCheckPublisher> m_logger;
+		private readonly ILogger<RestHealthCheckPublisher> m_logger;
 
 		private string? m_nodeName;
 
-		internal static new string? HealthReportSourceId => nameof(RestHealthCheckPublisher);
+		internal override string HealthReportSourceId => nameof(RestHealthCheckPublisher);
 
 		internal const string NodeNameVariableName = "Fabric_NodeName";
 
-		public RestHealthCheckPublisher(ILogger<ServiceFabricHealthCheckPublisher> logger,
+		public RestHealthCheckPublisher(ILogger<RestHealthCheckPublisher> logger,
 										IOptions<RestHealthCheckPublisherOptions> options,
-										ObjectPoolProvider objectPoolProvider) : base(objectPoolProvider)
+										ObjectPoolProvider objectPoolProvider,
+										string? nodeName = null) : base(objectPoolProvider)
 		{
-			m_nodeName = FindNodeName();
+			m_nodeName = nodeName == null? FindNodeName() : nodeName;
 			m_clientWrapper = new(new Uri(options.Value.RestHealthPublisherClusterEndpoint));
+			m_logger = logger;
+		}
+
+		// ??
+		public RestHealthCheckPublisher(ILogger<RestHealthCheckPublisher> logger,
+										IServiceFabricClient client,
+										ObjectPoolProvider objectPoolProvider,
+										string? nodeName = null) : base(objectPoolProvider)
+		{
+			m_nodeName = nodeName == null ? FindNodeName() : nodeName;
+			m_clientWrapper = new(client);
 			m_logger = logger;
 		}
 

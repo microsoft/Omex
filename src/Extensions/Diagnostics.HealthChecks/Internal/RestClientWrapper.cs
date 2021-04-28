@@ -11,12 +11,17 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	{
 		private IServiceFabricClient? m_client;
 
-		private readonly Uri m_clusterEndpoint;
+		private readonly Uri? m_clusterEndpoint;
 
 		public RestClientWrapper(Uri clusterEndpoint)
 		{
 			// m_client is initialized during first publish async in order to avoid possible deadlocks
 			m_clusterEndpoint = clusterEndpoint;
+		}
+
+		public RestClientWrapper(IServiceFabricClient client)
+		{
+			m_client = client;
 		}
 
 		public async Task<IServiceFabricClient> GetAsync()

@@ -19,6 +19,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private readonly ILogger<ServiceFabricHealthCheckPublisher> m_logger;
 
+		internal override string HealthReportSourceId => nameof(ServiceFabricHealthCheckPublisher);
+
 		public ServiceFabricHealthCheckPublisher(
 			IAccessor<IServicePartition> partitionAccessor,
 			ILogger<ServiceFabricHealthCheckPublisher> logger,
@@ -27,8 +29,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			m_partitionAccessor = partitionAccessor;
 			m_logger = logger;
 		}
-
-		internal static new string HealthReportSourceId => nameof(ServiceFabricHealthCheckPublisher);
 
 		public override Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{

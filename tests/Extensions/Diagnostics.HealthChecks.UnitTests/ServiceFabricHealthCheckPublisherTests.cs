@@ -27,11 +27,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 	[TestClass]
 	public class ServiceFabricHealthCheckPublisherTests
 	{
-		/*[TestMethod]
+		[TestMethod]
 		public async Task PublishAsync_WhenPartitionIsNotAvailable_ReturnsGracefully()
 		{
 			// Arrange.
-			PublisherTestContext testContext = new PublisherTestContext();
+			PublisherTestContext testContext = new StatelessSFPublisherTestContext();
+			NullableAssert.IsNotNull(testContext.Publisher);
 
 			// Act.
 			await testContext.Publisher.PublishAsync(HealthReportBuilder.EmptyHealthReport, cancellationToken: default);
@@ -44,8 +45,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task PublishAsync_WhenStatefulPartitionIsClosed_ReturnsGracefully()
 		{
 			// Arrange.
-			PublisherTestContext testContext = new PublisherTestContext();
-			testContext.ConfigureStatefulServicePartition(closed: true);
+			StatefulSFPublisherTestContext testContext = new StatefulSFPublisherTestContext(closed: true);
+			NullableAssert.IsNotNull(testContext.Publisher);
 
 			// Act.
 			await testContext.Publisher.PublishAsync(HealthReportBuilder.EmptyHealthReport, cancellationToken: default);
@@ -58,8 +59,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task PublishAsync_WhenStatelessPartitionIsClosed_ReturnsGracefully()
 		{
 			// Arrange.
-			PublisherTestContext testContext = new PublisherTestContext();
-			testContext.ConfigureStatelessServicePartition(closed: true);
+			StatelessSFPublisherTestContext testContext = new StatelessSFPublisherTestContext(closed: true);
+			NullableAssert.IsNotNull(testContext.Publisher);
 
 			// Act.
 			await testContext.Publisher.PublishAsync(HealthReportBuilder.EmptyHealthReport, cancellationToken: default);
@@ -72,8 +73,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task PublishAsync_ForStatefulServicePartition_ReportsReplicaHealth()
 		{
 			// Arrange.
-			PublisherTestContext testContext = new PublisherTestContext();
-			testContext.ConfigureStatefulServicePartition();
+			StatefulSFPublisherTestContext testContext = new StatefulSFPublisherTestContext();
+			NullableAssert.IsNotNull(testContext.Publisher);
 
 			// Act.
 			await testContext.Publisher.PublishAsync(HealthReportBuilder.EmptyHealthReport, cancellationToken: default);
@@ -86,8 +87,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task PublishAsync_ForStatelessServicePartition_ReportsInstanceHealth()
 		{
 			// Arrange.
-			PublisherTestContext testContext = new PublisherTestContext();
-			testContext.ConfigureStatelessServicePartition();
+			StatelessSFPublisherTestContext testContext = new StatelessSFPublisherTestContext();
+			NullableAssert.IsNotNull(testContext.Publisher);
 
 			// Act.
 			await testContext.Publisher.PublishAsync(HealthReportBuilder.EmptyHealthReport, cancellationToken: default);
@@ -100,8 +101,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task PublishAsync_ForUnknownPartitionType_ThrowsArgumentException()
 		{
 			// Arrange.
-			PublisherTestContext testContext = new PublisherTestContext();
-			testContext.ConfigureServicePartition();
+			UnknownSFPublisherTestContext testContext = new UnknownSFPublisherTestContext();
+			NullableAssert.IsNotNull(testContext.Publisher);
 
 			// Act.
 			async Task act() => await testContext.Publisher.PublishAsync(HealthReportBuilder.EmptyHealthReport, cancellationToken: default);
@@ -112,75 +113,66 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			StringAssert.Contains(actualException.Message, partitionTypeName);
 		}
 
-		[TestMethod]
-		public async Task PublishAsync_WhenCancellationIsRequested_ThrowsOperationCanceledException()
+		[DataTestMethod]
+		[DynamicData(nameof(PublisherCases), DynamicDataSourceType.Method)]
+		public async Task PublishAsync_WhenCancellationIsRequested_ThrowsOperationCanceledException( PublisherTestContext publisherContext)
 		{
-			// Arrange.
-			PublisherTestContext testContext = new PublisherTestContext();
-			testContext.ConfigureStatefulServicePartition();
+				// Arrange
+				NullableAssert.IsNotNull(publisherContext.Publisher);
 
-			CancellationTokenSource tokenSource = new CancellationTokenSource();
-			tokenSource.Cancel();
+				CancellationTokenSource tokenSource = new CancellationTokenSource();
+				tokenSource.Cancel();
 
-			// Act.
-			async Task act() => await testContext.Publisher.PublishAsync(HealthReportBuilder.EmptyHealthReport, tokenSource.Token);
+				// Act.
+				async Task act() => await publisherContext.Publisher.PublishAsync(HealthReportBuilder.EmptyHealthReport, tokenSource.Token);
 
-			// Assert.
-			await Assert.ThrowsExceptionAsync<OperationCanceledException>(act);
+				// Assert.
+				await Assert.ThrowsExceptionAsync<OperationCanceledException>(act);
 		}
 
 		[DataTestMethod]
-		[DataRow("HealthyCheck", HealthStatus.Healthy, SfHealthState.Ok)]
-		[DataRow("DegradedCheck", HealthStatus.Degraded, SfHealthState.Warning)]
-		[DataRow("UnhealthyCheck", HealthStatus.Unhealthy, SfHealthState.Error)]
-		public async Task PublishAsync_ForHealthCheckWithValidHealthStatus_ReportsCorrectSfHealthState(string healthCheckName, HealthStatus healthCheckStatus, SfHealthState expectedSfHealthState)
+		[DynamicData(nameof(StatusStatePublisherCases), DynamicDataSourceType.Method)]
+		public async Task PublishAsync_ForHealthCheckWithValidHealthStatus_ReportsCorrectSfHealthState(string healthCheckName, HealthStatus healthCheckStatus, SfHealthState expectedSfHealthState, PublisherTestContext publisherContext)
 		{
-			// Arrange.
-			PublisherTestContext testContext = new PublisherTestContext();
-			testContext.ConfigureStatelessServicePartition();
+				// Arrange
+				NullableAssert.IsNotNull(publisherContext.Publisher);
 
-			HealthReport report = new HealthReportBuilder()
+				HealthReport report = new HealthReportBuilder()
 				.AddEntry(healthCheckName, healthCheckStatus)
 				.ToHealthReport();
 
-			// Act.
-			await testContext.Publisher.PublishAsync(report, cancellationToken: default);
+				// Act.
+				await publisherContext.Publisher.PublishAsync(report, cancellationToken: default);
 
-			// Assert.
-			Assert.AreEqual(expectedSfHealthState, testContext.ReportedSfHealthInformation(healthCheckName)?.HealthState);
+				// Assert.
+				Assert.AreEqual(expectedSfHealthState, publisherContext.ReportedSfHealthInformation(healthCheckName)?.HealthState);
 		}
 
 		[DataTestMethod]
-		[DataRow("NegativeInvalidStatusCheck", -1)]
-		[DataRow("PositiveInvalidStatusCheck", 3)]
-		public async Task PublishAsync_ForHealthCheckWithInvalidHealthStatus_ThrowsArgumentException(string healthCheckName, HealthStatus invalidHealthCheckStatus)
+		[DynamicData(nameof(StatusPublisherCases), DynamicDataSourceType.Method)]
+		public async Task PublishAsync_ForHealthCheckWithInvalidHealthStatus_ThrowsArgumentException(string healthCheckName, HealthStatus invalidHealthCheckStatus, PublisherTestContext publisherContext)
 		{
-			// Arrange.
-			PublisherTestContext testContext = new PublisherTestContext();
-			testContext.ConfigureStatefulServicePartition();
+				// Arrange
+				NullableAssert.IsNotNull(publisherContext.Publisher);
 
-			HealthReport report = new HealthReportBuilder()
-				.AddEntry(healthCheckName, invalidHealthCheckStatus)
-				.ToHealthReport();
+				HealthReport report = new HealthReportBuilder()
+					.AddEntry(healthCheckName, invalidHealthCheckStatus)
+					.ToHealthReport();
 
-			// Act.
-			async Task act() => await testContext.Publisher.PublishAsync(report, cancellationToken: default);
+				// Act.
+				async Task act() => await publisherContext.Publisher.PublishAsync(report, cancellationToken: default);
 
-			// Assert.
-			ArgumentException actualException = await Assert.ThrowsExceptionAsync<ArgumentException>(act);
-			StringAssert.Contains(actualException.Message, invalidHealthCheckStatus.ToString());
+				// Assert.
+				ArgumentException actualException = await Assert.ThrowsExceptionAsync<ArgumentException>(act);
+				StringAssert.Contains(actualException.Message, invalidHealthCheckStatus.ToString());
 		}
-
+		
 		[DataTestMethod]
-		[DataRow("HealthyCheck", HealthStatus.Healthy, SfHealthState.Ok)]
-		[DataRow("DegradedCheck", HealthStatus.Degraded, SfHealthState.Warning)]
-		[DataRow("UnhealthyCheck", HealthStatus.Unhealthy, SfHealthState.Error)]
-		public async Task PublishAsync_ForReportWithValidHealthStatus_ReportsCorrectSfHealthState(string healthCheckName, HealthStatus healthCheckStatus, SfHealthState expectedSfHealthState)
+		[DynamicData(nameof(StatusStatePublisherCases), DynamicDataSourceType.Method)]
+		public async Task PublishAsync_ForReportWithValidHealthStatus_ReportsCorrectSfHealthState(string healthCheckName, HealthStatus healthCheckStatus, SfHealthState expectedSfHealthState, PublisherTestContext publisherContext)
 		{
-			foreach (PublisherTestContext publisherContext in PublishTestManager.TestCases())
-			{
-				// Arrange.
-				publisherContext.Configure();
+				// Arrange
+				NullableAssert.IsNotNull(publisherContext.Publisher);
 
 				// Currently report status is calculated as the worst of all healthchecks. In .NET 5 it will be possible to set it independently.
 				HealthReport report = new HealthReportBuilder()
@@ -192,18 +184,14 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 				// Assert.
 				Assert.AreEqual(expectedSfHealthState, publisherContext.ReportedSfHealthInformation(ServiceFabricHealthCheckPublisher.HealthReportSummaryProperty)?.HealthState);
-			}
-		}*/
+		}
 
 		[DataTestMethod]
-		[DataRow("NegativeInvalidStatusCheck", -1)]
-		[DataRow("PositiveInvalidStatusCheck", 3)]
-		public async Task PublishAsync_ForReportWithInvalidHealthStatus_ThrowsArgumentException(string healthCheckName, HealthStatus invalidHealthCheckStatus)
+		[DynamicData(nameof(StatusPublisherCases), DynamicDataSourceType.Method)]
+		public async Task PublishAsync_ForReportWithInvalidHealthStatus_ThrowsArgumentException(string healthCheckName, HealthStatus invalidHealthCheckStatus, PublisherTestContext publisherContext)
 		{
-			foreach (PublisherTestContext publisherContext in PublishTestManager.TestCases())
-			{
 				// Arrange.
-				publisherContext.Configure();
+				NullableAssert.IsNotNull(publisherContext.Publisher);
 
 				// Currently report status is calculated as the worst of all entries. In .NET 5 it will be possible to set it independently.
 				HealthReport report = new HealthReportBuilder()
@@ -217,18 +205,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				// Assert.
 				ArgumentException actualException = await Assert.ThrowsExceptionAsync<ArgumentException>(act);
 				StringAssert.Contains(actualException.Message, invalidHealthCheckStatus.ToString());
-			}
 		}
 
 		[TestMethod]
-		//TODO sth similar to DataRow
-		public async Task PublishAsync_ForValidReportWithSeveralEntries_ReportsCorrectSfHealthInformation()
+		[DynamicData(nameof(PublisherCases), DynamicDataSourceType.Method)]
+		public async Task PublishAsync_ForValidReportWithSeveralEntries_ReportsCorrectSfHealthInformation(PublisherTestContext publisherContext)
 		{
-			foreach(PublisherTestContext publisherContext in PublishTestManager.TestCases())
-			{
 				// Arrange.
-				publisherContext.Configure();
-
 				string healthyCheckName = "HealthyCheck";
 				HealthReportEntry healthyEntry = new HealthReportEntry(
 					status: HealthStatus.Healthy,
@@ -307,20 +290,51 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				Assert.AreEqual(ServiceFabricHealthCheckPublisher.HealthReportSummaryProperty, summaryInfo.Property, "Property from report is incorrect.");
 				Assert.AreEqual(SfHealthState.Error, summaryInfo.HealthState, "HealthState from report is incorrect.");
 				StringAssert.Contains(summaryInfo.Description, report.TotalDuration.ToString(), "TotalDuration from report is not included.");
+		}
+
+		public static IEnumerable<object[]> Combine(Func<IEnumerable<object[]>> firstSource, Func<IEnumerable<object[]>> secondSource)
+		{
+			foreach(object[] fst in firstSource())
+			{
+				foreach (object[] snd in secondSource())
+				{
+					List<object> list = new();
+					list.AddRange(fst);
+					list.AddRange(snd);
+					yield return list.ToArray();
+				}
 			}
 		}
 
-		private class PublishTestManager
+		public static IEnumerable<object[]> PublisherCases()
 		{
-			public static List<PublisherTestContext> TestCases()
-			{
-				List<PublisherTestContext> cases = new();
-				cases.Add(new StatelessSFPublisherTestContext());
-				cases.Add(new StatefulSFPublisherTestContext());
-				cases.Add(new RestPublisherTestContext());
+			yield return new object[] { new StatelessSFPublisherTestContext() };
+			yield return new object[] { new StatefulSFPublisherTestContext() };
+			yield return new object[] { new RestPublisherTestContext() };
+		}
 
-				return cases;
-			}
+		public static IEnumerable<object[]> StatusCheckCases()
+		{
+			yield return new object[] { "NegativeInvalidStatusCheck", -1 };
+			yield return new object[] { "PositiveInvalidStatusCheck", 3 };
+		}
+
+		public static IEnumerable<object[]> StatusStateCases()
+		{
+			yield return new object[] { "HealthyCheck", HealthStatus.Healthy, SfHealthState.Ok };
+			yield return new object[] { "DegradedCheck", HealthStatus.Degraded, SfHealthState.Warning };
+			yield return new object[] { "UnhealthyCheck", HealthStatus.Unhealthy, SfHealthState.Error };
+
+		}
+
+		public static IEnumerable<object[]> StatusPublisherCases()
+		{
+			return Combine(StatusCheckCases, PublisherCases);
+		}
+
+		public static IEnumerable<object[]> StatusStatePublisherCases()
+		{
+			return Combine(StatusStateCases, PublisherCases);
 		}
 
 		private class HealthReportBuilder
@@ -353,16 +367,16 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			public HealthReport ToHealthReport() => new HealthReport(Entries, TotalDuration);
 		}
 
-		internal abstract class PublisherTestContext
+		public abstract class PublisherTestContext
 		{
-			public PublisherTestContext()
+			public PublisherTestContext(bool closed = false)
 			{
-				Configure();
+				Configure(closed);
 			}
 
 			public abstract void Configure(bool closed = false);
 
-			public HealthCheckPublisher? Publisher { get; protected set; }
+			internal abstract HealthCheckPublisher? Publisher { get; set; }
 
 			public SfHealthInformation? ReportedSfHealthInformation(string propertyName) =>
 				ReportedSfHealthInformatioStore.ContainsKey(propertyName)
@@ -379,6 +393,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 		internal abstract class SFPublisherTestContext : PublisherTestContext
 		{
+			public SFPublisherTestContext(bool closed = false) : base(closed)
+			{
+			}
+
 			public Mock<IStatefulServicePartition>? MockStatefulServicePartition { get; protected set; }
 
 			public Mock<IStatelessServicePartition>? MockStatelessServicePartition { get; protected set; }
@@ -386,25 +404,31 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			public Mock<IServicePartition>? MockServicePartition { get; protected set; }
 		}
 
-		internal class UnknownSFPublisherTestContext : PublisherTestContext
+		private class UnknownSFPublisherTestContext : SFPublisherTestContext
 		{
-			public UnknownSFPublisherTestContext() : base()
+
+
+			public UnknownSFPublisherTestContext(bool closed = false) : base(closed)
 			{
 			}
 
+			internal override HealthCheckPublisher? Publisher { get; set; }
+
 			public override void Configure(bool closed = false)
 			{
-				// Partition is not available by default.
-				Accessor<IServicePartition> partitionAccessor = new Accessor<IServicePartition>(null);
+				MockServicePartition = new Mock<IServicePartition>();
+				Accessor<IServicePartition> partitionAccessor = new Accessor<IServicePartition>(MockServicePartition.Object);
 				Publisher = new ServiceFabricHealthCheckPublisher(partitionAccessor, new NullLogger<ServiceFabricHealthCheckPublisher>(), ObjectPoolProvider);
 			}
 		}
 
 		internal class StatefulSFPublisherTestContext : SFPublisherTestContext
 		{
-			public StatefulSFPublisherTestContext() : base()
+			public StatefulSFPublisherTestContext(bool closed = false) : base(closed)
 			{
 			}
+			internal override HealthCheckPublisher? Publisher { get; set; }
+
 
 			public override void Configure(bool closed = false)
 			{
@@ -426,9 +450,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 		internal class StatelessSFPublisherTestContext : SFPublisherTestContext
 		{
-			public StatelessSFPublisherTestContext() : base()
+			public StatelessSFPublisherTestContext(bool closed = false) : base(closed)
 			{
 			}
+
+			internal override HealthCheckPublisher? Publisher { get; set; }
 
 			public override void Configure(bool closed = false)
 			{
@@ -448,13 +474,15 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			}
 		}
 
-		internal class RestPublisherTestContext : SFPublisherTestContext
+		internal class RestPublisherTestContext : PublisherTestContext
 		{
 			public Mock<IServiceFabricClient>? SFClient { get; protected set; } // TODO: move to RestTestContext
 
-			public RestPublisherTestContext() : base()
+			public RestPublisherTestContext(bool closed = false) : base(closed)
 			{
 			}
+
+			internal override HealthCheckPublisher? Publisher { get; set; }
 
 			public override void Configure(bool closed = false)
 			{
