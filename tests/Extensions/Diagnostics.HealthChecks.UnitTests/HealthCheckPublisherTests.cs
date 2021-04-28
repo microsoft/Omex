@@ -7,7 +7,6 @@ using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
@@ -16,11 +15,10 @@ using Microsoft.ServiceFabric.Client;
 using Microsoft.ServiceFabric.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using SfHealthInformation = System.Fabric.Health.HealthInformation;
 using SfcHealthInformation = Microsoft.ServiceFabric.Common.HealthInformation;
-using SfHealthState = System.Fabric.Health.HealthState;
 using sfcHealthState = Microsoft.ServiceFabric.Common.HealthState;
-using Microsoft.Extensions.Options;
+using SfHealthInformation = System.Fabric.Health.HealthInformation;
+using SfHealthState = System.Fabric.Health.HealthState;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 {
@@ -115,186 +113,186 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 		[DataTestMethod]
 		[DynamicData(nameof(PublisherCases), DynamicDataSourceType.Method)]
-		public async Task PublishAsync_WhenCancellationIsRequested_ThrowsOperationCanceledException( PublisherTestContext publisherContext)
+		public async Task PublishAsync_WhenCancellationIsRequested_ThrowsOperationCanceledException(PublisherTestContext publisherContext)
 		{
-				// Arrange
-				NullableAssert.IsNotNull(publisherContext.Publisher);
+			// Arrange
+			NullableAssert.IsNotNull(publisherContext.Publisher);
 
-				CancellationTokenSource tokenSource = new CancellationTokenSource();
-				tokenSource.Cancel();
+			CancellationTokenSource tokenSource = new CancellationTokenSource();
+			tokenSource.Cancel();
 
-				// Act.
-				async Task act() => await publisherContext.Publisher.PublishAsync(HealthReportBuilder.EmptyHealthReport, tokenSource.Token);
+			// Act.
+			async Task act() => await publisherContext.Publisher.PublishAsync(HealthReportBuilder.EmptyHealthReport, tokenSource.Token);
 
-				// Assert.
-				await Assert.ThrowsExceptionAsync<OperationCanceledException>(act);
+			// Assert.
+			await Assert.ThrowsExceptionAsync<OperationCanceledException>(act);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(StatusStatePublisherCases), DynamicDataSourceType.Method)]
 		public async Task PublishAsync_ForHealthCheckWithValidHealthStatus_ReportsCorrectSfHealthState(string healthCheckName, HealthStatus healthCheckStatus, SfHealthState expectedSfHealthState, PublisherTestContext publisherContext)
 		{
-				// Arrange
-				NullableAssert.IsNotNull(publisherContext.Publisher);
+			// Arrange
+			NullableAssert.IsNotNull(publisherContext.Publisher);
 
-				HealthReport report = new HealthReportBuilder()
-				.AddEntry(healthCheckName, healthCheckStatus)
-				.ToHealthReport();
+			HealthReport report = new HealthReportBuilder()
+			.AddEntry(healthCheckName, healthCheckStatus)
+			.ToHealthReport();
 
-				// Act.
-				await publisherContext.Publisher.PublishAsync(report, cancellationToken: default);
+			// Act.
+			await publisherContext.Publisher.PublishAsync(report, cancellationToken: default);
 
-				// Assert.
-				Assert.AreEqual(expectedSfHealthState, publisherContext.ReportedSfHealthInformation(healthCheckName)?.HealthState);
+			// Assert.
+			Assert.AreEqual(expectedSfHealthState, publisherContext.ReportedSfHealthInformation(healthCheckName)?.HealthState);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(StatusPublisherCases), DynamicDataSourceType.Method)]
 		public async Task PublishAsync_ForHealthCheckWithInvalidHealthStatus_ThrowsArgumentException(string healthCheckName, HealthStatus invalidHealthCheckStatus, PublisherTestContext publisherContext)
 		{
-				// Arrange
-				NullableAssert.IsNotNull(publisherContext.Publisher);
+			// Arrange
+			NullableAssert.IsNotNull(publisherContext.Publisher);
 
-				HealthReport report = new HealthReportBuilder()
-					.AddEntry(healthCheckName, invalidHealthCheckStatus)
-					.ToHealthReport();
+			HealthReport report = new HealthReportBuilder()
+				.AddEntry(healthCheckName, invalidHealthCheckStatus)
+				.ToHealthReport();
 
-				// Act.
-				async Task act() => await publisherContext.Publisher.PublishAsync(report, cancellationToken: default);
+			// Act.
+			async Task act() => await publisherContext.Publisher.PublishAsync(report, cancellationToken: default);
 
-				// Assert.
-				ArgumentException actualException = await Assert.ThrowsExceptionAsync<ArgumentException>(act);
-				StringAssert.Contains(actualException.Message, invalidHealthCheckStatus.ToString());
+			// Assert.
+			ArgumentException actualException = await Assert.ThrowsExceptionAsync<ArgumentException>(act);
+			StringAssert.Contains(actualException.Message, invalidHealthCheckStatus.ToString());
 		}
-		
+
 		[DataTestMethod]
 		[DynamicData(nameof(StatusStatePublisherCases), DynamicDataSourceType.Method)]
 		public async Task PublishAsync_ForReportWithValidHealthStatus_ReportsCorrectSfHealthState(string healthCheckName, HealthStatus healthCheckStatus, SfHealthState expectedSfHealthState, PublisherTestContext publisherContext)
 		{
-				// Arrange
-				NullableAssert.IsNotNull(publisherContext.Publisher);
+			// Arrange
+			NullableAssert.IsNotNull(publisherContext.Publisher);
 
-				// Currently report status is calculated as the worst of all healthchecks. In .NET 5 it will be possible to set it independently.
-				HealthReport report = new HealthReportBuilder()
-					.AddEntry(healthCheckName, healthCheckStatus)
-					.ToHealthReport();
+			// Currently report status is calculated as the worst of all healthchecks. In .NET 5 it will be possible to set it independently.
+			HealthReport report = new HealthReportBuilder()
+				.AddEntry(healthCheckName, healthCheckStatus)
+				.ToHealthReport();
 
-				// Act.
-				await publisherContext.Publisher.PublishAsync(report, cancellationToken: default);
+			// Act.
+			await publisherContext.Publisher.PublishAsync(report, cancellationToken: default);
 
-				// Assert.
-				Assert.AreEqual(expectedSfHealthState, publisherContext.ReportedSfHealthInformation(ServiceFabricHealthCheckPublisher.HealthReportSummaryProperty)?.HealthState);
+			// Assert.
+			Assert.AreEqual(expectedSfHealthState, publisherContext.ReportedSfHealthInformation(ServiceFabricHealthCheckPublisher.HealthReportSummaryProperty)?.HealthState);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(StatusPublisherCases), DynamicDataSourceType.Method)]
 		public async Task PublishAsync_ForReportWithInvalidHealthStatus_ThrowsArgumentException(string healthCheckName, HealthStatus invalidHealthCheckStatus, PublisherTestContext publisherContext)
 		{
-				// Arrange.
-				NullableAssert.IsNotNull(publisherContext.Publisher);
+			// Arrange.
+			NullableAssert.IsNotNull(publisherContext.Publisher);
 
-				// Currently report status is calculated as the worst of all entries. In .NET 5 it will be possible to set it independently.
-				HealthReport report = new HealthReportBuilder()
-					.AddEntry(healthCheckName, invalidHealthCheckStatus)
-					.ToHealthReport();
-				NullableAssert.IsNotNull(publisherContext.Publisher);
+			// Currently report status is calculated as the worst of all entries. In .NET 5 it will be possible to set it independently.
+			HealthReport report = new HealthReportBuilder()
+				.AddEntry(healthCheckName, invalidHealthCheckStatus)
+				.ToHealthReport();
+			NullableAssert.IsNotNull(publisherContext.Publisher);
 
-				// Act.
-				async Task act() => await publisherContext.Publisher.PublishAsync(report, cancellationToken: default);
+			// Act.
+			async Task act() => await publisherContext.Publisher.PublishAsync(report, cancellationToken: default);
 
-				// Assert.
-				ArgumentException actualException = await Assert.ThrowsExceptionAsync<ArgumentException>(act);
-				StringAssert.Contains(actualException.Message, invalidHealthCheckStatus.ToString());
+			// Assert.
+			ArgumentException actualException = await Assert.ThrowsExceptionAsync<ArgumentException>(act);
+			StringAssert.Contains(actualException.Message, invalidHealthCheckStatus.ToString());
 		}
 
 		[TestMethod]
 		[DynamicData(nameof(PublisherCases), DynamicDataSourceType.Method)]
 		public async Task PublishAsync_ForValidReportWithSeveralEntries_ReportsCorrectSfHealthInformation(PublisherTestContext publisherContext)
 		{
-				// Arrange.
-				string healthyCheckName = "HealthyCheck";
-				HealthReportEntry healthyEntry = new HealthReportEntry(
-					status: HealthStatus.Healthy,
-					description: "Healthy entry description",
-					duration: TimeSpan.FromMilliseconds(12639),
-					exception: null,
-					data: null);
+			// Arrange.
+			string healthyCheckName = "HealthyCheck";
+			HealthReportEntry healthyEntry = new HealthReportEntry(
+				status: HealthStatus.Healthy,
+				description: "Healthy entry description",
+				duration: TimeSpan.FromMilliseconds(12639),
+				exception: null,
+				data: null);
 
-				string degradedCheckName = "DegradedCheck";
-				HealthReportEntry degradedEntry = new HealthReportEntry(
-					status: HealthStatus.Degraded,
-					description: "Degraded entry description",
-					duration: TimeSpan.FromMilliseconds(111),
-					exception: null,
-					data: null);
+			string degradedCheckName = "DegradedCheck";
+			HealthReportEntry degradedEntry = new HealthReportEntry(
+				status: HealthStatus.Degraded,
+				description: "Degraded entry description",
+				duration: TimeSpan.FromMilliseconds(111),
+				exception: null,
+				data: null);
 
-				string unhealthyCheckName = "UnhealthyCheck";
-				HealthReportEntry unhealthyEntry = new HealthReportEntry(
-					status: HealthStatus.Unhealthy,
-					description: "Unhealthy entry description",
-					duration: TimeSpan.FromMilliseconds(73),
-					exception: new InvalidOperationException("Unhealthy check performed invalid operation."),
-					data: null);
+			string unhealthyCheckName = "UnhealthyCheck";
+			HealthReportEntry unhealthyEntry = new HealthReportEntry(
+				status: HealthStatus.Unhealthy,
+				description: "Unhealthy entry description",
+				duration: TimeSpan.FromMilliseconds(73),
+				exception: new InvalidOperationException("Unhealthy check performed invalid operation."),
+				data: null);
 
-				HealthReport report = new HealthReportBuilder()
-					.AddEntry(healthyCheckName, healthyEntry)
-					.AddEntry(degradedCheckName, degradedEntry)
-					.AddEntry(unhealthyCheckName, unhealthyEntry)
-					.SetTotalDuration(TimeSpan.FromSeconds(72))
-					.ToHealthReport();
+			HealthReport report = new HealthReportBuilder()
+				.AddEntry(healthyCheckName, healthyEntry)
+				.AddEntry(degradedCheckName, degradedEntry)
+				.AddEntry(unhealthyCheckName, unhealthyEntry)
+				.SetTotalDuration(TimeSpan.FromSeconds(72))
+				.ToHealthReport();
 
-				// Act.
-				if (publisherContext.Publisher != null)
-				{
-					await publisherContext.Publisher.PublishAsync(report, cancellationToken: default);
-				}
-				else
-				{
-					Assert.Fail();
-				}
+			// Act.
+			if (publisherContext.Publisher != null)
+			{
+				await publisherContext.Publisher.PublishAsync(report, cancellationToken: default);
+			}
+			else
+			{
+				Assert.Fail();
+			}
 
-				// Assert.
-				SfHealthInformation? healthyInfo = publisherContext.ReportedSfHealthInformation(healthyCheckName);
+			// Assert.
+			SfHealthInformation? healthyInfo = publisherContext.ReportedSfHealthInformation(healthyCheckName);
 
-				NullableAssert.IsNotNull(healthyInfo);
-				NullableAssert.IsNotNull(publisherContext.Publisher);
-				Assert.AreEqual(publisherContext.Publisher.HealthReportSourceId, healthyInfo.SourceId, "SourceId from healthy check is incorrect.");
-				Assert.AreEqual(healthyCheckName, healthyInfo.Property, "Property from healthy check is incorrect.");
-				Assert.AreEqual(SfHealthState.Ok, healthyInfo.HealthState, "HealthState from healthy check is incorrect.");
-				StringAssert.Contains(healthyInfo.Description, healthyEntry.Description, "Description from healthy check is not included.");
-				StringAssert.Contains(healthyInfo.Description, healthyEntry.Duration.ToString(), "Duration from healthy check is not included.");
+			NullableAssert.IsNotNull(healthyInfo);
+			NullableAssert.IsNotNull(publisherContext.Publisher);
+			Assert.AreEqual(publisherContext.Publisher.HealthReportSourceId, healthyInfo.SourceId, "SourceId from healthy check is incorrect.");
+			Assert.AreEqual(healthyCheckName, healthyInfo.Property, "Property from healthy check is incorrect.");
+			Assert.AreEqual(SfHealthState.Ok, healthyInfo.HealthState, "HealthState from healthy check is incorrect.");
+			StringAssert.Contains(healthyInfo.Description, healthyEntry.Description, "Description from healthy check is not included.");
+			StringAssert.Contains(healthyInfo.Description, healthyEntry.Duration.ToString(), "Duration from healthy check is not included.");
 
-				SfHealthInformation? degradedInfo = publisherContext.ReportedSfHealthInformation(degradedCheckName);
-				NullableAssert.IsNotNull(degradedInfo);
+			SfHealthInformation? degradedInfo = publisherContext.ReportedSfHealthInformation(degradedCheckName);
+			NullableAssert.IsNotNull(degradedInfo);
 
-				Assert.AreEqual(publisherContext.Publisher.HealthReportSourceId, degradedInfo.SourceId, "SourceId from degraded check is incorrect.");
-				Assert.AreEqual(degradedCheckName, degradedInfo.Property, "Property from degraded check is incorrect.");
-				Assert.AreEqual(SfHealthState.Warning, degradedInfo.HealthState, "HealthState from degraded check is incorrect.");
-				StringAssert.Contains(degradedInfo.Description, degradedEntry.Description, "Description from degraded check is not included.");
-				StringAssert.Contains(degradedInfo.Description, degradedEntry.Duration.ToString(), "Duration from degraded check is not included.");
+			Assert.AreEqual(publisherContext.Publisher.HealthReportSourceId, degradedInfo.SourceId, "SourceId from degraded check is incorrect.");
+			Assert.AreEqual(degradedCheckName, degradedInfo.Property, "Property from degraded check is incorrect.");
+			Assert.AreEqual(SfHealthState.Warning, degradedInfo.HealthState, "HealthState from degraded check is incorrect.");
+			StringAssert.Contains(degradedInfo.Description, degradedEntry.Description, "Description from degraded check is not included.");
+			StringAssert.Contains(degradedInfo.Description, degradedEntry.Duration.ToString(), "Duration from degraded check is not included.");
 
-				SfHealthInformation? unhealthyInfo = publisherContext.ReportedSfHealthInformation(unhealthyCheckName);
-				NullableAssert.IsNotNull(unhealthyInfo);
+			SfHealthInformation? unhealthyInfo = publisherContext.ReportedSfHealthInformation(unhealthyCheckName);
+			NullableAssert.IsNotNull(unhealthyInfo);
 
-				Assert.AreEqual(publisherContext.Publisher.HealthReportSourceId, unhealthyInfo.SourceId, "SourceId from unhealthy check is incorrect.");
-				Assert.AreEqual(unhealthyCheckName, unhealthyInfo.Property, "Property from unhealthy check is incorrect.");
-				Assert.AreEqual(SfHealthState.Error, unhealthyInfo.HealthState, "HealthState from unhealthy check is incorrect.");
-				StringAssert.Contains(unhealthyInfo.Description, unhealthyEntry.Description, "Description from unhealthy check is not included.");
-				StringAssert.Contains(unhealthyInfo.Description, unhealthyEntry.Duration.ToString(), "Duration from unhealthy check is not included.");
-				StringAssert.Contains(unhealthyInfo.Description, unhealthyEntry.Exception?.GetType().ToString(), "Exception from unhealthy check is not included.");
+			Assert.AreEqual(publisherContext.Publisher.HealthReportSourceId, unhealthyInfo.SourceId, "SourceId from unhealthy check is incorrect.");
+			Assert.AreEqual(unhealthyCheckName, unhealthyInfo.Property, "Property from unhealthy check is incorrect.");
+			Assert.AreEqual(SfHealthState.Error, unhealthyInfo.HealthState, "HealthState from unhealthy check is incorrect.");
+			StringAssert.Contains(unhealthyInfo.Description, unhealthyEntry.Description, "Description from unhealthy check is not included.");
+			StringAssert.Contains(unhealthyInfo.Description, unhealthyEntry.Duration.ToString(), "Duration from unhealthy check is not included.");
+			StringAssert.Contains(unhealthyInfo.Description, unhealthyEntry.Exception?.GetType().ToString(), "Exception from unhealthy check is not included.");
 
-				SfHealthInformation? summaryInfo = publisherContext.ReportedSfHealthInformation(ServiceFabricHealthCheckPublisher.HealthReportSummaryProperty);
-				NullableAssert.IsNotNull(summaryInfo);
+			SfHealthInformation? summaryInfo = publisherContext.ReportedSfHealthInformation(ServiceFabricHealthCheckPublisher.HealthReportSummaryProperty);
+			NullableAssert.IsNotNull(summaryInfo);
 
-				Assert.AreEqual(publisherContext.Publisher.HealthReportSourceId, summaryInfo.SourceId, "SourceId from report is incorrect.");
-				Assert.AreEqual(ServiceFabricHealthCheckPublisher.HealthReportSummaryProperty, summaryInfo.Property, "Property from report is incorrect.");
-				Assert.AreEqual(SfHealthState.Error, summaryInfo.HealthState, "HealthState from report is incorrect.");
-				StringAssert.Contains(summaryInfo.Description, report.TotalDuration.ToString(), "TotalDuration from report is not included.");
+			Assert.AreEqual(publisherContext.Publisher.HealthReportSourceId, summaryInfo.SourceId, "SourceId from report is incorrect.");
+			Assert.AreEqual(ServiceFabricHealthCheckPublisher.HealthReportSummaryProperty, summaryInfo.Property, "Property from report is incorrect.");
+			Assert.AreEqual(SfHealthState.Error, summaryInfo.HealthState, "HealthState from report is incorrect.");
+			StringAssert.Contains(summaryInfo.Description, report.TotalDuration.ToString(), "TotalDuration from report is not included.");
 		}
 
 		public static IEnumerable<object[]> Combine(Func<IEnumerable<object[]>> firstSource, Func<IEnumerable<object[]>> secondSource)
 		{
-			foreach(object[] fst in firstSource())
+			foreach (object[] fst in firstSource())
 			{
 				foreach (object[] snd in secondSource())
 				{
