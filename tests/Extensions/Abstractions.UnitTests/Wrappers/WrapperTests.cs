@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 	[TestClass]
 	public class WrapperTests
 	{
-		[DataTestMethod]
+		[TestMethod]
 		public void Constructor_InitializesPropertiesProperly()
 		{
 			// Act.
@@ -21,7 +21,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			// If we are here, PublishAsync didn't explode.
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		public async Task Get_ReturnsValidObjectAsync()
 		{
 			// Arrange.
