@@ -26,11 +26,11 @@ namespace Microsoft.Omex.Extensions.Abstractions.Wrappers
 		/// <summary>
 		/// Returns along with constructing instance if not existed before 
 		/// </summary>
-		public T Get()
+		public async Task<T> GetAsync()
 		{
 			if (m_instance == null)
 			{
-				m_instance = m_factory.Invoke().Result;
+				m_instance = await m_factory.Invoke();
 			}
 
 			return m_instance;

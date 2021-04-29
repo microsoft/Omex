@@ -22,13 +22,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		}
 
 		[DataTestMethod]
-		public void Get_ReturnsValidObject()
+		public async Task Get_ReturnsValidObjectAsync()
 		{
 			// Arrange.
 			Wrapper<string> wrapper = new(() => Task.FromResult("42"));
 
 			// Act.
-			string value = wrapper.Get();
+			string value = await wrapper.GetAsync();
 
 			// Assert.
 			NullableAssert.IsNotNull(value);
