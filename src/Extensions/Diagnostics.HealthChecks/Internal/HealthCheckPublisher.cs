@@ -75,17 +75,26 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			}
 
 			StringBuilder descriptionBuilder = StringBuilderPool.Get();
+			string description;
+			try
+			{
 
-			descriptionBuilder
-				.AppendFormat("Health checks executed: {0}. ", entriesCount)
-				.AppendFormat("Healthy: {0}/{1}. ", healthyEntries, entriesCount)
-				.AppendFormat("Degraded: {0}/{1}. ", degradedEntries, entriesCount)
-				.AppendFormat("Unhealthy: {0}/{1}.", unhealthyEntries, entriesCount)
-				.AppendLine()
-				.AppendFormat("Total duration: {0}.", report.TotalDuration)
-				.AppendLine();
 
-			string description = descriptionBuilder.ToString();
+				descriptionBuilder
+					.AppendFormat("Health checks executed: {0}. ", entriesCount)
+					.AppendFormat("Healthy: {0}/{1}. ", healthyEntries, entriesCount)
+					.AppendFormat("Degraded: {0}/{1}. ", degradedEntries, entriesCount)
+					.AppendFormat("Unhealthy: {0}/{1}.", unhealthyEntries, entriesCount)
+					.AppendLine()
+					.AppendFormat("Total duration: {0}.", report.TotalDuration)
+					.AppendLine();
+
+				description = descriptionBuilder.ToString();
+			}
+			finally
+			{
+				StringBuilderPool.Return(descriptionBuilder);
+			}
 
 			ServiceFabricHealth.HealthInformation healthInfo = FinalizeHealthReport(HealthReportSummaryProperty, ToSfHealthState(report.Status));
 			healthInfo.Description = description;
