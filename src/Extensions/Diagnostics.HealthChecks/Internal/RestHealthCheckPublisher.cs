@@ -30,8 +30,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		internal const string NodeNameVariableName = "Fabric_NodeName";
 
 		public RestHealthCheckPublisher(ILogger<RestHealthCheckPublisher> logger,
-										IOptions<RestHealthCheckPublisherOptions> options,
-										ObjectPoolProvider objectPoolProvider) : base(objectPoolProvider)
+			IOptions<RestHealthCheckPublisherOptions> options,
+			ObjectPoolProvider objectPoolProvider) : base(objectPoolProvider)
 		{
 			m_nodeName = FindNodeName();
 			m_clientWrapper = new(new Uri(options.Value.RestHealthPublisherClusterEndpoint));
@@ -40,15 +40,15 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 
 		internal RestHealthCheckPublisher(ILogger<RestHealthCheckPublisher> logger,
-										IServiceFabricClient client,
-										ObjectPoolProvider objectPoolProvider,
-										string? nodeName = null) : base(objectPoolProvider)
+			IServiceFabricClient client,
+			ObjectPoolProvider objectPoolProvider,
+			string? nodeName = null) : base(objectPoolProvider)
 		{
 			m_nodeName = nodeName == null ? FindNodeName() : nodeName;
 			m_clientWrapper = new(client);
 			m_logger = logger;
 		}
-		
+
 		public override async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
 			if (m_nodeName == null)

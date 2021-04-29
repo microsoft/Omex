@@ -76,6 +76,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			StringBuilder descriptionBuilder = StringBuilderPool.Get();
 			string description;
+
 			try
 			{
 
