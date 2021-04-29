@@ -7,6 +7,7 @@ using Microsoft.ServiceFabric.Client;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
+	// TODO(4995982): Implement generic wrappers
 	internal class RestClientWrapper
 	{
 		private IServiceFabricClient? m_client;

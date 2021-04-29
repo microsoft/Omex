@@ -79,8 +79,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			try
 			{
-
-
 				descriptionBuilder
 					.AppendFormat("Health checks executed: {0}. ", entriesCount)
 					.AppendFormat("Healthy: {0}/{1}. ", healthyEntries, entriesCount)
