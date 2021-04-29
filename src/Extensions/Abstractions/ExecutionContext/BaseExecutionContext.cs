@@ -151,12 +151,8 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		protected static string? GetBuildVersionFromServiceManifest(string serviceManifestName)
 		{
 			string? serviceManifestPath = GetServiceManifestPath(serviceManifestName);
-			if (serviceManifestPath == null)
-			{
-				return null;
-			}
-
-			return XElement.Load(serviceManifestPath).Attribute("Version")?.Value;
+			return serviceManifestPath == null ? null :
+				XElement.Load(serviceManifestPath).Attribute("Version")?.Value;
 		}
 
 		/// <summary>
@@ -195,9 +191,12 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 			// Match our service with corresponding build version
 			try
 			{
-				string targetServiceType = serviceMetaInfo.Single(entry => entry.serviceName == serviceName.Split('/').Last())
-													.serviceTypeName;
-				return manifestMetaInfo.Single(entry => entry.serviceTypeName == targetServiceType).buildVersion;
+				string targetServiceType = serviceMetaInfo
+					.Single(entry => entry.serviceName == serviceName.Split('/').Last())
+					.serviceTypeName;
+				return manifestMetaInfo
+					.Single(entry => entry.serviceTypeName == targetServiceType)
+					.buildVersion;
 			}
 			catch (Exception)
 			{
