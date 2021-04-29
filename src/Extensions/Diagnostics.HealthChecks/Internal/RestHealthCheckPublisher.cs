@@ -31,16 +31,15 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		public RestHealthCheckPublisher(ILogger<RestHealthCheckPublisher> logger,
 										IOptions<RestHealthCheckPublisherOptions> options,
-										ObjectPoolProvider objectPoolProvider,
-										string? nodeName = null) : base(objectPoolProvider)
+										ObjectPoolProvider objectPoolProvider) : base(objectPoolProvider)
 		{
-			m_nodeName = nodeName == null? FindNodeName() : nodeName;
+			m_nodeName = FindNodeName();
 			m_clientWrapper = new(new Uri(options.Value.RestHealthPublisherClusterEndpoint));
 			m_logger = logger;
 		}
 
-		// ??
-		public RestHealthCheckPublisher(ILogger<RestHealthCheckPublisher> logger,
+
+		internal RestHealthCheckPublisher(ILogger<RestHealthCheckPublisher> logger,
 										IServiceFabricClient client,
 										ObjectPoolProvider objectPoolProvider,
 										string? nodeName = null) : base(objectPoolProvider)
@@ -49,7 +48,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			m_clientWrapper = new(client);
 			m_logger = logger;
 		}
-
+		
 		public override async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
 			if (m_nodeName == null)
@@ -108,10 +107,5 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		}
 
 		internal string? FindNodeName() => Environment.GetEnvironmentVariable(NodeNameVariableName);
-
-		protected override ServiceFabricHealth.HealthInformation FinalizeHealthReport(string healthReportSummaryProperty, System.Fabric.Health.HealthState healthState)
-		{
-			return new ServiceFabricHealth.HealthInformation(HealthReportSourceId, healthReportSummaryProperty, healthState);
-		}
 	}
 }

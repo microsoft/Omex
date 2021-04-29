@@ -25,8 +25,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		public abstract Task PublishAsync(HealthReport report, CancellationToken cancellationToken);
 
-		protected abstract ServiceFabricHealth.HealthInformation FinalizeHealthReport(string healthReportSummaryProperty, ServiceFabricHealth.HealthState healthState);
-
+		private ServiceFabricHealth.HealthInformation FinalizeHealthReport(string healthReportSummaryProperty, ServiceFabricHealth.HealthState healthState)
+		{
+			return new ServiceFabricHealth.HealthInformation(HealthReportSourceId, healthReportSummaryProperty, healthState);
+		}
 		protected void PublishAllEntries(HealthReport report, Action<ServiceFabricHealth.HealthInformation> publishFunc,
 			 CancellationToken cancellationToken)
 		{
@@ -102,18 +104,25 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		protected ServiceFabricHealth.HealthInformation BuildSfHealthInformation(string healthCheckName, HealthReportEntry reportEntry)
 		{
 			StringBuilder descriptionBuilder = StringBuilderPool.Get();
-
-			if (!string.IsNullOrWhiteSpace(reportEntry.Description))
+			string description;
+			try
 			{
-				descriptionBuilder.Append("Description: ").Append(reportEntry.Description).AppendLine();
-			}
-			descriptionBuilder.Append("Duration: ").Append(reportEntry.Duration).Append('.').AppendLine();
-			if (reportEntry.Exception != null)
-			{
-				descriptionBuilder.Append("Exception: ").Append(reportEntry.Exception).AppendLine();
-			}
+				if (!string.IsNullOrWhiteSpace(reportEntry.Description))
+				{
+					descriptionBuilder.Append("Description: ").Append(reportEntry.Description).AppendLine();
+				}
+				descriptionBuilder.Append("Duration: ").Append(reportEntry.Duration).Append('.').AppendLine();
+				if (reportEntry.Exception != null)
+				{
+					descriptionBuilder.Append("Exception: ").Append(reportEntry.Exception).AppendLine();
+				}
 
-			string description = descriptionBuilder.ToString();
+				description = descriptionBuilder.ToString();
+			}
+			finally
+			{
+				StringBuilderPool.Return(descriptionBuilder);
+			}
 
 			ServiceFabricHealth.HealthInformation healthInfo = FinalizeHealthReport(healthCheckName, ToSfHealthState(reportEntry.Status));
 			healthInfo.Description = description;

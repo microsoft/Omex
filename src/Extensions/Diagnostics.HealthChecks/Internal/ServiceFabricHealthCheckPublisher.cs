@@ -52,10 +52,5 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			return Task.CompletedTask;
 		}
-
-		protected override SfHealthInformation FinalizeHealthReport(string healthReportSummaryProperty, System.Fabric.Health.HealthState healthState)
-		{
-			return new SfHealthInformation(HealthReportSourceId, healthReportSummaryProperty, healthState);
-		}
 	}
 }
