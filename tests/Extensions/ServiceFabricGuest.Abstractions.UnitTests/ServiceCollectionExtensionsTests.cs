@@ -34,22 +34,8 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 				.GetRequiredService<IServiceFabricClientWrapper>();
 
 			// Assert.
-			Assert.IsInstanceOfType(client, typeof(ServiceFabricClientWrapper));
-		}
-
-		[TestMethod]
-		public async Task GetAsync_GetterWorksProperlyAsync()
-		{
-			// Arrange.
-			ServiceFabricRestClientOptions settings = new() { ClusterEndpoint = "http://moc" };
-			IOptions<ServiceFabricRestClientOptions> options = Options.Create(settings);
-			IServiceFabricClientWrapper wrapper = new ServiceFabricClientWrapper(options);
-
-			// Act
-			IServiceFabricClient? client = await wrapper.GetAsync();
-
-			// Assert
 			Assert.IsNotNull(client);
+			Assert.IsInstanceOfType(client, typeof(ServiceFabricClientWrapper));
 		}
 	}
 }
