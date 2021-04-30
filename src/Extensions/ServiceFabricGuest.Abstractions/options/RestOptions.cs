@@ -6,14 +6,14 @@ using System.ComponentModel.DataAnnotations;
 namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 {
 	/// <summary>
-	/// Option for the REST Health publisher
+	/// Option for the REST communication with cluster
 	/// </summary>
-	public class RestHealthCheckPublisherOptions
+	public class RestOptions
 	{
 		/// <summary>
 		/// Settings definition for Cluster Endpoint
 		/// </summary>
 		[Required(AllowEmptyStrings = false)]
-		public string RestHealthPublisherClusterEndpoint { get; set; } = string.Empty;
+		public string ClusterEndpoint { get; set; } = string.Empty;
 	}
 }

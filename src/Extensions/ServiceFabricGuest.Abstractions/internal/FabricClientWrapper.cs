@@ -14,9 +14,9 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 
 		private Uri m_clusterEndpoint;
 
-		public ServiceFabricClientWrapper(IOptions<RestHealthCheckPublisherOptions> options)
+		public ServiceFabricClientWrapper(IOptions<RestOptions> options)
 		{
-			m_clusterEndpoint = new(options.Value.RestHealthPublisherClusterEndpoint);
+			m_clusterEndpoint = new(options.Value.ClusterEndpoint);
 		}
 
 		public async Task<IServiceFabricClient> GetAsync()

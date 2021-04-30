@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 {
 	/// <summary>
-	/// Extension to add Omex dependencies to IServiceCollection
+	/// Extension to add Service Fabric Client dependencies to IServiceCollection
 	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
