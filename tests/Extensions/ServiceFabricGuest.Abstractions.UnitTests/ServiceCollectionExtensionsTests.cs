@@ -30,13 +30,11 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 				.BuildServiceProvider();
 
 			// Act.
-			IServiceFabricClientWrapper[] clients = provider
-				.GetRequiredService<IEnumerable<IServiceFabricClientWrapper>>()
-				.ToArray();
+			IServiceFabricClientWrapper client = provider
+				.GetRequiredService<IServiceFabricClientWrapper>();
 
 			// Assert.
-			Assert.AreEqual(1, clients.Length, "Published should be registered once");
-			Assert.IsInstanceOfType(clients[0], typeof(ServiceFabricClientWrapper));
+			Assert.IsInstanceOfType(client, typeof(ServiceFabricClientWrapper));
 		}
 
 		[TestMethod]
