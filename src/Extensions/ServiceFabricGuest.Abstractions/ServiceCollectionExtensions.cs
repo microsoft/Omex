@@ -12,20 +12,11 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 	public static class ServiceCollectionExtensions
 	{
 		/// <summary>
-		/// Register types required Service Fabric comunication
+		/// Register types required Service Fabric communication
 		/// </summary>
 		public static IServiceCollection AddServiceFabricClient(this IServiceCollection serviceCollection)
 		{
-			return serviceCollection.AddServiceFabricClient<ServiceFabricClientWrapper>();
-		}
-
-		/// <summary>
-		/// Register generic types required Service Fabric comunication
-		/// </summary>
-		public static IServiceCollection AddServiceFabricClient<TClinet>(this IServiceCollection serviceCollection)
-			where TClinet : class, IServiceFabricClientWrapper
-		{
-			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IServiceFabricClientWrapper, TClinet>());
+			serviceCollection.TryAddSingleton<IServiceFabricClientWrapper, ServiceFabricClientWrapper>();
 			return serviceCollection;
 		}
 	}

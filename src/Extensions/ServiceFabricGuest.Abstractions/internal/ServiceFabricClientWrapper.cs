@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 
 		private Uri m_clusterEndpoint;
 
-		public ServiceFabricClientWrapper(IOptions<RestOptions> options)
+		public ServiceFabricClientWrapper(IOptions<ServiceFabricRestClientOptions> options)
 		{
 			m_clusterEndpoint = new(options.Value.ClusterEndpoint);
 		}

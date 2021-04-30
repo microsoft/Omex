@@ -8,7 +8,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 	/// <summary>
 	/// Option for the REST communication with cluster
 	/// </summary>
-	public class RestOptions
+	public class ServiceFabricRestClientOptions
 	{
 		/// <summary>
 		/// Settings definition for Cluster Endpoint

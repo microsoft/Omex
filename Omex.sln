@@ -118,6 +118,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.CodeGenerato
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.SettingsGen.Example", "src\CodeGenerators\SettingsGen.Example\Microsoft.Omex.SettingsGen.Example.csproj", "{618DCDA0-595C-4F35-820D-A6D82E91B6EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests", "tests\Extensions\ServiceFabricGuest.Abstractions.UnitTests\Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests.csproj", "{E419A528-15B8-4A2D-856C-5AF706830072}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -406,6 +408,14 @@ Global
 		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Release|x64.ActiveCfg = Release|Any CPU
 		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Release|x64.Build.0 = Release|Any CPU
+		{E419A528-15B8-4A2D-856C-5AF706830072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E419A528-15B8-4A2D-856C-5AF706830072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E419A528-15B8-4A2D-856C-5AF706830072}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E419A528-15B8-4A2D-856C-5AF706830072}.Debug|x64.Build.0 = Debug|Any CPU
+		{E419A528-15B8-4A2D-856C-5AF706830072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E419A528-15B8-4A2D-856C-5AF706830072}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E419A528-15B8-4A2D-856C-5AF706830072}.Release|x64.ActiveCfg = Release|Any CPU
+		{E419A528-15B8-4A2D-856C-5AF706830072}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -450,6 +460,7 @@ Global
 		{62EEDB72-E231-477E-9AEE-D75E6B68DF47} = {551C93F8-6E89-4954-8905-7F5AC7173285}
 		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037} = {62EEDB72-E231-477E-9AEE-D75E6B68DF47}
 		{618DCDA0-595C-4F35-820D-A6D82E91B6EE} = {C5BA6376-60EB-43E5-A9EF-AD2792C8D2A8}
+		{E419A528-15B8-4A2D-856C-5AF706830072} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6FB7BCB-BF07-4F19-ACBA-457479D421BB}
