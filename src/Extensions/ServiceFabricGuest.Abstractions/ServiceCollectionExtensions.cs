@@ -20,9 +20,9 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 		}
 
 		/// <summary>
-		/// 
+		/// Register generic types required Service Fabric comunication
 		/// </summary>
-		private static IServiceCollection AddServiceFabricClient<TClinet>(this IServiceCollection serviceCollection)
+		public static IServiceCollection AddServiceFabricClient<TClinet>(this IServiceCollection serviceCollection)
 			where TClinet : class, IServiceFabricClientWrapper
 		{
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IServiceFabricClientWrapper, TClinet>());
