@@ -10,17 +10,18 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 	public class ServiceFabricClientWrapperTests
 	{
 		[TestMethod]
-		public void Constructor_InitializesProperly()
+		public async Task ServiceFabricClientWrapper_GetAsync_ReturnsClient()
 		{
 			// Arrange.
 			ServiceFabricRestClientOptions settings = new() { ClusterEndpoint = "fabric://moc" };
 			IOptions<ServiceFabricRestClientOptions> options = Options.Create(settings);
 
 			// Act.
-			IServiceFabricClientWrapper client = new ServiceFabricClientWrapper(options);
+			IServiceFabricClientWrapper wrapper = new ServiceFabricClientWrapper(options);
+			IServiceFabricClient client = await wrapper.GetAsync().ConfigureAwait(false);
 
 			// Assert.
-			Assert.IsNotNull(client.GetAsync());
+			Assert.IsNotNull(client);
 		}
 	}
 }
