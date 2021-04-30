@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Section Name="NewSection">
+    <Parameter Name="Whatever" Value="" />
+    <Parameter Name="TestingThis" Value="Hmmmm" />
+    <Parameter Name="Overriding" Value="" MustOverride="true" IsEncrypted="true" />
+  </Section>
+  <Section Name="SectionTwo">
+    <Parameter Name="TestingParamOne" Value="" />
+    <Parameter Name="TestingParamTwo" Value="" />
+    <Parameter Name="SomethingElseMaybe" Value="Hello" MustOverride="true" />
+  </Section>
+</Settings>

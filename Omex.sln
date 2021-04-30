@@ -45,6 +45,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Gating.UnitTests", "tests\Gating.UnitTests\Microsoft.Omex.Gating.UnitTests.csproj", "{60BE8066-9FD8-4E69-AC31-5FE0FBD665C8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGenerators", "CodeGenerators", "{C5BA6376-60EB-43E5-A9EF-AD2792C8D2A8}"
+	ProjectSection(SolutionItems) = preProject
+		src\CodeGenerators\Directory.Build.props = src\CodeGenerators\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.CodeGenerators.GateGen", "src\CodeGenerators\gategen\Microsoft.Omex.CodeGenerators.GateGen.csproj", "{D3B05497-4540-4D95-A829-E6CD42EE09D3}"
 EndProject
@@ -101,6 +104,17 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Activities", "src\Extensions\Activities\Microsoft.Omex.Extensions.Activities.csproj", "{8520AA74-FDA7-4EC0-B60D-C9A786574443}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Activities.UnitTests", "tests\Extensions\Activities.UnitTests\Microsoft.Omex.Extensions.Activities.UnitTests.csproj", "{E9123DDF-3D31-48A5-8442-F1DAD516E1A6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.CodeGenerators.SettingsGen", "src\CodeGenerators\SettingsGen\Microsoft.Omex.CodeGenerators.SettingsGen.csproj", "{905C495E-43DE-48AC-8768-4F9C75C8DDE9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGenerators", "CodeGenerators", "{62EEDB72-E231-477E-9AEE-D75E6B68DF47}"
+	ProjectSection(SolutionItems) = preProject
+		tests\CodeGenerators\Directory.Build.props = tests\CodeGenerators\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests", "tests\CodeGenerators\SettingsGen.UnitTests\Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.csproj", "{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.SettingsGen.Example", "src\CodeGenerators\SettingsGen.Example\Microsoft.Omex.SettingsGen.Example.csproj", "{618DCDA0-595C-4F35-820D-A6D82E91B6EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -358,6 +372,30 @@ Global
 		{E9123DDF-3D31-48A5-8442-F1DAD516E1A6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9123DDF-3D31-48A5-8442-F1DAD516E1A6}.Release|x64.ActiveCfg = Release|Any CPU
 		{E9123DDF-3D31-48A5-8442-F1DAD516E1A6}.Release|x64.Build.0 = Release|Any CPU
+		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Debug|x64.Build.0 = Debug|Any CPU
+		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Release|x64.ActiveCfg = Release|Any CPU
+		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Release|x64.Build.0 = Release|Any CPU
+		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Debug|x64.Build.0 = Debug|Any CPU
+		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Release|x64.ActiveCfg = Release|Any CPU
+		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Release|x64.Build.0 = Release|Any CPU
+		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Debug|x64.Build.0 = Debug|Any CPU
+		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Release|x64.ActiveCfg = Release|Any CPU
+		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -397,6 +435,10 @@ Global
 		{501FF230-7D2C-44DB-A4CC-7EC30E892EBD} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
 		{8520AA74-FDA7-4EC0-B60D-C9A786574443} = {366F11E6-7175-4E87-AFD4-D4860F03EE1E}
 		{E9123DDF-3D31-48A5-8442-F1DAD516E1A6} = {167E9B15-D185-4E08-990E-DB01FD5811DD}
+		{905C495E-43DE-48AC-8768-4F9C75C8DDE9} = {C5BA6376-60EB-43E5-A9EF-AD2792C8D2A8}
+		{62EEDB72-E231-477E-9AEE-D75E6B68DF47} = {551C93F8-6E89-4954-8905-7F5AC7173285}
+		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037} = {62EEDB72-E231-477E-9AEE-D75E6B68DF47}
+		{618DCDA0-595C-4F35-820D-A6D82E91B6EE} = {C5BA6376-60EB-43E5-A9EF-AD2792C8D2A8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6FB7BCB-BF07-4F19-ACBA-457479D421BB}
