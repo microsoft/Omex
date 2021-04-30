@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -30,6 +29,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 
 		// defined by Service Fabric https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-environment-variables-reference
 		internal const string ServiceNameVariableName = "Fabric_ServiceName";
+		internal const string ServicePackageVariableName = "Fabric_ServicePackageName";
 		internal const string ApplicationNameVariableName = "Fabric_ApplicationName";
 		internal const string NodeNameVariableName = "Fabric_NodeName";
 		internal const string NodeIPOrFQDNVariableName = "Fabric_NodeIPOrFQDN";
@@ -42,6 +42,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		public BaseExecutionContext(IHostEnvironment? hostEnvironment = null)
 		{
 			MachineName = GetMachineName();
+			ServicePackageName = GetVariable(ServicePackageVariableName) ?? DefaultEmptyValue;
 			BuildVersion = GetBuildVersionFromServiceManifest() ?? DefaultEmptyValue;
 
 			ClusterIpAddress = GetIpAddress(MachineName);
@@ -115,6 +116,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		/// <inheritdoc/>
 		public bool IsPrivateDeployment { get; protected set; }
 
+		/// <inheritdoc/>
+		public string ServicePackageName { get; protected set; }
+
 		/// <summary>
 		/// Get environment variable value
 		/// </summary>
@@ -147,7 +151,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		/// Get build version from the current running service's manifest file
 		/// </summary>
 		/// <returns> Build version if found, otherwise null </returns>
-		protected static string? GetBuildVersionFromServiceManifest()
+		protected string? GetBuildVersionFromServiceManifest()
 		{
 			string? serviceManifestPath = GetServiceManifestPath();
 			return serviceManifestPath == null ? null :
@@ -155,10 +159,10 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		}
 
 
-		private static string? GetServiceManifestPath()
+		private string? GetServiceManifestPath()
 		{
 			string? applicationDir = GetVariable(FarbicFolderApplication);
-			string serviceManifestName = GetVariable("Fabric_ServicePackageName")!;
+			string? serviceManifestName = ServicePackageName;
 
 			if (applicationDir == null || serviceManifestName == null)
 			{

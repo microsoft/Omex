@@ -67,5 +67,10 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		/// The service name
 		/// </summary>
 		string ServiceName { get; }
+
+		/// <summary>
+		/// The service package name
+		/// </summary>
+		string ServicePackageName { get; }
 	}
 }
