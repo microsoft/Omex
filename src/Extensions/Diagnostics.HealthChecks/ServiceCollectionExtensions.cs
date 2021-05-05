@@ -16,9 +16,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	public static class ServiceCollectionExtensions
 	{
 		/// <summary>
-		/// Register types required for Omex health check
+		/// Add dependencies for a publisher
 		/// </summary>
-		public static IHealthChecksBuilder AddServiceFabricHealthChecks(this IServiceCollection serviceCollection)
+		private static void AddPublisherDependencies(this IServiceCollection serviceCollection)
 		{
 			serviceCollection
 				.AddHttpClient(HttpEndpointHealthCheck.HttpClientLogicalName)
@@ -30,14 +30,36 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				});
 
 			serviceCollection.TryAddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
+		}
 
-			return serviceCollection
-				.AddHealthCheckPublisher<ServiceFabricHealthCheckPublisher>()
-				.AddHealthChecks();
+		/// <summary>
+		/// Register publisher for processing health check results directly to replicas
+		/// </summary>
+		public static IHealthChecksBuilder AddServiceFabricHealthChecks(this IServiceCollection serviceCollection)
+		{
+			return serviceCollection.AddServiceFabricHealthChecks<ServiceFabricHealthCheckPublisher>();
+		}
+
+		/// <summary>
+		/// Register publisher for processing health check results directly to nodes using REST api
+		/// </summary>
+		public static IHealthChecksBuilder AddRestHealthChecks(this IServiceCollection serviceCollection)
+		{
+			return serviceCollection.AddServiceFabricHealthChecks<RestHealthCheckPublisher>();
 		}
 
 		/// <summary>
 		/// Register publisher for processing health check results
+		/// </summary>
+		public static IHealthChecksBuilder AddServiceFabricHealthChecks<TPublisher>(this IServiceCollection serviceCollection)
+				where TPublisher : class, IHealthCheckPublisher
+		{
+			serviceCollection.AddPublisherDependencies();
+			return serviceCollection.AddHealthCheckPublisher<TPublisher>().AddHealthChecks();
+		}
+
+		/// <summary>
+		/// Register publisher using Dependency Injection
 		/// </summary>
 		public static IServiceCollection AddHealthCheckPublisher<TPublisher>(this IServiceCollection serviceCollection)
 			where TPublisher : class, IHealthCheckPublisher
