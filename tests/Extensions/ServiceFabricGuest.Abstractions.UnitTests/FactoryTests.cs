@@ -9,17 +9,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 {
 	[TestClass]
-	public class FactoryTests
+	public class ServiceFabricClientFactoryTests
 	{
 		[TestMethod]
-		public void Factory_ServiceFabricClientWrapperCreatedProperly()
+		public void ServiceFabricClientFactory_ServiceFabricClientWrapperCreatedProperly()
 		{
 			// Arrange.
 			ServiceFabricRestClientOptions settings = new() { ClusterEndpoint = "fabric://moc" };
-			IOptions<ServiceFabricRestClientOptions> options = Options.Create(settings);
 
 			// Act.
-			IServiceFabricClientWrapper client = ServiceFabricClientFactory.CreateServiceFabricClientWrapper(options);
+			IServiceFabricClientWrapper client = ServiceFabricClientFactory.Create(settings);
 
 			// Assert.
 			Assert.IsNotNull(client);
