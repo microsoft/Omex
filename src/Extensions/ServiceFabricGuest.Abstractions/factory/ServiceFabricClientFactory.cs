@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 		/// Creates service fabric client wrapper instance and returns it
 		/// </summary>
 		/// <param name="options">REST client options</param>
-		/// <returns></returns>
+		/// <returns>Service Fabric Client Wrapper</returns>
 		public static IServiceFabricClientWrapper CreateServiceFabricClientWrapper(IOptions<ServiceFabricRestClientOptions> options)
 		{
 			return new ServiceFabricClientWrapper(options);
