@@ -38,18 +38,20 @@
     <Microsoft_Extensions_Logging_Abstractions_Version>5.0.0</Microsoft_Extensions_Logging_Abstractions_Version>
     <Microsoft_Extensions_Logging_Console_Version>5.0.0</Microsoft_Extensions_Logging_Console_Version>
     <Microsoft_Extensions_ObjectPool_Version>5.0.5</Microsoft_Extensions_ObjectPool_Version>
+    <Microsoft_Extensions_Options_ConfigurationExtensions_Version>5.0.0</Microsoft_Extensions_Options_ConfigurationExtensions_Version>
     <Microsoft_Extensions_Options_Version>5.0.0</Microsoft_Extensions_Options_Version>
     <System_Diagnostics_DiagnosticSource_Version>5.0.1</System_Diagnostics_DiagnosticSource_Version>
     <System_Threading_Tasks_Extensions_Version>4.5.4</System_Threading_Tasks_Extensions_Version>
     <System_Diagnostics_DiagnosticSource_Version>5.0.1</System_Diagnostics_DiagnosticSource_Version>
   </PropertyGroup>
   <PropertyGroup Label="ServiceFabric packages for Omex Extensions">
-    <Microsoft_ServiceFabric_Version>7.2.434</Microsoft_ServiceFabric_Version>
+    <Microsoft_ServiceFabric_Version>8.0.516</Microsoft_ServiceFabric_Version>
     <Microsoft_ServiceFabric_Client_Http_Version>4.4.0</Microsoft_ServiceFabric_Client_Http_Version>
-    <Microsoft_ServiceFabric_Services_Version>4.2.434</Microsoft_ServiceFabric_Services_Version>
-    <Microsoft_ServiceFabric_Services_Remoting_Version>4.2.434</Microsoft_ServiceFabric_Services_Remoting_Version>
-    <Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>4.2.434</Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>
-    <Microsoft_ServiceFabric_AspNetCore_Abstractions_Version>4.2.434</Microsoft_ServiceFabric_AspNetCore_Abstractions_Version>
-    <ServiceFabric_Mocks_Version>4.2.6</ServiceFabric_Mocks_Version>
+    <Microsoft_ServiceFabric_Services_Version>5.0.516</Microsoft_ServiceFabric_Services_Version>
+    <Microsoft_ServiceFabric_Services_Remoting_Version>5.0.516</Microsoft_ServiceFabric_Services_Remoting_Version>
+    <Microsoft_ServiceFabric_Actors_Version>5.0.516</Microsoft_ServiceFabric_Actors_Version>
+    <Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>5.0.516</Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>
+    <Microsoft_ServiceFabric_AspNetCore_Abstractions_Version>5.0.516</Microsoft_ServiceFabric_AspNetCore_Abstractions_Version>
+    <ServiceFabric_Mocks_Version>5.0.0</ServiceFabric_Mocks_Version>
   </PropertyGroup>
 </Project>
