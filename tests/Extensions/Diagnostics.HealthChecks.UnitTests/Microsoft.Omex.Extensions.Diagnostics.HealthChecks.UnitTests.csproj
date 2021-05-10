@@ -8,6 +8,7 @@
     <ProjectReference Include="..\..\..\src\Extensions\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.ServiceFabric.Actors" Version="$(Microsoft_ServiceFabric_Actors_Version)" />
     <PackageReference Include="ServiceFabric.Mocks" Version="$(ServiceFabric_Mocks_Version)" />
   </ItemGroup>
   <ItemGroup Condition="$(IsNetFramework)">
