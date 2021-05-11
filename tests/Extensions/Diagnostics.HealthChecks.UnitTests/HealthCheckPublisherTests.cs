@@ -10,6 +10,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
+using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions;
 using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.ServiceFabric.Client;
 using Microsoft.ServiceFabric.Common;
@@ -474,8 +475,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 		internal class RestPublisherTestContext : PublisherTestContext
 		{
-			public Mock<IServiceFabricClient>? SFClient { get; protected set; } // TODO: move to RestTestContext
-
 			public RestPublisherTestContext(bool closed = false) : base(closed)
 			{
 			}
@@ -484,8 +483,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 			public override void Configure(bool closed = false)
 			{
-				SFClient = new Mock<IServiceFabricClient>();
-				SFClient.Setup(_ => _.Nodes.ReportNodeHealthAsync(It.IsAny<NodeName>(),
+				Mock<IServiceFabricClient> sfClient = new();
+				sfClient.Setup(_ => _.Nodes.ReportNodeHealthAsync(It.IsAny<NodeName>(),
 					It.IsAny<SfcHealthInformation>(),
 					It.IsAny<bool?>(),
 					It.IsAny<long?>(),
@@ -521,8 +520,14 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 						ReportedSfHealthInformatioStore[info.Property] = sfInfo;
 					});
 
+				Mock<IServiceFabricClientWrapper> sfClientWrapper = new();
+
+				sfClientWrapper.Setup(_ => _.GetAsync())
+					.Returns(Task.FromResult(sfClient.Object));
+
+
 				Publisher = new RestHealthCheckPublisher(new NullLogger<RestHealthCheckPublisher>(),
-					SFClient.Object, ObjectPoolProvider, "mockNodeName");
+					sfClientWrapper.Object, ObjectPoolProvider, "mockNodeName");
 			}
 		}
 
