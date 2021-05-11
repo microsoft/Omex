@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions;
 using Microsoft.ServiceFabric.Client;
 using ServiceFabricCommon = Microsoft.ServiceFabric.Common;
 using ServiceFabricHealth = System.Fabric.Health;
@@ -17,7 +18,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	internal class RestHealthCheckPublisher : HealthCheckPublisher
 	{
-		private readonly RestClientWrapper m_clientWrapper;
+		private readonly IServiceFabricClientWrapper m_clientWrapper;
 
 		private IServiceFabricClient? m_client;
 
@@ -30,22 +31,22 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		internal const string NodeNameVariableName = "Fabric_NodeName";
 
 		public RestHealthCheckPublisher(ILogger<RestHealthCheckPublisher> logger,
-			IOptions<RestHealthCheckPublisherOptions> options,
+			IServiceFabricClientWrapper clientWrapper,
 			ObjectPoolProvider objectPoolProvider) : base(objectPoolProvider)
 		{
 			m_nodeName = FindNodeName();
-			m_clientWrapper = new(new Uri(options.Value.RestHealthPublisherClusterEndpoint));
+			m_clientWrapper = clientWrapper;
 			m_logger = logger;
 		}
 
 
 		internal RestHealthCheckPublisher(ILogger<RestHealthCheckPublisher> logger,
-			IServiceFabricClient client,
+			IServiceFabricClientWrapper clientWrapper,
 			ObjectPoolProvider objectPoolProvider,
-			string? nodeName = null) : base(objectPoolProvider)
+			string nodeName) : base(objectPoolProvider)
 		{
-			m_nodeName = nodeName == null ? FindNodeName() : nodeName;
-			m_clientWrapper = new(client);
+			m_nodeName = nodeName;
+			m_clientWrapper = clientWrapper;
 			m_logger = logger;
 		}
 
