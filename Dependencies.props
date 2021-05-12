@@ -6,7 +6,7 @@
     <Microsoft_AspNetCore_Hosting_Version>2.2.7</Microsoft_AspNetCore_Hosting_Version>
     <Microsoft_AspNetCore_Http_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Http_Abstractions_Version>
     <Microsoft_AspNetCore_Http_Version>2.2.2</Microsoft_AspNetCore_Http_Version>
-    <Microsoft_Azure_DocumentDB_Version>2.14.0</Microsoft_Azure_DocumentDB_Version>
+    <Microsoft_Azure_DocumentDB_Version>2.14.1</Microsoft_Azure_DocumentDB_Version>
     <Microsoft_CodeAnalysis_Common>3.9.0</Microsoft_CodeAnalysis_Common>
     <Microsoft_CodeAnalysis_Csharp>3.9.0</Microsoft_CodeAnalysis_Csharp>
     <Microsoft_Net_Test_Sdk_Version>16.9.4</Microsoft_Net_Test_Sdk_Version>
@@ -30,14 +30,14 @@
   <PropertyGroup Label="Packages for Omex Extensions. AutoUpdate">
     <Microsoft_Extensions_DependencyInjection_Version>5.0.1</Microsoft_Extensions_DependencyInjection_Version>
     <Microsoft_Extensions_DependencyInjection_Abstractions_Version>5.0.0</Microsoft_Extensions_DependencyInjection_Abstractions_Version>
-    <Microsoft_Extensions_Diagnostics_HealthChecks_Version>5.0.5</Microsoft_Extensions_Diagnostics_HealthChecks_Version>
+    <Microsoft_Extensions_Diagnostics_HealthChecks_Version>5.0.6</Microsoft_Extensions_Diagnostics_HealthChecks_Version>
     <Microsoft_Extensions_Hosting_Version>5.0.0</Microsoft_Extensions_Hosting_Version>
     <Microsoft_Extensions_Hosting_Abstractions_Version>5.0.0</Microsoft_Extensions_Hosting_Abstractions_Version>
     <Microsoft_Extensions_Http_Version>5.0.0</Microsoft_Extensions_Http_Version>
     <Microsoft_Extensions_Logging_Version>5.0.0</Microsoft_Extensions_Logging_Version>
     <Microsoft_Extensions_Logging_Abstractions_Version>5.0.0</Microsoft_Extensions_Logging_Abstractions_Version>
     <Microsoft_Extensions_Logging_Console_Version>5.0.0</Microsoft_Extensions_Logging_Console_Version>
-    <Microsoft_Extensions_ObjectPool_Version>5.0.5</Microsoft_Extensions_ObjectPool_Version>
+    <Microsoft_Extensions_ObjectPool_Version>5.0.6</Microsoft_Extensions_ObjectPool_Version>
     <Microsoft_Extensions_Options_ConfigurationExtensions_Version>5.0.0</Microsoft_Extensions_Options_ConfigurationExtensions_Version>
     <Microsoft_Extensions_Options_Version>5.0.0</Microsoft_Extensions_Options_Version>
     <System_Diagnostics_DiagnosticSource_Version>5.0.1</System_Diagnostics_DiagnosticSource_Version>
