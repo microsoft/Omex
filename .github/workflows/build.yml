@@ -1,8 +1,5 @@
 name: Build and run unit tests
 
-variables:
-  tags: "production, multi-phased"
-
 on:
   push:
     branches:
