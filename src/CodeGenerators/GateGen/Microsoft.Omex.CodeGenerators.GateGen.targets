@@ -19,14 +19,14 @@
 		<QCustomInput Include="@(CustomTargetInputs)" />
 	</ItemGroup>
 
-	<Target Name="GateGen" BeforeTargets="CoreCompile">
+	<Target Name="GateGen" BeforeTargets="CoreCompile" Condition="'$(UseGateGen)' == '' OR '$(UseGateGen)' == 'True'">
 		<Message Text="Running GateGen Target" />
 
 		<Error Text="The GatesXml property is not defined." Condition="'$(GatesXml)' == ''" />
 		<Error Text="The TipXml property is not defined." Condition="'$(TipXml)' == ''" />
 		<Error Text="The GeneratedGates property is not defined." Condition="'$(GeneratedGates)' == ''" />
 
-		<Exec Command="dotnet $(MSBuildThisFileDirectory)..\tools\Microsoft.Omex.CodeGenerators.GateGen.dll $(GatesXml) $(TipXml) $(GeneratedGates) $(OmexGatesNamespace)" />
+		<Exec Command="dotnet $(MSBuildThisFileDirectory)..\tools\Microsoft.Omex.CodeGenerators.GateGen.dll $(GatesXml) $(TipXml) $(GeneratedGates) $(OmexGatesNamespace) $(UseGateGen)" />
 
 		<CreateItem Include="$(GeneratedGates)">
 			<Output TaskParameter="Include" ItemName="Compile"/>

@@ -7,6 +7,7 @@
     <PackageReference Include="Microsoft.ServiceFabric" Version="$(Microsoft_ServiceFabric_Version)" />
     <PackageReference Include="Microsoft.ServiceFabric.Services" Version="$(Microsoft_ServiceFabric_Services_Version)" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="$(Microsoft_Extensions_Hosting_Version)" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="$(System_Text_Encodings_Web_Version)" /> <!-- Override due to CG vulnerability -->
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hosting\Microsoft.Omex.Extensions.Hosting.csproj" />

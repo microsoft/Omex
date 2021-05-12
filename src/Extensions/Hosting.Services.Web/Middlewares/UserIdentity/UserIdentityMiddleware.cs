@@ -21,50 +21,62 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		private const int HashSize = 32; // sha256 hash size, from here https://github.com/dotnet/runtime/blob/26a71f95b708721065f974fd43ba82a1dcb3e8f0/src/libraries/System.Security.Cryptography.Algorithms/src/Internal/Cryptography/HashProviderDispenser.Windows.cs#L85
 		private readonly IUserIdentityProvider[] m_userIdentityProviders;
 		private readonly ISaltProvider m_saltProvider;
-		private readonly HashAlgorithm m_hashAlgorithm;
 		private readonly int m_maxIdentitySize;
 
 		public UserHashIdentityMiddleware(IEnumerable<IUserIdentityProvider> userIdentityProviders, ISaltProvider saltProvider)
 		{
 			m_userIdentityProviders = userIdentityProviders.ToArray();
 			m_saltProvider = saltProvider;
-			m_hashAlgorithm = new SHA256Managed();
 			m_maxIdentitySize = m_userIdentityProviders.Max(p => p.MaxBytesInIdentity);
 		}
 
-		Task IMiddleware.InvokeAsync(HttpContext context, RequestDelegate next)
+		async Task IMiddleware.InvokeAsync(HttpContext context, RequestDelegate next)
 		{
 			Activity? activity = Activity.Current;
 
 			if (activity != null && string.IsNullOrEmpty(activity.GetUserHash()))
 			{
-				string userHash = CreateUserHash(context);
+				string userHash = await CreateUserHashAsync(context).ConfigureAwait(false);
 				if (!string.IsNullOrWhiteSpace(userHash))
 				{
 					activity.SetUserHash(userHash);
 				}
 			}
 
-			return next(context);
+			await next(context);
 		}
 
-		internal string CreateUserHash(HttpContext context)
+		internal async Task<string> CreateUserHashAsync(HttpContext context)
 		{
-			ReadOnlySpan<byte> saltSpan = m_saltProvider.GetSalt();
+			using IMemoryOwner<byte> uidMemoryOwner = MemoryPool<byte>.Shared.Rent(m_maxIdentitySize + m_saltProvider.MaxBytesInSalt);
 
-			using IMemoryOwner<byte> uidMemoryOwner = MemoryPool<byte>.Shared.Rent(m_maxIdentitySize + saltSpan.Length);
-			Span<byte> uidSpan = uidMemoryOwner.Memory.Span;
+			// Done because span cannot be declared in an async function
+			uidMemoryOwner.Memory.Span.Fill(0);
 
 			int identityBytesWritten = -1;
-			Span<byte> identitySpan = uidSpan.Slice(0, m_maxIdentitySize);
 			foreach (IUserIdentityProvider provider in m_userIdentityProviders)
 			{
-				if (provider.TryWriteBytes(context, identitySpan, out identityBytesWritten))
+				bool success;
+				(success, identityBytesWritten) = await provider.TryWriteBytesAsync(context, uidMemoryOwner.Memory)
+					.ConfigureAwait(false);
+				if (success)
 				{
 					break;
 				}
+				else
+				{
+					uidMemoryOwner.Memory.Span.Fill(0);
+				}
 			}
 
+			return GetHashString(m_saltProvider.GetSalt(), uidMemoryOwner.Memory.Span, identityBytesWritten);
+		}
+
+		/// <summary>
+		/// This method was made because span byte cannot be declared in async or lambda functions
+		/// </summary>
+		private string GetHashString(ReadOnlySpan<byte> saltSpan, Span<byte> uidSpan, int identityBytesWritten)
+		{
 			if (identityBytesWritten <= 0)
 			{
 				return string.Empty;
@@ -74,22 +86,23 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 
 			using IMemoryOwner<byte> hashMemoryOwner = MemoryPool<byte>.Shared.Rent(HashSize);
 			Span<byte> hashSpan = hashMemoryOwner.Memory.Span;
-			if (!m_hashAlgorithm.TryComputeHash(uidSpan, hashSpan, out int hashBytesWritten))
+
+#if NETCOREAPP3_1
+			using HashAlgorithm hashAlgorithm = new SHA256Managed(); // need to have new instance each time since its not thread-safe
+
+			if (!hashAlgorithm.TryComputeHash(uidSpan, hashSpan, out _))
 			{
 				return string.Empty;
 			}
 
-#if NETCOREAPP3_1
 			return BitConverter.ToString(hashSpan.ToArray()).Replace("-", "");
 #else
+			SHA256.HashData(uidSpan, hashSpan);
+
 			return Convert.ToHexString(hashSpan);
 #endif
 		}
 
-		public void Dispose()
-		{
-			m_hashAlgorithm.Dispose();
-			m_saltProvider.Dispose();
-		}
+		public void Dispose() => m_saltProvider.Dispose();
 	}
 }
