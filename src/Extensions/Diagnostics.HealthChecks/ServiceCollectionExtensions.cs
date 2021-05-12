@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.ObjectPool;
+using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
@@ -45,6 +46,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// </summary>
 		public static IHealthChecksBuilder AddRestHealthChecks(this IServiceCollection serviceCollection)
 		{
+			serviceCollection.AddServiceFabricClient();
 			return serviceCollection.AddServiceFabricHealthChecks<RestHealthCheckPublisher>();
 		}
 
