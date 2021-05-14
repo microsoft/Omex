@@ -8,8 +8,11 @@
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="$(Microsoft_Extensions_Diagnostics_HealthChecks_Version)" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="$(Microsoft_Extensions_Http_Version)" />
     <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="$(Microsoft_Extensions_ObjectPool_Version)" />
+    <PackageReference Include="Microsoft.ServiceFabric.Client.Http" Version="$(Microsoft_ServiceFabric_Client_Http_Version)" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="$(System_ComponentModel_Annotations)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
+    <ProjectReference Include="..\ServiceFabricGuest.Abstractions\Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.csproj" />
   </ItemGroup>
 </Project>
