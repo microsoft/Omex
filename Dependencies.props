@@ -2,10 +2,10 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Package Versions. AutoUpdate">
     <Moq_Version>4.16.1</Moq_Version>
-    <Microsoft_AspNetCore_Hosting_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Hosting_Abstractions_Version>
-    <Microsoft_AspNetCore_Hosting_Version>2.2.7</Microsoft_AspNetCore_Hosting_Version>
-    <Microsoft_AspNetCore_Http_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Http_Abstractions_Version>
-    <Microsoft_AspNetCore_Http_Version>2.2.2</Microsoft_AspNetCore_Http_Version>
+    <Microsoft_AspNetCore_Hosting_Abstractions_Version>2.1.1</Microsoft_AspNetCore_Hosting_Abstractions_Version>
+    <Microsoft_AspNetCore_Hosting_Version>2.1.1</Microsoft_AspNetCore_Hosting_Version>
+    <Microsoft_AspNetCore_Http_Abstractions_Version>2.1.1</Microsoft_AspNetCore_Http_Abstractions_Version>
+    <Microsoft_AspNetCore_Http_Version>2.1.22</Microsoft_AspNetCore_Http_Version>
     <Microsoft_Azure_DocumentDB_Version>2.14.1</Microsoft_Azure_DocumentDB_Version>
     <Microsoft_CodeAnalysis_Common>3.9.0</Microsoft_CodeAnalysis_Common>
     <Microsoft_CodeAnalysis_Csharp>3.9.0</Microsoft_CodeAnalysis_Csharp>
@@ -50,7 +50,6 @@
     <Microsoft_ServiceFabric_Services_Version>5.0.516</Microsoft_ServiceFabric_Services_Version>
     <Microsoft_ServiceFabric_Services_Remoting_Version>5.0.516</Microsoft_ServiceFabric_Services_Remoting_Version>
     <Microsoft_ServiceFabric_Actors_Version>5.0.516</Microsoft_ServiceFabric_Actors_Version>
-    <Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>5.0.516</Microsoft_ServiceFabric_AspNetCore_Kestrel_Version>
     <Microsoft_ServiceFabric_AspNetCore_Abstractions_Version>5.0.516</Microsoft_ServiceFabric_AspNetCore_Abstractions_Version>
     <ServiceFabric_Mocks_Version>5.0.0</ServiceFabric_Mocks_Version>
   </PropertyGroup>
