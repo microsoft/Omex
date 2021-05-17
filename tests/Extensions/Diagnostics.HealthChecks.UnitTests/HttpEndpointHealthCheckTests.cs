@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -19,9 +20,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 	[TestClass]
 	public class HttpEndpointHealthCheckTests
 	{
-		internal const string PublishAddressEvnVariableName = "Fabric_NodeIPOrFQDN";
-		internal const string EndpointPortEvnVariableSuffix = "Fabric_Endpoint_";
-
 		[TestMethod]
 		public async Task CheckHealthAsync_WhenExpectedStatus_ReturnsHealthy()
 		{
@@ -216,7 +214,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		{
 			Mock<IHttpClientFactory> factoryMock = new();
 			MockClient clientMock = new(response);
-			Environment.SetEnvironmentVariable(EndpointPortEvnVariableSuffix + parameters.EndpointName, 6789.ToString(), EnvironmentVariableTarget.Process);
+			Environment.SetEnvironmentVariable(SfConfigurationProviderHelper.EndpointPortEvnVariableSuffix + parameters.EndpointName, 6789.ToString(), EnvironmentVariableTarget.Process);
 
 			factoryMock.Setup(f => f.CreateClient(HttpEndpointHealthCheck.HttpClientLogicalName))
 				.Returns(clientMock);

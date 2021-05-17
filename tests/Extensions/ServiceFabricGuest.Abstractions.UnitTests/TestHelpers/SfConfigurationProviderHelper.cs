@@ -12,5 +12,10 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 
 		public static void SetPublishAddress(string value = "localhost") =>
 			Environment.SetEnvironmentVariable(SfConfigurationProvider.PublishAddressEvnVariableName, value, EnvironmentVariableTarget.Process);
+
+		public static string EndpointPortEvnVariableSuffix => SfConfigurationProvider.EndpointPortEvnVariableSuffix;
+
+		public static string PublishAddressEvnVariableName => SfConfigurationProvider.EndpointPortEvnVariableSuffix;
+
 	}
 }
