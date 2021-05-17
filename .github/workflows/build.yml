@@ -3,12 +3,11 @@ name: Build and run unit tests
 on:
   push:
     branches:
-      - master
       - main
   pull_request:
     branches:
-      - master
       - main
+      - release
   release:
     types:
       - published
