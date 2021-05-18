@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Fabric;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,11 +11,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Omex.Extensions.Abstractions.Accessors;
-using Microsoft.Omex.Extensions.Abstractions.Activities;
+using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using ServiceFabric.Mocks;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 {
@@ -215,9 +212,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		private async Task<(MockClient, HealthCheckResult)> RunHealthCheckAsync(
 			HttpHealthCheckParameters parameters, HttpResponseMessage response, HealthStatus failureStatus = HealthStatus.Unhealthy)
 		{
-			Accessor<ServiceContext> accessor = new Accessor<ServiceContext>();
-			Mock<IHttpClientFactory> factoryMock = new Mock<IHttpClientFactory>();
-			MockClient clientMock = new MockClient(response);
+			Mock<IHttpClientFactory> factoryMock = new();
+			MockClient clientMock = new(response);
+			const int samplePort = 6789;
+			SfConfigurationProviderHelper.SetPortVariable(parameters.EndpointName, samplePort);
 
 			factoryMock.Setup(f => f.CreateClient(HttpEndpointHealthCheck.HttpClientLogicalName))
 				.Returns(clientMock);
@@ -225,23 +223,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			HttpEndpointHealthCheck healthCheck = new HttpEndpointHealthCheck(
 				parameters,
 				factoryMock.Object,
-				accessor,
 				new NullLogger<HttpEndpointHealthCheck>(),
 				new ActivitySource("Test"));
 
 			HealthCheckContext checkContext = HealthCheckContextHelper.CreateCheckContext();
 			checkContext.Registration.FailureStatus = failureStatus;
-
-			HealthCheckResult uninitializedResult = await healthCheck.CheckHealthAsync(checkContext);
-
-			Assert.AreEqual(HealthStatus.Healthy, uninitializedResult.Status,
-				FormattableString.Invariant($"Should return {HealthStatus.Healthy} if accessor not set"));
-
-			Mock<ICodePackageActivationContext> mock = new Mock<ICodePackageActivationContext>();
-			mock.Setup(c => c.GetEndpoint(parameters.EndpointName)).Returns(new System.Fabric.Description.EndpointResourceDescription());
-			ServiceContext context = MockStatelessServiceContextFactory.Create(mock.Object, string.Empty, new Uri("https://localhost"), Guid.Empty, 0);
-
-			(accessor as IAccessorSetter<ServiceContext>).SetValue(context);
 
 			HealthCheckResult result = await healthCheck.CheckHealthAsync(checkContext);
 
