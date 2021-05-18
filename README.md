@@ -2,7 +2,7 @@
 
 This repository contains source code for shared components used by the Omex team, which is part of the Office organization, at Microsoft to build scalable and highly available distributed systems.
 
-The code is released under the [MIT license](https://github.com/microsoft/Omex/blob/master/LICENSE).
+The code is released under the [MIT license](https://github.com/microsoft/Omex/blob/main/LICENSE).
 
 The pre-release NuGet packages are available to download from the MyGet feed
 
@@ -17,18 +17,18 @@ Additional source code from the Omex team, related to a collection of Azure DevO
 
 ### Projects in this repository
 
-* [__Gating__](https://github.com/microsoft/Omex/tree/master/src/Gating) - This library provides an implementation of a flighting mechanism for new features.
-* [__DocumentDb__](https://github.com/microsoft/Omex/tree/master/src/DocumentDb) - This library contains wrapper APIs over Microsoft Azure Document Db .Net Client SDK.
-* [__System__](https://github.com/microsoft/Omex/tree/master/src/System) - This library contains shared code for Omex libraries. You'll find there utilities for logging,
+* [__Gating__](https://github.com/microsoft/Omex/tree/main/src/Gating) - This library provides an implementation of a flighting mechanism for new features.
+* [__DocumentDb__](https://github.com/microsoft/Omex/tree/main/src/DocumentDb) - This library contains wrapper APIs over Microsoft Azure Document Db .Net Client SDK.
+* [__System__](https://github.com/microsoft/Omex/tree/main/src/System) - This library contains shared code for Omex libraries. You'll find there utilities for logging,
 argument validation, resource management, caching and more.
-* [__System.UnitTests.Shared__](https://github.com/microsoft/Omex/tree/master/src/System.UnitTests.Shared) - This library contains abstractions and utilities used for creating unit tests.
-* [__Gating.UnitTests.Shared__](https://github.com/microsoft/Omex/tree/master/src/Gating.UnitTests.Shared) - This library provides classes used in unit tests for Gating library.
-* [__Gating.Example__](https://github.com/microsoft/Omex/tree/master/src/Gating.Example) - This is a small console application that uses the Gating library to showcase some of its features.
-* [__GateGen__](https://github.com/microsoft/Omex/tree/master/src/CodeGenerators/GateGen) - This is a code generator tool that produces strongly typed gates (C# file) from the gates xml files. Should be used as a dependency in another project.
+* [__System.UnitTests.Shared__](https://github.com/microsoft/Omex/tree/main/src/System.UnitTests.Shared) - This library contains abstractions and utilities used for creating unit tests.
+* [__Gating.UnitTests.Shared__](https://github.com/microsoft/Omex/tree/main/src/Gating.UnitTests.Shared) - This library provides classes used in unit tests for Gating library.
+* [__Gating.Example__](https://github.com/microsoft/Omex/tree/main/src/Gating.Example) - This is a small console application that uses the Gating library to showcase some of its features.
+* [__GateGen__](https://github.com/microsoft/Omex/tree/main/src/CodeGenerators/GateGen) - This is a code generator tool that produces strongly typed gates (C# file) from the gates xml files. Should be used as a dependency in another project.
 
-Please contribute to this repository via [pull requests](https://github.com/Microsoft/Omex/pulls) against the __master__ branch.
+Please contribute to this repository via [pull requests](https://github.com/Microsoft/Omex/pulls) against the __main__ branch.
 
-[![Build Status](https://dev.azure.com/ms/Omex/_apis/build/status/Microsoft.Omex?branchName=master)](https://dev.azure.com/ms/Omex/_build/latest?definitionId=73&branchName=master)
+[![Build Status](https://dev.azure.com/ms/Omex/_apis/build/status/Microsoft.Omex?branchName=main)](https://dev.azure.com/ms/Omex/_build/latest?definitionId=73&branchName=main)
 
 ## Building
 
@@ -78,14 +78,14 @@ All documentation is located in the `./doc` folder. If you would like to contrib
 The easiest way to communicate with the team is via GitHub issues. Please file new issues, feature requests and suggestions.
 
 # FAQ
-## What is the difference between the master and release branches?
+## What is the difference between the main and release branches?
 There are two types of NuGet packages that get built from the code in this repository:
-* __Pre-release packages__: the pre-release packages are built after every change on the master branch
-* __Release packages__: after a period of time when more changes are made to master, the Team creates release packages which are published to NuGet.org.
-The release packages are built from the master branch. Public contributions are accepted only from the master branch.
+* __Pre-release packages__: the pre-release packages are built after every change on the main branch
+* __Release packages__: after a period of time when more changes are made to main, the Team creates release packages which are published to NuGet.org.
+The release packages are built from the main branch. Public contributions are accepted only from the main branch.
 
 ## Where are the NuGet packages for the components in this repository available for download?
-The pre-release NuGet packages which are built from the master branch are available to download from the MyGet feed
+The pre-release NuGet packages which are built from the main branch are available to download from the MyGet feed
 
     https://www.myget.org/F/omex/api/v3/index.json
 
