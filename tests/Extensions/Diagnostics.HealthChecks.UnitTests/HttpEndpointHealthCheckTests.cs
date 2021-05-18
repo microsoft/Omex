@@ -214,7 +214,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		{
 			Mock<IHttpClientFactory> factoryMock = new();
 			MockClient clientMock = new(response);
-			Environment.SetEnvironmentVariable(SfConfigurationProviderHelper.EndpointPortEvnVariableSuffix + parameters.EndpointName, 6789.ToString(), EnvironmentVariableTarget.Process);
+			const int samplePort = 6789;
+			SfConfigurationProviderHelper.SetPortVariable(parameters.EndpointName, samplePort);
 
 			factoryMock.Setup(f => f.CreateClient(HttpEndpointHealthCheck.HttpClientLogicalName))
 				.Returns(clientMock);
