@@ -16,9 +16,9 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 		internal const string EndpointPortEvnVariableSuffix = "Fabric_Endpoint_";
 
 		/// <summary>
-		/// 
+		/// Get Service Fabric Variable from environment
 		/// </summary>
-		/// <param name="name">Name of the SF variable</param>
+		/// <param name="name">Variable name</param>
 		public static string? GetSfVariable(string name) =>
 			Environment.GetEnvironmentVariable(name); // Environment variables should be provided by SF
 
