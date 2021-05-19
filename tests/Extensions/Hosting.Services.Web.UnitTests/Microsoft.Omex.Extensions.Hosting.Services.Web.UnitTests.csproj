@@ -9,7 +9,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Extensions\Hosting.Services.Web\Microsoft.Omex.Extensions.Hosting.Services.Web.csproj" />
+    <ProjectReference Include="..\..\..\src\Extensions\ServiceFabricGuest.Abstractions\Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\src\Extensions\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj" />
     <ProjectReference Include="..\Hosting.Services.UnitTests\Microsoft.Omex.Extensions.Hosting.Services.UnitTests.csproj" />
+    <ProjectReference Include="..\ServiceFabricGuest.Abstractions.UnitTests\Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests.csproj" />
   </ItemGroup>
 </Project>

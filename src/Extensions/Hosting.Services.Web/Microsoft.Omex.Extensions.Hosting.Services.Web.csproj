@@ -13,5 +13,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hosting.Services\Microsoft.Omex.Extensions.Hosting.Services.csproj" />
+    <ProjectReference Include="..\ServiceFabricGuest.Abstractions\Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.csproj" />
   </ItemGroup>
 </Project>

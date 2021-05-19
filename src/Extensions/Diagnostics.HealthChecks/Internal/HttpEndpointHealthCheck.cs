@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
@@ -23,36 +24,25 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private readonly IHttpClientFactory m_httpClientFactory;
 
-		private readonly IAccessor<ServiceContext> m_accessor;
-
 		private Uri? m_uriToCheck;
 
 		public HttpEndpointHealthCheck(
 			HttpHealthCheckParameters parameters,
 			IHttpClientFactory httpClientFactory,
-			IAccessor<ServiceContext> accessor,
 			ILogger<HttpEndpointHealthCheck> logger,
 			ActivitySource activitySource)
 				: base(parameters, logger, activitySource)
 		{
 			m_httpClientFactory = httpClientFactory;
-			m_accessor = accessor;
 		}
 
 		protected override async Task<HealthCheckResult> CheckHealthInternalAsync(HealthCheckContext context, CancellationToken token)
 		{
 			string checkName = context.Registration.Name;
 
-			if (m_accessor.Value == null)
-			{
-				Logger.LogWarning(Tag.Create(), "'{0}' check executed before ServiceContext provided", checkName);
-				// Health check ran too early in the service lifecycle. Returning error here might force deployment rollback.
-				return HealthCheckResult.Healthy("Not initialized");
-			}
-
 			if (m_uriToCheck == null)
 			{
-				int port = m_accessor.Value.CodePackageActivationContext.GetEndpoint(Parameters.EndpointName).Port;
+				int port = SfConfigurationProvider.GetEndpointPort(Parameters.EndpointName);
 				UriBuilder builder = new UriBuilder(Parameters.Scheme, Host, port, Parameters.RelativeUri.ToString());
 				m_uriToCheck = builder.Uri;
 			}
