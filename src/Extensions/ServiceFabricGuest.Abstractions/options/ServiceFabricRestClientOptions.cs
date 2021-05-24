@@ -14,6 +14,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 	{
 		/// <summary>
 		/// Settings definition for Cluster Endpoint Port
+		/// Value taken from https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-visualizing-your-cluster
 		/// </summary>
 		public int ClusterEndpointPort { get; set; } = 19080;
 
