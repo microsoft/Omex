@@ -4,7 +4,7 @@
 using System;
 using System.Globalization;
 
-namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
+namespace Microsoft.Omex.Extensions.Abstractions
 {
 	/// <summary>
 	/// Exception of getting Service Fabric configuration parameters from environment variables

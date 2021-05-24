@@ -2,8 +2,9 @@
 // Licensed under the MIT license.
 
 using System;
+using Microsoft.Omex.Extensions.Abstractions;
 
-namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
+namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 {
 	public static class SfConfigurationProviderHelper
 	{

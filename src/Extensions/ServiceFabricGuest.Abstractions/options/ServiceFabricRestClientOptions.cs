@@ -3,6 +3,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 {
