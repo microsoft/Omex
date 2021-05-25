@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.Omex.Extensions.Abstractions;
@@ -28,7 +29,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 		/// Settings definition for Cluster Endpoint protocol e.g. "http" or "https"
 		/// </summary>
 		[Required(AllowEmptyStrings = false)]
-		public string ClusterEndpointProtocol { get; set; } = "http";
+		public string ClusterEndpointProtocol { get; set; } = Uri.UriSchemeHttp;
 
 		/// <summary>
 		/// Settings definition for Cluster Endpoint 
