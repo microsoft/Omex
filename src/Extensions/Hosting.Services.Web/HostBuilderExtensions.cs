@@ -16,7 +16,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
-using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 
 namespace Microsoft.Extensions.Hosting

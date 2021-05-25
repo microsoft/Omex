@@ -33,10 +33,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 		/// <summary>
 		/// Settings definition for Cluster Endpoint 
 		/// </summary>
-		public string ClusterEndpoint()
-		{
-			return string.Format("{0}://{1}:{2}", ClusterEndpointProtocol, ClusterEndpointFQDN, ClusterEndpointPort.ToString());
-		}
+		public string ClusterEndpoint() => string.Format("{0}://{1}:{2}", ClusterEndpointProtocol, ClusterEndpointFQDN, ClusterEndpointPort.ToString());
 
 		internal static string DefaultFQDN()
 		{
@@ -47,12 +44,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 			}
 
 			string[] parts = runtimeAddress.Split(':');
-			if(parts.Length < 2)
-			{
-				return DefaultServiceFabricClusterFQDN;
-			}
-
-			return string.Join(":", parts.Take(parts.Length - 1));
+			return parts.Length < 2 ? DefaultServiceFabricClusterFQDN : string.Join(":", parts.Take(parts.Length - 1));
 		}
 
 		internal const string RuntimeConnectionAddressEvnVariableName = "Fabric_RuntimeConnectionAddress";
