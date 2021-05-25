@@ -12,7 +12,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 		public void ServiceFabricClientFactory_ServiceFabricClientWrapperCreatedProperly()
 		{
 			// Arrange.
-			ServiceFabricRestClientOptions settings = new() { ClusterEndpointFQDN = "fabric://moc" };
+			ServiceFabricRestClientOptions settings = new() { ClusterEndpointFQDN = "moc" };
 
 			// Act.
 			IServiceFabricClientWrapper client = ServiceFabricClientFactory.Create(settings);

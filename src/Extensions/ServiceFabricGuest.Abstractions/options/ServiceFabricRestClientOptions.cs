@@ -34,7 +34,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 		/// <summary>
 		/// Settings definition for Cluster Endpoint 
 		/// </summary>
-		public string ClusterEndpoint() => string.Format("{0}://{1}:{2}", ClusterEndpointProtocol, ClusterEndpointFQDN, ClusterEndpointPort.ToString());
+		public string ClusterEndpoint() => new UriBuilder(ClusterEndpointProtocol, ClusterEndpointFQDN, ClusterEndpointPort).ToString();
 
 		internal static string DefaultFQDN()
 		{

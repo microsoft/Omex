@@ -15,7 +15,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 		public async Task ServiceFabricClientWrapper_GetAsync_ReturnsClient()
 		{
 			// Arrange.
-			ServiceFabricRestClientOptions settings = new() { ClusterEndpointFQDN = "http://moc" };
+			ServiceFabricRestClientOptions settings = new() { ClusterEndpointFQDN = "moc" };
 			IOptions<ServiceFabricRestClientOptions> options = Options.Create(settings);
 
 			// Act.

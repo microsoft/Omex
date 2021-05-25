@@ -14,13 +14,13 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 		{
 			// Arrange.
 			Environment.SetEnvironmentVariable(ServiceFabricRestClientOptions.RuntimeConnectionAddressEvnVariableName, "local@@host19081");
-			ServiceFabricRestClientOptions options = new();
 
 			// Act.
-			string clusterEndpoint = options.ClusterEndpointFQDN;
+			ServiceFabricRestClientOptions options = new();
+			string clusterEndpointFQDN = options.ClusterEndpointFQDN;
 
 			// Assert.
-			Assert.AreEqual(ServiceFabricRestClientOptions.DefaultServiceFabricClusterFQDN, clusterEndpoint);
+			Assert.AreEqual(ServiceFabricRestClientOptions.DefaultServiceFabricClusterFQDN, clusterEndpointFQDN);
 		}
 
 		[TestMethod]
@@ -28,13 +28,13 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 		{
 			// Arrange.
 			Environment.SetEnvironmentVariable(ServiceFabricRestClientOptions.RuntimeConnectionAddressEvnVariableName, "localhost:19081");
-			ServiceFabricRestClientOptions options = new();
 
 			// Act.
-			string clusterEndpoint = options.ClusterEndpointFQDN;
+			ServiceFabricRestClientOptions options = new();
+			string clusterEndpointFQDN = options.ClusterEndpointFQDN;
 
 			// Assert.
-			Assert.AreEqual(ServiceFabricRestClientOptions.DefaultServiceFabricClusterFQDN, clusterEndpoint);
+			Assert.AreEqual(ServiceFabricRestClientOptions.DefaultServiceFabricClusterFQDN, clusterEndpointFQDN);
 		}
 
 		[TestMethod]
@@ -42,13 +42,13 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 		{
 			// Arrange.
 			Environment.SetEnvironmentVariable(ServiceFabricRestClientOptions.RuntimeConnectionAddressEvnVariableName, "local:host:19081");
-			ServiceFabricRestClientOptions options = new();
 
 			// Act.
-			string clusterEndpoint = options.ClusterEndpointFQDN;
+			ServiceFabricRestClientOptions options = new();
+			string clusterEndpointFQDN = options.ClusterEndpointFQDN;
 
 			// Assert.
-			Assert.AreEqual("local:host", clusterEndpoint);
+			Assert.AreEqual("local:host", clusterEndpointFQDN);
 		}
 
 		[TestMethod]
@@ -57,12 +57,13 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 			// Arrange.
 			Environment.SetEnvironmentVariable(ServiceFabricRestClientOptions.RuntimeConnectionAddressEvnVariableName, "localhost:19081");
 			const int defaultPort = 19080;
+
+			// Act.
 			ServiceFabricRestClientOptions options = new()
 			{
 				ClusterEndpointPort = defaultPort
 			};
 
-			// Act.
 			int port = options.ClusterEndpointPort;
 
 			// Assert.
@@ -75,12 +76,12 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 			// Arrange.
 			Environment.SetEnvironmentVariable(ServiceFabricRestClientOptions.RuntimeConnectionAddressEvnVariableName, "localhost:19081");
 			const string overrideFQDN = "myFQDN";
+
+			// Act.
 			ServiceFabricRestClientOptions options = new()
 			{
 				ClusterEndpointFQDN = overrideFQDN
 			};
-
-			// Act.
 			string fqdn = options.ClusterEndpointFQDN;
 
 			// Assert.
@@ -95,14 +96,13 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 			const string overrideFQDN = "myFQDN";
 			const int defaultPort = 19080;
 
+			// Act.
 			ServiceFabricRestClientOptions options = new()
 			{
 				ClusterEndpointFQDN = overrideFQDN,
 				ClusterEndpointPort = defaultPort
 			};
-
-			// Act.
-			string endpoint = "http://myFQDN:19080";
+			string endpoint = "http://myFQDN:19080/";
 
 			// Assert.
 			Assert.AreEqual(endpoint, options.ClusterEndpoint());
@@ -114,10 +114,9 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 			// Arrange.
 			Environment.SetEnvironmentVariable(ServiceFabricRestClientOptions.RuntimeConnectionAddressEvnVariableName, "localhost:19081");
 
-			ServiceFabricRestClientOptions options = new();
-
 			// Act.
-			string endpoint = "http://localhost:19080";
+			ServiceFabricRestClientOptions options = new();
+			string endpoint = "http://localhost:19080/";
 
 			// Assert.
 			Assert.AreEqual(endpoint, options.ClusterEndpoint());
