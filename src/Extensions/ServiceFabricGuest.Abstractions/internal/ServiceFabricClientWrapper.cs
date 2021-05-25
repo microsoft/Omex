@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 
 		public ServiceFabricClientWrapper(IOptions<ServiceFabricRestClientOptions> options)
 		{
-			m_clusterEndpoint = new(options.Value.ClusterEndpoint);
+			m_clusterEndpoint = new(options.Value.ClusterEndpoint());
 		}
 
 		public async Task<IServiceFabricClient> GetAsync()

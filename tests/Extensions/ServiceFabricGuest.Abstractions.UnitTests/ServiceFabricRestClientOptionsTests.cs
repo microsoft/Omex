@@ -14,14 +14,14 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 		public void ServiceFabricRestClientOptions_Default_FQDN_Invalid()
 		{
 			// Arrange.
-			Environment.SetEnvironmentVariable(ServiceFabricRestClientOptions.RuntimeConnectionAddressEvnVariableName, "localhost");
+			Environment.SetEnvironmentVariable(ServiceFabricRestClientOptions.RuntimeConnectionAddressEvnVariableName, "local@@host19081");
 			ServiceFabricRestClientOptions options = new();
 
 			// Act.
 			string clusterEndpoint = options.ClusterEndpointFQDN;
 
 			// Assert.
-			Assert.AreEqual(string.Empty, clusterEndpoint);
+			Assert.AreEqual(ServiceFabricRestClientOptions.DefaultServiceFabricClusterFQDN, clusterEndpoint);
 		}
 
 		[TestMethod]
@@ -35,7 +35,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 			string clusterEndpoint = options.ClusterEndpointFQDN;
 
 			// Assert.
-			Assert.AreEqual("localhost", clusterEndpoint);
+			Assert.AreEqual(ServiceFabricRestClientOptions.DefaultServiceFabricClusterFQDN, clusterEndpoint);
 		}
 
 		[TestMethod]
@@ -106,7 +106,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 			string endpoint = "http://myFQDN:19080";
 
 			// Assert.
-			Assert.AreEqual(endpoint, options.ClusterEndpoint);
+			Assert.AreEqual(endpoint, options.ClusterEndpoint());
 		}
 
 		[TestMethod]
@@ -121,7 +121,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 			string endpoint = "http://localhost:19080";
 
 			// Assert.
-			Assert.AreEqual(endpoint, options.ClusterEndpoint);
+			Assert.AreEqual(endpoint, options.ClusterEndpoint());
 		}
 	}
 }

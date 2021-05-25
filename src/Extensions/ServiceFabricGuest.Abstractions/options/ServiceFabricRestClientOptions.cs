@@ -24,29 +24,39 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 		[Required(AllowEmptyStrings = false)]
 		public string ClusterEndpointFQDN { get; set; } = DefaultFQDN();
 
+		/// <summary>
+		/// Settings definition for Cluster Endpoint protocol e.g. "http" or "https"
+		/// </summary>
+		[Required(AllowEmptyStrings = false)]
+		public string ClusterEndpointProtocol { get; set; } = "http";
 
 		/// <summary>
 		/// Settings definition for Cluster Endpoint 
 		/// </summary>
-		public string ClusterEndpoint => string.Format("http://{0}:{1}", ClusterEndpointFQDN, ClusterEndpointPort.ToString());
+		public string ClusterEndpoint()
+		{
+			return string.Format("{0}://{1}:{2}", ClusterEndpointProtocol, ClusterEndpointFQDN, ClusterEndpointPort.ToString());
+		}
 
 		internal static string DefaultFQDN()
 		{
 			string? runtimeAddress = SfConfigurationProvider.GetSfVariable(RuntimeConnectionAddressEvnVariableName);
 			if (runtimeAddress == null)
 			{
-				return string.Empty;
+				return DefaultServiceFabricClusterFQDN;
 			}
 
 			string[] parts = runtimeAddress.Split(':');
 			if(parts.Length < 2)
 			{
-				return string.Empty;
+				return DefaultServiceFabricClusterFQDN;
 			}
 
 			return string.Join(":", parts.Take(parts.Length - 1));
 		}
 
 		internal const string RuntimeConnectionAddressEvnVariableName = "Fabric_RuntimeConnectionAddress";
+
+		internal const string DefaultServiceFabricClusterFQDN = "localhost";
 	}
 }
