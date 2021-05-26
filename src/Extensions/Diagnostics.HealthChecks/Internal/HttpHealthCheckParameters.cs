@@ -20,6 +20,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// Creates HttpHealthCheckParameters instance
 		/// </summary>
+		/// <remarks>
+		/// Parameter description provided in a public method for creation of http health check <see cref="HealthChecksBuilderExtensions.AddHttpEndpointCheck"/>
+		/// </remarks>
 		public HttpHealthCheckParameters(
 			HttpRequestMessage httpRequestMessage,
 			HttpStatusCode? expectedStatus,
