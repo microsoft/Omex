@@ -32,10 +32,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			string checkName = context.Registration.Name;
 
 			HttpClient httpClient = m_httpClientFactory.CreateClient(HttpClientLogicalName);
-
-			HttpRequestMessage requestMessage = Parameters.RequestMessage;
-
-			HttpResponseMessage? response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
+			HttpResponseMessage? response = await httpClient.SendAsync(Parameters.RequestMessage, token).ConfigureAwait(false);
 
 			HealthStatus healthStatus = HealthStatus.Unhealthy;
 			string description = string.Empty;
