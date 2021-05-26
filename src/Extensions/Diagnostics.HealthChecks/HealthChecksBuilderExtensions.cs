@@ -41,16 +41,21 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? additionalCheck = null,
 			params KeyValuePair<string, object>[] reportData)
 		{
-			Func<UriBuilder, HttpRequestMessage> httpRequest = uriBuilder =>
-			{
-				uriBuilder.Path = relativePath;
-
-				uriBuilder.Scheme = scheme == null
+			scheme = scheme == null
 					? Uri.UriSchemeHttp
 					: Uri.CheckSchemeName(scheme)
 						? scheme
 						: throw new ArgumentException("Invalid uri scheme", nameof(scheme));
 
+			if(!Uri.TryCreate(relativePath, UriKind.Relative, out Uri? result) || result.IsAbsoluteUri)
+			{
+				throw new ArgumentException("relativePath is not valid or is an Absolute uri", nameof(relativePath));
+			}
+
+			Func<UriBuilder, HttpRequestMessage> httpRequest = uriBuilder =>
+			{
+				uriBuilder.Path = relativePath;
+				uriBuilder.Scheme = scheme;
 				HttpRequestMessage request = new HttpRequestMessage(method ?? HttpMethod.Get, uriBuilder.Uri);
 
 				if (headers != null)

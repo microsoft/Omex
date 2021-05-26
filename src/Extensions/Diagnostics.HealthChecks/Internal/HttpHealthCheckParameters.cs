@@ -13,7 +13,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	{
 		public HttpStatusCode ExpectedStatus { get; }
 
-		public HttpRequestMessage HttpRequest { get; }
+		public HttpRequestMessage RequestMessage { get; }
 
 		public Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? AdditionalCheck { get; }
 
@@ -21,13 +21,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// Creates HttpHealthCheckParameters instance
 		/// </summary>
 		public HttpHealthCheckParameters(
-			HttpRequestMessage httpRequest,
+			HttpRequestMessage httpRequestMessage,
 			HttpStatusCode? expectedStatus,
 			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? additionalCheck,
 			KeyValuePair<string, object>[] reportData)
 				: base(reportData)
 		{
-			HttpRequest = httpRequest;
+			RequestMessage = httpRequestMessage == null ? throw new ArgumentNullException(nameof(httpRequestMessage)) : httpRequestMessage;
 
 			ExpectedStatus = expectedStatus ?? HttpStatusCode.OK;
 

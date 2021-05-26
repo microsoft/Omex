@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -27,10 +26,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		{
 			string checkName = "MockHttpCheck";
 			string endpoitName = "MockEndpoitName";
+			Environment.SetEnvironmentVariable("Fabric_Endpoint_" + endpoitName, "80");
 			string path = "MockPath";
 			HttpMethod method = HttpMethod.Post;
 			HttpStatusCode code = HttpStatusCode.HttpVersionNotSupported;
-			string scheme = Uri.UriSchemeGopher;
+			string scheme = Uri.UriSchemeHttp;
 			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult> additionalCheck = (r, h) => HealthCheckResult.Degraded();
 			KeyValuePair<string, object>[] reportData = new Dictionary<string, object>
 			{
@@ -50,10 +50,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 			HttpHealthCheckParameters parameters = GetParameters(provider, checkName);
 
-			Assert.AreEqual(endpoitName, parameters.EndpointName, nameof(HttpHealthCheckParameters.EndpointName));
-			Assert.AreEqual(path, parameters.RelativeUri.ToString(), nameof(HttpHealthCheckParameters.RelativeUri));
-			Assert.AreEqual(method, parameters.Method, nameof(HttpHealthCheckParameters.Method));
-			Assert.AreEqual(scheme, parameters.Scheme, nameof(HttpHealthCheckParameters.Scheme));
 			Assert.AreEqual(code, parameters.ExpectedStatus, nameof(HttpHealthCheckParameters.ExpectedStatus));
 			Assert.AreEqual(additionalCheck, parameters.AdditionalCheck, nameof(HttpHealthCheckParameters.AdditionalCheck));
 			CollectionAssert.AreEquivalent(reportData, parameters.ReportData.ToArray(), nameof(HttpHealthCheckParameters.ReportData));
@@ -63,15 +59,16 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		[DataRow("https://localhost")]
 		public void AddServiceFabricHealthChecks_InvalidPath_ThrowException(string path)
 		{
-			Assert.ThrowsException<UriFormatException>(() =>
-				GetBuilder().AddHttpEndpointCheck("CheKName", "EndpointName", path, scheme: Uri.UriSchemeHttps));
+			string endpoitName = "EndpointName";
+			Environment.SetEnvironmentVariable("Fabric_Endpoint_" + endpoitName, "80");
+			Assert.ThrowsException<ArgumentException>(() =>
+				GetBuilder().AddHttpEndpointCheck("ChecKName", endpoitName, path, scheme: Uri.UriSchemeHttps));
 		}
 
 		private IHealthChecksBuilder GetBuilder() =>
 			new ServiceCollection()
 				.AddSingleton(new ActivitySource(nameof(HealthChecksBuilderExtensionsTests)))
 				.AddSingleton(new Mock<IAccessor<IServicePartition>>().Object)
-				.AddSingleton(new Mock<IAccessor<ServiceContext>>().Object)
 				.AddServiceFabricHealthChecks();
 
 		private HttpHealthCheckParameters GetParameters(IServiceProvider provider, string checkName)

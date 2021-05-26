@@ -33,7 +33,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			HttpClient httpClient = m_httpClientFactory.CreateClient(HttpClientLogicalName);
 
-			HttpRequestMessage request = Parameters.HttpRequest;
+			HttpRequestMessage request = Parameters.RequestMessage;
 
 			HttpResponseMessage? response = await httpClient.SendAsync(request, token).ConfigureAwait(false);
 
