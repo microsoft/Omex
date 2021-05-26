@@ -13,9 +13,9 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
-using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 
 namespace Microsoft.Extensions.Hosting

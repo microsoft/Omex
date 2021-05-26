@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
+namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 {
 	public static class SfConfigurationProviderHelper
 	{
