@@ -21,8 +21,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 	[TestClass]
 	public class HealthChecksBuilderExtensionsTests
 	{
-		[TestMethod]
-		public void AddServiceFabricHealthChecks_RegisterPublisherAndChecks()
+		[DataTestMethod]
+		[DynamicData(nameof(GetHeaders), DynamicDataSourceType.Method)]
+		public void AddServiceFabricHealthChecks_RegisterPublisherAndChecks(IReadOnlyDictionary<string, IEnumerable<string>> headers)
 		{
 			string checkName = "MockHttpCheck";
 			string endpoitName = "MockEndpoitName";
@@ -37,11 +38,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				{ "testKey1", new object() },
 				{ "testKey2", "value" }
 			}.ToArray();
-
-			IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string, IEnumerable<string>>
-			{
-				{ "testHeader", new List<string> { "value" } }
-			};
 
 			IServiceProvider provider = GetBuilder()
 				.AddHttpEndpointCheck(checkName, endpoitName, path, method, scheme, headers, code, additionalCheck, reportData)
@@ -65,6 +61,19 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				GetBuilder().AddHttpEndpointCheck("ChecKName", endpoitName, path, scheme: Uri.UriSchemeHttps));
 		}
 
+		[TestMethod]
+		public void AddServiceFabricHealthChecks_HeaderKeyIsWhiteSpace_ThrowException()
+		{
+			string endpoitName = "EndpointName";
+			Environment.SetEnvironmentVariable("Fabric_Endpoint_" + endpoitName, "80");
+			Assert.ThrowsException<ArgumentException>(() =>
+				GetBuilder().AddHttpEndpointCheck("ChecKName", endpoitName, "/", scheme: Uri.UriSchemeHttps,
+					headers: new Dictionary<string, IEnumerable<string>>
+					{
+						{ string.Empty, new List<string> { "value" } }
+					}));
+		}
+
 		private IHealthChecksBuilder GetBuilder() =>
 			new ServiceCollection()
 				.AddSingleton(new ActivitySource(nameof(HealthChecksBuilderExtensionsTests)))
@@ -80,6 +89,29 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			IHealthCheck check = registration.Factory(provider);
 			Assert.IsInstanceOfType(check, typeof(HttpEndpointHealthCheck));
 			return ((HttpEndpointHealthCheck)check).Parameters;
+		}
+
+		private static IEnumerable<object?[]> GetHeaders()
+		{
+			yield return new object?[] {
+				new Dictionary<string, IEnumerable<string>>
+				{
+					{ "testHeader", new List<string> { "value" } }
+				}
+			};
+			yield return new object?[] {
+				new Dictionary<string, IEnumerable<string>>
+				{
+					{ "testheader", new List<string>() }
+				}
+			};
+			yield return new object?[] {
+				new Dictionary<string, IEnumerable<string>>
+				{
+					{ "testheader", new List<string> { "value1", "value2" } },
+					{ "testheader2", new List<string> { "value1", "value2" } }
+				}
+			};
 		}
 	}
 }
