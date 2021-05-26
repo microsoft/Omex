@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -62,7 +63,17 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				{
 					foreach (KeyValuePair<string, IEnumerable<string>> pair in headers)
 					{
-						requestMessage.Headers.TryAddWithoutValidation(pair.Key, pair.Value);
+						if(!requestMessage.Headers.TryAddWithoutValidation(pair.Key, pair.Value))
+						{
+							string errorMessage = string.Format(
+								CultureInfo.InvariantCulture,
+								"Cannot add request header with name '{0}' value '{1}' for health check '{2}'.",
+								pair.Key,
+								pair.Value,
+								name);
+
+							throw new ArgumentException(errorMessage, nameof(headers));
+						}
 					}
 				}
 
