@@ -49,24 +49,24 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			if(!Uri.TryCreate(relativePath, UriKind.Relative, out Uri? result) || result.IsAbsoluteUri)
 			{
-				throw new ArgumentException("relativePath is not valid or is an Absolute uri", nameof(relativePath));
+				throw new ArgumentException("relativePath is not valid or can't be an Absolute uri", nameof(relativePath));
 			}
 
 			Func<UriBuilder, HttpRequestMessage> httpRequest = uriBuilder =>
 			{
 				uriBuilder.Path = relativePath;
 				uriBuilder.Scheme = scheme;
-				HttpRequestMessage request = new HttpRequestMessage(method ?? HttpMethod.Get, uriBuilder.Uri);
+				HttpRequestMessage requestMessage = new (method ?? HttpMethod.Get, uriBuilder.Uri);
 
 				if (headers != null)
 				{
 					foreach (KeyValuePair<string, IEnumerable<string>> pair in headers)
 					{
-						request.Headers.TryAddWithoutValidation(pair.Key, pair.Value);
+						requestMessage.Headers.TryAddWithoutValidation(pair.Key, pair.Value);
 					}
 				}
 
-				return request;
+				return requestMessage;
 			};
 
 			return builder.AddHttpEndpointCheck(name, endpointName, httpRequest, expectedStatus, additionalCheck, reportData);
@@ -93,11 +93,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		{
 			int port = SfConfigurationProvider.GetEndpointPort(endpointName);
 			UriBuilder uriBuilder = new UriBuilder(Uri.UriSchemeHttp, "localhost", port);
-			HttpRequestMessage request = httpRequestMessageBuilder(uriBuilder);
+			HttpRequestMessage requestMessage = httpRequestMessageBuilder(uriBuilder);
 
 			return builder.AddTypeActivatedCheck<HttpEndpointHealthCheck>(
 				name,
-				new HttpHealthCheckParameters(request, expectedStatus, additionalCheck, reportData));
+				new HttpHealthCheckParameters(requestMessage, expectedStatus, additionalCheck, reportData));
 		}
 	}
 }
