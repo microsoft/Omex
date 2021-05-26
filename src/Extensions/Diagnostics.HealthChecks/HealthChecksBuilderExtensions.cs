@@ -40,9 +40,59 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? additionalCheck = null,
 			params KeyValuePair<string, object>[] reportData)
 		{
+			//return builder.AddTypeActivatedCheck<HttpEndpointHealthCheck>(
+			//	name,
+			//	new HttpHealthCheckParameters(endpointName, new Uri(relativePath, UriKind.Relative), method, scheme, headers,
+			//		expectedStatus, additionalCheck, reportData));
+
+			Func<UriBuilder, HttpRequestMessage> httpRequest = uriBuilder =>
+			{
+				HttpRequestMessage request = new HttpRequestMessage(method, uriBuilder.Uri);
+
+				if (headers != null)
+				{
+					foreach (KeyValuePair<string, IEnumerable<string>> pair in headers)
+					{
+						request.Headers.TryAddWithoutValidation(pair.Key, pair.Value);
+					}
+				}
+
+				return request;
+			};
+
+			return builder.AddHttpEndpointCheck(name, endpointName, relativePath, httpRequest, scheme, "",
+				expectedStatus, additionalCheck, reportData);
+		}
+
+		/// <summary>
+		/// Add http endpoint health check
+		/// </summary>
+		/// <param name="builder">health checks builder</param>
+		/// <param name="name">name of the health check</param>
+		/// <param name="endpointName">name of the endpoint to check</param>
+		/// <param name="relativePath">relative path to check, absolute path not allowed</param>
+		/// <param name="scheme">uri scheme, defaults to http</param>
+		/// <param name="queryString"></param>
+		/// <param name="httpRequest">action that will return the http request</param>
+		/// <param name="expectedStatus">response status code that considered healthy, default to 200(OK)</param>
+		/// <param name="additionalCheck">action that would be called after getting response, function should return new result object that would be reported</param>
+		/// <param name="reportData">additional properties that will be attached to health check result, for example escalation info</param>
+		public static IHealthChecksBuilder AddHttpEndpointCheck(
+			this IHealthChecksBuilder builder,
+			string name,
+			string endpointName,
+			string relativePath,
+			Func<UriBuilder, HttpRequestMessage> httpRequest,
+			string? scheme = null,
+			string? queryString = null,
+			HttpStatusCode? expectedStatus = null,
+			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? additionalCheck = null,
+			params KeyValuePair<string, object>[] reportData)
+		{
 			return builder.AddTypeActivatedCheck<HttpEndpointHealthCheck>(
 				name,
-				new HttpHealthCheckParameters(endpointName, new Uri(relativePath, UriKind.Relative), method, scheme, headers, expectedStatus, additionalCheck, reportData));
+				new HttpHealthCheckParameters1(endpointName, new Uri(relativePath, UriKind.Relative), scheme, queryString, httpRequest,
+					expectedStatus, additionalCheck, reportData));
 		}
 	}
 }
