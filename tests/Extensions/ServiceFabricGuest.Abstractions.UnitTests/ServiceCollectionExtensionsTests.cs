@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 		public void Constructor_DI_InitializesPropertiesProperly()
 		{
 			// Arrange.
-			ServiceFabricRestClientOptions settings = new() { ClusterEndpoint = "fabric://moc" };
+			ServiceFabricRestClientOptions settings = new() { ClusterEndpointFQDN = "moc" };
 			IOptions<ServiceFabricRestClientOptions> options = Options.Create(settings);
 
 

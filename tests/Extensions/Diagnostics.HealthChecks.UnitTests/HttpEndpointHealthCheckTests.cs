@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests;
+using Microsoft.Omex.Extensions.Abstractions.UnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

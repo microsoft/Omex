@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
+namespace Microsoft.Omex.Extensions.Abstractions
 {
 	/// <summary>
 	/// Configuration provider for service fabric environment variables
