@@ -8,6 +8,7 @@ using System.Fabric;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
@@ -33,7 +34,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			HttpMethod method = HttpMethod.Post;
 			HttpStatusCode code = HttpStatusCode.HttpVersionNotSupported;
 			string scheme = Uri.UriSchemeHttp;
-			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult> additionalCheck = (r, h) => HealthCheckResult.Degraded();
+			Func<HttpResponseMessage, HealthCheckResult, Task<HealthCheckResult>> additionalCheck = (r, h) =>
+				Task.FromResult(HealthCheckResult.Degraded());
 			KeyValuePair<string, object>[] reportData = new Dictionary<string, object>
 			{
 				{ "testKey1", new object() },

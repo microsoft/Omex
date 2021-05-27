@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Omex.Extensions.Abstractions;
@@ -39,7 +40,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			string? scheme = null,
 			IReadOnlyDictionary<string, IEnumerable<string>>? headers = null,
 			HttpStatusCode? expectedStatus = null,
-			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? additionalCheck = null,
+			Func<HttpResponseMessage, HealthCheckResult, Task<HealthCheckResult>>? additionalCheck = null,
 			params KeyValuePair<string, object>[] reportData)
 		{
 			scheme = scheme == null
@@ -99,7 +100,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			string endpointName,
 			Func<UriBuilder, HttpRequestMessage> httpRequestMessageBuilder,
 			HttpStatusCode? expectedStatus = null,
-			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? additionalCheck = null,
+			Func<HttpResponseMessage, HealthCheckResult, Task<HealthCheckResult>>? additionalCheck = null,
 			params KeyValuePair<string, object>[] reportData)
 		{
 			int port = SfConfigurationProvider.GetEndpointPort(endpointName);

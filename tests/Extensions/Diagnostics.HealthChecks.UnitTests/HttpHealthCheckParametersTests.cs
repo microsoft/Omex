@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -34,7 +35,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		{
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, new Uri("path", UriKind.Relative));
 			HttpStatusCode status = HttpStatusCode.Ambiguous;
-			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult> additionalCheck = (r, h) => HealthCheckResult.Unhealthy();
+			Func<HttpResponseMessage, HealthCheckResult, Task<HealthCheckResult>> additionalCheck = (r, h) =>
+				Task.FromResult(HealthCheckResult.Unhealthy());
 			KeyValuePair<string, object>[] reportData = new Dictionary<string, object>
 			{
 				{ "testKey1", new object() },
@@ -62,7 +64,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		internal static HttpHealthCheckParameters Create(
 			HttpRequestMessage httpRequestMessage,
 			HttpStatusCode expectedStatus = HttpStatusCode.OK,
-			Func<HttpResponseMessage, HealthCheckResult, HealthCheckResult>? additionalCheck = null,
+			Func<HttpResponseMessage, HealthCheckResult, Task<HealthCheckResult>>? additionalCheck = null,
 			KeyValuePair<string, object>[]? reportData = null) =>
 				new HttpHealthCheckParameters(
 					httpRequestMessage,

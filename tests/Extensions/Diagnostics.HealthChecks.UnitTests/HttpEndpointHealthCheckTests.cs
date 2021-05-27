@@ -113,7 +113,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				{
 					actualResponce = response;
 					initialResult = result;
-					return expectedResult;
+					return Task.FromResult(expectedResult);
 				},
 				reportData: reportData);
 

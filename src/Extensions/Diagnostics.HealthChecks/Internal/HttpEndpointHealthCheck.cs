@@ -60,7 +60,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				Logger.LogInformation(Tag.Create(), "'{0}' check result will be overridden by {1}",
 					checkName, nameof(HttpHealthCheckParameters.AdditionalCheck));
 
-				result = Parameters.AdditionalCheck(response, result);
+				result = await Parameters.AdditionalCheck(response, result).ConfigureAwait(false);
 			}
 
 			return result;
