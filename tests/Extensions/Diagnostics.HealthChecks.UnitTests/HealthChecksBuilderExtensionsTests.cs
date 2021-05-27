@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.UnitTests;
 using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -27,7 +28,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		{
 			string checkName = "MockHttpCheck";
 			string endpoitName = "MockEndpoitName";
-			Environment.SetEnvironmentVariable("Fabric_Endpoint_" + endpoitName, "80");
+			SfConfigurationProviderHelper.SetPortVariable(endpoitName, 80);
 			string path = "MockPath";
 			HttpMethod method = HttpMethod.Post;
 			HttpStatusCode code = HttpStatusCode.HttpVersionNotSupported;
@@ -56,7 +57,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public void AddServiceFabricHealthChecks_InvalidPath_ThrowException(string path)
 		{
 			string endpoitName = "EndpointName";
-			Environment.SetEnvironmentVariable("Fabric_Endpoint_" + endpoitName, "80");
+			SfConfigurationProviderHelper.SetPortVariable(endpoitName, 80);
 			Assert.ThrowsException<ArgumentException>(() =>
 				GetBuilder().AddHttpEndpointCheck("ChecKName", endpoitName, path, scheme: Uri.UriSchemeHttps));
 		}
@@ -65,7 +66,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public void AddServiceFabricHealthChecks_HeaderKeyIsWhiteSpace_ThrowException()
 		{
 			string endpoitName = "EndpointName";
-			Environment.SetEnvironmentVariable("Fabric_Endpoint_" + endpoitName, "80");
+			SfConfigurationProviderHelper.SetPortVariable(endpoitName, 80);
 			Assert.ThrowsException<ArgumentException>(() =>
 				GetBuilder().AddHttpEndpointCheck("ChecKName", endpoitName, "/", scheme: Uri.UriSchemeHttps,
 					headers: new Dictionary<string, IEnumerable<string>>

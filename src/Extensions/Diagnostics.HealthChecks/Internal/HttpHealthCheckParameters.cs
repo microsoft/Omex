@@ -30,7 +30,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			KeyValuePair<string, object>[] reportData)
 				: base(reportData)
 		{
-			RequestMessage = httpRequestMessage == null ? throw new ArgumentNullException(nameof(httpRequestMessage)) : httpRequestMessage;
+			RequestMessage = httpRequestMessage;
 
 			ExpectedStatus = expectedStatus ?? HttpStatusCode.OK;
 
