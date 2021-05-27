@@ -59,12 +59,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			CollectionAssert.AreEquivalent(reportData, parameters.ReportData.ToArray(), nameof(HttpHealthCheckParameters.ReportData));
 		}
 
-		[TestMethod]
-		public void Constructor_InvalidRequestMessage_ThrowException()
-		{
-			Assert.ThrowsException<ArgumentNullException>(() => Create(httpRequestMessage: null!));
-		}
-
 		internal static HttpHealthCheckParameters Create(
 			HttpRequestMessage httpRequestMessage,
 			HttpStatusCode expectedStatus = HttpStatusCode.OK,
