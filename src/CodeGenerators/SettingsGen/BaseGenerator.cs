@@ -101,7 +101,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 			title: "Writing to settings file",
 			messageFormat: "Writing to file '{0}'.",
 			category: "SettingsGenerator",
-			DiagnosticSeverity.Warning,
+			DiagnosticSeverity.Info,
 			isEnabledByDefault: true);
 
 		/// <summary>
@@ -111,7 +111,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 			title: "Not generating",
 			messageFormat: "Not generating/updating settings file.",
 			category: "SettingsGenerator",
-			DiagnosticSeverity.Warning,
+			DiagnosticSeverity.Info,
 			isEnabledByDefault: true);
 
 		/// <summary>
@@ -121,7 +121,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 			title: "Existing settings match",
 			messageFormat: "No new settings or updated settings so don't need to generate",
 			category: "SettingsGenerator",
-			DiagnosticSeverity.Warning,
+			DiagnosticSeverity.Info,
 			isEnabledByDefault: true);
 
 		/// <summary>
