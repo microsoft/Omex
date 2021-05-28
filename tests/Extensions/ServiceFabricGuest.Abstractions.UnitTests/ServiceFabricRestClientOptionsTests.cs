@@ -100,9 +100,10 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 			ServiceFabricRestClientOptions options = new()
 			{
 				ClusterEndpointFQDN = overrideFQDN,
-				ClusterEndpointPort = defaultPort
+				ClusterEndpointPort = defaultPort,
+				ClusterEndpointProtocol = Uri.UriSchemeHttps
 			};
-			string endpoint = "http://myFQDN:19080/";
+			string endpoint = "https://myFQDN:19080/";
 
 			// Assert.
 			Assert.AreEqual(endpoint, options.ClusterEndpoint());
@@ -115,8 +116,12 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 			Environment.SetEnvironmentVariable(ServiceFabricRestClientOptions.RuntimeConnectionAddressEvnVariableName, "localhost:19081");
 
 			// Act.
-			ServiceFabricRestClientOptions options = new();
-			string endpoint = "http://localhost:19080/";
+			ServiceFabricRestClientOptions options = new()
+			{
+				ClusterEndpointProtocol = Uri.UriSchemeHttps
+			};
+
+			string endpoint = "https://localhost:19080/";
 
 			// Assert.
 			Assert.AreEqual(endpoint, options.ClusterEndpoint());
