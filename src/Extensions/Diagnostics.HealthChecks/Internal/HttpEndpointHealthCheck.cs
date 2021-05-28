@@ -1,30 +1,21 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Fabric;
-using System.Globalization;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	internal class HttpEndpointHealthCheck : AbstractHealthCheck<HttpHealthCheckParameters>
 	{
-		private const string Host = "localhost";
-
 		public static string HttpClientLogicalName { get; } = "HttpEndpointHealthCheckHttpClient";
 
 		private readonly IHttpClientFactory m_httpClientFactory;
-
-		private Uri? m_uriToCheck;
 
 		public HttpEndpointHealthCheck(
 			HttpHealthCheckParameters parameters,
@@ -40,34 +31,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		{
 			string checkName = context.Registration.Name;
 
-			if (m_uriToCheck == null)
-			{
-				int port = SfConfigurationProvider.GetEndpointPort(Parameters.EndpointName);
-				UriBuilder builder = new UriBuilder(Parameters.Scheme, Host, port, Parameters.RelativeUri.ToString());
-				m_uriToCheck = builder.Uri;
-			}
-
 			HttpClient httpClient = m_httpClientFactory.CreateClient(HttpClientLogicalName);
-
-			HttpRequestMessage request = new HttpRequestMessage(Parameters.Method, m_uriToCheck);
-
-			foreach (KeyValuePair<string, IEnumerable<string>> pair in Parameters.Headers)
-			{
-				if (!request.Headers.TryAddWithoutValidation(pair.Key, pair.Value))
-				{
-					string logMessage = string.Format(
-						CultureInfo.InvariantCulture,
-						"Cannot add request header with name '{0}' value '{1}' for health check '{2}'.",
-						pair.Key,
-						pair.Value,
-						checkName);
-					Logger.LogWarning(Tag.Create(), logMessage);
-
-					return new HealthCheckResult(HealthStatus.Unhealthy, logMessage, data: Parameters.ReportData);
-				}
-			}
-
-			HttpResponseMessage? response = await httpClient.SendAsync(request, token).ConfigureAwait(false);
+			HttpResponseMessage? response = await httpClient.SendAsync(Parameters.RequestMessage, token).ConfigureAwait(false);
 
 			HealthStatus healthStatus = HealthStatus.Unhealthy;
 			string description = string.Empty;
@@ -95,7 +60,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				Logger.LogInformation(Tag.Create(), "'{0}' check result will be overridden by {1}",
 					checkName, nameof(HttpHealthCheckParameters.AdditionalCheck));
 
-				result = Parameters.AdditionalCheck(response, result);
+				result = await Parameters.AdditionalCheck(response, result).ConfigureAwait(false);
 			}
 
 			return result;
