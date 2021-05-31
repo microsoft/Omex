@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
-using System.IO;
+using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.CodeAnalysis;
 
@@ -29,7 +29,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.Comparing
 			try
 			{
 				// A FileStream is needed to read the XML document.
-				using StringReader stringReader = new(fileContent);
+				using XmlReader stringReader = XmlReader.Create(fileContent);
 				// Declares an object variable of the type to be deserialized.
 				TSettingModel model = (TSettingModel)serializer.Deserialize(stringReader);
 
