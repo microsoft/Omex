@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading;
@@ -32,7 +33,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			string checkName = context.Registration.Name;
 
 			HttpClient httpClient = m_httpClientFactory.CreateClient(HttpClientLogicalName);
-			HttpResponseMessage? response = await httpClient.SendAsync(Parameters.RequestMessage, token).ConfigureAwait(false);
+			HttpResponseMessage? response = await httpClient.SendAsync(CloneRequestMessage(Parameters.RequestMessage), token).ConfigureAwait(false);
 
 			HealthStatus healthStatus = HealthStatus.Unhealthy;
 			string description = string.Empty;
@@ -53,7 +54,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				}
 			}
 
-			HealthCheckResult result = new HealthCheckResult(healthStatus, description, data: Parameters.ReportData);
+			HealthCheckResult result = new(healthStatus, description, data: Parameters.ReportData);
 
 			if (Parameters.AdditionalCheck != null && response != null)
 			{
@@ -64,6 +65,24 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			}
 
 			return result;
+		}
+
+		private static HttpRequestMessage CloneRequestMessage(HttpRequestMessage message)
+		{
+			HttpRequestMessage clone = new()
+			{
+				Method = message.Method,
+				RequestUri = message.RequestUri,
+				Content = message.Content,
+				Version = message.Version
+			};
+
+			foreach (KeyValuePair<string, IEnumerable<string>> header in message.Headers)
+			{
+				clone.Headers.TryAddWithoutValidation(header.Key, header.Value);
+			}
+
+			return clone;
 		}
 	}
 }
