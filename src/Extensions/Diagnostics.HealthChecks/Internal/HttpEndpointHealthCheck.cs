@@ -87,7 +87,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			foreach (KeyValuePair<string, object?> item in message.Options)
 			{
-				clone.Options.Set<object?>(new HttpRequestOptionsKey<object?>(item.Key), item.Value);
+				clone.Options.Set(new HttpRequestOptionsKey<object?>(item.Key), item.Value);
 			}
 #endif
 
