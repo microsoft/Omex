@@ -49,7 +49,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 						? scheme
 						: throw new ArgumentException("Invalid uri scheme", nameof(scheme));
 
-			if(!Uri.TryCreate(relativePath, UriKind.Relative, out Uri? result) || result.IsAbsoluteUri)
+			if (!Uri.TryCreate(relativePath, UriKind.Relative, out Uri? result) || result.IsAbsoluteUri)
 			{
 				throw new ArgumentException("relativePath is not valid or can't be an Absolute uri", nameof(relativePath));
 			}
@@ -58,13 +58,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			{
 				uriBuilder.Path = relativePath;
 				uriBuilder.Scheme = scheme;
-				HttpRequestMessage requestMessage = new (method ?? HttpMethod.Get, uriBuilder.Uri);
+				HttpRequestMessage requestMessage = new(method ?? HttpMethod.Get, uriBuilder.Uri);
 
 				if (headers != null)
 				{
 					foreach (KeyValuePair<string, IEnumerable<string>> pair in headers)
 					{
-						if(!requestMessage.Headers.TryAddWithoutValidation(pair.Key, pair.Value))
+						if (!requestMessage.Headers.TryAddWithoutValidation(pair.Key, pair.Value))
 						{
 							string errorMessage = string.Format(
 								CultureInfo.InvariantCulture,
@@ -104,7 +104,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			params KeyValuePair<string, object>[] reportData)
 		{
 			int port = SfConfigurationProvider.GetEndpointPort(endpointName);
-			UriBuilder uriBuilder = new UriBuilder(Uri.UriSchemeHttp, "localhost", port);
+			UriBuilder uriBuilder = new(Uri.UriSchemeHttp, "localhost", port);
 			HttpRequestMessage requestMessage = httpRequestMessageBuilder(uriBuilder);
 
 			return builder.AddTypeActivatedCheck<HttpEndpointHealthCheck>(
