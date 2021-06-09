@@ -70,7 +70,7 @@ namespace Hosting.Services.UnitTests
 			(EventId id, LogLevel level, string message) = testLogger.Messages.Single();
 			StringAssert.Contains(message, activity.Id);
 			StringAssert.Contains(message, activity.OperationName);
-			StringAssert.Contains(message, activity.Duration.ToString());
+			StringAssert.Contains(message, activity.Duration.TotalMilliseconds.ToString());
 
 			foreach (KeyValuePair<string, string?> pair in activity.Baggage)
 			{
