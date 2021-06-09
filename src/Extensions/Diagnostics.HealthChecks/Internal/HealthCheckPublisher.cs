@@ -23,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		public abstract Task PublishAsync(HealthReport report, CancellationToken cancellationToken);
 
-		protected void PublishAllEntries(HealthReport report, Action<HealthStatus, string> publishFunc,
+		protected void PublishAllEntries(HealthReport report, Func<HealthStatus, string, Task> publishFunc,
 			 CancellationToken cancellationToken)
 		{
 			// We trust the framework to ensure that the report is not null and doesn't contain null entries.
