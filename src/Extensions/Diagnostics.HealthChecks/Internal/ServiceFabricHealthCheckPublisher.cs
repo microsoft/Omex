@@ -18,6 +18,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		private readonly IAccessor<IServicePartition> m_partitionAccessor;
 
 		private readonly ILogger<ServiceFabricHealthCheckPublisher> m_logger;
+
 		internal override string HealthReportSourceId => nameof(ServiceFabricHealthCheckPublisher);
 
 		public ServiceFabricHealthCheckPublisher(
@@ -49,7 +50,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			Action<HealthStatus, string> reportHealthWithConvert = new((status, description) =>
 			{
-				reportHealth(new ServiceFabricHealth.HealthInformation(HealthReportSourceId, description, ToSfHealthState(status)));
+				ServiceFabricHealth.HealthInformation healthEntry = new(HealthReportSourceId, HealthReportSummaryProperty, ToSfHealthState(status));
+				healthEntry.Description = description;
+				reportHealth(healthEntry);
 			});
 
 			try

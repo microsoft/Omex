@@ -60,7 +60,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			Action<HealthStatus, string> reportHealthWithConvert = new(async (status, description) =>
 			{
-				await PublishHealthInfoAsync(new ServiceFabricCommon.HealthInformation(HealthReportSourceId, description, ToSfcHealthState(status)));
+				ServiceFabricCommon.HealthInformation healthEntry = new(HealthReportSourceId, HealthReportSummaryProperty, ToSfcHealthState(status), description: description);
+				await PublishHealthInfoAsync(healthEntry);
 			});
 
 			PublishAllEntries(report, reportHealthWithConvert, cancellationToken);
