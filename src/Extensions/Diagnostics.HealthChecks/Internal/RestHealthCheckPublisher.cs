@@ -60,42 +60,26 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			m_client = await m_clientWrapper.GetAsync();
 
-			Action<ServiceFabricHealth.HealthInformation> reportHealth =
-				async (sfHealthInfo) => await PublishHealthInfoAsync(sfHealthInfo);
+			Action<HealthStatus, string> reportHealthWithConvert = new(async (status, description) =>
+			{
+				await PublishHealthInfoAsync(new ServiceFabricCommon.HealthInformation(HealthReportSourceId, description, ToSfcHealthState(status)));
+			});
 
-			PublishAllEntries(report, reportHealth, cancellationToken);
+			PublishAllEntries(report, reportHealthWithConvert, cancellationToken);
 		}
 
-		internal static ServiceFabricCommon.HealthInformation FromSfHealthInformation(ServiceFabricHealth.HealthInformation healthInfo)
-		{
-			ServiceFabricCommon.HealthState healthState = healthInfo.HealthState switch
+		private ServiceFabricCommon.HealthState ToSfcHealthState(HealthStatus healthStatus) =>
+			healthStatus switch
 			{
-				ServiceFabricHealth.HealthState.Invalid => ServiceFabricCommon.HealthState.Invalid,
-				ServiceFabricHealth.HealthState.Ok => ServiceFabricCommon.HealthState.Ok,
-				ServiceFabricHealth.HealthState.Warning => ServiceFabricCommon.HealthState.Warning,
-				ServiceFabricHealth.HealthState.Error => ServiceFabricCommon.HealthState.Error,
-				ServiceFabricHealth.HealthState.Unknown => ServiceFabricCommon.HealthState.Unknown,
-				_ => throw new ArgumentException($"'{healthInfo.HealthState}' is not a valid health status."),
+				HealthStatus.Healthy => ServiceFabricCommon.HealthState.Ok,
+				HealthStatus.Degraded => ServiceFabricCommon.HealthState.Warning,
+				HealthStatus.Unhealthy => ServiceFabricCommon.HealthState.Error,
+				_ => throw new ArgumentException($"'{healthStatus}' is not a valid health status."),
 			};
 
-			ServiceFabricCommon.HealthInformation sfcHealthInfo = new(
-				   sourceId: healthInfo.SourceId,
-				   property: healthInfo.Property,
-				   healthState: healthState,
-				   timeToLiveInMilliSeconds: healthInfo.TimeToLive,
-				   description: healthInfo.Description,
-				   sequenceNumber: healthInfo.SequenceNumber.ToString(),
-				   removeWhenExpired: healthInfo.RemoveWhenExpired,
-				   healthReportId: healthInfo.HealthReportId
-		   );
 
-			return sfcHealthInfo;
-		}
-
-		internal async Task PublishHealthInfoAsync(ServiceFabricHealth.HealthInformation healthInfo)
+		internal async Task PublishHealthInfoAsync(ServiceFabricCommon.HealthInformation sfcHealthInfo)
 		{
-			ServiceFabricCommon.HealthInformation sfcHealthInfo = FromSfHealthInformation(healthInfo);
-
 			if (m_client == null)
 			{
 				m_logger.LogInformation(Tag.Create(), "HTTP Client isn't ready yet.");
