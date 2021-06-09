@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="$(Microsoft_Extensions_Hosting_Version)" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="$(System_Text_Encodings_Web_Version)" />
   </ItemGroup>
 
   <ItemGroup>
