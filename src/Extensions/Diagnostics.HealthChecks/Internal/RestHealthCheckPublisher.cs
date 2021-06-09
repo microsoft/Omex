@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
-using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions;
 using Microsoft.ServiceFabric.Client;
 using ServiceFabricCommon = Microsoft.ServiceFabric.Common;
-using ServiceFabricHealth = System.Fabric.Health;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {

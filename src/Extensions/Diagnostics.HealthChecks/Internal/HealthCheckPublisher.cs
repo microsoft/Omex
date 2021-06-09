@@ -3,19 +3,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Fabric;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.ObjectPool;
-using ServiceFabricHealth = System.Fabric.Health;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
-	/// <summary>
-	/// Base health check class
-	/// </summary>
 	internal abstract class HealthCheckPublisher : IHealthCheckPublisher
 	{
 		internal readonly ObjectPool<StringBuilder> StringBuilderPool;
