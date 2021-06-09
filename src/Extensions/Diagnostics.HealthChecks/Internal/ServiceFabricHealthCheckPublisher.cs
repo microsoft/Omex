@@ -48,9 +48,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				_ => throw new ArgumentException($"Service partition type '{partition.GetType()}' is not supported."),
 			};
 
-			Func<HealthStatus, string, Task> reportHealthWithConvert = new((status, description) =>
+			Func<string, HealthStatus, string, Task> reportHealthWithConvert = new((healthCheckName, status, description) =>
 			{
-				ServiceFabricHealth.HealthInformation healthEntry = new(HealthReportSourceId, HealthReportSummaryProperty, ToSfHealthState(status));
+				ServiceFabricHealth.HealthInformation healthEntry = new(HealthReportSourceId, healthCheckName, ToSfHealthState(status));
 				healthEntry.Description = description;
 				reportHealth(healthEntry);
 				return Task.CompletedTask;

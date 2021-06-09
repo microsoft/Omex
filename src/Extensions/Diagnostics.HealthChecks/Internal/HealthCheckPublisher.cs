@@ -23,18 +23,18 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		public abstract Task PublishAsync(HealthReport report, CancellationToken cancellationToken);
 
-		protected void PublishAllEntries(HealthReport report, Func<HealthStatus, string, Task> publishFunc,
+		protected void PublishAllEntries(HealthReport report, Func<string, HealthStatus, string, Task> publishFunc,
 			 CancellationToken cancellationToken)
 		{
 			// We trust the framework to ensure that the report is not null and doesn't contain null entries.
 			foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
 			{
 				cancellationToken.ThrowIfCancellationRequested();
-				publishFunc(entryPair.Value.Status, BuildSfHealthInformationDescription(entryPair.Value));
+				publishFunc(entryPair.Key, entryPair.Value.Status, BuildSfHealthInformationDescription(entryPair.Value));
 			}
 
 			cancellationToken.ThrowIfCancellationRequested();
-			publishFunc(report.Status, BuildSfHealthInformationDescription(report));
+			publishFunc(HealthReportSummaryProperty, report.Status, BuildSfHealthInformationDescription(report));
 		}
 
 		protected string BuildSfHealthInformationDescription(HealthReport report)

@@ -58,9 +58,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			m_client = await m_clientWrapper.GetAsync();
 
-			Func<HealthStatus, string, Task> reportHealthWithConvert = new((status, description) =>
+			Func<string, HealthStatus, string, Task> reportHealthWithConvert = new((healthCheckName, status, description) =>
 			{
-				ServiceFabricCommon.HealthInformation healthEntry = new(HealthReportSourceId, HealthReportSummaryProperty, ToSfcHealthState(status), description: description);
+				ServiceFabricCommon.HealthInformation healthEntry = new(HealthReportSourceId, healthCheckName, ToSfcHealthState(status), description: description);
 				PublishHealthInfoAsync(healthEntry).GetAwaiter().GetResult();
 				return Task.CompletedTask;
 			});
