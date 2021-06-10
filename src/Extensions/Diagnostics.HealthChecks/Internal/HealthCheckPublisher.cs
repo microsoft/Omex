@@ -21,7 +21,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		public HealthCheckPublisher(ObjectPoolProvider objectPoolProvider) => StringBuilderPool = objectPoolProvider.CreateStringBuilderPool();
 
-		public abstract Task PublishAsync(HealthReport report, CancellationToken cancellationToken); 
+		public abstract Task PublishAsync(HealthReport report, CancellationToken cancellationToken);
 
 		protected void PublishAllEntries(HealthReport report, CancellationToken cancellationToken)
 		{
