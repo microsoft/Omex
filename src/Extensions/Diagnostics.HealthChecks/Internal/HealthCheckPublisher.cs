@@ -13,7 +13,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	internal abstract class HealthCheckPublisher : IHealthCheckPublisher
 	{
-		internal readonly ObjectPool<StringBuilder> StringBuilderPool;
+		protected readonly ObjectPool<StringBuilder> StringBuilderPool;
 
 		internal abstract string HealthReportSourceId { get; }
 
@@ -21,20 +21,19 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		public HealthCheckPublisher(ObjectPoolProvider objectPoolProvider) => StringBuilderPool = objectPoolProvider.CreateStringBuilderPool();
 
-		public abstract Task PublishAsync(HealthReport report, CancellationToken cancellationToken);
+		public abstract Task PublishAsync(HealthReport report, CancellationToken cancellationToken); 
 
-		protected void PublishAllEntries(HealthReport report, Func<string, HealthStatus, string, Task> publishFunc,
-			 CancellationToken cancellationToken)
+		protected void PublishAllEntries(HealthReport report, CancellationToken cancellationToken)
 		{
 			// We trust the framework to ensure that the report is not null and doesn't contain null entries.
 			foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
 			{
 				cancellationToken.ThrowIfCancellationRequested();
-				publishFunc(entryPair.Key, entryPair.Value.Status, BuildSfHealthInformationDescription(entryPair.Value));
+				PublishHealthReportEntry(entryPair.Key, entryPair.Value.Status, BuildSfHealthInformationDescription(entryPair.Value));
 			}
 
 			cancellationToken.ThrowIfCancellationRequested();
-			publishFunc(HealthReportSummaryProperty, report.Status, BuildSfHealthInformationDescription(report));
+			PublishHealthReportEntry(HealthReportSummaryProperty, report.Status, BuildSfHealthInformationDescription(report));
 		}
 
 		protected string BuildSfHealthInformationDescription(HealthReport report)
@@ -109,5 +108,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			return description;
 		}
+
+		protected abstract void PublishHealthReportEntry(string healthCheckName, HealthStatus status, string description);
 	}
 }

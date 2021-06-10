@@ -19,6 +19,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private readonly ILogger<ServiceFabricHealthCheckPublisher> m_logger;
 
+		private Action<ServiceFabricHealth.HealthInformation>? m_reportHealth;
+
 		internal override string HealthReportSourceId => nameof(ServiceFabricHealthCheckPublisher);
 
 		public ServiceFabricHealthCheckPublisher(
@@ -41,24 +43,16 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			}
 
 			// Avoiding repeated pattern matching for each report entry.
-			Action<ServiceFabricHealth.HealthInformation> reportHealth = partition switch
+			m_reportHealth = partition switch
 			{
 				IStatefulServicePartition statefulPartition => statefulPartition.ReportReplicaHealth,
 				IStatelessServicePartition statelessPartition => statelessPartition.ReportInstanceHealth,
 				_ => throw new ArgumentException($"Service partition type '{partition.GetType()}' is not supported."),
 			};
 
-			Func<string, HealthStatus, string, Task> reportHealthWithConvert = new((healthCheckName, status, description) =>
-			{
-				ServiceFabricHealth.HealthInformation healthEntry = new(HealthReportSourceId, healthCheckName, ToSfHealthState(status));
-				healthEntry.Description = description;
-				reportHealth(healthEntry);
-				return Task.CompletedTask;
-			});
-
 			try
 			{
-				PublishAllEntries(report, reportHealthWithConvert, cancellationToken);
+				PublishAllEntries(report, cancellationToken);
 			}
 			catch (FabricObjectClosedException)
 			{
@@ -67,6 +61,20 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			return Task.CompletedTask;
 		}
+
+		protected override void PublishHealthReportEntry(string healthCheckName, HealthStatus status, string description)
+		{
+			if(m_reportHealth == null)
+			{
+				m_logger.LogWarning(Tag.Create(), "Publisher run before health report functions is provided.");
+				return;
+			}
+
+			ServiceFabricHealth.HealthInformation healthEntry = new(HealthReportSourceId, healthCheckName, ToSfHealthState(status));
+			healthEntry.Description = description;
+			m_reportHealth(healthEntry);
+		}
+
 
 		private ServiceFabricHealth.HealthState ToSfHealthState(HealthStatus healthStatus) =>
 			healthStatus switch
