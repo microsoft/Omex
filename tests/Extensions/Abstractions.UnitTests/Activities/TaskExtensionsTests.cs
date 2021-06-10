@@ -45,7 +45,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			TestExecution(activityName, wrapTask, tcs => tcs.SetResult(true), ActivityResult.Success);
 
 		private void TestFailedExecution(Action<Task<bool>, ActivitySource, string> wrapTask, [CallerMemberName] string activityName = "") =>
-			TestExecution(activityName, wrapTask, tcs => tcs.SetException(new Exception("Some failure")), ActivityResult.SystemError);
+			TestExecution(activityName, wrapTask, tcs => tcs.SetException(new DivideByZeroException("Some failure")), ActivityResult.SystemError);
 
 		private void TestExecution(
 			string activityName,
@@ -72,15 +72,35 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		}
 
 		private static Action<Task<bool>, ActivitySource, string> s_wrapTaskOfTAction =
-			(task, provider, name) => task.WithActivity(provider, name).ConfigureAwait(false);
+			async (task, provider, name) =>
+				await CatchExceptionAsync(async () => await task.WithActivity(provider, name).ConfigureAwait(false))
+					.ConfigureAwait(false);
 
 		private static Action<Task<bool>, ActivitySource, string> s_wrapTaskAction =
-			(task, provider, name) => ((Task)task).WithActivity(provider, name).ConfigureAwait(false);
+			async (task, provider, name) =>
+				await CatchExceptionAsync(async () => await ((Task)task).WithActivity(provider, name).ConfigureAwait(false))
+					.ConfigureAwait(false);
 
 		private static Action<Task<bool>, ActivitySource, string> s_wrapValueTaskOfTAction =
-			async (task, provider, name) => await new ValueTask<bool>(task).WithActivity(provider, name).ConfigureAwait(false);
+			async (task, provider, name) =>
+				await CatchExceptionAsync(async () => await new ValueTask<bool>(task).WithActivity(provider, name).ConfigureAwait(false))
+					.ConfigureAwait(false);
 
 		private static Action<Task<bool>, ActivitySource, string> s_wrapValueTaskAction =
-			async (task, provider, name) => await new ValueTask(task).WithActivity(provider, name).ConfigureAwait(false);
+			async (task, provider, name) =>
+				await CatchExceptionAsync(async () => await new ValueTask(task).WithActivity(provider, name).ConfigureAwait(false))
+					.ConfigureAwait(false);
+
+		private static async Task CatchExceptionAsync(Func<Task> func)
+		{
+			try
+			{
+				await func().ConfigureAwait(false);
+			}
+			catch (DivideByZeroException)
+			{
+				// ignore produced by test
+			}
+		}
 	}
 }
