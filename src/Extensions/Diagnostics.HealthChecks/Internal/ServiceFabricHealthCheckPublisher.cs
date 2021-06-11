@@ -64,7 +64,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		protected override void PublishHealthReportEntry(string healthCheckName, HealthStatus status, string description)
 		{
-			if(m_reportHealth == null)
+			if (m_reportHealth == null)
 			{
 				m_logger.LogWarning(Tag.Create(), "Publisher run before health report functions is provided.");
 				return;
@@ -74,7 +74,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			healthEntry.Description = description;
 			m_reportHealth(healthEntry);
 		}
-
 
 		private ServiceFabricHealth.HealthState ToSfHealthState(HealthStatus healthStatus) =>
 			healthStatus switch
