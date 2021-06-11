@@ -3,13 +3,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Fabric;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.ObjectPool;
-using ServiceFabricHealth = System.Fabric.Health;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
@@ -25,33 +23,20 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		public abstract Task PublishAsync(HealthReport report, CancellationToken cancellationToken);
 
-		private ServiceFabricHealth.HealthInformation FinalizeHealthReport(string healthReportSummaryProperty, ServiceFabricHealth.HealthState healthState)
+		protected void PublishAllEntries(HealthReport report, CancellationToken cancellationToken)
 		{
-			return new ServiceFabricHealth.HealthInformation(HealthReportSourceId, healthReportSummaryProperty, healthState);
-		}
-		protected void PublishAllEntries(HealthReport report, Action<ServiceFabricHealth.HealthInformation> publishFunc,
-			 CancellationToken cancellationToken)
-		{
-			try
+			// We trust the framework to ensure that the report is not null and doesn't contain null entries.
+			foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
 			{
-				// We trust the framework to ensure that the report is not null and doesn't contain null entries.
-				foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
-				{
-					cancellationToken.ThrowIfCancellationRequested();
-					publishFunc(BuildSfHealthInformation(entryPair.Key, entryPair.Value));
-				}
-
 				cancellationToken.ThrowIfCancellationRequested();
-				publishFunc(BuildSfHealthInformation(report));
+				PublishHealthReportEntry(entryPair.Key, entryPair.Value.Status, BuildSfHealthInformationDescription(entryPair.Value));
 			}
-			catch (FabricObjectClosedException)
-			{
-				// Ignore, the service instance is closing.
-			}
+
+			cancellationToken.ThrowIfCancellationRequested();
+			PublishHealthReportEntry(HealthReportSummaryProperty, report.Status, BuildSfHealthInformationDescription(report));
 		}
 
-
-		protected ServiceFabricHealth.HealthInformation BuildSfHealthInformation(HealthReport report)
+		protected string BuildSfHealthInformationDescription(HealthReport report)
 		{
 			int entriesCount = report.Entries.Count;
 			int healthyEntries = 0;
@@ -95,21 +80,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				StringBuilderPool.Return(descriptionBuilder);
 			}
 
-			ServiceFabricHealth.HealthInformation healthInfo = FinalizeHealthReport(HealthReportSummaryProperty, ToSfHealthState(report.Status));
-			healthInfo.Description = description;
-			return healthInfo;
+			return description;
 		}
 
-		protected ServiceFabricHealth.HealthState ToSfHealthState(HealthStatus healthStatus) =>
-			healthStatus switch
-			{
-				HealthStatus.Healthy => ServiceFabricHealth.HealthState.Ok,
-				HealthStatus.Degraded => ServiceFabricHealth.HealthState.Warning,
-				HealthStatus.Unhealthy => ServiceFabricHealth.HealthState.Error,
-				_ => throw new ArgumentException($"'{healthStatus}' is not a valid health status."),
-			};
-
-		protected ServiceFabricHealth.HealthInformation BuildSfHealthInformation(string healthCheckName, HealthReportEntry reportEntry)
+		protected string BuildSfHealthInformationDescription(HealthReportEntry reportEntry)
 		{
 			StringBuilder descriptionBuilder = StringBuilderPool.Get();
 			string description;
@@ -132,9 +106,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				StringBuilderPool.Return(descriptionBuilder);
 			}
 
-			ServiceFabricHealth.HealthInformation healthInfo = FinalizeHealthReport(healthCheckName, ToSfHealthState(reportEntry.Status));
-			healthInfo.Description = description;
-			return healthInfo;
+			return description;
 		}
+
+		protected abstract void PublishHealthReportEntry(string healthCheckName, HealthStatus status, string description);
 	}
 }
