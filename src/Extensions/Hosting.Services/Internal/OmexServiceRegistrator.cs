@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 
@@ -22,12 +23,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 		public IEnumerable<IServiceAction<TService>> ServiceActions { get; }
 
+		public IHostLifetime HostLifetime { get; }
+
 		public OmexServiceRegistrator(
+			IHostLifetime hostLifetime,
 			IOptions<ServiceRegistratorOptions> options,
 			IAccessorSetter<TContext> contextAccessor,
 			IEnumerable<IListenerBuilder<TService>> listenerBuilders,
 			IEnumerable<IServiceAction<TService>> serviceActions)
 		{
+			HostLifetime = hostLifetime;
 			Options = options.Value;
 			ContextAccessor = contextAccessor;
 			ListenerBuilders = listenerBuilders;

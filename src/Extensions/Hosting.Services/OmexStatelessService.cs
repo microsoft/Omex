@@ -38,5 +38,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 			return Task.WhenAll(m_serviceRegistrator.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
 		}
+
+		/// <inheritdoc />
+		protected override async Task OnCloseAsync(CancellationToken cancellationToken)
+		{
+			await base.OnCloseAsync(cancellationToken);
+			await m_serviceRegistrator.HostLifetime.StopAsync(cancellationToken);
+		}
 	}
 }
