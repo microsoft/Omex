@@ -29,9 +29,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string tagId,
 			string tagName,
 			int threadId,
-			string message) =>
+			string message,
+			bool isHealthCheck) =>
 			WriteEvent((int)EventSourcesEventIds.LogError, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
-				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message, isHealthCheck);
 
 		[Event((int)EventSourcesEventIds.LogWarning, Level = EventLevel.Warning, Message = "{12}:{13} {16}", Version = 6)]
 		public void LogWarningServiceMessage(
@@ -51,9 +52,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string tagId,
 			string tagName,
 			int threadId,
-			string message) =>
+			string message,
+			bool isHealthCheck) =>
 			WriteEvent((int)EventSourcesEventIds.LogWarning, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
-				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message, isHealthCheck);
 
 		[Event((int)EventSourcesEventIds.LogInfo, Level = EventLevel.Informational, Message = "{12}:{13} {16}", Version = 6)]
 		public void LogInfoServiceMessage(
@@ -73,9 +75,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string tagId,
 			string tagName,
 			int threadId,
-			string message) =>
+			string message,
+			bool isHealthCheck) =>
 			WriteEvent((int)EventSourcesEventIds.LogInfo, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
-				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message, isHealthCheck);
 
 		[Event((int)EventSourcesEventIds.LogVerbose, Level = EventLevel.Verbose, Message = "{12}:{13} {16}", Version = 6)]
 		public void LogVerboseServiceMessage(
@@ -95,9 +98,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string tagId,
 			string tagName,
 			int threadId,
-			string message) =>
+			string message,
+			bool isHealthCheck) =>
 			WriteEvent((int)EventSourcesEventIds.LogVerbose, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
-				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message, isHealthCheck);
 
 		[Event((int)EventSourcesEventIds.LogSpam, Level = EventLevel.Verbose, Message = "{12}:{13} {16}", Version = 6)]
 		public void LogSpamServiceMessage(
@@ -117,9 +121,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			string tagId,
 			string tagName,
 			int threadId,
-			string message) =>
+			string message,
+			bool isHealthCheck) =>
 			WriteEvent((int)EventSourcesEventIds.LogSpam, applicationName, serviceName, agentName, buildVersion, processName, partitionId, replicaId,
-				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message);
+				activityId, activityTraceId, correlationId, transactionId, level, category, tagId, tagName, threadId, message, isHealthCheck);
 
 		public static OmexLogEventSource Instance { get; } = new OmexLogEventSource();
 
