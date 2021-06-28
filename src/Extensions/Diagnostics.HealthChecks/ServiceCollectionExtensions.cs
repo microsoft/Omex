@@ -54,7 +54,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// Register publisher for processing health check results
 		/// </summary>
-		public static IHealthChecksBuilder AddOmexHealthChecks<TStatusSender>(this IServiceCollection serviceCollection)
+		private static IHealthChecksBuilder AddOmexHealthChecks<TStatusSender>(this IServiceCollection serviceCollection)
 				where TStatusSender : class, IHealthStatusSender
 		{
 			serviceCollection.TryAddSingleton<IHealthStatusSender, TStatusSender>();
