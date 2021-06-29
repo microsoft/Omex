@@ -18,6 +18,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 	[TestClass]
 	public class RestHealthStatusSenderTests
 	{
+		[TestMethod]
 		public async Task IntializeAsync_CreatesClientOnce()
 		{
 			SenderInfo context = GetRestHealthStatusSender();
@@ -26,9 +27,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			context.ClientWrapperMock.Verify(w => w.GetAsync(It.IsAny<CancellationToken>()), Times.Once, "SF Client created during initialization");
 
 			await context.Sender.IntializeAsync(default);
-			context.ClientWrapperMock.Verify(w => w.GetAsync(It.IsAny<CancellationToken>()), Times.Never, "SF Client should not be created on second call");
+			context.ClientWrapperMock.Verify(w => w.GetAsync(It.IsAny<CancellationToken>()), Times.Once, "SF Client should not be created on second call");
 		}
 
+		[TestMethod]
 		public async Task SendStatusAsync_WhenNotInitialized_Throws()
 		{
 			SenderInfo context = GetRestHealthStatusSender();
@@ -37,15 +39,18 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				context.Sender.SendStatusAsync("HealthCheckName", HealthStatus.Healthy, "SomeDescription", default));
 		}
 
+		[TestMethod]
 		public async Task SendStatusAsync_WhenUnsupportedStateUsed_Trows()
 		{
 			SenderInfo context = GetRestHealthStatusSender();
 			HealthStatus unsupportedHealthStatus = (HealthStatus)int.MinValue;
 
+			await context.Sender.IntializeAsync(default);
 			await Assert.ThrowsExceptionAsync<ArgumentException>(() =>
 				context.Sender.SendStatusAsync("HealthCheckName", unsupportedHealthStatus, "SomeDescription", default));
 		}
 
+		[TestMethod]
 		public async Task SendStatusAsync_ReportsHealthCorrectly()
 		{
 			(string name, string description, HealthStatus status, HealthState expected)[] checks = new[]
@@ -67,7 +72,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			{
 				Assert.IsTrue(context.ReportedState.TryGetValue(name, out HealthInformation? result));
 				Assert.IsNotNull(result);
-				Assert.AreEqual(name, result.HealthReportId);
+				Assert.AreEqual(name, result.Property);
 				Assert.AreEqual(description, result.Description);
 				Assert.AreEqual(expected, result.HealthState);
 			}

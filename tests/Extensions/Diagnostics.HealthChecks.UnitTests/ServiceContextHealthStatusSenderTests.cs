@@ -15,7 +15,7 @@ using System.Fabric.Health;
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 {
 	[TestClass]
-	internal class ServiceContextHealthStatusSenderTests
+	public class ServiceContextHealthStatusSenderTests
 	{
 		[TestMethod]
 		public async Task PublishAsync_WhenPartitionIsNotAvailable_ReturnsGracefully()
@@ -24,20 +24,21 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			ServiceContextHealthStatusSender senderWithoutPartition = CreateSender(null);
 
 			// Act.
-			await InializeAnsSendHealthAsync(senderWithoutPartition);
+			bool isInitialized = await senderWithoutPartition.IntializeAsync(default);
 
 			// Assert.
 			// If we are here, PublishAsync didn't explode.
+			Assert.IsFalse(isInitialized);
 		}
 
 		[TestMethod]
 		public async Task PublishAsync_WhenStatefulPartitionIsClosed_ReturnsGracefully()
 		{
 			// Arrange.
-			ServiceContextHealthStatusSender sender = CreateSenderForStateful(closed: true).Sender;
+			IHealthStatusSender sender = CreateSenderForStateful(closed: true).Sender;
 
 			// Act.
-			await InializeAnsSendHealthAsync(sender);
+			await InializeAndSendHealthAsync(sender);
 
 			// Assert.
 			// If we are here, PublishAsync didn't explode.
@@ -47,10 +48,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task PublishAsync_WhenStatelessPartitionIsClosed_ReturnsGracefully()
 		{
 			// Arrange.
-			ServiceContextHealthStatusSender sender = CreateSenderForStateless(closed: true).Sender;
+			IHealthStatusSender sender = CreateSenderForStateless(closed: true).Sender;
 
 			// Act.
-			await InializeAnsSendHealthAsync(sender);
+			await InializeAndSendHealthAsync(sender);
 
 			// Assert.
 			// If we are here, PublishAsync didn't explode.
@@ -63,7 +64,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			SenderContext<IStatefulServicePartition> context = CreateSenderForStateful();
 
 			// Act.
-			await InializeAnsSendHealthAsync(context.Sender);
+			await InializeAndSendHealthAsync(context.Sender);
 
 			// Assert.
 			context.PartitionMock.Verify(p => p.ReportReplicaHealth(It.IsAny<HealthInformation>()));
@@ -76,7 +77,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			SenderContext<IStatelessServicePartition> context = CreateSenderForStateless();
 
 			// Act.
-			await InializeAnsSendHealthAsync(context.Sender);
+			await InializeAndSendHealthAsync(context.Sender);
 
 			// Assert.
 			context.PartitionMock.Verify(p => p.ReportInstanceHealth(It.IsAny<HealthInformation>()));
@@ -130,7 +131,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			{
 				Assert.IsTrue(context.ReportedState.TryGetValue(name, out HealthInformation? result));
 				Assert.IsNotNull(result);
-				Assert.AreEqual(name, result.HealthReportId);
+				Assert.AreEqual(name, result.Property);
 				Assert.AreEqual(description, result.Description);
 				Assert.AreEqual(expected, result.HealthState);
 			}
@@ -144,7 +145,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				context.Sender.SendStatusAsync("HealthCheckName", HealthStatus.Healthy, "SomeDescription", default));
 		}
 
-		private async Task InializeAnsSendHealthAsync(ServiceContextHealthStatusSender sender)
+		private async Task InializeAndSendHealthAsync(IHealthStatusSender sender)
 		{
 			await sender.IntializeAsync(default);
 			await sender.SendStatusAsync("SomeCheck", HealthStatus.Healthy, "DumyDescription", default);
@@ -196,8 +197,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			new(new Accessor<IServicePartition>(partition), new NullLogger<ServiceContextHealthStatusSender>());
 
 
-		internal record SenderContext(
-			ServiceContextHealthStatusSender Sender,
+		public record SenderContext(
+			IHealthStatusSender Sender,
 			IDictionary<string, HealthInformation> ReportedState);
 
 		internal record SenderContext<TPartition>(

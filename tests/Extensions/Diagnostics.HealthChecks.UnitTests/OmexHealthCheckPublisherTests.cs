@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -26,6 +27,19 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 			// Assert.
 			await Assert.ThrowsExceptionAsync<OperationCanceledException>(act);
+		}
+
+		[TestMethod]
+		public async Task PublishAsync_WhenSenderNotInitialized_DontCallSendMethod()
+		{
+			// Arrange
+			PublisherContext publisherContext = CreatePublisher(canInitizlize: false);
+
+			// Act.
+			await publisherContext.Publisher.PublishAsync(HealthReportBuilder.EmptyHealthReport, new CancellationToken(true));
+
+			// Assert.
+			publisherContext.MockStatusSender.Verify(s_sendStatusExpression, Times.Never);
 		}
 
 		[DataTestMethod]
@@ -103,12 +117,15 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			StringAssert.Contains(summaryInfo.Description, report.TotalDuration.ToString(), "TotalDuration from report is not included.");
 		}
 
-		private PublisherContext CreatePublisher(bool canInitizlize = true)
+		private static Expression<Func<IHealthStatusSender, Task>> s_sendStatusExpression =
+			s => s.SendStatusAsync(It.IsAny<string>(), It.IsAny<HealthStatus>(), It.IsAny<string>(), It.IsAny<CancellationToken>());
+
+		private static PublisherContext CreatePublisher(bool canInitizlize = true)
 		{
 			Dictionary<string, HealthStateInfo> reportedState = new ();
 			Mock<IHealthStatusSender> mockSender = new ();
 			mockSender.Setup(s => s.IntializeAsync(It.IsAny<CancellationToken>())).Returns(Task.FromResult(canInitizlize));
-			mockSender.Setup(s => s.SendStatusAsync(It.IsAny<string>(), It.IsAny<HealthStatus>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+			mockSender.Setup(s_sendStatusExpression)
 				.Callback((string name, HealthStatus status, string description, CancellationToken token) =>
 					reportedState[name] = new HealthStateInfo(status, description))
 				.Returns(Task.CompletedTask);
@@ -117,11 +134,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				mockSender.Object,
 				new DefaultObjectPoolProvider());
 
-			return new (publisher, reportedState);
+			return new (publisher, mockSender, reportedState);
 		}
 
 		private record PublisherContext(
 			OmexHealthCheckPublisher Publisher,
+			Mock<IHealthStatusSender> MockStatusSender,
 			Dictionary<string, HealthStateInfo> ReportedState);
 
 		private record HealthStateInfo(HealthStatus Status, string Description);
