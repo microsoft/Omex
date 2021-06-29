@@ -23,10 +23,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			SenderInfo context = GetRestHealthStatusSender();
 
 			await context.Sender.IntializeAsync(default);
-			context.ClientWrapperMock.Verify(w => w.GetAsync(), Times.Once, "SF Client created during initialization");
+			context.ClientWrapperMock.Verify(w => w.GetAsync(It.IsAny<CancellationToken>()), Times.Once, "SF Client created during initialization");
 
 			await context.Sender.IntializeAsync(default);
-			context.ClientWrapperMock.Verify(w => w.GetAsync(), Times.Never, "SF Client should not be created on second call");
+			context.ClientWrapperMock.Verify(w => w.GetAsync(It.IsAny<CancellationToken>()), Times.Never, "SF Client should not be created on second call");
 		}
 
 		public async Task SendStatusAsync_WhenNotInitialized_Throws()
@@ -86,7 +86,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				.Callback<NodeName, HealthInformation, bool?, long?, CancellationToken>((_, info, _, _, _) => reportedState[info.Property] = info);
 
 			Mock<IServiceFabricClientWrapper> sfClientWrapper = new();
-			sfClientWrapper.Setup(w => w.GetAsync())
+			sfClientWrapper.Setup(w => w.GetAsync(It.IsAny<CancellationToken>()))
 				.Returns(Task.FromResult(sfClient.Object));
 
 			Mock<IExecutionContext> mockContext = new();

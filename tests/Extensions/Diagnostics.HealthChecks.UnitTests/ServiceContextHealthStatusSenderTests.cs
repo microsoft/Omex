@@ -136,6 +136,14 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			}
 		}
 
+		[DataTestMethod]
+		[DynamicData(nameof(StatusSenders), DynamicDataSourceType.Method)]
+		public async Task SendStatusAsync_WhenNotInitialized_Throws(SenderContext context)
+		{
+			await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+				context.Sender.SendStatusAsync("HealthCheckName", HealthStatus.Healthy, "SomeDescription", default));
+		}
+
 		private async Task InializeAnsSendHealthAsync(ServiceContextHealthStatusSender sender)
 		{
 			await sender.IntializeAsync(default);

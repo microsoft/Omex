@@ -28,12 +28,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			m_logger = logger;
 		}
 
-		public Task IntializeAsync(CancellationToken token)
+		public Task<bool> IntializeAsync(CancellationToken token)
 		{
 			IServicePartition? partition = m_partitionAccessor.Value;
 			if (partition == null)
 			{
-				m_logger.LogWarning(Tag.Create(), "Publisher run before partition provided.");
+				m_logger.LogWarning(Tag.Create(), "Status sender run before partition available.");
 			}
 			else
 			{
@@ -46,28 +46,23 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				};
 			}
 
-			return Task.CompletedTask;
+			return Task.FromResult(m_reportHealth != null);
 		}
 
 		public Task SendStatusAsync(string checkName, HealthStatus status, string description, CancellationToken token)
 		{
-			if (m_reportHealth == null)
+			_ = m_reportHealth ?? throw new InvalidOperationException("Status sender was executed before run before it can report result.");
+
+			try
 			{
-				m_logger.LogWarning(Tag.Create(), "Publisher run before health report functions is provided.");
+				m_reportHealth(new HealthInformation(HealthReportSourceId, checkName, ToSfHealthState(status))
+				{
+					Description = description
+				});
 			}
-			else
+			catch (FabricObjectClosedException)
 			{
-				try
-				{
-					m_reportHealth(new HealthInformation(HealthReportSourceId, checkName, ToSfHealthState(status))
-					{
-						Description = description
-					});
-				}
-				catch (FabricObjectClosedException)
-				{
-					// Ignore, the service instance is closing.
-				}
+				// Ignore, the service instance is closing.
 			}
 
 			return Task.CompletedTask;

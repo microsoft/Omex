@@ -15,7 +15,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// Initialization method that's called before each health status publishing session.
 		/// </summary>
-		Task IntializeAsync(CancellationToken token);
+		/// <returns>
+		/// Returns true if initialization was succesful and false if it wan't and user should retry later.
+		/// </returns>
+		Task<bool> IntializeAsync(CancellationToken token);
 
 		/// <summary>
 		/// Sends health status of single health check.

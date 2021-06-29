@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.ObjectPool;
-using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -104,11 +103,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			StringAssert.Contains(summaryInfo.Description, report.TotalDuration.ToString(), "TotalDuration from report is not included.");
 		}
 
-		private PublisherContext CreatePublisher()
+		private PublisherContext CreatePublisher(bool canInitizlize = true)
 		{
 			Dictionary<string, HealthStateInfo> reportedState = new ();
 			Mock<IHealthStatusSender> mockSender = new ();
-			mockSender.Setup(s => s.IntializeAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+			mockSender.Setup(s => s.IntializeAsync(It.IsAny<CancellationToken>())).Returns(Task.FromResult(canInitizlize));
 			mockSender.Setup(s => s.SendStatusAsync(It.IsAny<string>(), It.IsAny<HealthStatus>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
 				.Callback((string name, HealthStatus status, string description, CancellationToken token) =>
 					reportedState[name] = new HealthStateInfo(status, description))

@@ -28,12 +28,14 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			m_nodeName = executionContext.NodeName;
 		}
 
-		public async Task IntializeAsync(CancellationToken token)
+		public async Task<bool> IntializeAsync(CancellationToken token)
 		{
 			if (m_client == null)
 			{
-				m_client = await m_clientWrapper.GetAsync();
+				m_client = await m_clientWrapper.GetAsync(token);
 			}
+
+			return m_client != null;
 		}
 
 		public async Task SendStatusAsync(string checkName, HealthStatus status, string description, CancellationToken token)

@@ -27,17 +27,23 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		public async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 		{
-			await StatusSender.IntializeAsync(cancellationToken);
+			bool isInitialized = await StatusSender.IntializeAsync(cancellationToken).ConfigureAwait(false);
+			if (!isInitialized)
+			{
+				return;
+			}
 
 			// We trust the framework to ensure that the report is not null and doesn't contain null entries.
 			foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
 			{
 				cancellationToken.ThrowIfCancellationRequested();
-				await StatusSender.SendStatusAsync(entryPair.Key, entryPair.Value.Status, BuildSfHealthInformationDescription(entryPair.Value), cancellationToken);
+				await StatusSender.SendStatusAsync(entryPair.Key, entryPair.Value.Status, BuildSfHealthInformationDescription(entryPair.Value), cancellationToken)
+					.ConfigureAwait(false);
 			}
 
 			cancellationToken.ThrowIfCancellationRequested();
-			await StatusSender.SendStatusAsync(HealthReportSummaryProperty, report.Status, BuildHealthSummaryDescription(report), cancellationToken);
+			await StatusSender.SendStatusAsync(HealthReportSummaryProperty, report.Status, BuildHealthSummaryDescription(report), cancellationToken)
+				.ConfigureAwait(false);
 		}
 
 		protected string BuildHealthSummaryDescription(HealthReport report)
