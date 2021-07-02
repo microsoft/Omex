@@ -11,32 +11,42 @@ using Microsoft.Extensions.ObjectPool;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
-	internal abstract class HealthCheckPublisher : IHealthCheckPublisher
+	internal class OmexHealthCheckPublisher : IHealthCheckPublisher
 	{
 		protected readonly ObjectPool<StringBuilder> StringBuilderPool;
 
-		internal abstract string HealthReportSourceId { get; }
+		private IHealthStatusSender StatusSender { get; }
 
 		internal const string HealthReportSummaryProperty = "HealthReportSummary";
 
-		public HealthCheckPublisher(ObjectPoolProvider objectPoolProvider) => StringBuilderPool = objectPoolProvider.CreateStringBuilderPool();
-
-		public abstract Task PublishAsync(HealthReport report, CancellationToken cancellationToken);
-
-		protected void PublishAllEntries(HealthReport report, CancellationToken cancellationToken)
+		public OmexHealthCheckPublisher(IHealthStatusSender statusSender, ObjectPoolProvider objectPoolProvider)
 		{
+			StringBuilderPool = objectPoolProvider.CreateStringBuilderPool();
+			StatusSender = statusSender;
+		}
+
+		public async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
+		{
+			bool isInitialized = await StatusSender.IntializeAsync(cancellationToken).ConfigureAwait(false);
+			if (!isInitialized)
+			{
+				return;
+			}
+
 			// We trust the framework to ensure that the report is not null and doesn't contain null entries.
 			foreach (KeyValuePair<string, HealthReportEntry> entryPair in report.Entries)
 			{
 				cancellationToken.ThrowIfCancellationRequested();
-				PublishHealthReportEntry(entryPair.Key, entryPair.Value.Status, BuildSfHealthInformationDescription(entryPair.Value));
+				await StatusSender.SendStatusAsync(entryPair.Key, entryPair.Value.Status, BuildSfHealthInformationDescription(entryPair.Value), cancellationToken)
+					.ConfigureAwait(false);
 			}
 
 			cancellationToken.ThrowIfCancellationRequested();
-			PublishHealthReportEntry(HealthReportSummaryProperty, report.Status, BuildSfHealthInformationDescription(report));
+			await StatusSender.SendStatusAsync(HealthReportSummaryProperty, report.Status, BuildHealthSummaryDescription(report), cancellationToken)
+				.ConfigureAwait(false);
 		}
 
-		protected string BuildSfHealthInformationDescription(HealthReport report)
+		protected string BuildHealthSummaryDescription(HealthReport report)
 		{
 			int entriesCount = report.Entries.Count;
 			int healthyEntries = 0;
@@ -108,7 +118,5 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			return description;
 		}
-
-		protected abstract void PublishHealthReportEntry(string healthCheckName, HealthStatus status, string description);
 	}
 }

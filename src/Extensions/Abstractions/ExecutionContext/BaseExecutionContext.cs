@@ -60,8 +60,8 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 			ServiceName = GetVariable(ServiceNameVariableName) ?? DefaultEmptyValue;
 			ApplicationName = GetVariable(ApplicationNameVariableName) ?? DefaultEmptyValue;
 
-			string nodeName = GetVariable(NodeNameVariableName) ?? DefaultEmptyValue;
-			MachineId = FormattableString.Invariant($"{MachineName}_{nodeName}");
+			NodeName = GetVariable(NodeNameVariableName) ?? DefaultEmptyValue;
+			MachineId = FormattableString.Invariant($"{MachineName}_{NodeName}");
 
 			string? nodeIPAddressOrFQDN = GetVariable(NodeIPOrFQDNVariableName);
 
@@ -81,6 +81,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 
 		/// <inheritdoc/>
 		public string ApplicationName { get; protected set; }
+
+		/// <inheritdoc/>
+		public string NodeName { get; protected set; }
 
 		/// <inheritdoc/>
 		public IPAddress ClusterIpAddress { get; protected set; }
