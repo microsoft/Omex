@@ -48,6 +48,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 
 			Assert.AreEqual(applicationName, info.ApplicationName);
 			Assert.AreEqual(serviceName, info.ServiceName);
+			Assert.AreEqual(nodeName, info.NodeName);
 			StringAssert.Contains(info.MachineId, nodeName);
 			Assert.AreEqual(nodeIPOrFQDN, info.ClusterIpAddress);
 		}
