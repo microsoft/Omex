@@ -110,6 +110,27 @@ namespace Microsoft.Omex.System.Model.Types
 		}
 
 		/// <summary>
+		/// Initializes a new instance of the ProductVersion class using the specified
+		/// major, minor, build and revision values.
+		/// </summary>
+		/// <param name="major">The major version number.</param>
+		/// <param name="minor">The minor version number.</param>
+		/// <param name="build">The build number (nullable)</param>
+		/// <param name="revision">The revision number (nullable)</param>
+		public ProductVersion(int major, int minor, int? build, int? revision)
+		{
+			Code.Expects<ArgumentOutOfRangeException>(major >= 0, "Major is less than zero.", TaggingUtilities.ReserveTag(0));
+			Code.Expects<ArgumentOutOfRangeException>(minor >= 0, "Minor is less than zero.", TaggingUtilities.ReserveTag(0));
+			Code.Expects<ArgumentOutOfRangeException>(build == null || build >= 0, "Build is not null and is less than zero.", TaggingUtilities.ReserveTag(0));
+			Code.Expects<ArgumentOutOfRangeException>(revision == null || revision >= 0, "Revision is not null and is less than zero.", TaggingUtilities.ReserveTag(0));
+
+			Major = major;
+			Minor = minor;
+			Build = build;
+			Revision = revision;
+		}
+
+		/// <summary>
 		/// Determines whether two specified objects are not equal.
 		/// </summary>
 		/// <param name="v1">The first object.</param>
