@@ -94,14 +94,14 @@ namespace Microsoft.Omex.System.Model.Types
 		/// </summary>
 		/// <param name="major">The major version number.</param>
 		/// <param name="minor">The minor version number.</param>
-		/// <param name="build">The build number</param>
-		/// <param name="revision">The revision number</param>
-		public ProductVersion(int major, int minor, int build, int revision)
+		/// <param name="build">The build number (nullable)</param>
+		/// <param name="revision">The revision number (nullable)</param>
+		public ProductVersion(int major, int minor, int? build, int? revision)
 		{
 			Code.Expects<ArgumentOutOfRangeException>(major >= 0, "Major is less than zero.", TaggingUtilities.ReserveTag(0x23820859 /* tag_9667z */));
 			Code.Expects<ArgumentOutOfRangeException>(minor >= 0, "Minor is less than zero.", TaggingUtilities.ReserveTag(0x23820880 /* tag_9668a */));
-			Code.Expects<ArgumentOutOfRangeException>(build >= 0, "Build is less than zero.", TaggingUtilities.ReserveTag(0x23820881 /* tag_9668b */));
-			Code.Expects<ArgumentOutOfRangeException>(revision >= 0, "Revision is less than zero.", TaggingUtilities.ReserveTag(0x23820882 /* tag_9668c */));
+			Code.Expects<ArgumentOutOfRangeException>(build == null || build >= 0, "Build is not null and is less than zero.", TaggingUtilities.ReserveTag(0x23820881 /* tag_9668b */));
+			Code.Expects<ArgumentOutOfRangeException>(revision == null || revision >= 0, "Revision is not null and is less than zero.", TaggingUtilities.ReserveTag(0x23820882 /* tag_9668c */));
 
 			Major = major;
 			Minor = minor;
