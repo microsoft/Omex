@@ -54,10 +54,12 @@ namespace Microsoft.Omex.Extensions.Logging
 			ActivityTraceId activityTraceId = default;
 			Guid obsoleteCorrelationId = Guid.Empty;
 			uint obsoleteTransactionId = 0u;
+			bool isHealthCheck = false;
 			if (activity != null)
 			{
 				activityId = activity.Id ?? string.Empty;
 				activityTraceId = activity.TraceId;
+				isHealthCheck = activity.IsHealthCheck();
 
 				if (m_options.CurrentValue.AddObsoleteCorrelationToActivity)
 				{
@@ -83,24 +85,24 @@ namespace Microsoft.Omex.Extensions.Logging
 					break;
 				case LogLevel.Trace:
 					m_eventSource.LogSpamServiceMessage(applicationName, serviceName, machineId, buildVersion, s_processName, partitionId, replicaId,
-						activityId, traceIdAsString, obsoleteCorrelationId, obsoleteTransactionId, "Spam", category, tagId, tagName, threadId, message);
+						activityId, traceIdAsString, obsoleteCorrelationId, obsoleteTransactionId, "Spam", category, tagId, tagName, threadId, message, isHealthCheck);
 					break;
 				case LogLevel.Debug:
 					m_eventSource.LogVerboseServiceMessage(applicationName, serviceName, machineId, buildVersion, s_processName, partitionId, replicaId,
-						activityId, traceIdAsString, obsoleteCorrelationId, obsoleteTransactionId, "Verbose", category, tagId, tagName, threadId, message);
+						activityId, traceIdAsString, obsoleteCorrelationId, obsoleteTransactionId, "Verbose", category, tagId, tagName, threadId, message, isHealthCheck);
 					break;
 				case LogLevel.Information:
 					m_eventSource.LogInfoServiceMessage(applicationName, serviceName, machineId, buildVersion, s_processName, partitionId, replicaId,
-						activityId, traceIdAsString, obsoleteCorrelationId, obsoleteTransactionId, "Info", category, tagId, tagName, threadId, message);
+						activityId, traceIdAsString, obsoleteCorrelationId, obsoleteTransactionId, "Info", category, tagId, tagName, threadId, message, isHealthCheck);
 					break;
 				case LogLevel.Warning:
 					m_eventSource.LogWarningServiceMessage(applicationName, serviceName, machineId, buildVersion, s_processName, partitionId, replicaId,
-						activityId, traceIdAsString, obsoleteCorrelationId, obsoleteTransactionId, "Warning", category, tagId, tagName, threadId, message);
+						activityId, traceIdAsString, obsoleteCorrelationId, obsoleteTransactionId, "Warning", category, tagId, tagName, threadId, message, isHealthCheck);
 					break;
 				case LogLevel.Error:
 				case LogLevel.Critical:
 					m_eventSource.LogErrorServiceMessage(applicationName, serviceName, machineId, buildVersion, s_processName, partitionId, replicaId,
-						activityId, traceIdAsString, obsoleteCorrelationId, obsoleteTransactionId, "Error", category, tagId, tagName, threadId, message);
+						activityId, traceIdAsString, obsoleteCorrelationId, obsoleteTransactionId, "Error", category, tagId, tagName, threadId, message, isHealthCheck);
 					break;
 				default:
 					throw new ArgumentException(FormattableString.Invariant($"Unknown EventLevel: {level}"));
