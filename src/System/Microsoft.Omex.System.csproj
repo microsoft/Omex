@@ -11,4 +11,7 @@
     <PackageProjectUrl>https://github.com/microsoft/Omex/tree/master/src/System</PackageProjectUrl>
     <PackageTags>Microsoft;Omex;System</PackageTags>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="BuildTransitive\*" Pack="true" PackagePath="buildTransitive" />
+  </ItemGroup>
 </Project>

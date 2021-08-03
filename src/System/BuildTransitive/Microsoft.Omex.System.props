@@ -1,0 +1,13 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!-- Enforce nullability check and language version -->
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <Target Name="RunValidations" AfterTargets="Build">
+    <Error
+        Condition="'$(UseUnsupportedOmexPackage)' != 'true'"
+        Code="OMEX0101"
+        HelpKeyword="DoNotUseUnsupportedPackages"
+        Text="Mirosoft.Omex.System, Microsoft.OMEX.ServiceFabric.Core and packages dependend on them would be out of support after 30 of September 2021. You can temporary use flag &lt;UseUnsupportedOmexPackage&gt;true&lt;/UseUnsupportedOmexPackage&gt;, but add comment with PBI to fix it." />
+</Project>
