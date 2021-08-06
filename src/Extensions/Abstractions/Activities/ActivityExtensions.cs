@@ -38,6 +38,29 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 				StringComparison.OrdinalIgnoreCase);
 
 		/// <summary>
+		/// Returns true if activity is marked as Performance test
+		/// </summary>
+		/// <param name="activity"></param>
+		/// <returns></returns>
+		public static bool IsPerformanceTest(this Activity activity) =>
+			!string.IsNullOrEmpty(activity.GetBaggageItem(PerformanceMarkerKey));
+
+		/// <summary>
+		/// Returns the value of the Performance key if it exists
+		/// </summary>
+		/// <param name="activity"></param>
+		/// <returns></returns>
+		public static string PerformanceValue(this Activity activity)
+		{
+			if(activity.IsPerformanceTest())
+			{
+				return activity.GetBaggageItem(PerformanceMarkerKey);
+			}
+
+			return string.Empty;
+		}
+
+		/// <summary>
 		/// Set user hash for the activity
 		/// </summary>
 		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
@@ -129,6 +152,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		private const string UserHashKey = "UserHash";
 		private const string HealthCheckMarkerKey = "HealthCheckMarker";
 		private const string HealthCheckMarkerValue = "true";
+		private const string PerformanceMarkerKey = "PerformanceMarker";
 		private const string ObsoleteCorrelationId = "ObsoleteCorrelationId";
 		private const string ObsoleteTransactionId = "ObsoleteTransactionId";
 		private const string CorrelationIdObsoleteMessage = "Please use Activity.Id or Activity.GetRootIdAsGuid() for new services instead";
