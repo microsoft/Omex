@@ -52,12 +52,15 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <returns></returns>
 		public static string PerformanceValue(this Activity activity)
 		{
-			if(activity.IsPerformanceTest())
+			string? perfValue = activity.GetBaggageItem(PerformanceMarkerKey);
+			if (perfValue == null)
 			{
-				return activity.GetBaggageItem(PerformanceMarkerKey);
+				return string.Empty;
 			}
-
-			return string.Empty;
+			else
+			{
+				return perfValue;
+			}
 		}
 
 		/// <summary>
