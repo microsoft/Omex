@@ -29,12 +29,6 @@ namespace Microsoft.Omex.Extensions.Hosting
 		public static string EDog { get; } = "EDog"; //TODO: Consider replacing with Environments.Staging GitHub Issue #167
 
 		/// <summary>
-		/// Performance testing environment
-		/// This environment is used to run performance tests on our services
-		/// </summary>
-		public static string Perf { get; } = "Perf";
-
-		/// <summary>
 		/// Production/live environment
 		/// </summary>
 		public static string Production { get; } = Environments.Production;
