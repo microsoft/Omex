@@ -5,4 +5,5 @@
         Code="OMEX0101"
         HelpKeyword="DoNotUseUnsupportedPackages"
         Text="Mirosoft.Omex.System, Microsoft.OMEX.ServiceFabric.Core and packages depending on them will be out of support after the 30th of November 2021. You can temporarily use flag &lt;UseUnsupportedOmexSystemPackage&gt;true&lt;/UseUnsupportedOmexSystemPackage&gt; to suppress error, but add a comment with ID of work item to remove reference." />
+  </Target>
 </Project>
