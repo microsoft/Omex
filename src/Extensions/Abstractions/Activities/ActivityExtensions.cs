@@ -147,7 +147,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		private const string UserHashKey = "UserHash";
 		private const string HealthCheckMarkerKey = "HealthCheckMarker";
 		private const string HealthCheckMarkerValue = "true";
-		private const string PerformanceMarkerKey = "PerformanceMarker";
+		private const string PerformanceMarkerKey = "PerformanceTestMarker";
 		private const string ObsoleteCorrelationId = "ObsoleteCorrelationId";
 		private const string ObsoleteTransactionId = "ObsoleteTransactionId";
 		private const string CorrelationIdObsoleteMessage = "Please use Activity.Id or Activity.GetRootIdAsGuid() for new services instead";
