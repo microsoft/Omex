@@ -41,7 +41,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// Returns true if activity is marked as Performance test
 		/// </summary>
 		/// <param name="activity"></param>
-		/// <returns></returns>
+		/// <returns>True if the activity is marked as a Performance test, false otherwise</returns>
 		public static bool IsPerformanceTest(this Activity activity) =>
 			!string.IsNullOrEmpty(activity.GetBaggageItem(PerformanceMarkerKey));
 
@@ -49,7 +49,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// Returns the value of the Performance key if it exists
 		/// </summary>
 		/// <param name="activity"></param>
-		/// <returns></returns>
+		/// <returns>The value passed for PerformanceTestMarker</returns>
 		public static string PerformanceValue(this Activity activity)
 		{
 			return activity.GetBaggageItem(PerformanceMarkerKey) ?? string.Empty;
