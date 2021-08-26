@@ -42,6 +42,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// </summary>
 		/// <param name="activity"></param>
 		/// <returns>True if the activity is marked as a Performance test, false otherwise</returns>
+		/// <remarks>Currently added to the BaggageItems (via Kestrel) using header value Correlation-Context: "PerformanceTestMarker=0"</remarks>
 		public static bool IsPerformanceTest(this Activity activity) =>
 			!string.IsNullOrEmpty(activity.GetBaggageItem(PerformanceMarkerKey));
 
@@ -50,9 +51,21 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// </summary>
 		/// <param name="activity"></param>
 		/// <returns>The value passed for PerformanceTestMarker</returns>
-		public static string PerformanceValue(this Activity activity)
+		/// <remarks>Setting the value in the BaggageItems, the interger value can be used to mock a delayed response from a partner call</remarks>
+		/// <remarks>Example: PerformanceTestMarker=500 mocking a 500 millisecond delay</remarks>
+		public static int? PerformanceValue(this Activity activity)
 		{
-			return activity.GetBaggageItem(PerformanceMarkerKey) ?? string.Empty;
+			int? performanceIntValue = null;
+
+			string? performanceValue = activity.GetBaggageItem(PerformanceMarkerKey);
+			int perfInt;
+
+			if (performanceValue != null && int.TryParse(performanceValue, out perfInt))
+			{
+				performanceIntValue = perfInt;
+			}
+
+			return performanceIntValue;
 		}
 
 		/// <summary>
