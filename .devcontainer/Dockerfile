@@ -8,5 +8,5 @@ FROM mcr.microsoft.com/vscode/devcontainers/dotnet:0-${VARIANT}
 COPY --from=mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim /usr/share/dotnet /usr/share/dotnet
 
 # [Optional] Uncomment this section to install additional OS packages.
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends servicefabricsdkcommon
+# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+#    && apt-get -y install --no-install-recommends servicefabricsdkcommon
