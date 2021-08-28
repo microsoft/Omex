@@ -19,7 +19,7 @@ namespace Microsoft.Omex.System.UnitTests.Data
 		public void Constructor_SetsLocation()
 		{
 			FileResource fileResource = new FileResource(new IOFile(), FolderName, FileName);
-			Assert.Equal(Path.Compine(FolderName, FileName), fileResource.Location);
+			Assert.Equal(Path.Combine(FolderName, FileName), fileResource.Location);
 		}
 
 		[Fact]
