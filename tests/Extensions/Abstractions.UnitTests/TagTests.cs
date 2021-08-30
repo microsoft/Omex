@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -21,7 +22,8 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 
 			Assert.AreEqual(tag1.Name, tag2.Name, "EventId Name should be the same in the same file");
 
-			string relativePath = FormattableString.Invariant(@$"tests\Extensions\Abstractions.UnitTests\{nameof(TagTests)}.cs"); //This value should be change in case of changing file path or name
+			
+			string relativePath = Path.Combine("tests", "Extensions", "Abstractions.UnitTests", nameof(TagTests) + ".cs"); //This value should be change in case of changing file path or name
 			StringAssert.EndsWith(tag1.Name, relativePath, "tag1 Name should point to current file");
 			StringAssert.EndsWith(tag2.Name, relativePath, "tag2 Name should point to current file");
 		}
