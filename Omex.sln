@@ -49,7 +49,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGenerators", "CodeGener
 		src\CodeGenerators\Directory.Build.props = src\CodeGenerators\Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.CodeGenerators.GateGen", "src\CodeGenerators\gategen\Microsoft.Omex.CodeGenerators.GateGen.csproj", "{D3B05497-4540-4D95-A829-E6CD42EE09D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.CodeGenerators.GateGen", "src\CodeGenerators\GateGen\Microsoft.Omex.CodeGenerators.GateGen.csproj", "{D3B05497-4540-4D95-A829-E6CD42EE09D3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Logging", "src\Extensions\Logging\Microsoft.Omex.Extensions.Logging.csproj", "{3DA18B36-BFA5-4A51-A4E1-5C8F2EF825D8}"
 EndProject
