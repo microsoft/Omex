@@ -35,5 +35,21 @@ namespace Microsoft.Omex.Extensions.Abstractions
 
 			throw new ArgumentException("String contains only white space characters", name);
 		}
+
+		/// <summary>
+		/// Throw exception if object is null, otherwise returns not-nullable object
+		/// </summary>
+		/// <param name="value">nullable object to check</param>
+		/// <param name="name">name of the object for exception message</param>
+		/// <exception cref="ArgumentNullException">if object is null</exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static object ThrowIfNull(object? value, string? name = null)
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException(message: "Object is null", paramName: name);
+			}
+			return value;
+		}
 	}
 }

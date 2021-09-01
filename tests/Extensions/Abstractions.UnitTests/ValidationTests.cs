@@ -26,5 +26,16 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 		[TestMethod]
 		public void ThrowIfNullOrWhiteSpace_WhenValueNull_ThrowsException()
 			=> Assert.ThrowsException<ArgumentNullException>(() => Validation.ThrowIfNullOrWhiteSpace(null));
+
+		[TestMethod]
+		public void ThrowIfNull_WhenValueNull_ThrowsException()
+			=> Assert.ThrowsException<ArgumentNullException>(() => Validation.ThrowIfNull(null));
+
+		[TestMethod]
+		public void ThrowIfNull_WhenValueNotNull_ReturnsIt()
+		{
+			object? value = new();
+			Assert.AreEqual(expected: value, Validation.ThrowIfNull(value));
+		}
 	}
 }
