@@ -40,33 +40,14 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <summary>
 		/// Returns true if activity is marked as Performance test
 		/// </summary>
-		/// <param name="activity"></param>
+		/// <param name="activity">Activity for this request</param>
 		/// <returns>True if the activity is marked as a Performance test, false otherwise</returns>
-		/// <remarks>Currently added to the BaggageItems (via Kestrel) using header value Correlation-Context: "PerformanceTestMarker=0"</remarks>
+		/// <remarks>Currently added to the BaggageItems (via Kestrel) using header value Correlation-Context: "PerformanceTestMarker=true"</remarks>
 		public static bool IsPerformanceTest(this Activity activity) =>
-			!string.IsNullOrEmpty(activity.GetBaggageItem(PerformanceMarkerKey));
-
-		/// <summary>
-		/// Returns the value of the Performance key if it exists
-		/// </summary>
-		/// <param name="activity"></param>
-		/// <returns>The value passed for PerformanceTestMarker</returns>
-		/// <remarks>Setting the value in the BaggageItems, the interger value can be used to mock a delayed response from a partner call</remarks>
-		/// <remarks>Example: PerformanceTestMarker=500 mocking a 500 millisecond delay</remarks>
-		public static int? PerformanceValue(this Activity activity)
-		{
-			int? performanceIntValue = null;
-
-			string? performanceValue = activity.GetBaggageItem(PerformanceMarkerKey);
-			int perfInt;
-
-			if (performanceValue != null && int.TryParse(performanceValue, out perfInt))
-			{
-				performanceIntValue = perfInt;
-			}
-
-			return performanceIntValue;
-		}
+			string.Equals(
+				activity.GetBaggageItem(PerformanceMarkerKey),
+				PerformanceMarkerValue,
+				StringComparison.OrdinalIgnoreCase);
 
 		/// <summary>
 		/// Set user hash for the activity
@@ -161,6 +142,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		private const string HealthCheckMarkerKey = "HealthCheckMarker";
 		private const string HealthCheckMarkerValue = "true";
 		private const string PerformanceMarkerKey = "PerformanceTestMarker";
+		private const string PerformanceMarkerValue = "true";
 		private const string ObsoleteCorrelationId = "ObsoleteCorrelationId";
 		private const string ObsoleteTransactionId = "ObsoleteTransactionId";
 		private const string CorrelationIdObsoleteMessage = "Please use Activity.Id or Activity.GetRootIdAsGuid() for new services instead";
