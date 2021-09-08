@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System.IO;
 using Microsoft.Omex.System.Data;
 using Microsoft.Omex.System.Data.FileSystem;
 using Microsoft.Omex.System.UnitTests.Shared;
@@ -18,7 +19,7 @@ namespace Microsoft.Omex.System.UnitTests.Data
 		public void Constructor_SetsLocation()
 		{
 			FileResource fileResource = new FileResource(new IOFile(), FolderName, FileName);
-			Assert.Equal(string.Join("\\", FolderName, FileName), fileResource.Location);
+			Assert.Equal(Path.Combine(FolderName, FileName), fileResource.Location);
 		}
 
 		[Fact]
