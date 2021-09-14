@@ -29,7 +29,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Src\Gating.UnitTests.Shared\Microsoft.Omex.Gating.UnitTests.Shared.csproj" />
+    <ProjectReference Include="..\..\src\Gating.UnitTests.Shared\Microsoft.Omex.Gating.UnitTests.Shared.csproj" />
     <ProjectReference Include="..\..\src\Gating\Microsoft.Omex.Gating.csproj" />
     <ProjectReference Include="..\..\src\System.UnitTests.Shared\Microsoft.Omex.System.UnitTests.Shared.csproj" />
   </ItemGroup>

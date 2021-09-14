@@ -67,6 +67,18 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		}
 
 		[TestMethod]
+		public void MarkAsPerformanceTest_AddsMarker()
+		{
+			Activity activity1 = new Activity("PerformanceTest1");
+			Activity activity2 = new Activity("PerformanceTest2");
+
+			activity1.SetBaggage("PerformanceTestMarker", "true");
+
+			Assert.IsTrue(activity1.IsPerformanceTest());
+			Assert.IsFalse(activity2.IsPerformanceTest());
+		}
+
+		[TestMethod]
 		[Obsolete]
 		public void SetObsoleteCorrelationId_SetsValue()
 		{
