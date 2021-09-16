@@ -3,5 +3,6 @@
     <!-- Enforce nullability check and language version -->
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    <NoWarn>$(NoWarn);NU5104</NoWarn> <!-- Allow usage of RC version of Metric API, should be removed after .NET 6 release -->
   </PropertyGroup>
 </Project>

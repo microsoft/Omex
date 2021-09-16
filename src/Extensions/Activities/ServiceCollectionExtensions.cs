@@ -36,7 +36,11 @@ namespace Microsoft.Extensions.DependencyInjection
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IActivityStopObserver, ActivityObserver>(p => p.GetRequiredService<ActivityObserver>()));
 
 			serviceCollection.TryAddSingleton<IExecutionContext, BaseExecutionContext>();
+
+			// eventually ActivityMetricsSender will be default implementation of IActivitiesEventSender
+			serviceCollection.TryAddSingleton<ActivityMetricsSender>();
 			serviceCollection.TryAddSingleton<IActivitiesEventSender, ActivityEventSender>();
+
 			serviceCollection.TryAddSingleton<IActivityListenerConfigurator, DefaultActivityListenerConfigurator>();
 			serviceCollection.TryAddSingleton(p => new ActivitySource(ActivitySourceName, ActivitySourceVersion));
 			serviceCollection.TryAddSingleton(p => ActivityEventSource.Instance);
