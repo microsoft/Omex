@@ -55,8 +55,8 @@ namespace Hosting.Services.UnitTests
 		{
 			Activity activity = new Activity(nameof(OnStop_LogsStop))
 				.Start()
-				.AddBaggage("SomeValue", "BaggageValue")
-				.AddTag("SomeTag", "TagValue");
+				.SetBaggage("SomeValue", "BaggageValue")
+				.SetTag("SomeTag", "TagValue");
 
 			if (result.HasValue)
 			{
@@ -65,6 +65,7 @@ namespace Hosting.Services.UnitTests
 
 			(ActivityObserver observer, TestLogger testLogger, _) = CreateObserver();
 
+			activity.Stop();
 			observer.OnStop(activity);
 
 			(EventId id, LogLevel level, string message) = testLogger.Messages.Single();

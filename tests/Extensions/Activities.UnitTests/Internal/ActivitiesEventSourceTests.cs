@@ -2,16 +2,13 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Activities;
 using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -38,8 +35,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			ActivityEventSender logEventSource = new ActivityEventSender(
 				ActivityEventSource.Instance,
 				contextMock.Object,
-				new NullLogger<ActivityEventSender>(),
-				new ActivityMetricsSender(contextMock.Object, new Mock<IHostEnvironment>().Object));
+				new NullLogger<ActivityEventSender>());
 
 			string expectedActivityId = string.Empty;
 			Guid correlationId = Guid.NewGuid();

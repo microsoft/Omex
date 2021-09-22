@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Activities
 	{
 		private readonly Meter m_meter;
 		private readonly Counter<double> m_activityCounter;
-		private readonly Counter<double> m_healthcheckActivityCounter;
+		private readonly Counter<double> m_healthCheckActivityCounter;
 		private readonly IExecutionContext m_context;
 		private readonly IHostEnvironment m_hostEnvironment;
 		private readonly ArrayPool<KeyValuePair<string, object?>> m_arrayPool;
@@ -28,7 +28,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_hostEnvironment = hostEnvironment;
 			m_meter = new Meter("Microsoft.Omex.Activities", "1.0.0");
 			m_activityCounter = m_meter.CreateCounter<double>("Activities");
-			m_healthcheckActivityCounter = m_meter.CreateCounter<double>("HealthcheckActivities");
+			m_healthCheckActivityCounter = m_meter.CreateCounter<double>("HealthCheckActivities");
 			m_arrayPool = ArrayPool<KeyValuePair<string, object?>>.Create();
 		}
 
@@ -61,7 +61,7 @@ namespace Microsoft.Omex.Extensions.Activities
 
 			if (activity.IsHealthCheck())
 			{
-				m_healthcheckActivityCounter.Add(durationMs, tagsSpan);
+				m_healthCheckActivityCounter.Add(durationMs, tagsSpan);
 			}
 			else
 			{

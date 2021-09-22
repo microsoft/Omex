@@ -37,9 +37,10 @@ namespace Microsoft.Extensions.DependencyInjection
 
 			serviceCollection.TryAddSingleton<IExecutionContext, BaseExecutionContext>();
 
-			// eventually ActivityMetricsSender will be default implementation of IActivitiesEventSender
+			// eventually ActivityMetricsSender will be default implementation of IActivitiesEventSender and we should remove ActivityEventSender, and AggregatedActivitiesEventSender
 			serviceCollection.TryAddSingleton<ActivityMetricsSender>();
-			serviceCollection.TryAddSingleton<IActivitiesEventSender, ActivityEventSender>();
+			serviceCollection.TryAddSingleton<ActivityEventSender>();
+			serviceCollection.TryAddSingleton<IActivitiesEventSender, AggregatedActivitiesEventSender>();
 
 			serviceCollection.TryAddSingleton<IActivityListenerConfigurator, DefaultActivityListenerConfigurator>();
 			serviceCollection.TryAddSingleton(p => new ActivitySource(ActivitySourceName, ActivitySourceVersion));
