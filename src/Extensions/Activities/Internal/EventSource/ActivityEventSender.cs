@@ -36,29 +36,9 @@ namespace Microsoft.Omex.Extensions.Activities
 			string userHash = activity.GetUserHash();
 			bool isHealthCheck = activity.IsHealthCheck();
 
-			string subtype = NullPlaceholder;
-			string metadata = NullPlaceholder;
-			string resultAsString = NullPlaceholder;
-			foreach (KeyValuePair<string, string?> pair in activity.Tags)
-			{
-				if (pair.Value == null)
-				{
-					continue;
-				}
-
-				if (string.Equals(ActivityTagKeys.Result, pair.Key, StringComparison.Ordinal))
-				{
-					resultAsString = pair.Value;
-				}
-				else if (string.Equals(ActivityTagKeys.SubType, pair.Key, StringComparison.Ordinal))
-				{
-					subtype = pair.Value;
-				}
-				else if (string.Equals(ActivityTagKeys.Metadata, pair.Key, StringComparison.Ordinal))
-				{
-					metadata = pair.Value;
-				}
-			}
+			string subtype = activity.GetBaggageItem(ActivityTagKeys.SubType) ?? NullPlaceholder;
+			string metadata = activity.GetBaggageItem(ActivityTagKeys.Metadata) ?? NullPlaceholder;
+			string resultAsString = activity.GetBaggageItem(ActivityTagKeys.Result) ?? NullPlaceholder;
 
 #pragma warning disable CS0618 // Until it's used we need to include correlationId into events
 			string correlationId = activity.GetObsoleteCorrelationId()?.ToString()
