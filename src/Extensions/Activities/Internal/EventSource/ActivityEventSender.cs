@@ -122,7 +122,6 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly ActivityEventSource m_eventSource;
 		private readonly string m_serviceName;
 		private readonly ILogger<ActivityEventSender> m_logger;
-		private readonly ActivityMetricsSender m_metricsSender;
 		private static readonly string s_logCategory = typeof(ActivityEventSource).FullName ?? nameof(ActivityEventSource);
 		private const string NullPlaceholder = "null";
 	}
