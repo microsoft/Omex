@@ -36,9 +36,29 @@ namespace Microsoft.Omex.Extensions.Activities
 			string userHash = activity.GetUserHash();
 			bool isHealthCheck = activity.IsHealthCheck();
 
-			string subtype = activity.GetBaggageItem(ActivityTagKeys.SubType) ?? NullPlaceholder;
-			string metadata = activity.GetBaggageItem(ActivityTagKeys.Metadata) ?? NullPlaceholder;
-			string resultAsString = activity.GetBaggageItem(ActivityTagKeys.Result) ?? NullPlaceholder;
+			string subtype = NullPlaceholder;
+			string metadata = NullPlaceholder;
+			string resultAsString = NullPlaceholder;
+			foreach (KeyValuePair<string, string?> pair in activity.Tags)
+			{
+				if (pair.Value == null)
+				{
+					continue;
+				}
+
+				if (string.Equals(ActivityTagKeys.Result, pair.Key, StringComparison.Ordinal))
+				{
+					resultAsString = pair.Value;
+				}
+				else if (string.Equals(ActivityTagKeys.SubType, pair.Key, StringComparison.Ordinal))
+				{
+					subtype = pair.Value;
+				}
+				else if (string.Equals(ActivityTagKeys.Metadata, pair.Key, StringComparison.Ordinal))
+				{
+					metadata = pair.Value;
+				}
+			}
 
 #pragma warning disable CS0618 // Until it's used we need to include correlationId into events
 			string correlationId = activity.GetObsoleteCorrelationId()?.ToString()
@@ -102,6 +122,7 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly ActivityEventSource m_eventSource;
 		private readonly string m_serviceName;
 		private readonly ILogger<ActivityEventSender> m_logger;
+		private readonly ActivityMetricsSender m_metricsSender;
 		private static readonly string s_logCategory = typeof(ActivityEventSource).FullName ?? nameof(ActivityEventSource);
 		private const string NullPlaceholder = "null";
 	}
