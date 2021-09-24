@@ -33,7 +33,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			string activityId = activity.Id ?? string.Empty;
 			string name = activity.OperationName;
 			double durationMs = activity.Duration.TotalMilliseconds;
-			string userHash = activity.GetUserHash(); //TODO: We need add middleware that will set userhash in compliant way and IsTransaction GitHub Issue #166
+			string userHash = activity.GetUserHash();
 			bool isHealthCheck = activity.IsHealthCheck();
 
 			string subtype = NullPlaceholder;
