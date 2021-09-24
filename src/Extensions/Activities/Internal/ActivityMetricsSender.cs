@@ -49,7 +49,8 @@ namespace Microsoft.Omex.Extensions.Activities
 
 			foreach (KeyValuePair<string, string?> baggage in activity.Baggage)
 			{
-				tags[index++] = new KeyValuePair<string, object?>(baggage.Key, baggage.Value);
+				
+				tags[index++] = CreatePair(baggage.Key, baggage.Value);
 			}
 
 			foreach (KeyValuePair<string, object?> tag in activity.TagObjects)
