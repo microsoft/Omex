@@ -2,7 +2,13 @@
 	"Enabled": true,
 	"Tools": {
 		"ESLint": {
-			"Enabled": false,
+			"Enabled": true,
+			"Inputs": {
+				"Parser": "@typescript-eslint/parser",
+				"ParserOptions": "",
+				"EnableExclusions": true,
+				"ExclusionPatterns": "*.d.ts\n*.spec.js\n*.spec.jsx\n*.spec.ts\n*.spec.tsx"
+			}
 		}
 	}
 }
