@@ -1,0 +1,8 @@
+{
+	"Enabled": true,
+	"Tools": {
+		"ESLint": {
+			"Enabled": false,
+		}
+	}
+}
