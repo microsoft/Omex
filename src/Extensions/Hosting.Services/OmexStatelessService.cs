@@ -40,9 +40,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			m_serviceRegistrator.ListenerBuilders.Select(b => new ServiceInstanceListener(c => b.Build(this), b.Name));
 
 		/// <inheritdoc />
-		protected override Task RunAsync(CancellationToken cancellationToken)
-		{
-			return Task.WhenAll(m_serviceRegistrator.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
-		}
+		protected override Task RunAsync(CancellationToken cancellationToken) =>
+			Task.WhenAll(m_serviceRegistrator.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
 	}
 }
