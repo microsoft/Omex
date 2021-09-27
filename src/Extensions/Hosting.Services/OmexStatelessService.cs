@@ -27,7 +27,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			m_serviceRegistrator = serviceRegistrator;
 		}
 
-
 		/// <inheritdoc />
 		protected override Task OnOpenAsync(CancellationToken cancellationToken)
 		{
