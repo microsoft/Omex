@@ -28,15 +28,18 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		}
 
 		/// <inheritdoc />
+		protected override Task OnOpenAsync(CancellationToken cancellationToken)
+		{
+			m_serviceRegistrator.PartitionAccessor.SetValue(Partition);
+			return base.OnOpenAsync(cancellationToken);
+		}
+
+		/// <inheritdoc />
 		protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners() =>
 			m_serviceRegistrator.ListenerBuilders.Select(b => new ServiceInstanceListener(c => b.Build(this), b.Name));
 
 		/// <inheritdoc />
-		protected override Task RunAsync(CancellationToken cancellationToken)
-		{
-			m_serviceRegistrator.PartitionAccessor.SetValue(Partition);
-
-			return Task.WhenAll(m_serviceRegistrator.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
-		}
+		protected override Task RunAsync(CancellationToken cancellationToken) =>
+			Task.WhenAll(m_serviceRegistrator.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
 	}
 }
