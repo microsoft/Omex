@@ -19,8 +19,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// Add dependencies for a publisher
 		/// </summary>
-		private static void AddPublisherDependencies(this IServiceCollection serviceCollection)
+		private static IServiceCollection AddPublisherDependencies(this IServiceCollection serviceCollection)
 		{
+			// HttpClient registration only needed for HttpEndpointHealthCheck.
+			// It add added here instead of AddHttpEndpointCheck method to avoid creating new configuration each time new health check added.
+			// It would be nice to register this HttpClient configuration once and only if HttpEndpointCheck used.
 			serviceCollection
 				.AddHttpClient(HttpEndpointHealthCheck.HttpClientLogicalName)
 				.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
@@ -31,33 +34,34 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				});
 
 			serviceCollection.TryAddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
+			return serviceCollection;
 		}
 
 		/// <summary>
 		/// Register publisher for processing health check results directly to replicas
 		/// </summary>
-		public static IHealthChecksBuilder AddServiceFabricHealthChecks(this IServiceCollection serviceCollection)
-		{
-			return serviceCollection.AddServiceFabricHealthChecks<ServiceFabricHealthCheckPublisher>();
-		}
+		public static IHealthChecksBuilder AddServiceFabricHealthChecks(this IServiceCollection serviceCollection) =>
+			serviceCollection.AddOmexHealthChecks<ServiceContextHealthStatusSender>();
 
 		/// <summary>
 		/// Register publisher for processing health check results directly to nodes using REST api
 		/// </summary>
-		public static IHealthChecksBuilder AddRestHealthChecks(this IServiceCollection serviceCollection)
-		{
-			serviceCollection.AddServiceFabricClient();
-			return serviceCollection.AddServiceFabricHealthChecks<RestHealthCheckPublisher>();
-		}
+		public static IHealthChecksBuilder AddRestHealthChecksPublisher(this IServiceCollection serviceCollection) =>
+			serviceCollection
+				.AddServiceFabricClient()
+				.AddOmexHealthChecks<RestHealthStatusSender>();
 
 		/// <summary>
 		/// Register publisher for processing health check results
 		/// </summary>
-		public static IHealthChecksBuilder AddServiceFabricHealthChecks<TPublisher>(this IServiceCollection serviceCollection)
-				where TPublisher : class, IHealthCheckPublisher
+		private static IHealthChecksBuilder AddOmexHealthChecks<TStatusSender>(this IServiceCollection serviceCollection)
+				where TStatusSender : class, IHealthStatusSender
 		{
-			serviceCollection.AddPublisherDependencies();
-			return serviceCollection.AddHealthCheckPublisher<TPublisher>().AddHealthChecks();
+			serviceCollection.TryAddSingleton<IHealthStatusSender, TStatusSender>();
+			return serviceCollection
+				.AddPublisherDependencies()
+				.AddHealthCheckPublisher<OmexHealthCheckPublisher>()
+				.AddHealthChecks();
 		}
 
 		/// <summary>

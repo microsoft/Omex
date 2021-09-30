@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
+    <NoWarn>$(NoWarn);NU5104</NoWarn> <!-- Allow usage of RC version of Metric API, should be removed after .NET 6 release -->
   </PropertyGroup>
   <ItemGroup>
     <Content Include="BuildTransitive\*" Pack="true" PackagePath="buildTransitive" />

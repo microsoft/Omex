@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 
 			// Act.
 			IServiceFabricClientWrapper wrapper = new ServiceFabricClientWrapper(options);
-			IServiceFabricClient client = await wrapper.GetAsync().ConfigureAwait(false);
+			IServiceFabricClient client = await wrapper.GetAsync(default).ConfigureAwait(false);
 
 			// Assert.
 			Assert.IsNotNull(client);
