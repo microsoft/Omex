@@ -73,5 +73,7 @@
     <!-- Optional: Include the PDB in the built .nupkg -->
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <SourceRootLocation>$(MSBuildThisFileDirectory)</SourceRootLocation>
+    <!-- Maps paths injected by CallerFilePath attribute to be related and independent from repository location on hard drive -->
+    <PathMap>$(MSBuildThisFileDirectory)=/</PathMap>
   </PropertyGroup>
 </Project>
