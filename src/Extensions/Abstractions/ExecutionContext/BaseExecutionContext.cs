@@ -51,8 +51,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 			}
 			else
 			{
-				EnvironmentName = GetVariable(EnviromentVariableName) 
-					?? GetVariable(AspNetCoreEnviromentVariableName)
+				EnvironmentName = GetVariable(AspNetCoreEnviromentVariableName)
 					?? GetVariable(DotNetEnviromentVariableName)
 					?? Environments.Development;
 				IsPrivateDeployment = string.Equals(EnvironmentName, Environments.Development, StringComparison.OrdinalIgnoreCase);
