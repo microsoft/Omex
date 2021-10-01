@@ -23,9 +23,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 			Assert.AreEqual(tag1.Name, tag2.Name, "EventId Name should be the same in the same file");
 
 			
-			string relativePath = Path.Combine("tests", "Extensions", "Abstractions.UnitTests", nameof(TagTests) + ".cs"); //This value should be change in case of changing file path or name
-			StringAssert.EndsWith(tag1.Name, relativePath, "tag1 Name should point to current file");
-			StringAssert.EndsWith(tag2.Name, relativePath, "tag2 Name should point to current file");
+			string relativePath = "/tests/Extensions/Abstractions.UnitTests/" + nameof(TagTests) + ".cs"; //This value should be change in case of changing file path or name
+			Assert.AreEqual(tag1.Name, relativePath, "tag1 Name should point to current file");
+			Assert.AreEqual(tag2.Name, relativePath, "tag2 Name should point to current file");
 		}
 
 		[DataTestMethod]
