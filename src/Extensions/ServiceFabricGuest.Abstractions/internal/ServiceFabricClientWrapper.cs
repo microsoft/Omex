@@ -19,9 +19,9 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 
 		private readonly ServiceFabricRestClientOptions m_options;
 
-		private readonly ICertificateReader? m_certificateReader;
+		private readonly ICertificateReader m_certificateReader;
 
-		public ServiceFabricClientWrapper(IOptions<ServiceFabricRestClientOptions> options, ICertificateReader? certificateReader = null)
+		public ServiceFabricClientWrapper(IOptions<ServiceFabricRestClientOptions> options, ICertificateReader certificateReader)
 		{
 			m_options = options.Value;
 			m_certificateReader = certificateReader;
@@ -48,11 +48,6 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 				if (string.IsNullOrWhiteSpace(m_options.ClusterCertCommonName))
 				{
 					throw new InvalidOperationException($"{nameof(m_options.ClusterCertCommonName)} could not be empty for {Uri.UriSchemeHttps} cluster.");
-				}
-
-				if (m_certificateReader == null)
-				{
-					throw new InvalidOperationException($"{nameof(ICertificateReader)} required for {Uri.UriSchemeHttps} cluster. Call {nameof(Hosting.ServiceCollectionExtensions.AddCertificateReader)} on host builder.");
 				}
 
 				X509Certificate2? clusterCert = m_certificateReader.GetCertificateByCommonName(m_options.ClusterCertCommonName);
