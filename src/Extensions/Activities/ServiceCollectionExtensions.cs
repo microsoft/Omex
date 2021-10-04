@@ -27,6 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
 		public static IServiceCollection AddOmexActivitySource(this IServiceCollection serviceCollection)
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+			Activity.ForceDefaultIdFormat = true;
 			serviceCollection.AddHostedService<ActivityListenerInitializerService>();
 			serviceCollection.AddHostedService<DiagnosticsObserversInitializer>();
 
