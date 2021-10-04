@@ -103,10 +103,10 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 				ClusterEndpointPort = defaultPort,
 				ClusterEndpointProtocol = Uri.UriSchemeHttps
 			};
-			string endpoint = "https://myFQDN:19080/";
+			Uri endpoint = new Uri("https://myFQDN:19080/");
 
 			// Assert.
-			Assert.AreEqual(endpoint, options.ClusterEndpoint());
+			Assert.AreEqual(endpoint, options.GetClusterEndpoint());
 		}
 
 		[TestMethod]
@@ -121,10 +121,10 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 				ClusterEndpointProtocol = Uri.UriSchemeHttps
 			};
 
-			string endpoint = "https://localhost:19080/";
+			Uri endpoint = new Uri("https://localhost:19080/");
 
 			// Assert.
-			Assert.AreEqual(endpoint, options.ClusterEndpoint());
+			Assert.AreEqual(endpoint, options.GetClusterEndpoint());
 		}
 	}
 }

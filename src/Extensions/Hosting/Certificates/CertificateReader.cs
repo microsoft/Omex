@@ -14,10 +14,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Certificates
 	internal class CertificateReader : ICertificateReader
 	{
 		private readonly ICertificateStore m_certificateStore;
-		private readonly ILogger<CertificateReader> m_logger;
+		private readonly ILogger m_logger;
 		private readonly ConcurrentDictionary<StoreName, CertificateInformation[]> m_certificatesCache;
 
-		public CertificateReader(ICertificateStore certificateStore, ILogger<CertificateReader> logger)
+		public CertificateReader(ICertificateStore certificateStore, ILogger<CertificateReader> logger) : this(certificateStore, logger as ILogger)
+		{
+		}
+
+		internal CertificateReader(ICertificateStore certificateStore, ILogger logger)
 		{
 			m_certificateStore = certificateStore;
 			m_logger = logger;
