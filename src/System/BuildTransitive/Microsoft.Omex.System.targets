@@ -1,6 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="DisplayWarnings" AfterTargets="Build">
-    <Warning
+    <Error
         Condition="'$(UseUnsupportedOmexSystemPackage)' != 'true'"
         Code="OMEX0101"
         HelpKeyword="DoNotUseUnsupportedPackages"
