@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Certificates
 	/// <remarks>
 	/// Please prefer using instance resolved from DI container.
 	/// </remarks>
-	public class InitializationCertificateReader
+	public static class InitializationCertificateReader
 	{
 		/// <summary>
 		/// Instance of CertificateReader
