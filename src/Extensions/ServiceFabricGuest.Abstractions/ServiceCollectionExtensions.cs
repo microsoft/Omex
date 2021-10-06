@@ -3,6 +3,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Omex.Extensions.Hosting;
 
 namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 {
@@ -16,7 +17,9 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 		/// </summary>
 		public static IServiceCollection AddServiceFabricClient(this IServiceCollection serviceCollection)
 		{
-			serviceCollection.TryAddSingleton<IServiceFabricClientWrapper, ServiceFabricClientWrapper>();
+			serviceCollection
+				.AddCertificateReader()
+				.TryAddSingleton<IServiceFabricClientWrapper, ServiceFabricClientWrapper>();
 			return serviceCollection;
 		}
 	}

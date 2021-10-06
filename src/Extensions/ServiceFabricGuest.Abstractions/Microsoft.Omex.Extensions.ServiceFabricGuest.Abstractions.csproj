@@ -13,6 +13,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
+    <ProjectReference Include="..\Hosting\Microsoft.Omex.Extensions.Hosting.csproj" />
   </ItemGroup>
 
 </Project>
