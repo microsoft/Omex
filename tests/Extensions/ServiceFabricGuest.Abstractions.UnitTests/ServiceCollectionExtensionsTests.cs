@@ -2,12 +2,8 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.ServiceFabric.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
@@ -24,6 +20,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 
 
 			IServiceProvider provider = new ServiceCollection()
+				.AddLogging()
 				.AddSingleton(options)
 				.AddServiceFabricClient()
 				.AddServiceFabricClient()
