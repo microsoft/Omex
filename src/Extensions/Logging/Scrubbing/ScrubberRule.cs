@@ -27,7 +27,7 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// </summary>
 		/// <param name="filter">Data to replace</param>
 		/// <param name="replacementValue">Value to replace data with</param>
-		public ScrubberRule(Regex filter, string? replacementValue)
+		public ScrubberRule(Regex filter, string? replacementValue = null)
 		{
 			Filter = Code.ExpectsArgument(filter, nameof(filter), TaggingUtilities.ReserveTag(0));
 			ReplacementValue = replacementValue ?? "[REDACTED]";

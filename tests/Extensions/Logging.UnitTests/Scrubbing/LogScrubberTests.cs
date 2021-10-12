@@ -11,63 +11,49 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 	[TestCategory("Shared")]
 	public class LogScrubberUnitTests
 	{
-		[TestMethod]
-		public void Constructor_ShouldNotScrub()
+		[DataTestMethod]
+		[DataRow("", "")]
+		[DataRow(" ", " ")]
+		[DataRow("input", "input")]
+		public void Scrub_WithNoRules_ShouldNotScrub(string input, string expected)
 		{
-			LogScrubber scrubberRules = new LogScrubber();
-			Assert.IsFalse(scrubberRules.ShouldScrub, "No defined scrubber rules");
+			LogScrubber scrubber = new();
+
+			Assert.AreEqual(expected, scrubber.Scrub(input));
 		}
 
-		[TestMethod]
-		public void Add_ShouldScrub()
+		[DataTestMethod]
+		[DataRow("", "")]
+		[DataRow(" ", " ")]
+		[DataRow("input", "REDACTED")]
+		[DataRow("inputtt", "REDACTED")]
+		[DataRow("output", "output")]
+		[DataRow("output input", "output REDACTED")]
+		public void Scrub_WithOneRule_ShouldScrub(string input, string expected)
 		{
-			LogScrubber scrubberRules = new LogScrubber();
+			LogScrubber scrubber = new();
+			scrubber.AddRule(new ScrubberRule(new Regex("input*"), "REDACTED"));
 
-			scrubberRules.AddRule(new ScrubberRule(new Regex("foobar*"), "redacted"));
-			Assert.IsTrue(scrubberRules.ShouldScrub, "Should scrub based on rule");
+			Assert.AreEqual(expected, scrubber.Scrub(input));
 		}
 
-
-		[TestMethod]
-		public void Scrub_WidthEmptyRules_ShouldNotScrub()
+		[DataTestMethod]
+		[DataRow("", "")]
+		[DataRow(" ", " ")]
+		[DataRow("input", "REDACTED")]
+		[DataRow("inputtt", "REDACTED")]
+		[DataRow("output", "output")]
+		[DataRow("output input", "output REDACTED")]
+		[DataRow("hellooo", "goodbyeoo")]
+		[DataRow("hello input", "goodbye REDACTED")]
+		[DataRow("hello hello input", "goodbye goodbye REDACTED")]
+		public void Scrub_WithMultipleRules_ShouldScrub(string input, string expected)
 		{
-			LogScrubber scrubberRules = new LogScrubber();
-			string input = "foobar";
-			Assert.AreEqual(input, scrubberRules.Scrub(input));
+			LogScrubber scrubber = new();
+			scrubber.AddRule(new ScrubberRule(new Regex("input*"), "REDACTED"));
+			scrubber.AddRule(new ScrubberRule(new Regex("hello"), "goodbye"));
+
+			Assert.AreEqual(expected, scrubber.Scrub(input));
 		}
-
-
-		[TestMethod]
-		public void Scrub_WithRule_ShouldScrub()
-		{
-			LogScrubber scrubberRules = new LogScrubber();
-			scrubberRules.AddRule(new ScrubberRule(new Regex("foobar*"), "redacted"));
-
-			Assert.AreEqual("hello redacted", scrubberRules.Scrub("hello foobarrr"));
-		}
-
-
-		[TestMethod]
-		public void Scrub_WithMultipleRules_ShouldScrub()
-		{
-			LogScrubber scrubberRules = new LogScrubber();
-			scrubberRules.AddRule(new ScrubberRule(new Regex("foobar*"), "redacted"));
-			scrubberRules.AddRule(new ScrubberRule(new Regex("hello"), "goodbye"));
-
-			Assert.AreEqual("goodbye redacted", scrubberRules.Scrub("hello foobarrr"));
-		}
-
-
-		[TestMethod]
-		public void Scrub_WithoutInput_ShouldNotScrub()
-		{
-			LogScrubber scrubberRules = new LogScrubber();
-			scrubberRules.AddRule(new ScrubberRule(new Regex("foobar*"), "redacted"));
-			scrubberRules.AddRule(new ScrubberRule(new Regex("hello"), "goodbye"));
-
-			Assert.AreEqual(string.Empty, scrubberRules.Scrub(string.Empty));
-			Assert.AreEqual(null, scrubberRules.Scrub(null));
-		}
-
 	}
 }

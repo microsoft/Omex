@@ -73,53 +73,45 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[DataRow(EventSourcesEventIds.LogActivity, false)]
 		public void LogActivityEndEvent_Scrubs(EventSourcesEventIds eventId, bool isHealthCheck)
 		{
-			TestEventListener listener = new TestEventListener();
+			using TestEventListener listener = new();
 			listener.EnableEvents(ActivityEventSource.Instance, EventLevel.Informational);
 
-			string name = "TestName";
-			string subType = "TestSubType";
-			string metaData = "TestmetaData";
-			Mock<IExecutionContext> contextMock = new Mock<IExecutionContext>();
+			const string name = "TestName";
+			const string subType = "TestSubType";
+			const string metaData = "TestMetaData";
+			Mock<IExecutionContext> contextMock = new();
 			contextMock.Setup(c => c.ServiceName).Returns("TestService");
-			Mock<ILogScrubber> mockLogScrubber = new Mock<ILogScrubber>();
-			mockLogScrubber.Setup(m => m.ShouldScrub).Returns(true);
+			Mock<ILogScrubber> mockLogScrubber = new();
 			mockLogScrubber
-				.Setup(m => m.Scrub(It.IsAny<string?>()))
-				.Returns<string?>((input) => string.IsNullOrWhiteSpace(input) ? input : input!.Replace("Test", "redacted"));
+				.Setup(m => m.Scrub(It.IsAny<string>()))
+				.Returns<string>(input => input.Replace("Test", "REDACTED"));
 
-			ActivityEventSender logEventSource = new ActivityEventSender(
+			ActivityEventSender logEventSource = new(
 				ActivityEventSource.Instance,
 				contextMock.Object,
 				new NullLogger<ActivityEventSender>(),
 				mockLogScrubber.Object);
 
-			string expectedActivityId = string.Empty;
-			Guid correlationId = Guid.NewGuid();
-			Activity activity = new Activity(name).Start();
-			using (activity)
+			string expectedActivityId;
+			using (Activity activity = new Activity(name).Start())
 			{
-				expectedActivityId = activity.Id ?? string.Empty;
+				expectedActivityId = activity.Id!;
 				activity.SetSubType(subType);
 				activity.SetMetadata(metaData);
 				activity.SetUserHash("TestUserHash");
-#pragma warning disable CS0618 // Type or member is obsolete
-				activity.SetObsoleteCorrelationId(correlationId);
-#pragma warning restore CS0618 // Type or member is obsolete
 				if (isHealthCheck)
 				{
 					activity.MarkAsHealthCheck();
 				}
+
+				logEventSource.SendActivityMetric(activity);
 			}
 
-			logEventSource.SendActivityMetric(activity);
-
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
-
 			eventInfo.AssertPayload("name", name);
 			eventInfo.AssertPayload("subType", subType);
-			eventInfo.AssertPayload("metadata", "redactedmetaData");
+			eventInfo.AssertPayload("metadata", "REDACTEDMetaData");
 			eventInfo.AssertPayload("activityId", expectedActivityId);
-			eventInfo.AssertPayload("correlationId", correlationId.ToString());
 		}
 	}
 }
