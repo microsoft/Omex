@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 	public class ScrubberRule
 	{
 		/// <summary>
-		/// Data to replace
+		/// A regular expression filter specifying the data to replace
 		/// </summary>
 		public Regex Filter { get; }
 
@@ -23,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// <summary>
 		/// Constructor to create a new ScrubberRule
 		/// </summary>
-		/// <param name="filter">Data to replace</param>
+		/// <param name="filter">A regular expression filter specifying the data to replace</param>
 		/// <param name="replacementValue">Value to replace data with</param>
 		public ScrubberRule(Regex filter, string replacementValue)
 		{

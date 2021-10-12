@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[TestMethod]
 		public void Add_WithValues_StoresValues()
 		{
-			Regex filter = new("pattern");
+			Regex filter = new("filter");
 			const string replacementValue = "replacementValue";
 			ScrubberRule scrubberRule = new(filter, replacementValue);
 

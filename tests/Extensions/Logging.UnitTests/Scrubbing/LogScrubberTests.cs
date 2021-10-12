@@ -25,14 +25,14 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataTestMethod]
 		[DataRow("", "")]
 		[DataRow(" ", " ")]
-		[DataRow("input", "REDACTED")]
-		[DataRow("inputtt", "REDACTED")]
+		[DataRow("input", "[REDACTED]")]
+		[DataRow("inputtt", "[REDACTED]")]
 		[DataRow("output", "output")]
-		[DataRow("output input", "output REDACTED")]
+		[DataRow("output input", "output [REDACTED]")]
 		public void Scrub_WithOneRule_ShouldScrub(string input, string expected)
 		{
 			LogScrubber scrubber = new();
-			scrubber.AddRule(new ScrubberRule(new Regex("input*"), "REDACTED"));
+			scrubber.AddRule(new ScrubberRule(new Regex("input*"), "[REDACTED]"));
 
 			Assert.AreEqual(expected, scrubber.Scrub(input));
 		}
@@ -40,17 +40,17 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataTestMethod]
 		[DataRow("", "")]
 		[DataRow(" ", " ")]
-		[DataRow("input", "REDACTED")]
-		[DataRow("inputtt", "REDACTED")]
+		[DataRow("input", "[REDACTED]")]
+		[DataRow("inputtt", "[REDACTED]")]
 		[DataRow("output", "output")]
-		[DataRow("output input", "output REDACTED")]
+		[DataRow("output input", "output [REDACTED]")]
 		[DataRow("hellooo", "goodbyeoo")]
-		[DataRow("hello input", "goodbye REDACTED")]
-		[DataRow("hello hello input", "goodbye goodbye REDACTED")]
+		[DataRow("hello input", "goodbye [REDACTED]")]
+		[DataRow("hello hello input", "goodbye goodbye [REDACTED]")]
 		public void Scrub_WithMultipleRules_ShouldScrub(string input, string expected)
 		{
 			LogScrubber scrubber = new();
-			scrubber.AddRule(new ScrubberRule(new Regex("input*"), "REDACTED"));
+			scrubber.AddRule(new ScrubberRule(new Regex("input*"), "[REDACTED]"));
 			scrubber.AddRule(new ScrubberRule(new Regex("hello"), "goodbye"));
 
 			Assert.AreEqual(expected, scrubber.Scrub(input));

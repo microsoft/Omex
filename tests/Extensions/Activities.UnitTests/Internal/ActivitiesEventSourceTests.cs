@@ -90,7 +90,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			Mock<ILogScrubber> mockLogScrubber = new();
 			mockLogScrubber
 				.Setup(m => m.Scrub(It.IsAny<string>()))
-				.Returns<string>(input => input.Replace("Test", "REDACTED"));
+				.Returns<string>(input => input.Replace("Test", "[REDACTED]"));
 
 			ActivityEventSender logEventSource = new(
 				ActivityEventSource.Instance,
@@ -115,8 +115,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
 			eventInfo.AssertPayload("name", name);
-			eventInfo.AssertPayload("subType", "REDACTEDSubType");
-			eventInfo.AssertPayload("metadata", "REDACTEDMetadata");
+			eventInfo.AssertPayload("subType", "[REDACTED]SubType");
+			eventInfo.AssertPayload("metadata", "[REDACTED]Metadata");
 			eventInfo.AssertPayload("activityId", expectedActivityId);
 		}
 	}
