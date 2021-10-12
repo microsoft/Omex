@@ -24,6 +24,6 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// </summary>
 		/// <param name="input">Input to scrub</param>
 		/// <returns>Scrubbed input</returns>
-		string Scrub(string? input);
+		string? Scrub(string? input);
 	}
 }

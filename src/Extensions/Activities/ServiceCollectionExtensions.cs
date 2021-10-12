@@ -10,6 +10,7 @@ using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.Omex.Extensions.Activities;
+using Microsoft.Omex.Extensions.Logging.Scrubbing;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -46,6 +47,7 @@ namespace Microsoft.Extensions.DependencyInjection
 			serviceCollection.TryAddSingleton<IActivityListenerConfigurator, DefaultActivityListenerConfigurator>();
 			serviceCollection.TryAddSingleton(p => new ActivitySource(ActivitySourceName, ActivitySourceVersion));
 			serviceCollection.TryAddSingleton(p => ActivityEventSource.Instance);
+			serviceCollection.TryAddSingleton<ILogScrubber, LogScrubber>();
 
 			return serviceCollection;
 		}

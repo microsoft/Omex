@@ -10,16 +10,18 @@ using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Logging.Scrubbing;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
 	internal sealed class ActivityEventSender : IActivitiesEventSender
 	{
-		public ActivityEventSender(ActivityEventSource eventSource, IExecutionContext executionContext, ILogger<ActivityEventSender> logger)
+		public ActivityEventSender(ActivityEventSource eventSource, IExecutionContext executionContext, ILogger<ActivityEventSender> logger, ILogScrubber logScrubber)
 		{
 			m_eventSource = eventSource;
 			m_serviceName = executionContext.ServiceName;
 			m_logger = logger;
+			m_logScrubber = logScrubber;
 		}
 
 		public void SendActivityMetric(Activity activity)
@@ -67,8 +69,8 @@ namespace Microsoft.Omex.Extensions.Activities
 #pragma warning restore CS0618
 
 			string nameAsString = SanitizeString(name, nameof(name), name);
-			string subTypeAsString = SanitizeString(subtype, nameof(subtype), name);
-			string metaDataAsString = SanitizeString(metadata, nameof(metadata), name);
+			string subTypeAsString = SanitizeString((m_logScrubber.ShouldScrub ? m_logScrubber.Scrub(subtype) : subtype) ?? "", nameof(subtype), name);
+			string metaDataAsString = SanitizeString((m_logScrubber.ShouldScrub ? m_logScrubber.Scrub(metadata) : metadata) ?? "", nameof(metadata), name);
 			string userHashAsString = SanitizeString(userHash, nameof(userHash), name);
 			string serviceNameAsString = SanitizeString(serviceName, nameof(serviceName), name);
 			string correlationIdAsString = SanitizeString(correlationId, nameof(correlationId), name);
@@ -122,6 +124,7 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly ActivityEventSource m_eventSource;
 		private readonly string m_serviceName;
 		private readonly ILogger<ActivityEventSender> m_logger;
+		private readonly ILogScrubber m_logScrubber;
 		private static readonly string s_logCategory = typeof(ActivityEventSource).FullName ?? nameof(ActivityEventSource);
 		private const string NullPlaceholder = "null";
 	}
