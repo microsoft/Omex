@@ -9,21 +9,16 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 	public interface ILogScrubber
 	{
 		/// <summary>
-		/// Gets whether inputs should be scrubbed
-		/// </summary>
-		bool ShouldScrub { get; }
-
-		/// <summary>
 		/// Adds a new scrubber rule
 		/// </summary>
 		/// <param name="rule">Scrubber rule</param>
-		void Add(ScrubberRule rule);
+		void AddRule(ScrubberRule rule);
 
 		/// <summary>
 		/// Scrubs an input based on rules
 		/// </summary>
 		/// <param name="input">Input to scrub</param>
 		/// <returns>Scrubbed input</returns>
-		string? Scrub(string? input);
+		string Scrub(string input);
 	}
 }

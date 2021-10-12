@@ -23,7 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
 		private const string ActivitySourceVersion = "1.0.0.0";
 
 		/// <summary>
-		/// Add ActivitySource to ServiceCollection
+		/// AddRule ActivitySource to ServiceCollection
 		/// </summary>
 		public static IServiceCollection AddOmexActivitySource(this IServiceCollection serviceCollection)
 		{

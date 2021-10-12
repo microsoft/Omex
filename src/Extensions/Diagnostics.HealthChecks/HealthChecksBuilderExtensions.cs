@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	public static class HealthChecksBuilderExtensions
 	{
 		/// <summary>
-		/// Add http endpoint health check
+		/// AddRule http endpoint health check
 		/// </summary>
 		/// <param name="builder">health checks builder</param>
 		/// <param name="name">name of the health check</param>
@@ -85,7 +85,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		}
 
 		/// <summary>
-		/// Add http endpoint health check
+		/// AddRule http endpoint health check
 		/// </summary>
 		/// <param name="builder">health checks builder</param>
 		/// <param name="name">name of the health check</param>

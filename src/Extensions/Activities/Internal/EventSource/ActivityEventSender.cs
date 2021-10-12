@@ -69,8 +69,8 @@ namespace Microsoft.Omex.Extensions.Activities
 #pragma warning restore CS0618
 
 			string nameAsString = SanitizeString(name, nameof(name), name);
-			string subTypeAsString = SanitizeString((m_logScrubber.ShouldScrub ? m_logScrubber.Scrub(subtype) : subtype) ?? "", nameof(subtype), name);
-			string metaDataAsString = SanitizeString((m_logScrubber.ShouldScrub ? m_logScrubber.Scrub(metadata) : metadata) ?? "", nameof(metadata), name);
+			string subTypeAsString = SanitizeString(m_logScrubber.Scrub(subtype), nameof(subtype), name);
+			string metaDataAsString = SanitizeString(m_logScrubber.Scrub(metadata), nameof(metadata), name);
 			string userHashAsString = SanitizeString(userHash, nameof(userHash), name);
 			string serviceNameAsString = SanitizeString(serviceName, nameof(serviceName), name);
 			string correlationIdAsString = SanitizeString(correlationId, nameof(correlationId), name);

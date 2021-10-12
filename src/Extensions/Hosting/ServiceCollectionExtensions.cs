@@ -15,14 +15,14 @@ namespace Microsoft.Omex.Extensions.Hosting
 	public static class ServiceCollectionExtensions
 	{
 		/// <summary>
-		/// Add Omex Logging and ActivitySource dependencies
+		/// AddRule Omex Logging and ActivitySource dependencies
 		/// </summary>
 		public static IHostBuilder AddOmexServices(this IHostBuilder builder) =>
 			builder
 				.ConfigureServices((context, collection) => collection.AddOmexServices());
 
 		/// <summary>
-		/// Add Omex Logging and ActivitySource dependencies
+		/// AddRule Omex Logging and ActivitySource dependencies
 		/// </summary>
 		public static IServiceCollection AddOmexServices(this IServiceCollection collection) =>
 			collection
@@ -30,7 +30,7 @@ namespace Microsoft.Omex.Extensions.Hosting
 				.AddOmexActivitySource();
 
 		/// <summary>
-		/// Add Omex Logging and ActivitySource dependencies
+		/// AddRule Omex Logging and ActivitySource dependencies
 		/// </summary>
 		public static IServiceCollection AddCertificateReader(this IServiceCollection collection)
 		{

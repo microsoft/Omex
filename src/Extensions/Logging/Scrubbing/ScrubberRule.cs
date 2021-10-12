@@ -6,7 +6,7 @@ using Microsoft.Omex.System.Logging;
 using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.Extensions.Logging.Scrubbing
-	{
+{
 	/// <summary>
 	/// Rule for Scrubber to remove sensitive information from message
 	/// </summary>
@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// <summary>
 		/// Value to replace data with
 		/// </summary>
-		public string? ReplacementValue { get; }
+		public string ReplacementValue { get; }
 
 		/// <summary>
 		/// Constructor to create a new ScrubberRule
@@ -30,7 +30,7 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		public ScrubberRule(Regex filter, string? replacementValue)
 		{
 			Filter = Code.ExpectsArgument(filter, nameof(filter), TaggingUtilities.ReserveTag(0));
-			ReplacementValue = replacementValue;
+			ReplacementValue = replacementValue ?? "[REDACTED]";
 		}
 	}
 }

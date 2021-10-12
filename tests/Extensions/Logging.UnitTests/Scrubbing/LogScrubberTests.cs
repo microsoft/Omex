@@ -23,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		{
 			LogScrubber scrubberRules = new LogScrubber();
 
-			scrubberRules.Add(new ScrubberRule(new Regex("foobar*"), "redacted"));
+			scrubberRules.AddRule(new ScrubberRule(new Regex("foobar*"), "redacted"));
 			Assert.IsTrue(scrubberRules.ShouldScrub, "Should scrub based on rule");
 		}
 
@@ -41,7 +41,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		public void Scrub_WithRule_ShouldScrub()
 		{
 			LogScrubber scrubberRules = new LogScrubber();
-			scrubberRules.Add(new ScrubberRule(new Regex("foobar*"), "redacted"));
+			scrubberRules.AddRule(new ScrubberRule(new Regex("foobar*"), "redacted"));
 
 			Assert.AreEqual("hello redacted", scrubberRules.Scrub("hello foobarrr"));
 		}
@@ -51,8 +51,8 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		public void Scrub_WithMultipleRules_ShouldScrub()
 		{
 			LogScrubber scrubberRules = new LogScrubber();
-			scrubberRules.Add(new ScrubberRule(new Regex("foobar*"), "redacted"));
-			scrubberRules.Add(new ScrubberRule(new Regex("hello"), "goodbye"));
+			scrubberRules.AddRule(new ScrubberRule(new Regex("foobar*"), "redacted"));
+			scrubberRules.AddRule(new ScrubberRule(new Regex("hello"), "goodbye"));
 
 			Assert.AreEqual("goodbye redacted", scrubberRules.Scrub("hello foobarrr"));
 		}
@@ -62,8 +62,8 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		public void Scrub_WithoutInput_ShouldNotScrub()
 		{
 			LogScrubber scrubberRules = new LogScrubber();
-			scrubberRules.Add(new ScrubberRule(new Regex("foobar*"), "redacted"));
-			scrubberRules.Add(new ScrubberRule(new Regex("hello"), "goodbye"));
+			scrubberRules.AddRule(new ScrubberRule(new Regex("foobar*"), "redacted"));
+			scrubberRules.AddRule(new ScrubberRule(new Regex("hello"), "goodbye"));
 
 			Assert.AreEqual(string.Empty, scrubberRules.Scrub(string.Empty));
 			Assert.AreEqual(null, scrubberRules.Scrub(null));

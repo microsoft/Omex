@@ -45,8 +45,8 @@ namespace Microsoft.Omex.Extensions.Logging
 			string serviceName = m_executionContext.ServiceName;
 			string buildVersion = m_executionContext.BuildVersion;
 			string machineId = m_executionContext.MachineId;
-			category = (m_logScrubber.ShouldScrub ? m_logScrubber.Scrub(category) : category) ?? string.Empty;
-			message = (m_logScrubber.ShouldScrub ? m_logScrubber.Scrub(message) : message) ?? string.Empty;
+			category = m_logScrubber.Scrub(category);
+			message = m_logScrubber.Scrub(message);
 
 			string tagName = eventId.Name ?? string.Empty;
 			// In case if tag created using Tag.Create (line number and file in description) it's better to display decimal number
