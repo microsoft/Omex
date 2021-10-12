@@ -8,7 +8,6 @@
     <PackageReference Include="System.Text.Encodings.Web" Version="$(System_Text_Encodings_Web_Version)" /> <!-- Override due to CG vulnerability -->
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\System\Microsoft.Omex.System.csproj" />
     <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
   </ItemGroup>
 </Project>
