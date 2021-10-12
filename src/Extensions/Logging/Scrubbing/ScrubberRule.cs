@@ -2,8 +2,6 @@
 // Licensed under the MIT license.
 
 using System.Text.RegularExpressions;
-using Microsoft.Omex.System.Logging;
-using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 {
@@ -27,10 +25,10 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// </summary>
 		/// <param name="filter">Data to replace</param>
 		/// <param name="replacementValue">Value to replace data with</param>
-		public ScrubberRule(Regex filter, string? replacementValue = null)
+		public ScrubberRule(Regex filter, string replacementValue)
 		{
-			Filter = Code.ExpectsArgument(filter, nameof(filter), TaggingUtilities.ReserveTag(0));
-			ReplacementValue = replacementValue ?? "[REDACTED]";
+			Filter = filter;
+			ReplacementValue = replacementValue;
 		}
 	}
 }

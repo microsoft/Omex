@@ -3,8 +3,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Omex.System.Logging;
-using Microsoft.Omex.System.Validation;
 
 namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 {
@@ -19,12 +17,8 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// Adds a new scrubber rule
 		/// </summary>
 		/// <param name="rule">Scrubber rule</param>
-		public void AddRule(ScrubberRule rule)
-		{
-			Code.ExpectsArgument(rule, nameof(rule), TaggingUtilities.ReserveTag(0));
-
+		public void AddRule(ScrubberRule rule) =>
 			m_scrubberRules.Add(rule);
-		}
 
 		/// <summary>
 		/// Scrubs an input based on rules

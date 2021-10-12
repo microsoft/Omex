@@ -24,29 +24,34 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[DataRow(EventSourcesEventIds.LogActivity, false)]
 		public void LogActivityEndEvent_CreatesEvent(EventSourcesEventIds eventId, bool isHealthCheck)
 		{
-			TestEventListener listener = new TestEventListener();
+			using TestEventListener listener = new();
 			listener.EnableEvents(ActivityEventSource.Instance, EventLevel.Informational);
 
-			string name = "TestName";
-			string subType = "TestSubType";
-			string metaData = "TestmetaData";
-			Mock<IExecutionContext> contextMock = new Mock<IExecutionContext>();
+			const string name = "TestName";
+			const string subType = "TestSubType";
+			const string metadata = "TestMetadata";
+
+			Mock<IExecutionContext> contextMock = new();
 			contextMock.Setup(c => c.ServiceName).Returns("TestService");
 
-			ActivityEventSender logEventSource = new ActivityEventSender(
+			Mock<ILogScrubber> mockLogScrubber = new();
+			mockLogScrubber
+				.Setup(m => m.Scrub(It.IsAny<string>()))
+				.Returns<string>(input => input);
+
+			ActivityEventSender logEventSource = new(
 				ActivityEventSource.Instance,
 				contextMock.Object,
 				new NullLogger<ActivityEventSender>(),
-				new Mock<ILogScrubber>().Object);
+				mockLogScrubber.Object);
 
-			string expectedActivityId = string.Empty;
+			string expectedActivityId;
 			Guid correlationId = Guid.NewGuid();
-			Activity activity = new Activity(name).Start();
-			using (activity)
+			using (Activity activity = new Activity(name).Start())
 			{
-				expectedActivityId = activity.Id ?? string.Empty;
+				expectedActivityId = activity.Id!;
 				activity.SetSubType(subType);
-				activity.SetMetadata(metaData);
+				activity.SetMetadata(metadata);
 				activity.SetUserHash("TestUserHash");
 #pragma warning disable CS0618 // Type or member is obsolete
 				activity.SetObsoleteCorrelationId(correlationId);
@@ -55,15 +60,14 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 				{
 					activity.MarkAsHealthCheck();
 				}
+
+				logEventSource.SendActivityMetric(activity);
 			}
 
-			logEventSource.SendActivityMetric(activity);
-
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
-
 			eventInfo.AssertPayload("name", name);
 			eventInfo.AssertPayload("subType", subType);
-			eventInfo.AssertPayload("metadata", metaData);
+			eventInfo.AssertPayload("metadata", metadata);
 			eventInfo.AssertPayload("activityId", expectedActivityId);
 			eventInfo.AssertPayload("correlationId", correlationId.ToString());
 		}
@@ -78,9 +82,11 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 
 			const string name = "TestName";
 			const string subType = "TestSubType";
-			const string metaData = "TestMetaData";
+			const string metadata = "TestMetadata";
+
 			Mock<IExecutionContext> contextMock = new();
 			contextMock.Setup(c => c.ServiceName).Returns("TestService");
+
 			Mock<ILogScrubber> mockLogScrubber = new();
 			mockLogScrubber
 				.Setup(m => m.Scrub(It.IsAny<string>()))
@@ -97,7 +103,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			{
 				expectedActivityId = activity.Id!;
 				activity.SetSubType(subType);
-				activity.SetMetadata(metaData);
+				activity.SetMetadata(metadata);
 				activity.SetUserHash("TestUserHash");
 				if (isHealthCheck)
 				{
@@ -109,8 +115,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
 			eventInfo.AssertPayload("name", name);
-			eventInfo.AssertPayload("subType", subType);
-			eventInfo.AssertPayload("metadata", "REDACTEDMetaData");
+			eventInfo.AssertPayload("subType", "REDACTEDSubType");
+			eventInfo.AssertPayload("metadata", "REDACTEDMetadata");
 			eventInfo.AssertPayload("activityId", expectedActivityId);
 		}
 	}

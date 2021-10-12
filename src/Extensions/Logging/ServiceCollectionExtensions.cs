@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Logging
 	public static class ServiceCollectionExtensions
 	{
 		/// <summary>
-		/// AddRule IServiceContext to ServiceCollection
+		/// Add IServiceContext to ServiceCollection
 		/// </summary>
 		public static IServiceCollection AddOmexServiceContext<TServiceContext>(this IServiceCollection serviceCollection)
 			where TServiceContext : class, IServiceContext

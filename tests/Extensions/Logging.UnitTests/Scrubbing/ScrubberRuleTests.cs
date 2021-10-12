@@ -12,10 +12,14 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 	public class ScrubberRuleUnitTests
 	{
 		[TestMethod]
-		public void Add_WithoutReplacementValue_ShouldNotThrow()
+		public void Add_WithValues_StoresValues()
 		{
-			ScrubberRule scrubberRule = new(new Regex("pattern"), null);
-			Assert.IsNotNull(scrubberRule, "Scrubber Rule got created");
+			Regex filter = new("pattern");
+			const string replacementValue = "replacementValue";
+			ScrubberRule scrubberRule = new(filter, replacementValue);
+
+			Assert.AreEqual(filter, scrubberRule.Filter);
+			Assert.AreEqual(replacementValue, scrubberRule.ReplacementValue);
 		}
 	}
 }

@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	public static class ServiceCollectionExtensions
 	{
 		/// <summary>
-		/// AddRule dependencies for a publisher
+		/// Add dependencies for a publisher
 		/// </summary>
 		private static IServiceCollection AddPublisherDependencies(this IServiceCollection serviceCollection)
 		{

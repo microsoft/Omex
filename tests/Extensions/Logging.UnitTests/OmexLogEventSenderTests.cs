@@ -28,45 +28,49 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[DataRow(EventLevel.Verbose, LogLevel.Trace, EventSourcesEventIds.LogSpam)]
 		public void LogMessage_CreatesProperEvents(EventLevel eventLevel, LogLevel logLevel, EventSourcesEventIds eventId)
 		{
-			TestEventListener listener = new TestEventListener();
+			using TestEventListener listener = new();
 			listener.EnableEvents(OmexLogEventSource.Instance, eventLevel);
 			listener.EnableEvents(ServiceInitializationEventSource.Instance, EventLevel.Informational);
 
-			string message = "Test message";
-			string category = "Test category";
-			int tagId = 0xFFF9;
-			Activity activity = new Activity("Test activity");
-			activity.Start().Stop(); // start and stop activity to get correlation id
+			const string message = "Test message";
+			const string category = "Test category";
+			const int tagId = 0xFFF9;
+			string expectedActivityId;
+			using (Activity activity = new("Test activity"))
+			{
+				activity.Start().Stop(); // Start and stop the activity to get the correlation ID.
+				expectedActivityId = activity.Id!;
 
-			Mock<IOptionsMonitor<OmexLoggingOptions>> mockOptions = new Mock<IOptionsMonitor<OmexLoggingOptions>>();
-			mockOptions.Setup(m => m.CurrentValue).Returns(new OmexLoggingOptions());
+				Mock<IOptionsMonitor<OmexLoggingOptions>> mockOptions = new();
+				mockOptions.Setup(m => m.CurrentValue).Returns(new OmexLoggingOptions());
 
-			OmexLogEventSender logsSender = new OmexLogEventSender(
-				OmexLogEventSource.Instance,
-				new Mock<IExecutionContext>().Object,
-				new EmptyServiceContext(),
-				mockOptions.Object,
-				new Mock<ILogScrubber>().Object);
+				Mock<ILogScrubber> mockLogScrubber = new();
+				mockLogScrubber
+					.Setup(m => m.Scrub(It.IsAny<string>()))
+					.Returns<string>(input => input);
 
-			logsSender.LogMessage(activity, category, logLevel, tagId, 0, message, new Exception("Not expected to be part of the event"));
+				OmexLogEventSender logsSender = new(
+					OmexLogEventSource.Instance,
+					new Mock<IExecutionContext>().Object,
+					new EmptyServiceContext(),
+					mockOptions.Object,
+					mockLogScrubber.Object);
+
+				logsSender.LogMessage(activity, category, logLevel, tagId, 0, message, new Exception("Not expected to be part of the event"));
+			}
 
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
-
 			eventInfo.AssertPayload("message", message);
 			eventInfo.AssertPayload("category", category);
-			eventInfo.AssertPayload("activityId", activity.Id ?? string.Empty);
-			eventInfo.AssertPayload("tagId", "fff9");
+			eventInfo.AssertPayload("activityId", expectedActivityId);
+			eventInfo.AssertPayload("tagId", tagId.ToString("x4"));
 
 			InitializationLogger.LogInitializationSucceed(category, message);
-
-
 			eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)EventSourcesEventIds.GenericHostBuildSucceeded);
-
 			eventInfo.AssertPayload("message", "Initialization successful for Test category, Test message");
 
-			string newMessage = "New message";
+			const string newMessage = "New message";
 			InitializationLogger.LogInitializationFail(category, new Exception("Not expected to be part of the event"), newMessage);
-
 			eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)EventSourcesEventIds.GenericHostFailed);
 			eventInfo.AssertPayload("message", newMessage);
 		}
@@ -99,7 +103,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 				Mock<ILogScrubber> mockLogScrubber = new();
 				mockLogScrubber
 					.Setup(m => m.Scrub(It.IsAny<string>()))
-					.Returns<string>((input) => input.Replace("Test", "REDACTED"));
+					.Returns<string>(input => input.Replace("Test", "REDACTED"));
 
 				OmexLogEventSender logsSender = new(
 					OmexLogEventSource.Instance,
@@ -116,15 +120,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			eventInfo.AssertPayload("category", "REDACTED category");
 			eventInfo.AssertPayload("activityId", expectedActivityId);
 			eventInfo.AssertPayload("tagId", tagId.ToString("x4"));
-
-			InitializationLogger.LogInitializationSucceed(category, message);
-			eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)EventSourcesEventIds.GenericHostBuildSucceeded);
-			eventInfo.AssertPayload("message", "Initialization successful for Test category, redacted message");
-
-			const string newMessage = "New message";
-			InitializationLogger.LogInitializationFail(category, new Exception("Not expected to be part of the event"), newMessage);
-			eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)EventSourcesEventIds.GenericHostFailed);
-			eventInfo.AssertPayload("message", newMessage);
 		}
 	}
 }

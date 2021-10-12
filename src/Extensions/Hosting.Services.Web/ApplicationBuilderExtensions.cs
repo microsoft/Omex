@@ -46,25 +46,25 @@ namespace Microsoft.AspNetCore.Builder
 		}
 
 		/// <summary>
-		/// AddRule middleware to enrich request activity with Result, SubType and Metadata
+		/// Add middleware to enrich request activity with Result, SubType and Metadata
 		/// </summary>
 		public static IApplicationBuilder UseActivityEnrichmentMiddleware(this IApplicationBuilder builder) =>
 			builder.UseMiddleware<ActivityEnrichmentMiddleware>();
 
 		/// <summary>
-		/// AddRule middleware that adds Omex headers to responses, like MachineId and BuildVersion
+		/// Add middleware that adds Omex headers to responses, like MachineId and BuildVersion
 		/// </summary>
 		public static IApplicationBuilder UseResponseHeadersMiddleware(this IApplicationBuilder builder) =>
 			builder.UseMiddleware<ResponseHeadersMiddleware>();
 
 		/// <summary>
-		/// AddRule middleware user identity middleware to add user hash to correlation
+		/// Add middleware user identity middleware to add user hash to correlation
 		/// </summary>
 		public static IApplicationBuilder UseUserHashIdentiyMiddleware(this IApplicationBuilder builder) =>
 			builder.UseMiddleware<UserHashIdentityMiddleware>();
 
 		/// <summary>
-		/// AddRule middleware that adds Omex headers to responses, like MachineId and BuildVersion
+		/// Add middleware that adds Omex headers to responses, like MachineId and BuildVersion
 		/// </summary>
 		[Obsolete("Use it only if you need to communicate with services that use old correlation", false)]
 		public static IApplicationBuilder UseObsoleteCorrelationHeadersMiddleware(this IApplicationBuilder builder) =>
