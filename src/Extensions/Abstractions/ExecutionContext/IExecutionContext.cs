@@ -59,6 +59,11 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		string ApplicationName { get; }
 
 		/// <summary>
+		/// Node name
+		/// </summary>
+		string NodeName { get; }
+
+		/// <summary>
 		/// Azure region name
 		/// </summary>
 		string RegionName { get; }

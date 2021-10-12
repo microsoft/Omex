@@ -21,7 +21,8 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		// We define them
 		internal const string ClusterNameVariableName = "CLUSTER_NAME";
 		internal const string SliceNameVariableName = "SLICE_NAME";
-		internal const string EnviromentVariableName = "DOTNET_ENVIRONMENT"; // getting environment directly only if we don't have IHostEnvironment ex. InitializationLogger
+		internal const string AspNetCoreEnviromentVariableName = "ASPNETCORE_ENVIRONMENT";
+		internal const string DotNetEnviromentVariableName = "DOTNET_ENVIRONMENT"; // getting environment directly only if we don't have IHostEnvironment ex. InitializationLogger
 
 		// defined by Service Fabric https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-environment-variables-reference
 		internal const string ServiceNameVariableName = "Fabric_ServiceName";
@@ -50,7 +51,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 			}
 			else
 			{
-				EnvironmentName = GetVariable(EnviromentVariableName) ?? DefaultEmptyValue;
+				EnvironmentName = GetVariable(AspNetCoreEnviromentVariableName)
+					?? GetVariable(DotNetEnviromentVariableName)
+					?? Environments.Development;
 				IsPrivateDeployment = string.Equals(EnvironmentName, Environments.Development, StringComparison.OrdinalIgnoreCase);
 			}
 
@@ -60,8 +63,8 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 			ServiceName = GetVariable(ServiceNameVariableName) ?? DefaultEmptyValue;
 			ApplicationName = GetVariable(ApplicationNameVariableName) ?? DefaultEmptyValue;
 
-			string nodeName = GetVariable(NodeNameVariableName) ?? DefaultEmptyValue;
-			MachineId = FormattableString.Invariant($"{MachineName}_{nodeName}");
+			NodeName = GetVariable(NodeNameVariableName) ?? DefaultEmptyValue;
+			MachineId = FormattableString.Invariant($"{MachineName}_{NodeName}");
 
 			string? nodeIPAddressOrFQDN = GetVariable(NodeIPOrFQDNVariableName);
 
@@ -81,6 +84,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 
 		/// <inheritdoc/>
 		public string ApplicationName { get; protected set; }
+
+		/// <inheritdoc/>
+		public string NodeName { get; protected set; }
 
 		/// <inheritdoc/>
 		public IPAddress ClusterIpAddress { get; protected set; }

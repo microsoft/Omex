@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Fabric;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,11 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Omex.Extensions.Abstractions.Accessors;
-using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using ServiceFabric.Mocks;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 {
@@ -35,92 +31,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			};
 
 			HttpHealthCheckParameters parameters = HttpHealthCheckParametersTests.Create(
-				headers: new Dictionary<string, IEnumerable<string>>
-				{
-					{ "testHeader", new List<string> { "value" } }
-				},
-				expectedStatus: status,
-				reportData: reportData);
-
-			(MockClient _, HealthCheckResult result) = await RunHealthCheckAsync(parameters, response);
-
-			Assert.AreEqual(HealthStatus.Healthy, result.Status,
-				FormattableString.Invariant($"Should return {HealthStatus.Healthy} for expected status"));
-
-			Assert.AreEqual(string.Empty, result.Description, "Content should not be in the description for healthy check");
-			CollectionAssert.AreEquivalent(reportData, result.Data.ToArray(), "Result should propagate reportData");
-		}
-
-		[TestMethod]
-		public async Task CheckHealthAsync_HeaderKeyIsWhiteSpace_ReturnsUnhealthy()
-		{
-			string contentText = nameof(CheckHealthAsync_WhenExpectedStatus_ReturnsHealthy);
-			HttpStatusCode status = HttpStatusCode.Found;
-			KeyValuePair<string, object>[] reportData = Array.Empty<KeyValuePair<string, object>>();
-			HttpResponseMessage response = new HttpResponseMessage(status)
-			{
-				Content = new StringContent(contentText)
-			};
-
-			HttpHealthCheckParameters parameters = HttpHealthCheckParametersTests.Create(
-				headers: new Dictionary<string, IEnumerable<string>>
-				{
-					{ string.Empty, new List<string> { "value" } }
-				},
-				expectedStatus: status,
-				reportData: reportData);
-
-			(MockClient _, HealthCheckResult result) = await RunHealthCheckAsync(parameters, response);
-
-			Assert.AreEqual(HealthStatus.Unhealthy, result.Status,
-				FormattableString.Invariant($"Should return {HealthStatus.Unhealthy} for expected status"));
-		}
-
-		[TestMethod]
-		public async Task CheckHealthAsync_HeaderValueIsEmpty_ReturnsHealthy()
-		{
-			string contentText = nameof(CheckHealthAsync_WhenExpectedStatus_ReturnsHealthy);
-			HttpStatusCode status = HttpStatusCode.Found;
-			KeyValuePair<string, object>[] reportData = Array.Empty<KeyValuePair<string, object>>();
-			HttpResponseMessage response = new HttpResponseMessage(status)
-			{
-				Content = new StringContent(contentText)
-			};
-
-			HttpHealthCheckParameters parameters = HttpHealthCheckParametersTests.Create(
-				headers: new Dictionary<string, IEnumerable<string>>
-				{
-					{ "testheader", new List<string>() }
-				},
-				expectedStatus: status,
-				reportData: reportData);
-
-			(MockClient _, HealthCheckResult result) = await RunHealthCheckAsync(parameters, response);
-
-			Assert.AreEqual(HealthStatus.Healthy, result.Status,
-				FormattableString.Invariant($"Should return {HealthStatus.Healthy} for expected status"));
-
-			Assert.AreEqual(string.Empty, result.Description, "Content should not be in the description for healthy check");
-			CollectionAssert.AreEquivalent(reportData, result.Data.ToArray(), "Result should propagate reportData");
-		}
-
-		[TestMethod]
-		public async Task CheckHealthAsync_MultipleHeaderValues_ReturnsHealthy()
-		{
-			string contentText = nameof(CheckHealthAsync_WhenExpectedStatus_ReturnsHealthy);
-			HttpStatusCode status = HttpStatusCode.Found;
-			KeyValuePair<string, object>[] reportData = Array.Empty<KeyValuePair<string, object>>();
-			HttpResponseMessage response = new HttpResponseMessage(status)
-			{
-				Content = new StringContent(contentText)
-			};
-
-			HttpHealthCheckParameters parameters = HttpHealthCheckParametersTests.Create(
-				headers: new Dictionary<string, IEnumerable<string>>
-				{
-					{ "testheader", new List<string> { "value1", "value2" } },
-					{ "testheader2", new List<string> { "value1", "value2" } }
-				},
+				new HttpRequestMessage(),
 				expectedStatus: status,
 				reportData: reportData);
 
@@ -144,6 +55,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			};
 
 			HttpHealthCheckParameters parameters = HttpHealthCheckParametersTests.Create(
+				new HttpRequestMessage(),
 				expectedStatus: HttpStatusCode.NotFound,
 				reportData: reportData);
 
@@ -167,6 +79,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			};
 
 			HttpHealthCheckParameters parameters = HttpHealthCheckParametersTests.Create(
+				new HttpRequestMessage(),
 				expectedStatus: HttpStatusCode.NotFound,
 				reportData: reportData);
 
@@ -194,12 +107,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			HealthCheckResult expectedResult = HealthCheckResult.Healthy("Some description", new Dictionary<string, object>());
 
 			HttpHealthCheckParameters parameters = HttpHealthCheckParametersTests.Create(
+				new HttpRequestMessage(),
 				expectedStatus: HttpStatusCode.BadRequest,
 				additionalCheck: (response, result) =>
 				{
 					actualResponce = response;
 					initialResult = result;
-					return expectedResult;
+					return Task.FromResult(expectedResult);
 				},
 				reportData: reportData);
 
@@ -215,9 +129,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		private async Task<(MockClient, HealthCheckResult)> RunHealthCheckAsync(
 			HttpHealthCheckParameters parameters, HttpResponseMessage response, HealthStatus failureStatus = HealthStatus.Unhealthy)
 		{
-			Accessor<ServiceContext> accessor = new Accessor<ServiceContext>();
-			Mock<IHttpClientFactory> factoryMock = new Mock<IHttpClientFactory>();
-			MockClient clientMock = new MockClient(response);
+			Mock<IHttpClientFactory> factoryMock = new();
+			MockClient clientMock = new(response);
 
 			factoryMock.Setup(f => f.CreateClient(HttpEndpointHealthCheck.HttpClientLogicalName))
 				.Returns(clientMock);
@@ -225,23 +138,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			HttpEndpointHealthCheck healthCheck = new HttpEndpointHealthCheck(
 				parameters,
 				factoryMock.Object,
-				accessor,
 				new NullLogger<HttpEndpointHealthCheck>(),
 				new ActivitySource("Test"));
 
 			HealthCheckContext checkContext = HealthCheckContextHelper.CreateCheckContext();
 			checkContext.Registration.FailureStatus = failureStatus;
-
-			HealthCheckResult uninitializedResult = await healthCheck.CheckHealthAsync(checkContext);
-
-			Assert.AreEqual(HealthStatus.Healthy, uninitializedResult.Status,
-				FormattableString.Invariant($"Should return {HealthStatus.Healthy} if accessor not set"));
-
-			Mock<ICodePackageActivationContext> mock = new Mock<ICodePackageActivationContext>();
-			mock.Setup(c => c.GetEndpoint(parameters.EndpointName)).Returns(new System.Fabric.Description.EndpointResourceDescription());
-			ServiceContext context = MockStatelessServiceContextFactory.Create(mock.Object, string.Empty, new Uri("https://localhost"), Guid.Empty, 0);
-
-			(accessor as IAccessorSetter<ServiceContext>).SetValue(context);
 
 			HealthCheckResult result = await healthCheck.CheckHealthAsync(checkContext);
 

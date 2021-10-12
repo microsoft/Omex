@@ -18,6 +18,7 @@
   </ItemGroup>
   <ItemGroup Condition="$(IsNetCore)">
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(Microsoft_AspNetCore_Http_Abstractions_Version)" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="$(System_Text_Encodings_Web_Version)" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DefaultGates.xml" Link="DefaultGates.xml">
@@ -28,7 +29,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Src\Gating.UnitTests.Shared\Microsoft.Omex.Gating.UnitTests.Shared.csproj" />
+    <ProjectReference Include="..\..\src\Gating.UnitTests.Shared\Microsoft.Omex.Gating.UnitTests.Shared.csproj" />
     <ProjectReference Include="..\..\src\Gating\Microsoft.Omex.Gating.csproj" />
     <ProjectReference Include="..\..\src\System.UnitTests.Shared\Microsoft.Omex.System.UnitTests.Shared.csproj" />
   </ItemGroup>

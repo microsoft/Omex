@@ -2,6 +2,10 @@
 // Licensed under the MIT license.
 
 using System;
+using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.UnitTests;
+using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions;
+using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal

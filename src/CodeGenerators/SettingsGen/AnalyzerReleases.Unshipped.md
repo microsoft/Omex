@@ -4,8 +4,8 @@
 ### New Rules
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
-SETTINGSGEN001 | SettingsGenerator | Warning | BaseGenerator
-SETTINGSGEN002 | SettingsGenerator | Warning | BaseGenerator
-SETTINGSGEN003 | SettingsGenerator | Warning | BaseGenerator
+SETTINGSGEN001 | SettingsGenerator | Info | BaseGenerator
+SETTINGSGEN002 | SettingsGenerator | Info | BaseGenerator
+SETTINGSGEN003 | SettingsGenerator | Info | BaseGenerator
 SETTINGSGEN004 | SettingsGenerator | Error | BaseGenerator
 SETTINGSGEN005 | SettingsGenerator | Error | BaseGenerator

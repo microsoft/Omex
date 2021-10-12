@@ -25,3 +25,13 @@ namespace System.Diagnostics.CodeAnalysis
 	}
 }
 #endif
+
+#if !NET5_0_OR_GREATER
+namespace System.Runtime.CompilerServices
+{
+	/// <summary>
+	/// Stub to allow using record and init properties when building for older targets
+	/// </summary>
+	public static class IsExternalInit { }
+}
+#endif

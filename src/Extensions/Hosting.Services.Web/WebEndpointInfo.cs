@@ -4,6 +4,7 @@
 using System;
 using System.Globalization;
 using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 {

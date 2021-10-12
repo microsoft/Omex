@@ -54,8 +54,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				.ToArray();
 
 			Assert.IsTrue(
-				publishers.Any(p => p is ServiceFabricHealthCheckPublisher),
-				FormattableString.Invariant($"{nameof(ServiceFabricHealthCheckPublisher)} publisher should be registered"));
+				publishers.Any(p => p is OmexHealthCheckPublisher),
+				FormattableString.Invariant($"{nameof(OmexHealthCheckPublisher)} publisher should be registered"));
 
 			IOptions<HealthCheckServiceOptions> options = provider.GetRequiredService<IOptions<HealthCheckServiceOptions>>();
 			HealthCheckRegistration? registration = options.Value.Registrations.SingleOrDefault(r => string.Equals(checkName, r.Name, StringComparison.Ordinal));

@@ -10,5 +10,10 @@
     <PackageReference Include="Microsoft.ServiceFabric.Client.Http" Version="$(Microsoft_ServiceFabric_Client_Http_Version)" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="$(System_ComponentModel_Annotations)" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
+    <ProjectReference Include="..\Hosting\Microsoft.Omex.Extensions.Hosting.csproj" />
+  </ItemGroup>
 
 </Project>

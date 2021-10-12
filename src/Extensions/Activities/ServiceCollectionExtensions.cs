@@ -27,6 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
 		public static IServiceCollection AddOmexActivitySource(this IServiceCollection serviceCollection)
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+			Activity.ForceDefaultIdFormat = true;
 			serviceCollection.AddHostedService<ActivityListenerInitializerService>();
 			serviceCollection.AddHostedService<DiagnosticsObserversInitializer>();
 
@@ -36,7 +37,12 @@ namespace Microsoft.Extensions.DependencyInjection
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<IActivityStopObserver, ActivityObserver>(p => p.GetRequiredService<ActivityObserver>()));
 
 			serviceCollection.TryAddSingleton<IExecutionContext, BaseExecutionContext>();
-			serviceCollection.TryAddSingleton<IActivitiesEventSender, ActivityEventSender>();
+
+			// eventually ActivityMetricsSender will be default implementation of IActivitiesEventSender and we should remove ActivityEventSender, and AggregatedActivitiesEventSender
+			serviceCollection.TryAddSingleton<ActivityMetricsSender>();
+			serviceCollection.TryAddSingleton<ActivityEventSender>();
+			serviceCollection.TryAddSingleton<IActivitiesEventSender, AggregatedActivitiesEventSender>();
+
 			serviceCollection.TryAddSingleton<IActivityListenerConfigurator, DefaultActivityListenerConfigurator>();
 			serviceCollection.TryAddSingleton(p => new ActivitySource(ActivitySourceName, ActivitySourceVersion));
 			serviceCollection.TryAddSingleton(p => ActivityEventSource.Instance);

@@ -40,8 +40,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Certificates
 		/// <param name="thumbprint">Thumbprint of certificate</param>
 		/// <param name="refreshCache">Refresh cache before looking for certificate</param>
 		/// <param name="storeName">Certificate store</param>
-		/// <remarks>It preferable to getting certificate by common name</remarks>
-		[Obsolete("Consider getting certificate by common name instead thumbprint", false)]
+		/// <remarks>It preferable to getting certificate by common name.
+		/// Please use this method only in cases where retrieving by common name might not work, e.g. a certificate used to decrypt an access token.
+		/// </remarks>
 		X509Certificate2? GetCertificateByThumbprint(string thumbprint, bool refreshCache = false, StoreName storeName = StoreName.My);
 	}
 }
