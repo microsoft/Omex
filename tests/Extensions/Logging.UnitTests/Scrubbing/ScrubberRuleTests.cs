@@ -21,5 +21,27 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 			Assert.AreEqual(filter, scrubberRule.Filter);
 			Assert.AreEqual(replacementValue, scrubberRule.ReplacementValue);
 		}
+
+		[DataTestMethod]
+		[DataRow("", "")]
+		[DataRow(" ", " ")]
+		[DataRow("input", "[REDACTED]")]
+		[DataRow("inputtt", "[REDACTED]")]
+		[DataRow("output", "output")]
+		[DataRow("output input", "output [REDACTED]")]
+		public void Scrub_WhenCalled_ShouldScrub(string input, string expected)
+		{
+			ScrubberRule scrubberRule = new(new Regex("input*"), "[REDACTED]");
+
+			Assert.AreEqual(expected, scrubberRule.Scrub(input));
+		}
+
+		[TestMethod]
+		public void Scrub_WhenCalledWithInputContainingMultipleSubstringsToReplace_ShouldScrub()
+		{
+			ScrubberRule scrubberRule = new(new Regex("input"), "[REDACTED]");
+
+			Assert.AreEqual("[REDACTED] [REDACTED] output [REDACTED]", scrubberRule.Scrub("input input output input"));
+		}
 	}
 }

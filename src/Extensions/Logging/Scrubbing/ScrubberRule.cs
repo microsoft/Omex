@@ -30,5 +30,13 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 			Filter = filter;
 			ReplacementValue = replacementValue;
 		}
+
+		/// <summary>
+		/// Scrubs an input based on the current rule
+		/// </summary>
+		/// <param name="input">Input to scrub</param>
+		/// <returns>Scrubbed input</returns>
+		public string Scrub(string input) =>
+			Filter.Replace(input, ReplacementValue);
 	}
 }

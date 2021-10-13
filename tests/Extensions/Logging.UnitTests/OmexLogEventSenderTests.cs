@@ -117,7 +117,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
 			eventInfo.AssertPayload("message", "[REDACTED] message");
-			eventInfo.AssertPayload("category", "[REDACTED] category");
+			eventInfo.AssertPayload("category", category);
 			eventInfo.AssertPayload("activityId", expectedActivityId);
 			eventInfo.AssertPayload("tagId", tagId.ToString("x4"));
 		}

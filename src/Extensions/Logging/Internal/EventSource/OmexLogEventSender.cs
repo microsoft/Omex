@@ -45,7 +45,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			string serviceName = m_executionContext.ServiceName;
 			string buildVersion = m_executionContext.BuildVersion;
 			string machineId = m_executionContext.MachineId;
-			category = m_logScrubber.Scrub(category);
 			message = m_logScrubber.Scrub(message);
 
 			string tagName = eventId.Name ?? string.Empty;

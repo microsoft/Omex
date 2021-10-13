@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 
 namespace Microsoft.Omex.Extensions.Logging.Scrubbing
@@ -11,7 +11,13 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 	/// </summary>
 	public class LogScrubber : ILogScrubber
 	{
-		private readonly List<ScrubberRule> m_scrubberRules = new();
+		/// <summary>
+		/// The list of scrubber rules.
+		/// </summary>
+		/// <remarks>This is stored as a <see cref="ConcurrentBag{ScrubberRule}"/> as <see cref="LogScrubber"/> is
+		/// intended to be stored as a singleton and the choice of this data structure allows for safe concurrent write
+		/// access.</remarks>
+		private readonly ConcurrentBag<ScrubberRule> m_scrubberRules = new();
 
 		/// <summary>
 		/// Adds a new scrubber rule
@@ -26,6 +32,6 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// <param name="input">Input to scrub</param>
 		/// <returns>Scrubbed input</returns>
 		public string Scrub(string input) =>
-			m_scrubberRules.Aggregate(input, (current, rule) => rule.Filter.Replace(current, rule.ReplacementValue));
+			m_scrubberRules.Aggregate(input, (current, rule) => rule.Scrub(current));
 	}
 }
