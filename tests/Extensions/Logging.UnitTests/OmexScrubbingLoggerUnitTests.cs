@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Logging.Internal.EventSource;
@@ -132,8 +131,8 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[TestMethod]
 		public void Log_ShouldScrub()
 		{
-			LogScrubber.Instance.AddRule(new ScrubberRule(new Regex("Replay"), "redacted"));
-			LogScrubber.Instance.AddRule(new ScrubberRule(new Regex("Error"), "redacted"));
+			LogScrubber.Instance.AddRule("Replay", "redacted");
+			LogScrubber.Instance.AddRule("Error", "redacted");
 
 			string replayMessage1 = "ReplayMessage1";
 			Exception exception1 = new ArgumentException("Error");

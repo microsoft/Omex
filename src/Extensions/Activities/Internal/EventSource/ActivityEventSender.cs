@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
@@ -13,9 +14,9 @@ using Microsoft.Omex.Extensions.Logging.Scrubbing;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
-	internal sealed class ActivityEventSender : IActivitiesEventSender
+	internal sealed class ActivityEventSender : IActivityEventSender
 	{
-		public ActivityEventSender(ActivityEventSource eventSource, IExecutionContext executionContext, ILogger<ActivityEventSender> logger)
+		public ActivityEventSender(ActivityEventSource eventSource, IExecutionContext executionContext, ILogger<IActivityEventSender> logger)
 		{
 			m_eventSource = eventSource;
 			m_serviceName = executionContext.ServiceName;
@@ -42,24 +43,24 @@ namespace Microsoft.Omex.Extensions.Activities
 			string subtype = NullPlaceholder;
 			string metadata = NullPlaceholder;
 			string resultAsString = NullPlaceholder;
-			foreach ((string key, string? value) in activity.Tags)
+			foreach (KeyValuePair<string, string?> pair in activity.Tags)
 			{
-				if (value == null)
+				if (pair.Value == null)
 				{
 					continue;
 				}
 
-				if (string.Equals(ActivityTagKeys.Result, key, StringComparison.Ordinal))
+				if (string.Equals(ActivityTagKeys.Result, pair.Key, StringComparison.Ordinal))
 				{
-					resultAsString = value;
+					resultAsString = pair.Value;
 				}
-				else if (string.Equals(ActivityTagKeys.SubType, key, StringComparison.Ordinal))
+				else if (string.Equals(ActivityTagKeys.SubType, pair.Key, StringComparison.Ordinal))
 				{
-					subtype = value;
+					subtype = pair.Value;
 				}
-				else if (string.Equals(ActivityTagKeys.Metadata, key, StringComparison.Ordinal))
+				else if (string.Equals(ActivityTagKeys.Metadata, pair.Key, StringComparison.Ordinal))
 				{
-					metadata = value;
+					metadata = pair.Value;
 				}
 			}
 
@@ -121,7 +122,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			}
 
 			m_logger.LogWarning(Tag.Create(), StringLimitMessage, stringLimit, name, activityName, value.Length);
-			return value[..stringLimit];
+			return value.Substring(0, stringLimit);
 		}
 
 		private const string StringLimitMessage =
@@ -129,7 +130,7 @@ namespace Microsoft.Omex.Extensions.Activities
 
 		private readonly ActivityEventSource m_eventSource;
 		private readonly string m_serviceName;
-		private readonly ILogger<ActivityEventSender> m_logger;
+		private readonly ILogger<IActivityEventSender> m_logger;
 		private static readonly string s_logCategory = typeof(ActivityEventSource).FullName ?? nameof(ActivityEventSource);
 		private const string NullPlaceholder = "null";
 	}

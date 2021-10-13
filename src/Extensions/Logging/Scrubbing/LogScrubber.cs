@@ -3,7 +3,7 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace Microsoft.Omex.Extensions.Logging.Scrubbing
@@ -21,8 +21,8 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// <remarks>This is stored as a <see cref="ConcurrentBag{ScrubberRule}"/> as <see cref="LogScrubber"/> is
 		/// intended to be stored as a singleton and the choice of this data structure allows for safe concurrent write
 		/// access.</remarks>
-		private ConcurrentBag<ScrubberRule> m_scrubberRules = new();
-		
+		private ConcurrentBag<Tuple<Regex, string>> m_scrubberRules = new();
+
 		private LogScrubber()
 		{
 		}
@@ -36,16 +36,17 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// <summary>
 		/// Adds a new scrubber rule
 		/// </summary>
-		/// <param name="rule">Scrubber rule</param>
-		public void AddRule(ScrubberRule rule) =>
-			m_scrubberRules.Add(rule);
+		/// <param name="regularExpression">A regular expression filter specifying the data to replace</param>
+		/// <param name="replacementValue">Value to replace data with</param>
+		public void AddRule(string regularExpression, string replacementValue) =>
+			m_scrubberRules.Add(new Tuple<Regex, string>(new Regex(regularExpression, RegexOptions.Compiled), replacementValue));
 
 		/// <summary>
 		/// Clears all scrubber rules.
 		/// </summary>
 		public void ClearRules()
 		{
-			ConcurrentBag<ScrubberRule> emptyScrubberRules = new();
+			ConcurrentBag<Tuple<Regex, string>> emptyScrubberRules = new();
 			Interlocked.Exchange(ref m_scrubberRules, emptyScrubberRules);
 		}
 
@@ -54,7 +55,14 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// </summary>
 		/// <param name="input">Input to scrub</param>
 		/// <returns>Scrubbed input</returns>
-		public string Scrub(string input) =>
-			m_scrubberRules.Aggregate(input, (current, rule) => rule.Scrub(current));
+		public string Scrub(string input)
+		{
+			foreach ((Regex regularExpression, string replacementValue) in m_scrubberRules)
+			{
+				input = regularExpression.Replace(input, replacementValue);
+			}
+
+			return input;
+		}
 	}
 }

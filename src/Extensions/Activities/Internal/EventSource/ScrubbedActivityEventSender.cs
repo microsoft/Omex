@@ -7,11 +7,11 @@ using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
-	internal sealed class ScrubbedActivityEventSender : IActivitiesEventSender
+	internal sealed class ScrubbedActivityEventSender : IActivityEventSender
 	{
 		private readonly ActivityEventSender m_activityEventSender;
 
-		public ScrubbedActivityEventSender(ActivityEventSource eventSource, IExecutionContext executionContext, ILogger<ActivityEventSender> logger) =>
+		public ScrubbedActivityEventSender(ActivityEventSource eventSource, IExecutionContext executionContext, ILogger<IActivityEventSender> logger) =>
 			m_activityEventSender = new ActivityEventSender(eventSource, executionContext, logger);
 
 		public void SendActivityMetric(Activity activity) =>

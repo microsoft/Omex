@@ -85,7 +85,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			contextMock.Setup(c => c.ServiceName).Returns("TestService");
 
 			LogScrubber.Instance.ClearRules();
-			LogScrubber.Instance.AddRule(new ScrubberRule(new Regex("Test"), "[REDACTED]"));
+			LogScrubber.Instance.AddRule("Test", "[REDACTED]");
 
 			ActivityEventSender logEventSource = new(
 				ActivityEventSource.Instance,

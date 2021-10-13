@@ -3,7 +3,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Logging.Internal.EventSource;
 using Microsoft.Omex.Extensions.Logging.Scrubbing;
@@ -44,7 +43,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[TestMethod]
 		public void CreateLogger_CreatesScrubbingLogger()
 		{
-			LogScrubber.Instance.AddRule(new ScrubberRule(new Regex("Test"), "redacted"));
+			LogScrubber.Instance.AddRule("Test", "redacted");
 
 			string testCategory = "SomeTestCategoryName";
 			string testMessage = "TestMessage";
