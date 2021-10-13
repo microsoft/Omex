@@ -17,7 +17,8 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataRow("input", "input")]
 		public void Scrub_WithNoRules_ShouldNotScrub(string input, string expected)
 		{
-			LogScrubber scrubber = new();
+			LogScrubber scrubber = LogScrubber.Instance;
+			scrubber.ClearRules();
 
 			Assert.AreEqual(expected, scrubber.Scrub(input));
 		}
@@ -31,7 +32,8 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataRow("output input", "output [REDACTED]")]
 		public void Scrub_WithOneRule_ShouldScrub(string input, string expected)
 		{
-			LogScrubber scrubber = new();
+			LogScrubber scrubber = LogScrubber.Instance;
+			scrubber.ClearRules();
 			scrubber.AddRule(new ScrubberRule(new Regex("input*"), "[REDACTED]"));
 
 			Assert.AreEqual(expected, scrubber.Scrub(input));
@@ -49,7 +51,8 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataRow("hello hello input", "goodbye goodbye [REDACTED]")]
 		public void Scrub_WithMultipleRules_ShouldScrub(string input, string expected)
 		{
-			LogScrubber scrubber = new();
+			LogScrubber scrubber = LogScrubber.Instance;
+			scrubber.ClearRules();
 			scrubber.AddRule(new ScrubberRule(new Regex("input*"), "[REDACTED]"));
 			scrubber.AddRule(new ScrubberRule(new Regex("hello"), "goodbye"));
 

@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
@@ -44,17 +45,13 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 				Mock<IOptionsMonitor<OmexLoggingOptions>> mockOptions = new();
 				mockOptions.Setup(m => m.CurrentValue).Returns(new OmexLoggingOptions());
 
-				Mock<ILogScrubber> mockLogScrubber = new();
-				mockLogScrubber
-					.Setup(m => m.Scrub(It.IsAny<string>()))
-					.Returns<string>(input => input);
+				LogScrubber.Instance.ClearRules();
 
 				OmexLogEventSender logsSender = new(
 					OmexLogEventSource.Instance,
 					new Mock<IExecutionContext>().Object,
 					new EmptyServiceContext(),
-					mockOptions.Object,
-					mockLogScrubber.Object);
+					mockOptions.Object);
 
 				logsSender.LogMessage(activity, category, logLevel, tagId, 0, message, new Exception("Not expected to be part of the event"));
 			}
@@ -99,18 +96,15 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 				Mock<IOptionsMonitor<OmexLoggingOptions>> mockOptions = new();
 				mockOptions.Setup(m => m.CurrentValue).Returns(new OmexLoggingOptions());
-
-				Mock<ILogScrubber> mockLogScrubber = new();
-				mockLogScrubber
-					.Setup(m => m.Scrub(It.IsAny<string>()))
-					.Returns<string>(input => input.Replace("Test", "[REDACTED]"));
+				
+				LogScrubber.Instance.ClearRules();
+				LogScrubber.Instance.AddRule(new ScrubberRule(new Regex("Test"), "[REDACTED]"));
 
 				OmexLogEventSender logsSender = new(
 					OmexLogEventSource.Instance,
 					new Mock<IExecutionContext>().Object,
 					new EmptyServiceContext(),
-					mockOptions.Object,
-					mockLogScrubber.Object);
+					mockOptions.Object);
 
 				logsSender.LogMessage(activity, category, logLevel, tagId, 0, message, new Exception("Not expected to be part of the event"));
 			}

@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
@@ -34,16 +35,12 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			Mock<IExecutionContext> contextMock = new();
 			contextMock.Setup(c => c.ServiceName).Returns("TestService");
 
-			Mock<ILogScrubber> mockLogScrubber = new();
-			mockLogScrubber
-				.Setup(m => m.Scrub(It.IsAny<string>()))
-				.Returns<string>(input => input);
+			LogScrubber.Instance.ClearRules();
 
 			ActivityEventSender logEventSource = new(
 				ActivityEventSource.Instance,
 				contextMock.Object,
-				new NullLogger<ActivityEventSender>(),
-				mockLogScrubber.Object);
+				new NullLogger<ActivityEventSender>());
 
 			string expectedActivityId;
 			Guid correlationId = Guid.NewGuid();
@@ -87,16 +84,13 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			Mock<IExecutionContext> contextMock = new();
 			contextMock.Setup(c => c.ServiceName).Returns("TestService");
 
-			Mock<ILogScrubber> mockLogScrubber = new();
-			mockLogScrubber
-				.Setup(m => m.Scrub(It.IsAny<string>()))
-				.Returns<string>(input => input.Replace("Test", "[REDACTED]"));
+			LogScrubber.Instance.ClearRules();
+			LogScrubber.Instance.AddRule(new ScrubberRule(new Regex("Test"), "[REDACTED]"));
 
 			ActivityEventSender logEventSource = new(
 				ActivityEventSource.Instance,
 				contextMock.Object,
-				new NullLogger<ActivityEventSender>(),
-				mockLogScrubber.Object);
+				new NullLogger<ActivityEventSender>());
 
 			string expectedActivityId;
 			using (Activity activity = new Activity(name).Start())

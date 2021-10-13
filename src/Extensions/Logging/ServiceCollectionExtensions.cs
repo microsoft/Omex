@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.Omex.Extensions.Logging.Replayable;
-using Microsoft.Omex.Extensions.Logging.Scrubbing;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
@@ -52,7 +51,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			serviceCollection.TryAddSingleton(p => OmexLogEventSource.Instance);
 			serviceCollection.TryAddSingleton<ILogEventReplayer, OmexLogEventReplayer>();
 			serviceCollection.TryAddSingleton<ILogEventSender, OmexLogEventSender>();
-			serviceCollection.TryAddSingleton<ILogScrubber, LogScrubber>();
 
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ReplayableActivityStopObserver>());
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
