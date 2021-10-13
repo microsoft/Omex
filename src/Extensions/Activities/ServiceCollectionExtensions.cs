@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System.Diagnostics;
+using System.Security.Cryptography;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
@@ -21,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
 		/// <summary>
 		/// Add ActivitySource to ServiceCollection
 		/// </summary>
-		public static IServiceCollection AddOmexActivitySource(this IServiceCollection serviceCollection)
+		public static IServiceCollection AddOmexActivitySource(this IServiceCollection serviceCollection, bool enableScrubbing = false)
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 			Activity.ForceDefaultIdFormat = true;
@@ -37,9 +38,17 @@ namespace Microsoft.Extensions.DependencyInjection
 
 			// eventually ActivityMetricsSender will be default implementation of IActivitiesEventSender and we should remove ActivityEventSender, and AggregatedActivitiesEventSender
 			serviceCollection.TryAddSingleton<ActivityMetricsSender>();
-			serviceCollection.TryAddSingleton<ActivityEventSender>();
-			serviceCollection.TryAddSingleton<IActivitiesEventSender, AggregatedActivitiesEventSender>();
 
+			if (!enableScrubbing)
+			{
+				serviceCollection.TryAddSingleton<IActivityEventSender, ActivityEventSender>();
+			}
+			else
+			{
+				serviceCollection.TryAddSingleton<IActivityEventSender, ScrubbedActivityEventSender>();
+			}
+
+			serviceCollection.TryAddSingleton<IActivitiesEventSender, AggregatedActivitiesEventSender>();
 			serviceCollection.TryAddSingleton<IActivityListenerConfigurator, DefaultActivityListenerConfigurator>();
 			serviceCollection.TryAddSingleton(p => new ActivitySource(ActivitySourceName, ActivitySourceVersion));
 			serviceCollection.TryAddSingleton(p => ActivityEventSource.Instance);

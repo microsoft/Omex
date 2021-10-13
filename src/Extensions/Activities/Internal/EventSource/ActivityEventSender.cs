@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
@@ -23,7 +22,10 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_logger = logger;
 		}
 
-		public void SendActivityMetric(Activity activity)
+		public void SendActivityMetric(Activity activity) =>
+			SendActivityMetric(activity, false);
+
+		internal void SendActivityMetric(Activity activity, bool enableScrubbing)
 		{
 			if (!m_eventSource.IsEnabled())
 			{
@@ -40,24 +42,24 @@ namespace Microsoft.Omex.Extensions.Activities
 			string subtype = NullPlaceholder;
 			string metadata = NullPlaceholder;
 			string resultAsString = NullPlaceholder;
-			foreach (KeyValuePair<string, string?> pair in activity.Tags)
+			foreach ((string key, string? value) in activity.Tags)
 			{
-				if (pair.Value == null)
+				if (value == null)
 				{
 					continue;
 				}
 
-				if (string.Equals(ActivityTagKeys.Result, pair.Key, StringComparison.Ordinal))
+				if (string.Equals(ActivityTagKeys.Result, key, StringComparison.Ordinal))
 				{
-					resultAsString = pair.Value;
+					resultAsString = value;
 				}
-				else if (string.Equals(ActivityTagKeys.SubType, pair.Key, StringComparison.Ordinal))
+				else if (string.Equals(ActivityTagKeys.SubType, key, StringComparison.Ordinal))
 				{
-					subtype = pair.Value;
+					subtype = value;
 				}
-				else if (string.Equals(ActivityTagKeys.Metadata, pair.Key, StringComparison.Ordinal))
+				else if (string.Equals(ActivityTagKeys.Metadata, key, StringComparison.Ordinal))
 				{
-					metadata = pair.Value;
+					metadata = value;
 				}
 			}
 
@@ -67,9 +69,14 @@ namespace Microsoft.Omex.Extensions.Activities
 				?? NullPlaceholder;
 #pragma warning restore CS0618
 
+			if (enableScrubbing)
+			{
+				metadata = LogScrubber.Instance.Scrub(metadata);
+			}
+
 			string nameAsString = SanitizeString(name, nameof(name), name);
-			string subTypeAsString = SanitizeString(LogScrubber.Instance.Scrub(subtype), nameof(subtype), name);
-			string metaDataAsString = SanitizeString(LogScrubber.Instance.Scrub(metadata), nameof(metadata), name);
+			string subTypeAsString = SanitizeString(subtype, nameof(subtype), name);
+			string metaDataAsString = SanitizeString(metadata, nameof(metadata), name);
 			string userHashAsString = SanitizeString(userHash, nameof(userHash), name);
 			string serviceNameAsString = SanitizeString(serviceName, nameof(serviceName), name);
 			string correlationIdAsString = SanitizeString(correlationId, nameof(correlationId), name);
@@ -108,13 +115,13 @@ namespace Microsoft.Omex.Extensions.Activities
 		private string SanitizeString(string value, string name, string activityName)
 		{
 			const int stringLimit = 1024;
-			if (value.Length > stringLimit)
+			if (value.Length <= stringLimit)
 			{
-				m_logger.LogWarning(Tag.Create(), StringLimitMessage, stringLimit, name, activityName, value.Length);
-				value = value.Substring(0, stringLimit);
+				return value;
 			}
 
-			return value;
+			m_logger.LogWarning(Tag.Create(), StringLimitMessage, stringLimit, name, activityName, value.Length);
+			return value[..stringLimit];
 		}
 
 		private const string StringLimitMessage =
