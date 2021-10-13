@@ -2,6 +2,14 @@
   <PropertyGroup>
     <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
   </PropertyGroup>
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter</Title>
+    <Summary>Microsoft Omex Extensions Compatibility UlsLoggerAdapter</Summary>
+    <Description>This library contains compatibility classes that enable logging using the legacy Omex extensions.</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Compatibility.UlsLoggerAdapter</PackageProjectUrl>
+    <PackageTags>Microsoft;Omex;Extensions;UlsLoggerAdapter</PackageTags>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\System\Microsoft.Omex.System.csproj" />
   </ItemGroup>
