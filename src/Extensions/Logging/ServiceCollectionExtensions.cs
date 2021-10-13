@@ -39,8 +39,9 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// Adds Omex event logger to the factory
 		/// </summary>
 		/// <param name="serviceCollection">The extension method argument</param>
+		/// <param name="shouldScrub">A value indicating whether the logs should be scrubbed.</param>
 		/// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained</returns>
-		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection)
+		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection, bool shouldScrub = false)
 		{
 			serviceCollection.AddLogging();
 
@@ -50,7 +51,15 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			serviceCollection.TryAddSingleton(p => OmexLogEventSource.Instance);
 			serviceCollection.TryAddSingleton<ILogEventReplayer, OmexLogEventReplayer>();
-			serviceCollection.TryAddSingleton<ILogEventSender, OmexLogEventSender>();
+
+			if (shouldScrub)
+			{
+				serviceCollection.TryAddSingleton<ILogEventSender, OmexScrubbedLogEventSender>();
+			}
+			else
+			{
+				serviceCollection.TryAddSingleton<ILogEventSender, OmexLogEventSender>();
+			}
 
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ReplayableActivityStopObserver>());
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());

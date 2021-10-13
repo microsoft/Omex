@@ -8,11 +8,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Logging.Scrubbing;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
-	internal sealed class OmexLogEventSender : ILogEventSender
+	internal class OmexLogEventSender : ILogEventSender
 	{
 		static OmexLogEventSender()
 		{
@@ -44,7 +43,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			string serviceName = m_executionContext.ServiceName;
 			string buildVersion = m_executionContext.BuildVersion;
 			string machineId = m_executionContext.MachineId;
-			message = LogScrubber.Instance.Scrub(message);
 
 			string tagName = eventId.Name ?? string.Empty;
 			// In case if tag created using Tag.Create (line number and file in description) it's better to display decimal number
