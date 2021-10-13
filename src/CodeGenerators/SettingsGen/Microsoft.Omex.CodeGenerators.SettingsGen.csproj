@@ -6,6 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.CodeGenerators.SettingsGen</Title>
+    <DevelopmentDependency>True</DevelopmentDependency>
+    <Summary>Microsoft Omex Code Generators SettingsGen</Summary>
+    <Description>Generates strongly typed settings from settings xml.</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/CodeGenerators/SettingsGen</PackageProjectUrl>
+    <PackageTags>Microsoft;Omex;Settings</PackageTags>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="$(Microsoft_CodeAnalysis_Common)" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(Microsoft_CodeAnalysis_CSharp)" PrivateAssets="all" />
