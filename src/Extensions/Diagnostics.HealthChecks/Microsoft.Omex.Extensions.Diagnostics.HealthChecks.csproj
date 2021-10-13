@@ -3,6 +3,14 @@
     <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.Extensions.Diagnostics.HealthChecks</Title>
+    <Summary>Microsoft Omex Extensions Diagnostics HealthChecks</Summary>
+    <Description>This library faciliates creating and running health checks in Service Fabric.</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Diagnostics.HealthChecks</PackageProjectUrl>
+    <PackageTags>Microsoft;Omex;Extensions;HealthChecks</PackageTags>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ServiceFabric" Version="$(Microsoft_ServiceFabric_Version)" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="$(Microsoft_Extensions_Diagnostics_HealthChecks_Version)" />

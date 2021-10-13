@@ -3,6 +3,14 @@
     <TargetFrameworks>$(NetCoreVersions)</TargetFrameworks>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.Extensions.Hosting.Services.Web</Title>
+    <Summary>Microsoft Omex Extensions Hosting Services Web</Summary>
+    <Description>This library contains functionality to configure the Service Fabric Kestrel listeners, and additional middleware to enable tracing.</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Hosting.Services.Web</PackageProjectUrl>
+    <PackageTags>Microsoft;Omex;Extensions;Hosting;Services;Web</PackageTags>
+  </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
