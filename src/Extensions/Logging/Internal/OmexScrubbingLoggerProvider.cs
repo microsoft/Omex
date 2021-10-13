@@ -12,16 +12,22 @@ namespace Microsoft.Omex.Extensions.Logging.Internal.EventSource
 	{
 		public OmexScrubbingLoggerProvider(ILogEventSender logsEventSender, IExternalScopeProvider defaultExternalScopeProvider, ILogEventReplayer? replayer = null)
 		{
-			m_loggerProvider = new OmexLoggerProvider(logsEventSender, defaultExternalScopeProvider, replayer);
+			m_logsEventSender = logsEventSender;
+			m_defaultExternalScopeProvider = defaultExternalScopeProvider;
+			m_replayer = replayer;
 		}
 
 		public ILogger CreateLogger(string categoryName) =>
-			m_loggerProvider!.CreateLogger(m_logScrubber.Scrub(categoryName));
+			new OmexScrubbingLogger(m_logsEventSender, m_externalScopeProvider ?? m_defaultExternalScopeProvider, categoryName, m_replayer);
 
-		public void Dispose() => m_loggerProvider!.Dispose();
-		public void SetScopeProvider(IExternalScopeProvider scopeProvider) => m_loggerProvider!.SetScopeProvider(scopeProvider);
+		public void Dispose() { }
 
-		private OmexLoggerProvider? m_loggerProvider;
+		public void SetScopeProvider(IExternalScopeProvider scopeProvider) => m_externalScopeProvider = scopeProvider;
+
+		private IExternalScopeProvider? m_externalScopeProvider;
+		private readonly IExternalScopeProvider m_defaultExternalScopeProvider;
+		private readonly ILogEventReplayer? m_replayer;
+		private readonly ILogEventSender m_logsEventSender;
 		private LogScrubber m_logScrubber = LogScrubber.Instance;
 	}
 }

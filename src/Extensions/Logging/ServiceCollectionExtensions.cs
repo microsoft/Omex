@@ -54,6 +54,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			serviceCollection.TryAddSingleton<ILogEventReplayer, OmexLogEventReplayer>();
 
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ReplayableActivityStopObserver>());
+
 			if (enableScrubbing)
 			{
 				serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexScrubbingLoggerProvider>());
