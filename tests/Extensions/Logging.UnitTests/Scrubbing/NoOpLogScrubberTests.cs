@@ -8,7 +8,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 {
 	[TestClass]
 	[TestCategory("Shared")]
-	public class LogScrubberUnitTests
+	public class NoOpLogScrubberUnitTests
 	{
 		[DataTestMethod]
 		[DataRow("", "")]
@@ -16,8 +16,18 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataRow("input", "input")]
 		public void Scrub_WithNoRules_ShouldNotScrub(string input, string expected)
 		{
-			LogScrubber scrubber = LogScrubber.Instance;
-			scrubber.ClearRules();
+			NoOpLogScrubber scrubber = new();
+
+			Assert.AreEqual(expected, scrubber.Scrub(input));
+		}
+
+		[DataTestMethod]
+		[DataRow("", "")]
+		[DataRow(" ", " ")]
+		[DataRow("input", "input")]
+		public void Scrub_WithInheritedScrubberAndNoRules_ShouldNotScrub(string input, string expected)
+		{
+			InheritedLogScrubberTests scrubber = new();
 
 			Assert.AreEqual(expected, scrubber.Scrub(input));
 		}
@@ -29,10 +39,9 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataRow("inputtt", "[REDACTED]")]
 		[DataRow("output", "output")]
 		[DataRow("output input", "output [REDACTED]")]
-		public void Scrub_WithOneRule_ShouldScrub(string input, string expected)
+		public void Scrub_WithInheritedScrubberAndOneRule_ShouldScrub(string input, string expected)
 		{
-			LogScrubber scrubber = LogScrubber.Instance;
-			scrubber.ClearRules();
+			InheritedLogScrubberTests scrubber = new();
 			scrubber.AddRule("input*", "[REDACTED]");
 
 			Assert.AreEqual(expected, scrubber.Scrub(input));
@@ -48,30 +57,19 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataRow("hellooo", "goodbyeoo")]
 		[DataRow("hello input", "goodbye [REDACTED]")]
 		[DataRow("hello hello input", "goodbye goodbye [REDACTED]")]
-		public void Scrub_WithMultipleRules_ShouldScrub(string input, string expected)
+		public void Scrub_WithInheritedScrubberAndMultipleRules_ShouldScrub(string input, string expected)
 		{
-			LogScrubber scrubber = LogScrubber.Instance;
-			scrubber.ClearRules();
+			InheritedLogScrubberTests scrubber = new();
 			scrubber.AddRule("input*", "[REDACTED]");
 			scrubber.AddRule("hello", "goodbye");
 
 			Assert.AreEqual(expected, scrubber.Scrub(input));
 		}
 
-		[DataTestMethod]
-		[DataRow("", "")]
-		[DataRow(" ", " ")]
-		[DataRow("input", "input")]
-		[DataRow("0.0.0.0", "[IPv4 ADDRESS]")]
-		[DataRow("100.100.100.100", "[IPv4 ADDRESS]")]
-		[DataRow("0.0.0.0 100.100.100.100", "[IPv4 ADDRESS] [IPv4 ADDRESS]")]
-		public void Scrub_WithIPv4AddressRule_ShouldScrub(string input, string expected)
+		private class InheritedLogScrubberTests : NoOpLogScrubber
 		{
-			LogScrubber scrubber = LogScrubber.Instance;
-			scrubber.ClearRules();
-			scrubber.AddIPv4AddressRule();
-
-			Assert.AreEqual(expected, scrubber.Scrub(input));
+			public new void AddRule(string regularExpression, string replacementValue) =>
+				base.AddRule(regularExpression, replacementValue);
 		}
 	}
 }

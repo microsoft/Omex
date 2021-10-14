@@ -6,8 +6,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Logging.Internal.EventSource;
 using Microsoft.Omex.Extensions.Logging.Replayable;
+using Microsoft.Omex.Extensions.Logging.Scrubbing;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
@@ -40,9 +40,9 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// Adds Omex event logger to the factory
 		/// </summary>
 		/// <param name="serviceCollection">The extension method argument</param>
-		/// <param name="enableScrubbing">Whether logs should be scrubbed according to scrubbing rules</param>
+		/// <param name="scrubber">The optional log scrubber to use for scrubbing the logs.</param>
 		/// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained</returns>
-		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection, bool enableScrubbing = false)
+		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection, ILogScrubber? scrubber = null)
 		{
 			serviceCollection.AddLogging();
 
@@ -50,20 +50,13 @@ namespace Microsoft.Omex.Extensions.Logging
 			serviceCollection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
 			serviceCollection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
 
-			serviceCollection.TryAddSingleton(p => OmexLogEventSource.Instance);
+			serviceCollection.TryAddSingleton(_ => OmexLogEventSource.Instance);
 			serviceCollection.TryAddSingleton<ILogEventReplayer, OmexLogEventReplayer>();
 			serviceCollection.TryAddSingleton<ILogEventSender, OmexLogEventSender>();
+			serviceCollection.TryAddSingleton(_ => scrubber ?? new NoOpLogScrubber());
 
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ReplayableActivityStopObserver>());
-
-			if (enableScrubbing)
-			{
-				serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexScrubbingLoggerProvider>());
-			}
-			else
-			{
-				serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
-			}
+			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
 
 			return serviceCollection;
 		}

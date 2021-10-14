@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Logging.Scrubbing;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
@@ -19,9 +20,10 @@ namespace Microsoft.Omex.Extensions.Logging
 			s_processName = string.Format(CultureInfo.InvariantCulture, "{0} (0x{1:X4})", process.ProcessName, process.Id);
 		}
 
-		public OmexLogEventSender(OmexLogEventSource eventSource, IExecutionContext executionContext, IServiceContext context, IOptionsMonitor<OmexLoggingOptions> options)
+		public OmexLogEventSender(OmexLogEventSource eventSource, ILogScrubber logScrubber, IExecutionContext executionContext, IServiceContext context, IOptionsMonitor<OmexLoggingOptions> options)
 		{
 			m_eventSource = eventSource;
+			m_logScrubber = logScrubber;
 			m_executionContext = executionContext;
 			m_serviceContext = context;
 			m_options = options;
@@ -43,6 +45,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			string serviceName = m_executionContext.ServiceName;
 			string buildVersion = m_executionContext.BuildVersion;
 			string machineId = m_executionContext.MachineId;
+			message = m_logScrubber.Scrub(message);
 
 			string tagName = eventId.Name ?? string.Empty;
 			// In case if tag created using Tag.Create (line number and file in description) it's better to display decimal number
@@ -115,6 +118,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			};
 
 		private readonly OmexLogEventSource m_eventSource;
+		private readonly ILogScrubber m_logScrubber;
 		private readonly IServiceContext m_serviceContext;
 		private readonly IOptionsMonitor<OmexLoggingOptions> m_options;
 		private readonly IExecutionContext m_executionContext;
