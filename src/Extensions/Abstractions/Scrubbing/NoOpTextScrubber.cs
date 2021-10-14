@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Microsoft.Omex.Extensions.Logging.Scrubbing
+namespace Microsoft.Omex.Extensions.Abstractions.Scrubbing
 {
 	/// <summary>
 	/// A no-op scrubber to remove sensitive information, which can be subclassed to support the removal of sensitive
 	/// information.
 	/// </summary>
-	public class NoOpLogScrubber : ILogScrubber
+	public class NoOpTextScrubber : ITextScrubber
 	{
 		private readonly List<Tuple<Regex, string>> m_scrubberRules = new();
 

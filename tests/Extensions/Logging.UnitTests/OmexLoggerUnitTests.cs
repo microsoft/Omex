@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Omex.Extensions.Abstractions.Scrubbing;
 using Microsoft.Omex.Extensions.Logging.Internal.Replayable;
 using Microsoft.Omex.Extensions.Logging.Replayable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,33 +20,33 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 	[TestClass]
 	public class OmexLoggerUnitTests
 	{
-		private static readonly Exception s_expectedPropagatedException = new Exception("Test exception");
+		private static readonly Exception s_expectedPropagatedException = new("Test exception");
 
 		[TestMethod]
 		public void LogMessage_PropagatedToEventSource()
 		{
-			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock(isEnabled: true);
-			LogMessage(eventSourceMock);
+			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock();
+			LogMessage(eventSourceMock, new NoOpTextScrubber());
 			eventSourceMock.Verify(s_logExpression, Times.Once);
 		}
 
 		[TestMethod]
 		public void LogMessage_UseIsEnabledFlag()
 		{
-			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock(isEnabled: false);
-			LogMessage(eventSourceMock);
+			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock(false);
+			LogMessage(eventSourceMock, new NoOpTextScrubber());
 			eventSourceMock.Verify(s_logExpression, Times.Never);
 		}
 
 		[TestMethod]
 		public void LogMessage_UseIsReplayableMessageFlag()
 		{
-			string suffix = nameof(LogMessage_UseIsReplayableMessageFlag);
+			const string suffix = nameof(LogMessage_UseIsReplayableMessageFlag);
 			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock();
 
-			Activity activity = CreateActivity(suffix);
+			using Activity activity = CreateActivity(suffix);
 			activity.Start();
-			LogMessage(eventSourceMock, CreateLogReplayer(10));
+			LogMessage(eventSourceMock, new NoOpTextScrubber(), CreateLogReplayer(10));
 			activity.Stop();
 
 			eventSourceMock.Verify(s_logExpression, Times.Once);
@@ -55,19 +56,22 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[TestMethod]
 		public void LogMessage_ReplayedMessageAndExceptionSaved()
 		{
-			string suffix = nameof(LogMessage_ReplayedMessageAndExceptionSaved);
+			const string suffix = nameof(LogMessage_ReplayedMessageAndExceptionSaved);
 			EventId eventId = CreateEventId(7, suffix);
 			string message = GetLogMessage(suffix);
 			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock();
 
-			Activity activity = CreateActivity(suffix);
-			activity.Start();
-			(ILogger logger, _) = LogMessage(eventSourceMock, logEventReplayer: CreateLogReplayer(10), eventId.Id);
-			logger.LogDebug(eventId, s_expectedPropagatedException, message);
-			activity.Stop();
+			LogMessageInformation info;
+			using (Activity activity = CreateActivity(suffix))
+			{
+				activity.Start();
+				(ILogger logger, _) = LogMessage(eventSourceMock, new NoOpTextScrubber(), CreateLogReplayer(10), eventId.Id);
+				logger.LogDebug(eventId, s_expectedPropagatedException, message);
+				activity.Stop();
 
-			eventSourceMock.Verify(s_logExpression, Times.Exactly(2));
-			LogMessageInformation info = activity.GetReplayableLogs().Single();
+				eventSourceMock.Verify(s_logExpression, Times.Exactly(2));
+				info = activity.GetReplayableLogs().Single();
+			}
 
 			Assert.AreEqual(GetLogCategory(suffix), info.Category);
 			Assert.AreEqual(eventId, info.EventId);
@@ -76,27 +80,58 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		}
 
 		[TestMethod]
-		public void LogMessage_ReplayedMessageSavedUnitilTheLimit()
+		public void LogMessage_WithScrubber_ScrubbedReplayedMessageAndExceptionSaved()
 		{
-			string replayMessage1 = "ReplayMessage1";
+			const string suffix = nameof(LogMessage_WithScrubber_ScrubbedReplayedMessageAndExceptionSaved);
+			EventId eventId = CreateEventId(7, suffix);
+			string message = GetLogMessage(suffix);
+			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock();
+			Mock<ITextScrubber> textScrubber = new();
+			textScrubber.Setup(m => m.Scrub(It.IsAny<string>())).Returns<string>(input => input.Replace("Message", "[REDACTED]"));
+
+			LogMessageInformation info;
+			using (Activity activity = CreateActivity(suffix))
+			{
+				activity.Start();
+				(ILogger logger, _) = LogMessage(eventSourceMock, textScrubber.Object, CreateLogReplayer(10), eventId.Id);
+				logger.LogDebug(eventId, s_expectedPropagatedException, message);
+				activity.Stop();
+
+				eventSourceMock.Verify(s_logExpression, Times.Exactly(2));
+				info = activity.GetReplayableLogs().Single();
+			}
+
+			Assert.AreEqual(GetLogCategory(suffix), info.Category);
+			Assert.AreEqual(eventId, info.EventId);
+			StringAssert.Contains(info.Message, FormattableString.Invariant($"[REDACTED]-{suffix}"));
+			StringAssert.Contains(info.Message, s_expectedPropagatedException.ToString());
+		}
+
+		[TestMethod]
+		public void LogMessage_ReplayedMessageSavedUntilTheLimit()
+		{
+			const string replayMessage1 = "ReplayMessage1";
 			Exception exception1 = new ArgumentException("Error");
-			string replayMessage2 = "ReplayMessage2";
+			const string replayMessage2 = "ReplayMessage2";
 			Exception exception2 = new NullReferenceException("Error");
 
-			string suffix = nameof(LogMessage_ReplayedMessageSavedUnitilTheLimit);
-			int eventId = 7;
+			const string suffix = nameof(LogMessage_ReplayedMessageSavedUntilTheLimit);
+			const int eventId = 7;
 			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock();
 
-			Activity activity = CreateActivity(suffix);
-			activity.Start();
-			(ILogger logger, _) = LogMessage(eventSourceMock, logEventReplayer: CreateLogReplayer(2), eventId);
-			logger.LogDebug(new DivideByZeroException(), "LostMessage"); // would be lost due overflow
-			logger.LogDebug(exception1, replayMessage1);
-			logger.LogDebug(exception2, replayMessage2);
-			activity.Stop();
+			List<LogMessageInformation> info;
+			using (Activity activity = CreateActivity(suffix))
+			{
+				activity.Start();
+				(ILogger logger, _) = LogMessage(eventSourceMock, new NoOpTextScrubber(), CreateLogReplayer(2), eventId);
+				logger.LogDebug(new DivideByZeroException(), "LostMessage"); // would be lost due overflow
+				logger.LogDebug(exception1, replayMessage1);
+				logger.LogDebug(exception2, replayMessage2);
+				activity.Stop();
 
-			eventSourceMock.Verify(s_logExpression, Times.Exactly(4));
-			List<LogMessageInformation> info = activity.GetReplayableLogs().ToList();
+				eventSourceMock.Verify(s_logExpression, Times.Exactly(4));
+				info = activity.GetReplayableLogs().ToList();
+			}
 
 			Assert.AreEqual(2, info.Count);
 			StringAssert.Contains(info[0].Message, replayMessage1);
@@ -108,39 +143,44 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[TestMethod]
 		public void BeginScope_ScopeProperlyCreated()
 		{
-			(ILogger logger, Mock<IExternalScopeProvider> scopeProvicedMock) = LogMessage(CreateEventSourceMock());
+			(ILogger logger, Mock<IExternalScopeProvider> scopeProviderMock) = LogMessage(CreateEventSourceMock(), new NoOpTextScrubber());
 
-			object obj = new object();
+			object obj = new();
 			IDisposable resultMock = new Mock<IDisposable>().Object;
-			scopeProvicedMock.Setup(p => p.Push(obj)).Returns(resultMock);
+			scopeProviderMock.Setup(p => p.Push(obj)).Returns(resultMock);
 
 			IDisposable result = logger.BeginScope(obj);
 
-			scopeProvicedMock.Verify(p => p.Push(obj), Times.Once);
+			scopeProviderMock.Verify(p => p.Push(obj), Times.Once);
 			Assert.AreEqual(resultMock, result);
 		}
 
 		private static Mock<ILogEventSender> CreateEventSourceMock(bool isEnabled = true)
 		{
-			Mock<ILogEventSender> eventSourceMock = new Mock<ILogEventSender>();
+			Mock<ILogEventSender> eventSourceMock = new();
 			eventSourceMock.Setup(e => e.IsEnabled(It.IsAny<LogLevel>())).Returns(isEnabled);
 			return eventSourceMock;
 		}
 
-		private static (ILogger, Mock<IExternalScopeProvider>) LogMessage(Mock<ILogEventSender> eventSourceMock, ILogEventReplayer? logEventReplayer = null, int eventId = 0, [CallerMemberName]string suffix = "")
+		private static (ILogger, Mock<IExternalScopeProvider>) LogMessage(
+			IMock<ILogEventSender> eventSourceMock,
+			ITextScrubber textScrubber,
+			ILogEventReplayer? logEventReplayer = null,
+			int eventId = 0,
+			[CallerMemberName] string suffix = "")
 		{
-			Mock<IExternalScopeProvider> scopeProvicedMock = new Mock<IExternalScopeProvider>();
-			ILogger logger = new OmexLogger(eventSourceMock.Object, scopeProvicedMock.Object, GetLogCategory(suffix), logEventReplayer);
+			Mock<IExternalScopeProvider> scopeProviderMock = new();
+			ILogger logger = new OmexLogger(eventSourceMock.Object, scopeProviderMock.Object, textScrubber, GetLogCategory(suffix), logEventReplayer);
 
 			logger.LogError(CreateEventId(eventId, suffix), s_expectedPropagatedException, GetLogMessage(suffix));
 
-			return (logger, scopeProvicedMock);
+			return (logger, scopeProviderMock);
 		}
 
 		private static ILogEventReplayer CreateLogReplayer(uint replayLimit)
 		{
-			Mock<IOptionsMonitor<OmexLoggingOptions>> mock = new Mock<IOptionsMonitor<OmexLoggingOptions>>();
-			mock.Setup(m => m.CurrentValue).Returns(new OmexLoggingOptions()
+			Mock<IOptionsMonitor<OmexLoggingOptions>> mock = new();
+			mock.Setup(m => m.CurrentValue).Returns(new OmexLoggingOptions
 			{
 				ReplayLogsInCaseOfError = true,
 				MaxReplayedEventsPerActivity = replayLimit
@@ -149,13 +189,17 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			return new OmexLogEventReplayer(new Mock<ILogEventSender>().Object, mock.Object);
 		}
 
-		private static string GetLogMessage(string suffix) => FormattableString.Invariant($"Message-{suffix}");
+		private static string GetLogMessage(string suffix) =>
+			FormattableString.Invariant($"Message-{suffix}");
 
-		private static string GetLogCategory(string suffix) => FormattableString.Invariant($"Category-{suffix}");
+		private static string GetLogCategory(string suffix) =>
+			FormattableString.Invariant($"Category-{suffix}");
 
-		private static EventId CreateEventId(int id, string suffix) => new EventId(id, FormattableString.Invariant($"EventId-{suffix}"));
+		private static EventId CreateEventId(int id, string suffix) =>
+			new(id, FormattableString.Invariant($"EventId-{suffix}"));
 
-		private static Activity CreateActivity(string suffix) => new Activity(FormattableString.Invariant($"Activity-{suffix}"));
+		private static Activity CreateActivity(string suffix) =>
+			new(FormattableString.Invariant($"Activity-{suffix}"));
 
 		private static readonly Expression<Action<ILogEventSender>> s_logExpression = e =>
 			e.LogMessage(

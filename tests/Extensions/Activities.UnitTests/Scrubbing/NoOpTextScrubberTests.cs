@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using Microsoft.Omex.Extensions.Logging.Scrubbing;
+using Microsoft.Omex.Extensions.Abstractions.Scrubbing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
+namespace Microsoft.Omex.Extensions.Activities.UnitTests.Scrubbing
 {
 	[TestClass]
 	[TestCategory("Shared")]
-	public class NoOpLogScrubberUnitTests
+	public class NoOpTextScrubberUnitTests
 	{
 		[DataTestMethod]
 		[DataRow("", "")]
@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataRow("input", "input")]
 		public void Scrub_WithNoRules_ShouldNotScrub(string input, string expected)
 		{
-			NoOpLogScrubber scrubber = new();
+			NoOpTextScrubber scrubber = new();
 
 			Assert.AreEqual(expected, scrubber.Scrub(input));
 		}
@@ -27,7 +27,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataRow("input", "input")]
 		public void Scrub_WithInheritedScrubberAndNoRules_ShouldNotScrub(string input, string expected)
 		{
-			InheritedLogScrubberTests scrubber = new();
+			InheritedTextScrubberTests scrubber = new();
 
 			Assert.AreEqual(expected, scrubber.Scrub(input));
 		}
@@ -41,7 +41,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataRow("output input", "output [REDACTED]")]
 		public void Scrub_WithInheritedScrubberAndOneRule_ShouldScrub(string input, string expected)
 		{
-			InheritedLogScrubberTests scrubber = new();
+			InheritedTextScrubberTests scrubber = new();
 			scrubber.AddRule("input*", "[REDACTED]");
 
 			Assert.AreEqual(expected, scrubber.Scrub(input));
@@ -59,14 +59,14 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataRow("hello hello input", "goodbye goodbye [REDACTED]")]
 		public void Scrub_WithInheritedScrubberAndMultipleRules_ShouldScrub(string input, string expected)
 		{
-			InheritedLogScrubberTests scrubber = new();
+			InheritedTextScrubberTests scrubber = new();
 			scrubber.AddRule("input*", "[REDACTED]");
 			scrubber.AddRule("hello", "goodbye");
 
 			Assert.AreEqual(expected, scrubber.Scrub(input));
 		}
 
-		private class InheritedLogScrubberTests : NoOpLogScrubber
+		private class InheritedTextScrubberTests : NoOpTextScrubber
 		{
 			public new void AddRule(string regularExpression, string replacementValue) =>
 				base.AddRule(regularExpression, replacementValue);
