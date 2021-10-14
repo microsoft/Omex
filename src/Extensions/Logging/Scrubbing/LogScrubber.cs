@@ -38,7 +38,7 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// Adds a rule to scrub IPv4 addresses.
 		/// </summary>
 		public void AddIPv4AddressRule() =>
-			AddRule("([0-9]{1,3}\\.){3}[0-9]{1,3}", "[IPv4 ADDRESS]");
+			AddRule("(\\d{1,3}\\.){3}\\d{1,3}", "[IPv4 ADDRESS]");
 
 		/// <summary>
 		/// Clears all scrubber rules.
