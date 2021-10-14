@@ -2,9 +2,8 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 {
@@ -15,13 +14,7 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 	{
 		private static readonly Lazy<LogScrubber> s_lazyInstance = new(() => new LogScrubber());
 
-		/// <summary>
-		/// The list of scrubber rules.
-		/// </summary>
-		/// <remarks>This is stored as a <see cref="ConcurrentBag{ScrubberRule}"/> as <see cref="LogScrubber"/> is
-		/// intended to be stored as a singleton and the choice of this data structure allows for safe concurrent write
-		/// access.</remarks>
-		private ConcurrentBag<Tuple<Regex, string>> m_scrubberRules = new();
+		private readonly List<Tuple<Regex, string>> m_scrubberRules = new();
 
 		private LogScrubber()
 		{
@@ -42,13 +35,16 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 			m_scrubberRules.Add(new Tuple<Regex, string>(new Regex(regularExpression, RegexOptions.Compiled), replacementValue));
 
 		/// <summary>
+		/// Adds a rule to scrub IP addresses.
+		/// </summary>
+		public void AddIPAddressRule() =>
+			AddRule("([0-9]{1,3}\\.){3}[0-9]{1,3}", "[IP ADDRESS]");
+
+		/// <summary>
 		/// Clears all scrubber rules.
 		/// </summary>
-		public void ClearRules()
-		{
-			ConcurrentBag<Tuple<Regex, string>> emptyScrubberRules = new();
-			Interlocked.Exchange(ref m_scrubberRules, emptyScrubberRules);
-		}
+		public void ClearRules() =>
+			m_scrubberRules.Clear();
 
 		/// <summary>
 		/// Scrubs an input based on rules

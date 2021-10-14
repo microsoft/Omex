@@ -11,7 +11,7 @@ using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
-	internal class OmexLogEventSender : ILogEventSender
+	internal sealed class OmexLogEventSender : ILogEventSender
 	{
 		static OmexLogEventSender()
 		{

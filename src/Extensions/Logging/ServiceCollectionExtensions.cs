@@ -52,6 +52,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			serviceCollection.TryAddSingleton(p => OmexLogEventSource.Instance);
 			serviceCollection.TryAddSingleton<ILogEventReplayer, OmexLogEventReplayer>();
+			serviceCollection.TryAddSingleton<ILogEventSender, OmexLogEventSender>();
 
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ReplayableActivityStopObserver>());
 

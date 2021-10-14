@@ -10,23 +10,19 @@ using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Logging.Scrubbing;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
-	internal sealed class ActivityEventSender : IActivityEventSender
+	internal sealed class ActivityEventSender : IActivitiesEventSender
 	{
-		public ActivityEventSender(ActivityEventSource eventSource, IExecutionContext executionContext, ILogger<IActivityEventSender> logger)
+		public ActivityEventSender(ActivityEventSource eventSource, IExecutionContext executionContext, ILogger<ActivityEventSender> logger)
 		{
 			m_eventSource = eventSource;
 			m_serviceName = executionContext.ServiceName;
 			m_logger = logger;
 		}
 
-		public void SendActivityMetric(Activity activity) =>
-			SendActivityMetric(activity, false);
-
-		internal void SendActivityMetric(Activity activity, bool enableScrubbing)
+		public void SendActivityMetric(Activity activity)
 		{
 			if (!m_eventSource.IsEnabled())
 			{
@@ -70,11 +66,6 @@ namespace Microsoft.Omex.Extensions.Activities
 				?? NullPlaceholder;
 #pragma warning restore CS0618
 
-			if (enableScrubbing)
-			{
-				metadata = LogScrubber.Instance.Scrub(metadata);
-			}
-
 			string nameAsString = SanitizeString(name, nameof(name), name);
 			string subTypeAsString = SanitizeString(subtype, nameof(subtype), name);
 			string metaDataAsString = SanitizeString(metadata, nameof(metadata), name);
@@ -116,13 +107,13 @@ namespace Microsoft.Omex.Extensions.Activities
 		private string SanitizeString(string value, string name, string activityName)
 		{
 			const int stringLimit = 1024;
-			if (value.Length <= stringLimit)
+			if (value.Length > stringLimit)
 			{
-				return value;
+				m_logger.LogWarning(Tag.Create(), StringLimitMessage, stringLimit, name, activityName, value.Length);
+				value = value.Substring(0, stringLimit);
 			}
 
-			m_logger.LogWarning(Tag.Create(), StringLimitMessage, stringLimit, name, activityName, value.Length);
-			return value.Substring(0, stringLimit);
+			return value;
 		}
 
 		private const string StringLimitMessage =
@@ -130,7 +121,7 @@ namespace Microsoft.Omex.Extensions.Activities
 
 		private readonly ActivityEventSource m_eventSource;
 		private readonly string m_serviceName;
-		private readonly ILogger<IActivityEventSender> m_logger;
+		private readonly ILogger<ActivityEventSender> m_logger;
 		private static readonly string s_logCategory = typeof(ActivityEventSource).FullName ?? nameof(ActivityEventSource);
 		private const string NullPlaceholder = "null";
 	}

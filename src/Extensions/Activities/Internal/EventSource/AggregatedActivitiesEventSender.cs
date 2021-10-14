@@ -10,10 +10,10 @@ namespace Microsoft.Omex.Extensions.Activities
 	/// </summary>
 	internal sealed class AggregatedActivitiesEventSender : IActivitiesEventSender
 	{
-		private readonly IActivityEventSender m_etwSender;
+		private readonly ActivityEventSender m_etwSender;
 		private readonly ActivityMetricsSender m_metricsSender;
 
-		public AggregatedActivitiesEventSender(IActivityEventSender etwSender, ActivityMetricsSender metricsSender)
+		public AggregatedActivitiesEventSender(ActivityEventSender etwSender, ActivityMetricsSender metricsSender)
 		{
 			m_etwSender = etwSender;
 			m_metricsSender = metricsSender;

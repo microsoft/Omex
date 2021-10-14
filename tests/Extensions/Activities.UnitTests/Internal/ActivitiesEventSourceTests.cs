@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Logging.Scrubbing;
 using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -34,8 +33,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 
 			Mock<IExecutionContext> contextMock = new();
 			contextMock.Setup(c => c.ServiceName).Returns("TestService");
-
-			LogScrubber.Instance.ClearRules();
 
 			ActivityEventSender logEventSource = new(
 				ActivityEventSource.Instance,
@@ -67,51 +64,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			eventInfo.AssertPayload("metadata", metadata);
 			eventInfo.AssertPayload("activityId", expectedActivityId);
 			eventInfo.AssertPayload("correlationId", correlationId.ToString());
-		}
-
-		[DataTestMethod]
-		[DataRow(EventSourcesEventIds.LogActivityTestContext, true)]
-		[DataRow(EventSourcesEventIds.LogActivity, false)]
-		public void LogActivityEndEvent_Scrubs(EventSourcesEventIds eventId, bool isHealthCheck)
-		{
-			using TestEventListener listener = new();
-			listener.EnableEvents(ActivityEventSource.Instance, EventLevel.Informational);
-
-			const string name = "TestName";
-			const string subType = "TestSubType";
-			const string metadata = "TestMetadata";
-
-			Mock<IExecutionContext> contextMock = new();
-			contextMock.Setup(c => c.ServiceName).Returns("TestService");
-
-			LogScrubber.Instance.ClearRules();
-			LogScrubber.Instance.AddRule("Test", "[REDACTED]");
-
-			ActivityEventSender logEventSource = new(
-				ActivityEventSource.Instance,
-				contextMock.Object,
-				new NullLogger<ActivityEventSender>());
-
-			string expectedActivityId;
-			using (Activity activity = new Activity(name).Start())
-			{
-				expectedActivityId = activity.Id!;
-				activity.SetSubType(subType);
-				activity.SetMetadata(metadata);
-				activity.SetUserHash("TestUserHash");
-				if (isHealthCheck)
-				{
-					activity.MarkAsHealthCheck();
-				}
-
-				logEventSource.SendActivityMetric(activity);
-			}
-
-			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
-			eventInfo.AssertPayload("name", name);
-			eventInfo.AssertPayload("subType", "[REDACTED]SubType");
-			eventInfo.AssertPayload("metadata", "[REDACTED]Metadata");
-			eventInfo.AssertPayload("activityId", expectedActivityId);
 		}
 	}
 }
