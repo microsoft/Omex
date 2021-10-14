@@ -57,5 +57,21 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 
 			Assert.AreEqual(expected, scrubber.Scrub(input));
 		}
+
+		[DataTestMethod]
+		[DataRow("", "")]
+		[DataRow(" ", " ")]
+		[DataRow("input", "input")]
+		[DataRow("0.0.0.0", "[IPv4 ADDRESS]")]
+		[DataRow("100.100.100.100", "[IPv4 ADDRESS]")]
+		[DataRow("0.0.0.0 100.100.100.100", "[IPv4 ADDRESS] [IPv4 ADDRESS]")]
+		public void Scrub_WithIPv4AddressRule_ShouldScrub(string input, string expected)
+		{
+			LogScrubber scrubber = LogScrubber.Instance;
+			scrubber.ClearRules();
+			scrubber.AddIPv4AddressRule();
+
+			Assert.AreEqual(expected, scrubber.Scrub(input));
+		}
 	}
 }

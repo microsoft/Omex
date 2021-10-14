@@ -35,10 +35,10 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 			m_scrubberRules.Add(new Tuple<Regex, string>(new Regex(regularExpression, RegexOptions.Compiled), replacementValue));
 
 		/// <summary>
-		/// Adds a rule to scrub IP addresses.
+		/// Adds a rule to scrub IPv4 addresses.
 		/// </summary>
-		public void AddIPAddressRule() =>
-			AddRule("([0-9]{1,3}\\.){3}[0-9]{1,3}", "[IP ADDRESS]");
+		public void AddIPv4AddressRule() =>
+			AddRule("([0-9]{1,3}\\.){3}[0-9]{1,3}", "[IPv4 ADDRESS]");
 
 		/// <summary>
 		/// Clears all scrubber rules.
