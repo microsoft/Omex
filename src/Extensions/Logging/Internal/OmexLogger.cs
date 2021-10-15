@@ -17,15 +17,16 @@ namespace Microsoft.Omex.Extensions.Logging
 		public OmexLogger(
 			ILogEventSender logsEventSource,
 			IExternalScopeProvider externalScopeProvider,
+			IEnumerable<ILogScrubbingRule> textScrubbers,
 			string categoryName,
-			ILogEventReplayer? replayer = null,
-			IEnumerable<ILogScrubbingRule>? textScrubbers = null)
+			ILogEventReplayer? replayer = null)
 		{
 			m_logsEventSender = logsEventSource;
 			m_externalScopeProvider = externalScopeProvider;
+			m_textScrubbers = textScrubbers.ToArray();
+			m_textScrubbers = m_textScrubbers.Any() ? m_textScrubbers : null;
 			m_categoryName = categoryName;
 			m_replayer = replayer;
-			m_textScrubbers = textScrubbers;
 		}
 
 		public IDisposable BeginScope<TState>(TState state) => m_externalScopeProvider.Push(state);
@@ -65,8 +66,8 @@ namespace Microsoft.Omex.Extensions.Logging
 
 		private readonly IExternalScopeProvider m_externalScopeProvider;
 		private readonly ILogEventSender m_logsEventSender;
+		private readonly ILogScrubbingRule[]? m_textScrubbers;
 		private readonly string m_categoryName;
 		private readonly ILogEventReplayer? m_replayer;
-		private readonly IEnumerable<ILogScrubbingRule>? m_textScrubbers;
 	}
 }

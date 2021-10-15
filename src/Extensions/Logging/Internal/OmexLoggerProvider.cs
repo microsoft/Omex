@@ -13,8 +13,8 @@ namespace Microsoft.Omex.Extensions.Logging
 		public OmexLoggerProvider(
 			ILogEventSender logsEventSender,
 			IExternalScopeProvider defaultExternalScopeProvider,
-			ILogEventReplayer? replayer = null,
-			IEnumerable<ILogScrubbingRule>? textScrubbers = null)
+			IEnumerable<ILogScrubbingRule> textScrubbers,
+			ILogEventReplayer? replayer = null)
 		{
 			m_logsEventSender = logsEventSender;
 			m_defaultExternalScopeProvider = defaultExternalScopeProvider;
@@ -23,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		}
 
 		public ILogger CreateLogger(string categoryName) =>
-			new OmexLogger(m_logsEventSender, m_externalScopeProvider ?? m_defaultExternalScopeProvider, categoryName, m_replayer, m_textScrubbers);
+			new OmexLogger(m_logsEventSender, m_externalScopeProvider ?? m_defaultExternalScopeProvider, m_textScrubbers, categoryName, m_replayer);
 
 		public void Dispose() { }
 
@@ -31,8 +31,8 @@ namespace Microsoft.Omex.Extensions.Logging
 
 		private IExternalScopeProvider? m_externalScopeProvider;
 		private readonly IExternalScopeProvider m_defaultExternalScopeProvider;
+		private readonly IEnumerable<ILogScrubbingRule> m_textScrubbers;
 		private readonly ILogEventReplayer? m_replayer;
 		private readonly ILogEventSender m_logsEventSender;
-		private readonly IEnumerable<ILogScrubbingRule>? m_textScrubbers;
 	}
 }

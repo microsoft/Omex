@@ -8,7 +8,7 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 	/// <summary>
 	/// A log scrubber to remove sensitive information from logs in accordance with a regular expression.
 	/// </summary>
-	public class RegexLogScrubbingRule : ILogScrubbingRule
+	internal class RegexLogScrubbingRule : ILogScrubbingRule
 	{
 		private readonly Regex m_regexToReplace;
 		private readonly string m_replacementValue;
@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// <param name="replacementValue">The value with which to replace the matching text.</param>
 		public RegexLogScrubbingRule(string regexToReplace, string replacementValue)
 		{
-			m_regexToReplace = new Regex(regexToReplace, RegexOptions.Compiled);
+			m_regexToReplace = new Regex(regexToReplace, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 			m_replacementValue = replacementValue;
 		}
 

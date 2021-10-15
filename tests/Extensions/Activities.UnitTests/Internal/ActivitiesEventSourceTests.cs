@@ -38,11 +38,11 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 				contextMock.Object,
 				new NullLogger<ActivityEventSender>());
 
-			string expectedActivityId;
+			string? expectedActivityId;
 			Guid correlationId = Guid.NewGuid();
 			using (Activity activity = new Activity(name).Start())
 			{
-				expectedActivityId = activity.Id!;
+				expectedActivityId = activity.Id;
 				activity.SetSubType(subType);
 				activity.SetMetadata(metadata);
 				activity.SetUserHash("TestUserHash");
@@ -61,7 +61,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			eventInfo.AssertPayload("name", name);
 			eventInfo.AssertPayload("subType", subType);
 			eventInfo.AssertPayload("metadata", metadata);
-			eventInfo.AssertPayload("activityId", expectedActivityId);
+			eventInfo.AssertPayload("activityId", expectedActivityId!);
 			eventInfo.AssertPayload("correlationId", correlationId.ToString());
 		}
 	}

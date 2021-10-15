@@ -26,7 +26,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		public void LogMessage_PropagatedToEventSource()
 		{
 			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock();
-			LogMessage(eventSourceMock);
+			LogMessage(eventSourceMock, Array.Empty<ILogScrubbingRule>());
 			eventSourceMock.Verify(s_logExpression, Times.Once);
 		}
 
@@ -34,7 +34,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		public void LogMessage_UseIsEnabledFlag()
 		{
 			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock(false);
-			LogMessage(eventSourceMock);
+			LogMessage(eventSourceMock, Array.Empty<ILogScrubbingRule>());
 			eventSourceMock.Verify(s_logExpression, Times.Never);
 		}
 
@@ -46,7 +46,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			using Activity activity = CreateActivity(suffix);
 			activity.Start();
-			LogMessage(eventSourceMock, CreateLogReplayer(10));
+			LogMessage(eventSourceMock, Array.Empty<ILogScrubbingRule>(), CreateLogReplayer(10));
 			activity.Stop();
 
 			eventSourceMock.Verify(s_logExpression, Times.Once);
@@ -65,7 +65,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			using (Activity activity = CreateActivity(suffix))
 			{
 				activity.Start();
-				(ILogger logger, _) = LogMessage(eventSourceMock, CreateLogReplayer(10), eventId.Id);
+				(ILogger logger, _) = LogMessage(eventSourceMock, Array.Empty<ILogScrubbingRule>(), CreateLogReplayer(10), eventId.Id);
 				logger.LogDebug(eventId, s_expectedPropagatedException, message);
 				activity.Stop();
 
@@ -93,9 +93,9 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 				activity.Start();
 				(ILogger logger, _) = LogMessage(
 					eventSourceMock,
+					new List<ILogScrubbingRule> { new RegexLogScrubbingRule("Message", "[REDACTED]") },
 					CreateLogReplayer(10),
-					eventId.Id,
-					new List<ILogScrubbingRule> { new ConstantLogScrubbingRule("Message", "[REDACTED]") });
+					eventId.Id);
 				logger.LogDebug(eventId, s_expectedPropagatedException, message);
 				activity.Stop();
 
@@ -123,13 +123,13 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 				activity.Start();
 				(ILogger logger, _) = LogMessage(
 					eventSourceMock,
-					CreateLogReplayer(10),
-					eventId.Id,
 					new List<ILogScrubbingRule>
 					{
-						new ConstantLogScrubbingRule("Mes", "[REDACTED]"),
-						new ConstantLogScrubbingRule("sage", "[REDACTED]")
-					});
+						new RegexLogScrubbingRule("Mes", "[REDACTED]"),
+						new RegexLogScrubbingRule("sage", "[REDACTED]")
+					},
+					CreateLogReplayer(10),
+					eventId.Id);
 				logger.LogDebug(eventId, s_expectedPropagatedException, message);
 				activity.Stop();
 
@@ -159,7 +159,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			using (Activity activity = CreateActivity(suffix))
 			{
 				activity.Start();
-				(ILogger logger, _) = LogMessage(eventSourceMock, CreateLogReplayer(2), eventId);
+				(ILogger logger, _) = LogMessage(eventSourceMock, Array.Empty<ILogScrubbingRule>(), CreateLogReplayer(2), eventId);
 				logger.LogDebug(new DivideByZeroException(), "LostMessage"); // would be lost due overflow
 				logger.LogDebug(exception1, replayMessage1);
 				logger.LogDebug(exception2, replayMessage2);
@@ -179,7 +179,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[TestMethod]
 		public void BeginScope_ScopeProperlyCreated()
 		{
-			(ILogger logger, Mock<IExternalScopeProvider> scopeProviderMock) = LogMessage(CreateEventSourceMock());
+			(ILogger logger, Mock<IExternalScopeProvider> scopeProviderMock) = LogMessage(CreateEventSourceMock(), Array.Empty<ILogScrubbingRule>());
 
 			object obj = new();
 			IDisposable resultMock = new Mock<IDisposable>().Object;
@@ -200,13 +200,13 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 		private static (ILogger, Mock<IExternalScopeProvider>) LogMessage(
 			IMock<ILogEventSender> eventSourceMock,
+			IEnumerable<ILogScrubbingRule> textScrubbers,
 			ILogEventReplayer? logEventReplayer = null,
 			int eventId = 0,
-			IEnumerable<ILogScrubbingRule>? textScrubbers = null,
 			[CallerMemberName] string suffix = "")
 		{
 			Mock<IExternalScopeProvider> scopeProviderMock = new();
-			ILogger logger = new OmexLogger(eventSourceMock.Object, scopeProviderMock.Object, GetLogCategory(suffix), logEventReplayer, textScrubbers);
+			ILogger logger = new OmexLogger(eventSourceMock.Object, scopeProviderMock.Object, textScrubbers, GetLogCategory(suffix), logEventReplayer);
 
 			logger.LogError(CreateEventId(eventId, suffix), s_expectedPropagatedException, GetLogMessage(suffix));
 
