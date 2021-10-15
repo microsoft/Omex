@@ -4,7 +4,6 @@
 using System;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
-using Microsoft.Omex.Extensions.Abstractions.Scrubbing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -21,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			Mock<ILogEventSender> mockEventSource = new();
 			IExternalScopeProvider mockExternalScopeProvider = new Mock<IExternalScopeProvider>().Object;
 
-			ILoggerProvider loggerProvider = new OmexLoggerProvider(mockEventSource.Object, mockExternalScopeProvider, new NoOpTextScrubber());
+			ILoggerProvider loggerProvider = new OmexLoggerProvider(mockEventSource.Object, mockExternalScopeProvider);
 			ILogger logger = loggerProvider.CreateLogger(testCategory);
 
 			Assert.IsInstanceOfType(logger, typeof(OmexLogger));

@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Abstractions.Scrubbing;
 using Microsoft.Omex.Extensions.Logging.Replayable;
 
 namespace Microsoft.Omex.Extensions.Logging
@@ -40,9 +39,8 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// Adds Omex event logger to the factory
 		/// </summary>
 		/// <param name="serviceCollection">The extension method argument</param>
-		/// <param name="scrubber">The optional log scrubber to use for scrubbing the logs.</param>
 		/// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained</returns>
-		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection, ITextScrubber? scrubber = null)
+		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection)
 		{
 			serviceCollection.AddLogging();
 
@@ -53,7 +51,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			serviceCollection.TryAddSingleton(_ => OmexLogEventSource.Instance);
 			serviceCollection.TryAddSingleton<ILogEventReplayer, OmexLogEventReplayer>();
 			serviceCollection.TryAddSingleton<ILogEventSender, OmexLogEventSender>();
-			serviceCollection.TryAddSingleton(_ => scrubber ?? new NoOpTextScrubber());
 
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ReplayableActivityStopObserver>());
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());

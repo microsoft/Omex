@@ -2,11 +2,13 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using Microsoft.Extensions.Logging;
-using Microsoft.Omex.Extensions.Abstractions.Scrubbing;
 using Microsoft.Omex.Extensions.Logging.Replayable;
+using Microsoft.Omex.Extensions.Logging.Scrubbing;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
@@ -15,15 +17,15 @@ namespace Microsoft.Omex.Extensions.Logging
 		public OmexLogger(
 			ILogEventSender logsEventSource,
 			IExternalScopeProvider externalScopeProvider,
-			ITextScrubber textScrubber,
 			string categoryName,
-			ILogEventReplayer? replayer = null)
+			ILogEventReplayer? replayer = null,
+			IEnumerable<ILogScrubbingRule>? textScrubbers = null)
 		{
 			m_logsEventSender = logsEventSource;
 			m_externalScopeProvider = externalScopeProvider;
-			m_textScrubber = textScrubber;
 			m_categoryName = categoryName;
 			m_replayer = replayer;
+			m_textScrubbers = textScrubbers;
 		}
 
 		public IDisposable BeginScope<TState>(TState state) => m_externalScopeProvider.Push(state);
@@ -43,7 +45,11 @@ namespace Microsoft.Omex.Extensions.Logging
 				message = string.Concat(message, Environment.NewLine, exception); // We need to concatenate with exception since the default formatter ignores it https://github.com/aspnet/Logging/issues/442
 			}
 
-			message = m_textScrubber.Scrub(message);
+			if (m_textScrubbers != null)
+			{
+				message = m_textScrubbers.Aggregate(message, (current, textScrubber) => textScrubber.Scrub(current));
+			}
+
 			int threadId = Thread.CurrentThread.ManagedThreadId;
 			Activity? activity = Activity.Current;
 
@@ -59,8 +65,8 @@ namespace Microsoft.Omex.Extensions.Logging
 
 		private readonly IExternalScopeProvider m_externalScopeProvider;
 		private readonly ILogEventSender m_logsEventSender;
-		private readonly ITextScrubber m_textScrubber;
 		private readonly string m_categoryName;
 		private readonly ILogEventReplayer? m_replayer;
+		private readonly IEnumerable<ILogScrubbingRule>? m_textScrubbers;
 	}
 }

@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace Microsoft.Omex.Extensions.Abstractions.Scrubbing
+namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 {
 	/// <summary>
-	/// An interface to a text scrubber to remove sensitive information.
+	/// An interface to a rule for removing sensitive information from logs.
 	/// </summary>
-	public interface ITextScrubber
+	public interface ILogScrubbingRule
 	{
 		/// <summary>
 		/// Scrubs an input based on rules.
