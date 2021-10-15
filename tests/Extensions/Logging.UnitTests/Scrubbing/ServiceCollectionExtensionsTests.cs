@@ -44,18 +44,30 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		}
 
 		[TestMethod]
+		public void AddIPv6AddressLogScrubbingRule_RegistersLogger()
+		{
+			ILoggingBuilder builder = new MockLoggingBuilder().AddIPv6AddressLogScrubbingRule();
+
+			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder.Services);
+			Assert.AreEqual(1, logScrubbingRules.Length);
+			Assert.IsTrue(logScrubbingRules.Any(logScrubbingRule => logScrubbingRule is IPv6AddressLogScrubbingRule));
+		}
+
+		[TestMethod]
 		public void AddMultipleLogScrubbingRules_RegistersLoggers()
 		{
 			ILoggingBuilder builder = new MockLoggingBuilder()
 				.AddConstantLogScrubbingRule("valueToReplace", "replacementValue")
 				.AddRegexLogScrubbingRule("valueToReplace", "replacementValue")
-				.AddIPv4AddressLogScrubbingRule();
+				.AddIPv4AddressLogScrubbingRule()
+				.AddIPv6AddressLogScrubbingRule();
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder.Services);
-			Assert.AreEqual(3, logScrubbingRules.Length);
+			Assert.AreEqual(4, logScrubbingRules.Length);
 			Assert.IsTrue(logScrubbingRules.Any(logScrubbingRule => logScrubbingRule is ConstantLogScrubbingRule));
 			Assert.IsTrue(logScrubbingRules.Any(logScrubbingRule => logScrubbingRule is RegexLogScrubbingRule));
 			Assert.IsTrue(logScrubbingRules.Any(logScrubbingRule => logScrubbingRule is IPv4AddressLogScrubbingRule));
+			Assert.IsTrue(logScrubbingRules.Any(logScrubbingRule => logScrubbingRule is IPv6AddressLogScrubbingRule));
 		}
 
 		private static ILogScrubbingRule[] GetTypeRegistrations(IServiceCollection collection)

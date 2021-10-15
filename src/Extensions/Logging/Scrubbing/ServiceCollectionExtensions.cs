@@ -44,5 +44,15 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 			builder.Services.AddSingleton<ILogScrubbingRule, IPv4AddressLogScrubbingRule>();
 			return builder;
 		}
+
+		/// <summary>
+		/// Adds an IPv6 address log scrubbing rule.
+		/// </summary>
+		/// <param name="builder">The extension method argument.</param>
+		public static ILoggingBuilder AddIPv6AddressLogScrubbingRule(this ILoggingBuilder builder)
+		{
+			builder.Services.AddSingleton<ILogScrubbingRule, IPv6AddressLogScrubbingRule>();
+			return builder;
+		}
 	}
 }
