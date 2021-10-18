@@ -34,28 +34,24 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			const string message = "Test message";
 			const string category = "Test category";
 			const int tagId = 0xFFF9;
-			string? expectedActivityId;
-			using (Activity activity = new("Test activity"))
-			{
-				activity.Start().Stop(); // Start and stop the activity to get the correlation ID.
-				expectedActivityId = activity.Id;
+			using Activity activity = new("Test activity");
+			activity.Start().Stop(); // Start and stop the activity to get the correlation ID.
 
-				Mock<IOptionsMonitor<OmexLoggingOptions>> mockOptions = new();
-				mockOptions.Setup(m => m.CurrentValue).Returns(new OmexLoggingOptions());
+			Mock<IOptionsMonitor<OmexLoggingOptions>> mockOptions = new();
+			mockOptions.Setup(m => m.CurrentValue).Returns(new OmexLoggingOptions());
 
-				OmexLogEventSender logsSender = new(
-					OmexLogEventSource.Instance,
-					new Mock<IExecutionContext>().Object,
-					new EmptyServiceContext(),
-					mockOptions.Object);
+			OmexLogEventSender logsSender = new(
+				OmexLogEventSource.Instance,
+				new Mock<IExecutionContext>().Object,
+				new EmptyServiceContext(),
+				mockOptions.Object);
 
-				logsSender.LogMessage(activity, category, logLevel, tagId, 0, message, new Exception("Not expected to be part of the event"));
-			}
+			logsSender.LogMessage(activity, category, logLevel, tagId, 0, message, new Exception("Not expected to be part of the event"));
 
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
 			eventInfo.AssertPayload("message", message);
 			eventInfo.AssertPayload("category", category);
-			eventInfo.AssertPayload("activityId", expectedActivityId);
+			eventInfo.AssertPayload("activityId", activity.Id);
 			eventInfo.AssertPayload("tagId", tagId.ToString("x4"));
 
 			InitializationLogger.LogInitializationSucceed(category, message);
