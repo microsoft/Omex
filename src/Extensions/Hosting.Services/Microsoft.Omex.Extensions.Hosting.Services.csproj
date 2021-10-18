@@ -3,6 +3,14 @@
     <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.Extensions.Hosting.Services</Title>
+    <Summary>Microsoft Omex Extensions Hosting Services</Summary>
+    <Description>This library contains functionality to configure the Service Fabric host listeners.</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Hosting.Services</PackageProjectUrl>
+    <PackageTags>Microsoft;Omex;Extensions;Hosting;Services</PackageTags>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ServiceFabric" Version="$(Microsoft_ServiceFabric_Version)" />
     <PackageReference Include="Microsoft.ServiceFabric.Services" Version="$(Microsoft_ServiceFabric_Services_Version)" />
