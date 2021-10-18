@@ -34,11 +34,11 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			const string message = "Test message";
 			const string category = "Test category";
 			const int tagId = 0xFFF9;
-			string expectedActivityId;
+			string? expectedActivityId;
 			using (Activity activity = new("Test activity"))
 			{
 				activity.Start().Stop(); // Start and stop the activity to get the correlation ID.
-				expectedActivityId = activity.Id!;
+				expectedActivityId = activity.Id;
 
 				Mock<IOptionsMonitor<OmexLoggingOptions>> mockOptions = new();
 				mockOptions.Setup(m => m.CurrentValue).Returns(new OmexLoggingOptions());

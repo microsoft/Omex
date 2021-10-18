@@ -38,30 +38,26 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 				contextMock.Object,
 				new NullLogger<ActivityEventSender>());
 
-			string? expectedActivityId;
 			Guid correlationId = Guid.NewGuid();
-			using (Activity activity = new Activity(name).Start())
-			{
-				expectedActivityId = activity.Id;
-				activity.SetSubType(subType);
-				activity.SetMetadata(metadata);
-				activity.SetUserHash("TestUserHash");
+			using Activity activity = new Activity(name).Start();
+			activity.SetSubType(subType);
+			activity.SetMetadata(metadata);
+			activity.SetUserHash("TestUserHash");
 #pragma warning disable CS0618 // Type or member is obsolete
-				activity.SetObsoleteCorrelationId(correlationId);
+			activity.SetObsoleteCorrelationId(correlationId);
 #pragma warning restore CS0618 // Type or member is obsolete
-				if (isHealthCheck)
-				{
-					activity.MarkAsHealthCheck();
-				}
-
-				logEventSource.SendActivityMetric(activity);
+			if (isHealthCheck)
+			{
+				activity.MarkAsHealthCheck();
 			}
+
+			logEventSource.SendActivityMetric(activity);
 
 			EventWrittenEventArgs eventInfo = listener.EventsInformation.Single(e => e.EventId == (int)eventId);
 			eventInfo.AssertPayload("name", name);
 			eventInfo.AssertPayload("subType", subType);
 			eventInfo.AssertPayload("metadata", metadata);
-			eventInfo.AssertPayload("activityId", expectedActivityId!);
+			eventInfo.AssertPayload("activityId", activity.Id);
 			eventInfo.AssertPayload("correlationId", correlationId.ToString());
 		}
 	}

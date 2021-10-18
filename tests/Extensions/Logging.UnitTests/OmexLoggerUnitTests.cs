@@ -61,17 +61,14 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			string message = GetLogMessage(suffix);
 			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock();
 
-			LogMessageInformation info;
-			using (Activity activity = CreateActivity(suffix))
-			{
-				activity.Start();
-				(ILogger logger, _) = LogMessage(eventSourceMock, Array.Empty<ILogScrubbingRule>(), CreateLogReplayer(10), eventId.Id);
-				logger.LogDebug(eventId, s_expectedPropagatedException, message);
-				activity.Stop();
+			using Activity activity = CreateActivity(suffix);
+			activity.Start();
+			(ILogger logger, _) = LogMessage(eventSourceMock, Array.Empty<ILogScrubbingRule>(), CreateLogReplayer(10), eventId.Id);
+			logger.LogDebug(eventId, s_expectedPropagatedException, message);
+			activity.Stop();
 
-				eventSourceMock.Verify(s_logExpression, Times.Exactly(2));
-				info = activity.GetReplayableLogs().Single();
-			}
+			eventSourceMock.Verify(s_logExpression, Times.Exactly(2));
+			LogMessageInformation info = activity.GetReplayableLogs().Single();
 
 			Assert.AreEqual(GetLogCategory(suffix), info.Category);
 			Assert.AreEqual(eventId, info.EventId);
@@ -87,21 +84,18 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			string message = GetLogMessage(suffix);
 			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock();
 
-			LogMessageInformation info;
-			using (Activity activity = CreateActivity(suffix))
-			{
-				activity.Start();
-				(ILogger logger, _) = LogMessage(
-					eventSourceMock,
-					new List<ILogScrubbingRule> { new RegexLogScrubbingRule("Message", "[REDACTED]") },
-					CreateLogReplayer(10),
-					eventId.Id);
-				logger.LogDebug(eventId, s_expectedPropagatedException, message);
-				activity.Stop();
+			using Activity activity = CreateActivity(suffix);
+			activity.Start();
+			(ILogger logger, _) = LogMessage(
+				eventSourceMock,
+				new List<ILogScrubbingRule> { new RegexLogScrubbingRule("Message", "[REDACTED]") },
+				CreateLogReplayer(10),
+				eventId.Id);
+			logger.LogDebug(eventId, s_expectedPropagatedException, message);
+			activity.Stop();
 
-				eventSourceMock.Verify(s_logExpression, Times.Exactly(2));
-				info = activity.GetReplayableLogs().Single();
-			}
+			eventSourceMock.Verify(s_logExpression, Times.Exactly(2));
+			LogMessageInformation info = activity.GetReplayableLogs().Single();
 
 			Assert.AreEqual(GetLogCategory(suffix), info.Category);
 			Assert.AreEqual(eventId, info.EventId);
@@ -117,25 +111,22 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			string message = GetLogMessage(suffix);
 			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock();
 
-			LogMessageInformation info;
-			using (Activity activity = CreateActivity(suffix))
-			{
-				activity.Start();
-				(ILogger logger, _) = LogMessage(
-					eventSourceMock,
-					new List<ILogScrubbingRule>
-					{
-						new RegexLogScrubbingRule("Mes", "[REDACTED]"),
-						new RegexLogScrubbingRule("sage", "[REDACTED]")
-					},
-					CreateLogReplayer(10),
-					eventId.Id);
-				logger.LogDebug(eventId, s_expectedPropagatedException, message);
-				activity.Stop();
+			using Activity activity = CreateActivity(suffix);
+			activity.Start();
+			(ILogger logger, _) = LogMessage(
+				eventSourceMock,
+				new List<ILogScrubbingRule>
+				{
+					new RegexLogScrubbingRule("Mes", "[REDACTED]"),
+					new RegexLogScrubbingRule("sage", "[REDACTED]")
+				},
+				CreateLogReplayer(10),
+				eventId.Id);
+			logger.LogDebug(eventId, s_expectedPropagatedException, message);
+			activity.Stop();
 
-				eventSourceMock.Verify(s_logExpression, Times.Exactly(2));
-				info = activity.GetReplayableLogs().Single();
-			}
+			eventSourceMock.Verify(s_logExpression, Times.Exactly(2));
+			LogMessageInformation info = activity.GetReplayableLogs().Single();
 
 			Assert.AreEqual(GetLogCategory(suffix), info.Category);
 			Assert.AreEqual(eventId, info.EventId);
@@ -155,19 +146,16 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			const int eventId = 7;
 			Mock<ILogEventSender> eventSourceMock = CreateEventSourceMock();
 
-			List<LogMessageInformation> info;
-			using (Activity activity = CreateActivity(suffix))
-			{
-				activity.Start();
-				(ILogger logger, _) = LogMessage(eventSourceMock, Array.Empty<ILogScrubbingRule>(), CreateLogReplayer(2), eventId);
-				logger.LogDebug(new DivideByZeroException(), "LostMessage"); // would be lost due overflow
-				logger.LogDebug(exception1, replayMessage1);
-				logger.LogDebug(exception2, replayMessage2);
-				activity.Stop();
+			using Activity activity = CreateActivity(suffix);
+			activity.Start();
+			(ILogger logger, _) = LogMessage(eventSourceMock, Array.Empty<ILogScrubbingRule>(), CreateLogReplayer(2), eventId);
+			logger.LogDebug(new DivideByZeroException(), "LostMessage"); // would be lost due overflow
+			logger.LogDebug(exception1, replayMessage1);
+			logger.LogDebug(exception2, replayMessage2);
+			activity.Stop();
 
-				eventSourceMock.Verify(s_logExpression, Times.Exactly(4));
-				info = activity.GetReplayableLogs().ToList();
-			}
+			eventSourceMock.Verify(s_logExpression, Times.Exactly(4));
+			List<LogMessageInformation> info = activity.GetReplayableLogs().ToList();
 
 			Assert.AreEqual(2, info.Count);
 			StringAssert.Contains(info[0].Message, replayMessage1);
