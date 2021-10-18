@@ -23,8 +23,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		{
 			m_logsEventSender = logsEventSource;
 			m_externalScopeProvider = externalScopeProvider;
-			m_textScrubbers = textScrubbers.ToArray();
-			m_textScrubbers = m_textScrubbers.Any() ? m_textScrubbers : null;
+			m_textScrubbers = textScrubbers.ToArray(); // Convert to an array for improved iteration performance on each call.
 			m_categoryName = categoryName;
 			m_replayer = replayer;
 		}
@@ -46,9 +45,9 @@ namespace Microsoft.Omex.Extensions.Logging
 				message = string.Concat(message, Environment.NewLine, exception); // We need to concatenate with exception since the default formatter ignores it https://github.com/aspnet/Logging/issues/442
 			}
 
-			if (m_textScrubbers != null)
+			foreach (ILogScrubbingRule textScrubber in m_textScrubbers)
 			{
-				message = m_textScrubbers.Aggregate(message, (current, textScrubber) => textScrubber.Scrub(current));
+				message = textScrubber.Scrub(message);
 			}
 
 			int threadId = Thread.CurrentThread.ManagedThreadId;
@@ -66,7 +65,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 		private readonly IExternalScopeProvider m_externalScopeProvider;
 		private readonly ILogEventSender m_logsEventSender;
-		private readonly ILogScrubbingRule[]? m_textScrubbers;
+		private readonly ILogScrubbingRule[] m_textScrubbers;
 		private readonly string m_categoryName;
 		private readonly ILogEventReplayer? m_replayer;
 	}

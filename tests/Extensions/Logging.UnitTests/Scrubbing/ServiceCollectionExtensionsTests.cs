@@ -14,6 +14,15 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 	public class ServiceCollectionTests
 	{
 		[TestMethod]
+		public void WithNoRules_ReturnsEmptyList()
+		{
+			ILoggingBuilder builder = new MockLoggingBuilder();
+
+			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder.Services);
+			Assert.AreEqual(0, logScrubbingRules.Length);
+		}
+
+		[TestMethod]
 		public void AddRegexLogScrubbingRule_RegistersLogger()
 		{
 			ILoggingBuilder builder = new MockLoggingBuilder().AddRegexLogScrubbingRule("valueToReplace", "replacementValue");
