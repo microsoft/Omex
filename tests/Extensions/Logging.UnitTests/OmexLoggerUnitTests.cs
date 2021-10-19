@@ -170,10 +170,10 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			(ILogger logger, Mock<IExternalScopeProvider> scopeProviderMock) = LogMessage(CreateEventSourceMock(), Array.Empty<ILogScrubbingRule>());
 
 			object obj = new();
-			IDisposable resultMock = new Mock<IDisposable>().Object;
+			using IDisposable resultMock = new Mock<IDisposable>().Object;
 			scopeProviderMock.Setup(p => p.Push(obj)).Returns(resultMock);
 
-			IDisposable result = logger.BeginScope(obj);
+			using IDisposable result = logger.BeginScope(obj);
 
 			scopeProviderMock.Verify(p => p.Push(obj), Times.Once);
 			Assert.AreEqual(resultMock, result);

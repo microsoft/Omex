@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder.Services);
 			Assert.AreEqual(1, logScrubbingRules.Length);
-			Assert.IsTrue(logScrubbingRules[0] is RegexLogScrubbingRule);
+			Assert.IsInstanceOfType(logScrubbingRules[0], typeof(RegexLogScrubbingRule));
 		}
 
 		[TestMethod]
@@ -39,7 +39,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder.Services);
 			Assert.AreEqual(1, logScrubbingRules.Length);
-			Assert.IsTrue(logScrubbingRules[0] is RegexLogScrubbingRule);
+			Assert.IsInstanceOfType(logScrubbingRules[0], typeof(RegexLogScrubbingRule));
 		}
 
 		[DataTestMethod]
@@ -67,7 +67,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder.Services);
 			Assert.AreEqual(1, logScrubbingRules.Length);
-			Assert.IsTrue(logScrubbingRules[0] is RegexLogScrubbingRule);
+			Assert.IsInstanceOfType(logScrubbingRules[0], typeof(RegexLogScrubbingRule));
 		}
 
 		[DataTestMethod]
@@ -101,11 +101,11 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder.Services);
 			Assert.AreEqual(3, logScrubbingRules.Length);
-			Assert.IsTrue(logScrubbingRules[0] is RegexLogScrubbingRule);
+			Assert.IsInstanceOfType(logScrubbingRules[0], typeof(RegexLogScrubbingRule));
 			Assert.AreEqual("replacementValue", logScrubbingRules[0].Scrub("valueToReplace"));
-			Assert.IsTrue(logScrubbingRules[1] is RegexLogScrubbingRule);
+			Assert.IsInstanceOfType(logScrubbingRules[1], typeof(RegexLogScrubbingRule));
 			Assert.AreEqual("[IPv4 ADDRESS]", logScrubbingRules[1].Scrub("0.0.0.0"));
-			Assert.IsTrue(logScrubbingRules[2] is RegexLogScrubbingRule);
+			Assert.IsInstanceOfType(logScrubbingRules[2], typeof(RegexLogScrubbingRule));
 			Assert.AreEqual("[IPv6 ADDRESS]", logScrubbingRules[2].Scrub("1000::A01:1:AA10"));
 		}
 
