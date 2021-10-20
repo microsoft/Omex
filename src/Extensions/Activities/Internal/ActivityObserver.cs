@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -33,9 +34,9 @@ namespace Microsoft.Omex.Extensions.Activities
 			bool isSuccessful = true;
 			foreach (KeyValuePair<string, string?> pair in activity.Tags)
 			{
-				if (ActivityTagKeys.Result.Equals(pair.Key, System.StringComparison.OrdinalIgnoreCase))
+				if (ActivityTagKeys.Result.Equals(pair.Key, StringComparison.OrdinalIgnoreCase))
 				{
-					if (!ActivityResultStrings.Success.Equals(pair.Value, System.StringComparison.OrdinalIgnoreCase))
+					if (!ActivityResultStrings.Success.Equals(pair.Value, StringComparison.OrdinalIgnoreCase))
 					{
 						isSuccessful = false;
 					}
