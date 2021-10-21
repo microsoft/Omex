@@ -42,7 +42,7 @@
   <PropertyGroup Label="Versioning">
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <!-- The release version should get updated on every new release -->
-    <Version>20.0.5</Version>
+    <Version>20.0.6</Version>
     <PreReleaseSuffix Condition="'$(PreReleaseSuffix)' == ''">$([System.DateTime]::UtcNow.ToString(yyyyMMdd-HHmmss))</PreReleaseSuffix>
     <PackageVersion Condition="'$(IsReleaseBuild)' == 'true'">$(Version)</PackageVersion>
     <!-- Continuous integration version, which is updated on every build of the dev branch -->
