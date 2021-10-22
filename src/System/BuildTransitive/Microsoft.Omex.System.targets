@@ -1,9 +1,9 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="DisplayWarnings" AfterTargets="Build">
-    <Warning
+    <Error
         Condition="'$(UseUnsupportedOmexSystemPackage)' != 'true'"
         Code="OMEX0101"
         HelpKeyword="DoNotUseUnsupportedPackages"
-        Text="Mirosoft.Omex.System, Microsoft.OMEX.ServiceFabric.Core and packages depending on them will be out of support after the 30th of November 2021. You can temporarily use flag &lt;UseUnsupportedOmexSystemPackage&gt;true&lt;/UseUnsupportedOmexSystemPackage&gt; to suppress error, but add a comment with ID of work item to remove reference." />
+        Text="Microsoft.Omex.System, Microsoft.OMEX.ServiceFabric.Core and packages depending on them will be out of support after the 30th of November 2021. You can temporarily use flag &lt;UseUnsupportedOmexSystemPackage&gt;true&lt;/UseUnsupportedOmexSystemPackage&gt; to suppress error, but add a comment with ID of work item to remove reference." />
   </Target>
 </Project>

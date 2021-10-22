@@ -3,16 +3,26 @@
     <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
-  
+
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions</Title>
+    <Summary>Microsoft Omex Extensions ServiceFabricGuest Abstractions</Summary>
+    <Description>This library contains abstractions for Service Fabric Guest Executables</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Abstractions</PackageProjectUrl>
+    <PackageTags>Microsoft;Omex;Extensions;ServiceFabricGuest;Abstractions</PackageTags>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(Microsoft_Extensions_DependencyInjection_Version)" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="$(Microsoft_Extensions_Options_Version)" />
     <PackageReference Include="Microsoft.ServiceFabric.Client.Http" Version="$(Microsoft_ServiceFabric_Client_Http_Version)" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="$(System_ComponentModel_Annotations)" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
+    <ProjectReference Include="..\Hosting\Microsoft.Omex.Extensions.Hosting.csproj" />
   </ItemGroup>
 
 </Project>

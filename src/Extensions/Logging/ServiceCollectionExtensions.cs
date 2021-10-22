@@ -48,7 +48,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			serviceCollection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
 			serviceCollection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
 
-			serviceCollection.TryAddSingleton(p => OmexLogEventSource.Instance);
+			serviceCollection.TryAddSingleton(_ => OmexLogEventSource.Instance);
 			serviceCollection.TryAddSingleton<ILogEventReplayer, OmexLogEventReplayer>();
 			serviceCollection.TryAddSingleton<ILogEventSender, OmexLogEventSender>();
 

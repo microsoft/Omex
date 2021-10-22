@@ -1,7 +1,7 @@
 ﻿<Project>
   <Import Project="$(MSBuildThisFileDirectory)\Dependencies.props" />
   <PropertyGroup Label="Target Platforms" >
-    <NetCoreVersions>netcoreapp3.1;net5.0</NetCoreVersions>
+    <NetCoreVersions>net5.0</NetCoreVersions>
     <NetStandardVersions>netstandard2.0</NetStandardVersions>
     <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
     <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
@@ -42,7 +42,7 @@
   <PropertyGroup Label="Versioning">
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <!-- The release version should get updated on every new release -->
-    <Version>20.0.4</Version>
+    <Version>20.0.6</Version>
     <PreReleaseSuffix Condition="'$(PreReleaseSuffix)' == ''">$([System.DateTime]::UtcNow.ToString(yyyyMMdd-HHmmss))</PreReleaseSuffix>
     <PackageVersion Condition="'$(IsReleaseBuild)' == 'true'">$(Version)</PackageVersion>
     <!-- Continuous integration version, which is updated on every build of the dev branch -->
@@ -73,5 +73,7 @@
     <!-- Optional: Include the PDB in the built .nupkg -->
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <SourceRootLocation>$(MSBuildThisFileDirectory)</SourceRootLocation>
+    <!-- Maps paths injected by CallerFilePath attribute to be related and independent from repository location on hard drive -->
+    <PathMap>$(MSBuildThisFileDirectory)=/</PathMap>
   </PropertyGroup>
 </Project>
