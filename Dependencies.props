@@ -6,10 +6,10 @@
     <Microsoft_AspNetCore_Hosting_Version>2.2.7</Microsoft_AspNetCore_Hosting_Version>
     <Microsoft_AspNetCore_Http_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Http_Abstractions_Version>
     <Microsoft_AspNetCore_Http_Version>2.2.2</Microsoft_AspNetCore_Http_Version>
-    <Microsoft_Azure_DocumentDB_Version>2.16.1</Microsoft_Azure_DocumentDB_Version>
+    <Microsoft_Azure_DocumentDB_Version>2.16.2</Microsoft_Azure_DocumentDB_Version>
     <Microsoft_CodeAnalysis_Common>3.9.0</Microsoft_CodeAnalysis_Common>
     <Microsoft_CodeAnalysis_Csharp>3.9.0</Microsoft_CodeAnalysis_Csharp>
-    <Microsoft_Net_Test_Sdk_Version>16.11.0</Microsoft_Net_Test_Sdk_Version>
+    <Microsoft_Net_Test_Sdk_Version>17.0.0</Microsoft_Net_Test_Sdk_Version>
     <Microsoft_SourceLink_GitHub_Version>1.0.0</Microsoft_SourceLink_GitHub_Version>
     <Microsoft_SourceLink_AzureRepos_Git_Version>1.0.0</Microsoft_SourceLink_AzureRepos_Git_Version>
     <MSTest_TestAdapter_Version>2.2.7</MSTest_TestAdapter_Version>
