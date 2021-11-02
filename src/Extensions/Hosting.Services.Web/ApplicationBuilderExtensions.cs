@@ -73,9 +73,15 @@ namespace Microsoft.AspNetCore.Builder
 		/// <summary>
 		/// Adds the default exception handling logic that will display a developer exception page in develop and a short message during deployment
 		/// </summary>
-		public static IApplicationBuilder UseOmexExceptionHandler(this IApplicationBuilder builder, IHostEnvironment environment)
+		public static IApplicationBuilder UseOmexExceptionHandler(this IApplicationBuilder builder, IHostEnvironment environment) =>
+			builder.UseOmexExceptionHandler(environment.IsDevelopment());
+		
+		/// <summary>
+		/// Adds the default exception handling logic that will display a developer exception page in develop and a short message during deployment
+		/// </summary>
+		public static IApplicationBuilder UseOmexExceptionHandler(this IApplicationBuilder builder, bool isDevelopment)
 		{
-			if (environment.IsDevelopment())
+			if (isDevelopment)
 			{
 				builder.UseDeveloperExceptionPage();
 			}
