@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Testing.Helpers
 		/// <summary>
 		/// Asserts that ETW event payload has proper value
 		/// </summary>
-		public static void AssertPayload<TPayloadType>(this EventWrittenEventArgs info, string name, TPayloadType expected)
+		public static void AssertPayload<TPayloadType>(this EventWrittenEventArgs info, string name, TPayloadType? expected)
 			where TPayloadType : class
 		{
 			int index = info.PayloadNames?.IndexOf(name) ?? -1;
