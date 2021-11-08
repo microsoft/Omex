@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	internal class RestHealthStatusSender : IHealthStatusSender
 	{
-		private const string HealthReportSourceId = nameof(RestHealthStatusSender);
+		private static readonly string s_healthReportSourceId = nameof(RestHealthStatusSender);
 
 		private readonly IServiceFabricClientWrapper m_clientWrapper;
 
@@ -44,7 +44,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			await m_client.Nodes.ReportNodeHealthAsync(
 				nodeName: m_nodeName,
-				healthInformation: new HealthInformation(HealthReportSourceId, checkName, ToSfHealthState(status), description: description));
+				healthInformation: new HealthInformation(s_healthReportSourceId, checkName, ToSfHealthState(status), description: description));
 		}
 
 		private HealthState ToSfHealthState(HealthStatus healthStatus) =>

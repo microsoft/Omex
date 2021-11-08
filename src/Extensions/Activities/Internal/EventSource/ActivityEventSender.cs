@@ -36,9 +36,9 @@ namespace Microsoft.Omex.Extensions.Activities
 			string userHash = activity.GetUserHash();
 			bool isHealthCheck = activity.IsHealthCheck();
 
-			string subtype = NullPlaceholder;
-			string metadata = NullPlaceholder;
-			string resultAsString = NullPlaceholder;
+			string subtype = s_nullPlaceholder;
+			string metadata = s_nullPlaceholder;
+			string resultAsString = s_nullPlaceholder;
 			foreach (KeyValuePair<string, string?> pair in activity.Tags)
 			{
 				if (pair.Value == null)
@@ -63,7 +63,7 @@ namespace Microsoft.Omex.Extensions.Activities
 #pragma warning disable CS0618 // Until it's used we need to include correlationId into events
 			string correlationId = activity.GetObsoleteCorrelationId()?.ToString()
 				?? activity.GetRootIdAsGuid()?.ToString()
-				?? NullPlaceholder;
+				?? s_nullPlaceholder;
 #pragma warning restore CS0618
 
 			string nameAsString = SanitizeString(name, nameof(name), name);
@@ -116,13 +116,13 @@ namespace Microsoft.Omex.Extensions.Activities
 			return value;
 		}
 
-		private const string StringLimitMessage =
+		private static readonly string StringLimitMessage =
 			"Log aggregation enforces a string length limit of {0} characters per dimension. Truncating length of dimension {1} on activity {2} from {3} chars in order to allow upload of the metric";
 
 		private readonly ActivityEventSource m_eventSource;
 		private readonly string m_serviceName;
 		private readonly ILogger<ActivityEventSender> m_logger;
 		private static readonly string s_logCategory = typeof(ActivityEventSource).FullName ?? nameof(ActivityEventSource);
-		private const string NullPlaceholder = "null";
+		private static readonly string s_nullPlaceholder = "null";
 	}
 }

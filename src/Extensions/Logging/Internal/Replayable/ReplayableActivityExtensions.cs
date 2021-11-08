@@ -11,10 +11,10 @@ namespace Microsoft.Omex.Extensions.Logging.Internal.Replayable
 {
 	internal static class ReplayebleActivityExtensions
 	{
-		private const string ReplayableLogKey = "ReplayableLogKey";
+		private static readonly string s_replayableLogKey = "ReplayableLogKey";
 
 		private static ConcurrentQueue<LogMessageInformation>? GetReplayableLogsInternal(this Activity activity) =>
-			activity.GetCustomProperty(ReplayableLogKey) as ConcurrentQueue<LogMessageInformation>;
+			activity.GetCustomProperty(s_replayableLogKey) as ConcurrentQueue<LogMessageInformation>;
 
 		public static IEnumerable<LogMessageInformation> GetReplayableLogs(this Activity activity) =>
 			activity.GetReplayableLogsInternal() ?? Enumerable.Empty<LogMessageInformation>();
@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.Logging.Internal.Replayable
 			if (queue == null)
 			{
 				queue = new ConcurrentQueue<LogMessageInformation>();
-				activity.SetCustomProperty(ReplayableLogKey, queue);
+				activity.SetCustomProperty(s_replayableLogKey, queue);
 			}
 
 			queue.Enqueue(logEvent);

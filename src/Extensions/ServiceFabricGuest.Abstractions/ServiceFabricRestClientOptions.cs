@@ -53,8 +53,8 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 			return parts.Length < 2 ? DefaultServiceFabricClusterFQDN : string.Join(":", parts.Take(parts.Length - 1));
 		}
 
-		internal const string RuntimeConnectionAddressEvnVariableName = "Fabric_RuntimeConnectionAddress";
+		internal static readonly string RuntimeConnectionAddressEvnVariableName = "Fabric_RuntimeConnectionAddress";
 
-		internal const string DefaultServiceFabricClusterFQDN = "localhost";
+		internal static readonly string DefaultServiceFabricClusterFQDN = "localhost";
 	}
 }

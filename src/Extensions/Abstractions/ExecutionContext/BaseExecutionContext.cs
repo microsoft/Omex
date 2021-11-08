@@ -16,19 +16,19 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 	public class BaseExecutionContext : IExecutionContext
 	{
 		// Defined by Azure https://whatazurewebsiteenvironmentvariablesareavailable.azurewebsites.net/
-		internal const string RegionNameVariableName = "REGION_NAME";
+		internal static readonly string RegionNameVariableName = "REGION_NAME";
 
 		// We define them
-		internal const string ClusterNameVariableName = "CLUSTER_NAME";
-		internal const string SliceNameVariableName = "SLICE_NAME";
-		internal const string AspNetCoreEnviromentVariableName = "ASPNETCORE_ENVIRONMENT";
-		internal const string DotNetEnviromentVariableName = "DOTNET_ENVIRONMENT"; // getting environment directly only if we don't have IHostEnvironment ex. InitializationLogger
+		internal static readonly string ClusterNameVariableName = "CLUSTER_NAME";
+		internal static readonly string SliceNameVariableName = "SLICE_NAME";
+		internal static readonly string AspNetCoreEnviromentVariableName = "ASPNETCORE_ENVIRONMENT";
+		internal static readonly string DotNetEnviromentVariableName = "DOTNET_ENVIRONMENT"; // getting environment directly only if we don't have IHostEnvironment ex. InitializationLogger
 
 		// defined by Service Fabric https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-environment-variables-reference
-		internal const string ServiceNameVariableName = "Fabric_ServiceName";
-		internal const string ApplicationNameVariableName = "Fabric_ApplicationName";
-		internal const string NodeNameVariableName = "Fabric_NodeName";
-		internal const string NodeIPOrFQDNVariableName = "Fabric_NodeIPOrFQDN";
+		internal static readonly string ServiceNameVariableName = "Fabric_ServiceName";
+		internal static readonly string ApplicationNameVariableName = "Fabric_ApplicationName";
+		internal static readonly string NodeNameVariableName = "Fabric_NodeName";
+		internal static readonly string NodeIPOrFQDNVariableName = "Fabric_NodeIPOrFQDN";
 
 		/// <summary>
 		/// Create instance of execution context

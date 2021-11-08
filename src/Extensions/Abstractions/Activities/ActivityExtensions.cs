@@ -20,21 +20,21 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		public static Guid? GetRootIdAsGuid(this Activity activity) =>
 			Guid.TryParse(activity.RootId, out Guid result)
 				? result
-				: (Guid?)null;
+				: null;
 
 		/// <summary>
 		/// Get user hash from activity
 		/// </summary>
 		public static string GetUserHash(this Activity activity) =>
-			activity.GetBaggageItem(UserHashKey) ?? string.Empty;
+			activity.GetBaggageItem(s_userHashKey) ?? string.Empty;
 
 		/// <summary>
 		/// Returns true if activity is transaction
 		/// </summary>
 		public static bool IsHealthCheck(this Activity activity) =>
 			string.Equals(
-				activity.GetBaggageItem(HealthCheckMarkerKey),
-				HealthCheckMarkerValue,
+				activity.GetBaggageItem(s_healthCheckMarkerKey),
+				s_healthCheckMarkerValue,
 				StringComparison.OrdinalIgnoreCase);
 
 		/// <summary>
@@ -45,8 +45,8 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <remarks>Currently added to the BaggageItems (via Kestrel) using header value Correlation-Context: "PerformanceTestMarker=true"</remarks>
 		public static bool IsPerformanceTest(this Activity activity) =>
 			string.Equals(
-				activity.GetBaggageItem(PerformanceMarkerKey),
-				PerformanceMarkerValue,
+				activity.GetBaggageItem(s_performanceMarkerKey),
+				s_performanceMarkerValue,
 				StringComparison.OrdinalIgnoreCase);
 
 		/// <summary>
@@ -54,7 +54,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// </summary>
 		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
 		public static Activity SetUserHash(this Activity activity, string userHash) =>
-			activity.SetBaggage(UserHashKey, userHash);
+			activity.SetBaggage(s_userHashKey, userHash);
 
 		/// <summary>
 		/// Mark as health check activity
@@ -63,7 +63,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		public static Activity MarkAsHealthCheck(this Activity activity) =>
 			activity.IsHealthCheck()
 				? activity
-				: activity.SetBaggage(HealthCheckMarkerKey, HealthCheckMarkerValue);
+				: activity.SetBaggage(s_healthCheckMarkerKey, s_healthCheckMarkerValue);
 
 		/// <summary>
 		/// Set result
@@ -109,9 +109,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// </summary>
 		[Obsolete(CorrelationIdObsoleteMessage, false)]
 		public static Guid? GetObsoleteCorrelationId(this Activity activity) =>
-			Guid.TryParse(activity.GetBaggageItem(ObsoleteCorrelationId), out Guid correlation)
+			Guid.TryParse(activity.GetBaggageItem(s_obsoleteCorrelationId), out Guid correlation)
 				? correlation
-				: (Guid?)null;
+				: null;
 
 		/// <summary>
 		/// Set correlation guid that is used by old Omex services
@@ -119,16 +119,16 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
 		[Obsolete(CorrelationIdObsoleteMessage, false)]
 		public static Activity SetObsoleteCorrelationId(this Activity activity, Guid correlation) =>
-			activity.SetBaggage(ObsoleteCorrelationId, correlation.ToString());
+			activity.SetBaggage(s_obsoleteCorrelationId, correlation.ToString());
 
 		/// <summary>
 		/// Get transaction id that is used by old Omex services
 		/// </summary>
 		[Obsolete(TransactionIdObsoleteMessage, false)]
 		public static uint? GetObsoleteTransactionId(this Activity activity) =>
-			uint.TryParse(activity.GetBaggageItem(ObsoleteTransactionId), out uint transactionId)
+			uint.TryParse(activity.GetBaggageItem(s_obsoleteTransactionId), out uint transactionId)
 				? transactionId
-				: (uint?)null;
+				: null;
 
 		/// <summary>
 		/// Set transaction id that is used by old Omex services
@@ -136,15 +136,15 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
 		[Obsolete(TransactionIdObsoleteMessage, false)]
 		public static Activity SetObsoleteTransactionId(this Activity activity, uint transactionId) =>
-			activity.SetBaggage(ObsoleteTransactionId, transactionId.ToString(CultureInfo.InvariantCulture));
+			activity.SetBaggage(s_obsoleteTransactionId, transactionId.ToString(CultureInfo.InvariantCulture));
 
-		private const string UserHashKey = "UserHash";
-		private const string HealthCheckMarkerKey = "HealthCheckMarker";
-		private const string HealthCheckMarkerValue = "true";
-		private const string PerformanceMarkerKey = "PerformanceTestMarker";
-		private const string PerformanceMarkerValue = "true";
-		private const string ObsoleteCorrelationId = "ObsoleteCorrelationId";
-		private const string ObsoleteTransactionId = "ObsoleteTransactionId";
+		private static readonly string s_userHashKey = "UserHash";
+		private static readonly string s_healthCheckMarkerKey = "HealthCheckMarker";
+		private static readonly string s_healthCheckMarkerValue = "true";
+		private static readonly string s_performanceMarkerKey = "PerformanceTestMarker";
+		private static readonly string s_performanceMarkerValue = "true";
+		private static readonly string s_obsoleteCorrelationId = "ObsoleteCorrelationId";
+		private static readonly string s_obsoleteTransactionId = "ObsoleteTransactionId";
 		private const string CorrelationIdObsoleteMessage = "Please use Activity.Id or Activity.GetRootIdAsGuid() for new services instead";
 		private const string TransactionIdObsoleteMessage = "Please use Activity.IsHealthCheck() for new services instead";
 	}

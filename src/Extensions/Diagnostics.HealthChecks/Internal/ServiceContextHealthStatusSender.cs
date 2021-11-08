@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	internal class ServiceContextHealthStatusSender : IHealthStatusSender
 	{
-		private const string HealthReportSourceId = nameof(ServiceContextHealthStatusSender);
+		private static readonly string s_healthReportSourceId = nameof(ServiceContextHealthStatusSender);
 
 		private readonly IAccessor<IServicePartition> m_partitionAccessor;
 
@@ -55,7 +55,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			try
 			{
-				m_reportHealth(new HealthInformation(HealthReportSourceId, checkName, ToSfHealthState(status))
+				m_reportHealth(new HealthInformation(s_healthReportSourceId, checkName, ToSfHealthState(status))
 				{
 					Description = description
 				});

@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		private IHealthStatusSender StatusSender { get; }
 
-		internal const string HealthReportSummaryProperty = "HealthReportSummary";
+		internal static readonly string HealthReportSummaryProperty = "HealthReportSummary";
 
 		public OmexHealthCheckPublisher(IHealthStatusSender statusSender, ObjectPoolProvider objectPoolProvider)
 		{

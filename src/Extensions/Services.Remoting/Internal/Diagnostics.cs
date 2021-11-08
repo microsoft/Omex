@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		/// <remarks>
 		/// Changing this name will mean that consumers might miss telemetry events
 		/// </remarks>
-		internal const string DiagnosticListenerName = "Microsoft.Omex.Extensions.Services.Remoting";
+		internal static readonly string DiagnosticListenerName = "Microsoft.Omex.Extensions.Services.Remoting";
 
 		/// <summary>
 		/// Name of the exception event
@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 		/// <remarks>
 		/// Should end with Exception to be enabled by our telemetry
 		/// </remarks>
-		private const string ExceptionEventName = DiagnosticListenerName + ".Exception";
+		private static readonly string s_exceptionEventName = DiagnosticListenerName + ".Exception";
 
 		public static DiagnosticListener DefaultListener { get; } = new DiagnosticListener(DiagnosticListenerName);
 
@@ -48,9 +48,9 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 
 		public static void ReportException(this DiagnosticListener listener, Exception exception)
 		{
-			if (listener.IsEnabled(ExceptionEventName))
+			if (listener.IsEnabled(s_exceptionEventName))
 			{
-				listener.Write(ExceptionEventName, exception);
+				listener.Write(s_exceptionEventName, exception);
 			}
 		}
 	}
