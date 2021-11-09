@@ -16,8 +16,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		public Task<(bool success, int bytesWritten)> TryWriteBytesAsync(HttpContext context, Memory<byte> memory)
 		{
 			int bytesWritten = -1;
-			IHttpConnectionFeature connection = context.Features.Get<IHttpConnectionFeature>();
-			IPAddress? remoteIpAddress = connection.RemoteIpAddress;
+			IHttpConnectionFeature? connection = context.Features.Get<IHttpConnectionFeature>();
+			IPAddress? remoteIpAddress = connection?.RemoteIpAddress;
 
 			return Task.FromResult((remoteIpAddress != null
 				&& remoteIpAddress.TryWriteBytes(memory.Span.Slice(0, MaxBytesInIdentity), out bytesWritten), bytesWritten));
