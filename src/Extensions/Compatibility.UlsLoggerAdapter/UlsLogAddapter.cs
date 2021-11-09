@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Extensions.Compatibility.UlsLoggerAdapter
 	/// </summary>
 	internal class UlsLogAddapter : IHostedService
 	{
-		private static readonly Func<string, Exception, string> s_formatter = (message, exception) => message; // emulating behavior of standard formatter to avoid duplicating exception stack trace
+		private static readonly Func<string, Exception?, string> s_formatter = (message, exception) => message; // emulating behavior of standard formatter to avoid duplicating exception stack trace
 		private readonly ILoggerFactory m_loggerFactory;
 		private readonly ConcurrentDictionary<string, ILogger> m_loggersDictionary;
 
