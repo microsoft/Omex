@@ -94,7 +94,7 @@ namespace Microsoft.AspNetCore.Builder
 						context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 						context.Response.ContentType = "application/json";
 
-						IExceptionHandlerFeature contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+						IExceptionHandlerFeature? contextFeature = context.Features.Get<IExceptionHandlerFeature>();
 
 						Dictionary<string, string> errorDict = new Dictionary<string, string>
 						{

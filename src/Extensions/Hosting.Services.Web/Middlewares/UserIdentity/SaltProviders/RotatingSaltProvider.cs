@@ -18,7 +18,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	{
 		private const int SaltLength = 48; // currently recommended salt size 32
 		private const int HoursToKeepSalt = 40; // should not be more then 48 hours
-		private readonly RandomNumberGenerator m_random;
 		private readonly IMemoryOwner<byte> m_currentSaltMemory;
 		private readonly ISystemClock m_systemClock;
 		private readonly ILogger<RotatingSaltProvider> m_logger;
@@ -27,7 +26,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 
 		public RotatingSaltProvider(ISystemClock systemClock, ILogger<RotatingSaltProvider> logger)
 		{
-			m_random = new RNGCryptoServiceProvider();
 			m_currentSaltMemory = MemoryPool<byte>.Shared.Rent(SaltLength);
 			m_saltGenerationTime = DateTime.MinValue;
 			m_systemClock = systemClock;
@@ -59,14 +57,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		public void Dispose()
 		{
 			m_currentSaltMemory.Dispose();
-			m_random.Dispose();
 		}
 
 		private bool IsSaltOutdated(DateTimeOffset currentTime) => (currentTime - m_saltGenerationTime).TotalHours > HoursToKeepSalt;
 
 		private void RotateSalt(Span<byte> saltSpan, DateTimeOffset currentTime)
 		{
-			m_random.GetNonZeroBytes(saltSpan);
+			RandomNumberGenerator.Fill(saltSpan);
 			m_saltGenerationTime = currentTime;
 
 			// DO NOT ADD THE SALT TO THIS LOG STATEMENT. Doing so may violate compliance guarantees.

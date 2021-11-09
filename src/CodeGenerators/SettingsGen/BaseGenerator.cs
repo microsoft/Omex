@@ -99,7 +99,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		/// </summary>
 		protected static readonly DiagnosticDescriptor WritingToFile = new(id: "SETTINGSGEN001",
 			title: "Writing to settings file",
-			messageFormat: "Writing to file '{0}'.",
+			messageFormat: "Writing to file '{0}'",
 			category: "SettingsGenerator",
 			DiagnosticSeverity.Info,
 			isEnabledByDefault: true);
@@ -109,7 +109,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		/// </summary>
 		protected static readonly DiagnosticDescriptor DontGen = new(id: "SETTINGSGEN002",
 			title: "Not generating",
-			messageFormat: "Not generating/updating settings file.",
+			messageFormat: "Not generating/updating settings file",
 			category: "SettingsGenerator",
 			DiagnosticSeverity.Info,
 			isEnabledByDefault: true);
