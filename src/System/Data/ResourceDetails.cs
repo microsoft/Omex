@@ -32,7 +32,11 @@ namespace Microsoft.Omex.System.Data
 
 			Contents = Code.ExpectsArgument(contents, nameof(contents), TaggingUtilities.ReserveTag(0x238208d1 /* tag_9669r */));
 
+#if NET6_0_OR_GREATER
+			SHA256Hash = Convert.ToBase64String(SHA256.HashData(contents));
+#else
 			SHA256Hash = contents.GetHash<SHA256CryptoServiceProvider>();
+#endif
 		}
 
 		/// <summary>
