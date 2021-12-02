@@ -12,8 +12,8 @@
     <Microsoft_Net_Test_Sdk_Version>17.0.0</Microsoft_Net_Test_Sdk_Version>
     <Microsoft_SourceLink_GitHub_Version>1.1.1</Microsoft_SourceLink_GitHub_Version>
     <Microsoft_SourceLink_AzureRepos_Git_Version>1.1.1</Microsoft_SourceLink_AzureRepos_Git_Version>
-    <MSTest_TestAdapter_Version>2.2.7</MSTest_TestAdapter_Version>
-    <MSTest_TestFramework_Version>2.2.7</MSTest_TestFramework_Version>
+    <MSTest_TestAdapter_Version>2.2.8</MSTest_TestAdapter_Version>
+    <MSTest_TestFramework_Version>2.2.8</MSTest_TestFramework_Version>
     <System_Configuration_ConfigurationManager_Version>6.0.0</System_Configuration_ConfigurationManager_Version>
     <System_ServiceModel_Primitives_Version>4.9.0</System_ServiceModel_Primitives_Version>
     <System_Text_Encodings_Web_Version>6.0.0</System_Text_Encodings_Web_Version>
