@@ -13,7 +13,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="$(Microsoft_Extensions_Logging_Version)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="$(Microsoft_Extensions_Logging_Console_Version)" />
-    <PackageReference Include="System.Text.Encodings.Web" Version="$(System_Text_Encodings_Web_Version)" /> <!-- Override due to CG vulnerability -->
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
