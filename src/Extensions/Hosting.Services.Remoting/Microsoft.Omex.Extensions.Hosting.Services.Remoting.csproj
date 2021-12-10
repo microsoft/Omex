@@ -13,7 +13,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ServiceFabric.Services.Remoting" Version="$(Microsoft_ServiceFabric_Services_Remoting_Version)" />
-    <PackageReference Include="System.Text.Encodings.Web" Version="$(System_Text_Encodings_Web_Version)" /> <!-- Override due to CG vulnerability -->
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hosting.Services\Microsoft.Omex.Extensions.Hosting.Services.csproj" />
