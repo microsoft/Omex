@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <param name="scheme">uri scheme, defaults to http</param>
 		/// <param name="headers">headers to attach to the request</param>
 		/// <param name="expectedStatus">response status code that considered healthy, default to 200(OK)</param>
-		/// <param name="failureStatus">status that should be reported when the health check reports a failure</param>
+		/// <param name="failureStatus">status that should be reported when the health check reports a failure, if the provided value is null, Unhealthy will be reported Unhealthy</param>
 		/// <param name="additionalCheck">action that would be called after getting response, function should return new result object that would be reported</param>
 		/// <param name="reportData">additional properties that will be attached to health check result, for example escalation info</param>
 		public static IHealthChecksBuilder AddHttpEndpointCheck(
@@ -94,7 +94,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <param name="endpointName">name of the endpoint to check</param>
 		/// <param name="httpRequestMessageBuilder">action that will return the http request message</param>
 		/// <param name="expectedStatus">response status code that considered healthy, default to 200(OK)</param>
-		/// <param name="failureStatus">status that should be reported when the health check reports a failure</param>
+		/// <param name="failureStatus">status that should be reported when the health check reports a failure, if the provided value is null, Unhealthy will be reported Unhealthy</param>
 		/// <param name="additionalCheck">action that would be called after getting response, function should return new result object that would be reported</param>
 		/// <param name="reportData">additional properties that will be attached to health check result, for example escalation info</param>
 		public static IHealthChecksBuilder AddHttpEndpointCheck(
@@ -103,7 +103,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			string endpointName,
 			Func<UriBuilder, HttpRequestMessage> httpRequestMessageBuilder,
 			HttpStatusCode? expectedStatus = null,
-			HealthStatus failureStatus = HealthStatus.Unhealthy,
+			HealthStatus? failureStatus = null,
 			Func<HttpResponseMessage, HealthCheckResult, Task<HealthCheckResult>>? additionalCheck = null,
 			params KeyValuePair<string, object>[] reportData)
 		{
@@ -113,8 +113,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 			return builder.AddTypeActivatedCheck<HttpEndpointHealthCheck>(
 				name,
-				new HttpHealthCheckParameters(requestMessage, expectedStatus, additionalCheck, reportData),
-				failureStatus);
+				failureStatus,
+				new HttpHealthCheckParameters(requestMessage, expectedStatus, additionalCheck, reportData));
 		}
 	}
 }
