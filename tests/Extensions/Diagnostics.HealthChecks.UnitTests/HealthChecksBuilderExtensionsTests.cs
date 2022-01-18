@@ -43,7 +43,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			}.ToArray();
 
 			IServiceProvider provider = GetBuilder()
-				.AddHttpEndpointCheck(checkName, endpoitName, path, method, scheme, headers, code, additionalCheck, reportData)
+				.AddHttpEndpointCheck(checkName, endpoitName, path, method, scheme, headers, code, HealthStatus.Unhealthy, additionalCheck, reportData)
 				.Services
 				.BuildServiceProvider();
 
