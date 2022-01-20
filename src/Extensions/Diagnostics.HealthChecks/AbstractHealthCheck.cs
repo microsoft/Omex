@@ -43,7 +43,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <inheritdoc />
 		public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken token = default)
 		{
-			using Activity? activity = m_activitySource.StartActivity("HealthCheckActivity")
+			using Activity? activity = m_activitySource.StartActivity(context.Registration.Name)
 				?.MarkAsSystemError()
 				.MarkAsHealthCheck();
 
