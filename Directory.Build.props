@@ -1,7 +1,7 @@
 ﻿<Project>
   <Import Project="$(MSBuildThisFileDirectory)\Dependencies.props" />
   <PropertyGroup Label="Target Platforms" >
-    <NetCoreVersions>net5.0;net6.0</NetCoreVersions>
+    <NetCoreVersions>net6.0</NetCoreVersions>
     <NetStandardVersions>netstandard2.0</NetStandardVersions>
     <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
     <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>

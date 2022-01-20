@@ -2,23 +2,18 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Package Versions. AutoUpdate">
     <Moq_Version>4.16.1</Moq_Version>
-    <Microsoft_AspNetCore_Hosting_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Hosting_Abstractions_Version>
-    <Microsoft_AspNetCore_Hosting_Version>2.2.7</Microsoft_AspNetCore_Hosting_Version>
-    <Microsoft_AspNetCore_Http_Abstractions_Version>2.2.0</Microsoft_AspNetCore_Http_Abstractions_Version>
-    <Microsoft_AspNetCore_Http_Version>2.2.2</Microsoft_AspNetCore_Http_Version>
     <Microsoft_Azure_DocumentDB_Version>2.16.2</Microsoft_Azure_DocumentDB_Version>
     <Microsoft_CodeAnalysis_Common>3.11.0</Microsoft_CodeAnalysis_Common>
     <Microsoft_CodeAnalysis_Csharp>3.11.0</Microsoft_CodeAnalysis_Csharp>
     <Microsoft_Net_Test_Sdk_Version>17.0.0</Microsoft_Net_Test_Sdk_Version>
     <Microsoft_SourceLink_GitHub_Version>1.1.1</Microsoft_SourceLink_GitHub_Version>
     <Microsoft_SourceLink_AzureRepos_Git_Version>1.1.1</Microsoft_SourceLink_AzureRepos_Git_Version>
-    <MSTest_TestAdapter_Version>2.2.7</MSTest_TestAdapter_Version>
-    <MSTest_TestFramework_Version>2.2.7</MSTest_TestFramework_Version>
+    <MSTest_TestAdapter_Version>2.2.8</MSTest_TestAdapter_Version>
+    <MSTest_TestFramework_Version>2.2.8</MSTest_TestFramework_Version>
     <System_Configuration_ConfigurationManager_Version>6.0.0</System_Configuration_ConfigurationManager_Version>
     <System_ServiceModel_Primitives_Version>4.9.0</System_ServiceModel_Primitives_Version>
-    <System_Text_Encodings_Web_Version>6.0.0</System_Text_Encodings_Web_Version>
     <System_Threading_Tasks_Version>4.3.0</System_Threading_Tasks_Version>
-    <System_Text_Json_Version>6.0.0</System_Text_Json_Version>
+    <System_Text_Json_Version>6.0.1</System_Text_Json_Version>
     <System_ComponentModel_Annotations>5.0.0</System_ComponentModel_Annotations>
     <Xunit_Runner_VisualStudio_Version>2.4.3</Xunit_Runner_VisualStudio_Version>
   </PropertyGroup>
@@ -30,14 +25,14 @@
   <PropertyGroup Label="Packages for Omex Extensions. AutoUpdate">
     <Microsoft_Extensions_DependencyInjection_Version>6.0.0</Microsoft_Extensions_DependencyInjection_Version>
     <Microsoft_Extensions_DependencyInjection_Abstractions_Version>6.0.0</Microsoft_Extensions_DependencyInjection_Abstractions_Version>
-    <Microsoft_Extensions_Diagnostics_HealthChecks_Version>6.0.0</Microsoft_Extensions_Diagnostics_HealthChecks_Version>
+    <Microsoft_Extensions_Diagnostics_HealthChecks_Version>6.0.1</Microsoft_Extensions_Diagnostics_HealthChecks_Version>
     <Microsoft_Extensions_Hosting_Version>6.0.0</Microsoft_Extensions_Hosting_Version>
     <Microsoft_Extensions_Hosting_Abstractions_Version>6.0.0</Microsoft_Extensions_Hosting_Abstractions_Version>
     <Microsoft_Extensions_Http_Version>6.0.0</Microsoft_Extensions_Http_Version>
     <Microsoft_Extensions_Logging_Version>6.0.0</Microsoft_Extensions_Logging_Version>
     <Microsoft_Extensions_Logging_Abstractions_Version>6.0.0</Microsoft_Extensions_Logging_Abstractions_Version>
     <Microsoft_Extensions_Logging_Console_Version>6.0.0</Microsoft_Extensions_Logging_Console_Version>
-    <Microsoft_Extensions_ObjectPool_Version>6.0.0</Microsoft_Extensions_ObjectPool_Version>
+    <Microsoft_Extensions_ObjectPool_Version>6.0.1</Microsoft_Extensions_ObjectPool_Version>
     <Microsoft_Extensions_Options_ConfigurationExtensions_Version>6.0.0</Microsoft_Extensions_Options_ConfigurationExtensions_Version>
     <Microsoft_Extensions_Options_Version>6.0.0</Microsoft_Extensions_Options_Version>
     <System_Diagnostics_DiagnosticSource_Version>6.0.0</System_Diagnostics_DiagnosticSource_Version>
