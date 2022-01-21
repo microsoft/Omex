@@ -11,9 +11,9 @@ namespace Microsoft.Omex.Extensions.Abstractions
 	public class SfConfigurationProvider
 	{
 		/// SF environment variables taken from https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-environment-variables-reference
-		internal const string PublishAddressEvnVariableName = "Fabric_NodeIPOrFQDN";
+		internal static readonly string PublishAddressEvnVariableName = "Fabric_NodeIPOrFQDN";
 
-		internal const string EndpointPortEvnVariableSuffix = "Fabric_Endpoint_";
+		internal static readonly string EndpointPortEvnVariableSuffix = "Fabric_Endpoint_";
 
 		/// <summary>
 		/// Get Service Fabric Variable from environment

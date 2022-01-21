@@ -23,11 +23,11 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Runtime
 		/// <remarks>
 		/// Should end with RequestIn to be enabled by our telemetry
 		/// </remarks>
-		private const string RequestInActivitySuffix = "RequestIn";
+		private static readonly string s_requestInActivitySuffix = "RequestIn";
 
-		private const string OneWayMessageActivityName = Diagnostics.DiagnosticListenerName + "OneWay" + RequestInActivitySuffix;
+		private static readonly string s_oneWayMessageActivityName = Diagnostics.DiagnosticListenerName + "OneWay" + s_requestInActivitySuffix;
 
-		private const string RequestActivityName = Diagnostics.DiagnosticListenerName + RequestInActivitySuffix;
+		private static readonly string s_requestActivityName = Diagnostics.DiagnosticListenerName + s_requestInActivitySuffix;
 
 		private readonly DiagnosticListener m_diagnosticListener;
 
@@ -49,7 +49,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Runtime
 
 			try
 			{
-				activity = requestMessage.StartActivityFromIncomingRequest(m_diagnosticListener, OneWayMessageActivityName);
+				activity = requestMessage.StartActivityFromIncomingRequest(m_diagnosticListener, s_oneWayMessageActivityName);
 				base.HandleOneWayMessage(requestMessage);
 				activity?.SetResult(ActivityResult.Success);
 			}
@@ -75,7 +75,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Runtime
 
 			try
 			{
-				activity = requestMessage.StartActivityFromIncomingRequest(m_diagnosticListener, RequestActivityName);
+				activity = requestMessage.StartActivityFromIncomingRequest(m_diagnosticListener, s_requestActivityName);
 				responseMessage = await base.HandleRequestResponseAsync(requestContext, requestMessage).ConfigureAwait(false);
 				activity?.SetResult(ActivityResult.Success);
 			}

@@ -55,13 +55,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			!IsClientRequest(request)
 			&& Guid.TryParse(ExtractParameter(request.Query, s_correlationIdNames), out Guid correlation)
 				? correlation
-				: (Guid?)null;
+				: null;
 
 		private static Guid? ExtractCorrelationIdFromHeader(HttpRequest request) =>
 			!IsClientRequest(request)
 			&& Guid.TryParse(ExtractHeader(request.Headers, s_correlationIdNames), out Guid correlation)
 				? correlation
-				: (Guid?)null;
+				: null;
 
 		private static string? ExtractParameter(IQueryCollection dataSources, IEnumerable<string> names)
 		{
@@ -100,7 +100,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		/// Checks if the context is for a request that contains identifiers indicating that the request originated from an Office client
 		/// </summary>
 		private static bool IsClientRequest(HttpRequest request) =>
-			request.Headers.ContainsKey(OfficeClientVersionHeader)
+			request.Headers.ContainsKey(s_officeClientVersionHeader)
 				? true
 				: request.Query.Count == 0 // Don't check empty parameters
 					? false
@@ -109,14 +109,18 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		private static uint? ParseUint(string? value) =>
 			uint.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out uint result)
 				? result
-				: (uint?)null;
+				: null;
+
+		private static readonly string s_correlationHeader = "X-CorrelationId";
+
+		private static readonly string s_officeClientVersionHeader = "X-Office-Version";
 
 		private static readonly string[] s_transactionsNames = {
 			"corrtid",					// Correlation transaction query parameter
 			"X-TransactionId" };
 
 		private static readonly string[] s_correlationIdNames = {
-			CorrelationHeader,
+			s_correlationHeader,
 			"MS-CorrelationId",			// Correlation Id header used by other Microsoft services
 			"corr",						// Correlation query parameter
 			"HTTP_X_CORRELATIONID" };
@@ -125,9 +129,5 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			"client",					// Identifies the client application and platform
 			"av",						// Identifies the client application, platform and partial version
 			"app" };					// Identifies the client application
-
-		private const string CorrelationHeader = "X-CorrelationId";
-
-		private const string OfficeClientVersionHeader = "X-Office-Version";
 	}
 }

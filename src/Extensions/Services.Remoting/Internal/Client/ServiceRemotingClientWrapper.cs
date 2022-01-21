@@ -22,11 +22,11 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 		/// <remarks>
 		/// Should end with RequestOut to be enabled by our telemetry
 		/// </remarks>
-		private const string RequestOutActivitySuffix = "RequestOut";
+		private static readonly string s_requestOutActivitySuffix = "RequestOut";
 
-		private const string OneWayMessageActivityName = Diagnostics.DiagnosticListenerName + "OneWay" + RequestOutActivitySuffix;
+		private static readonly string s_oneWayMessageActivityName = Diagnostics.DiagnosticListenerName + "OneWay" + s_requestOutActivitySuffix;
 
-		private const string RequestActivityName = Diagnostics.DiagnosticListenerName + RequestOutActivitySuffix;
+		private static readonly string s_requestActivityName = Diagnostics.DiagnosticListenerName + s_requestOutActivitySuffix;
 
 		private readonly DiagnosticListener m_diagnosticListener;
 
@@ -58,7 +58,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 
 		public async Task<IServiceRemotingResponseMessage> RequestResponseAsync(IServiceRemotingRequestMessage requestMessage)
 		{
-			Activity? activity = m_diagnosticListener.CreateAndStartActivity(RequestActivityName);
+			Activity? activity = m_diagnosticListener.CreateAndStartActivity(s_requestActivityName);
 			requestMessage.AttachActivityToOutgoingRequest(activity);
 			IServiceRemotingResponseMessage? responseMessage = null;
 
@@ -82,7 +82,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 
 		public void SendOneWay(IServiceRemotingRequestMessage requestMessage)
 		{
-			Activity? activity = m_diagnosticListener.CreateAndStartActivity(OneWayMessageActivityName);
+			Activity? activity = m_diagnosticListener.CreateAndStartActivity(s_oneWayMessageActivityName);
 			requestMessage.AttachActivityToOutgoingRequest(activity);
 
 			try

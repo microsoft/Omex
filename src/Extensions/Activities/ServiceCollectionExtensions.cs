@@ -1,11 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
@@ -18,8 +15,8 @@ namespace Microsoft.Extensions.DependencyInjection
 	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
-		private const string ActivitySourceName = "OmexActivitySource";
-		private const string ActivitySourceVersion = "1.0.0.0";
+		private static readonly string s_activitySourceName = "OmexActivitySource";
+		private static readonly string s_activitySourceVersion = "1.0.0.0";
 
 		/// <summary>
 		/// Add ActivitySource to ServiceCollection
@@ -44,7 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
 			serviceCollection.TryAddSingleton<IActivitiesEventSender, AggregatedActivitiesEventSender>();
 
 			serviceCollection.TryAddSingleton<IActivityListenerConfigurator, DefaultActivityListenerConfigurator>();
-			serviceCollection.TryAddSingleton(p => new ActivitySource(ActivitySourceName, ActivitySourceVersion));
+			serviceCollection.TryAddSingleton(p => new ActivitySource(s_activitySourceName, s_activitySourceVersion));
 			serviceCollection.TryAddSingleton(p => ActivityEventSource.Instance);
 
 			return serviceCollection;
