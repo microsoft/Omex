@@ -3,9 +3,13 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using Microsoft.Extensions.Hosting;
 
 namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
@@ -26,9 +30,11 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 
 		// defined by Service Fabric https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-environment-variables-reference
 		internal const string ServiceNameVariableName = "Fabric_ServiceName";
+		internal const string ServicePackageVariableName = "Fabric_ServicePackageName";
 		internal const string ApplicationNameVariableName = "Fabric_ApplicationName";
 		internal const string NodeNameVariableName = "Fabric_NodeName";
 		internal const string NodeIPOrFQDNVariableName = "Fabric_NodeIPOrFQDN";
+		internal const string FarbicFolderApplication = "Fabric_Folder_Application";
 
 		/// <summary>
 		/// Create instance of execution context
@@ -37,10 +43,11 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		public BaseExecutionContext(IHostEnvironment? hostEnvironment = null)
 		{
 			MachineName = GetMachineName();
-			BuildVersion = GetBuildVersion();
+			ServicePackageName = GetVariable(ServicePackageVariableName) ?? DefaultEmptyValue;
+			BuildVersion = GetBuildVersionFromServiceManifest() ?? DefaultEmptyValue;
 
 			ClusterIpAddress = GetIpAddress(MachineName);
-			
+
 			RegionName = GetVariable(RegionNameVariableName) ?? DefaultEmptyValue;
 			DeploymentSlice = GetVariable(SliceNameVariableName) ?? DefaultEmptyValue;
 
@@ -115,6 +122,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		/// <inheritdoc/>
 		public bool IsPrivateDeployment { get; protected set; }
 
+		/// <inheritdoc/>
+		public string ServicePackageName { get; protected set; }
+
 		/// <summary>
 		/// Get environment variable value
 		/// </summary>
@@ -141,6 +151,37 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 			return assembly != null
 				? FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion ?? DefaultEmptyValue
 				: DefaultEmptyValue;
+		}
+
+		/// <summary>
+		/// Get build version from the current running service's manifest file
+		/// </summary>
+		/// <returns> Build version if found, otherwise null </returns>
+		protected string? GetBuildVersionFromServiceManifest()
+		{
+			string? serviceManifestPath = GetServiceManifestPath();
+			return serviceManifestPath == null ? null :
+				XElement.Load(serviceManifestPath).Attribute("Version")?.Value;
+		}
+
+
+		private string? GetServiceManifestPath()
+		{
+			string? applicationDir = GetVariable(FarbicFolderApplication);
+			string? serviceManifestName = ServicePackageName;
+
+			if (applicationDir == null || serviceManifestName == null)
+			{
+				return null;
+			}
+			string serviceProperName = serviceManifestName.Replace(@"\", @"\\").Replace(".", @"\.");
+			string regexExp = string.Format(@"(.*{0}.*\.Manifest\..*\.xml)$", serviceProperName);
+			Regex regex = new(regexExp);
+			string[] manifests = Directory.GetFiles(applicationDir).Where(
+					path => regex.IsMatch(path)
+				).ToArray();
+
+			return manifests.Length != 1 ? null : manifests.Single();
 		}
 
 		/// <summary>

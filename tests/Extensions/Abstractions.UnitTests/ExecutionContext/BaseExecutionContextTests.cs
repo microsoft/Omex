@@ -24,9 +24,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			string applicationName = "SomeApplicationName";
 			string serviceName = "SomeServiceName";
 			string nodeName = "SomeNodeName";
+			string packageName = "SomePackageName";
+
 			IPAddress nodeIPOrFQDN = IPAddress.Parse("192.0.0.1");
 
 			Environment.SetEnvironmentVariable(BaseExecutionContext.ClusterNameVariableName, clusterName);
+			Environment.SetEnvironmentVariable(BaseExecutionContext.ServicePackageVariableName, packageName);
 			Environment.SetEnvironmentVariable(BaseExecutionContext.RegionNameVariableName, regionName);
 			Environment.SetEnvironmentVariable(BaseExecutionContext.SliceNameVariableName, sliceName);
 			Environment.SetEnvironmentVariable(BaseExecutionContext.ApplicationNameVariableName, applicationName);
@@ -42,6 +45,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			Assert.AreEqual(clusterName, info.Cluster);
 			Assert.AreEqual(regionName, info.RegionName);
 			Assert.AreEqual(sliceName, info.DeploymentSlice);
+			Assert.AreEqual(packageName, info.ServicePackageName);
 
 			Assert.AreEqual(enviroment, info.EnvironmentName);
 			Assert.AreEqual(isPrivate, info.IsPrivateDeployment);
