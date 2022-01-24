@@ -1,9 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Extensions\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
-    <ProjectReference Include="..\..\..\src\Extensions\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj" />
-  </ItemGroup>
-</Project>

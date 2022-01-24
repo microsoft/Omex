@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Hosting\Microsoft.Omex.Extensions.Hosting.csproj" />
+    <ProjectReference Include="..\..\src\ServiceFabricGuest.Abstractions\Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="$(Microsoft_Extensions_Logging_Version)" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(Microsoft_Extensions_Options_ConfigurationExtensions_Version)" />
+    <PackageReference Include="Microsoft.ServiceFabric.Actors" Version="$(Microsoft_ServiceFabric_Actors_Version)" />
+    <PackageReference Include="ServiceFabric.Mocks" Version="$(ServiceFabric_Mocks_Version)" />
+  </ItemGroup>
+  <ItemGroup Condition="$(IsNetFramework)">
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+</Project>

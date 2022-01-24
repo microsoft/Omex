@@ -10,6 +10,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\CodeGenerators\SettingsGen\Microsoft.Omex.CodeGenerators.SettingsGen.csproj" />
-    <ProjectReference Include="..\..\..\src\System.UnitTests.Shared\Microsoft.Omex.System.UnitTests.Shared.csproj" />
   </ItemGroup>
 </Project>

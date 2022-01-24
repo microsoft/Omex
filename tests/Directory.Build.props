@@ -6,8 +6,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(Microsoft_Net_Test_Sdk_Version)" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="$(Xunit_Runner_VisualStudio_Version)" PrivateAssets="All" />
-    <PackageReference Include="xunit.assert" Version="$(Xunit_Assert_Version)" />
-    <PackageReference Include="xunit.core" Version="$(Xunit_Core_Version)" />
+    <PackageReference Include="MSTest.TestAdapter" Version="$(MSTest_TestAdapter_Version)" PrivateAssets="All" />
+    <PackageReference Include="MSTest.TestFramework" Version="$(MSTest_TestFramework_Version)" />
+    <PackageReference Include="Moq" Version="$(Moq_Version)" />
   </ItemGroup>
 </Project>
