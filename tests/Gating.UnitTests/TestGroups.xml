@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TestGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<TestGroup name="DefaultTestGroup">
-		<Member email="myemail@mydomain.xx" alias="myalias"/>
-	</TestGroup>
-</TestGroups>

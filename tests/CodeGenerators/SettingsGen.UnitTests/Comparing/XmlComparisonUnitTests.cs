@@ -1,40 +1,39 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.Omex.CodeGenerators.SettingsGen.Comparing;
 using Microsoft.Omex.CodeGenerators.SettingsGen.Models;
-using Microsoft.Omex.System.UnitTests.Shared;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.Comparing
 {
 	/// <summary>
 	/// Unit tests for XmlComparison class
 	/// </summary>
-	public sealed class XmlComparisonUnitTests : UnitTestBase
+	[TestClass]
+	public sealed class XmlComparisonUnitTests
 	{
-		[Fact]
+		[TestMethod]
 		public void AreExistingSettingsEqual_TestFalse_NoSourceText()
 		{
 			XmlComparison<SettingsXmlModel> xmlComparison = new XmlComparison<SettingsXmlModel>();
 			AdditionalText additionalText = new MockAdditionalText(string.Empty);
-			Assert.False(xmlComparison.AreExistingSettingsEqual(new SettingsXmlModel(), additionalText), "Empty text should be false");
+			Assert.IsFalse(xmlComparison.AreExistingSettingsEqual(new SettingsXmlModel(), additionalText), "Empty text should be false");
 		}
 
-		[Fact]
+		[TestMethod]
 		public void AreExistingSettingsEqual_TestEqual_Empty()
 		{
 			XmlComparison<SettingsXmlModel> xmlComparison = new XmlComparison<SettingsXmlModel>();
 			AdditionalText additionalText = new MockAdditionalText(string.Format(SettingElement, string.Empty));
-			Assert.True(xmlComparison.AreExistingSettingsEqual(new SettingsXmlModel(), additionalText), "Empty settings should be equal");
+			Assert.IsTrue(xmlComparison.AreExistingSettingsEqual(new SettingsXmlModel(), additionalText), "Empty settings should be equal");
 		}
 
-		[Fact]
+		[TestMethod]
 		public void AreExistingSettingsEqual_TestEqual_WithParms()
 		{
 			XmlComparison<SettingsXmlModel> xmlComparison = new XmlComparison<SettingsXmlModel>();
@@ -42,10 +41,10 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.Comparing
 			settingsXmlModel.Sections.Add(SectionModel);
 
 			AdditionalText additionalText = new MockAdditionalText(string.Format(SettingElement, SectionWithParamXml));
-			Assert.True(xmlComparison.AreExistingSettingsEqual(settingsXmlModel, additionalText), "Empty settings should be equal");
+			Assert.IsTrue(xmlComparison.AreExistingSettingsEqual(settingsXmlModel, additionalText), "Empty settings should be equal");
 		}
 
-		[Fact]
+		[TestMethod]
 		public void AreExistingSettingsEqual_TestNotEqual()
 		{
 			XmlComparison<SettingsXmlModel> xmlComparison = new XmlComparison<SettingsXmlModel>();
@@ -57,10 +56,10 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.Comparing
 			});
 
 			AdditionalText additionalText = new MockAdditionalText(string.Format(SettingElement, SectionWithParamXml));
-			Assert.False(xmlComparison.AreExistingSettingsEqual(settingsXmlModel, additionalText), "Settings should not be equal");
+			Assert.IsFalse(xmlComparison.AreExistingSettingsEqual(settingsXmlModel, additionalText), "Settings should not be equal");
 		}
 
-		[Fact]
+		[TestMethod]
 		public void AreExistingSettingsEqual_TestInvalidXml()
 		{
 			string invalidXml = "hello";
@@ -73,7 +72,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.Comparing
 			});
 
 			AdditionalText additionalText = new MockAdditionalText(invalidXml);
-			Assert.False(xmlComparison.AreExistingSettingsEqual(settingsXmlModel, additionalText));
+			Assert.IsFalse(xmlComparison.AreExistingSettingsEqual(settingsXmlModel, additionalText));
 		}
 
 		public readonly SectionModel SectionModel = new SectionModel
