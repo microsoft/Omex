@@ -10,23 +10,22 @@ using Microsoft.Omex.CodeGenerators.SettingsGen.Models;
 using Microsoft.Omex.CodeGenerators.SettingsGen.Models.Attributes;
 using Microsoft.Omex.CodeGenerators.SettingsGen.Parser;
 using Microsoft.Omex.CodeGenerators.SettingsGen.Wrappers;
-using Microsoft.Omex.System.UnitTests.Shared;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Xunit;
 
 namespace Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.Parser
 {
-    public sealed class SettingsFromAttributeParserUnitTests : UnitTestBase
+    public sealed class SettingsFromAttributeParserUnitTests
     {
 		private Mock<IContextWrapper> m_contextWrapper = new Mock<IContextWrapper>();
 
-		[Fact]
+		[TestMethod]
 		public void Constructor_TestEmptySet()
 		{
-			Assert.Throws<ArgumentException>(() => new SettingsFromAttributeParser(new HashSet<string> { }, m_contextWrapper.Object));
+			Assert.ThrowsException<ArgumentException>(() => new SettingsFromAttributeParser(new HashSet<string> { }, m_contextWrapper.Object));
 		}
 
-		[Fact]
+		[TestMethod]
 		public void OnVisitSyntax_TestNoSection()
 		{
 			Mock<INamedTypeSymbol> mock = new Mock<INamedTypeSymbol>();
@@ -40,10 +39,10 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.Parser
 			}, m_contextWrapper.Object);
 
 			parser.OnVisitSyntaxNode(new GeneratorSyntaxContext());
-			Assert.Equal(0, parser.Classes.Count);
+			Assert.AreEqual(0, parser.Classes.Count);
 		}
 
-		[Fact]
+		[TestMethod]
 		public void OnVisitSyntax_TestHasSections_WithNameAttribute()
 		{
 			Mock<INamedTypeSymbol> mock = new Mock<INamedTypeSymbol>();
@@ -61,11 +60,11 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.Parser
 			}, m_contextWrapper.Object);
 			parser.OnVisitSyntaxNode(new GeneratorSyntaxContext());
 
-			Assert.Equal(1, parser.Classes.Count);
-			Assert.Equal("Override", parser.Classes.First().sectionName);
+			Assert.AreEqual(1, parser.Classes.Count);
+			Assert.AreEqual("Override", parser.Classes.First().sectionName);
 		}
 
-		[Fact]
+		[TestMethod]
 		public void OnVisitSyntax_TestHasSections_WithNoNameAttribute()
 		{
 			Mock<INamedTypeSymbol> mock = new Mock<INamedTypeSymbol>();
@@ -83,11 +82,11 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.Parser
 			}, m_contextWrapper.Object);
 			parser.OnVisitSyntaxNode(new GeneratorSyntaxContext());
 
-			Assert.Equal(1, parser.Classes.Count);
-			Assert.Equal("Hello", parser.Classes.First().sectionName);
+			Assert.AreEqual(1, parser.Classes.Count);
+			Assert.AreEqual("Hello", parser.Classes.First().sectionName);
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GetSettings_TestHasSections_WithNoNameAttribute()
 		{
 			Mock<INamedTypeSymbol> mock = new Mock<INamedTypeSymbol>();
@@ -121,11 +120,11 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.Parser
 				}
 			};
 
-			Assert.Equal(expected, settings);
+			Assert.AreEqual(expected, settings);
 		}
 
 
-		[Fact]
+		[TestMethod]
 		public void GetSettings_TestHasSections_WithNameAttribute()
 		{
 			Mock<INamedTypeSymbol> mock = new Mock<INamedTypeSymbol>();
@@ -159,10 +158,10 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.Parser
 				}
 			};
 
-			Assert.Equal(expected, settings);
+			Assert.AreEqual(expected, settings);
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GetSettings_TestHasSections_WithIgnoreAttribute()
 		{
 			Mock<INamedTypeSymbol> mock = new Mock<INamedTypeSymbol>();
@@ -191,7 +190,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.Parser
 				}
 			};
 
-			Assert.Equal(expected, settings);
+			Assert.AreEqual(expected, settings);
 		}
 
 		private static ImmutableArray<ISymbol> PropertySymbols()
