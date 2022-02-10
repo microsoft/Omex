@@ -106,7 +106,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_logger.LogError(
 				Tag.Create(),
 				ExtractExceptionFromPayload(payload),
-				"Exception diagnostic event '{0}' with payload '{1}'", eventName, payload);
+				"Exception diagnostic event '{0}'", eventName);
 
 
 		// Made internal for unit testing
