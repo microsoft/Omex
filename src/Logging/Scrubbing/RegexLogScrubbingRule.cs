@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// Initializes a new instance of the <see cref="RegexLogScrubbingRule"/> class.
 		/// </summary>
 		/// <param name="regexToReplace">The regular expression specifying the strings to replace.</param>
-		/// <param name="matchEvaluator">The value with which to replace the matching text.</param>
+		/// <param name="matchEvaluator">Custom logic for regex replace.</param>
 		public RegexLogScrubbingRule(string regexToReplace, MatchEvaluator? matchEvaluator)
 		{
 			m_regexToReplace = new Regex(regexToReplace, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
@@ -43,18 +43,9 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// <returns>The scrubbed input.</returns>
 		public string Scrub(string input)
 		{
-			string scrubbedResult = string.Empty;
-
-			if (m_matchEvaluator != null)
-			{
-				scrubbedResult = m_regexToReplace.Replace(input, m_matchEvaluator);
-			}
-			else
-			{
-				scrubbedResult = m_regexToReplace.Replace(input, m_replacementValue ?? string.Empty);
-			}
-
-			return scrubbedResult;
+			return m_matchEvaluator != null
+				? m_regexToReplace.Replace(input, m_matchEvaluator)
+				: m_regexToReplace.Replace(input, m_replacementValue ?? string.Empty);
 		}
 	}
 }
