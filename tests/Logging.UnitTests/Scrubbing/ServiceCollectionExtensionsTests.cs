@@ -116,11 +116,24 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataRow("/api/path?q3=v3", "/api/path?q3=v3")]
 		public void Scrub_Url_WithMatchEvaluator_ShouldScrub(string input, string expected)
 		{
-			string regex2 = "(q1|q2)=(.+?)(&|$)";
 			MatchEvaluator matchEvaluator = new((match) => match.Groups[1].Value + "=REDACTED" + match.Groups[3].Value);
 
 			ILoggingBuilder builder2 = new MockLoggingBuilder()
-				.AddRegexLogScrubbingRule(regex2, matchEvaluator);
+				.AddRegexLogScrubbingRule(Regex, matchEvaluator);
+
+			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder2.Services);
+
+			Assert.AreEqual(expected, logScrubbingRules[0].Scrub(input));
+		}
+
+		[TestMethod]
+		[DataRow("/api/path?q1=v1&q2=v2&q3=v3", "/api/path?REDACTED&REDACTED&q3=v3")]
+		[DataRow("/api/path?q1=v1&q2=v2", "/api/path?REDACTED&REDACTED&")]
+		[DataRow("/api/path?q3=v3", "/api/path?q3=v3")]
+		public void Scrub_Url_WithoutMatchEvaluator_ShouldScrub(string input, string expected)
+		{
+			ILoggingBuilder builder2 = new MockLoggingBuilder()
+				.AddRegexLogScrubbingRule(Regex, "REDACTED&");
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder2.Services);
 
@@ -145,5 +158,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		{
 			public IServiceCollection Services { get; } = new ServiceCollection();
 		}
+
+		private const string Regex = "(q1|q2)=(.+?)(&|$)";
 	}
 }
