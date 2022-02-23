@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Logging.Scrubbing;
@@ -107,6 +108,23 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 			Assert.AreEqual("[IPv4 ADDRESS]", logScrubbingRules[1].Scrub("0.0.0.0"));
 			Assert.IsInstanceOfType(logScrubbingRules[2], typeof(RegexLogScrubbingRule));
 			Assert.AreEqual("[IPv6 ADDRESS]", logScrubbingRules[2].Scrub("1000::A01:1:AA10"));
+		}
+
+		[TestMethod]
+		[DataRow("/api/path?q1=v1&q2=v2&q3=v3", "/api/path?q1=REDACTED&q2=REDACTED&q3=v3")]
+		[DataRow("/api/path?q1=v1&q2=v2", "/api/path?q1=REDACTED&q2=REDACTED")]
+		[DataRow("/api/path?q3=v3", "/api/path?q3=v3")]
+		public void Scrub_Url_WithMatchEvaluator_ShouldScrub(string input, string expected)
+		{
+			string regex2 = "(q1|q2)=(.+?)(&|$)";
+			MatchEvaluator matchEvaluator = new((match) => match.Groups[1].Value + "=REDACTED" + match.Groups[3].Value);
+
+			ILoggingBuilder builder2 = new MockLoggingBuilder()
+				.AddRegexLogScrubbingRule(regex2, matchEvaluator);
+
+			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder2.Services);
+
+			Assert.AreEqual(expected, logScrubbingRules[0].Scrub(input));
 		}
 
 		private static ILogScrubbingRule[] GetTypeRegistrations(IServiceCollection collection)
