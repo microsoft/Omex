@@ -11,17 +11,29 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 	internal class RegexLogScrubbingRule : ILogScrubbingRule
 	{
 		private readonly Regex m_regexToReplace;
-		private readonly string m_replacementValue;
+		private readonly MatchEvaluator? m_matchEvaluator;
+		private readonly string? m_replacementValue;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="RegexLogScrubbingRule"/> class.
 		/// </summary>
 		/// <param name="regexToReplace">The regular expression specifying the strings to replace.</param>
 		/// <param name="replacementValue">The value with which to replace the matching text.</param>
-		public RegexLogScrubbingRule(string regexToReplace, string replacementValue)
+		public RegexLogScrubbingRule(string regexToReplace, string? replacementValue)
 		{
 			m_regexToReplace = new Regex(regexToReplace, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 			m_replacementValue = replacementValue;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RegexLogScrubbingRule"/> class.
+		/// </summary>
+		/// <param name="regexToReplace">The regular expression specifying the strings to replace.</param>
+		/// <param name="matchEvaluator">The value with which to replace the matching text.</param>
+		public RegexLogScrubbingRule(string regexToReplace, MatchEvaluator? matchEvaluator)
+		{
+			m_regexToReplace = new Regex(regexToReplace, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+			m_matchEvaluator = matchEvaluator;
 		}
 
 		/// <summary>
@@ -29,7 +41,20 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// </summary>
 		/// <param name="input">The input to scrub.</param>
 		/// <returns>The scrubbed input.</returns>
-		public string Scrub(string input) =>
-			m_regexToReplace.Replace(input, m_replacementValue);
+		public string Scrub(string input)
+		{
+			string scrubbedResult = string.Empty;
+
+			if (m_matchEvaluator != null)
+			{
+				scrubbedResult = m_regexToReplace.Replace(input, m_matchEvaluator);
+			}
+			else
+			{
+				scrubbedResult = m_regexToReplace.Replace(input, m_replacementValue ?? string.Empty);
+			}
+
+			return scrubbedResult;
+		}
 	}
 }
