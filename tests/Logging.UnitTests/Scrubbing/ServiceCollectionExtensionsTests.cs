@@ -119,7 +119,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 			MatchEvaluator matchEvaluator = new((match) => match.Groups[1].Value + "=REDACTED" + match.Groups[3].Value);
 
 			ILoggingBuilder builder2 = new MockLoggingBuilder()
-				.AddRegexLogScrubbingRule(Regex, matchEvaluator);
+				.AddRegexLogScrubbingRule(Regex, matchEvaluator: matchEvaluator);
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder2.Services);
 
@@ -133,7 +133,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		public void Scrub_Url_WithoutMatchEvaluator_ShouldScrub(string input, string expected)
 		{
 			ILoggingBuilder builder2 = new MockLoggingBuilder()
-				.AddRegexLogScrubbingRule(Regex, "REDACTED&");
+				.AddRegexLogScrubbingRule(Regex,"REDACTED&");
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder2.Services);
 
