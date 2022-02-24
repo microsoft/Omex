@@ -11,8 +11,8 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 	internal class RegexLogScrubbingRule : ILogScrubbingRule
 	{
 		private readonly Regex m_regexToReplace;
-		private readonly string m_replacementValue;
-		private readonly MatchEvaluator m_matchEvaluator;
+		private readonly string? m_replacementValue;
+		private readonly MatchEvaluator? m_matchEvaluator;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="RegexLogScrubbingRule"/> class.
@@ -23,7 +23,6 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		{
 			m_regexToReplace = new Regex(regexToReplace, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 			m_replacementValue = replacementValue;
-			m_matchEvaluator = null!;
 		}
 
 		/// <summary>
@@ -35,7 +34,6 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		{
 			m_regexToReplace = new Regex(regexToReplace, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 			m_matchEvaluator = matchEvaluator;
-			m_replacementValue = string.Empty;
 		}
 
 		/// <summary>
