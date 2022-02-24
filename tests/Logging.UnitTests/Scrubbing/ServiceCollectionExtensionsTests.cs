@@ -119,7 +119,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 			MatchEvaluator matchEvaluator = new((match) => match.Groups[1].Value + "=REDACTED" + match.Groups[3].Value);
 
 			ILoggingBuilder builder2 = new MockLoggingBuilder()
-				.AddRegexLogScrubbingRule(Regex, matchEvaluator: matchEvaluator);
+				.AddRegexLogScrubbingRule(Regex, matchEvaluator);
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder2.Services);
 

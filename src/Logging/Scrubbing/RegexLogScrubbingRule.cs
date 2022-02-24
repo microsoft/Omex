@@ -11,20 +11,31 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 	internal class RegexLogScrubbingRule : ILogScrubbingRule
 	{
 		private readonly Regex m_regexToReplace;
-		private readonly MatchEvaluator? m_matchEvaluator;
-		private readonly string? m_replacementValue;
+		private readonly string m_replacementValue;
+		private readonly MatchEvaluator m_matchEvaluator;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="RegexLogScrubbingRule"/> class.
 		/// </summary>
 		/// <param name="regexToReplace">The regular expression specifying the strings to replace.</param>
 		/// <param name="replacementValue">The value with which to replace the matching text.</param>
-		/// <param name="matchEvaluator">Custom logic for regex replace.</param>
-		public RegexLogScrubbingRule(string regexToReplace, string? replacementValue = null, MatchEvaluator? matchEvaluator = null)
+		public RegexLogScrubbingRule(string regexToReplace, string replacementValue)
 		{
 			m_regexToReplace = new Regex(regexToReplace, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 			m_replacementValue = replacementValue;
+			m_matchEvaluator = null!;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RegexLogScrubbingRule"/> class.
+		/// </summary>
+		/// <param name="regexToReplace">The regular expression specifying the strings to replace.</param>
+		/// <param name="matchEvaluator">Custom logic for regex replace.</param>
+		public RegexLogScrubbingRule(string regexToReplace, MatchEvaluator matchEvaluator)
+		{
+			m_regexToReplace = new Regex(regexToReplace, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 			m_matchEvaluator = matchEvaluator;
+			m_replacementValue = string.Empty;
 		}
 
 		/// <summary>
