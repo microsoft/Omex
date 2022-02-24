@@ -33,7 +33,7 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// <remarks>
 		/// Please be advised that using MatchEvaluator for Regex replace is a
 		/// more expensive operation compared to simple string replace of the entire regex. After running
-		/// unit tests locally, we can see roughly a 28.57% difference (increase of about 33%).
+		/// unit test profiler locally, we can see there is roughly a 31% increase when using the evaluator. 
 		/// </remarks>
 		public static ILoggingBuilder AddRegexLogScrubbingRule(this ILoggingBuilder builder, string regexToReplace, MatchEvaluator matchEvaluator)
 		{
