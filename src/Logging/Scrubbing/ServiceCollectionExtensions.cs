@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// <param name="builder">The extension method argument.</param>
 		/// <param name="regexToReplace">The regular expression specifying the strings to replace.</param>
 		/// <param name="replacementValue">The value with which to replace the matching text.</param>
-		/// <param name="matchEvaluator"></param>
+		/// <param name="matchEvaluator">Custom logic for regex replace.</param>
 		public static ILoggingBuilder AddRegexLogScrubbingRule(this ILoggingBuilder builder, string regexToReplace, string? replacementValue = null, MatchEvaluator? matchEvaluator = null)
 		{
 			builder.Services.AddSingleton<ILogScrubbingRule>(_ => new RegexLogScrubbingRule(regexToReplace, replacementValue, matchEvaluator));

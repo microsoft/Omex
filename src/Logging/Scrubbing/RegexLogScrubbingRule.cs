@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		/// </summary>
 		/// <param name="regexToReplace">The regular expression specifying the strings to replace.</param>
 		/// <param name="replacementValue">The value with which to replace the matching text.</param>
-		/// <param name="matchEvaluator"></param>
+		/// <param name="matchEvaluator">Custom logic for regex replace.</param>
 		public RegexLogScrubbingRule(string regexToReplace, string? replacementValue = null, MatchEvaluator? matchEvaluator = null)
 		{
 			m_regexToReplace = new Regex(regexToReplace, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
