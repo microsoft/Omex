@@ -114,7 +114,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataRow("/api/path?q1=v1&q2=v2&q3=v3", "/api/path?q1=REDACTED&q2=REDACTED&q3=v3")]
 		[DataRow("/api/path?q1=v1&q2=v2", "/api/path?q1=REDACTED&q2=REDACTED")]
 		[DataRow("/api/path?q3=v3", "/api/path?q3=v3")]
-		public void Scrub_Url_WithMatchEvaluator_ShouldScrub(string input, string expected)
+		public void AddRegexLogScrubbingRule_WithMatchEvaluator_Scrubs(string input, string expected)
 		{
 			MatchEvaluator matchEvaluator = new((match) => match.Groups[1].Value + "=REDACTED" + match.Groups[3].Value);
 
@@ -130,7 +130,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		[DataRow("/api/path?q1=v1&q2=v2&q3=v3", "/api/path?REDACTED&REDACTED&q3=v3")]
 		[DataRow("/api/path?q1=v1&q2=v2", "/api/path?REDACTED&REDACTED&")]
 		[DataRow("/api/path?q3=v3", "/api/path?q3=v3")]
-		public void Scrub_Url_WithoutMatchEvaluator_ShouldScrub(string input, string expected)
+		public void AddRegexLogScrubbingRule_Scrubs(string input, string expected)
 		{
 			ILoggingBuilder builder2 = new MockLoggingBuilder()
 				.AddRegexLogScrubbingRule(Regex,"REDACTED&");
