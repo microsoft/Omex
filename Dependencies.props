@@ -5,7 +5,7 @@
     <Microsoft_Azure_DocumentDB_Version>2.16.2</Microsoft_Azure_DocumentDB_Version>
     <Microsoft_CodeAnalysis_Common>3.11.0</Microsoft_CodeAnalysis_Common>
     <Microsoft_CodeAnalysis_Csharp>3.11.0</Microsoft_CodeAnalysis_Csharp>
-    <Microsoft_Net_Test_Sdk_Version>17.0.0</Microsoft_Net_Test_Sdk_Version>
+    <Microsoft_Net_Test_Sdk_Version>17.1.0</Microsoft_Net_Test_Sdk_Version>
     <Microsoft_SourceLink_GitHub_Version>1.1.1</Microsoft_SourceLink_GitHub_Version>
     <Microsoft_SourceLink_AzureRepos_Git_Version>1.1.1</Microsoft_SourceLink_AzureRepos_Git_Version>
     <MSTest_TestAdapter_Version>2.2.8</MSTest_TestAdapter_Version>
