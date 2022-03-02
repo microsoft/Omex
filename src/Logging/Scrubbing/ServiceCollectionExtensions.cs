@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -20,6 +21,23 @@ namespace Microsoft.Omex.Extensions.Logging.Scrubbing
 		public static ILoggingBuilder AddRegexLogScrubbingRule(this ILoggingBuilder builder, string regexToReplace, string replacementValue)
 		{
 			builder.Services.AddSingleton<ILogScrubbingRule>(_ => new RegexLogScrubbingRule(regexToReplace, replacementValue));
+			return builder;
+		}
+
+		/// <summary>
+		/// Adds a regular expression log scrubbing rule.
+		/// </summary>
+		/// <param name="builder">The extension method argument.</param>
+		/// <param name="regexToReplace">The regular expression specifying the strings to replace.</param>
+		/// <param name="matchEvaluator">Custom logic for regex replace.</param>
+		/// <remarks>
+		/// Please be advised that using MatchEvaluator for Regex replace is a
+		/// more expensive operation compared to simple string replace of the entire regex. After running
+		/// unit test profiler locally, we can see there is roughly a 31% increase when using the evaluator. 
+		/// </remarks>
+		public static ILoggingBuilder AddRegexLogScrubbingRule(this ILoggingBuilder builder, string regexToReplace, MatchEvaluator matchEvaluator)
+		{
+			builder.Services.AddSingleton<ILogScrubbingRule>(_ => new RegexLogScrubbingRule(regexToReplace, matchEvaluator));
 			return builder;
 		}
 
