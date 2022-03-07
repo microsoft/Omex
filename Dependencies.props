@@ -39,12 +39,12 @@
     <System_Threading_Tasks_Extensions_Version>4.5.4</System_Threading_Tasks_Extensions_Version>
   </PropertyGroup>
   <PropertyGroup Label="ServiceFabric packages for Omex Extensions">
-    <Microsoft_ServiceFabric_Version>8.2.1235</Microsoft_ServiceFabric_Version>
+    <Microsoft_ServiceFabric_Version>8.2.1486</Microsoft_ServiceFabric_Version>
     <Microsoft_ServiceFabric_Client_Http_Version>4.6.0</Microsoft_ServiceFabric_Client_Http_Version>
-    <Microsoft_ServiceFabric_Services_Version>5.2.1235</Microsoft_ServiceFabric_Services_Version>
-    <Microsoft_ServiceFabric_Services_Remoting_Version>5.2.1235</Microsoft_ServiceFabric_Services_Remoting_Version>
-    <Microsoft_ServiceFabric_Actors_Version>5.2.1235</Microsoft_ServiceFabric_Actors_Version>
-    <Microsoft_ServiceFabric_AspNetCore_Abstractions_Version>5.2.1235</Microsoft_ServiceFabric_AspNetCore_Abstractions_Version>
-    <ServiceFabric_Mocks_Version>5.0.4</ServiceFabric_Mocks_Version>
+    <Microsoft_ServiceFabric_Services_Version>5.2.1486</Microsoft_ServiceFabric_Services_Version>
+    <Microsoft_ServiceFabric_Services_Remoting_Version>5.2.1486</Microsoft_ServiceFabric_Services_Remoting_Version>
+    <Microsoft_ServiceFabric_Actors_Version>5.2.1486</Microsoft_ServiceFabric_Actors_Version>
+    <Microsoft_ServiceFabric_AspNetCore_Abstractions_Version>5.2.1486</Microsoft_ServiceFabric_AspNetCore_Abstractions_Version>
+    <ServiceFabric_Mocks_Version>5.0.6</ServiceFabric_Mocks_Version>
   </PropertyGroup>
 </Project>
