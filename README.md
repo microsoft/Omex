@@ -13,7 +13,7 @@ The release NuGet packages are available for download from Nuget.org
 
     https://www.nuget.org/packages?q=omex
 
-Additional source code from the Omex team, related to a collection of Azure DevOps Extensions, can be located at <https://github.com/microsoft/OMEX-Azure-DevOps-Extensions>.
+Additional source code from the Omex team can be located at <https://github.com/microsoft/PR-Metrics>. This project is an Azure DevOps Extension and GitHub Action that augments PR titles with size and test coverage indicators.
 
 ### Projects in this repository
 
