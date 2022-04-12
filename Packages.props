@@ -3,8 +3,8 @@
   <ItemGroup Label="Package Versions. AutoUpdate">
     <PackageReference Update="Moq" Version="4.17.2" />
     <PackageReference Update="Microsoft.Azure.DocumentDB" Version="2.17.0" />
-    <PackageReference Update="Microsoft.CodeAnalysis.Common>3.11.0" />
-    <PackageReference Update="Microsoft.CodeAnalysis.Csharp>3.11.0" />
+    <PackageReference Update="Microsoft.CodeAnalysis.Common" Version="3.11.0" />
+    <PackageReference Update="Microsoft.CodeAnalysis.Csharp" Version="3.11.0" />
     <PackageReference Update="Microsoft.Net.Test.Sdk" Version="17.1.0" />
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     <PackageReference Update="Microsoft.SourceLink.AzureRepos.Git" Version="1.1.1" />
