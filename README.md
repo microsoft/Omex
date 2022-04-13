@@ -1,6 +1,7 @@
-# Microsoft Omex
+# Microsoft OMEX
 
-This repository contains source code for shared components used by the Omex team, which is part of the Office organization, at Microsoft to build scalable and highly available distributed systems.
+This repository contains source code for shared components used by the 
+team, which is part of the Office organization, at Microsoft to build scalable and highly available distributed systems.
 
 The code is released under the [MIT license](https://github.com/microsoft/Omex/blob/main/LICENSE).
 
@@ -13,13 +14,13 @@ The release NuGet packages are available for download from Nuget.org
 
     https://www.nuget.org/packages?q=omex
 
-Additional source code from the Omex team, related to a collection of Azure DevOps Extensions, can be located at <https://github.com/microsoft/OMEX-Azure-DevOps-Extensions>.
+Additional source code from the OMEX team can be located at <https://github.com/microsoft/PR-Metrics>. This project is an Azure DevOps Extension and GitHub Action that augments PR titles with size and test coverage indicators.
 
 ### Projects in this repository
 
 * [__Gating__](https://github.com/microsoft/Omex/tree/main/src/Gating) - This library provides an implementation of a flighting mechanism for new features.
 * [__DocumentDb__](https://github.com/microsoft/Omex/tree/main/src/DocumentDb) - This library contains wrapper APIs over Microsoft Azure Document Db .Net Client SDK.
-* [__System__](https://github.com/microsoft/Omex/tree/main/src/System) - This library contains shared code for Omex libraries. You'll find there utilities for logging,
+* [__System__](https://github.com/microsoft/Omex/tree/main/src/System) - This library contains shared code for OMEX libraries. You'll find there utilities for logging,
 argument validation, resource management, caching and more.
 * [__System.UnitTests.Shared__](https://github.com/microsoft/Omex/tree/main/src/System.UnitTests.Shared) - This library contains abstractions and utilities used for creating unit tests.
 * [__Gating.UnitTests.Shared__](https://github.com/microsoft/Omex/tree/main/src/Gating.UnitTests.Shared) - This library provides classes used in unit tests for Gating library.
