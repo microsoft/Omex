@@ -1,5 +1,4 @@
 ﻿<Project>
-  <Import Project="$(MSBuildThisFileDirectory)\Packages.props" />
   <PropertyGroup>
     <RepoRoot Condition="'$(RepoRoot)' == ''">$([System.IO.Path]::GetDirectoryName($([MSBuild]::GetPathOfFileAbove('global.json', '$(MSBuildProjectDirectory)'))))</RepoRoot>
     <IsCentralPackageVersioningUsed>true</IsCentralPackageVersioningUsed>
