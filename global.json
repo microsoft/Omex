@@ -5,4 +5,5 @@
   }
   "msbuild-sdks": {
     "Microsoft.Build.CentralPackageVersions": "2.1.3"
+  }
 }
