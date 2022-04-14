@@ -5,7 +5,7 @@
     <DocumentationFile>$(DocumentationFileValue)</DocumentationFile>
   </PropertyGroup>
   <ItemGroup Condition="'$(UseVstsSourceLink)' == 'true'">
-    <PackageReference Include="Microsoft.SourceLink.AzureRepos.Git" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.AzureRepos.Git" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup Condition="'$(UseVstsSourceLink)' == ''">
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
