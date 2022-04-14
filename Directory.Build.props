@@ -1,4 +1,5 @@
 ﻿<Project>
+  <Import Project="$(MSBuildThisFileDirectory)\Packages.props" />
   <PropertyGroup>
     <IsCentralPackageVersioningUsed>true</IsCentralPackageVersioningUsed>
     <MicrosoftCommonPropsHasBeenImported>true</MicrosoftCommonPropsHasBeenImported> <!-- Property needed for Microsoft.Build.CentralPackageVersions package -->
