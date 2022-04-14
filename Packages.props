@@ -18,9 +18,9 @@
     <PackageReference Update="Xunit.Runner.VisualStudio" Version="2.4.3" />
   </ItemGroup>
   <ItemGroup Label="Package Versions. Pinned">
-    <PackageReference Update="Microsoft.Azure.DocumentDb" Version="2.5.1</Microsoft.Azure.DocumentDb"  />
-    <PackageReference Update="Xunit.Assert" Version="2.4.1</Xunit.Assert"  />
-    <PackageReference Update="Xunit.Core" Version="2.4.1</Xunit.Core"  />
+    <PackageReference Update="Microsoft.Azure.DocumentDb" Version="2.5.1"  />
+    <PackageReference Update="Xunit.Assert" Version="2.4.1" />
+    <PackageReference Update="Xunit.Core" Version="2.4.1" />
   </ItemGroup>
   <ItemGroup Label="Packages for Omex Extensions. AutoUpdate">
     <PackageReference Update="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
