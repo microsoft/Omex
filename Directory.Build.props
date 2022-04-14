@@ -1,4 +1,8 @@
 ﻿<Project>
+  <PropertyGroup>
+    <IsCentralPackageVersioningUsed>true</IsCentralPackageVersioningUsed>
+    <MicrosoftCommonPropsHasBeenImported>true</MicrosoftCommonPropsHasBeenImported> <!-- Property needed for Microsoft.Build.CentralPackageVersions package -->
+  </PropertyGroup>
   <PropertyGroup Label="Target Platforms" >
     <NetCoreVersions>net6.0</NetCoreVersions>
     <NetStandardVersions>netstandard2.0</NetStandardVersions>
