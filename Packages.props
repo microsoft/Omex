@@ -18,7 +18,7 @@
     <PackageReference Update="Xunit.Runner.VisualStudio" Version="2.4.3" />
   </ItemGroup>
   <ItemGroup Label="Package Versions. Pinned">
-    <PackageReference Update="Microsoft.Azure.DocumentDb" Version="2.5.1"  />
+    <PackageReference Update="Microsoft.Azure.DocumentDb" Version="2.5.1" />
     <PackageReference Update="Xunit.Assert" Version="2.4.1" />
     <PackageReference Update="Xunit.Core" Version="2.4.1" />
   </ItemGroup>
