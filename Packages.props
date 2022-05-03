@@ -39,12 +39,12 @@
     <PackageReference Update="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
   <ItemGroup Label="ServiceFabric packages for Omex Extensions">
-    <PackageReference Update="Microsoft.ServiceFabric" Version="8.2.1486" />
+    <PackageReference Update="Microsoft.ServiceFabric" Version="8.2.1571" />
     <PackageReference Update="Microsoft.ServiceFabric.Client.Http" Version="4.6.0" />
-    <PackageReference Update="Microsoft.ServiceFabric.Services" Version="5.2.1486" />
-    <PackageReference Update="Microsoft.ServiceFabric.Services.Remoting" Version="5.2.1486" />
-    <PackageReference Update="Microsoft.ServiceFabric.Actors" Version="5.2.1486" />
-    <PackageReference Update="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="5.2.1486" />
+    <PackageReference Update="Microsoft.ServiceFabric.Services" Version="5.2.1571" />
+    <PackageReference Update="Microsoft.ServiceFabric.Services.Remoting" Version="5.2.1571" />
+    <PackageReference Update="Microsoft.ServiceFabric.Actors" Version="5.2.1571" />
+    <PackageReference Update="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="5.2.1571" />
     <PackageReference Update="ServiceFabric.Mocks" Version="5.0.6" />
   </ItemGroup>
 </Project>
