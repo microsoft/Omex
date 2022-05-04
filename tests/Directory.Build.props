@@ -5,9 +5,9 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(Microsoft_Net_Test_Sdk_Version)" />
-    <PackageReference Include="MSTest.TestAdapter" Version="$(MSTest_TestAdapter_Version)" PrivateAssets="All" />
-    <PackageReference Include="MSTest.TestFramework" Version="$(MSTest_TestFramework_Version)" />
-    <PackageReference Include="Moq" Version="$(Moq_Version)" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="MSTest.TestAdapter" PrivateAssets="All" />
+    <PackageReference Include="MSTest.TestFramework" />
+    <PackageReference Include="Moq" />
   </ItemGroup>
 </Project>
