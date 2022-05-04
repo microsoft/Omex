@@ -18,14 +18,10 @@ Additional source code from the OMEX team can be located at <https://github.com/
 
 ### Projects in this repository
 
-* [__Gating__](https://github.com/microsoft/Omex/tree/main/src/Gating) - This library provides an implementation of a flighting mechanism for new features.
 * [__DocumentDb__](https://github.com/microsoft/Omex/tree/main/src/DocumentDb) - This library contains wrapper APIs over Microsoft Azure Document Db .Net Client SDK.
 * [__System__](https://github.com/microsoft/Omex/tree/main/src/System) - This library contains shared code for OMEX libraries. You'll find there utilities for logging,
 argument validation, resource management, caching and more.
 * [__System.UnitTests.Shared__](https://github.com/microsoft/Omex/tree/main/src/System.UnitTests.Shared) - This library contains abstractions and utilities used for creating unit tests.
-* [__Gating.UnitTests.Shared__](https://github.com/microsoft/Omex/tree/main/src/Gating.UnitTests.Shared) - This library provides classes used in unit tests for Gating library.
-* [__Gating.Example__](https://github.com/microsoft/Omex/tree/main/src/Gating.Example) - This is a small console application that uses the Gating library to showcase some of its features.
-* [__GateGen__](https://github.com/microsoft/Omex/tree/main/src/CodeGenerators/GateGen) - This is a code generator tool that produces strongly typed gates (C# file) from the gates xml files. Should be used as a dependency in another project.
 
 Please contribute to this repository via [pull requests](https://github.com/Microsoft/Omex/pulls) against the __main__ branch.
 
