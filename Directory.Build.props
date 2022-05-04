@@ -1,5 +1,12 @@
 ﻿<Project>
-  <Import Project="$(MSBuildThisFileDirectory)\Dependencies.props" />
+  <PropertyGroup>
+    <RepoRoot Condition="'$(RepoRoot)' == ''">$([System.IO.Path]::GetDirectoryName($([MSBuild]::GetPathOfFileAbove('global.json', '$(MSBuildProjectDirectory)'))))</RepoRoot>
+    <IsCentralPackageVersioningUsed>true</IsCentralPackageVersioningUsed>
+    <MicrosoftCommonPropsHasBeenImported>true</MicrosoftCommonPropsHasBeenImported> <!-- Property needed for Microsoft.Build.CentralPackageVersions package -->
+  </PropertyGroup>
+
+  <Import Project="Sdk.props" Sdk="Microsoft.Build.CentralPackageVersions" Condition="$(IsCentralPackageVersioningUsed)" />
+
   <PropertyGroup Label="Target Platforms" >
     <NetCoreVersions>net6.0</NetCoreVersions>
     <NetStandardVersions>netstandard2.0</NetStandardVersions>

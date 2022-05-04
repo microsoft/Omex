@@ -12,7 +12,7 @@
     <PackageTags>Microsoft;Omex;Extensions;Services;Remoting</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ServiceFabric.Services.Remoting" Version="$(Microsoft_ServiceFabric_Services_Remoting_Version)" />
+    <PackageReference Include="Microsoft.ServiceFabric.Services.Remoting" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
