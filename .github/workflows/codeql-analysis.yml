@@ -17,8 +17,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    # Move to Windows 2022 when CodeQL is supported there
-    runs-on: windows-2019
+    runs-on: windows-latest
 
     strategy:
       fail-fast: false
