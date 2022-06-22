@@ -24,7 +24,15 @@ namespace Microsoft.Omex.Extensions.Logging
 
 		private static ILoggingBuilder LoadInitializationLogger(this ILoggingBuilder builder)
 		{
-			builder.AddConsole();
+			// Check if we are running on Service Fabric, if we are not on Service Fabric, add console logging
+			string sfAppName = Environment.GetEnvironmentVariable("Fabric_ApplicationName");
+			bool isSf = sfAppName != null;
+			
+			if (!isSf)
+			{
+				builder.AddConsole();
+			}
+			
 			builder.AddOmexLogging();
 			return builder;
 		}
