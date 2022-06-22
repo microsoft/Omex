@@ -26,9 +26,9 @@ namespace Microsoft.Omex.Extensions.Logging
 		{
 			// Check if we are running on Service Fabric, if we are not on Service Fabric, add console logging
 			string sfAppName = Environment.GetEnvironmentVariable("Fabric_ApplicationName");
-			bool isSf = sfAppName != null;
+			bool isServiceFabric = sfAppName != null;
 			
-			if (!isSf)
+			if (!isServiceFabric)
 			{
 				builder.AddConsole();
 			}
