@@ -38,7 +38,7 @@
   </ItemGroup>
   <ItemGroup Label="ServiceFabric packages for Omex Extensions">
     <PackageReference Update="Microsoft.ServiceFabric" Version="9.0.1028" />
-    <PackageReference Update="Microsoft.ServiceFabric.Client.Http" Version="4.7.0" />
+    <PackageReference Update="Microsoft.ServiceFabric.Client.Http" Version="4.7.1" />
     <PackageReference Update="Microsoft.ServiceFabric.Services" Version="6.0.1028" />
     <PackageReference Update="Microsoft.ServiceFabric.Services.Remoting" Version="6.0.1028" />
     <PackageReference Update="Microsoft.ServiceFabric.Actors" Version="6.0.1028" />
