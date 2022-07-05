@@ -24,7 +24,11 @@ namespace Microsoft.Omex.Extensions.Logging
 
 		private static ILoggingBuilder LoadInitializationLogger(this ILoggingBuilder builder)
 		{
-			builder.AddConsole();
+			if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+			{
+				builder.AddConsole();
+			}
+
 			builder.AddOmexLogging();
 			return builder;
 		}
