@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
     <PackageReference Include="Microsoft.ServiceFabric.Actors" />
+    <PackageReference Include="Newtonsoft.Json" /> <!-- Bump version of transitive dependency -->
     <PackageReference Include="ServiceFabric.Mocks" />
   </ItemGroup>
   <ItemGroup Condition="$(IsNetFramework)">

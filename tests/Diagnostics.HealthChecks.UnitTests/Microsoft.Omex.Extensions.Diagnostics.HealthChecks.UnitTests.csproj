@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ServiceFabric.Actors" />
+    <PackageReference Include="Newtonsoft.Json" /> <!-- Bump version of transitive dependency -->
     <PackageReference Include="ServiceFabric.Mocks" />
   </ItemGroup>
   <ItemGroup Condition="$(IsNetFramework)">
