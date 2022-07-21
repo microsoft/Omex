@@ -9,6 +9,7 @@
     <PackageReference Update="Microsoft.SourceLink.AzureRepos.Git" Version="1.1.1" />
     <PackageReference Update="MSTest.TestAdapter" Version="2.2.10" />
     <PackageReference Update="MSTest.TestFramework" Version="2.2.10" />
+    <PackageReference Update="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Update="System.Configuration.ConfigurationManager" Version="6.0.0" />
     <PackageReference Update="System.ServiceModel.Primitives" Version="4.9.0" />
     <PackageReference Update="System.Threading.Tasks" Version="4.3.0" />

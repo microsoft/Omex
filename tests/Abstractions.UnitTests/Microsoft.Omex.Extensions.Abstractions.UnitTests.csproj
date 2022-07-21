@@ -3,6 +3,9 @@
     <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" /> <!-- Bump version of transitive dependency -->
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\src\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
     <ProjectReference Include="..\..\src\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj" />
   </ItemGroup>

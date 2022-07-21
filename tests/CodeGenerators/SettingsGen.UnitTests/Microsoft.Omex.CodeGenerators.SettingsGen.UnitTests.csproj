@@ -7,6 +7,7 @@
     <PackageReference Include="Moq" />
     <PackageReference Include="Microsoft.CodeAnalysis.Common" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+    <PackageReference Include="Newtonsoft.Json" /> <!-- Bump version of transitive dependency -->
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\CodeGenerators\SettingsGen\Microsoft.Omex.CodeGenerators.SettingsGen.csproj" />

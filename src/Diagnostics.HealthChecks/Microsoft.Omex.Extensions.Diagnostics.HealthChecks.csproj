@@ -17,6 +17,7 @@
     <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Microsoft.Extensions.ObjectPool" />
     <PackageReference Include="Microsoft.ServiceFabric.Client.Http" />
+    <PackageReference Include="Newtonsoft.Json" /> <!-- Bump version of transitive dependency -->
     <PackageReference Include="System.ComponentModel.Annotations" />
   </ItemGroup>
   <ItemGroup>
