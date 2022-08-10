@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="Package Versions. AutoUpdate">
-    <PackageReference Update="Moq" Version="4.18.1" />
+    <PackageReference Update="Moq" Version="4.18.2" />
     <PackageReference Update="Microsoft.CodeAnalysis.Common" Version="4.2.0" />
     <PackageReference Update="Microsoft.CodeAnalysis.Csharp" Version="4.2.0" />
     <PackageReference Update="Microsoft.Net.Test.Sdk" Version="17.2.0" />
@@ -24,14 +24,14 @@
   <ItemGroup Label="Packages for Omex Extensions. AutoUpdate">
     <PackageReference Update="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Update="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-    <PackageReference Update="Microsoft.Extensions.Diagnostics.HealthChecks" Version="6.0.7" />
+    <PackageReference Update="Microsoft.Extensions.Diagnostics.HealthChecks" Version="6.0.8" />
     <PackageReference Update="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Update="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
     <PackageReference Update="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Update="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
     <PackageReference Update="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
-    <PackageReference Update="Microsoft.Extensions.ObjectPool" Version="6.0.7" />
+    <PackageReference Update="Microsoft.Extensions.ObjectPool" Version="6.0.8" />
     <PackageReference Update="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
     <PackageReference Update="Microsoft.Extensions.Options" Version="6.0.0" />
     <PackageReference Update="System.Diagnostics.DiagnosticSource" Version="6.0.0" />
