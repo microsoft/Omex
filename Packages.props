@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="Package Versions. AutoUpdate">
-    <PackageReference Update="Moq" Version="4.18.1" />
+    <PackageReference Update="Moq" Version="4.18.2" />
     <PackageReference Update="Microsoft.CodeAnalysis.Common" Version="4.2.0" />
     <PackageReference Update="Microsoft.CodeAnalysis.Csharp" Version="4.2.0" />
     <PackageReference Update="Microsoft.Net.Test.Sdk" Version="17.2.0" />
