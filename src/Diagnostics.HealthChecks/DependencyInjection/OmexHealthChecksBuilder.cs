@@ -4,9 +4,9 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Omex.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks;
 
-namespace Microsoft.Omex.Extensions.DependencyInjection;
+namespace Microsoft.Omex.Preview.Extensions.DependencyInjection;
 
 internal sealed class OmexHealthChecksBuilder : IOmexHealthChecksBuilder
 {

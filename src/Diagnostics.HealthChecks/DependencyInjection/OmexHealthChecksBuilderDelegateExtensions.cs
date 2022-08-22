@@ -10,9 +10,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Omex.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks;
 
-namespace Microsoft.Omex.Extensions.DependencyInjection;
+namespace Microsoft.Omex.Preview.Extensions.DependencyInjection;
 
 /// <summary>
 /// Provides extension methods for registering delegates with the <see cref="IOmexHealthChecksBuilder"/>.
@@ -184,7 +184,8 @@ public static class OmexHealthChecksBuilderDelegateExtensions
 
 		if (parameters == null)
 		{
-			return (IOmexHealthChecksBuilder)HealthChecksBuilderDelegateExtensions.AddAsyncCheck(builder, name, ct => check(ct).AsTask(), tags, timeout);;
+			return (IOmexHealthChecksBuilder)HealthChecksBuilderDelegateExtensions.AddAsyncCheck(builder, name, ct => check(ct).AsTask(), tags, timeout);
+			;
 		}
 
 		var instance = new DelegateHealthCheck((ct) => check(ct));

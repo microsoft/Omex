@@ -1,13 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+//Imported from https://github.com/dotnet/aspnetcore/blob/main/src/Shared/TrimmingAttributes.cs
+
 #nullable enable
 
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks;
+namespace Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks;
 
 /// <summary>
 /// Indicates that the specified method requires dynamic access to code that is not referenced

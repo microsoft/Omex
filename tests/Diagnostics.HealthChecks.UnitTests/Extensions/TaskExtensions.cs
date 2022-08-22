@@ -3,17 +3,19 @@
 
 // Imported from https://github.com/dotnet/aspnetcore/blob/main/src/Shared/TaskExtensions.cs
 
+#pragma warning disable IDE0005 // Remove unnecessary using directives
+
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests.Extensions
+namespace Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks.UnitTests.Extensions
 {
 	public static class TaskExtensions
 	{
-		public static string CreateMessage(TimeSpan timeout, string filePath, int lineNumber)
+		private static string CreateMessage(TimeSpan timeout, string filePath, int lineNumber)
 		=> string.IsNullOrEmpty(filePath)
 		? $"The operation timed out after reaching the limit of {timeout.TotalMilliseconds}ms."
 		: $"The operation at {filePath}:{lineNumber} timed out after reaching the limit of {timeout.TotalMilliseconds}ms.";
