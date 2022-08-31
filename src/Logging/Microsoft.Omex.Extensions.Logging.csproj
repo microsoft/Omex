@@ -2,6 +2,9 @@
   <PropertyGroup>
     <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
   </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith(`netstandard`))">
+    <DefineConstants>$(DefineConstants);Net_Standard</DefineConstants>
+  </PropertyGroup>
   <PropertyGroup Label="NuGet Properties">
     <Title>Microsoft.Omex.Extensions.Logging</Title>
     <Summary>Microsoft Omex Extensions Logging</Summary>
