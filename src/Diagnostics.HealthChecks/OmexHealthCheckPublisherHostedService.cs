@@ -3,6 +3,7 @@
 
 #pragma warning disable IDE1006 // ASP.NET Core codebase naming convention
 #pragma warning disable IDE0008 // Use explicit type
+#pragma warning disable CS8795 // Partial method must have an implementation part because it has accessibility modifiers
 
 using System;
 using System.Collections.Generic;
