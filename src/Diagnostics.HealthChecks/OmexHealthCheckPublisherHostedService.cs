@@ -29,9 +29,9 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 	private readonly IOptions<HealthCheckRegistrationParametersOptions> _healthCheckRegistrationOptions;
 	private readonly ILogger _logger;
 	private readonly IHealthCheckPublisher[] _publishers;
-	private readonly HealthCheckRegistrationParameters _defaultHealthCheckOptions;
-	private readonly Dictionary<HealthCheckRegistrationParameters, List<HealthCheckRegistration>> _healthChecksByOptions;
-	private Dictionary<HealthCheckRegistrationParameters, Timer>? _timersByOptions;
+	private readonly (TimeSpan Delay, TimeSpan Period, TimeSpan Timeout) _defaultTimerOptions;
+	private readonly Dictionary<(TimeSpan Delay, TimeSpan Period, TimeSpan Timeout), List<HealthCheckRegistration>> _healthChecksByOptions;
+	private Dictionary<(TimeSpan Delay, TimeSpan Period, TimeSpan Timeout), Timer>? _timersByOptions;
 
 	private readonly CancellationTokenSource _stopping;
 	private CancellationTokenSource? _runTokenSource;
@@ -88,17 +88,18 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 		// actually tries to **run** health checks would be real baaaaad.
 		ValidateRegistrations(_healthCheckServiceOptions.Value.Registrations);
 
-		_defaultHealthCheckOptions = new HealthCheckRegistrationParameters(_healthCheckPublisherOptions.Value.Delay, _healthCheckPublisherOptions.Value.Period);
-		// Group healthcheck registrations by delay, period and timeout, to build a Dictionary<(TimeSpan, TimeSpan, TimeSpan), List<HealthCheckRegistration>>
-		// For HCs with no Delay or Period, we default to the publisher values
-		_healthChecksByOptions = _healthCheckServiceOptions.Value.Registrations.GroupBy(r => GetHealthCheckRegistrationParametersOrDefault(r.Name) ?? _defaultHealthCheckOptions).ToDictionary(g => g.Key, g => g.ToList());
+		_defaultTimerOptions =  (_healthCheckPublisherOptions.Value.Delay, _healthCheckPublisherOptions.Value.Period, _healthCheckPublisherOptions.Value.Timeout);
+
+		// Group healthcheck registrations by Delay, Period and Timeout, to build a Dictionary<(TimeSpan, TimeSpan, TimeSpan), List<HealthCheckRegistration>>
+		// For HCs with no Delay, Period or Timeout, we default to the publisher values
+		_healthChecksByOptions = _healthCheckServiceOptions.Value.Registrations.GroupBy(r => GetTimerOptionsOrDefault(r.Name)).ToDictionary(g => g.Key, g => g.ToList());
 	}
 
-	private HealthCheckRegistrationParameters? GetHealthCheckRegistrationParametersOrDefault(string registrationName)
+	private (TimeSpan Delay, TimeSpan Period, TimeSpan Timeout) GetTimerOptionsOrDefault(string registrationName)
 	{
 		_healthCheckRegistrationOptions.Value.RegistrationParameters.TryGetValue(registrationName, out var registrationParameters);
 
-		return registrationParameters;
+		return (registrationParameters?.Delay ?? _healthCheckPublisherOptions.Value.Delay, registrationParameters?.Period ?? _healthCheckPublisherOptions.Value.Period, registrationParameters?.Timeout ?? _healthCheckPublisherOptions.Value.Timeout);
 	}
 
 	internal bool IsStopping => _stopping.IsCancellationRequested;
@@ -148,23 +149,23 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 		return Task.CompletedTask;
 	}
 
-	private Dictionary<HealthCheckRegistrationParameters, Timer> CreateTimers(IReadOnlyDictionary<HealthCheckRegistrationParameters, List<HealthCheckRegistration>> periodHealthChecksMap)
+	private Dictionary<(TimeSpan Delay, TimeSpan Period, TimeSpan Timeout), Timer> CreateTimers(IReadOnlyDictionary<(TimeSpan Delay, TimeSpan Period, TimeSpan Timeout), List<HealthCheckRegistration>> healthChecksByOptions)
 	{
-		return periodHealthChecksMap.Select(m => CreateTimer(m.Key)).ToDictionary(kv => kv.Key, kv => kv.Value);
+		return healthChecksByOptions.Select(m => CreateTimer(m.Key)).ToDictionary(kv => kv.Key, kv => kv.Value);
 	}
 
-	private KeyValuePair<HealthCheckRegistrationParameters, Timer> CreateTimer(HealthCheckRegistrationParameters healthCheckOptions)
+	private KeyValuePair<(TimeSpan Delay, TimeSpan Period, TimeSpan Timeout), Timer> CreateTimer((TimeSpan Delay, TimeSpan Period, TimeSpan Timeout) timerOptions)
 	{
-		return new KeyValuePair<HealthCheckRegistrationParameters, Timer>(
-			healthCheckOptions,
+		return new KeyValuePair<(TimeSpan Delay, TimeSpan Period, TimeSpan Timeout), Timer>(
+			timerOptions,
 			NonCapturingTimer.Create(
 			async (state) =>
 			{
-				await RunAsync(healthCheckOptions: healthCheckOptions).ConfigureAwait(false);
+				await RunAsync(timerOptions).ConfigureAwait(false);
 			},
 			null,
-			dueTime: healthCheckOptions.Delay ?? _healthCheckPublisherOptions.Value.Delay, // Default to publisher Delay
-			period: healthCheckOptions.Period ?? _healthCheckPublisherOptions.Value.Period) // Default to publisher Period
+			dueTime: timerOptions.Delay,
+			period: timerOptions.Period)
 		);
 	}
 
@@ -175,12 +176,9 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 	}
 
 	// Internal for testing
-	internal async Task RunAsync(HealthCheckRegistrationParameters? healthCheckOptions = default)
+	internal async Task RunAsync((TimeSpan Delay, TimeSpan Period, TimeSpan Timeout)? timerOptions = null)
 	{
-		if (healthCheckOptions == default)
-		{
-			healthCheckOptions = _defaultHealthCheckOptions;
-		}
+		timerOptions ??= _defaultTimerOptions;
 
 		var duration = ValueStopwatch.StartNew();
 		Logger.HealthCheckPublisherProcessingBegin(_logger);
@@ -188,13 +186,13 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 		CancellationTokenSource? cancellation = null;
 		try
 		{
-			var timeout = healthCheckOptions.Timeout ?? _healthCheckPublisherOptions.Value.Timeout; // Default to publisher timeout if null
+			var timeout = timerOptions.Value.Timeout;
 
 			cancellation = CancellationTokenSource.CreateLinkedTokenSource(_stopping.Token);
 			_runTokenSource = cancellation;
 			cancellation.CancelAfter(timeout);
 
-			await RunAsyncCore(healthCheckOptions, cancellation.Token).ConfigureAwait(false);
+			await RunAsyncCore(timerOptions.Value, cancellation.Token).ConfigureAwait(false);
 
 			Logger.HealthCheckPublisherProcessingEnd(_logger, duration.GetElapsedTime());
 		}
@@ -214,17 +212,16 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 		}
 	}
 
-	private async Task RunAsyncCore(HealthCheckRegistrationParameters healthCheckOptions, CancellationToken cancellationToken)
+	private async Task RunAsyncCore((TimeSpan Delay, TimeSpan Period, TimeSpan Timeout) timerOptions, CancellationToken cancellationToken)
 	{
 		// Forcibly yield - we want to unblock the timer thread.
 		await Task.Yield();
 
-		// Concatenate predicates - we only run HCs with the set delay and period
+		// Concatenate predicates - we only run HCs with the set delay, period and timeout
 		var withOptionsPredicate = (HealthCheckRegistration r) =>
 		{
-			var options = GetHealthCheckRegistrationParametersOrDefault(r.Name);
-			var hasOptions = (options == default && healthCheckOptions == _defaultHealthCheckOptions) ||
-							  options == healthCheckOptions;
+			var rOptions = GetTimerOptionsOrDefault(r.Name); // Check whether the current timer options correspond to the ones of the HC registration
+			var hasOptions = rOptions == timerOptions;
 			if (_healthCheckPublisherOptions?.Value.Predicate == null)
 			{
 				return hasOptions;
