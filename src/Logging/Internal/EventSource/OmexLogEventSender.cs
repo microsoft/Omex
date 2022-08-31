@@ -15,7 +15,7 @@ namespace Microsoft.Omex.Extensions.Logging
 	{
 		static OmexLogEventSender()
 		{
-			Process process = Process.GetCurrentProcess();
+			using Process process = Process.GetCurrentProcess();
 			s_processName = string.Format(CultureInfo.InvariantCulture, "{0} (0x{1:X4})", process.ProcessName, process.Id);
 		}
 

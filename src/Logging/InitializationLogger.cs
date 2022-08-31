@@ -41,7 +41,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		public static void LogInitializationSucceed(string serviceNameForLogging, string message = "")
 		{
 			string logMessage = $"Initialization successful for {serviceNameForLogging}, {message}";
-			ServiceInitializationEventSource.Instance.LogHostBuildSucceeded(Process.GetCurrentProcess().Id, serviceNameForLogging, logMessage);
+			ServiceInitializationEventSource.Instance.LogHostBuildSucceeded(Environment.ProcessId, serviceNameForLogging, logMessage);
 			Instance.LogInformation(Tag.Create(), logMessage);
 		}
 
