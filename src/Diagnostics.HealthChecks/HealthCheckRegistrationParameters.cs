@@ -4,14 +4,13 @@
 #pragma warning disable IDE0008 // Use explicit type
 
 using System;
-using System.Collections.Generic;
 
 namespace Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks;
 
 /// <summary>
 /// Represent the individual health check parameters associated with an <see cref="T:Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckRegistration"/>.
 /// </summary>
-public class HealthCheckRegistrationParameters : IEquatable<HealthCheckRegistrationParameters?>
+public class HealthCheckRegistrationParameters
 {
 	/// <summary>
 	/// Creates a new <see cref="T:Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckRegistrationParameters" />.
@@ -44,13 +43,4 @@ public class HealthCheckRegistrationParameters : IEquatable<HealthCheckRegistrat
 	/// Use <see cref="System.Threading.Timeout.InfiniteTimeSpan"/> to execute with no timeout.
 	/// </summary>
 	public TimeSpan? Timeout { get; }
-
-	/// <inheritdoc/>
-	public override bool Equals(object? obj) => Equals(obj as HealthCheckRegistrationParameters);
-
-	/// <inheritdoc/>
-	public bool Equals(HealthCheckRegistrationParameters? other) => other is not null && EqualityComparer<TimeSpan?>.Default.Equals(Delay, other.Delay) && EqualityComparer<TimeSpan?>.Default.Equals(Period, other.Period) && EqualityComparer<TimeSpan?>.Default.Equals(Timeout, other.Timeout);
-
-	/// <inheritdoc/>
-	public override int GetHashCode() => (Delay, Period, Timeout).GetHashCode();
 }
