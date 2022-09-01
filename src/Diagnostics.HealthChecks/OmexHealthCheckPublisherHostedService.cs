@@ -217,17 +217,30 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 		// Forcibly yield - we want to unblock the timer thread.
 		await Task.Yield();
 
-		// Concatenate predicates - we only run HCs with the set delay, period and timeout
+		// Concatenate predicates - we only run HCs at the set delay, period and timeout, and that are enabled
 		var withOptionsPredicate = (HealthCheckRegistration r) =>
 		{
-			var rOptions = GetTimerOptionsOrDefault(r.Name); // Check whether the current timer options correspond to the ones of the HC registration
+			// Check whether the current timer options correspond to the ones of the HC registration
+			var rOptions = GetTimerOptionsOrDefault(r.Name);
 			var hasOptions = rOptions == timerOptions;
-			if (_healthCheckPublisherOptions?.Value.Predicate == null)
+			if (!hasOptions)
 			{
-				return hasOptions;
+				return false;
 			}
 
-			return hasOptions && _healthCheckPublisherOptions.Value.Predicate(r);
+			// Check if HC is enabled
+			if (_healthCheckRegistrationOptions.Value.RegistrationParameters.TryGetValue(r.Name, out var hcrParams) && !hcrParams.IsEnabled)
+			{
+				return false;
+			}
+
+			if (_healthCheckPublisherOptions?.Value.Predicate == null)
+			{
+				return true;
+			}
+
+			// Else check the user-applied predicates
+			return _healthCheckPublisherOptions.Value.Predicate(r);
 		};
 
 		// The health checks service does it's own logging, and doesn't throw exceptions.
