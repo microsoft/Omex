@@ -5,11 +5,6 @@ team, which is part of the Office organization, at Microsoft to build scalable a
 
 The code is released under the [MIT license](https://github.com/microsoft/Omex/blob/main/LICENSE).
 
-The pre-release NuGet packages are available to download from the MyGet feed
-
-    https://www.myget.org/F/omex/api/v3/index.json
-
-
 The release NuGet packages are available for download from Nuget.org
 
     https://www.nuget.org/packages?q=omex
