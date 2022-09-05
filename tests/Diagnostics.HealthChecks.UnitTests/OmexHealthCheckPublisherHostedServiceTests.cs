@@ -228,28 +228,35 @@ namespace Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks.UnitTests
 			var service = CreateService(publishers, configureBuilder: b =>
 			{
 				b.AddAsyncCheck("CheckDefault", _ =>
-					{
-						return Task.FromResult(HealthCheckResult.Healthy(HealthyMessage));
-					});
+				{
+					return Task.FromResult(HealthCheckResult.Healthy(HealthyMessage));
+				});
 
 				b.AddAsyncCheck("CheckDelay2Period18", _ =>
-					{
-						return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy(HealthyMessage));
-					},
-					parameters: new(delay: TimeSpan.FromSeconds(2), period: TimeSpan.FromSeconds(18)));
+				{
+					return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy(HealthyMessage));
+				},
+				parameters: new(name: "CheckDelay2Period18", delay: TimeSpan.FromSeconds(2), period: TimeSpan.FromSeconds(18)));
 
 				b.AddAsyncCheck("CheckDelay7Period11", _ =>
-					{
-						return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy(HealthyMessage));
-					},
-					parameters: new(delay: TimeSpan.FromSeconds(7), period: TimeSpan.FromSeconds(11)));
+				{
+					return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy(HealthyMessage));
+				},
+				parameters: new(name: "CheckDelay7Period11", delay: TimeSpan.FromSeconds(7), period: TimeSpan.FromSeconds(11)));
 
 				b.AddAsyncCheck("CheckDelay9Period5", _ =>
-					{
-						unblockDelayedCheck.TrySetResult(null); // Unblock last delayed check
-						return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy(HealthyMessage));
-					},
-					parameters: new(delay: TimeSpan.FromSeconds(9), period: TimeSpan.FromSeconds(5)));
+				{
+					unblockDelayedCheck.TrySetResult(null); // Unblock last delayed check
+					return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy(HealthyMessage));
+				},
+				parameters: new(name: "CheckDelay9Period5", delay: TimeSpan.FromSeconds(9), period: TimeSpan.FromSeconds(5)));
+
+				b.AddAsyncCheck("DisabledCheck", _ =>
+				{
+					unblockDelayedCheck.TrySetResult(null); // Unblock last delayed check
+					return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy(HealthyMessage));
+				},
+				parameters: new(name: "DisabledCheck", delay: TimeSpan.FromSeconds(9), period: TimeSpan.FromSeconds(5), isEnabled: false));
 			});
 
 			try
@@ -452,20 +459,27 @@ namespace Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks.UnitTests
 					{
 						return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy(HealthyMessage));
 					},
-					parameters: new(delay: TimeSpan.FromSeconds(2), period: TimeSpan.FromSeconds(18)));
+					parameters: new(name: "CheckDelay2Period18", delay: TimeSpan.FromSeconds(2), period: TimeSpan.FromSeconds(18)));
 
 					b.AddAsyncCheck("CheckDelay7Period11", _ =>
 					{
 						return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy(HealthyMessage));
 					},
-					parameters: new(delay: TimeSpan.FromSeconds(7), period: TimeSpan.FromSeconds(11)));
+					parameters: new(name: "CheckDelay7Period11", delay: TimeSpan.FromSeconds(7), period: TimeSpan.FromSeconds(11)));
 
 					b.AddAsyncCheck("CheckDelay9Period5", _ =>
 					{
 						unblockDelayedCheck.TrySetResult(null); // Unblock last delayed check
 						return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy(HealthyMessage));
 					},
-					parameters: new(delay: TimeSpan.FromSeconds(9), period: TimeSpan.FromSeconds(5)));
+					parameters: new(name: "CheckDelay9Period5", delay: TimeSpan.FromSeconds(9), period: TimeSpan.FromSeconds(5)));
+
+					b.AddAsyncCheck("DisabledCheck", _ =>
+					{
+						unblockDelayedCheck.TrySetResult(null); // Unblock last delayed check
+						return new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy(HealthyMessage));
+					},
+					parameters: new(name: "DisabledCheck", delay: TimeSpan.FromSeconds(9), period: TimeSpan.FromSeconds(5), isEnabled: false));
 				});
 
 			try
