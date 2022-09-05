@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.Extensions.Testing.Helpers</Title>
+    <Summary>Microsoft Omex Extensions Testing Helpers</Summary>
+    <Description>This library contains helpers for testing the Omex Extensions.</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Testing.Helpers</PackageProjectUrl>
+    <PackageTags>Microsoft;Omex;Extensions;Testing</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSTest.TestFramework" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
+  </ItemGroup>
+</Project>

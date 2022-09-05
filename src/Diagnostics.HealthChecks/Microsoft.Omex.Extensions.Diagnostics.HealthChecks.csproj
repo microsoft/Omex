@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.Extensions.Diagnostics.HealthChecks</Title>
+    <Summary>Microsoft Omex Extensions Diagnostics HealthChecks</Summary>
+    <Description>This library faciliates creating and running health checks in Service Fabric.</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Diagnostics.HealthChecks</PackageProjectUrl>
+    <PackageTags>Microsoft;Omex;Extensions;HealthChecks</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ServiceFabric" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.ObjectPool" />
+    <PackageReference Include="Microsoft.ServiceFabric.Client.Http" />
+    <PackageReference Include="Newtonsoft.Json" /> <!-- Bump version of transitive dependency -->
+    <PackageReference Include="System.ComponentModel.Annotations" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
+    <ProjectReference Include="..\ServiceFabricGuest.Abstractions\Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.csproj" />
+  </ItemGroup>
+</Project>

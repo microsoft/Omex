@@ -1,7 +1,12 @@
 ﻿<Project>
-  <Import Project="$(MSBuildThisFileDirectory)\Dependencies.props" />
+  <PropertyGroup>
+    <RepoRoot Condition="'$(RepoRoot)' == ''">$([System.IO.Path]::GetDirectoryName($([MSBuild]::GetPathOfFileAbove('global.json', '$(MSBuildProjectDirectory)'))))</RepoRoot>
+    <IsCentralPackageVersioningUsed>true</IsCentralPackageVersioningUsed>
+    <MicrosoftCommonPropsHasBeenImported>true</MicrosoftCommonPropsHasBeenImported> <!-- Property needed for Microsoft.Build.CentralPackageVersions package -->
+  </PropertyGroup>
+
   <PropertyGroup Label="Target Platforms" >
-    <NetCoreVersions>net5.0</NetCoreVersions>
+    <NetCoreVersions>net6.0</NetCoreVersions>
     <NetStandardVersions>netstandard2.0</NetStandardVersions>
     <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
     <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
@@ -20,6 +25,7 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Label="Condition Variables" >
     <IsNetStandard>$(NetStandardVersions.Contains('$(TargetFramework)'))</IsNetStandard>
@@ -42,7 +48,7 @@
   <PropertyGroup Label="Versioning">
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <!-- The release version should get updated on every new release -->
-    <Version>20.0.5</Version>
+    <Version>20.0.7-alpha</Version>
     <PreReleaseSuffix Condition="'$(PreReleaseSuffix)' == ''">$([System.DateTime]::UtcNow.ToString(yyyyMMdd-HHmmss))</PreReleaseSuffix>
     <PackageVersion Condition="'$(IsReleaseBuild)' == 'true'">$(Version)</PackageVersion>
     <!-- Continuous integration version, which is updated on every build of the dev branch -->

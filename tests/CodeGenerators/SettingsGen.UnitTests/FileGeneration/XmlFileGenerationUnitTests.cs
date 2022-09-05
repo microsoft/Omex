@@ -4,26 +4,25 @@
 using System;
 using Microsoft.Omex.CodeGenerators.SettingsGen.FileGeneration;
 using Microsoft.Omex.CodeGenerators.SettingsGen.Models;
-using Microsoft.Omex.System.UnitTests.Shared;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.FileGeneration
 {
-	public sealed class XmlFileGenerationUnitTests : UnitTestBase
+	public sealed class XmlFileGenerationUnitTests
 	{
 
-		[Fact]
+		[TestMethod]
 		public void XmlFileGeneration_TestWriteToFile_Succeed()
 		{
 			XmlFileGeneration<SettingsXmlModel> generator = new();
 			generator.GenerateFile(new SettingsXmlModel(), ".\\text.xml");
 		}
 
-		[Fact]
+		[TestMethod]
 		public void XmlFileGeneration_TestWriteToFile_Fail()
 		{
 			XmlFileGeneration<SettingsXmlModel> generator = new();
-			Assert.Throws<ArgumentException>(() => generator.GenerateFile(new SettingsXmlModel(), string.Empty));
+			Assert.ThrowsException<ArgumentException>(() => generator.GenerateFile(new SettingsXmlModel(), string.Empty));
 		}
 	}
 }

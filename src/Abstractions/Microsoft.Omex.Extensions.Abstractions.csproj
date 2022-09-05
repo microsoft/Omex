@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
+    <NoWarn>$(NoWarn);NU5104</NoWarn> <!-- Allow usage of RC version of Metric API, should be removed after .NET 6 release -->
+  </PropertyGroup>
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.Extensions.Abstractions</Title>
+    <Summary>Microsoft Omex Extensions Abstractions</Summary>
+    <Description>This library contains abstraction interfaces used in the Omex Extensions.</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Abstractions</PackageProjectUrl>
+    <PackageTags>Microsoft;Omex;Extensions</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="BuildTransitive\*" Pack="true" PackagePath="buildTransitive" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" />
+  </ItemGroup>
+  <ItemGroup Condition="!$(IsNetCore)">
+    <PackageReference Include="System.Threading.Tasks.Extensions" />
+  </ItemGroup>
+</Project>

@@ -1,7 +1,3 @@
-﻿<Project>
-  <PropertyGroup Condition="'$(IsPackable)' == 'true' AND '$(IsInternalBuild)' == 'true'" >
-    <InternalPackageSuffix>.Internal</InternalPackageSuffix>
-    <PackageId Condition="$(PackageId) != ''" >$(PackageId)$(InternalPackageSuffix)</PackageId>
-    <PackageId Condition="$(PackageId) == ''" >$(AssemblyName)$(InternalPackageSuffix)</PackageId>
-  </PropertyGroup>
+<Project>
+  <Sdk Name="Microsoft.Build.CentralPackageVersions" />
 </Project>

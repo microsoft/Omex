@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Moq" Version="$(Moq_Version)" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="$(Microsoft_CodeAnalysis_Common)" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(Microsoft_CodeAnalysis_CSharp)" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+    <PackageReference Include="Newtonsoft.Json" /> <!-- Bump version of transitive dependency -->
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\CodeGenerators\SettingsGen\Microsoft.Omex.CodeGenerators.SettingsGen.csproj" />
-    <ProjectReference Include="..\..\..\src\System.UnitTests.Shared\Microsoft.Omex.System.UnitTests.Shared.csproj" />
   </ItemGroup>
 </Project>

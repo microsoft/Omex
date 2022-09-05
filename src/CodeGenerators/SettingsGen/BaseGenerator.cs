@@ -97,9 +97,9 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		/// <summary>
 		/// Writing to a file
 		/// </summary>
-		protected static readonly DiagnosticDescriptor WritingToFile = new(id: "SETTINGSGEN001",
+		protected static readonly DiagnosticDescriptor WritingToFile = new DiagnosticDescriptor(id: "SETTINGSGEN001",
 			title: "Writing to settings file",
-			messageFormat: "Writing to file '{0}'.",
+			messageFormat: "Writing to file '{0}'",
 			category: "SettingsGenerator",
 			DiagnosticSeverity.Info,
 			isEnabledByDefault: true);
@@ -107,9 +107,9 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		/// <summary>
 		/// Don't generate
 		/// </summary>
-		protected static readonly DiagnosticDescriptor DontGen = new(id: "SETTINGSGEN002",
+		protected static readonly DiagnosticDescriptor DontGen = new DiagnosticDescriptor(id: "SETTINGSGEN002",
 			title: "Not generating",
-			messageFormat: "Not generating/updating settings file.",
+			messageFormat: "Not generating/updating settings file",
 			category: "SettingsGenerator",
 			DiagnosticSeverity.Info,
 			isEnabledByDefault: true);
@@ -117,7 +117,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		/// <summary>
 		/// Matching settings
 		/// </summary>
-		protected static readonly DiagnosticDescriptor MatchingSettings = new(id: "SETTINGSGEN003",
+		protected static readonly DiagnosticDescriptor MatchingSettings = new DiagnosticDescriptor(id: "SETTINGSGEN003",
 			title: "Existing settings match",
 			messageFormat: "No new settings or updated settings so don't need to generate",
 			category: "SettingsGenerator",
@@ -127,7 +127,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		/// <summary>
 		/// Failed to generate
 		/// </summary>
-		protected static readonly DiagnosticDescriptor FailedGeneration = new(id: "SETTINGSGEN004",
+		protected static readonly DiagnosticDescriptor FailedGeneration = new DiagnosticDescriptor(id: "SETTINGSGEN004",
 			title: "Failed with exception",
 			messageFormat: "Failed to write settings generator with error {0}",
 			category: "SettingsGenerator",
@@ -137,7 +137,7 @@ namespace Microsoft.Omex.CodeGenerators.SettingsGen
 		/// <summary>
 		/// Encoutered error in settings gen
 		/// </summary>
-		protected static readonly DiagnosticDescriptor EncounteredError = new(id: "SETTINGSGEN005",
+		protected static readonly DiagnosticDescriptor EncounteredError = new DiagnosticDescriptor(id: "SETTINGSGEN005",
 			title: "Error encountered",
 			messageFormat: "Encountered error {0} when running settings gen",
 			category: "SettingsGenerator",
