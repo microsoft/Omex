@@ -27,8 +27,8 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
 			m_meter = new Meter("Microsoft.Omex.Activities", "1.0.0");
-			m_activityCounter = m_meter.CreateCounter<double>("Activity");
-			m_healthCheckActivityCounter = m_meter.CreateCounter<double>("HealthCheckActivity");
+			m_activityCounter = m_meter.CreateCounter<double>("Activities");
+			m_healthCheckActivityCounter = m_meter.CreateCounter<double>("HealthCheckActivities");
 			m_arrayPool = ArrayPool<KeyValuePair<string, object?>>.Create();
 		}
 
