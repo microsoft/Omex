@@ -27,8 +27,8 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
 			m_meter = new Meter("Microsoft.Omex.Activities", "1.0.0");
-			m_activityCounter = m_meter.CreateCounter<double>("Activities");
-			m_healthCheckActivityCounter = m_meter.CreateCounter<double>("HealthCheckActivities");
+			m_activityCounter = m_meter.CreateCounter<double>("Activity");
+			m_healthCheckActivityCounter = m_meter.CreateCounter<double>("HealthCheckActivity");
 			m_arrayPool = ArrayPool<KeyValuePair<string, object?>>.Create();
 		}
 
@@ -49,7 +49,6 @@ namespace Microsoft.Omex.Extensions.Activities
 
 			foreach (KeyValuePair<string, string?> baggage in activity.Baggage)
 			{
-				
 				tags[index++] = CreatePair(baggage.Key, baggage.Value);
 			}
 
@@ -76,12 +75,10 @@ namespace Microsoft.Omex.Extensions.Activities
 
 		private static readonly Func<ActivityMetricsSender, Activity, KeyValuePair<string, object?>>[] s_customTags = new Func<ActivityMetricsSender, Activity, KeyValuePair<string, object?>>[]
 		{
-			static (sender, activity) => CreatePair("ActivityId", activity.Id),
-			static (sender, activity) => CreatePair("TraceId", activity.TraceId),
-			static (sender, activity) => CreatePair("Name", activity.OperationName),
+			static (sender, activity) => CreatePair("ActivityName", activity.OperationName),
 			static (sender, activity) => CreatePair("Environment", sender.m_hostEnvironment.EnvironmentName),
-			static (sender, activity) => CreatePair("RegionName", sender.m_context.RegionName),
-			static (sender, activity) => CreatePair("Cluster", sender.m_context.Cluster),
+			static (sender, activity) => CreatePair("Region", sender.m_context.RegionName),
+			static (sender, activity) => CreatePair("ClusterName", sender.m_context.Cluster),
 			static (sender, activity) => CreatePair("ApplicationName", sender.m_context.ApplicationName),
 			static (sender, activity) => CreatePair("ServiceName", sender.m_context.ServiceName),
 			static (sender, activity) => CreatePair("BuildVersion", sender.m_context.BuildVersion),
