@@ -49,7 +49,6 @@ namespace Microsoft.Omex.Extensions.Activities
 
 			foreach (KeyValuePair<string, string?> baggage in activity.Baggage)
 			{
-				
 				tags[index++] = CreatePair(baggage.Key, baggage.Value);
 			}
 
@@ -76,8 +75,6 @@ namespace Microsoft.Omex.Extensions.Activities
 
 		private static readonly Func<ActivityMetricsSender, Activity, KeyValuePair<string, object?>>[] s_customTags = new Func<ActivityMetricsSender, Activity, KeyValuePair<string, object?>>[]
 		{
-			static (sender, activity) => CreatePair("ActivityId", activity.Id),
-			static (sender, activity) => CreatePair("TraceId", activity.TraceId),
 			static (sender, activity) => CreatePair("Name", activity.OperationName),
 			static (sender, activity) => CreatePair("Environment", sender.m_hostEnvironment.EnvironmentName),
 			static (sender, activity) => CreatePair("RegionName", sender.m_context.RegionName),
