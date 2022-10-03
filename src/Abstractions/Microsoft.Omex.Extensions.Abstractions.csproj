@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
-    <NoWarn>$(NoWarn);NU5104</NoWarn> <!-- Allow usage of RC version of Metric API, should be removed after .NET 6 release -->
   </PropertyGroup>
   <PropertyGroup Label="NuGet Properties">
     <Title>Microsoft.Omex.Extensions.Abstractions</Title>
