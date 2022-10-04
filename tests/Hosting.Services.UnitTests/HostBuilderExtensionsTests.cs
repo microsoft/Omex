@@ -47,6 +47,18 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			CheckTypeRegistration<StatefulServiceContext>();
 		}
 
+		[TestMethod]
+		public void AddServiceFabricClientTest()
+		{
+			ServiceProvider collection = new ServiceCollection()
+				.AddServiceFabricClient()
+				.BuildServiceProvider();
+
+			IFabricClientWrapper? fabricClientWrapper = collection.GetService<IFabricClientWrapper>();
+
+			Assert.IsNotNull(fabricClientWrapper);
+		}
+
 		[DataTestMethod]
 		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]

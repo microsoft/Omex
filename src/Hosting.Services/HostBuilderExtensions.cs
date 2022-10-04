@@ -63,6 +63,19 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			return collection.AddOmexServices();
 		}
 
+		/// <summary>
+		/// Adds the Fabric Client instance wrapped in the <seealso cref="IFabricClientWrapper"/> interface.
+		/// </summary>
+		/// <param name="collection">The service collection.</param>
+		/// <returns>The service collection.</returns>
+		public static IServiceCollection AddServiceFabricClient(this IServiceCollection collection)
+		{
+			collection.AddSingleton<FabricClient>();
+			collection.AddSingleton<IFabricClientWrapper, IFabricClientWrapper>();
+
+			return collection;
+		}
+
 		private static IHost BuildServiceFabricService<TRunner, TService, TContext>(
 			this IHostBuilder builder,
 			string serviceName,
