@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Hosting.Services.Internal;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Data;
 
@@ -71,7 +72,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public static IServiceCollection AddServiceFabricClient(this IServiceCollection collection)
 		{
 			collection.AddSingleton<FabricClient>();
-			collection.AddSingleton<IFabricClientWrapper, IFabricClientWrapper>();
+			collection.AddSingleton<IFabricClientWrapper, FabricClientWrapper>();
 
 			return collection;
 		}
