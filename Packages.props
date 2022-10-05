@@ -2,8 +2,8 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="Package Versions. AutoUpdate">
     <PackageReference Update="Moq" Version="4.18.2" />
-    <PackageReference Update="Microsoft.CodeAnalysis.Common" Version="4.3.0" />
-    <PackageReference Update="Microsoft.CodeAnalysis.Csharp" Version="4.3.0" />
+    <PackageReference Update="Microsoft.CodeAnalysis.Common" Version="4.3.1" />
+    <PackageReference Update="Microsoft.CodeAnalysis.Csharp" Version="4.3.1" />
     <PackageReference Update="Microsoft.Net.Test.Sdk" Version="17.3.2" />
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     <PackageReference Update="Microsoft.SourceLink.AzureRepos.Git" Version="1.1.1" />
@@ -38,12 +38,12 @@
     <PackageReference Update="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
   <ItemGroup Label="ServiceFabric packages for Omex Extensions">
-    <PackageReference Update="Microsoft.ServiceFabric" Version="9.0.1048" />
+    <PackageReference Update="Microsoft.ServiceFabric" Version="9.0.1107" />
     <PackageReference Update="Microsoft.ServiceFabric.Client.Http" Version="4.7.1" />
-    <PackageReference Update="Microsoft.ServiceFabric.Services" Version="6.0.1048" />
-    <PackageReference Update="Microsoft.ServiceFabric.Services.Remoting" Version="6.0.1048" />
-    <PackageReference Update="Microsoft.ServiceFabric.Actors" Version="6.0.1048" />
-    <PackageReference Update="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="6.0.1048" />
-    <PackageReference Update="ServiceFabric.Mocks" Version="6.0.2" />
+    <PackageReference Update="Microsoft.ServiceFabric.Services" Version="6.0.1107" />
+    <PackageReference Update="Microsoft.ServiceFabric.Services.Remoting" Version="6.0.1107" />
+    <PackageReference Update="Microsoft.ServiceFabric.Actors" Version="6.0.1107" />
+    <PackageReference Update="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="6.0.1107" />
+    <PackageReference Update="ServiceFabric.Mocks" Version="6.0.3" />
   </ItemGroup>
 </Project>
