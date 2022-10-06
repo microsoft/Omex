@@ -77,10 +77,9 @@ There are two types of NuGet packages that get built from the code in this repos
 The release packages are built from the main branch. Public contributions are accepted only from the main branch.
 
 ## Where are the NuGet packages for the components in this repository available for download?
-The pre-release NuGet packages which are built from the main branch are available to download from the MyGet feed
+The pre-release NuGet packages which are built from the main branch and could be published on request to [Microsoft GitHub feed](https://github.com/orgs/microsoft/packages?repo_name=Omex):
 
-    https://www.myget.org/F/omex/api/v3/index.json
-
+    https://nuget.pkg.github.com/microsoft/index.json
 
 The release packages are available for download from NuGet.org
 
