@@ -44,6 +44,6 @@
     <PackageReference Update="Microsoft.ServiceFabric.Services.Remoting" Version="6.0.1107" />
     <PackageReference Update="Microsoft.ServiceFabric.Actors" Version="6.0.1107" />
     <PackageReference Update="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="6.0.1107" />
-    <PackageReference Update="ServiceFabric.Mocks" Version="6.0.3" />
+    <PackageReference Update="ServiceFabric.Mocks" Version="6.0.4" />
   </ItemGroup>
 </Project>
