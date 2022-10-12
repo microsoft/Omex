@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Logging.Replayable;
@@ -39,27 +40,27 @@ namespace Microsoft.Omex.Extensions.Logging
 				return;
 			}
 
-			string message = formatter(state, exception);
+			StringBuilder message = new StringBuilder(formatter(state, exception));
 			if (exception != null)
 			{
-				message = string.Concat(message, Environment.NewLine, exception); // We need to concatenate with exception since the default formatter ignores it https://github.com/aspnet/Logging/issues/442
+				message.Append(string.Concat(message, Environment.NewLine, exception)); // We need to concatenate with exception since the default formatter ignores it https://github.com/aspnet/Logging/issues/442
 			}
 
 			foreach (ILogScrubbingRule textScrubber in m_textScrubbers)
 			{
-				message = textScrubber.Scrub(message);
+				message.Append(textScrubber.Scrub(message.ToString()));
 			}
 
 			int threadId = Thread.CurrentThread.ManagedThreadId;
 			Activity? activity = Activity.Current;
 
-			m_logsEventSender.LogMessage(activity, m_categoryName, logLevel, eventId, threadId, message, exception);
+			m_logsEventSender.LogMessage(activity, m_categoryName, logLevel, eventId, threadId, message.ToString(), exception);
 
 			if (activity != null
 				&& m_replayer != null
 				&& m_replayer.IsReplayableMessage(logLevel))
 			{
-				m_replayer.AddReplayLog(activity, new LogMessageInformation(m_categoryName, eventId, threadId, message, exception));
+				m_replayer.AddReplayLog(activity, new LogMessageInformation(m_categoryName, eventId, threadId, message.ToString(), exception));
 			}
 		}
 
