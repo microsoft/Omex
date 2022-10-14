@@ -22,28 +22,28 @@
     <PackageReference Update="Xunit.Core" Version="2.4.1" />
   </ItemGroup>
   <ItemGroup Label="Packages for Omex Extensions. AutoUpdate">
-    <PackageReference Update="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Update="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
     <PackageReference Update="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-    <PackageReference Update="Microsoft.Extensions.Diagnostics.HealthChecks" Version="6.0.9" />
+    <PackageReference Update="Microsoft.Extensions.Diagnostics.HealthChecks" Version="6.0.10" />
     <PackageReference Update="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Update="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
     <PackageReference Update="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Update="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
     <PackageReference Update="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
-    <PackageReference Update="Microsoft.Extensions.ObjectPool" Version="6.0.9" />
+    <PackageReference Update="Microsoft.Extensions.ObjectPool" Version="6.0.10" />
     <PackageReference Update="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
     <PackageReference Update="Microsoft.Extensions.Options" Version="6.0.0" />
     <PackageReference Update="System.Diagnostics.DiagnosticSource" Version="6.0.0" />
     <PackageReference Update="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
   <ItemGroup Label="ServiceFabric packages for Omex Extensions">
-    <PackageReference Update="Microsoft.ServiceFabric" Version="9.0.1048" />
+    <PackageReference Update="Microsoft.ServiceFabric" Version="9.0.1107" />
     <PackageReference Update="Microsoft.ServiceFabric.Client.Http" Version="4.7.1" />
-    <PackageReference Update="Microsoft.ServiceFabric.Services" Version="6.0.1048" />
-    <PackageReference Update="Microsoft.ServiceFabric.Services.Remoting" Version="6.0.1048" />
-    <PackageReference Update="Microsoft.ServiceFabric.Actors" Version="6.0.1048" />
-    <PackageReference Update="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="6.0.1048" />
-    <PackageReference Update="ServiceFabric.Mocks" Version="6.0.2" />
+    <PackageReference Update="Microsoft.ServiceFabric.Services" Version="6.0.1107" />
+    <PackageReference Update="Microsoft.ServiceFabric.Services.Remoting" Version="6.0.1107" />
+    <PackageReference Update="Microsoft.ServiceFabric.Actors" Version="6.0.1107" />
+    <PackageReference Update="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="6.0.1107" />
+    <PackageReference Update="ServiceFabric.Mocks" Version="6.0.4" />
   </ItemGroup>
 </Project>
