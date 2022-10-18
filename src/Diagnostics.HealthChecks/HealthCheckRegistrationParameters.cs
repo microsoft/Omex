@@ -4,6 +4,7 @@
 #pragma warning disable IDE0008 // Use explicit type
 
 using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks;
 
@@ -57,4 +58,9 @@ public class HealthCheckRegistrationParameters
 	/// Gets or sets whether the health check should be run. Enabled by default.
 	/// </summary>
 	public bool IsEnabled { get; set; } = true;
+
+	/// <summary>
+	/// Gets the property bag associated with the <see cref="HealthCheckRegistrationParameters"/>.
+	/// </summary>
+	public Dictionary<string, object> Properties { get; } = new Dictionary<string, object>();
 }
