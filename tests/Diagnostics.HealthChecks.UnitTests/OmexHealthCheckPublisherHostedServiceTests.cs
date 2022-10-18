@@ -15,11 +15,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Omex.Preview.Extensions.DependencyInjection;
-using Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks.UnitTests.Extensions;
+using Microsoft.Omex.Extensions.DependencyInjection;
+using Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks.UnitTests
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 {
 	[TestClass]
 	public class OmexHealthCheckPublisherHostedServiceTest

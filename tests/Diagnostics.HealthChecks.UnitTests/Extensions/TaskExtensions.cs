@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks.UnitTests.Extensions
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests.Extensions
 {
 	public static class TaskExtensions
 	{

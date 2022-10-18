@@ -3,9 +3,9 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Omex.Extensions.Diagnostics.HealthChecks;
 
-namespace Microsoft.Omex.Preview.Extensions.DependencyInjection;
+namespace Microsoft.Omex.Extensions.DependencyInjection;
 
 /// <summary>
 /// A builder used to register health checks.

@@ -8,7 +8,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks;
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks;
 
 internal struct ValueStopwatch
 {
