@@ -10,7 +10,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 #pragma warning disable IDE1006 // ASP.NET Core codebase naming convention
 
-namespace Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks;
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks;
 
 /// <summary>
 /// A simple implementation of <see cref="IHealthCheck"/> which uses a provided delegate to

@@ -15,7 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks;
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks;
 
 /// <summary>
 /// Health Check Publisher Service is responsible for filtering the provided HealthCheck Registrations based on the function predicate,
