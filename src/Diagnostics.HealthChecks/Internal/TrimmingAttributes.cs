@@ -9,7 +9,7 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks;
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks;
 
 /// <summary>
 /// Indicates that the specified method requires dynamic access to code that is not referenced

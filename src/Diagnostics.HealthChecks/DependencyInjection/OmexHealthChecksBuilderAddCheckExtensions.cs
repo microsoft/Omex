@@ -9,12 +9,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks;
-using DynamicallyAccessedMembersAttribute = Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks.DynamicallyAccessedMembersAttribute;
-using DynamicallyAccessedMemberTypes = Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks.DynamicallyAccessedMemberTypes;
-using UnconditionalSuppressMessageAttribute = Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks.UnconditionalSuppressMessageAttribute;
+using Microsoft.Omex.Extensions.Diagnostics.HealthChecks;
+using DynamicallyAccessedMembersAttribute = Microsoft.Omex.Extensions.Diagnostics.HealthChecks.DynamicallyAccessedMembersAttribute;
+using DynamicallyAccessedMemberTypes = Microsoft.Omex.Extensions.Diagnostics.HealthChecks.DynamicallyAccessedMemberTypes;
+using UnconditionalSuppressMessageAttribute = Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnconditionalSuppressMessageAttribute;
 
-namespace Microsoft.Omex.Preview.Extensions.DependencyInjection;
+namespace Microsoft.Omex.Extensions.DependencyInjection;
 
 /// <summary>
 /// Provides basic extension methods for registering <see cref="IHealthCheck"/> instances in an <see cref="IOmexHealthChecksBuilder"/>.

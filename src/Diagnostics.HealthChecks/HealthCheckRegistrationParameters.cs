@@ -5,7 +5,7 @@
 
 using System;
 
-namespace Microsoft.Omex.Preview.Extensions.Diagnostics.HealthChecks;
+namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks;
 
 /// <summary>
 /// Represent the individual health check parameters associated with an <see cref="T:Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckRegistration"/>.
