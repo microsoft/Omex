@@ -3,7 +3,7 @@
     "description": "Open source repository for nuget packages published by Omex",
     "deployedToProduction": true,
     "complianceTypes": ["soc-2"],
-    "inventoryId": ["4dec5f5a-6016-4b6b-a130-3a56324ade82"],
+    "inventoryId": ["a8c8b1bf-65a0-46be-9801-414ea4008b45"],
     "schema": {
         "office": "1.0.0"
     }
