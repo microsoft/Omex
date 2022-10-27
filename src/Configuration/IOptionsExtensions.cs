@@ -23,8 +23,8 @@ namespace Microsoft.Omex.Extensions.Configuration
 		/// <para><em>Example:</em></para>
 		/// <para>
 		/// <code>
-		///	try
-		///	{
+		/// try
+		/// {
 		///     string optionValue = m_option.Value;
 		/// }
 		/// catch (OptionsValidationException ex)
@@ -67,8 +67,8 @@ namespace Microsoft.Omex.Extensions.Configuration
 		/// <para><em>Example:</em></para>
 		/// <para>
 		/// <code>
-		///	try
-		///	{
+		/// try
+		/// {
 		///     string optionValue = m_optionMonitor.CurrentValue;
 		/// }
 		/// catch (OptionsValidationException ex)
