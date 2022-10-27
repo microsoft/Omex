@@ -34,19 +34,19 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests
 		}
 
 		[TestMethod]
-		public void IOptions_SafeCurrentValue_ReturnsNullWhenInstanceInvalid()
+		public void IOptions_SafeGetValue_ReturnsNullWhenInstanceInvalid()
 		{
 			OptionsValidationException exception = GetOptionsValidationException();
 			Mock<IOptions<ConfigurationExample>> mock = new();
 			mock.Setup(m => m.Value).Throws(exception);
 
-			ConfigurationExample? configuration = mock.Object.SafeCurrentValue();
+			ConfigurationExample? configuration = mock.Object.SafeGetValue();
 
 			Assert.IsNull(configuration);
 		}
 
 		[TestMethod]
-		public void IOptions_SafeCurrentValue_ReturnsInstanceWhenValid()
+		public void IOptions_SafeGetValue_ReturnsInstanceWhenValid()
 		{
 			ConfigurationExample configuration = new()
 			{
@@ -56,7 +56,7 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests
 			Mock<IOptions<ConfigurationExample>> mock = new();
 			mock.Setup(m => m.Value).Returns(configuration);
 
-			ConfigurationExample? gotConfiguration = mock.Object.SafeCurrentValue();
+			ConfigurationExample? gotConfiguration = mock.Object.SafeGetValue();
 
 			Assert.AreEqual(configuration.ValidatedConfiguration, gotConfiguration?.ValidatedConfiguration);
 			Assert.AreEqual(configuration.UnvalidatedConfiguration, gotConfiguration?.UnvalidatedConfiguration);
@@ -64,19 +64,19 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests
 		}
 
 		[TestMethod]
-		public void IOptionsMonitor_SafeCurrentValue_ReturnsNullWhenInstanceInvalid()
+		public void IOptionsMonitor_SafeGetCurrentValue_ReturnsNullWhenInstanceInvalid()
 		{
 			OptionsValidationException exception = GetOptionsValidationException();
 			Mock<IOptionsMonitor<ConfigurationExample>> mock = new();
 			mock.Setup(m => m.CurrentValue).Throws(exception);
 
-			ConfigurationExample? configuration = mock.Object.SafeCurrentValue();
+			ConfigurationExample? configuration = mock.Object.SafeGetCurrentValue();
 
 			Assert.IsNull(configuration);
 		}
 
 		[TestMethod]
-		public void IOptionsMonitor_SafeCurrentValue_ReturnsInstanceWhenValid()
+		public void IOptionsMonitor_SafeGetCurrentValue_ReturnsInstanceWhenValid()
 		{
 			ConfigurationExample configuration = new()
 			{
@@ -86,7 +86,7 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests
 			Mock<IOptionsMonitor<ConfigurationExample>> mock = new();
 			mock.Setup(m => m.CurrentValue).Returns(configuration);
 
-			ConfigurationExample? gotConfiguration = mock.Object.SafeCurrentValue();
+			ConfigurationExample? gotConfiguration = mock.Object.SafeGetCurrentValue();
 
 			Assert.AreEqual(configuration.ValidatedConfiguration, gotConfiguration?.ValidatedConfiguration);
 			Assert.AreEqual(configuration.UnvalidatedConfiguration, gotConfiguration?.UnvalidatedConfiguration);
@@ -94,14 +94,14 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests
 		}
 
 		[TestMethod]
-		public void IOptions_SafeCurrentValue_WithLogger_ReturnsNullWhenInstanceInvalid()
+		public void IOptions_SafeGetValue_WithLogger_ReturnsNullWhenInstanceInvalid()
 		{
 			LogCollectorLogger<IOptionsExtensionsTests> logger = new();
 			OptionsValidationException exception = GetOptionsValidationException();
 			Mock<IOptions<ConfigurationExample>> mock = new();
 			mock.Setup(m => m.Value).Throws(exception);
 
-			ConfigurationExample? configuration = mock.Object.SafeCurrentValue(logger);
+			ConfigurationExample? configuration = mock.Object.SafeGetValue(logger);
 
 			Assert.IsNull(configuration);
 
@@ -111,7 +111,7 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests
 		}
 
 		[TestMethod]
-		public void IOptions_SafeCurrentValue_WithLogger_ReturnsInstanceWhenValid()
+		public void IOptions_SafeGetValue_WithLogger_ReturnsInstanceWhenValid()
 		{
 			LogCollectorLogger<IOptionsExtensionsTests> logger = new();
 			ConfigurationExample configuration = new()
@@ -122,7 +122,7 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests
 			Mock<IOptions<ConfigurationExample>> mock = new();
 			mock.Setup(m => m.Value).Returns(configuration);
 
-			ConfigurationExample? gotConfiguration = mock.Object.SafeCurrentValue(logger);
+			ConfigurationExample? gotConfiguration = mock.Object.SafeGetValue(logger);
 
 			Assert.AreEqual(configuration.ValidatedConfiguration, gotConfiguration?.ValidatedConfiguration);
 			Assert.AreEqual(configuration.UnvalidatedConfiguration, gotConfiguration?.UnvalidatedConfiguration);
@@ -132,14 +132,14 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests
 		}
 
 		[TestMethod]
-		public void IOptionsMonitor_SafeCurrentValue_WithLogger_ReturnsNullWhenInstanceInvalid()
+		public void IOptionsMonitor_SafeGetCurrentValue_WithLogger_ReturnsNullWhenInstanceInvalid()
 		{
 			LogCollectorLogger<IOptionsExtensionsTests> logger = new();
 			OptionsValidationException exception = GetOptionsValidationException();
 			Mock<IOptionsMonitor<ConfigurationExample>> mock = new();
 			mock.Setup(m => m.CurrentValue).Throws(exception);
 
-			ConfigurationExample? configuration = mock.Object.SafeCurrentValue(logger);
+			ConfigurationExample? configuration = mock.Object.SafeGetCurrentValue(logger);
 
 			Assert.IsNull(configuration);
 
@@ -149,7 +149,7 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests
 		}
 
 		[TestMethod]
-		public void IOptionsMonitor_SafeCurrentValue_WithLogger_ReturnsInstanceWhenValid()
+		public void IOptionsMonitor_SafeGetCurrentValue_WithLogger_ReturnsInstanceWhenValid()
 		{
 			LogCollectorLogger<IOptionsExtensionsTests> logger = new();
 			ConfigurationExample configuration = new()
@@ -160,7 +160,7 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests
 			Mock<IOptionsMonitor<ConfigurationExample>> mock = new();
 			mock.Setup(m => m.CurrentValue).Returns(configuration);
 
-			ConfigurationExample? gotConfiguration = mock.Object.SafeCurrentValue(logger);
+			ConfigurationExample? gotConfiguration = mock.Object.SafeGetCurrentValue(logger);
 
 			Assert.AreEqual(configuration.ValidatedConfiguration, gotConfiguration?.ValidatedConfiguration);
 			Assert.AreEqual(configuration.UnvalidatedConfiguration, gotConfiguration?.UnvalidatedConfiguration);

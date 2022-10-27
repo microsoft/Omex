@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Configuration
 		/// to log the details of the validation exception if thrown.
 		/// </param>
 		/// <returns>The configuration value if the validation passes, <c>null</c> otherwise.</returns>
-		public static TOption? SafeCurrentValue<TOption>(this IOptionsMonitor<TOption> options, ILogger? logger = default)
+		public static TOption? SafeGetCurrentValue<TOption>(this IOptionsMonitor<TOption> options, ILogger? logger = default)
 			where TOption : class
 		{
 			try
@@ -50,7 +50,7 @@ namespace Microsoft.Omex.Extensions.Configuration
 		/// to log the details of the validation exception if thrown.
 		/// </param>
 		/// <returns>The configuration value if the validation passes, <c>null</c> otherwise.</returns>
-		public static TOption? SafeCurrentValue<TOption>(this IOptions<TOption> options, ILogger? logger = default)
+		public static TOption? SafeGetValue<TOption>(this IOptions<TOption> options, ILogger? logger = default)
 			where TOption : class
 		{
 			try
