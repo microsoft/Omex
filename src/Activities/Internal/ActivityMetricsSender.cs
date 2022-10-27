@@ -35,7 +35,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_healthCheckActivityCounter = m_meter.CreateCounter<double>("HealthCheckActivities");
 			m_activityHistogram = m_meter.CreateHistogram<double>("Activities");
 			m_healthCheckActivityHistogram = m_meter.CreateHistogram<double>("HealthCheckActivities");
-			if (configuration.GetSection(UseHistogramForActivityMonitoringConfigurationPath).Value != null)
+			if (!string.IsNullOrEmpty(configuration.GetSection(UseHistogramForActivityMonitoringConfigurationPath).Value))
 			{
 				bool isConfigParsable = bool.TryParse(configuration.GetSection(UseHistogramForActivityMonitoringConfigurationPath).Value, out m_useHistogramForActivity);
 				if (!isConfigParsable)
