@@ -80,8 +80,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		}
 
 		[TestMethod]
-		[DataRow("true")]	// Means Histogram instrument is used
-		[DataRow("false")]	// Means Counter instrument is used
+		[DataRow("true")]   // Means Histogram instrument is used
+		[DataRow("false")]  // Means Counter instrument is used
 		public void SendActivityMetric_ProduceMetrics(string useHistogramForActivity)
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
@@ -98,7 +98,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			contextMock.Setup(e => e.DeploymentSlice).Returns("002");
 			contextMock.Setup(e => e.IsCanary).Returns(true);
 			contextMock.Setup(e => e.IsPrivateDeployment).Returns(false);
-			IExecutionContext context= contextMock.Object;
+			IExecutionContext context = contextMock.Object;
 
 			Mock<IHostEnvironment> environmentMock = new();
 			environmentMock.Setup(e => e.EnvironmentName).Returns("TestEnv");
