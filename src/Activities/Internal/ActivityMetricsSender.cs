@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
@@ -18,17 +19,31 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly Meter m_meter;
 		private readonly Counter<double> m_activityCounter;
 		private readonly Counter<double> m_healthCheckActivityCounter;
+		private readonly Histogram<double> m_activityHistogram;
+		private readonly Histogram<double> m_healthCheckActivityHistogram;
+		private readonly bool m_useHistogramForActivity;
 		private readonly IExecutionContext m_context;
 		private readonly IHostEnvironment m_hostEnvironment;
 		private readonly ArrayPool<KeyValuePair<string, object?>> m_arrayPool;
 
-		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment)
+		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment, IConfiguration configuration)
 		{
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
 			m_meter = new Meter("Microsoft.Omex.Activities", "1.0.0");
 			m_activityCounter = m_meter.CreateCounter<double>("Activities");
 			m_healthCheckActivityCounter = m_meter.CreateCounter<double>("HealthCheckActivities");
+			m_activityHistogram = m_meter.CreateHistogram<double>("Activities");
+			m_healthCheckActivityHistogram = m_meter.CreateHistogram<double>("HealthCheckActivities");
+			if (configuration.GetSection(UseHistogramForActivityMonitoringConfigurationPath).Value != null)
+			{
+				bool isConfigParsable = bool.TryParse(configuration.GetSection(UseHistogramForActivityMonitoringConfigurationPath).Value, out m_useHistogramForActivity);
+				if (!isConfigParsable)
+				{
+					throw new ArgumentException($"Unable to parse {nameof(m_useHistogramForActivity)} from configuration");
+				}
+			}
+
 			m_arrayPool = ArrayPool<KeyValuePair<string, object?>>.Create();
 		}
 
@@ -61,11 +76,25 @@ namespace Microsoft.Omex.Extensions.Activities
 
 			if (activity.IsHealthCheck())
 			{
-				m_healthCheckActivityCounter.Add(durationMs, tagsSpan);
+				if (m_useHistogramForActivity)
+				{
+					m_healthCheckActivityHistogram.Record(durationMs, tagsSpan);
+				}
+				else
+				{
+					m_healthCheckActivityCounter.Add(durationMs, tagsSpan);
+				}
 			}
 			else
 			{
-				m_activityCounter.Add(durationMs, tagsSpan);
+				if (m_useHistogramForActivity)
+				{
+					m_activityHistogram.Record(durationMs, tagsSpan);
+				}
+				else
+				{
+					m_activityCounter.Add(durationMs, tagsSpan);
+				}
 			}
 
 			m_arrayPool.Return(tags, clearArray: true);
@@ -88,6 +117,8 @@ namespace Microsoft.Omex.Extensions.Activities
 			static (sender, activity) => CreatePair("IsCanary", sender.m_context.IsCanary),
 			static (sender, activity) => CreatePair("IsPrivateDeployment", sender.m_context.IsPrivateDeployment)
 		};
+
+		internal const string UseHistogramForActivityMonitoringConfigurationPath = "Monitoring:UseHistogramForActivityMonitoring";
 
 		private static KeyValuePair<string, object?> CreatePair(string key, object? value) => new(key, value);
 	}
