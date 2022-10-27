@@ -14,8 +14,26 @@ namespace Microsoft.Omex.Extensions.Configuration
 	{
 		/// <summary>
 		/// Returns the <seealso cref="IOptionsMonitor{TOptions}.CurrentValue"/> from the given options.
+		/// <para>
 		/// If the options value does not pass the validation set while configuring the configuration at startup,
 		/// it will return null instead of throwing <seealso cref="OptionsValidationException"/>.
+		/// </para>
+		/// <para><em><strong>Note</strong> - In certain context, handling directly the exception, or let the service fail if the configuration
+		/// is wrong, would be a better solution.</em></para>
+		/// <para><em>Example:</em></para>
+		/// <para>
+		/// <code>
+		///	try
+		///	{
+		///     string optionValue = m_option.Value;
+		/// }
+		/// catch (OptionsValidationException ex)
+		/// {
+		///     m_logger.LogError(/*Logging exception*/);
+		///     throw;
+		/// }
+		/// </code>
+		/// </para>
 		/// </summary>
 		/// <typeparam name="TOption">The type that parses the configuration.</typeparam>
 		/// <param name="options">The <seealso cref="IOptionsMonitor{TOptions}"/> instance.</param>
@@ -40,8 +58,26 @@ namespace Microsoft.Omex.Extensions.Configuration
 
 		/// <summary>
 		/// Returns the <seealso cref="IOptions{TOptions}.Value"/> from the given options.
+		/// <para>
 		/// If the options value does not pass the validation set while configuring the configuration at startup,
 		/// it will return null instead of throwing <seealso cref="OptionsValidationException"/>.
+		/// </para>
+		/// <para><em><strong>Note</strong> - In certain context, handling directly the exception, or let the service fail if the configuration
+		/// is wrong, would be a better solution.</em></para>
+		/// <para><em>Example:</em></para>
+		/// <para>
+		/// <code>
+		///	try
+		///	{
+		///     string optionValue = m_optionMonitor.CurrentValue;
+		/// }
+		/// catch (OptionsValidationException ex)
+		/// {
+		///     m_logger.LogError(/*Logging exception*/);
+		///     throw;
+		/// }
+		/// </code>
+		/// </para>
 		/// </summary>
 		/// <typeparam name="TOption">The type that parses the configuration.</typeparam>
 		/// <param name="options">The <seealso cref="IOptions{TOptions}"/> instance.</param>
