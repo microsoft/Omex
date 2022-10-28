@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Microsoft.Omex.Extensions.Configuration.UnitTests.Support
 {
-	public class ConfigurationExample
+	internal class ConfigurationExample
 	{
 		[Required(AllowEmptyStrings = false)]
 		public string ValidatedConfiguration { get; set; } = "";

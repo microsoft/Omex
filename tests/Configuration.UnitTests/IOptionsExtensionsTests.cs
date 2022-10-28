@@ -37,7 +37,7 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests
 		public void IOptions_SafeGetValue_ReturnsNullWhenInstanceInvalid()
 		{
 			OptionsValidationException exception = GetOptionsValidationException();
-			Mock<IOptions<ConfigurationExample>> mock = new();
+			Mock<IOptionsSnapshot<ConfigurationExample>> mock = new();
 			mock.Setup(m => m.Value).Throws(exception);
 
 			ConfigurationExample? configuration = mock.Object.SafeGetValue();
@@ -53,7 +53,7 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests
 				ValidatedConfiguration = "not-empty",
 				ValidatedInteger = 5
 			};
-			Mock<IOptions<ConfigurationExample>> mock = new();
+			Mock<IOptionsSnapshot<ConfigurationExample>> mock = new();
 			mock.Setup(m => m.Value).Returns(configuration);
 
 			ConfigurationExample? gotConfiguration = mock.Object.SafeGetValue();
@@ -98,7 +98,7 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests
 		{
 			LogCollectorLogger<IOptionsExtensionsTests> logger = new();
 			OptionsValidationException exception = GetOptionsValidationException();
-			Mock<IOptions<ConfigurationExample>> mock = new();
+			Mock<IOptionsSnapshot<ConfigurationExample>> mock = new();
 			mock.Setup(m => m.Value).Throws(exception);
 
 			ConfigurationExample? configuration = mock.Object.SafeGetValue(logger);
@@ -119,7 +119,7 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests
 				ValidatedConfiguration = "not-empty",
 				ValidatedInteger = 5
 			};
-			Mock<IOptions<ConfigurationExample>> mock = new();
+			Mock<IOptionsSnapshot<ConfigurationExample>> mock = new();
 			mock.Setup(m => m.Value).Returns(configuration);
 
 			ConfigurationExample? gotConfiguration = mock.Object.SafeGetValue(logger);

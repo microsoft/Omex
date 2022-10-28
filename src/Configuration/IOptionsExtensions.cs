@@ -51,7 +51,7 @@ namespace Microsoft.Omex.Extensions.Configuration
 			}
 			catch (OptionsValidationException ex)
 			{
-				logger?.LogError(Tag.ReserveTag(0), ex, "The configuration validation threw an exception: '{ExceptionMessage}'.", ex.Message);
+				logger?.LogError(Tag.Create(), ex, "The configuration validation threw an exception: '{ExceptionMessage}'.", ex.Message);
 				return null;
 			}
 		}
@@ -80,13 +80,13 @@ namespace Microsoft.Omex.Extensions.Configuration
 		/// </para>
 		/// </summary>
 		/// <typeparam name="TOption">The type that parses the configuration.</typeparam>
-		/// <param name="options">The <seealso cref="IOptions{TOptions}"/> instance.</param>
+		/// <param name="options">The <seealso cref="IOptionsSnapshot{TOptions}"/> instance.</param>
 		/// <param name="logger">
 		/// An <seealso cref="ILogger"/> instance that, if passed in input, will be used
 		/// to log the details of the validation exception if thrown.
 		/// </param>
 		/// <returns>The configuration value if the validation passes, <c>null</c> otherwise.</returns>
-		public static TOption? SafeGetValue<TOption>(this IOptions<TOption> options, ILogger? logger = default)
+		public static TOption? SafeGetValue<TOption>(this IOptionsSnapshot<TOption> options, ILogger? logger = default)
 			where TOption : class
 		{
 			try
@@ -95,7 +95,7 @@ namespace Microsoft.Omex.Extensions.Configuration
 			}
 			catch (OptionsValidationException ex)
 			{
-				logger?.LogError(Tag.ReserveTag(0), ex, "The configuration validation threw an exception: '{ExceptionMessage}'.", ex.Message);
+				logger?.LogError(Tag.Create(), ex, "The configuration validation threw an exception: '{ExceptionMessage}'.", ex.Message);
 				return null;
 			}
 		}

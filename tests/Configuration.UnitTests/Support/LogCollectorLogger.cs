@@ -13,7 +13,7 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests.Support
 	/// to return them for test purposes.
 	/// </summary>
 	/// <typeparam name="TInstance">The class for which the logger instance will log.</typeparam>
-	public class LogCollectorLogger<TInstance> : ILogger<TInstance>
+	internal class LogCollectorLogger<TInstance> : ILogger<TInstance>
 	{
 		private readonly IDictionary<LogLevel, IList<string>> m_logMessages = new Dictionary<LogLevel, IList<string>>();
 
