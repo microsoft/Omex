@@ -9,8 +9,10 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Abstractions.Option;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
@@ -26,7 +28,7 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly IHostEnvironment m_hostEnvironment;
 		private readonly ArrayPool<KeyValuePair<string, object?>> m_arrayPool;
 
-		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment, IConfiguration configuration)
+		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment, IOptions<MonitoringOption> monitoringOption)
 		{
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
@@ -35,14 +37,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_healthCheckActivityCounter = m_meter.CreateCounter<double>("HealthCheckActivities");
 			m_activityHistogram = m_meter.CreateHistogram<double>("Activities");
 			m_healthCheckActivityHistogram = m_meter.CreateHistogram<double>("HealthCheckActivities");
-			if (!string.IsNullOrEmpty(configuration.GetSection(UseHistogramForActivityMonitoringConfigurationPath).Value))
-			{
-				bool isConfigParsable = bool.TryParse(configuration.GetSection(UseHistogramForActivityMonitoringConfigurationPath).Value, out m_useHistogramForActivity);
-				if (!isConfigParsable)
-				{
-					throw new ArgumentException($"Unable to parse {nameof(m_useHistogramForActivity)} from configuration");
-				}
-			}
+			m_useHistogramForActivity = monitoringOption.Value.UseHistogramForActivityMonitoring;
 
 			m_arrayPool = ArrayPool<KeyValuePair<string, object?>>.Create();
 		}
@@ -74,27 +69,21 @@ namespace Microsoft.Omex.Extensions.Activities
 
 			ReadOnlySpan<KeyValuePair<string, object?>> tagsSpan = MemoryExtensions.AsSpan(tags, 0, tagsCount);
 
+			Histogram<double> histogram = m_activityHistogram;
+			Counter<double> counter = m_activityCounter;
 			if (activity.IsHealthCheck())
 			{
-				if (m_useHistogramForActivity)
-				{
-					m_healthCheckActivityHistogram.Record(durationMs, tagsSpan);
-				}
-				else
-				{
-					m_healthCheckActivityCounter.Add(durationMs, tagsSpan);
-				}
+				histogram = m_healthCheckActivityHistogram;
+				counter = m_healthCheckActivityCounter;
+			}
+
+			if (m_useHistogramForActivity)
+			{
+				histogram.Record(durationMs, tagsSpan);
 			}
 			else
 			{
-				if (m_useHistogramForActivity)
-				{
-					m_activityHistogram.Record(durationMs, tagsSpan);
-				}
-				else
-				{
-					m_activityCounter.Add(durationMs, tagsSpan);
-				}
+				counter.Add(durationMs, tagsSpan);
 			}
 
 			m_arrayPool.Return(tags, clearArray: true);
