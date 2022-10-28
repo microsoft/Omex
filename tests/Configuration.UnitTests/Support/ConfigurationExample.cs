@@ -9,7 +9,7 @@ namespace Microsoft.Omex.Extensions.Configuration.UnitTests.Support
 	public class ConfigurationExample
 	{
 		[Required(AllowEmptyStrings = false)]
-		public string? ValidatedConfiguration { get; set; }
+		public string ValidatedConfiguration { get; set; } = "";
 
 		public string? UnvalidatedConfiguration { get; set; }
 
