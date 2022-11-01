@@ -69,7 +69,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			ReadOnlySpan<KeyValuePair<string, object?>> tagsSpan = MemoryExtensions.AsSpan(tags, 0, tagsCount);
 
 			Histogram<double> histogram = activity.IsHealthCheck() ? m_healthCheckActivityHistogram : m_activityHistogram;
-			Counter<double> counter = activity.IsHealthCheck() ? m_healthCheckActivityCounter :m_activityCounter;
+			Counter<double> counter = activity.IsHealthCheck() ? m_healthCheckActivityCounter : m_activityCounter;
 
 			if (m_monitoringOption.Value.UseHistogramForActivityMonitoring)
 			{
