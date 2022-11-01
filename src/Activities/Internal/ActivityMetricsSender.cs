@@ -9,10 +9,8 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Abstractions.Option;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
@@ -28,7 +26,7 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly IHostEnvironment m_hostEnvironment;
 		private readonly ArrayPool<KeyValuePair<string, object?>> m_arrayPool;
 
-		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment, IOptions<MonitoringOption> monitoringOption)
+		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment, IConfiguration configuration)
 		{
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
@@ -37,7 +35,14 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_healthCheckActivityCounter = m_meter.CreateCounter<double>("HealthCheckActivities");
 			m_activityHistogram = m_meter.CreateHistogram<double>("Activities");
 			m_healthCheckActivityHistogram = m_meter.CreateHistogram<double>("HealthCheckActivities");
-			m_useHistogramForActivity = monitoringOption.Value.UseHistogramForActivityMonitoring;
+			if (!string.IsNullOrEmpty(configuration.GetSection(UseHistogramForActivityMonitoringConfigurationPath).Value))
+			{
+				bool isConfigParsable = bool.TryParse(configuration.GetSection(UseHistogramForActivityMonitoringConfigurationPath).Value, out m_useHistogramForActivity);
+				if (!isConfigParsable)
+				{
+					throw new ArgumentException($"Unable to parse {nameof(m_useHistogramForActivity)} from this configuration {UseHistogramForActivityMonitoringConfigurationPath}");
+				}
+			}
 
 			m_arrayPool = ArrayPool<KeyValuePair<string, object?>>.Create();
 		}
