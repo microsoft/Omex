@@ -8,8 +8,10 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Abstractions.Option;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -19,70 +21,9 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 	public class ActivityMetricsSenderTests
 	{
 		[TestMethod]
-		[DataRow("")]
-		[DataRow(null!)]
-		public void ActivityMetricsSender_Construction_NonExistConfigSection_ReturnNotNull(string nonExistValue)
-		{
-			Mock<IExecutionContext> contextMock = new();
-			Mock<IHostEnvironment> environmentMock = new();
-			Mock<IConfiguration> mockConfig = new();
-			Mock<IConfigurationSection> mockConfigSection = new();
-
-			mockConfig.Setup(configuration => configuration.GetSection(ActivityMetricsSender.UseHistogramForActivityMonitoringConfigurationPath))
-				.Returns(mockConfigSection.Object);
-			mockConfigSection.Setup(section => section.Value).Returns(nonExistValue);
-
-			ActivityMetricsSender sender = new(contextMock.Object, environmentMock.Object, mockConfig.Object);
-			Assert.IsNotNull(sender);
-		}
-
-		[TestMethod]
-		[DataRow("true")]
-		[DataRow("false")]
-		public void ActivityMetricsSender_Construction_TrueAndFalseParsableConfig_ReturnNotNull(string parsableConfigValue)
-		{
-			Mock<IExecutionContext> contextMock = new();
-			Mock<IHostEnvironment> environmentMock = new();
-			Mock<IConfiguration> mockConfig = new();
-			Mock<IConfigurationSection> mockConfigSection = new();
-
-			mockConfig.Setup(configuration => configuration.GetSection(ActivityMetricsSender.UseHistogramForActivityMonitoringConfigurationPath))
-				.Returns(mockConfigSection.Object);
-			mockConfigSection.Setup(section => section.Value).Returns(parsableConfigValue);
-
-			ActivityMetricsSender sender = new(contextMock.Object, environmentMock.Object, mockConfig.Object);
-			Assert.IsNotNull(sender);
-		}
-
-		[TestMethod]
-		[DataRow("Not boolean passable")]
-		[DataRow("truee")]
-		[DataRow("falsee")]
-		[DataRow("T")]
-		[DataRow("F")]
-		[DataRow("0")]
-		[DataRow("1")]
-		public void ActivityMetricsSender_Construction_NotParsableConfigValue_ThrowArgumentException(string notParsableConfigValue)
-		{
-			Mock<IExecutionContext> contextMock = new();
-			Mock<IHostEnvironment> environmentMock = new();
-			Mock<IConfiguration> mockConfig = new();
-			Mock<IConfigurationSection> mockConfigSection = new();
-
-			mockConfig.Setup(configuration => configuration.GetSection(ActivityMetricsSender.UseHistogramForActivityMonitoringConfigurationPath))
-				.Returns(mockConfigSection.Object);
-			mockConfigSection.Setup(section => section.Value).Returns(notParsableConfigValue);
-
-			Assert.ThrowsException<ArgumentException>(() =>
-			{
-				new ActivityMetricsSender(contextMock.Object, environmentMock.Object, mockConfig.Object);
-			});
-		}
-
-		[TestMethod]
-		[DataRow("true")]   // Means Histogram instrument is used
-		[DataRow("false")]  // Means Counter instrument is used
-		public void SendActivityMetric_ProduceMetrics(string useHistogramForActivity)
+		[DataRow(true)]
+		[DataRow(false)]
+		public void SendActivityMetric_ProduceMetrics(bool useHistogramForActivityMonitoring)
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 			Activity.ForceDefaultIdFormat = true;
@@ -104,12 +45,12 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			environmentMock.Setup(e => e.EnvironmentName).Returns("TestEnv");
 			IHostEnvironment environment = environmentMock.Object;
 
-			Mock<IConfiguration> mockConfiguration = new();
-			Mock<IConfigurationSection> mockConfigSection = new();
-			mockConfiguration.Setup(configuration => configuration.GetSection(It.IsAny<string>())).Returns(mockConfigSection.Object);
-			mockConfigSection.Setup(section => section.Value).Returns(useHistogramForActivity);
-
-			ActivityMetricsSender sender = new(context, environment, mockConfiguration.Object);
+			Mock<IOptions<MonitoringOption>> mockMonitorOption = new();
+			mockMonitorOption.Setup(options => options.Value).Returns(new MonitoringOption()
+			{
+				UseHistogramForActivityMonitoring = useHistogramForActivityMonitoring
+			});
+			ActivityMetricsSender sender = new(context, environment, mockMonitorOption.Object);
 
 			Listener listener = new();
 
