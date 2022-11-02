@@ -3,7 +3,6 @@
 
 using System;
 using System.Diagnostics;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
@@ -22,7 +21,6 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 		public void AddOmexServices_TypesRegistered(Type type)
 		{
 			object collectionObj = new ServiceCollection()
-				.AddSingleton<IConfiguration>(new ConfigurationBuilder().Build())
 				.AddSingleton<IHostEnvironment>(new HostingEnvironment())
 				.AddOmexServices()
 				.BuildServiceProvider(new ServiceProviderOptions
