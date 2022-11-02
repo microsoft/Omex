@@ -101,8 +101,6 @@ namespace Microsoft.Omex.Extensions.Activities
 			static (sender, activity) => CreatePair("IsPrivateDeployment", sender.m_context.IsPrivateDeployment)
 		};
 
-		internal const string UseHistogramForActivityMonitoringConfigurationPath = "Monitoring:UseHistogramForActivityMonitoring";
-
 		private static KeyValuePair<string, object?> CreatePair(string key, object? value) => new(key, value);
 	}
 }
