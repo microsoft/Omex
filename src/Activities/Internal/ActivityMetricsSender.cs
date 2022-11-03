@@ -7,9 +7,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Abstractions.Option;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
@@ -18,17 +21,23 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly Meter m_meter;
 		private readonly Counter<double> m_activityCounter;
 		private readonly Counter<double> m_healthCheckActivityCounter;
+		private readonly Histogram<double> m_activityHistogram;
+		private readonly Histogram<double> m_healthCheckActivityHistogram;
 		private readonly IExecutionContext m_context;
 		private readonly IHostEnvironment m_hostEnvironment;
+		private readonly IOptions<MonitoringOption> m_monitoringOption;
 		private readonly ArrayPool<KeyValuePair<string, object?>> m_arrayPool;
 
-		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment)
+		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment, IOptions<MonitoringOption> monitoringOption)
 		{
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
+			m_monitoringOption = monitoringOption;
 			m_meter = new Meter("Microsoft.Omex.Activities", "1.0.0");
 			m_activityCounter = m_meter.CreateCounter<double>("Activities");
 			m_healthCheckActivityCounter = m_meter.CreateCounter<double>("HealthCheckActivities");
+			m_activityHistogram = m_meter.CreateHistogram<double>("Activities");
+			m_healthCheckActivityHistogram = m_meter.CreateHistogram<double>("HealthCheckActivities");
 			m_arrayPool = ArrayPool<KeyValuePair<string, object?>>.Create();
 		}
 
@@ -59,13 +68,16 @@ namespace Microsoft.Omex.Extensions.Activities
 
 			ReadOnlySpan<KeyValuePair<string, object?>> tagsSpan = MemoryExtensions.AsSpan(tags, 0, tagsCount);
 
-			if (activity.IsHealthCheck())
+			Histogram<double> histogram = activity.IsHealthCheck() ? m_healthCheckActivityHistogram : m_activityHistogram;
+			Counter<double> counter = activity.IsHealthCheck() ? m_healthCheckActivityCounter : m_activityCounter;
+
+			if (m_monitoringOption.Value.UseHistogramForActivityMonitoring)
 			{
-				m_healthCheckActivityCounter.Add(durationMs, tagsSpan);
+				histogram.Record(durationMs, tagsSpan);
 			}
 			else
 			{
-				m_activityCounter.Add(durationMs, tagsSpan);
+				counter.Add(durationMs, tagsSpan);
 			}
 
 			m_arrayPool.Return(tags, clearArray: true);
