@@ -86,21 +86,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 
 			using IMemoryOwner<byte> hashMemoryOwner = MemoryPool<byte>.Shared.Rent(HashSize);
 			Span<byte> hashSpan = hashMemoryOwner.Memory.Span;
-
-#if NETCOREAPP3_1
-			using HashAlgorithm hashAlgorithm = new SHA256Managed(); // need to have new instance each time since its not thread-safe
-
-			if (!hashAlgorithm.TryComputeHash(uidSpan, hashSpan, out _))
-			{
-				return string.Empty;
-			}
-
-			return BitConverter.ToString(hashSpan.ToArray()).Replace("-", "");
-#else
 			SHA256.HashData(uidSpan, hashSpan);
-
 			return Convert.ToHexString(hashSpan);
-#endif
 		}
 
 		public void Dispose() => m_saltProvider.Dispose();
