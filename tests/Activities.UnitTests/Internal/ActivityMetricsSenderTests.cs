@@ -1,13 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Abstractions.Option;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -17,7 +21,9 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 	public class ActivityMetricsSenderTests
 	{
 		[TestMethod]
-		public void SendActivityMetric_ProduceMetrics()
+		[DataRow(true)]
+		[DataRow(false)]
+		public void SendActivityMetric_ProduceMetrics(bool useHistogramForActivityMonitoring)
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 			Activity.ForceDefaultIdFormat = true;
@@ -33,13 +39,19 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			contextMock.Setup(e => e.DeploymentSlice).Returns("002");
 			contextMock.Setup(e => e.IsCanary).Returns(true);
 			contextMock.Setup(e => e.IsPrivateDeployment).Returns(false);
-			IExecutionContext context= contextMock.Object;
+			IExecutionContext context = contextMock.Object;
 
 			Mock<IHostEnvironment> environmentMock = new();
 			environmentMock.Setup(e => e.EnvironmentName).Returns("TestEnv");
 			IHostEnvironment environment = environmentMock.Object;
 
-			ActivityMetricsSender sender = new(context, environment);
+			Mock<IOptions<MonitoringOption>> mockMonitorOption = new();
+			mockMonitorOption.Setup(options => options.Value).Returns(new MonitoringOption()
+			{
+				UseHistogramForActivityMonitoring = useHistogramForActivityMonitoring
+			});
+			ActivityMetricsSender sender = new(context, environment, mockMonitorOption.Object);
+
 			Listener listener = new();
 
 			Activity testActivity = new(nameof(testActivity));
