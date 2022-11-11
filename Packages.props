@@ -25,7 +25,7 @@
     <PackageReference Update="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Update="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Update="System.Diagnostics.DiagnosticSource" Version="7.0.0" />
-    <PackageReference Update="System.Text.Json" Version="6.0.6" />
+    <PackageReference Update="System.Text.Json" Version="7.0.0" />
     <PackageReference Update="System.Threading.Tasks" Version="4.3.0" />
     <PackageReference Update="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
