@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		{
 			void CheckTypeRegistration<TContext>() where TContext : ServiceContext
 			{
-				object obj = new ServiceCollection()
+				object? obj = new ServiceCollection()
 					.AddOmexServiceFabricDependencies<TContext>()
 					.AddSingleton(new Mock<IHostEnvironment>().Object)
 					.BuildServiceProvider()

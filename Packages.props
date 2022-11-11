@@ -5,17 +5,17 @@
     <PackageReference Update="MSTest.TestFramework" Version="2.2.10" />
     <PackageReference Update="Microsoft.CodeAnalysis.Common" Version="4.3.1" />
     <PackageReference Update="Microsoft.CodeAnalysis.Csharp" Version="4.3.1" />
-    <PackageReference Update="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
-    <PackageReference Update="Microsoft.Extensions.Diagnostics.HealthChecks" Version="6.0.10" />
-    <PackageReference Update="Microsoft.Extensions.Hosting" Version="6.0.1" />
-    <PackageReference Update="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
-    <PackageReference Update="Microsoft.Extensions.Http" Version="6.0.0" />
-    <PackageReference Update="Microsoft.Extensions.Logging" Version="6.0.0" />
-    <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
-    <PackageReference Update="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
-    <PackageReference Update="Microsoft.Extensions.ObjectPool" Version="6.0.10" />
-    <PackageReference Update="Microsoft.Extensions.Options" Version="6.0.0" />
-    <PackageReference Update="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+    <PackageReference Update="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Diagnostics.HealthChecks" Version="7.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Http" Version="7.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
+    <PackageReference Update="Microsoft.Extensions.ObjectPool" Version="7.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Options" Version="7.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
     <PackageReference Update="Microsoft.Net.Test.Sdk" Version="17.3.2" />
     <PackageReference Update="Microsoft.SourceLink.AzureRepos.Git" Version="1.1.1" />
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />

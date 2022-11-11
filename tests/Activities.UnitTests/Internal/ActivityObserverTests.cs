@@ -101,7 +101,7 @@ namespace Hosting.Services.UnitTests
 		{
 			public List<(EventId id, LogLevel level, string message)> Messages = new();
 
-			public IDisposable BeginScope<TState>(TState state) => throw new NotImplementedException();
+			public IDisposable? BeginScope<TState>(TState state) where TState : notnull => throw new NotImplementedException();
 
 			public bool IsEnabled(LogLevel logLevel) => true;
 

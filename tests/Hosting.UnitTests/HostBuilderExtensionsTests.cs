@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 		[DataRow(typeof(ActivitySource))]
 		public void AddOmexServices_TypesRegistered(Type type)
 		{
-			object collectionObj = new ServiceCollection()
+			object? collectionObj = new ServiceCollection()
 				.AddSingleton<IHostEnvironment>(new HostingEnvironment())
 				.AddOmexServices()
 				.BuildServiceProvider(new ServiceProviderOptions
