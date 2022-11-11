@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Abstractions.Option;
 using Microsoft.Omex.Extensions.Activities;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -42,6 +40,11 @@ namespace Microsoft.Extensions.DependencyInjection
 			serviceCollection.TryAddSingleton<ActivityMetricsSender>();
 			serviceCollection.TryAddSingleton<ActivityEventSender>();
 			serviceCollection.TryAddSingleton<IActivitiesEventSender, AggregatedActivitiesEventSender>();
+
+			serviceCollection
+				.AddOptions<MonitoringOption>()
+				.BindConfiguration(MonitoringOption.MonitoringPath)
+				.ValidateDataAnnotations();
 
 			serviceCollection.TryAddSingleton<IActivityListenerConfigurator, DefaultActivityListenerConfigurator>();
 			serviceCollection.TryAddSingleton(p => new ActivitySource(ActivitySourceName, ActivitySourceVersion));
