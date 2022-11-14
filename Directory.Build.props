@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Target Platforms" >
-    <NetCoreVersions>net6.0</NetCoreVersions>
+    <NetCoreVersions>net7.0</NetCoreVersions>
     <NetStandardVersions>netstandard2.0</NetStandardVersions>
     <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
     <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
