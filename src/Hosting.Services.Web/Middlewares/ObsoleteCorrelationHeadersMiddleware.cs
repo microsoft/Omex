@@ -117,6 +117,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 
 		private static readonly string[] s_correlationIdNames = {
 			CorrelationHeader,
+			"X-MS-Correlationid",
 			"MS-CorrelationId",			// Correlation Id header used by other Microsoft services
 			"corr",						// Correlation query parameter
 			"HTTP_X_CORRELATIONID" };
