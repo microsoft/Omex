@@ -88,7 +88,7 @@ namespace Hosting.Services.UnitTests
 		{
 			public List<Exception?> Exceptions { get; } = new();
 
-			public IDisposable BeginScope<TState>(TState state) => throw new NotImplementedException();
+			public IDisposable? BeginScope<TState>(TState state) where TState : notnull => throw new NotImplementedException();
 
 			public bool IsEnabled(LogLevel logLevel) => true;
 

@@ -99,7 +99,8 @@ namespace Microsoft.Extensions.Hosting
 								{
 									if (endpoint.UseHttps)
 									{
-										string certificateSubject = context.Configuration.GetValue<string>(endpoint.SettingForCertificateCommonName);
+										string settingForCertificateCommonName = Validation.ThrowIfNullOrWhiteSpace(endpoint.SettingForCertificateCommonName);
+										string certificateSubject = Validation.ThrowIfNullOrWhiteSpace(context.Configuration.GetValue<string>(settingForCertificateCommonName));
 										listenOptions.UseHttps(StoreName.My, certificateSubject, true, StoreLocation.LocalMachine);
 									}
 								});
