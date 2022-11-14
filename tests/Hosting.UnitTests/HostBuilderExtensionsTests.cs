@@ -22,8 +22,8 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 		public void AddOmexServices_TypesRegistered(Type type)
 		{
 			object? collectionObj = new ServiceCollection()
-                .AddSingleton<IConfiguration>(new ConfigurationBuilder().Build()) // Added IConfiguration because one of the dependency depends on IOptions which in turn depends on IConfiguration
-                .AddSingleton<IHostEnvironment>(new HostingEnvironment())
+				.AddSingleton<IConfiguration>(new ConfigurationBuilder().Build()) // Added IConfiguration because one of the dependency depends on IOptions which in turn depends on IConfiguration
+				.AddSingleton<IHostEnvironment>(new HostingEnvironment())
 				.AddOmexServices()
 				.BuildServiceProvider(new ServiceProviderOptions
 				{
