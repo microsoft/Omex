@@ -173,7 +173,9 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			using IDisposable resultMock = new Mock<IDisposable>().Object;
 			scopeProviderMock.Setup(p => p.Push(obj)).Returns(resultMock);
 
-			using IDisposable result = logger.BeginScope(obj);
+			using IDisposable? result = logger.BeginScope(obj);
+
+			Assert.IsNotNull(result, "Failed to begin scope");
 
 			scopeProviderMock.Verify(p => p.Push(obj), Times.Once);
 			Assert.AreEqual(resultMock, result);

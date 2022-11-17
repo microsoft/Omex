@@ -28,7 +28,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			m_replayer = replayer;
 		}
 
-		public IDisposable BeginScope<TState>(TState state) => m_externalScopeProvider.Push(state);
+		public IDisposable? BeginScope<TState>(TState state) where TState : notnull => m_externalScopeProvider.Push(state);
 
 		public bool IsEnabled(LogLevel logLevel) => m_logsEventSender.IsEnabled(logLevel);
 
