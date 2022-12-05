@@ -23,7 +23,7 @@
     <PackageReference Update="Microsoft.SourceLink.AzureRepos.Git" Version="1.1.1" />
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     <PackageReference Update="Moq" Version="4.18.2" />
-    <PackageReference Update="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Update="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Update="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Update="System.Diagnostics.DiagnosticSource" Version="7.0.0" />
     <PackageReference Update="System.Text.Json" Version="7.0.0" />
