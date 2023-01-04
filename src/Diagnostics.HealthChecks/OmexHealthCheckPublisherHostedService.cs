@@ -243,8 +243,26 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 			return _healthCheckPublisherOptions.Value.Predicate(r);
 		};
 
-		// The health checks service does it's own logging, and doesn't throw exceptions.
-		var report = await _healthCheckService.CheckHealthAsync(withOptionsPredicate, cancellationToken).ConfigureAwait(false);
+		HealthReport report;
+		try
+		{
+			// The health checks service does it's own logging
+			report = await _healthCheckService.CheckHealthAsync(withOptionsPredicate, cancellationToken).ConfigureAwait(false);
+		}
+		catch (Exception e)
+		{
+			report = new HealthReport(new Dictionary<string, HealthReportEntry>()
+			{
+				{ "Error", new HealthReportEntry(
+					HealthStatus.Unhealthy,
+					"Exception been thrown while trying to execute Health Check",
+					TimeSpan.Zero,
+					e,
+					null)
+				}
+			}, TimeSpan.Zero);
+		}
+		
 
 		var publishers = _publishers;
 		var tasks = new Task[publishers.Length];
