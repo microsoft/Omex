@@ -30,14 +30,14 @@ jobs:
 
     steps:
     - name: configure Pagefile
-      uses: al-cheb/configure-pagefile-action@v1.2
+      uses: al-cheb/configure-pagefile-action@v1.3
       with:
           minimum-size: 8GB
           maximum-size: 32GB
           disk-root: "D:"
     - name: Checkout repository
-      uses: actions/checkout@v2
-    - uses: actions/setup-dotnet@v1
+      uses: actions/checkout@v3
+    - uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '7.0.x'
 
