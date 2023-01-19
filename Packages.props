@@ -37,6 +37,6 @@
     <PackageReference Update="Microsoft.ServiceFabric.Client.Http" Version="4.8.1" />
     <PackageReference Update="Microsoft.ServiceFabric.Services" Version="6.1.1436" />
     <PackageReference Update="Microsoft.ServiceFabric.Services.Remoting" Version="6.1.1436" />
-    <PackageReference Update="ServiceFabric.Mocks" Version="7.0.1" />
+    <PackageReference Update="ServiceFabric.Mocks" Version="6.1.6" />
   </ItemGroup>
 </Project>
