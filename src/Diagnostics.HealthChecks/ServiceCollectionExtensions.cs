@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.ObjectPool;
+using Microsoft.Omex.Extensions.DependencyInjection;
 using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
@@ -41,7 +42,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// Register publisher for processing health check results directly to replicas
 		/// </summary>
 		public static IHealthChecksBuilder AddServiceFabricHealthChecks(this IServiceCollection serviceCollection) =>
-			serviceCollection.AddOmexHealthChecks<ServiceContextHealthStatusSender>();
+			serviceCollection.AddOmexHealthCheckDependencies<ServiceContextHealthStatusSender>();
 
 		/// <summary>
 		/// Register publisher for processing health check results directly to nodes using REST api
@@ -49,19 +50,19 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		public static IHealthChecksBuilder AddRestHealthChecksPublisher(this IServiceCollection serviceCollection) =>
 			serviceCollection
 				.AddServiceFabricClient()
-				.AddOmexHealthChecks<RestHealthStatusSender>();
+				.AddOmexHealthCheckDependencies<RestHealthStatusSender>();
 
 		/// <summary>
 		/// Register publisher for processing health check results
 		/// </summary>
-		private static IHealthChecksBuilder AddOmexHealthChecks<TStatusSender>(this IServiceCollection serviceCollection)
+		private static IHealthChecksBuilder AddOmexHealthCheckDependencies<TStatusSender>(this IServiceCollection serviceCollection)
 				where TStatusSender : class, IHealthStatusSender
 		{
 			serviceCollection.TryAddSingleton<IHealthStatusSender, TStatusSender>();
 			return serviceCollection
 				.AddPublisherDependencies()
 				.AddHealthCheckPublisher<OmexHealthCheckPublisher>()
-				.AddHealthChecks();
+				.AddOmexHealthChecks();
 		}
 
 		/// <summary>
