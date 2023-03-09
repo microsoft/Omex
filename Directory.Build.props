@@ -5,15 +5,14 @@
 
   <PropertyGroup Label="Target Platforms" >
     <DefaultNetCoreVersion>net7.0</DefaultNetCoreVersion>
-    <NetCoreVersions>$(DefaultNetCoreVersion);net6.0</NetCoreVersions>
     <NetStandardVersions>netstandard2.0</NetStandardVersions>
-    <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
-    <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
+    <LibraryTargetFrameworks>$(DefaultNetCoreVersion);$(NetStandardVersions)</LibraryTargetFrameworks>
+    <ExecutableTargetFrameworks>$(DefaultNetCoreVersion)</ExecutableTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="UnitTest Targets">
     <NetFrameworkVersion>net472</NetFrameworkVersion>
     <UnitTestTargetFrameworks>$(DefaultNetCoreVersion);$(NetFrameworkVersion)</UnitTestTargetFrameworks>
-    <UnitTestTargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions)</UnitTestTargetFrameworks>
+    <UnitTestTargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(DefaultNetCoreVersion)</UnitTestTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="Project Settings" >
     <Platforms>AnyCPU</Platforms>
@@ -28,7 +27,7 @@
   </PropertyGroup>
   <PropertyGroup Label="Condition Variables" >
     <IsNetStandard>$(NetStandardVersions.Contains('$(TargetFramework)'))</IsNetStandard>
-    <IsNetCore>$(NetCoreVersions.Contains('$(TargetFramework)'))</IsNetCore>
+    <IsNetCore>$(DefaultNetCoreVersion.Contains('$(TargetFramework)'))</IsNetCore>
     <IsNetFramework>false</IsNetFramework>
     <IsNetFramework Condition="!$(IsNetStandard) And !$(IsNetCore)">true</IsNetFramework>
   </PropertyGroup>
