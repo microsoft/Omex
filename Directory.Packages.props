@@ -8,8 +8,8 @@
     <PackageVersion Include="MSTest.TestAdapter" Version="3.0.2" />
     <PackageVersion Include="MSTest.TestFramework" Version="3.0.2" />
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.5.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Csharp" Version="4.5.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.4.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Csharp" Version="4.4.0" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="7.0.4" />
