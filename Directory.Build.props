@@ -4,15 +4,14 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Target Platforms" >
-    <DefaultNetCoreVersion>net7.0</DefaultNetCoreVersion>
-    <NetCoreVersions>$(DefaultNetCoreVersion);net6.0</NetCoreVersions>
+    <NetCoreVersions>net7.0</NetCoreVersions>
     <NetStandardVersions>netstandard2.0</NetStandardVersions>
     <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
     <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="UnitTest Targets">
     <NetFrameworkVersion>net472</NetFrameworkVersion>
-    <UnitTestTargetFrameworks>$(DefaultNetCoreVersion);$(NetFrameworkVersion)</UnitTestTargetFrameworks>
+    <UnitTestTargetFrameworks>$(NetCoreVersions);$(NetFrameworkVersion)</UnitTestTargetFrameworks>
     <UnitTestTargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions)</UnitTestTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="Project Settings" >
