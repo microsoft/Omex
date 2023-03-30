@@ -117,6 +117,8 @@ namespace Services.Remoting
 
 			public string? MethodName { get; set; }
 
+			public string? RequestId { get; set; }
+
 			private readonly Dictionary<string, byte[]> m_headers = new Dictionary<string, byte[]>();
 
 			public void AddHeader(string headerName, byte[] headerValue) => m_headers.Add(headerName, headerValue);
