@@ -113,7 +113,7 @@ namespace Services.Remoting
 
 			public int InterfaceId { get; set; }
 
-			public int RequestId { get; set; }
+			public Guid RequestId { get; set; }
 
 			public string? InvocationId { get; set; }
 
