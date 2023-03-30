@@ -113,11 +113,11 @@ namespace Services.Remoting
 
 			public int InterfaceId { get; set; }
 
+			public int RequestId { get; set; }
+
 			public string? InvocationId { get; set; }
 
 			public string? MethodName { get; set; }
-
-			public string? RequestId { get; set; }
 
 			private readonly Dictionary<string, byte[]> m_headers = new Dictionary<string, byte[]>();
 
