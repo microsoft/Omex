@@ -12,7 +12,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 	/// </summary>
 	/// <remarks>
 	/// This wrapper exists to bridge the gap between native service proxy constructs and Service Fabric remoting client creation.
-	/// The default Service Fabric remoting client initialization tries to load transport settigns from a 'TransportSettings' section in the service manifest.
+	/// The default Service Fabric remoting client initialization tries to load transport settings from a 'TransportSettings' section in the service manifest.
 	/// References:
 	/// https://github.com/microsoft/service-fabric-services-and-actors-dotnet/blob/master/src/Microsoft.ServiceFabric.Services.Remoting/V2/FabricTransport/Client/FabricTransportServiceRemotingClientFactory.cs#L108
 	/// https://github.com/microsoft/service-fabric/blob/master/src/prod/src/managed/Microsoft.ServiceFabric.FabricTransport/FabricTransport/Common/FabricTransportSettings.cs#L300
