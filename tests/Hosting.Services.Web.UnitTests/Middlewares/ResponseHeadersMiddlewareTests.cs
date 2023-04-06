@@ -17,8 +17,8 @@ namespace Hosting.Services.Web.UnitTests
 	public class ResponseHeadersMiddlewareTests
 	{
 		private const string MachineHeaderName = "X-Machine";
-		private const string BuildVersionHeaderName = "X-Machine";
-		private const string TraceIdHeaderName = "X-Machine";
+		private const string BuildVersionHeaderName = "X-BuildVersion";
+		private const string TraceIdHeaderName = "X-TraceId";
 
 		[TestMethod]
 		[TestCategory("MiddlewareTests")]
