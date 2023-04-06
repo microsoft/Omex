@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
@@ -25,6 +26,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 			HttpResponse response = (HttpResponse)state;
 			response.Headers.Add("X-Machine", m_context.MachineId);
 			response.Headers.Add("X-BuildVersion", m_context.BuildVersion); //Renamed from X-OfficeVersion
+
+			if (Activity.Current != null)
+			{
+				response.Headers.Add("X-TraceId", Activity.Current.TraceId.ToString());
+			}
+
 			return Task.CompletedTask;
 		}
 
