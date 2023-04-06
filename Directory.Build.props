@@ -1,7 +1,10 @@
 ﻿<Project>
-  <Import Project="$(MSBuildThisFileDirectory)\Dependencies.props" />
+  <PropertyGroup>
+    <RepoRoot Condition="'$(RepoRoot)' == ''">$([System.IO.Path]::GetDirectoryName($([MSBuild]::GetPathOfFileAbove('global.json', '$(MSBuildProjectDirectory)'))))</RepoRoot>
+  </PropertyGroup>
+
   <PropertyGroup Label="Target Platforms" >
-    <NetCoreVersions>net6.0</NetCoreVersions>
+    <NetCoreVersions>net7.0</NetCoreVersions>
     <NetStandardVersions>netstandard2.0</NetStandardVersions>
     <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
     <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
@@ -43,7 +46,7 @@
   <PropertyGroup Label="Versioning">
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <!-- The release version should get updated on every new release -->
-    <Version>20.0.6</Version>
+    <Version>20.0.7-alpha</Version>
     <PreReleaseSuffix Condition="'$(PreReleaseSuffix)' == ''">$([System.DateTime]::UtcNow.ToString(yyyyMMdd-HHmmss))</PreReleaseSuffix>
     <PackageVersion Condition="'$(IsReleaseBuild)' == 'true'">$(Version)</PackageVersion>
     <!-- Continuous integration version, which is updated on every build of the dev branch -->

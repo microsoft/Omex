@@ -1,13 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Abstractions.Option;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -17,7 +21,9 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 	public class ActivityMetricsSenderTests
 	{
 		[TestMethod]
-		public void SendActivityMetric_ProduceMetrics()
+		[DataRow(true)]
+		[DataRow(false)]
+		public void SendActivityMetric_ProduceMetrics(bool useHistogramForActivityMonitoring)
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 			Activity.ForceDefaultIdFormat = true;
@@ -33,13 +39,19 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			contextMock.Setup(e => e.DeploymentSlice).Returns("002");
 			contextMock.Setup(e => e.IsCanary).Returns(true);
 			contextMock.Setup(e => e.IsPrivateDeployment).Returns(false);
-			IExecutionContext context= contextMock.Object;
+			IExecutionContext context = contextMock.Object;
 
 			Mock<IHostEnvironment> environmentMock = new();
 			environmentMock.Setup(e => e.EnvironmentName).Returns("TestEnv");
 			IHostEnvironment environment = environmentMock.Object;
 
-			ActivityMetricsSender sender = new(context, environment);
+			Mock<IOptions<MonitoringOption>> mockMonitorOption = new();
+			mockMonitorOption.Setup(options => options.Value).Returns(new MonitoringOption()
+			{
+				UseHistogramForActivityMonitoring = useHistogramForActivityMonitoring
+			});
+			ActivityMetricsSender sender = new(context, environment, mockMonitorOption.Object);
+
 			Listener listener = new();
 
 			Activity testActivity = new(nameof(testActivity));
@@ -53,28 +65,27 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 				.Stop();
 
 			sender.SendActivityMetric(testActivity);
-			VerifyMeasurement(listener, testActivity, context, environment, s_activityCounterName);
+			VerifyTagsExist(listener, testActivity, false, context, environment, s_activityCounterName);
 
 			Activity testHealthCheckActivity = new(nameof(testHealthCheckActivity));
 			testHealthCheckActivity.Start()
 				.MarkAsHealthCheck()
-				.AddTag("HealthCheckTag", "TagValue")
+				.AddTag(s_healthCheckTag, "TagValue")
 				.AddBaggage("HealthCheckBaggage", "BaggageValue")
 				.Stop();
 
 			sender.SendActivityMetric(testHealthCheckActivity);
-			VerifyMeasurement(listener, testHealthCheckActivity, context, environment, s_heathCheckActivityCounterName);
+			VerifyTagsExist(listener, testHealthCheckActivity, true, context, environment, s_heathCheckActivityCounterName);
 		}
 
-		private void VerifyMeasurement(Listener listener, Activity activity, IExecutionContext context, IHostEnvironment environment, string instrumentationName)
+		private void VerifyTagsExist(Listener listener, Activity activity, bool isHealthCheck, IExecutionContext context, IHostEnvironment environment, string instrumentationName)
 		{
-			// We need to filter by both ActivityId and Enviroment since same activity might be captured and reported by diffirent UT
-			MeasurementResult result = listener.Results.Single(m => activity.Id?.Equals(m.Tags[s_activityIdTagName]) == true && environment.EnvironmentName.Equals(m.Tags[s_environmentTagName]));
+			MeasurementResult result = isHealthCheck ?
+				listener.Results.First(m => m.Tags.ContainsKey(s_healthCheckTag) && environment.EnvironmentName.Equals(m.Tags[s_environmentTagName]))
+				: listener.Results.First(m => !m.Tags.ContainsKey(s_healthCheckTag) && environment.EnvironmentName.Equals(m.Tags[s_environmentTagName]));
 
 			Assert.AreEqual(instrumentationName, result.Instrument.Name);
 			Assert.AreEqual(activity.Duration.TotalMilliseconds, result.Measurement);
-			AssertTag(result, s_activityIdTagName, activity.Id);
-			AssertTag(result, "TraceId", activity.TraceId);
 			AssertTag(result, "Name", activity.OperationName);
 			AssertTag(result, s_environmentTagName, environment.EnvironmentName);
 			AssertTag(result, "RegionName", context.RegionName);
@@ -101,7 +112,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 
 		private static void AssertTag(MeasurementResult result, string key, object? expectedValue) => Assert.AreEqual(expectedValue, result.Tags[key]);
 
-		private static readonly string s_activityIdTagName = "ActivityId";
+		private static readonly string s_healthCheckTag = "HealthCheckTag";
 
 		private static readonly string s_environmentTagName = "Environment";
 

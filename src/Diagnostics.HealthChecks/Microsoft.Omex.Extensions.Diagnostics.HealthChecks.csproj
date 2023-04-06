@@ -12,12 +12,16 @@
     <PackageTags>Microsoft;Omex;Extensions;HealthChecks</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ServiceFabric" Version="$(Microsoft_ServiceFabric_Version)" />
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="$(Microsoft_Extensions_Diagnostics_HealthChecks_Version)" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="$(Microsoft_Extensions_Http_Version)" />
-    <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="$(Microsoft_Extensions_ObjectPool_Version)" />
-    <PackageReference Include="Microsoft.ServiceFabric.Client.Http" Version="$(Microsoft_ServiceFabric_Client_Http_Version)" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="$(System_ComponentModel_Annotations)" />
+    <PackageReference Include="Microsoft.ServiceFabric" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.ObjectPool" />
+    <PackageReference Include="Microsoft.ServiceFabric.Client.Http" />
+    <PackageReference Include="Newtonsoft.Json" /> <!-- Bump version of transitive dependency -->
+    <PackageReference Include="System.ComponentModel.Annotations" />
+  </ItemGroup>
+  <ItemGroup Condition="!$(IsNetCore)">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />

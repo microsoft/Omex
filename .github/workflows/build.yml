@@ -23,10 +23,10 @@ jobs:
       IsReleaseBuild: ${{ matrix.configuration == 'Release' && github.event_name == 'release' && !github.event.release.prerelease && github.ref == 'refs/heads/master' }}
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-dotnet@v1
+    - uses: actions/checkout@v3
+    - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: '7.0.x'
     - name: Build with dotnet
       run: dotnet build --configuration ${{ matrix.configuration }}
     - name: Run Unit Tests

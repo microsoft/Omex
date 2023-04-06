@@ -11,8 +11,9 @@
     <ProjectReference Include="..\ServiceFabricGuest.Abstractions.UnitTests\Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ServiceFabric.Actors" Version="$(Microsoft_ServiceFabric_Actors_Version)" />
-    <PackageReference Include="ServiceFabric.Mocks" Version="$(ServiceFabric_Mocks_Version)" />
+    <PackageReference Include="Microsoft.ServiceFabric.Actors" />
+    <PackageReference Include="Newtonsoft.Json" /> <!-- Bump version of transitive dependency -->
+    <PackageReference Include="ServiceFabric.Mocks" />
   </ItemGroup>
   <ItemGroup Condition="$(IsNetFramework)">
     <Reference Include="System.Net.Http" />

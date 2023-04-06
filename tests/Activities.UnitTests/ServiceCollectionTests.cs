@@ -21,14 +21,14 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[DataRow(typeof(ActivitySource), typeof(ActivitySource))]
 		[DataRow(typeof(IActivityStartObserver), typeof(ActivityObserver))]
 		[DataRow(typeof(IActivityStopObserver), typeof(ActivityObserver))]
-		public void AddOmexActivitySource_TypesRegistered(Type typeToResolve, Type implementinType)
+		public void AddOmexActivitySource_TypesRegistered(Type typeToResolve, Type implementingType)
 		{
 			object obj = CreateHost()
 				.Services
 				.GetRequiredService(typeToResolve);
 
 			Assert.IsNotNull(obj);
-			Assert.IsInstanceOfType(obj, implementinType);
+			Assert.IsInstanceOfType(obj, implementingType);
 		}
 
 		[TestMethod]

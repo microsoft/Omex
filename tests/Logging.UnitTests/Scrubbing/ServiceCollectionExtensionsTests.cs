@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Logging.Scrubbing;
@@ -109,6 +110,36 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 			Assert.AreEqual("[IPv6 ADDRESS]", logScrubbingRules[2].Scrub("1000::A01:1:AA10"));
 		}
 
+		[TestMethod]
+		[DataRow("/api/path?q1=v1&q2=v2&q3=v3", "/api/path?q1=REDACTED&q2=REDACTED&q3=v3")]
+		[DataRow("/api/path?q1=v1&q2=v2", "/api/path?q1=REDACTED&q2=REDACTED")]
+		[DataRow("/api/path?q3=v3", "/api/path?q3=v3")]
+		public void AddRegexLogScrubbingRule_WithMatchEvaluator_Scrubs(string input, string expected)
+		{
+			MatchEvaluator matchEvaluator = new((match) => match.Groups[1].Value + "=REDACTED" + match.Groups[3].Value);
+
+			ILoggingBuilder builder2 = new MockLoggingBuilder()
+				.AddRegexLogScrubbingRule(Regex, matchEvaluator);
+
+			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder2.Services);
+
+			Assert.AreEqual(expected, logScrubbingRules[0].Scrub(input));
+		}
+
+		[TestMethod]
+		[DataRow("/api/path?q1=v1&q2=v2&q3=v3", "/api/path?REDACTED&REDACTED&q3=v3")]
+		[DataRow("/api/path?q1=v1&q2=v2", "/api/path?REDACTED&REDACTED&")]
+		[DataRow("/api/path?q3=v3", "/api/path?q3=v3")]
+		public void AddRegexLogScrubbingRule_Scrubs(string input, string expected)
+		{
+			ILoggingBuilder builder2 = new MockLoggingBuilder()
+				.AddRegexLogScrubbingRule(Regex,"REDACTED&");
+
+			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder2.Services);
+
+			Assert.AreEqual(expected, logScrubbingRules[0].Scrub(input));
+		}
+
 		private static ILogScrubbingRule[] GetTypeRegistrations(IServiceCollection collection)
 		{
 			IEnumerable<ILogScrubbingRule> objects = collection
@@ -127,5 +158,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		{
 			public IServiceCollection Services { get; } = new ServiceCollection();
 		}
+
+		private const string Regex = "(q1|q2)=(.+?)(&|$)";
 	}
 }
