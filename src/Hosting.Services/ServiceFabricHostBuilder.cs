@@ -5,6 +5,7 @@ using System;
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
@@ -29,6 +30,20 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public ServiceFabricHostBuilder<TService, TContext> ConfigureServices(Action<HostBuilderContext, IServiceCollection> action)
 		{
 			m_builder.ConfigureServices(action);
+			return this;
+		}
+
+		/// <summary>
+		/// Sets up the configuration for the remainder of the build process and application. This can be called multiple times and
+		/// the results will be additive.
+		/// This method is called after the Service Fabric configuration has been added.
+		/// </summary>
+		/// <param name="action">The delegate for configuring the <see cref="IConfigurationBuilder"/> that will be used
+		/// to construct the <see cref="IConfiguration"/> for the application.</param>
+		/// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
+		public ServiceFabricHostBuilder<TService, TContext> ConfigureAppConfiguration(Action<HostBuilderContext, IConfigurationBuilder> action)
+		{
+			m_builder.ConfigureAppConfiguration(action);
 			return this;
 		}
 
