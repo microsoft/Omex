@@ -26,7 +26,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 
 		/// <summary>
 		/// Binds custom transport settings to the service proxy factory.
-		/// If non non-default secure remoting configuration is required, call this before calling OmexServiceProxyFactory.Instance.
+		/// If non-default secure remoting configuration is required, call this before calling OmexServiceProxyFactory.Instance.
 		/// </summary>
 		public static void WithCustomTransportSettings(FabricTransportRemotingSettings transportSettings)
 		{
