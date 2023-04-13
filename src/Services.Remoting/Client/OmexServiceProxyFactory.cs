@@ -43,7 +43,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 		/// <remarks>
 		/// The default implementation uses insecure connections.
 		/// To use secure connections either add a TransportSettings section to the service manifest
-		/// or call <see cref="WithCustomTransportSettings"/> prior to calling .Instance to use custom transport settings configuration.
+		/// or call <see cref="WithCustomTransportSettings"/> prior to calling `.Instance` to use custom transport settings configuration.
 		/// </remarks>
 		public static ServiceProxyFactory Instance => s_serviceProxyFactory;
 	}
