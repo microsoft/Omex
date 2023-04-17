@@ -8,8 +8,15 @@ using Microsoft.ServiceFabric.Services.Remoting.V2.FabricTransport.Client;
 namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 {
 	/// <summary>
-	/// Class to provide ServiceProxyFactory
+	/// Class to provide ServiceProxyFactory wrapper around a Service Fabric remoting client factory.
 	/// </summary>
+	/// <remarks>
+	/// This wrapper exists to bridge the gap between native service proxy constructs and Service Fabric remoting client creation.
+	/// The default Service Fabric remoting client initialization tries to load transport settings from a 'TransportSettings' section in the service manifest.
+	/// References:
+	/// https://github.com/microsoft/service-fabric-services-and-actors-dotnet/blob/master/src/Microsoft.ServiceFabric.Services.Remoting/V2/FabricTransport/Client/FabricTransportServiceRemotingClientFactory.cs#L108
+	/// https://github.com/microsoft/service-fabric/blob/master/src/prod/src/managed/Microsoft.ServiceFabric.FabricTransport/FabricTransport/Common/FabricTransportSettings.cs#L300
+	/// </remarks>
 	public static class OmexServiceProxyFactory
 	{
 		private static ServiceProxyFactory s_serviceProxyFactory = new ServiceProxyFactory(handler =>
@@ -18,9 +25,10 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 					remotingCallbackMessageHandler: handler)));
 
 		/// <summary>
-		/// Binds transport settings to the service proxy factory, for use in secure remoting communication.
+		/// Binds custom transport settings to the service proxy factory.
+		/// If non-default secure remoting configuration is required, call this before calling OmexServiceProxyFactory.Instance.
 		/// </summary>
-		public static void WithTransportSettings(FabricTransportRemotingSettings transportSettings)
+		public static void WithCustomTransportSettings(FabricTransportRemotingSettings transportSettings)
 		{
 			s_serviceProxyFactory = new ServiceProxyFactory(handler =>
 				new OmexServiceRemotingClientFactory(
@@ -34,7 +42,8 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 		/// </summary>
 		/// <remarks>
 		/// The default implementation uses insecure connections.
-		/// To use secure connections call <see cref="WithTransportSettings"/> prior to calling .Instance.
+		/// To use secure connections either add a TransportSettings section to the service manifest
+		/// or call <see cref="WithCustomTransportSettings"/> prior to calling `.Instance` to use custom transport settings configuration.
 		/// </remarks>
 		public static ServiceProxyFactory Instance => s_serviceProxyFactory;
 	}
