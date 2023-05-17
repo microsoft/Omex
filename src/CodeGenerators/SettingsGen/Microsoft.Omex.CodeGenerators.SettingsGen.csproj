@@ -4,6 +4,7 @@
     <TargetFramework>$(NetStandardVersions)</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
 
   <PropertyGroup Label="NuGet Properties">
