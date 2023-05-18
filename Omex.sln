@@ -28,8 +28,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ship.snk = ship.snk
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGenerators", "CodeGenerators", "{C5BA6376-60EB-43E5-A9EF-AD2792C8D2A8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Logging", "src\Logging\Microsoft.Omex.Extensions.Logging.csproj", "{3DA18B36-BFA5-4A51-A4E1-5C8F2EF825D8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Abstractions", "src\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj", "{82242741-FC4D-493C-97F9-75413BC4CFAA}"
@@ -71,19 +69,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Activities.UnitTests", "tests\Activities.UnitTests\Microsoft.Omex.Extensions.Activities.UnitTests.csproj", "{E9123DDF-3D31-48A5-8442-F1DAD516E1A6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions", "src\ServiceFabricGuest.Abstractions\Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.csproj", "{A07BF64C-1B19-4972-83DB-B22BFF26E6B0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.CodeGenerators.SettingsGen", "src\CodeGenerators\SettingsGen\Microsoft.Omex.CodeGenerators.SettingsGen.csproj", "{905C495E-43DE-48AC-8768-4F9C75C8DDE9}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGenerators", "CodeGenerators", "{62EEDB72-E231-477E-9AEE-D75E6B68DF47}"
-	ProjectSection(SolutionItems) = preProject
-		tests\CodeGenerators\Directory.Build.props = tests\CodeGenerators\Directory.Build.props
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests", "tests\CodeGenerators\SettingsGen.UnitTests\Microsoft.Omex.CodeGenerators.SettingsGen.UnitTests.csproj", "{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.SettingsGen.Example", "src\CodeGenerators\SettingsGen.Example\Microsoft.Omex.SettingsGen.Example.csproj", "{618DCDA0-595C-4F35-820D-A6D82E91B6EE}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests", "tests\ServiceFabricGuest.Abstractions.UnitTests\Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests.csproj", "{E419A528-15B8-4A2D-856C-5AF706830072}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -261,44 +246,11 @@ Global
 		{A07BF64C-1B19-4972-83DB-B22BFF26E6B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A07BF64C-1B19-4972-83DB-B22BFF26E6B0}.Release|x64.ActiveCfg = Release|Any CPU
 		{A07BF64C-1B19-4972-83DB-B22BFF26E6B0}.Release|x64.Build.0 = Release|Any CPU
-		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Debug|x64.Build.0 = Debug|Any CPU
-		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Release|x64.ActiveCfg = Release|Any CPU
-		{905C495E-43DE-48AC-8768-4F9C75C8DDE9}.Release|x64.Build.0 = Release|Any CPU
-		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Debug|x64.Build.0 = Debug|Any CPU
-		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Release|x64.ActiveCfg = Release|Any CPU
-		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037}.Release|x64.Build.0 = Release|Any CPU
-		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Debug|x64.Build.0 = Debug|Any CPU
-		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Release|x64.ActiveCfg = Release|Any CPU
-		{618DCDA0-595C-4F35-820D-A6D82E91B6EE}.Release|x64.Build.0 = Release|Any CPU
-		{E419A528-15B8-4A2D-856C-5AF706830072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E419A528-15B8-4A2D-856C-5AF706830072}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E419A528-15B8-4A2D-856C-5AF706830072}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{E419A528-15B8-4A2D-856C-5AF706830072}.Debug|x64.Build.0 = Debug|Any CPU
-		{E419A528-15B8-4A2D-856C-5AF706830072}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E419A528-15B8-4A2D-856C-5AF706830072}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E419A528-15B8-4A2D-856C-5AF706830072}.Release|x64.ActiveCfg = Release|Any CPU
-		{E419A528-15B8-4A2D-856C-5AF706830072}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C5BA6376-60EB-43E5-A9EF-AD2792C8D2A8} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
 		{3DA18B36-BFA5-4A51-A4E1-5C8F2EF825D8} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
 		{82242741-FC4D-493C-97F9-75413BC4CFAA} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
 		{BA452FDC-1C9B-45EE-BC75-8493FF618437} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
@@ -320,11 +272,6 @@ Global
 		{8520AA74-FDA7-4EC0-B60D-C9A786574443} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
 		{E9123DDF-3D31-48A5-8442-F1DAD516E1A6} = {551C93F8-6E89-4954-8905-7F5AC7173285}
 		{A07BF64C-1B19-4972-83DB-B22BFF26E6B0} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
-		{905C495E-43DE-48AC-8768-4F9C75C8DDE9} = {C5BA6376-60EB-43E5-A9EF-AD2792C8D2A8}
-		{62EEDB72-E231-477E-9AEE-D75E6B68DF47} = {551C93F8-6E89-4954-8905-7F5AC7173285}
-		{6B3AC42A-5386-4CB8-84D8-4B16D98B8037} = {62EEDB72-E231-477E-9AEE-D75E6B68DF47}
-		{618DCDA0-595C-4F35-820D-A6D82E91B6EE} = {C5BA6376-60EB-43E5-A9EF-AD2792C8D2A8}
-		{E419A528-15B8-4A2D-856C-5AF706830072} = {551C93F8-6E89-4954-8905-7F5AC7173285}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6FB7BCB-BF07-4F19-ACBA-457479D421BB}
