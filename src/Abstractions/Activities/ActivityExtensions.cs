@@ -38,6 +38,15 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 				StringComparison.OrdinalIgnoreCase);
 
 		/// <summary>
+		/// Returns true if the activity belongs to a consistency health check.
+		/// </summary>
+		public static bool IsConsistencyHealthCheck(this Activity activity)	=>
+			string.Equals(
+				activity.GetBaggageItem(ConsistencyHealthCheckMarkerKey),
+				ConsistencyHealthCheckMarkerValue,
+				StringComparison.OrdinalIgnoreCase);
+
+		/// <summary>
 		/// Returns true if activity is marked as Performance test
 		/// </summary>
 		/// <param name="activity">Activity for this request</param>
@@ -64,6 +73,17 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 			activity.IsHealthCheck()
 				? activity
 				: activity.SetBaggage(HealthCheckMarkerKey, HealthCheckMarkerValue);
+
+		/// <summary>
+		/// Mark as consistency health check activity.
+		/// A consistency health check is considered to be an health check that must verify the response
+		/// consistency, but the action it performs cannot be considered as normal traffic.
+		/// </summary>
+		/// <remarks>This property would be transfered to child activity and via web requests</remarks>
+		public static Activity MarkAsConsistencyHealthCheck(this Activity activity) =>
+			activity.IsConsistencyHealthCheck()
+				? activity
+				: activity.SetBaggage(ConsistencyHealthCheckMarkerKey, ConsistencyHealthCheckMarkerValue);
 
 		/// <summary>
 		/// Set result
@@ -141,6 +161,8 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		private const string UserHashKey = "UserHash";
 		private const string HealthCheckMarkerKey = "HealthCheckMarker";
 		private const string HealthCheckMarkerValue = "true";
+		private const string ConsistencyHealthCheckMarkerKey = "ConsistencyHealthCheckMarker";
+		private const string ConsistencyHealthCheckMarkerValue = "true";
 		private const string PerformanceMarkerKey = "PerformanceTestMarker";
 		private const string PerformanceMarkerValue = "true";
 		private const string ObsoleteCorrelationId = "ObsoleteCorrelationId";

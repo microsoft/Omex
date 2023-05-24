@@ -34,7 +34,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			string name = activity.OperationName;
 			double durationMs = activity.Duration.TotalMilliseconds;
 			string userHash = activity.GetUserHash();
-			bool isHealthCheck = activity.IsHealthCheck();
+			bool isHealthCheck = activity.IsHealthCheck() || activity.IsConsistencyHealthCheck();
 
 			string subtype = NullPlaceholder;
 			string metadata = NullPlaceholder;

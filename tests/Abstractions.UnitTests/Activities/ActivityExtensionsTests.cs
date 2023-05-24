@@ -67,6 +67,19 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		}
 
 		[TestMethod]
+		public void MarkAsConsistencyHealthCheck_AddsMarker()
+		{
+			Activity activity1 = new Activity("HealthCheckTest1");
+			Activity activity2 = new Activity("HealthCheckTest2");
+
+			activity1.MarkAsConsistencyHealthCheck();
+			CheckThatKeyNotDuplicated(activity1.Baggage);
+
+			Assert.IsTrue(activity1.IsConsistencyHealthCheck());
+			Assert.IsFalse(activity2.IsConsistencyHealthCheck());
+		}
+
+		[TestMethod]
 		public void MarkAsPerformanceTest_AddsMarker()
 		{
 			Activity activity1 = new Activity("PerformanceTest1");

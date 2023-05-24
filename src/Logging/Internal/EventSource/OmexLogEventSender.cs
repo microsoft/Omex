@@ -55,11 +55,12 @@ namespace Microsoft.Omex.Extensions.Logging
 			Guid obsoleteCorrelationId = Guid.Empty;
 			uint obsoleteTransactionId = 0u;
 			bool isHealthCheck = false;
+
 			if (activity != null)
 			{
 				activityId = activity.Id ?? string.Empty;
 				activityTraceId = activity.TraceId;
-				isHealthCheck = activity.IsHealthCheck();
+				isHealthCheck = activity.IsHealthCheck() || activity.IsConsistencyHealthCheck();
 
 				if (m_options.CurrentValue.AddObsoleteCorrelationToActivity)
 				{
