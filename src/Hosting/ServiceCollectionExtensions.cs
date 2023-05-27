@@ -16,18 +16,31 @@ namespace Microsoft.Omex.Extensions.Hosting
 	{
 		/// <summary>
 		/// Add Omex Logging and ActivitySource dependencies
+		/// <param name="builder">Host builder</param>
+		/// <param name="disableOmexLogging">Disable OmexLogger if you want to use your custom logger, eg: OpenTelemetry</param>
 		/// </summary>
-		public static IHostBuilder AddOmexServices(this IHostBuilder builder) =>
+		/// <returns>Host Builder</returns>
+		public static IHostBuilder AddOmexServices(this IHostBuilder builder, bool disableOmexLogging = false) =>
 			builder
-				.ConfigureServices((context, collection) => collection.AddOmexServices());
+				.ConfigureServices((context, collection) => collection.AddOmexServices(disableOmexLogging));
 
 		/// <summary>
 		/// Add Omex Logging and ActivitySource dependencies
 		/// </summary>
-		public static IServiceCollection AddOmexServices(this IServiceCollection collection) =>
-			collection
-				.AddOmexLogging()
-				.AddOmexActivitySource();
+		/// <param name="collection">Service Collection for DI</param>
+		/// <param name="disableOmexLogging">Disable OmexLogger if you want to use your custom logger, eg: OpenTelemetry</param>
+		/// <returns>Service Collection</returns>
+		public static IServiceCollection AddOmexServices(this IServiceCollection collection, bool disableOmexLogging = false)
+		{
+			collection.AddOmexActivitySource();
+
+			if (!disableOmexLogging)
+			{
+				collection.AddOmexLogging();
+			}
+
+			return collection;
+		}
 
 		/// <summary>
 		/// Add Omex Logging and ActivitySource dependencies
