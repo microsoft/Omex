@@ -35,12 +35,12 @@
     <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
   <ItemGroup Label="ServiceFabric packages for Omex Extensions">
-    <PackageVersion Include="Microsoft.ServiceFabric" Version="9.1.1653" />
-    <PackageVersion Include="Microsoft.ServiceFabric.Actors" Version="6.1.1653" />
-    <PackageVersion Include="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="6.1.1653" />
+    <PackageVersion Include="Microsoft.ServiceFabric" Version="9.1.1799" />
+    <PackageVersion Include="Microsoft.ServiceFabric.Actors" Version="6.1.1799" />
+    <PackageVersion Include="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="6.1.1799" />
     <PackageVersion Include="Microsoft.ServiceFabric.Client.Http" Version="4.8.1" />
-    <PackageVersion Include="Microsoft.ServiceFabric.Services" Version="6.1.1653" />
-    <PackageVersion Include="Microsoft.ServiceFabric.Services.Remoting" Version="6.1.1653" />
+    <PackageVersion Include="Microsoft.ServiceFabric.Services" Version="6.1.1799" />
+    <PackageVersion Include="Microsoft.ServiceFabric.Services.Remoting" Version="6.1.1799" />
     <PackageVersion Include="ServiceFabric.Mocks" Version="6.2.2" />
   </ItemGroup>
 </Project>
