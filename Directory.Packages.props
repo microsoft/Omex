@@ -41,6 +41,6 @@
     <PackageVersion Include="Microsoft.ServiceFabric.Client.Http" Version="4.8.1" />
     <PackageVersion Include="Microsoft.ServiceFabric.Services" Version="6.1.1799" />
     <PackageVersion Include="Microsoft.ServiceFabric.Services.Remoting" Version="6.1.1799" />
-    <PackageVersion Include="ServiceFabric.Mocks" Version="6.2.2" />
+    <PackageVersion Include="ServiceFabric.Mocks" Version="6.2.3" />
   </ItemGroup>
 </Project>
