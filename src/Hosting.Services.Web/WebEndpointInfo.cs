@@ -4,7 +4,6 @@
 using System;
 using System.Globalization;
 using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 {
@@ -54,7 +53,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		/// <param name="endpointName">Endpoint name from ServiceManifest.xml</param>
 		[Obsolete("Services must have transport-level encryption. Consider using CreateHttps instead", false)]
 		public static WebEndpointInfo CreateHttp(string endpointName) =>
-			new WebEndpointInfo(endpointName, null);
+			new(endpointName, null);
 
 		/// <summary>
 		/// Create https endpoint information
@@ -62,6 +61,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web
 		/// <param name="endpointName">Endpoint name from ServiceManifest.xml</param>
 		/// <param name="settingForCertificateCommonName">Name of the setting to get certificate common name for https, default value is 'Certificates:SslCertificateCommonName'</param>
 		public static WebEndpointInfo CreateHttps(string endpointName, string settingForCertificateCommonName = "Certificates:SslCertificateCommonName") =>
-			new WebEndpointInfo(endpointName, settingForCertificateCommonName);
+			new(endpointName, settingForCertificateCommonName);
 	}
 }

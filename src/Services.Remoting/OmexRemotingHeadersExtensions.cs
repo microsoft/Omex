@@ -103,18 +103,18 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 
 		private static byte[] SerializeBaggage(KeyValuePair<string, string?>[] baggage)
 		{
-			using MemoryStream stream = new MemoryStream();
+			using MemoryStream stream = new();
 			s_serializer.WriteObject(stream, baggage);
 			return stream.ToArray();
 		}
 
 		private static KeyValuePair<string, string>[] DeserializeBaggage(byte[] bytes)
 		{
-			using MemoryStream stream = new MemoryStream(bytes);
+			using MemoryStream stream = new(bytes);
 			return s_serializer.ReadObject(stream) as KeyValuePair<string, string>[]
 				?? Array.Empty<KeyValuePair<string, string>>();
 		}
 
-		private static readonly DataContractSerializer s_serializer = new DataContractSerializer(typeof(KeyValuePair<string, string>[]));
+		private static readonly DataContractSerializer s_serializer = new(typeof(KeyValuePair<string, string>[]));
 	}
 }

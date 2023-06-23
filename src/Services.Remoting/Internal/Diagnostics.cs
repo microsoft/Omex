@@ -33,7 +33,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting
 				return null;
 			}
 
-			Activity activity = new Activity(name);
+			Activity activity = new(name);
 			activity.SetParentId(parentId);
 			return listener.StartActivity(activity, null);
 		}

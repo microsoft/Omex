@@ -3,7 +3,6 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
-using Microsoft.Omex.Extensions.Activities;
 using Moq;
 using Microsoft.Extensions.Options;
 
@@ -24,8 +23,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 
 			IActivityListenerConfigurator configurator = new DefaultActivityListenerConfigurator(optionsMock);
 
-			ActivityCreationOptions<ActivityContext> sampleContext = new ActivityCreationOptions<ActivityContext>();
-			ActivityCreationOptions<string> sampleUsingParentContext = new ActivityCreationOptions<string>();
+			ActivityCreationOptions<ActivityContext> sampleContext = new();
+			ActivityCreationOptions<string> sampleUsingParentContext = new();
 
 			Assert.AreEqual(shouldListen, configurator.ShouldListenTo(new ActivitySource("Some")));
 			Assert.AreEqual(sample, configurator.Sample(ref sampleContext));
@@ -34,8 +33,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 
 		internal static IOptionsMonitor<OmexActivityListenerOptions> CreateOptionsMonitor()
 		{
-			OmexActivityListenerOptions options = new OmexActivityListenerOptions();
-			Mock<IOptionsMonitor<OmexActivityListenerOptions>> optionsMock = new Mock<IOptionsMonitor<OmexActivityListenerOptions>>();
+			OmexActivityListenerOptions options = new();
+			Mock<IOptionsMonitor<OmexActivityListenerOptions>> optionsMock = new();
 			optionsMock.Setup(m => m.CurrentValue).Returns(options);
 
 			return optionsMock.Object;

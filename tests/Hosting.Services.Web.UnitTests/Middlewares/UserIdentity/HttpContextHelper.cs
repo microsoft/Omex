@@ -19,12 +19,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 
 		public static (HttpContext context, HttpConnectionFeature feature) CreateHttpContext()
 		{
-			HttpConnectionFeature feature = new HttpConnectionFeature();
+			HttpConnectionFeature feature = new();
 
-			FeatureCollection features = new FeatureCollection();
+			FeatureCollection features = new();
 			features.Set<IHttpConnectionFeature>(feature);
 
-			Mock<HttpContext> contextMock = new Mock<HttpContext>();
+			Mock<HttpContext> contextMock = new();
 			contextMock.SetupGet(c => c.Features).Returns(features);
 
 			return (contextMock.Object, feature);

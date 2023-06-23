@@ -40,7 +40,7 @@ namespace Services.Remoting
 		public void CreateAndStartActivity_DontCreateEventsIfNobodyListens()
 		{
 			string name = nameof(CreateAndStartActivity_DontCreateEventsIfNobodyListens);
-			DiagnosticListener listener = new DiagnosticListener(name);
+			DiagnosticListener listener = new(name);
 
 			Activity? activity = listener.CreateAndStartActivity(name);
 

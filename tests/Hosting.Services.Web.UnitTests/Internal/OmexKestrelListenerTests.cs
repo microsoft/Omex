@@ -34,13 +34,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 
 		private ICommunicationListener CreateListener(string publishAddress = "localhost", int port = 80, params string[] addresses)
 		{
-			Mock<IServerAddressesFeature> addressesMock = new Mock<IServerAddressesFeature>();
+			Mock<IServerAddressesFeature> addressesMock = new();
 			addressesMock.SetupGet(m => m.Addresses).Returns(addresses);
 
-			Mock<IFeatureCollection> featureMock = new Mock<IFeatureCollection>();
+			Mock<IFeatureCollection> featureMock = new();
 			featureMock.Setup(m => m.Get<IServerAddressesFeature>()).Returns(addressesMock.Object);
 
-			Mock<IServer> serverMock = new Mock<IServer>();
+			Mock<IServer> serverMock = new();
 			serverMock.SetupGet(m => m.Features).Returns(featureMock.Object);
 
 			return new OmexKestrelListener(serverMock.Object, publishAddress, port);

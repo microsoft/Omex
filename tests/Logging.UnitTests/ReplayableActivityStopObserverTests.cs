@@ -23,15 +23,15 @@ namespace Hosting.Services.UnitTests
 		{
 			Activity activity = new Activity(nameof(OnStop_UsingReplaySettingsAndResult_CallesLogReplayIfNeeded)).SetResult(result);
 
-			Mock<IOptionsMonitor<OmexLoggingOptions>> mockOptions = new Mock<IOptionsMonitor<OmexLoggingOptions>>();
+			Mock<IOptionsMonitor<OmexLoggingOptions>> mockOptions = new();
 			mockOptions.Setup(m => m.CurrentValue).Returns(new OmexLoggingOptions()
 			{
 				ReplayLogsInCaseOfError = shouldBeCalled,
 			});
 
 			IOptions<OmexLoggingOptions> options = Options.Create(new OmexLoggingOptions { ReplayLogsInCaseOfError = replayLog });
-			LogEventReplayerMock replayerMock = new LogEventReplayerMock();
-			ReplayableActivityStopObserver observer = new ReplayableActivityStopObserver(replayerMock, mockOptions.Object);
+			LogEventReplayerMock replayerMock = new();
+			ReplayableActivityStopObserver observer = new(replayerMock, mockOptions.Object);
 			observer.OnStop(activity, null);
 
 			if (shouldBeCalled)
