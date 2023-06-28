@@ -49,9 +49,9 @@ namespace Services.Remoting
 
 		public static (DiagnosticListener, MockObserver) CreateListener([CallerMemberName] string name = "")
 		{
-			MockObserver mockObserver = new MockObserver(name);
+			MockObserver mockObserver = new(name);
 			mockObserver.m_unsubscribe = DiagnosticListener.AllListeners.Subscribe(mockObserver);
-			DiagnosticListener listener = new DiagnosticListener(name);
+			DiagnosticListener listener = new(name);
 			return (listener, mockObserver);
 		}
 

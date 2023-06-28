@@ -26,9 +26,9 @@ namespace Services.Remoting
 		public void GetRemotingMessageBodyFactory_PropagatesCalls()
 		{
 			IServiceRemotingMessageBodyFactory expectedResult = new Mock<IServiceRemotingMessageBodyFactory>().Object;
-			Mock<IServiceRemotingClientFactory> factoryMock = new Mock<IServiceRemotingClientFactory>();
+			Mock<IServiceRemotingClientFactory> factoryMock = new();
 			factoryMock.Setup(f => f.GetRemotingMessageBodyFactory()).Returns(expectedResult);
-			OmexServiceRemotingClientFactory wrapper = new OmexServiceRemotingClientFactory(factoryMock.Object);
+			OmexServiceRemotingClientFactory wrapper = new(factoryMock.Object);
 
 			IServiceRemotingMessageBodyFactory actualResult = wrapper.GetRemotingMessageBodyFactory();
 			factoryMock.Verify(f => f.GetRemotingMessageBodyFactory());
@@ -39,11 +39,11 @@ namespace Services.Remoting
 		[TestMethod]
 		public async Task GetClientAsync_UsingUri_WrapsClient()
 		{
-			Uri serviceUri = new Uri("https://localhost");
-			ServicePartitionKey partitionKey = new ServicePartitionKey();
+			Uri serviceUri = new("https://localhost");
+			ServicePartitionKey partitionKey = new();
 			TargetReplicaSelector targetReplicaSelector = TargetReplicaSelector.PrimaryReplica;
 			string listenerName = nameof(GetClientAsync_UsingUri_WrapsClient);
-			OperationRetrySettings retrySettings = new OperationRetrySettings();
+			OperationRetrySettings retrySettings = new();
 			CancellationToken cancellationToken = CancellationToken.None;
 
 			Expression<Func<IServiceRemotingClientFactory, Task<IServiceRemotingClient>>> expression = f =>
@@ -56,9 +56,9 @@ namespace Services.Remoting
 					cancellationToken);
 
 			IServiceRemotingClient expectedResult = new Mock<IServiceRemotingClient>().Object;
-			Mock<IServiceRemotingClientFactory> factoryMock = new Mock<IServiceRemotingClientFactory>();
+			Mock<IServiceRemotingClientFactory> factoryMock = new();
 			factoryMock.Setup(expression).Returns(Task.FromResult(expectedResult));
-			OmexServiceRemotingClientFactory wrapper = new OmexServiceRemotingClientFactory(factoryMock.Object);
+			OmexServiceRemotingClientFactory wrapper = new(factoryMock.Object);
 
 			IServiceRemotingClient actualResult = await wrapper.GetClientAsync(
 				serviceUri,
@@ -82,7 +82,7 @@ namespace Services.Remoting
 				new List<ResolvedServiceEndpoint>());
 			TargetReplicaSelector targetReplicaSelector = TargetReplicaSelector.PrimaryReplica;
 			string listenerName = nameof(GetClientAsync_UsingPreviousRsp_WrapsClient);
-			OperationRetrySettings retrySettings = new OperationRetrySettings();
+			OperationRetrySettings retrySettings = new();
 			CancellationToken cancellationToken = CancellationToken.None;
 
 			Expression<Func<IServiceRemotingClientFactory, Task<IServiceRemotingClient>>> expression = f =>
@@ -94,9 +94,9 @@ namespace Services.Remoting
 					cancellationToken);
 
 			IServiceRemotingClient expectedResult = new Mock<IServiceRemotingClient>().Object;
-			Mock<IServiceRemotingClientFactory> factoryMock = new Mock<IServiceRemotingClientFactory>();
+			Mock<IServiceRemotingClientFactory> factoryMock = new();
 			factoryMock.Setup(expression).Returns(Task.FromResult(expectedResult));
-			OmexServiceRemotingClientFactory wrapper = new OmexServiceRemotingClientFactory(factoryMock.Object);
+			OmexServiceRemotingClientFactory wrapper = new(factoryMock.Object);
 
 			IServiceRemotingClient actualResult = await wrapper.GetClientAsync(
 				previousRsp,
@@ -115,8 +115,8 @@ namespace Services.Remoting
 		public async Task ReportOperationExceptionAsync_PropagatesCalls()
 		{
 			IServiceRemotingClient client = new Mock<IServiceRemotingClient>().Object;
-			ExceptionInformation exceptionInformation = new ExceptionInformation(new FileNotFoundException());
-			OperationRetrySettings retrySettings = new OperationRetrySettings();
+			ExceptionInformation exceptionInformation = new(new FileNotFoundException());
+			OperationRetrySettings retrySettings = new();
 			CancellationToken cancellationToken = CancellationToken.None;
 
 			Expression<Func<IServiceRemotingClientFactory, Task<OperationRetryControl>>> expression = f =>
@@ -126,10 +126,10 @@ namespace Services.Remoting
 					retrySettings,
 					cancellationToken);
 
-			OperationRetryControl expectedResult = new OperationRetryControl();
-			Mock<IServiceRemotingClientFactory> factoryMock = new Mock<IServiceRemotingClientFactory>();
+			OperationRetryControl expectedResult = new();
+			Mock<IServiceRemotingClientFactory> factoryMock = new();
 			factoryMock.Setup(expression).Returns(Task.FromResult(expectedResult));
-			OmexServiceRemotingClientFactory wrapper = new OmexServiceRemotingClientFactory(factoryMock.Object);
+			OmexServiceRemotingClientFactory wrapper = new(factoryMock.Object);
 
 			OperationRetryControl actualResult = await wrapper.ReportOperationExceptionAsync(
 				client,

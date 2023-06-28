@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public void Constructor_SetsDefaultParameters()
 		{
 			HttpHealthCheckParameters parameters =
-				new HttpHealthCheckParameters(
+				new(
 					new HttpRequestMessage(),
 					null,
 					null,
@@ -33,7 +33,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		[TestMethod]
 		public void Constructor_SetsProperties()
 		{
-			HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, new Uri("path", UriKind.Relative));
+			HttpRequestMessage httpRequestMessage = new(HttpMethod.Post, new Uri("path", UriKind.Relative));
 			HttpStatusCode status = HttpStatusCode.Ambiguous;
 			Func<HttpResponseMessage, HealthCheckResult, Task<HealthCheckResult>> additionalCheck = (r, h) =>
 				Task.FromResult(HealthCheckResult.Unhealthy());
@@ -49,7 +49,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			};
 
 			HttpHealthCheckParameters parameters =
-				new HttpHealthCheckParameters(
+				new(
 					httpRequestMessage,
 					status,
 					additionalCheck,
@@ -66,7 +66,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			HttpStatusCode expectedStatus = HttpStatusCode.OK,
 			Func<HttpResponseMessage, HealthCheckResult, Task<HealthCheckResult>>? additionalCheck = null,
 			KeyValuePair<string, object>[]? reportData = null) =>
-				new HttpHealthCheckParameters(
+				new(
 					httpRequestMessage,
 					expectedStatus,
 					additionalCheck,

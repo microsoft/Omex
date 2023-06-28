@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			string contentText = nameof(CheckHealthAsync_WhenExpectedStatus_ReturnsHealthy);
 			HttpStatusCode status = HttpStatusCode.Found;
 			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
-			HttpResponseMessage response = new HttpResponseMessage(status)
+			HttpResponseMessage response = new(status)
 			{
 				Content = new StringContent(contentText)
 			};
@@ -49,7 +49,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		{
 			string contentText = nameof(CheckHealthAsync_WhenWrongStatusAndDefaultRegistrationFailureStatus_ReturnsUnhealthy);
 			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
-			HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+			HttpResponseMessage response = new(HttpStatusCode.InternalServerError)
 			{
 				Content = new StringContent(contentText)
 			};
@@ -73,7 +73,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		{
 			string contentText = nameof(CheckHealthAsync_WhenWrongStatusAndExplicitRegistrationFailureStatus_ReturnsRegistrationFailureStatus);
 			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
-			HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+			HttpResponseMessage response = new(HttpStatusCode.InternalServerError)
 			{
 				Content = new StringContent(contentText)
 			};
@@ -97,7 +97,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		{
 			string contentText = nameof(CheckHealthAsync_WithAdditionalCheck_ReturnsOverridenResult);
 			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
-			HttpResponseMessage expectedResponse = new HttpResponseMessage(HttpStatusCode.Ambiguous)
+			HttpResponseMessage expectedResponse = new(HttpStatusCode.Ambiguous)
 			{
 				Content = new StringContent(contentText)
 			};
@@ -135,7 +135,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			factoryMock.Setup(f => f.CreateClient(HttpEndpointHealthCheck.HttpClientLogicalName))
 				.Returns(clientMock);
 
-			HttpEndpointHealthCheck healthCheck = new HttpEndpointHealthCheck(
+			HttpEndpointHealthCheck healthCheck = new(
 				parameters,
 				factoryMock.Object,
 				new NullLogger<HttpEndpointHealthCheck>(),

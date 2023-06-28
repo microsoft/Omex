@@ -3,11 +3,9 @@
 
 using System.Fabric;
 using System.Linq;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.ServiceFabric.Data;
-using Moq;
 using ServiceFabric.Mocks;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests

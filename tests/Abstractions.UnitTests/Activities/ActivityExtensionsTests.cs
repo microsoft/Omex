@@ -21,7 +21,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 
-			Activity activty = new Activity("RootIdTest");
+			Activity activty = new("RootIdTest");
 
 			Guid? guidBeforeStart = activty.GetRootIdAsGuid();
 
@@ -38,8 +38,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void SetUserHash_SetsHash()
 		{
-			Activity activity1 = new Activity("UserHashTest1");
-			Activity activity2 = new Activity("UserHashTest2");
+			Activity activity1 = new("UserHashTest1");
+			Activity activity2 = new("UserHashTest2");
 
 			string initialUserHash = "intial hash value";
 			string updatedUserHash = "updated hash value";
@@ -55,8 +55,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void MarkAsTransaction_AddsMarker()
 		{
-			Activity activity1 = new Activity("TransactionTest1");
-			Activity activity2 = new Activity("TransactionTest2");
+			Activity activity1 = new("TransactionTest1");
+			Activity activity2 = new("TransactionTest2");
 
 			activity1.MarkAsHealthCheck();
 			activity1.MarkAsHealthCheck();
@@ -69,8 +69,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void MarkAsPerformanceTest_AddsMarker()
 		{
-			Activity activity1 = new Activity("PerformanceTest1");
-			Activity activity2 = new Activity("PerformanceTest2");
+			Activity activity1 = new("PerformanceTest1");
+			Activity activity2 = new("PerformanceTest2");
 
 			activity1.SetBaggage("PerformanceTestMarker", "true");
 
@@ -82,8 +82,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[Obsolete]
 		public void SetObsoleteCorrelationId_SetsValue()
 		{
-			Activity activity1 = new Activity("CorrelationTest1");
-			Activity activity2 = new Activity("CorrelationTest2");
+			Activity activity1 = new("CorrelationTest1");
+			Activity activity2 = new("CorrelationTest2");
 			Guid initialCorrelation = Guid.NewGuid();
 			Guid updatedCorrelation = Guid.NewGuid();
 
@@ -99,8 +99,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[Obsolete]
 		public void SetObsoleteTransactionId_SetsValue()
 		{
-			Activity activity1 = new Activity("TransactionIdTest1");
-			Activity activity2 = new Activity("TransactionIdTest2");
+			Activity activity1 = new("TransactionIdTest1");
+			Activity activity2 = new("TransactionIdTest2");
 			uint initialId = 117u;
 			uint updatedId = 219u;
 
@@ -118,8 +118,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[DataRow(ActivityResult.Success)]
 		public void SetResult_SetsValue(ActivityResult result)
 		{
-			Activity activity1 = new Activity("SetResultTest1");
-			Activity activity2 = new Activity("SetResultTest2");
+			Activity activity1 = new("SetResultTest1");
+			Activity activity2 = new("SetResultTest2");
 
 			activity1.SetResult(ActivityResult.SystemError); // set some value intially to check that it could be updated
 			activity1.SetResult(result);
@@ -132,7 +132,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void MarkAsSuccess_SetsResultToSuccess()
 		{
-			Activity activity1 = new Activity("SetMarkAsSuccessTest1");
+			Activity activity1 = new("SetMarkAsSuccessTest1");
 
 			activity1.SetResult(ActivityResult.SystemError); // set some value intially to check that it could be updated
 			activity1.MarkAsSuccess();
@@ -144,7 +144,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void MarkAsSystemError_SetsResultToSystemError()
 		{
-			Activity activity1 = new Activity("SetMarkAsSystemErrorTest1");
+			Activity activity1 = new("SetMarkAsSystemErrorTest1");
 
 			activity1.SetResult(ActivityResult.ExpectedError); // set some value intially to check that it could be updated
 			activity1.MarkAsSystemError();
@@ -156,7 +156,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void MarkAsExpectedError_SetsResultToExpectedError()
 		{
-			Activity activity1 = new Activity("SetMarkAsExpectedErrorTest1");
+			Activity activity1 = new("SetMarkAsExpectedErrorTest1");
 
 			activity1.SetResult(ActivityResult.Success); // set some value intially to check that it could be updated
 			activity1.MarkAsExpectedError();
@@ -168,8 +168,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void SetSubType_SetsValue()
 		{
-			Activity activity1 = new Activity("SetSubTypeTest1");
-			Activity activity2 = new Activity("SetSubTypeTest2");
+			Activity activity1 = new("SetSubTypeTest1");
+			Activity activity2 = new("SetSubTypeTest2");
 			string initialValue = "Initial sub type";
 			string updatedValue = "Updated sub type";
 
@@ -184,8 +184,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void SetMetadata_SetsValue()
 		{
-			Activity activity1 = new Activity("SetMetadataTest1");
-			Activity activity2 = new Activity("SetMetadataTest2");
+			Activity activity1 = new("SetMetadataTest1");
+			Activity activity2 = new("SetMetadataTest2");
 			string initialValue = "initial metadata";
 			string updatedValue = "Updated metadata";
 

@@ -12,7 +12,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Certificates
 		/// <inheritdoc/>
 		public IEnumerable<CertificateInformation> GetAllCertificates(StoreName storeName, StoreLocation storeLocation)
 		{
-			using X509Store store = new X509Store(storeName, storeLocation);
+			using X509Store store = new(storeName, storeLocation);
 			store.Open(OpenFlags.ReadOnly);
 			return store.Certificates
 				.OfType<X509Certificate2>()

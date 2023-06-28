@@ -96,7 +96,7 @@ namespace Microsoft.AspNetCore.Builder
 
 						IExceptionHandlerFeature? contextFeature = context.Features.Get<IExceptionHandlerFeature>();
 
-						Dictionary<string, string> errorDict = new Dictionary<string, string>
+						Dictionary<string, string> errorDict = new()
 						{
 							{ "Message", "Internal Server Error" },
 							{ "ErrorMessage", contextFeature?.Error?.Message ?? string.Empty },

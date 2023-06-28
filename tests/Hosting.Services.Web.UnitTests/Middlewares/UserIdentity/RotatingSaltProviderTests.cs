@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		[TestMethod]
 		public void GetSalt_RotatesEarlierThen48Hours()
 		{
-			Mock<ISystemClock> systemClock = new Mock<ISystemClock>();
+			Mock<ISystemClock> systemClock = new();
 			systemClock
 				.SetupGet(c => c.UtcNow)
 				.Returns(DateTimeOffset.Now);

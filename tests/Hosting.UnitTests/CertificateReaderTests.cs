@@ -164,7 +164,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 			Expression<Func<ICertificateStore, IEnumerable<CertificateInformation>>> expression = store =>
 				store.GetAllCertificates(storeName, StoreLocation.LocalMachine);
 
-			Mock<ICertificateStore> storeMock = new Mock<ICertificateStore>();
+			Mock<ICertificateStore> storeMock = new();
 
 			storeMock
 				.Setup(expression)
