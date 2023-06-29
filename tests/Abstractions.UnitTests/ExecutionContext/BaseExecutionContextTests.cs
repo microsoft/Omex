@@ -34,7 +34,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			Environment.SetEnvironmentVariable(BaseExecutionContext.NodeNameVariableName, nodeName);
 			Environment.SetEnvironmentVariable(BaseExecutionContext.NodeIPOrFQDNVariableName, nodeIPOrFQDN.ToString());
 
-			Mock<IHostEnvironment> enviromentMock = new Mock<IHostEnvironment>();
+			Mock<IHostEnvironment> enviromentMock = new();
 			enviromentMock.SetupGet(e => e.EnvironmentName).Returns(enviroment);
 
 			IExecutionContext info = new BaseExecutionContext(enviromentMock.Object);

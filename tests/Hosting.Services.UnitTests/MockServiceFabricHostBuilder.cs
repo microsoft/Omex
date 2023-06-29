@@ -11,6 +11,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		public static ServiceFabricHostBuilder<TService, TContext> CreateMockBuilder<TService, TContext>(IHostBuilder builder)
 			where TService : IServiceFabricService<TContext>
 			where TContext : ServiceContext =>
-				new ServiceFabricHostBuilder<TService, TContext>(builder);
+				new(builder);
 	}
 }

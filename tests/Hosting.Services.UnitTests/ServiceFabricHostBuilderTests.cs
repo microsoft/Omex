@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[TestMethod]
 		public void AddServiceAction_UsingTypeForStateless_RegisterInstance()
 		{
-			HostBuilder hostBuilder = new HostBuilder();
+			HostBuilder hostBuilder = new();
 			new ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext>(hostBuilder)
 				.AddServiceAction<TestServiceAction<OmexStatelessService>>();
 
@@ -33,7 +33,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[TestMethod]
 		public void AddServiceAction_UsingTypeForStateful_RegisterInstance()
 		{
-			HostBuilder hostBuilder = new HostBuilder();
+			HostBuilder hostBuilder = new();
 			new ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext>(hostBuilder)
 				.AddServiceAction<TestServiceAction<OmexStatefulService>>();
 
@@ -49,7 +49,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		{
 			IServiceAction<IServiceFabricService<ServiceContext>> serviceAction = new Mock<IServiceAction<IServiceFabricService<ServiceContext>>>().Object;
 
-			HostBuilder hostBuilder = new HostBuilder();
+			HostBuilder hostBuilder = new();
 			new ServiceFabricHostBuilder<IServiceFabricService<ServiceContext>, ServiceContext>(hostBuilder).AddServiceAction(p => serviceAction);
 			IServiceAction<IServiceFabricService<ServiceContext>> resolvedAction = hostBuilder
 				.Build()
@@ -69,7 +69,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 				return Task.CompletedTask;
 			}
 
-			HostBuilder hostBuilder = new HostBuilder();
+			HostBuilder hostBuilder = new();
 			new ServiceFabricHostBuilder<IServiceFabricService<ServiceContext>, ServiceContext>(hostBuilder).AddServiceAction(action);
 
 			IServiceAction<IServiceFabricService<ServiceContext>> resolvedAction = hostBuilder
@@ -85,7 +85,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[TestMethod]
 		public void AddServiceListener_UsingTypeForStateless_RegisterInstance()
 		{
-			HostBuilder hostBuilder = new HostBuilder();
+			HostBuilder hostBuilder = new();
 			new ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext>(hostBuilder)
 				.AddServiceListener<TestListenerBuilder<OmexStatelessService>>();
 
@@ -99,7 +99,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[TestMethod]
 		public void AddServiceListener_UsingTypeForStateful_RegisterInstance()
 		{
-			HostBuilder hostBuilder = new HostBuilder();
+			HostBuilder hostBuilder = new();
 			new ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext>(hostBuilder)
 				.AddServiceListener<TestListenerBuilder<OmexStatelessService>>();
 
@@ -115,7 +115,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		{
 			IListenerBuilder<IServiceFabricService<ServiceContext>> listenerBuilder = new Mock<IListenerBuilder<IServiceFabricService<ServiceContext>>>().Object;
 
-			HostBuilder hostBuilder = new HostBuilder();
+			HostBuilder hostBuilder = new();
 			new ServiceFabricHostBuilder<IServiceFabricService<ServiceContext>, ServiceContext>(hostBuilder)
 				.AddServiceListener(p => listenerBuilder);
 
@@ -132,7 +132,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			ICommunicationListener listener = new Mock<ICommunicationListener>().Object;
 			ICommunicationListener listenerBuilder(IServiceProvider provider, object context) => listener;
 
-			HostBuilder hostBuilder = new HostBuilder();
+			HostBuilder hostBuilder = new();
 			new ServiceFabricHostBuilder<IServiceFabricService<ServiceContext>, ServiceContext>(hostBuilder)
 				.AddServiceListener("testName", listenerBuilder);
 
@@ -149,7 +149,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[TestMethod]
 		public void ConfigureServices_PropagatesTypesRegistration()
 		{
-			HostBuilder hostBuilder = new HostBuilder();
+			HostBuilder hostBuilder = new();
 
 			new ServiceFabricHostBuilder<IServiceFabricService<ServiceContext>, ServiceContext>(hostBuilder)
 				.ConfigureServices((context, collection) =>

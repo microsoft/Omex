@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 	/// </remarks>
 	public static class OmexServiceProxyFactory
 	{
-		private static ServiceProxyFactory s_serviceProxyFactory = new ServiceProxyFactory(handler =>
+		private static ServiceProxyFactory s_serviceProxyFactory = new(handler =>
 			new OmexServiceRemotingClientFactory(
 				new FabricTransportServiceRemotingClientFactory(
 					remotingCallbackMessageHandler: handler)));

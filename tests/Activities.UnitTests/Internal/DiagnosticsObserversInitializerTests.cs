@@ -7,12 +7,8 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Activities;
-using Microsoft.Omex.Extensions.Activities.UnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Hosting.Services.UnitTests
 {
@@ -29,7 +25,7 @@ namespace Hosting.Services.UnitTests
 		[TestMethod]
 		public void ExtractExceptionFromPayload_HandleExceptionPayload()
 		{
-			NullReferenceException exception = new NullReferenceException();
+			NullReferenceException exception = new();
 			Exception? result = DiagnosticsObserversInitializer.ExtractExceptionFromPayload(exception);
 			Assert.AreEqual(exception, result);
 		}
@@ -37,7 +33,7 @@ namespace Hosting.Services.UnitTests
 		[TestMethod]
 		public void ExtractExceptionFromPayload_HandleExceptionProperty()
 		{
-			ArgumentException exception = new ArgumentException();
+			ArgumentException exception = new();
 			Exception? result = DiagnosticsObserversInitializer.ExtractExceptionFromPayload(new { Exception = exception });
 			Assert.AreEqual(exception, result);
 		}
@@ -53,7 +49,7 @@ namespace Hosting.Services.UnitTests
 			{
 				await diagnosticsInitializer.StartAsync(CancellationToken.None).ConfigureAwait(false);
 
-				using DiagnosticListener listener = new DiagnosticListener(name);
+				using DiagnosticListener listener = new(name);
 
 				AssertEnabledFor(listener, HttpClientListenerName);
 				AssertEnabledFor(listener, HttpRequestOutEventName);

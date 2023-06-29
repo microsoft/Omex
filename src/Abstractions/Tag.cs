@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		/// <summary>
 		/// Create an EventId using a tag using GitTagger
 		/// </summary>
-		public static EventId ReserveTag(int tagId) => new EventId(tagId);
+		public static EventId ReserveTag(int tagId) => new(tagId);
 
 		/// <summary>
 		/// Create an EventId tag using CallerFilePath and CallerLineNumber
@@ -22,6 +22,6 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		public static EventId Create(
 			[CallerFilePath] string sourceFilePath = "",
 			[CallerLineNumber] int sourceLineNumber = 0) =>
-				new EventId(sourceLineNumber, sourceFilePath);
+				new(sourceLineNumber, sourceFilePath);
 	}
 }

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System;
 using System.Fabric;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
@@ -19,7 +18,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		public void Constructor_InitializesPropertiesProperly()
 		{
 			ServiceContext context = MockStatelessServiceContextFactory.Default;
-			Accessor<ServiceContext> accessor = new Accessor<ServiceContext>();
+			Accessor<ServiceContext> accessor = new();
 			((IAccessorSetter<ServiceContext>)accessor).SetValue(context);
 
 			IExecutionContext info = new ServiceFabricExecutionContext(new Mock<IHostEnvironment>().Object, accessor);

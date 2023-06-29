@@ -25,15 +25,15 @@ namespace Services.Remoting
 		[TestMethod]
 		public void OmexRemotingHeaders_AttachActivityToOutgoingRequest_HandlesNullActivityProperly()
 		{
-			Mock<IServiceRemotingRequestMessage> requestMock = new Mock<IServiceRemotingRequestMessage>();
+			Mock<IServiceRemotingRequestMessage> requestMock = new();
 			requestMock.Object.AttachActivityToOutgoingRequest(null);
 		}
 
 		[TestMethod]
 		public void OmexRemotingHeaders_StartActivityFromIncomingRequestWhenListenerDisabled_ReturnsNull()
 		{
-			Mock<IServiceRemotingRequestMessage> requestMock = new Mock<IServiceRemotingRequestMessage>();
-			DiagnosticListener disabledListener = new DiagnosticListener("DisabledListener");
+			Mock<IServiceRemotingRequestMessage> requestMock = new();
+			DiagnosticListener disabledListener = new("DisabledListener");
 
 			Assert.IsNull(requestMock.Object.StartActivityFromIncomingRequest(disabledListener, "SomeName"));
 		}
@@ -42,7 +42,7 @@ namespace Services.Remoting
 		public void OmexRemotingHeaders_WithoutBaggage_ProperlyTransferred()
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
-			Activity outgoingActivity = new Activity(nameof(OmexRemotingHeaders_WithoutBaggage_ProperlyTransferred));
+			Activity outgoingActivity = new(nameof(OmexRemotingHeaders_WithoutBaggage_ProperlyTransferred));
 
 			TestActivityTransfer(outgoingActivity);
 		}
@@ -74,8 +74,8 @@ namespace Services.Remoting
 
 		private void TestActivityTransfer(Activity outgoingActivity)
 		{
-			HeaderMock header = new HeaderMock();
-			Mock<IServiceRemotingRequestMessage> requestMock = new Mock<IServiceRemotingRequestMessage>();
+			HeaderMock header = new();
+			Mock<IServiceRemotingRequestMessage> requestMock = new();
 			requestMock.Setup(m => m.GetHeader()).Returns(header);
 
 			outgoingActivity.Start();
@@ -93,7 +93,7 @@ namespace Services.Remoting
 
 		private DiagnosticListener CreateActiveListener(string name)
 		{
-			DiagnosticListener listener = new DiagnosticListener(name);
+			DiagnosticListener listener = new(name);
 			listener.Subscribe(new TestDiagnosticsObserversInitializer());
 			return listener;
 		}
@@ -119,7 +119,7 @@ namespace Services.Remoting
 
 			public string? MethodName { get; set; }
 
-			private readonly Dictionary<string, byte[]> m_headers = new Dictionary<string, byte[]>();
+			private readonly Dictionary<string, byte[]> m_headers = new();
 
 			public void AddHeader(string headerName, byte[] headerValue) => m_headers.Add(headerName, headerValue);
 

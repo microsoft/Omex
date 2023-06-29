@@ -12,7 +12,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[TestMethod]
 		public void Constructor_SetsDefaultValues()
 		{
-			EmptyServiceContext emptyContext = new EmptyServiceContext();
+			EmptyServiceContext emptyContext = new();
 			Assert.AreEqual(Guid.Empty, emptyContext.PartitionId);
 			Assert.AreEqual(0, emptyContext.ReplicaOrInstanceId);
 		}

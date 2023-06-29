@@ -43,8 +43,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		[TestMethod]
 		public async Task CreateUserHash_UseSalt()
 		{
-			Random random = new Random();
-			TestSaltProvider saltProvider = new TestSaltProvider();
+			Random random = new();
+			TestSaltProvider saltProvider = new();
 			random.NextBytes(saltProvider.Salt);
 			UserHashIdentityMiddleware middleware = GetMiddelware(saltProvider: saltProvider);
 
@@ -109,7 +109,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		}
 
 		private static UserHashIdentityMiddleware GetMiddelware(ISaltProvider? saltProvider = null, params IUserIdentityProvider[] providers) =>
-			new UserHashIdentityMiddleware(
+			new(
 				providers.Length > 0
 					? providers
 					: new IUserIdentityProvider[] { new IpBasedUserIdentityProvider() },
