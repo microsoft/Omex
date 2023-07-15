@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
@@ -9,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Abstractions.Option;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -19,9 +19,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 	public class ActivityMetricsSenderTests
 	{
 		[TestMethod]
-		[DataRow(true)]
-		[DataRow(false)]
-		public void SendActivityMetric_ProduceMetrics(bool useHistogramForActivityMonitoring)
+		public void SendActivityMetric_ProduceMetrics()
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 			Activity.ForceDefaultIdFormat = true;
@@ -43,13 +41,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			environmentMock.Setup(e => e.EnvironmentName).Returns("TestEnv");
 			IHostEnvironment environment = environmentMock.Object;
 
-			Mock<IOptions<MonitoringOption>> mockMonitorOption = new();
-			mockMonitorOption.Setup(options => options.Value).Returns(new MonitoringOption()
-			{
-				UseHistogramForActivityMonitoring = useHistogramForActivityMonitoring
-			});
-			ActivityMetricsSender sender = new(context, environment, mockMonitorOption.Object);
-
+			ActivityMetricsSender sender = new(context, environment);
 			Listener listener = new();
 
 			Activity testActivity = new(nameof(testActivity));
@@ -83,7 +75,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 				: listener.Results.First(m => !m.Tags.ContainsKey(s_healthCheckTag) && environment.EnvironmentName.Equals(m.Tags[s_environmentTagName]));
 
 			Assert.AreEqual(instrumentationName, result.Instrument.Name);
-			Assert.AreEqual(activity.Duration.TotalMilliseconds, result.Measurement);
+			Assert.AreEqual(Convert.ToInt64(activity.Duration.TotalMilliseconds), result.Measurement);
 			AssertTag(result, "Name", activity.OperationName);
 			AssertTag(result, s_environmentTagName, environment.EnvironmentName);
 			AssertTag(result, "RegionName", context.RegionName);
@@ -135,7 +127,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 
 				Results = new List<MeasurementResult>();
 
-				listener.SetMeasurementEventCallback<double>((instrument, measurement, tags, state) =>
+				listener.SetMeasurementEventCallback<long>((instrument, measurement, tags, state) =>
 				{
 					Results.Add(new MeasurementResult(instrument, measurement, tags.ToArray().ToDictionary(p => p.Key, p => p.Value), state));
 				});
