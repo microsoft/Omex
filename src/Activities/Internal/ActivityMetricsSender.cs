@@ -18,31 +18,25 @@ namespace Microsoft.Omex.Extensions.Activities
 	internal sealed class ActivityMetricsSender : IActivitiesEventSender, IDisposable
 	{
 		private readonly Meter m_meter;
-		private readonly Counter<double> m_activityCounter;
-		private readonly Counter<double> m_healthCheckActivityCounter;
-		private readonly Histogram<double> m_activityHistogram;
-		private readonly Histogram<double> m_healthCheckActivityHistogram;
+		private readonly Histogram<long> m_activityHistogram;
+		private readonly Histogram<long> m_healthCheckActivityHistogram;
 		private readonly IExecutionContext m_context;
 		private readonly IHostEnvironment m_hostEnvironment;
-		private readonly IOptions<MonitoringOption> m_monitoringOption;
 		private readonly ArrayPool<KeyValuePair<string, object?>> m_arrayPool;
 
-		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment, IOptions<MonitoringOption> monitoringOption)
+		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment)
 		{
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
-			m_monitoringOption = monitoringOption;
 			m_meter = new Meter("Microsoft.Omex.Activities", "1.0.0");
-			m_activityCounter = m_meter.CreateCounter<double>("Activities");
-			m_healthCheckActivityCounter = m_meter.CreateCounter<double>("HealthCheckActivities");
-			m_activityHistogram = m_meter.CreateHistogram<double>("Activities");
-			m_healthCheckActivityHistogram = m_meter.CreateHistogram<double>("HealthCheckActivities");
+			m_activityHistogram = m_meter.CreateHistogram<long>("Activities");
+			m_healthCheckActivityHistogram = m_meter.CreateHistogram<long>("HealthCheckActivities");
 			m_arrayPool = ArrayPool<KeyValuePair<string, object?>>.Create();
 		}
 
 		public void SendActivityMetric(Activity activity)
 		{
-			double durationMs = activity.Duration.TotalMilliseconds;
+			long durationMs = Convert.ToInt64(activity.Duration.TotalMilliseconds);
 
 			int tagsCount = s_customTags.Length + activity.TagObjects.Count() + activity.Baggage.Count();
 
@@ -67,17 +61,9 @@ namespace Microsoft.Omex.Extensions.Activities
 
 			ReadOnlySpan<KeyValuePair<string, object?>> tagsSpan = MemoryExtensions.AsSpan(tags, 0, tagsCount);
 
-			Histogram<double> histogram = activity.IsHealthCheck() ? m_healthCheckActivityHistogram : m_activityHistogram;
-			Counter<double> counter = activity.IsHealthCheck() ? m_healthCheckActivityCounter : m_activityCounter;
+			Histogram<long> histogram = activity.IsHealthCheck() ? m_healthCheckActivityHistogram : m_activityHistogram;
 
-			if (m_monitoringOption.Value.UseHistogramForActivityMonitoring)
-			{
-				histogram.Record(durationMs, tagsSpan);
-			}
-			else
-			{
-				counter.Add(durationMs, tagsSpan);
-			}
+			histogram.Record(durationMs, tagsSpan);
 
 			m_arrayPool.Return(tags, clearArray: true);
 		}

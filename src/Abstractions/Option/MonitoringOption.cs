@@ -12,10 +12,5 @@ namespace Microsoft.Omex.Extensions.Abstractions.Option
 		/// Path to the setting
 		/// </summary>
 		public static string MonitoringPath = "Monitoring";
-
-		/// <summary>
-		/// Setting to determine whether using Histogram ar Counter for metrics
-		/// </summary>
-		public bool UseHistogramForActivityMonitoring { get; set; }
 	}
 }
