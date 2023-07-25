@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
@@ -33,10 +34,14 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			Mock<IExecutionContext> contextMock = new();
 			contextMock.Setup(c => c.ServiceName).Returns("TestService");
 
+			Mock<IOptionsMonitor<OmexActivityListenerOptions>> mockOptions = new();
+			mockOptions.Setup(m => m.CurrentValue).Returns(new OmexActivityListenerOptions());
+
 			ActivityEventSender logEventSource = new(
 				ActivityEventSource.Instance,
 				contextMock.Object,
-				new NullLogger<ActivityEventSender>());
+				new NullLogger<ActivityEventSender>(),
+				mockOptions.Object);
 
 			Guid correlationId = Guid.NewGuid();
 			using Activity activity = new Activity(name).Start();
@@ -59,6 +64,41 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			eventInfo.AssertPayload("metadata", metadata);
 			eventInfo.AssertPayload("activityId", activity.Id);
 			eventInfo.AssertPayload("correlationId", correlationId.ToString());
+		}
+
+		[DataTestMethod]
+		[DataRow(EventSourcesEventIds.LogActivityTestContext, true)]
+		[DataRow(EventSourcesEventIds.LogActivity, false)]
+		public void LogActivityEndEvent_DisableByOption_CreatesNoEvent(EventSourcesEventIds eventId, bool isHealthCheck)
+		{
+			using TestEventListener listener = new();
+			listener.EnableEvents(ActivityEventSource.Instance, EventLevel.Informational);
+
+			const string name = "TestName";
+
+			Mock<IExecutionContext> contextMock = new();
+			contextMock.Setup(c => c.ServiceName).Returns("TestService");
+
+			Mock<IOptionsMonitor<OmexActivityListenerOptions>> mockOptions = new();
+			OmexActivityListenerOptions omexActivityListenerOptions = new() { DisableEventSender = true };
+			mockOptions.Setup(m => m.CurrentValue).Returns(omexActivityListenerOptions);
+
+			ActivityEventSender logEventSource = new(
+				ActivityEventSource.Instance,
+				contextMock.Object,
+				new NullLogger<ActivityEventSender>(),
+				mockOptions.Object);
+
+			Guid correlationId = Guid.NewGuid();
+			using Activity activity = new Activity(name).Start();
+			if (isHealthCheck)
+			{
+				activity.MarkAsHealthCheck();
+			}
+
+			logEventSource.SendActivityMetric(activity);
+
+			Assert.AreEqual(0, listener.EventsInformation.Count);
 		}
 	}
 }

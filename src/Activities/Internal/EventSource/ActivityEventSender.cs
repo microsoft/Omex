@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
@@ -15,16 +16,17 @@ namespace Microsoft.Omex.Extensions.Activities
 {
 	internal sealed class ActivityEventSender : IActivitiesEventSender
 	{
-		public ActivityEventSender(ActivityEventSource eventSource, IExecutionContext executionContext, ILogger<ActivityEventSender> logger)
+		public ActivityEventSender(ActivityEventSource eventSource, IExecutionContext executionContext, ILogger<ActivityEventSender> logger, IOptionsMonitor<OmexActivityListenerOptions> optionsMonitor)
 		{
 			m_eventSource = eventSource;
 			m_serviceName = executionContext.ServiceName;
 			m_logger = logger;
+			m_optionsMonitor = optionsMonitor;
 		}
 
 		public void SendActivityMetric(Activity activity)
 		{
-			if (!m_eventSource.IsEnabled())
+			if (m_optionsMonitor.CurrentValue.DisableEventSender || !m_eventSource.IsEnabled())
 			{
 				return;
 			}
@@ -122,6 +124,7 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly ActivityEventSource m_eventSource;
 		private readonly string m_serviceName;
 		private readonly ILogger<ActivityEventSender> m_logger;
+		private readonly IOptionsMonitor<OmexActivityListenerOptions> m_optionsMonitor;
 		private static readonly string s_logCategory = typeof(ActivityEventSource).FullName ?? nameof(ActivityEventSource);
 		private const string NullPlaceholder = "null";
 	}
