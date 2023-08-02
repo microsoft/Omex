@@ -27,7 +27,7 @@ namespace Microsoft.Omex.Extensions.Activities
 
 		public void SendActivityMetric(Activity activity)
 		{
-			if (m_options.Value.DisableEventSender || !m_eventSource.IsEnabled())
+			if (m_options.Value.DisableActivityEventSender || !m_eventSource.IsEnabled())
 			{
 				return;
 			}
