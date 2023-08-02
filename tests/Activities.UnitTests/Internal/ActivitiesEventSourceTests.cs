@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Abstractions.Option;
 using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -34,8 +35,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			Mock<IExecutionContext> contextMock = new();
 			contextMock.Setup(c => c.ServiceName).Returns("TestService");
 
-			Mock<IOptionsMonitor<OmexActivityListenerOptions>> mockOptions = new();
-			mockOptions.Setup(m => m.CurrentValue).Returns(new OmexActivityListenerOptions());
+			Mock<IOptions<MonitoringOption>> mockOptions = new();
+			mockOptions.Setup(m => m.Value).Returns(new MonitoringOption());
 
 			ActivityEventSender logEventSource = new(
 				ActivityEventSource.Instance,
@@ -79,9 +80,9 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			Mock<IExecutionContext> contextMock = new();
 			contextMock.Setup(c => c.ServiceName).Returns("TestService");
 
-			Mock<IOptionsMonitor<OmexActivityListenerOptions>> mockOptions = new();
-			OmexActivityListenerOptions omexActivityListenerOptions = new() { DisableEventSender = true };
-			mockOptions.Setup(m => m.CurrentValue).Returns(omexActivityListenerOptions);
+			Mock<IOptions<MonitoringOption>> mockOptions = new();
+			MonitoringOption monitoringOption = new() { DisableEventSender = true };
+			mockOptions.Setup(m => m.Value).Returns(monitoringOption);
 
 			ActivityEventSender logEventSource = new(
 				ActivityEventSource.Instance,
