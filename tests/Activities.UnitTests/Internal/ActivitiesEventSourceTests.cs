@@ -10,7 +10,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Activities.Option;
 using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

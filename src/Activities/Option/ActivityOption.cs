@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace Microsoft.Omex.Extensions.Activities.Option
+namespace Microsoft.Omex.Extensions.Activities
 {
 	/// <summary>
 	/// Monitoring option

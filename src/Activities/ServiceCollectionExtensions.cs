@@ -7,7 +7,6 @@ using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.Omex.Extensions.Activities;
-using Microsoft.Omex.Extensions.Activities.Option;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
