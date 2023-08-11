@@ -21,7 +21,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// Add dependencies for a publisher
 		/// </summary>
-		[Obsolete("This method is deprecated, please use HealthCheckComposablesExtensions class extension methods to compose health checks.")]
+		[Obsolete("This method is deprecated and will be removed in a later release, please use HealthCheckComposablesExtensions class extension methods to compose health checks.")]
 		private static IServiceCollection AddPublisherDependencies(this IServiceCollection serviceCollection)
 		{
 			// HttpClient registration only needed for HttpEndpointHealthCheck.
