@@ -13,7 +13,7 @@ using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
-	[Obsolete("The usage of this class is deprecated, please use composable classes in Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Composables namespace to build health checks.")]
+	[Obsolete("The usage of this class is deprecated and will be removed in a later release, please use composable classes in Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Composables namespace to build health checks.")]
 	internal class HttpEndpointHealthCheck : AbstractHealthCheck<HttpHealthCheckParameters>
 	{
 		public static string HttpClientLogicalName { get; } = "HttpEndpointHealthCheckHttpClient";
