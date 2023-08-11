@@ -15,7 +15,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	/// <summary>
 	/// Base health check that extracts logic of exception handling and wraps it into activity
 	/// </summary>
-	[Obsolete("The usage of this class is deprecated, please use composable classes in Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Composables namespace to build health checks.")]
+	[Obsolete("The usage of this class is deprecated and will be removed in a later release, please use composable classes in Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Composables namespace to build health checks.")]
 	public abstract class AbstractHealthCheck<TParameters> : IHealthCheck
 		where TParameters : HealthCheckParameters
 	{

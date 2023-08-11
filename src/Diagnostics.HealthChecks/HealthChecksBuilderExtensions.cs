@@ -32,7 +32,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <param name="failureStatus">status that should be reported when the health check reports a failure, if the provided value is null, Unhealthy will be reported Unhealthy</param>
 		/// <param name="additionalCheck">action that would be called after getting response, function should return new result object that would be reported</param>
 		/// <param name="reportData">additional properties that will be attached to health check result, for example escalation info</param>
-		[Obsolete("This method is deprecated, please use HealthCheckComposablesExtensions class extension methods to compose health checks.")]
+		[Obsolete("This method is deprecated and will be removed in a later release, please use HealthCheckComposablesExtensions class extension methods to compose health checks.")]
 		public static IHealthChecksBuilder AddHttpEndpointCheck(
 			this IHealthChecksBuilder builder,
 			string name,
@@ -98,7 +98,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <param name="failureStatus">status that should be reported when the health check reports a failure, if the provided value is null, Unhealthy will be reported Unhealthy</param>
 		/// <param name="additionalCheck">action that would be called after getting response, function should return new result object that would be reported</param>
 		/// <param name="reportData">additional properties that will be attached to health check result, for example escalation info</param>
-		[Obsolete("This method is deprecated, please use HealthCheckComposablesExtensions class extension methods to compose health checks.")]
+		[Obsolete("This method is deprecated and will be removed in a later release, please use HealthCheckComposablesExtensions class extension methods to compose health checks.")]
 		public static IHealthChecksBuilder AddHttpEndpointCheck(
 			this IHealthChecksBuilder builder,
 			string name,
