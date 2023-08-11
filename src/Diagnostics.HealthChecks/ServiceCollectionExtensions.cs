@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Net;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// Add dependencies for a publisher
 		/// </summary>
+		[Obsolete("This method is deprecated, please use HealthCheckComposablesExtensions class extension methods to compose health checks.")]
 		private static IServiceCollection AddPublisherDependencies(this IServiceCollection serviceCollection)
 		{
 			// HttpClient registration only needed for HttpEndpointHealthCheck.
@@ -41,12 +43,14 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// Register publisher for processing health check results directly to replicas
 		/// </summary>
+		[Obsolete("This method is deprecated, please use HealthCheckComposablesExtensions class extension methods to compose health checks.")]
 		public static IHealthChecksBuilder AddServiceFabricHealthChecks(this IServiceCollection serviceCollection) =>
 			serviceCollection.AddOmexHealthCheckDependencies<ServiceContextHealthStatusSender>();
 
 		/// <summary>
 		/// Register publisher for processing health check results directly to nodes using REST api
 		/// </summary>
+		[Obsolete("This method is deprecated, please use HealthCheckComposablesExtensions class extension methods to compose health checks.")]
 		public static IHealthChecksBuilder AddRestHealthChecksPublisher(this IServiceCollection serviceCollection) =>
 			serviceCollection
 				.AddServiceFabricClient()
@@ -55,6 +59,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// Register publisher for processing health check results
 		/// </summary>
+
+		[Obsolete("This method is deprecated, please use HealthCheckComposablesExtensions class extension methods to compose health checks.")]
 		private static IHealthChecksBuilder AddOmexHealthCheckDependencies<TStatusSender>(this IServiceCollection serviceCollection)
 				where TStatusSender : class, IHealthStatusSender
 		{

@@ -37,6 +37,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public void AddServiceFabricHealthChecks_RegisterPublisherAndChecks()
 		{
 			string checkName = "MockCheck";
