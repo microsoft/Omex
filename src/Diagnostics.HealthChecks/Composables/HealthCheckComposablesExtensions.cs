@@ -89,7 +89,7 @@ public static class HealthCheckComposablesExtensions
 	/// <param name="response">The endpoint response.</param>
 	/// <param name="allowedStatusCodes">The allowed status codes for the response..</param>
 	/// <returns>The health check result.</returns>
-	public static Task<HealthCheckResult> CheckResponseStatusCodeAsync(
+	public static async Task<HealthCheckResult> CheckResponseStatusCodeAsync(
 		HealthCheckContext context,
 		HttpResponseMessage response,
 		HttpStatusCode[]? allowedStatusCodes = null)
@@ -101,10 +101,10 @@ public static class HealthCheckComposablesExtensions
 
 		if (allowedStatusCodes.Contains(response.StatusCode))
 		{
-			return Task.FromResult(new HealthCheckResult(HealthStatus.Healthy, "The endpoint returned an allowed status code."));
+			return await Task.FromResult(new HealthCheckResult(HealthStatus.Healthy, "The endpoint returned an allowed status code."));
 		}
 
-		return Task.FromResult(
+		return await Task.FromResult(
 			new HealthCheckResult(
 				context.Registration.FailureStatus,
 				$"The endpoint returned an unallowed status code. Status code returned: '{response.StatusCode}'. " +

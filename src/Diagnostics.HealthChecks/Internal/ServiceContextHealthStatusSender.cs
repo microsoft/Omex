@@ -28,7 +28,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			m_logger = logger;
 		}
 
-		public Task<bool> IntializeAsync(CancellationToken token)
+		public async Task<bool> IntializeAsync(CancellationToken token)
 		{
 			IServicePartition? partition = m_partitionAccessor.Value;
 			if (partition == null)
@@ -46,7 +46,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				};
 			}
 
-			return Task.FromResult(m_reportHealth != null);
+			return await Task.FromResult(m_reportHealth != null);
 		}
 
 		public Task SendStatusAsync(string checkName, HealthStatus status, string description, CancellationToken token)

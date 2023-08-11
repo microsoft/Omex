@@ -29,7 +29,7 @@ public static class HealthCheckComposablesExtensions
 		string? httpClientName = "") =>
 			Composables.HealthCheckComposablesExtensions.CreateHttpHealthCheck(
 				requestBuilder,
-				(context, response, _) => Composables.HealthCheckComposablesExtensions.CheckResponseStatusCodeAsync(context, response),
+				async (context, response, _) => await Composables.HealthCheckComposablesExtensions.CheckResponseStatusCodeAsync(context, response),
 				activitySource,
 				httpClientFactory,
 				httpClientName: httpClientName,

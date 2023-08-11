@@ -74,14 +74,14 @@ internal class FailingThreeTimeHealthCheck : IHealthCheck
 {
 	private int m_count = 0;
 
-	public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
+	public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
 	{
 		if (m_count < 2)
 		{
 			Interlocked.Increment(ref m_count);
-			return Task.FromResult(new HealthCheckResult(HealthStatus.Unhealthy));
+			return await Task.FromResult(new HealthCheckResult(HealthStatus.Unhealthy));
 		}
 
-		return Task.FromResult(new HealthCheckResult(HealthStatus.Healthy));
+		return await Task.FromResult(new HealthCheckResult(HealthStatus.Healthy));
 	}
 }
