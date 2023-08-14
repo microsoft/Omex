@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
@@ -12,6 +13,7 @@ using Microsoft.Omex.Extensions.Abstractions;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
+	[Obsolete("The usage of this class is deprecated and will be removed in a later release, please use composable classes in Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Composables namespace to build health checks.")]
 	internal class HttpEndpointHealthCheck : AbstractHealthCheck<HttpHealthCheckParameters>
 	{
 		public static string HttpClientLogicalName { get; } = "HttpEndpointHealthCheckHttpClient";

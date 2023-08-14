@@ -25,6 +25,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 	{
 		[DataTestMethod]
 		[DynamicData(nameof(GetHeaders), DynamicDataSourceType.Method)]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public void AddServiceFabricHealthChecks_RegisterPublisherAndChecks(IReadOnlyDictionary<string, IEnumerable<string>> headers)
 		{
 			string checkName = "MockHttpCheck";
@@ -56,6 +57,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 		[DataTestMethod]
 		[DataRow("https://localhost")]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public void AddServiceFabricHealthChecks_InvalidPath_ThrowException(string path)
 		{
 			string endpoitName = "EndpointName";
@@ -65,6 +67,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public void AddServiceFabricHealthChecks_HeaderKeyIsWhiteSpace_ThrowException()
 		{
 			string endpoitName = "EndpointName";
@@ -77,12 +80,14 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 					}));
 		}
 
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		private IHealthChecksBuilder GetBuilder() =>
 			new ServiceCollection()
 				.AddSingleton(new ActivitySource(nameof(HealthChecksBuilderExtensionsTests)))
 				.AddSingleton(new Mock<IAccessor<IServicePartition>>().Object)
 				.AddServiceFabricHealthChecks();
 
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		private HttpHealthCheckParameters GetParameters(IServiceProvider provider, string checkName)
 		{
 			IOptions<HealthCheckServiceOptions> options = provider.GetRequiredService<IOptions<HealthCheckServiceOptions>>();
