@@ -29,7 +29,6 @@
     <PackageVersion Include="Microsoft.Net.Test.Sdk" Version="17.7.0" />
     <PackageVersion Include="Microsoft.SourceLink.AzureRepos.Git" Version="1.1.1" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
-    <PackageVersion Include="Moq" Version="4.20.69" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="7.0.2" />
@@ -45,5 +44,8 @@
     <PackageVersion Include="Microsoft.ServiceFabric.Services" Version="6.1.1833" />
     <PackageVersion Include="Microsoft.ServiceFabric.Services.Remoting" Version="6.1.1833" />
     <PackageVersion Include="ServiceFabric.Mocks" Version="6.2.4" />
+  </ItemGroup>
+  <ItemGroup Label="Moq pinned to 4.18.4 until SponsorLink is fully removed and new versions are deemed trustworty">
+    <PackageVersion Include="Moq" Version="4.18.4" />
   </ItemGroup>
 </Project>
