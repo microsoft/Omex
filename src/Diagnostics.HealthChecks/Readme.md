@@ -2,7 +2,7 @@
 
 This project and the [`Diagnostics.HealthChecks.AspNetCore`](../Diagnostics.HealthChecks.AspNetCore/Readme.md) offer a range of composable classes, all of which implement the .NET `IHealthCheck` interface. Developers can build their own Health Checks by reusing these classes behaviors' with the help of extension methods.
 
-This approach enables the ability to create new composable objects to enrich the single Health Check with different behaviour, or substitute an existing one in the composition chain, offering more flexibility to the
+This approach enables the ability to create new composable objects to enrich the single Health Check with different behaviour, or substitute an existing one in the composition chain, offering more flexibility than the previous inheritance-based approach, where each class would have had to implement the Health Check following a rigid chain of inheritance.
 
 In the following, each different composable classes provided by the package will be listed, followed by utilisation examples.
 
