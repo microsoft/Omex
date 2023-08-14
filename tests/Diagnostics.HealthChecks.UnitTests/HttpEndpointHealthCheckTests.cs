@@ -20,6 +20,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 	public class HttpEndpointHealthCheckTests
 	{
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public async Task CheckHealthAsync_WhenExpectedStatus_ReturnsHealthy()
 		{
 			string contentText = nameof(CheckHealthAsync_WhenExpectedStatus_ReturnsHealthy);
@@ -45,6 +46,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public async Task CheckHealthAsync_WhenWrongStatusAndDefaultRegistrationFailureStatus_ReturnsUnhealthy()
 		{
 			string contentText = nameof(CheckHealthAsync_WhenWrongStatusAndDefaultRegistrationFailureStatus_ReturnsUnhealthy);
@@ -69,6 +71,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public async Task CheckHealthAsync_WhenWrongStatusAndExplicitRegistrationFailureStatus_ReturnsRegistrationFailureStatus()
 		{
 			string contentText = nameof(CheckHealthAsync_WhenWrongStatusAndExplicitRegistrationFailureStatus_ReturnsRegistrationFailureStatus);
@@ -93,6 +96,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public async Task CheckHealthAsync_WithAdditionalCheck_ReturnsOverridenResult()
 		{
 			string contentText = nameof(CheckHealthAsync_WithAdditionalCheck_ReturnsOverridenResult);
@@ -126,6 +130,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			CollectionAssert.AreEquivalent(reportData, result.Data.ToArray(), "Provided result should have proper data");
 		}
 
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		private async Task<(MockClient, HealthCheckResult)> RunHealthCheckAsync(
 			HttpHealthCheckParameters parameters, HttpResponseMessage response, HealthStatus failureStatus = HealthStatus.Unhealthy)
 		{

@@ -20,6 +20,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 	public class AbstractHealthCheckTests
 	{
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public async Task AbstractHealthCheck_PropagatesParametersAndResult()
 		{
 			HealthCheckResult expectedResult = HealthCheckResult.Healthy("test");
@@ -42,6 +43,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public async Task AbstractHealthCheck_WhenExceptionThrown_ReturnsUnhealtyState()
 		{
 			using TestActivityListener listener = new();
@@ -64,6 +66,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public async Task AbstractHealthCheck_MarksActivityWithHealthCheckFlag()
 		{
 			using TestActivityListener listener = new();
@@ -81,6 +84,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			activity.AssertResult(ActivityResult.Success);
 		}
 
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		private class TestHealthCheck : AbstractHealthCheck<HealthCheckParameters>
 		{
 			private readonly Func<HealthCheckContext, CancellationToken, HealthCheckResult> m_internalFunction;
