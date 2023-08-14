@@ -48,7 +48,7 @@ Implementing an Health Check using the composable classes provided by default ca
 - **Creating the classes manually**: this approach consists on creating the classes manually inside the constructor of the Health Check that will be registered for the application. The resulting Health Check will have to declare the join set of dependencies needed by all the default classes used, along with its own.
 - **Leveraging the extension methods provided in the project**: this project provides a set of extension methods located in the [`HealthCheckComposablesExtensions`](./Composables/HealthCheckComposablesExtensions.cs) class that will complement the functionality offered by the default composable classes with default composition building for different use cases.
 
-In each cases, having that the Health Check will have to be registered with the DI, the implementor will have to create a class implementing the `IHealthCheck` interface directly, composing the different health checks in the constructor and storing the reference in a private field in the class.
+In each case, having that the Health Check will have to be registered with the DI, the implementor will have to create a class implementing the `IHealthCheck` interface directly, composing the different health checks in the constructor and storing the reference in a private field in the class.
 
 #### Manual composition
 
