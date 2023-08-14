@@ -1,6 +1,6 @@
 ## Omex Health Checks
 
-This project and the [`Diagnostics.HealthChecks.AspNetCore`](../Diagnostics.HealthChecks.AspNetCore/Readme.md) offers a range of composable classes, all of which implements the .NET `IHealthCheck` interface, to help the developer build their own Health Checks by reusing different behaviours with the help of extension methods.
+This project and the [`Diagnostics.HealthChecks.AspNetCore`](../Diagnostics.HealthChecks.AspNetCore/Readme.md) offer a range of composable classes, all of which implement the .NET `IHealthCheck` interface. Developers can build their own Health Checks by reusing these classes behaviors' with the help of extension methods.
 
 This approach enables the ability to create new composable objects to enrich the single Health Check with different behaviour, or substitute an existing one in the composition chain, offering more flexibility to the
 
