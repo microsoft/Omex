@@ -45,40 +45,14 @@ The `HttpEndpointHealthCheck` offers the possibility to "mark" the created `Acti
 
 Implementing an Health Check using the composable classes provided by default can be done following two patterns:
 
-- **Creating the classes manually**: this approach consists on creating the classes manually inside the constructor of the Health Check that will be registered for the application. The resulting Health Check will have to declare the join set of dependencies needed by all the default classes used, along with its own.
 - **Leveraging the extension methods provided in the project**: this project provides a set of extension methods located in the [`HealthCheckComposablesExtensions`](./Composables/HealthCheckComposablesExtensions.cs) class that will complement the functionality offered by the default composable classes with default composition building for different use cases.
+- **Creating the classes manually**: this approach consists on creating the classes manually inside the constructor of the Health Check that will be registered for the application. The resulting Health Check will have to declare the join set of dependencies needed by all the default classes used, along with its own.
 
-In each case, having that the Health Check will have to be registered with the DI, the implementor will have to create a class implementing the `IHealthCheck` interface directly, composing the different health checks in the constructor and storing the reference in a private field in the class.
-
-#### Manual composition
-
-In this case, the final Health Check class will have to instantiate the Health Checks composable classes manually in the constructor.
-
-Let's say for instance that the Health Check will have to constantly query an endpoint in the service, the class constructor can be implemented as:
-
-```csharp
-public class CustomHealthCheck : IHealthCheck
-{
-    private IHealthCheck m_composed;
-
-    public CustomHealthCheck(IHttpClientFactory factory, ...)
-    {
-        // In the constructor, the health check instance will be built manually, passing along all the necessary dependencies.
-        IHealthCheck httpHealthCheck = new HttpEndpointHealthCheck(...);
-        m_composed = new ObservableHealthCheck(httpHealthCheck, ...);
-    }
-
-    // The method simply forward the health check implementation to the composed instance.
-    public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default) =>
-        m_composed.CheckHealthAsync(context, cancellationToken);
-}
-```
-
-This approach offers more flexibility and customisation, but it introduces more complexity and coupling with this project.
+In each case, having that the Health Check must be registered with the DI, the implementor will have to create a class implementing the `IHealthCheck` interface directly, composing the different health checks in the constructor and storing the reference in a private field in the class.
 
 #### Composing using extension methods
 
-The [`HealthCheckComposablesExtensions`](./Composables/HealthCheckComposablesExtensions.cs) class offers a number of health check factories that will create composed classes ready to be used for a number of different cases. If the developer wants to implement a simple HTTP Health Check like in the [previous example](#manual-composition), for instance, they can leverage the `CreateHttpHealthCheck` method:
+The [`HealthCheckComposablesExtensions`](./Composables/HealthCheckComposablesExtensions.cs) class offers a number of health check factories that will create composed classes ready to be used for a number of different cases. If the developer wants to implement a simple HTTP Health Check, for instance, they can leverage the `CreateHttpHealthCheck` method:
 
 ```csharp
 public class CustomHealthCheck : IHealthCheck
@@ -100,6 +74,34 @@ public class CustomHealthCheck : IHealthCheck
 }
 ```
 
-This approach is less flexible, but it provides more readability out of the box by representing exactly what the health check should do through the static factory method name.
+This implementation is currently equivalent to creating intances of the different Health Checks composable classes, as shown in the [next section](#manual-composition).
+
+This approach is less flexible than the manual composition, but it provides more readability out of the box by representing exactly what the health check should do through the static factory method name.
 
 More factory methods will be presented in the [Diagnostics.HealthChecks.AspNetCore](../Diagnostics.HealthChecks.AspNetCore/Readme.md) project.
+
+#### Manual composition
+
+In this case, the final Health Check class will have to instantiate the Health Checks composable classes manually in the constructor.
+
+Let's say for instance that the Health Check will have to constantly query an endpoint in the service, like in the [previous example](#composition-using-extension-methods), the class constructor can be implemented as:
+
+```csharp
+public class CustomHealthCheck : IHealthCheck
+{
+    private IHealthCheck m_composed;
+
+    public CustomHealthCheck(IHttpClientFactory factory, ...)
+    {
+        // In the constructor, the health check instance will be built manually, passing along all the necessary dependencies.
+        IHealthCheck httpHealthCheck = new HttpEndpointHealthCheck(...);
+        m_composed = new ObservableHealthCheck(httpHealthCheck, ...);
+    }
+
+    // The method simply forward the health check implementation to the composed instance.
+    public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default) =>
+        m_composed.CheckHealthAsync(context, cancellationToken);
+}
+```
+
+This approach offers more flexibility and customisation, but it introduces more complexity and coupling with this project.
