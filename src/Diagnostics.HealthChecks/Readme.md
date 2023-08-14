@@ -21,7 +21,7 @@ The `ObservableHealthCheck` will mark the `Activity` using the `MarkAsHealthChec
 
 This implementation offers the capability of executing the health check until it succeeds, then it will re-use the last cached successful result without repeating the Health Check execution. This behaviour is useful when an health check must be executed only at startup, to check for instance for configuration errors, reporting them back to Service Fabric engine while deploying to mark the new service as faulty, enabling the orchestrator to rollback the deployment.
 
-The developer must keep in mind that an health check that includes the startup health check in its implementation will keep executing if the health check result results in a warning or in an error state; this can happen when the service the health check it's implemented into is created by Service Fabric in response to an automatic scale-up.
+The developer must keep in mind that a health check that includes the startup health check in its implementation will keep executing if the health check result results in a warning or in an error state; this can happen when the service the health check it's implemented into is created by Service Fabric in response to an automatic scale-up.
 
 The developer must also keep in mind that to use this composable Health Check they will have to provide an implementation of the [`IMemoryCache`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.caching.memory.imemorycache?view=dotnet-plat-ext-7.0) interface through Dependency Injection.
 
