@@ -1,6 +1,6 @@
 ## Health Check ASP.NET Core helpers and extensions
 
-This project introduces features specifically dependent from the ASP.NET Core WebAPI Framework. This will not introduce other composable classes, but it will leverage them to provide a new factory method to create a **Liveness Health Check**, an health check that will only verify that the endpoint is reachable without letting it execute its logic, short-circuiting it using an implementatin of the `ActionFilterAttribute`.
+This project introduces features specifically designed for the ASP.NET Core WebAPI Framework. This will not introduce other composable classes, but it will leverage them to provide a new factory method to create a **Liveness Health Check**, an health check that will only verify that the endpoint is reachable without letting it execute its logic, short-circuiting it using an implementatin of the `ActionFilterAttribute`.
 
 #### Liveness Health Check
 
