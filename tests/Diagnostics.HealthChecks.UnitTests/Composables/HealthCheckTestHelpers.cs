@@ -92,13 +92,14 @@ public static class HealthCheckTestHelpers
 		int? numberOfFailuresBeforeOk = null,
 		bool? shouldThrowException = false)
 	{
-		HttpMessageHandler messageHandler =
+		HttpClientHandler messageHandler =
 			(shouldThrowException, numberOfFailuresBeforeOk) switch
 			{
 				(true, _) => new MockedHttpExceptionMessageHandler(message),
 				(_, null) => new MockedHttpMessageHandler(message),
 				(_, int n) => new MockedRepeatedErrorsHttpMessageHandler(message, n)
 			};
+		messageHandler.CheckCertificateRevocationList = true;
 
 		HttpClient httpClientMock = new(messageHandler);
 
@@ -146,7 +147,7 @@ public static class HealthCheckTestHelpers
 	}
 }
 
-internal class MockedHttpMessageHandler : HttpMessageHandler
+internal class MockedHttpMessageHandler : HttpClientHandler
 {
 	private readonly HttpResponseMessage m_response;
 
@@ -163,7 +164,7 @@ internal class MockedHttpMessageHandler : HttpMessageHandler
 /// Returns 500 for a given number of times before returning the given response.
 /// The pattern is recursive, so after returning an OK response, it returns an originally given number of 500 responses.
 /// </summary>
-internal class MockedRepeatedErrorsHttpMessageHandler : HttpMessageHandler
+internal class MockedRepeatedErrorsHttpMessageHandler : HttpClientHandler
 {
 	private readonly HttpResponseMessage m_response;
 	private readonly int m_failureTimes;
@@ -189,7 +190,7 @@ internal class MockedRepeatedErrorsHttpMessageHandler : HttpMessageHandler
 	}
 }
 
-internal class MockedHttpExceptionMessageHandler : HttpMessageHandler
+internal class MockedHttpExceptionMessageHandler : HttpClientHandler
 {
 	private readonly HttpResponseMessage m_response;
 
