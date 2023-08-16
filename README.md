@@ -1,6 +1,6 @@
 # Microsoft OMEX
 
-This repository contains source code for shared components used by the 
+This repository contains source code for shared components used by the
 team, which is part of the Office organization, at Microsoft to build scalable and highly available distributed systems.
 
 The code is released under the [MIT license](https://github.com/microsoft/Omex/blob/main/LICENSE).
@@ -17,6 +17,7 @@ Additional source code from the OMEX team can be located at <https://github.com/
 * [__System__](https://github.com/microsoft/Omex/tree/main/src/System) - This library contains shared code for OMEX libraries. You'll find there utilities for logging,
 argument validation, resource management, caching and more.
 * [__System.UnitTests.Shared__](https://github.com/microsoft/Omex/tree/main/src/System.UnitTests.Shared) - This library contains abstractions and utilities used for creating unit tests.
+* [__Diagnostics.HealthChecks__](https://github.com/microsoft/Omex/tree/main/src/Diagnostics.HealthChecks) - This library offers a set of default composable classes to implement custom health checks implementing the .NET `IHealthCheck` interface.
 
 Please contribute to this repository via [pull requests](https://github.com/Microsoft/Omex/pulls) against the __main__ branch.
 
