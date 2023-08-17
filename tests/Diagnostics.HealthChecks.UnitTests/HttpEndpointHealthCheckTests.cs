@@ -137,7 +137,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			Mock<IHttpClientFactory> factoryMock = new();
 			MockClient clientMock = new(response);
 
-			factoryMock.Setup(f => f.CreateClient(HttpEndpointHealthCheck.HttpClientLogicalName))
+			factoryMock.Setup(f => f.CreateClient(HealthCheckConstants.HttpClientLogicalName))
 				.Returns(clientMock);
 
 			HttpEndpointHealthCheck healthCheck = new(
