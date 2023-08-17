@@ -21,14 +21,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// Add dependencies for a publisher
 		/// </summary>
-		[Obsolete("This method is deprecated and will be removed in a later release, please use HealthCheckComposablesExtensions class extension methods to compose health checks.")]
 		private static IServiceCollection AddPublisherDependencies(this IServiceCollection serviceCollection)
 		{
 			// HttpClient registration only needed for HttpEndpointHealthCheck.
 			// It add added here instead of AddHttpEndpointCheck method to avoid creating new configuration each time new health check added.
 			// It would be nice to register this HttpClient configuration once and only if HttpEndpointCheck used.
 			serviceCollection
-				.AddHttpClient(HttpEndpointHealthCheck.HttpClientLogicalName)
+				.AddHttpClient(HealthCheckConstants.HttpClientLogicalName)
 				.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
 				{
 					AllowAutoRedirect = false,
@@ -43,14 +42,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// Register publisher for processing health check results directly to replicas
 		/// </summary>
-		[Obsolete("This method is deprecated and will be removed in a later release, please use HealthCheckComposablesExtensions class extension methods to compose health checks.")]
 		public static IHealthChecksBuilder AddServiceFabricHealthChecks(this IServiceCollection serviceCollection) =>
 			serviceCollection.AddOmexHealthCheckDependencies<ServiceContextHealthStatusSender>();
 
 		/// <summary>
 		/// Register publisher for processing health check results directly to nodes using REST api
 		/// </summary>
-		[Obsolete("This method is deprecated and will be removed in a later release, please use HealthCheckComposablesExtensions class extension methods to compose health checks.")]
 		public static IHealthChecksBuilder AddRestHealthChecksPublisher(this IServiceCollection serviceCollection) =>
 			serviceCollection
 				.AddServiceFabricClient()
@@ -59,8 +56,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// <summary>
 		/// Register publisher for processing health check results
 		/// </summary>
-
-		[Obsolete("This method is deprecated and will be removed in a later release, please use HealthCheckComposablesExtensions class extension methods to compose health checks.")]
 		private static IHealthChecksBuilder AddOmexHealthCheckDependencies<TStatusSender>(this IServiceCollection serviceCollection)
 				where TStatusSender : class, IHealthStatusSender
 		{
