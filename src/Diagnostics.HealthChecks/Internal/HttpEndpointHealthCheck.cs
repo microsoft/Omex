@@ -16,9 +16,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 	[Obsolete("The usage of this class is deprecated and will be removed in a later release, please use composable classes in Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Composables namespace to build health checks.")]
 	internal class HttpEndpointHealthCheck : AbstractHealthCheck<HttpHealthCheckParameters>
 	{
-		[Obsolete("This property is deprecated and will be removed in a later release.")]
-		public static string HttpClientLogicalName { get; } = "HttpEndpointHealthCheckHttpClient";
-
 		private readonly IHttpClientFactory m_httpClientFactory;
 
 		public HttpEndpointHealthCheck(
