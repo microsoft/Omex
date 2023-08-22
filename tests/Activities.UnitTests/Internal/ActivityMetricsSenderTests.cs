@@ -22,18 +22,16 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		[DataTestMethod]
 		[DataRow(false)]
 		[DataRow(true)]
-		public void SendActivityMetric_ProduceMetrics(bool isHealthCheck)
+		public void SendActivityMetric_NoExtraDimensions_ProduceMetricPointSuccessfully(bool isHealthCheck)
 		{
 			// 1. Arrange
 			(IExecutionContext context, IHostEnvironment environment) = PrepareEnvironment();
 
-			Mock<IExtraActivityBaggageDimensions> baggageDimensionsMock = new();
-			Mock<IExtraActivityTagObjectsDimensions> tagObjectsDimensionsMock = new();
-
-			baggageDimensionsMock.Setup(dimensions => dimensions.ExtraDimensions).Returns(new HashSet<string> { "HealthCheckMarker" });
-			tagObjectsDimensionsMock.Setup(dimensions => dimensions.ExtraDimensions).Returns(new HashSet<string> { s_healthCheckTag, ActivityTagKeys.Result, ActivityTagKeys.Metadata, ActivityTagKeys.SubType });
-
-			ActivityMetricsSender sender = new(context, environment, baggageDimensionsMock.Object, tagObjectsDimensionsMock.Object);
+			ActivityMetricsSender sender = new(
+				context,
+				environment,
+				isHealthCheck ? new ExtraActivityBaggageDimensions(new HashSet<string> { "HealthCheckMarker" }) : new ExtraActivityBaggageDimensions(),
+				new ExtraActivityTagObjectsDimensions());
 			Listener listener = new();
 
 			Activity activity = new(nameof(activity));
@@ -41,24 +39,119 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			// 2. Act
 			if (isHealthCheck)
 			{
-				activity.Start()
-					.MarkAsHealthCheck()
-					.AddTag(s_healthCheckTag, "TagValue")
-					// .AddBaggage("HealthCheckBaggage", "BaggageValue")
-					.Stop();
+				activity.Start().MarkAsHealthCheck().Stop();
 			}
 			else
 			{
-				activity.Start()
-					.SetSubType("TestSubType")
-					.SetMetadata("TestMetadata")
-					.MarkAsSuccess()
-					.Stop();
+				activity.Start().Stop();
+			}
+
+			sender.SendActivityMetric(activity);
+
+			// 3. Assert
+			VerifyTagsExist(listener, activity, context, environment, isHealthCheck ? s_heathCheckActivityMetricName : s_activityMetricName);
+		}
+
+		[TestMethod]
+		[DataTestMethod]
+		[DataRow(false)]
+		[DataRow(true)]
+		public void SendActivityMetric_ExtraDimensionsAreRegistered_ProduceMetricPointWithRegisteredDimensions(bool isHealthCheck)
+		{
+			// 1. Arrange
+			(IExecutionContext context, IHostEnvironment environment) = PrepareEnvironment();
+
+			const string testBaggage1 = "TestBaggage1";
+			const string testBaggage2 = "TestBaggage2";
+			const string testTag1 = "TestTag1";
+			const string testTag2 = "TestTag1";
+
+			ActivityMetricsSender sender = new(
+				context,
+				environment,
+				isHealthCheck ?
+					new ExtraActivityBaggageDimensions(new HashSet<string> { "HealthCheckMarker", testBaggage1, testBaggage2 })
+					: new ExtraActivityBaggageDimensions( new HashSet<string>(){ testBaggage1, testBaggage2 }) ,
+				new ExtraActivityTagObjectsDimensions(new HashSet<string>()
+				{
+					ActivityTagKeys.Result, ActivityTagKeys.Metadata, ActivityTagKeys.SubType,
+					testTag1, testTag2
+				}));
+
+			Listener listener = new();
+
+			Activity activity = new(nameof(activity));
+			activity
+				.SetBaggage(testBaggage1, "value1")
+				.SetBaggage(testBaggage2, "value2")
+				.SetTag(testTag1, "value3")
+				.SetTag(testTag2, "value4")
+				.MarkAsSuccess()
+				.SetMetadata("TestMetadata")
+				.SetSubType("TestSubType");
+
+			// 2. Act
+			if (isHealthCheck)
+			{
+				activity.Start().MarkAsHealthCheck().Stop();
+			}
+			else
+			{
+				activity.Start().Stop();
 			}
 			sender.SendActivityMetric(activity);
 
 			// 3. Assert
-			VerifyTagsExist(listener, activity, context, environment, isHealthCheck ? s_heathCheckActivityCounterName : s_activityMetricName);
+			VerifyTagsExist(listener, activity, context, environment, isHealthCheck ? s_heathCheckActivityMetricName : s_activityMetricName);
+		}
+
+		[TestMethod]
+		public void SendActivityMetric_ExtraDimensionsAreNotRegistered_FailToProduceMetricPoint()
+		{
+			// 1. Arrange
+			(IExecutionContext context, IHostEnvironment environment) = PrepareEnvironment();
+
+			const string testBaggage1 = "TestBaggage1";
+			const string testBaggage2 = "TestBaggage2";
+			const string testTag1 = "TestTag1";
+			const string testTag2 = "TestTag1";
+
+			ActivityMetricsSender sender = new(
+				context,
+				environment,
+				new ExtraActivityBaggageDimensions(new HashSet<string>()), // Override by empty set
+				new ExtraActivityTagObjectsDimensions(new HashSet<string>())); // Override by empty set
+
+			Listener listener = new();
+
+			Activity activity = new(nameof(activity));
+			activity
+				.Start()
+				.SetBaggage(testBaggage1, "value1")
+				.SetBaggage(testBaggage2, "value2")
+				.SetTag(testTag1, "value3")
+				.SetTag(testTag2, "value4")
+				.MarkAsSuccess()
+				.MarkAsHealthCheck()
+				.SetMetadata("TestMetadata")
+				.SetSubType("TestSubType")
+				.Stop();
+
+			sender.SendActivityMetric(activity);
+
+			// 3. Assert
+			MeasurementResult result = listener.Results.First();
+
+			foreach (KeyValuePair<string, object?> tagPair in activity.TagObjects)
+			{
+				Assert.ThrowsException<KeyNotFoundException>(() => result.Tags[tagPair.Key]);
+			}
+
+			foreach (KeyValuePair<string, string?> tagPair in activity.Baggage)
+			{
+				Assert.ThrowsException<KeyNotFoundException>(() => result.Tags[tagPair.Key]);
+
+			}
 		}
 
 		private void VerifyTagsExist(Listener listener, Activity activity, IExecutionContext context, IHostEnvironment environment, string instrumentationName)
@@ -68,7 +161,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			Assert.AreEqual(instrumentationName, result.Instrument.Name);
 			Assert.AreEqual(Convert.ToInt64(activity.Duration.TotalMilliseconds), result.Measurement);
 			AssertTag(result, "Name", activity.OperationName);
-			AssertTag(result, s_environmentTagName, environment.EnvironmentName);
+			AssertTag(result, "Environment", environment.EnvironmentName);
 			AssertTag(result, "RegionName", context.RegionName);
 			AssertTag(result, "Cluster", context.Cluster);
 			AssertTag(result, "ApplicationName", context.ApplicationName);
@@ -92,6 +185,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		}
 
 		private static void AssertTag(MeasurementResult result, string key, object? expectedValue) => Assert.AreEqual(expectedValue, result.Tags[key]);
+
 
 		private (IExecutionContext, IHostEnvironment) PrepareEnvironment()
 		{
@@ -117,13 +211,9 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			return (context, environment);
 		}
 
-		private static readonly string s_healthCheckTag = "HealthCheckTag";
-
-		private static readonly string s_environmentTagName = "Environment";
-
 		private static readonly string s_activityMetricName = "Activities";
 
-		private static readonly string s_heathCheckActivityCounterName = "HealthCheckActivities";
+		private static readonly string s_heathCheckActivityMetricName = "HealthCheckActivities";
 
 		private class Listener
 		{
@@ -132,7 +222,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 				MeterListener listener = new();
 				listener.InstrumentPublished = (instrument, meterListener) =>
 				{
-					if ((instrument.Name == s_activityMetricName || instrument.Name == s_heathCheckActivityCounterName)
+					if ((instrument.Name == s_activityMetricName || instrument.Name == s_heathCheckActivityMetricName)
 						&& instrument.Meter.Name == "Microsoft.Omex.Activities"
 						&& instrument.Meter.Version == "1.0.0")
 					{
