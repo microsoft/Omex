@@ -15,8 +15,10 @@
     <PackageReference Include="Microsoft.ServiceFabric" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" />
     <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" />
   </ItemGroup>
   <ItemGroup Condition="!$(IsNetCore)">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
   </ItemGroup>
   <ItemGroup>

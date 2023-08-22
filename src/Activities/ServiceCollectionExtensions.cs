@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Abstractions.Option;
 using Microsoft.Omex.Extensions.Activities;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -44,8 +43,8 @@ namespace Microsoft.Extensions.DependencyInjection
 			serviceCollection.TryAddSingleton<IExtraActivityTagObjectsDimensions>(_ => new ExtraActivityTagObjectsDimensions());
 
 			serviceCollection
-				.AddOptions<MonitoringOption>()
-				.BindConfiguration(MonitoringOption.MonitoringPath)
+				.AddOptions<ActivityOption>()
+				.BindConfiguration(ActivityOption.MonitoringPath)
 				.ValidateDataAnnotations();
 
 			serviceCollection.TryAddSingleton<IActivityListenerConfigurator, DefaultActivityListenerConfigurator>();

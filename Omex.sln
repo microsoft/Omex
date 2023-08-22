@@ -21,9 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
+		Directory.Packages.props = Directory.Packages.props
 		global.json = global.json
 		NuGet.Config = NuGet.Config
-		Packages.props = Packages.props
 		README.md = README.md
 		ship.snk = ship.snk
 	EndProjectSection
@@ -69,6 +69,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Activities.UnitTests", "tests\Activities.UnitTests\Microsoft.Omex.Extensions.Activities.UnitTests.csproj", "{E9123DDF-3D31-48A5-8442-F1DAD516E1A6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions", "src\ServiceFabricGuest.Abstractions\Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.csproj", "{A07BF64C-1B19-4972-83DB-B22BFF26E6B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Diagnostics.HealthChecks.AspNetCore", "src\Diagnostics.HealthChecks.AspNetCore\Microsoft.Omex.Extensions.Diagnostics.HealthChecks.AspNetCore.csproj", "{7FD8C746-9DB1-4B33-B4A6-95AF5FEF2CCD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Diagnostics.HealthChecks.AspNetCore.UnitTests", "tests\Diagnostics.HealthChecks.AspNetCore.UnitTests\Microsoft.Omex.Extensions.Diagnostics.HealthChecks.AspNetCore.UnitTests.csproj", "{43CE835D-5A71-4689-9297-942EF1233175}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -246,6 +250,22 @@ Global
 		{A07BF64C-1B19-4972-83DB-B22BFF26E6B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A07BF64C-1B19-4972-83DB-B22BFF26E6B0}.Release|x64.ActiveCfg = Release|Any CPU
 		{A07BF64C-1B19-4972-83DB-B22BFF26E6B0}.Release|x64.Build.0 = Release|Any CPU
+		{7FD8C746-9DB1-4B33-B4A6-95AF5FEF2CCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FD8C746-9DB1-4B33-B4A6-95AF5FEF2CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FD8C746-9DB1-4B33-B4A6-95AF5FEF2CCD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7FD8C746-9DB1-4B33-B4A6-95AF5FEF2CCD}.Debug|x64.Build.0 = Debug|Any CPU
+		{7FD8C746-9DB1-4B33-B4A6-95AF5FEF2CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FD8C746-9DB1-4B33-B4A6-95AF5FEF2CCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FD8C746-9DB1-4B33-B4A6-95AF5FEF2CCD}.Release|x64.ActiveCfg = Release|Any CPU
+		{7FD8C746-9DB1-4B33-B4A6-95AF5FEF2CCD}.Release|x64.Build.0 = Release|Any CPU
+		{43CE835D-5A71-4689-9297-942EF1233175}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43CE835D-5A71-4689-9297-942EF1233175}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43CE835D-5A71-4689-9297-942EF1233175}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{43CE835D-5A71-4689-9297-942EF1233175}.Debug|x64.Build.0 = Debug|Any CPU
+		{43CE835D-5A71-4689-9297-942EF1233175}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43CE835D-5A71-4689-9297-942EF1233175}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43CE835D-5A71-4689-9297-942EF1233175}.Release|x64.ActiveCfg = Release|Any CPU
+		{43CE835D-5A71-4689-9297-942EF1233175}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -272,6 +292,8 @@ Global
 		{8520AA74-FDA7-4EC0-B60D-C9A786574443} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
 		{E9123DDF-3D31-48A5-8442-F1DAD516E1A6} = {551C93F8-6E89-4954-8905-7F5AC7173285}
 		{A07BF64C-1B19-4972-83DB-B22BFF26E6B0} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
+		{7FD8C746-9DB1-4B33-B4A6-95AF5FEF2CCD} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
+		{43CE835D-5A71-4689-9297-942EF1233175} = {551C93F8-6E89-4954-8905-7F5AC7173285}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6FB7BCB-BF07-4F19-ACBA-457479D421BB}
