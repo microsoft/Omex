@@ -37,6 +37,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public void AddServiceFabricHealthChecks_RegisterPublisherAndChecks()
 		{
 			string checkName = "MockCheck";
@@ -72,8 +73,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 		public class MockCheck : IHealthCheck
 		{
-			public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken) =>
-				Task.FromResult(HealthCheckResult.Healthy());
+			public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken) =>
+				await Task.FromResult(HealthCheckResult.Healthy());
 		}
 	}
 }
