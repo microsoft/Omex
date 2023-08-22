@@ -140,7 +140,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			sender.SendActivityMetric(activity);
 
 			// 3. Assert
-			MeasurementResult result = listener.Results.First();
+			MeasurementResult result = listener.Results.First(m => environment.EnvironmentName.Equals(m.Tags[s_environmentTagName]));
 
 			foreach (KeyValuePair<string, object?> tagPair in activity.TagObjects)
 			{
@@ -150,13 +150,12 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			foreach (KeyValuePair<string, string?> tagPair in activity.Baggage)
 			{
 				Assert.ThrowsException<KeyNotFoundException>(() => result.Tags[tagPair.Key]);
-
 			}
 		}
 
 		private void VerifyTagsExist(Listener listener, Activity activity, IExecutionContext context, IHostEnvironment environment, string instrumentationName)
 		{
-			MeasurementResult result = listener.Results.First();
+			MeasurementResult result = listener.Results.First(m => environment.EnvironmentName.Equals(m.Tags[s_environmentTagName]));
 
 			Assert.AreEqual(instrumentationName, result.Instrument.Name);
 			Assert.AreEqual(Convert.ToInt64(activity.Duration.TotalMilliseconds), result.Measurement);
@@ -210,6 +209,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			IHostEnvironment environment = environmentMock.Object;
 			return (context, environment);
 		}
+
+		private static readonly string s_environmentTagName = "Environment";
 
 		private static readonly string s_activityMetricName = "Activities";
 
