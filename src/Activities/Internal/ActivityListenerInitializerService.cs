@@ -1,13 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
+using Moq;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
+using System.Threading.Tasks;
+using System.Threading;
+using Microsoft.Omex.Extensions.Testing.Helpers;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
