@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
@@ -21,6 +22,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_eventSource = eventSource;
 			m_serviceName = executionContext.ServiceName;
 			m_logger = logger;
+			m_options = options;
 		}
 
 		public void SendActivityMetric(Activity activity)
