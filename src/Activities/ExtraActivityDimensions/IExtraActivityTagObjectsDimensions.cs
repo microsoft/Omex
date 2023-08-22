@@ -7,7 +7,7 @@ namespace Microsoft.Omex.Extensions.Activities
 {
 	/// <summary>
 	/// Define extra metric dimensions which are extracted from Activity TagObjects  by <see cref="ActivityMetricsSender.SendActivityMetric"/>
-	/// By using this, ensure that the value of any extra dimensions are not random values such as ID, timestamp because it will lead to metric explosion.
+	/// Make sure that the value of any extra dimensions are not random values such as ID, timestamp because it will lead to metric explosion.
 	/// </summary>
 	public interface IExtraActivityTagObjectsDimensions
 	{

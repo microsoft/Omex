@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Extensions.Activities
 		/// <summary>
 		/// Override the default constructor to specify extra dimension set.
 		/// </summary>
-		/// <param name="overrideDefaultExtraDimensions"></param>
+		/// <param name="overrideDefaultExtraDimensions">Set of extra dimensions which are added to metric point</param>
 		public ExtraActivityBaggageDimensions(HashSet<string> overrideDefaultExtraDimensions) => ExtraDimensions = overrideDefaultExtraDimensions;
 
 		/// <inheritdoc/>
