@@ -71,7 +71,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 				environment,
 				isHealthCheck ?
 					new ExtraActivityBaggageDimensions(new HashSet<string> { "HealthCheckMarker", testBaggage1, testBaggage2 })
-					: new ExtraActivityBaggageDimensions( new HashSet<string>(){ testBaggage1, testBaggage2 }) ,
+					: new ExtraActivityBaggageDimensions(new HashSet<string>() { testBaggage1, testBaggage2 }),
 				new ExtraActivityTagObjectsDimensions(new HashSet<string>()
 				{
 					ActivityTagKeys.Result, ActivityTagKeys.Metadata, ActivityTagKeys.SubType,
