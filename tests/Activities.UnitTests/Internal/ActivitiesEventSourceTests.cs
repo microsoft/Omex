@@ -81,7 +81,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			contextMock.Setup(c => c.ServiceName).Returns("TestService");
 
 			Mock<IOptions<MonitoringOption>> mockOptions = new();
-			MonitoringOption monitoringOption = new() { DisableEventSender = true };
+			MonitoringOption monitoringOption = new() { DisableActivityEventSender = true };
 			mockOptions.Setup(m => m.Value).Returns(monitoringOption);
 
 			ActivityEventSender logEventSource = new(
