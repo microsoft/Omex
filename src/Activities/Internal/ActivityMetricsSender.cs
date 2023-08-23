@@ -56,17 +56,19 @@ namespace Microsoft.Omex.Extensions.Activities
 
 			foreach (string dimension in m_extraBaggageDimension)
 			{
-				if (!string.IsNullOrWhiteSpace(activity.GetBaggageItem(dimension)))
+				string? baggageItem = activity.GetBaggageItem(dimension);
+				if (!string.IsNullOrWhiteSpace(baggageItem))
 				{
-					tagList.Add(dimension, activity.GetBaggageItem(dimension));
+					tagList.Add(dimension, baggageItem);
 				}
 			}
 
 			foreach (string dimension in m_extraTagObjectsDimension)
 			{
-				if (activity.GetTagItem(dimension) != null)
+				object? tagItem = activity.GetTagItem(dimension);
+				if (tagItem != null)
 				{
-					tagList.Add(dimension, activity.GetTagItem(dimension));
+					tagList.Add(dimension, tagItem);
 				}
 			}
 
