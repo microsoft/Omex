@@ -18,18 +18,18 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly Histogram<long> m_healthCheckActivityHistogram;
 		private readonly IExecutionContext m_context;
 		private readonly IHostEnvironment m_hostEnvironment;
-		private readonly HashSet<string> m_extraBaggageDimension;
-		private readonly HashSet<string> m_extraTagObjectsDimension;
+		private readonly HashSet<string> m_customBaggageDimension;
+		private readonly HashSet<string> m_customTagObjectsDimension;
 
-		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment, IExtraActivityBaggageDimensions extraActivityBaggageDimensions, IExtraActivityTagObjectsDimensions extraActivityTagObjectsDimensions)
+		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment, ICustomBaggageDimensions customBaggageDimensions, ICustomTagObjectsDimensions customTagObjectsDimensions)
 		{
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
 			m_meter = new Meter("Microsoft.Omex.Activities", "1.0.0");
 			m_activityHistogram = m_meter.CreateHistogram<long>("Activities");
 			m_healthCheckActivityHistogram = m_meter.CreateHistogram<long>("HealthCheckActivities");
-			m_extraBaggageDimension = extraActivityBaggageDimensions.ExtraDimensions;
-			m_extraTagObjectsDimension = extraActivityTagObjectsDimensions.ExtraDimensions;
+			m_customBaggageDimension = customBaggageDimensions.CustomDimensions;
+			m_customTagObjectsDimension = customTagObjectsDimensions.CustomDimensions;
 		}
 
 		public void SendActivityMetric(Activity activity)
@@ -54,7 +54,7 @@ namespace Microsoft.Omex.Extensions.Activities
 					{ "IsPrivateDeployment", m_context.IsPrivateDeployment }
 				};
 
-			foreach (string dimension in m_extraBaggageDimension)
+			foreach (string dimension in m_customBaggageDimension)
 			{
 				string? baggageItem = activity.GetBaggageItem(dimension);
 				if (!string.IsNullOrWhiteSpace(baggageItem))
@@ -63,7 +63,7 @@ namespace Microsoft.Omex.Extensions.Activities
 				}
 			}
 
-			foreach (string dimension in m_extraTagObjectsDimension)
+			foreach (string dimension in m_customTagObjectsDimension)
 			{
 				object? tagItem = activity.GetTagItem(dimension);
 				if (tagItem != null)

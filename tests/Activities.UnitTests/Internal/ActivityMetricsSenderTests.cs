@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		[DataTestMethod]
 		[DataRow(false)]
 		[DataRow(true)]
-		public void SendActivityMetric_NoExtraDimensions_ProduceMetricPointSuccessfully(bool isHealthCheck)
+		public void SendActivityMetric_NoCustomDimensions_ProduceMetricPointSuccessfully(bool isHealthCheck)
 		{
 			// 1. Arrange
 			(IExecutionContext context, IHostEnvironment environment) = PrepareEnvironment();
@@ -30,8 +30,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			ActivityMetricsSender sender = new(
 				context,
 				environment,
-				isHealthCheck ? new ExtraActivityBaggageDimensions(new HashSet<string> { "HealthCheckMarker" }) : new ExtraActivityBaggageDimensions(),
-				new ExtraActivityTagObjectsDimensions());
+				isHealthCheck ? new CustomBaggageDimensions(new HashSet<string> { "HealthCheckMarker" }) : new CustomBaggageDimensions(),
+				new CustomTagObjectsDimensions());
 			Listener listener = new();
 
 			Activity activity = new(nameof(activity));
@@ -56,7 +56,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		[DataTestMethod]
 		[DataRow(false)]
 		[DataRow(true)]
-		public void SendActivityMetric_ExtraDimensionsAreRegistered_ProduceMetricPointWithRegisteredDimensions(bool isHealthCheck)
+		public void SendActivityMetric_CustomDimensionsAreRegistered_ProduceMetricPointWithRegisteredDimensions(bool isHealthCheck)
 		{
 			// 1. Arrange
 			(IExecutionContext context, IHostEnvironment environment) = PrepareEnvironment();
@@ -70,9 +70,9 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 				context,
 				environment,
 				isHealthCheck ?
-					new ExtraActivityBaggageDimensions(new HashSet<string> { "HealthCheckMarker", testBaggage1, testBaggage2 })
-					: new ExtraActivityBaggageDimensions(new HashSet<string>() { testBaggage1, testBaggage2 }),
-				new ExtraActivityTagObjectsDimensions(new HashSet<string>()
+					new CustomBaggageDimensions(new HashSet<string> { "HealthCheckMarker", testBaggage1, testBaggage2 })
+					: new CustomBaggageDimensions(new HashSet<string>() { testBaggage1, testBaggage2 }),
+				new CustomTagObjectsDimensions(new HashSet<string>()
 				{
 					ActivityTagKeys.Result, ActivityTagKeys.Metadata, ActivityTagKeys.SubType,
 					testTag1, testTag2
@@ -106,7 +106,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		}
 
 		[TestMethod]
-		public void SendActivityMetric_ExtraDimensionsAreNotRegistered_FailToProduceMetricPoint()
+		public void SendActivityMetric_CustomDimensionsAreNotRegistered_FailToProduceMetricPoint()
 		{
 			// 1. Arrange
 			(IExecutionContext context, IHostEnvironment environment) = PrepareEnvironment();
@@ -119,8 +119,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			ActivityMetricsSender sender = new(
 				context,
 				environment,
-				new ExtraActivityBaggageDimensions(new HashSet<string>()), // Override by empty set
-				new ExtraActivityTagObjectsDimensions(new HashSet<string>())); // Override by empty set
+				new CustomBaggageDimensions(new HashSet<string>()), // Override by empty set
+				new CustomTagObjectsDimensions(new HashSet<string>())); // Override by empty set
 
 			Listener listener = new();
 
