@@ -2,13 +2,10 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
-using System.Linq;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 
@@ -21,70 +18,63 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly Histogram<long> m_healthCheckActivityHistogram;
 		private readonly IExecutionContext m_context;
 		private readonly IHostEnvironment m_hostEnvironment;
-		private readonly ArrayPool<KeyValuePair<string, object?>> m_arrayPool;
+		private readonly HashSet<string> m_extraBaggageDimension;
+		private readonly HashSet<string> m_extraTagObjectsDimension;
 
-		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment)
+		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment, IExtraActivityBaggageDimensions extraActivityBaggageDimensions, IExtraActivityTagObjectsDimensions extraActivityTagObjectsDimensions)
 		{
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
 			m_meter = new Meter("Microsoft.Omex.Activities", "1.0.0");
 			m_activityHistogram = m_meter.CreateHistogram<long>("Activities");
 			m_healthCheckActivityHistogram = m_meter.CreateHistogram<long>("HealthCheckActivities");
-			m_arrayPool = ArrayPool<KeyValuePair<string, object?>>.Create();
+			m_extraBaggageDimension = extraActivityBaggageDimensions.ExtraDimensions;
+			m_extraTagObjectsDimension = extraActivityTagObjectsDimensions.ExtraDimensions;
 		}
 
 		public void SendActivityMetric(Activity activity)
 		{
-			long durationMs = Convert.ToInt64(activity.Duration.TotalMilliseconds);
-
-			int tagsCount = s_customTags.Length + activity.TagObjects.Count() + activity.Baggage.Count();
-
-			KeyValuePair<string, object?>[] tags = m_arrayPool.Rent(tagsCount);
-
-			int index = 0;
-
-			foreach (Func<ActivityMetricsSender, Activity, KeyValuePair<string, object?>> getter in s_customTags)
-			{
-				tags[index++] = getter(this, activity);
-			}
-
-			foreach (KeyValuePair<string, string?> baggage in activity.Baggage)
-			{
-				tags[index++] = CreatePair(baggage.Key, baggage.Value);
-			}
-
-			foreach (KeyValuePair<string, object?> tag in activity.TagObjects)
-			{
-				tags[index++] = tag;
-			}
-
-			ReadOnlySpan<KeyValuePair<string, object?>> tagsSpan = MemoryExtensions.AsSpan(tags, 0, tagsCount);
-
 			Histogram<long> histogram = activity.IsHealthCheck() ? m_healthCheckActivityHistogram : m_activityHistogram;
 
-			histogram.Record(durationMs, tagsSpan);
+			long durationMs = Convert.ToInt64(activity.Duration.TotalMilliseconds);
 
-			m_arrayPool.Return(tags, clearArray: true);
+			TagList tagList = new()
+				{
+					{ "Name", activity.OperationName },
+					{ "RegionName", m_context.RegionName },
+					{ "ServiceName", m_context.ServiceName },
+					{ "BuildVersion", m_context.BuildVersion },
+					{ "Environment", m_hostEnvironment.EnvironmentName },
+					{ "Cluster", m_context.Cluster },
+					{ "ApplicationName", m_context.ApplicationName },
+					{ "NodeName", m_context.NodeName },
+					{ "MachineId", m_context.MachineId },
+					{ "DeploymentSlice", m_context.DeploymentSlice },
+					{ "IsCanary", m_context.IsCanary },
+					{ "IsPrivateDeployment", m_context.IsPrivateDeployment }
+				};
+
+			foreach (string dimension in m_extraBaggageDimension)
+			{
+				string? baggageItem = activity.GetBaggageItem(dimension);
+				if (!string.IsNullOrWhiteSpace(baggageItem))
+				{
+					tagList.Add(dimension, baggageItem);
+				}
+			}
+
+			foreach (string dimension in m_extraTagObjectsDimension)
+			{
+				object? tagItem = activity.GetTagItem(dimension);
+				if (tagItem != null)
+				{
+					tagList.Add(dimension, tagItem);
+				}
+			}
+
+			histogram.Record(durationMs, tagList);
 		}
 
 		public void Dispose() => m_meter.Dispose();
-
-		private static readonly Func<ActivityMetricsSender, Activity, KeyValuePair<string, object?>>[] s_customTags = new Func<ActivityMetricsSender, Activity, KeyValuePair<string, object?>>[]
-		{
-			static (sender, activity) => CreatePair("Name", activity.OperationName),
-			static (sender, activity) => CreatePair("Environment", sender.m_hostEnvironment.EnvironmentName),
-			static (sender, activity) => CreatePair("RegionName", sender.m_context.RegionName),
-			static (sender, activity) => CreatePair("Cluster", sender.m_context.Cluster),
-			static (sender, activity) => CreatePair("ApplicationName", sender.m_context.ApplicationName),
-			static (sender, activity) => CreatePair("ServiceName", sender.m_context.ServiceName),
-			static (sender, activity) => CreatePair("BuildVersion", sender.m_context.BuildVersion),
-			static (sender, activity) => CreatePair("NodeName", sender.m_context.NodeName),
-			static (sender, activity) => CreatePair("MachineId", sender.m_context.MachineId),
-			static (sender, activity) => CreatePair("DeploymentSlice", sender.m_context.DeploymentSlice),
-			static (sender, activity) => CreatePair("IsCanary", sender.m_context.IsCanary),
-			static (sender, activity) => CreatePair("IsPrivateDeployment", sender.m_context.IsPrivateDeployment)
-		};
-
-		private static KeyValuePair<string, object?> CreatePair(string key, object? value) => new(key, value);
 	}
 }

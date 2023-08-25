@@ -39,6 +39,8 @@ namespace Microsoft.Extensions.DependencyInjection
 			serviceCollection.TryAddSingleton<ActivityMetricsSender>();
 			serviceCollection.TryAddSingleton<ActivityEventSender>();
 			serviceCollection.TryAddSingleton<IActivitiesEventSender, AggregatedActivitiesEventSender>();
+			serviceCollection.TryAddSingleton<IExtraActivityBaggageDimensions>(_ => new ExtraActivityBaggageDimensions());
+			serviceCollection.TryAddSingleton<IExtraActivityTagObjectsDimensions>(_ => new ExtraActivityTagObjectsDimensions());
 
 			serviceCollection
 				.AddOptions<ActivityOption>()
