@@ -12,9 +12,9 @@
     <PackageTags>Microsoft;Omex;Extensions;HealthChecks;AspNetCore</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" />
+    <ProjectReference Include="..\Diagnostics.HealthChecks\Microsoft.Omex.Extensions.Diagnostics.HealthChecks.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Diagnostics.HealthChecks\Microsoft.Omex.Extensions.Diagnostics.HealthChecks.csproj" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 </Project>
