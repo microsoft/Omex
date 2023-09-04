@@ -87,7 +87,7 @@ public static class HealthCheckTestHelpers
 	/// <param name="numberOfFailuresBeforeOk">The number of failures before returning the response.</param>
 	/// <param name="shouldThrowException">Whether the HttpClient should throw an exception.</param>
 	/// <returns>The Http Client factory mock.</returns>
-	internal static Mock<IHttpClientFactory> GetHttpClientFactoryMock(
+	public static Mock<IHttpClientFactory> GetHttpClientFactoryMock(
 		HttpResponseMessage message,
 		int? numberOfFailuresBeforeOk = null,
 		bool? shouldThrowException = false)
@@ -124,7 +124,7 @@ public static class HealthCheckTestHelpers
 	/// <param name="statusCode">The response status code.</param>
 	/// <param name="message">The response raw body string.</param>
 	/// <returns>The response.</returns>
-	internal static HttpResponseMessage GetHttpResponseMessageMock(HttpStatusCode statusCode, string message) =>
+	public static HttpResponseMessage GetHttpResponseMessageMock(HttpStatusCode statusCode, string message) =>
 		new(statusCode)
 		{
 			Content = new StringContent(message)
@@ -137,7 +137,7 @@ public static class HealthCheckTestHelpers
 	/// <summary>
 	/// Creates the local SF service info mock.
 	/// </summary>
-	internal static void SetLocalServiceInfo()
+	public static void SetLocalServiceInfo()
 	{
 		const string PublishAddressEvnVariableName = "Fabric_NodeIPOrFQDN";
 		const string EndpointPortEvnVariableSuffix = "Fabric_Endpoint_";

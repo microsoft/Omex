@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics;
 using System.Net.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.AspNetCore;
@@ -34,4 +35,27 @@ public static class HealthCheckComposablesExtensions
 				httpClientFactory,
 				httpClientName: httpClientName,
 				activityMarker: activity => activity?.MarkAsLivenessCheck());
+
+	/// <summary>
+	/// Adds the endpoint health check to the project.
+	/// </summary>
+	/// <param name="healthChecksBuilder">The health check builder.</param>
+	/// <param name="name">The health check name.</param>
+	/// <param name="failureStatus">
+	/// The health check failure status that will be reported if the health check fails.
+	/// </param>
+	/// <param name="parameters">
+	/// The health check parameters. Notice that these parameters will have to be an instance of the <see cref="EndpointLivenessHealthCheckParameters"/> class.
+	/// </param>
+	/// <returns>The health check builder.</returns>
+	public static IHealthChecksBuilder AddEndpointHttpHealthCheck(
+		this IHealthChecksBuilder healthChecksBuilder,
+		string name,
+		HealthStatus? failureStatus,
+		EndpointLivenessHealthCheckParameters parameters) =>
+		healthChecksBuilder
+			.AddTypeActivatedCheck<EndpointLivenessHealthCheck>(
+				name,
+				failureStatus,
+				parameters);
 }
