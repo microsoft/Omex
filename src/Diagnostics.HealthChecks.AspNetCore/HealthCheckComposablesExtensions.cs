@@ -1,6 +1,7 @@
 ﻿// Copyright (C) Microsoft Corporation. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -58,4 +59,41 @@ public static class HealthCheckComposablesExtensions
 				name,
 				failureStatus,
 				parameters);
+
+	/// <summary>
+	/// Adds the endpoint helath check in the project.
+	/// This overload will build the custom Health Check parameters with the parameters provided in input.
+	/// The order of the input parameters is the same as the legacy extension method.
+	/// </summary>
+	/// <param name="healthChecksBuilder">The HealthChecks builder.</param>
+	/// <param name="name">The Health Check name.</param>
+	/// <param name="endpointName">The Service Fabric endpoint name.</param>
+	/// <param name="relativePath">The relative path of the endpoint to check.</param>
+	/// <param name="httpClientLogicalName">
+	/// The HTTP Client logical name. It must be the same as the one registered in the DI.
+	/// </param>
+	/// <param name="failureStatus">The status that will be reported if the Health Check fails.</param>
+	/// <param name="host">The service host.</param>
+	/// <param name="reportData">The report data parameters.</param>
+	/// <returns>The Health Check builder.</returns>
+	public static IHealthChecksBuilder AddEndpointHttpHealthCheck(
+		this IHealthChecksBuilder healthChecksBuilder,
+		string name,
+		string endpointName,
+		string relativePath,
+		string httpClientLogicalName,
+		HealthStatus failureStatus = HealthStatus.Unhealthy,
+		string host = "localhost",
+		params KeyValuePair<string, object>[] reportData)
+	{
+		EndpointLivenessHealthCheckParameters parameters = new(
+			endpointName,
+			httpClientLogicalName,
+			relativePath,
+			host,
+			reportData
+		);
+
+		return healthChecksBuilder.AddEndpointHttpHealthCheck(name, failureStatus, parameters);
+	}
 }
