@@ -19,14 +19,14 @@ namespace Microsoft.Omex.Extensions.Hosting
 		/// </summary>
 		public static IHostBuilder AddOmexServices(this IHostBuilder builder) =>
 			builder
-				.ConfigureServices((context, collection) => collection.AddOmexServices());
+				.ConfigureServices((context, collection) => collection.AddOmexServices(context));
 
 		/// <summary>
 		/// Add Omex Logging and ActivitySource dependencies
 		/// </summary>
-		public static IServiceCollection AddOmexServices(this IServiceCollection collection) =>
+		public static IServiceCollection AddOmexServices(this IServiceCollection collection, HostBuilderContext? hostBuilderContext) =>
 			collection
-				.AddOmexLogging()
+				.AddOmexLogging(hostBuilderContext)
 				.AddOmexActivitySource();
 
 		/// <summary>
