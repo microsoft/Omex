@@ -50,7 +50,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			serviceCollection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
 			serviceCollection.AddLogging();
 
-			const string settingName = "Monitoring:EventSourceLoggingEnabled";
+			const string settingName = "Monitoring:OmexLoggingEnabled";
 			bool isEventSourceLoggingEnabled = bool.Parse(context?.Configuration.GetSection(settingName).Get<string>() ?? "true");
 			if (!isEventSourceLoggingEnabled)
 			{
