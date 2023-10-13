@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 			object? collectionObj = new ServiceCollection()
 				.AddSingleton<IConfiguration>(new ConfigurationBuilder().Build()) // Added IConfiguration because one of the dependency depends on IOptions which in turn depends on IConfiguration
 				.AddSingleton<IHostEnvironment>(new HostingEnvironment())
-				.AddOmexServices()
+				.AddOmexServices(null!)
 				.BuildServiceProvider(new ServiceProviderOptions
 				{
 					ValidateOnBuild = true,

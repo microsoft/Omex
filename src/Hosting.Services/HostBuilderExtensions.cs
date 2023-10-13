@@ -41,7 +41,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>
 		/// Registering Dependency Injection classes that will provide Service Fabric specific information for logging
 		/// </summary>
-		public static IServiceCollection AddOmexServiceFabricDependencies<TContext>(this IServiceCollection collection)
+		public static IServiceCollection AddOmexServiceFabricDependencies<TContext>(this IServiceCollection collection, HostBuilderContext? hostBuilderContext)
 			where TContext : ServiceContext
 		{
 			bool isStatefulService = typeof(StatefulServiceContext).IsAssignableFrom(typeof(TContext));
@@ -60,7 +60,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 			collection.TryAddSingleton<IServiceContext, OmexServiceFabricContext>();
 			collection.TryAddSingleton<IExecutionContext, ServiceFabricExecutionContext>();
-			return collection.AddOmexServices();
+			return collection.AddOmexServices(hostBuilderContext);
 		}
 
 		private static IHost BuildServiceFabricService<TRunner, TService, TContext>(
@@ -92,7 +92,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 							{
 								options.ServiceTypeName = serviceName;
 							})
-							.AddOmexServiceFabricDependencies<TContext>()
+							.AddOmexServiceFabricDependencies<TContext>(context)
 							.AddSingleton<IOmexServiceRegistrator, TRunner>()
 							.AddHostedService<OmexHostedService>();
 					})

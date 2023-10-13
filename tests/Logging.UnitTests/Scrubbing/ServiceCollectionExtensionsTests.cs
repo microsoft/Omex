@@ -143,7 +143,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		private static ILogScrubbingRule[] GetTypeRegistrations(IServiceCollection collection)
 		{
 			IEnumerable<ILogScrubbingRule> objects = collection
-				.AddOmexLogging()
+				.AddOmexLogging(null!)
 				.BuildServiceProvider(new ServiceProviderOptions
 				{
 					ValidateOnBuild = true,

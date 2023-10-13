@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
@@ -29,9 +31,10 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// Adds Omex event logger to the factory
 		/// </summary>
 		/// <param name="builder">The extension method argument</param>
-		public static ILoggingBuilder AddOmexLogging(this ILoggingBuilder builder)
+		/// <param name="context">HostBuilderContext to access Configuration</param>
+		public static ILoggingBuilder AddOmexLogging(this ILoggingBuilder builder, HostBuilderContext? context)
 		{
-			builder.Services.AddOmexLogging();
+			builder.Services.AddOmexLogging(context);
 			return builder;
 		}
 
@@ -39,13 +42,21 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// Adds Omex event logger to the factory
 		/// </summary>
 		/// <param name="serviceCollection">The extension method argument</param>
+		/// <param name="context">HostBuilderContext to access Configuration</param>
 		/// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained</returns>
-		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection)
+		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection, HostBuilderContext? context)
 		{
-			serviceCollection.AddLogging();
-
 			serviceCollection.TryAddTransient<IServiceContext, EmptyServiceContext>();
 			serviceCollection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
+			serviceCollection.AddLogging();
+
+			const string settingName = "Monitoring:OmexLoggingEnabled";
+			bool isEventSourceLoggingEnabled = bool.Parse(context?.Configuration.GetSection(settingName).Get<string>() ?? "true");
+			if (!isEventSourceLoggingEnabled)
+			{
+				return serviceCollection;
+			}
+
 			serviceCollection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
 
 			serviceCollection.TryAddSingleton(_ => OmexLogEventSource.Instance);

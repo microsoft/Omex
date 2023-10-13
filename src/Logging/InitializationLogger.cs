@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Logging
 				builder.AddConsole();
 			}
 
-			builder.AddOmexLogging();
+			builder.AddOmexLogging(null!); // Because this method cannot access HostBuilder's configuration.
 			return builder;
 		}
 

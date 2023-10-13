@@ -2,8 +2,12 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Logging.Scrubbing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.Logging.UnitTests
@@ -25,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		{
 			IServiceCollection collection = new ServiceCollection()
 				.AddOmexServiceContext<MockServiceContext>()
-				.AddOmexLogging();
+				.AddOmexLogging(null!);
 
 			IServiceContext context = ValidateTypeRegistration<IServiceContext>(collection);
 
@@ -37,14 +41,14 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[TestMethod]
 		public void AddOmexLoggerOnServiceCollection_RegistersLogger()
 		{
-			IServiceCollection collection = new ServiceCollection().AddOmexLogging();
+			IServiceCollection collection = new ServiceCollection().AddOmexLogging(null!);
 			ValidateTypeRegistration<ILogger<ServiceCollectionTests>>(collection);
 		}
 
 		[TestMethod]
 		public void AddOmexLoggerOnLogBuilder_RegistersLogger()
 		{
-			ILoggingBuilder builder = new MockLoggingBuilder().AddOmexLogging();
+			ILoggingBuilder builder = new MockLoggingBuilder().AddOmexLogging(null!);
 			ValidateTypeRegistration<ILogger<ServiceCollectionTests>>(builder.Services);
 		}
 
@@ -52,7 +56,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			where T : class
 		{
 			T obj = collection
-				.AddOmexLogging()
+				.AddOmexLogging(null!)
 				.BuildServiceProvider(new ServiceProviderOptions
 				{
 					ValidateOnBuild = true,
@@ -62,6 +66,80 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			Assert.IsNotNull(obj);
 
 			return obj;
+		}
+
+		[TestMethod]
+		public void AddOmexLoggerOnLogBuilder_ContainHostBuilder_SettingOmexLoggingEnabled_False_OmexLoggerNotRegistered()
+		{
+			HostBuilderContext hostBuilderContext = new(new Dictionary<object, object>());
+			IConfigurationRoot configuration = new ConfigurationBuilder()
+				.AddInMemoryCollection(new Dictionary<string, string?>
+				{
+					{ "Monitoring:OmexLoggingEnabled", "false"},
+				})
+				.Build();
+
+			hostBuilderContext.Configuration = configuration;
+			IServiceCollection collection = new ServiceCollection()
+				.AddOmexServiceContext<MockServiceContext>()
+				.AddOmexLogging(hostBuilderContext);
+
+			Assert.ThrowsException<InvalidOperationException>(() =>
+			{
+				OmexLogEventSource logEventSource = collection
+					.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true })
+					.GetRequiredService<OmexLogEventSource>();
+			});
+
+			Assert.ThrowsException<InvalidOperationException>(() =>
+			{
+				ILogEventSender eventSender = collection
+					.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true })
+					.GetRequiredService<ILogEventSender>();
+			});
+
+			Assert.ThrowsException<InvalidOperationException>(() =>
+			{
+				ILoggerProvider omexLoggerProvider = collection
+					.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true })
+					.GetRequiredService<ILoggerProvider>();
+			});
+		}
+
+		[TestMethod]
+		[DataTestMethod]
+		[DataRow(true)]
+		[DataRow(null!)]
+		public void AddOmexLoggerOnLogBuilder_ContainHostBuilder_SettingOmexLoggingEnabled_TrueOrMissing_OmexLoggerRegistered(bool? isEnabled)
+		{
+			HostBuilderContext hostBuilderContext = new(new Dictionary<object, object>());
+			IConfigurationRoot configuration = new ConfigurationBuilder()
+				.AddInMemoryCollection(isEnabled == null ? new Dictionary<string, string?>() : new Dictionary<string, string?>
+				{
+					{ "Monitoring:OmexLoggingEnabled", isEnabled.ToString()},
+				})
+				.Build();
+
+			hostBuilderContext.Configuration = configuration;
+			IServiceCollection collection = new ServiceCollection()
+				.AddOmexServiceContext<MockServiceContext>()
+				.AddOmexLogging(hostBuilderContext);
+
+			OmexLogEventSource logEventSource = collection
+				.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true })
+				.GetRequiredService<OmexLogEventSource>();
+
+			ILogEventSender eventSender = collection
+				.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true })
+				.GetRequiredService<ILogEventSender>();
+
+			ILoggerProvider omexLoggerProvider = collection
+				.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true })
+				.GetRequiredService<ILoggerProvider>();
+
+			Assert.IsInstanceOfType<OmexLogEventSource>(logEventSource);
+			Assert.IsInstanceOfType<ILogEventSender>(eventSender);
+			Assert.IsInstanceOfType<OmexLoggerProvider>(omexLoggerProvider);
 		}
 
 		private class MockLoggingBuilder : ILoggingBuilder
