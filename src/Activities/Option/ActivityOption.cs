@@ -6,7 +6,7 @@ namespace Microsoft.Omex.Extensions.Activities
 	/// <summary>
 	/// Monitoring option
 	/// </summary>
-	public class ActivityOption
+	internal class ActivityOption
 	{
 		/// <summary>
 		/// Path to the setting
