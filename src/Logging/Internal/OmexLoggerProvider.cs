@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		}
 
 		public ILogger CreateLogger(string categoryName) =>
-			return new OmexLogger(m_logsEventSender, m_externalScopeProvider ?? m_defaultExternalScopeProvider, m_textScrubbers, categoryName, m_replayer);
+			new OmexLogger(m_logsEventSender, m_externalScopeProvider ?? m_defaultExternalScopeProvider, m_textScrubbers, categoryName, m_replayer);
 
 		public void Dispose() { }
 
