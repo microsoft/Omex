@@ -9,16 +9,6 @@ namespace Microsoft.Omex.Extensions.Logging
 	internal class OmexLoggingOptions
 	{
 		/// <summary>
-		/// Default configuration section to bind these options.
-		/// </summary>
-		public const string DefaultConfigurationSection = "OmexLogging";
-
-		/// <summary>
-		/// If false, OmexLoggerProvider returns NullLogger instead of OmexLogger.
-		/// </summary>
-		public bool Enabled { get; set; } = true;
-
-		/// <summary>
 		/// Should logs wrapped by the Activity be stored and replayed at a higher severity, in the event of an error.
 		/// Setting this to true will impact the performance of logging
 		/// </summary>

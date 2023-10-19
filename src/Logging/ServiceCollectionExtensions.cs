@@ -4,6 +4,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.Omex.Extensions.Logging.Replayable;
@@ -31,6 +32,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <param name="builder">The extension method argument</param>
 		public static ILoggingBuilder AddOmexLogging(this ILoggingBuilder builder)
 		{
+			builder.AddConfiguration();
 			builder.Services.AddOmexLogging();
 			return builder;
 		}
@@ -42,14 +44,6 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained</returns>
 		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection)
 		{
-			serviceCollection
-				.AddOptions<OmexLoggingOptions>()
-				.BindConfiguration(OmexLoggingOptions.DefaultConfigurationSection)
-				.ValidateDataAnnotations()
-				.ValidateOnStart();
-
-			serviceCollection.AddLogging();
-
 			serviceCollection.TryAddTransient<IServiceContext, EmptyServiceContext>();
 			serviceCollection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
 			serviceCollection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
