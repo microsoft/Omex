@@ -32,7 +32,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		}
 
 		[TestMethod]
-		public void AddOmexActivitySource_HostedServicesRegiestered()
+		public void AddOmexActivitySource_HostedServicesRegistered()
 		{
 			Type[] types = GetRegisteredServices<IHostedService>();
 
@@ -47,7 +47,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			Task task = CreateHost().RunAsync();
 
 			Activity? activity = new ActivitySource("Source")
-				.StartActivity(nameof(AddOmexActivitySource_HostedServicesRegiestered));
+				.StartActivity(nameof(AddOmexActivitySource_HostedServicesRegistered));
 
 			NullableAssert.IsNotNull(activity, "Activity creation enabled after host started");
 		}
