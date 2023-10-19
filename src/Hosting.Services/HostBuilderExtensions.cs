@@ -85,6 +85,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				builderAction(new ServiceFabricHostBuilder<TService, TContext>(builder));
 
 				IHost host = builder
+					.ConfigureLogging(builder => builder.AddOmexLogging())
 					.ConfigureServices((context, collection) =>
 					{
 						collection
