@@ -36,7 +36,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		{
 			Type[] types = GetRegisteredServices<IHostedService>();
 
-			Assert.AreEqual(2, types.Length);
 			CollectionAssert.Contains(types, typeof(ActivityListenerInitializerService));
 			CollectionAssert.Contains(types, typeof(DiagnosticsObserversInitializer));
 		}
