@@ -1,0 +1,26 @@
+# .NET Build and Tests
+
+parameters:
+- name: BuildConfiguration
+  type: string
+  default: $(BuildConfiguration)
+- name: BuildParameters
+  type: string
+  default: Platform="$(BuildPlatform)"
+- name: BuildPlatform
+  type: string
+- name: TestFilter
+  type: string
+  default: FullyQualifiedName!~CloudTests
+steps:
+- template: /.github/pipelines/dotnet-build.yml@self
+  parameters:
+    BuildConfiguration: ${{parameters.BuildConfiguration}}
+    BuildParameters: ${{parameters.BuildParameters}}
+    BuildPlatform: ${{parameters.BuildPlatform}}
+- template: /.github/pipelines/dotnet-tests.yml@self
+  parameters:
+    BuildConfiguration: ${{parameters.BuildConfiguration}}
+    BuildParameters: ${{parameters.BuildParameters}}
+    BuildPlatform: ${{parameters.BuildPlatform}}
+    TestFilter: ${{parameters.TestFilter}}
