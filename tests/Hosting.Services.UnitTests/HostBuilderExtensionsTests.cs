@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ActivitySource), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
-		public void AddOmexServiceFabricDependencies_TypesRegistered(Type typeToResolver, Type? expectedImplementationType)
+		public void AddOmexServiceFabricDependencies_TypesRegistered(Type typeToResolve, Type? expectedImplementationType)
 		{
 			void CheckTypeRegistration<TContext>() where TContext : ServiceContext
 			{
@@ -33,7 +33,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 					.AddOmexServiceFabricDependencies<TContext>()
 					.AddSingleton(new Mock<IHostEnvironment>().Object)
 					.BuildServiceProvider()
-					.GetService(typeToResolver);
+					.GetService(typeToResolve);
 
 				Assert.IsNotNull(obj, "Failed to resolve for {0}", typeof(TContext));
 

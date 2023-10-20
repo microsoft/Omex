@@ -8,6 +8,7 @@ using Microsoft.Omex.Extensions.Logging.Scrubbing;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
+	[ProviderAlias("Omex")]
 	internal class OmexLoggerProvider : ILoggerProvider, ISupportExternalScope
 	{
 		public OmexLoggerProvider(
@@ -18,8 +19,8 @@ namespace Microsoft.Omex.Extensions.Logging
 		{
 			m_logsEventSender = logsEventSender;
 			m_defaultExternalScopeProvider = defaultExternalScopeProvider;
-			m_replayer = replayer;
 			m_textScrubbers = textScrubbers;
+			m_replayer = replayer;
 		}
 
 		public ILogger CreateLogger(string categoryName) =>
@@ -30,9 +31,10 @@ namespace Microsoft.Omex.Extensions.Logging
 		public void SetScopeProvider(IExternalScopeProvider scopeProvider) => m_externalScopeProvider = scopeProvider;
 
 		private IExternalScopeProvider? m_externalScopeProvider;
+
+		private readonly ILogEventSender m_logsEventSender;
 		private readonly IExternalScopeProvider m_defaultExternalScopeProvider;
 		private readonly IEnumerable<ILogScrubbingRule> m_textScrubbers;
 		private readonly ILogEventReplayer? m_replayer;
-		private readonly ILogEventSender m_logsEventSender;
 	}
 }

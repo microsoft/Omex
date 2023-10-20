@@ -101,6 +101,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 						options.ValidateOnBuild = true;
 						options.ValidateScopes = true;
 					})
+					.ConfigureLogging(builder => builder.AddOmexLogging())
 					.Build();
 
 				InitializationLogger.LogInitializationSucceed(serviceNameForLogging);
