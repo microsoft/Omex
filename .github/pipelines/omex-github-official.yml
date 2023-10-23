@@ -1,0 +1,276 @@
+# OMEX GitHub Official Pipeline
+name: $(date:yyyyMMddHHmmss)
+variables:
+- name: BuildConfiguration
+  value: Release
+- name: BuildPlatform
+  value: Any CPU
+- name: CodeQL.Enabled
+  value: true
+- name: DisableCfsDetector
+  value: true
+- name: guardianbaselineupdated
+  value: "20211002"
+- name: system.debug
+  value: false
+- name: tags
+  value: production, multi-phased, externalfacing
+schedules:
+- cron: 0 20 * * 0
+  branches:
+    include:
+    - refs/heads/main
+  always: true
+resources:
+  repositories:
+  - repository: OfficePipelineTemplates
+    type: git
+    name: OE/OfficePipelineTemplates
+    ref: refs/heads/main
+pr: none
+trigger:
+  branches:
+    include:
+    - refs/heads/main
+    - refs/heads/release
+extends:
+  template: v1/Office.Official.PipelineTemplate.yml@OfficePipelineTemplates
+  parameters:
+    pool:
+      name: Azure-Pipelines-1ESPT-ExDShared
+      image: windows-2022
+      os: windows
+    customBuildTags:
+    - ES365AIMigrationTooling
+    stages:
+    - stage: Stage
+      jobs:
+        - job: Job_1
+          displayName: Build
+          templateContext:
+            outputs:
+              - output: pipelineArtifact
+                artifactName: binaries
+                targetPath: bin
+                displayName: Publish Binaries
+          steps:
+            - checkout: self
+              clean: true
+              fetchDepth: 1
+              persistCredentials: true
+            - template: /.github/pipelines/dotnet-build.yml@self
+              parameters:
+                BuildParameters: Platform="$(BuildPlatform)";SignAssemblies=true;UseVstsSourceLink=true;CommitSha=$(Build.SourceVersion)
+                BuildPlatform: $(BuildPlatform)
+            - task: mspremier.BuildQualityChecks.QualityChecks-task.BuildQualityChecks@6
+              displayName: Check build quality
+              inputs:
+                checkWarnings: true
+                warningFailOption: fixed
+                warningTaskFilters: /^(((android|xcode|gradlew)\s+)?build|ant|maven|cmake|gulp)/i
+            - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+              displayName: "Manifest Generator "
+              inputs:
+                BuildDropPath: bin
+        - job: Job_6
+          displayName: Validation
+          dependsOn: Job_1
+          steps:
+            - checkout: self
+              clean: true
+              fetchDepth: 1
+              persistCredentials: true
+            - task: DownloadPipelineArtifact@0
+              displayName: Download Binaries
+              inputs:
+                artifactName: binaries
+                targetPath: bin
+            - template: /.github/pipelines/dotnet-initialize.yml@self
+            - template: /.github/pipelines/dotnet-tests.yml@self
+              parameters:
+                BuildParameters: Platform="$(BuildPlatform)"
+        - job: Job_2
+          displayName: Code Sign
+          dependsOn: Job_1
+          templateContext:
+            outputs:
+              - output: pipelineArtifact
+                artifactName: binaries_signed
+                targetPath: bin
+                displayName: Publish Binaries
+          steps:
+            - checkout: self
+              clean: true
+              fetchDepth: 1
+            - task: DownloadPipelineArtifact@0
+              displayName: Download Binaries
+              inputs:
+                artifactName: binaries
+                targetPath: bin
+            - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@3
+              displayName: ESRP CodeSigning OSS
+              inputs:
+                ConnectedServiceName: OmexOpenSourceESRP
+                FolderPath: $(Build.Repository.LocalPath)\bin
+                Pattern: Microsoft.Omex*.dll,Microsoft.Office.Web.OfficeMarketplace*.dll,Microsoft.Omex*.exe
+                signConfigType: inlineSignParams
+                inlineOperation: |
+                  [
+                          {
+                              "KeyCode" : "CP-231522",
+                              "OperationCode" : "SigntoolSign",
+                              "Parameters" : {
+                                  "OpusName" : "Microsoft",
+                                  "OpusInfo" : "http://www.microsoft.com",
+                                  "FileDigest" : "/fd \"SHA256\"",
+                                  "PageHash" : "/NPH",
+                                  "TimeStamp" : "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
+                              },
+                              "ToolName" : "sign",
+                              "ToolVersion" : "1.0"
+                          },
+                          {
+                              "KeyCode" : "CP-231522",
+                              "OperationCode" : "SigntoolVerify",
+                              "Parameters" : {},
+                              "ToolName" : "sign",
+                              "ToolVersion" : "1.0"
+                          }
+                  ]
+        - job: Job_3
+          displayName: Pack
+          dependsOn:
+            - Job_2
+            - Job_6
+          templateContext:
+            outputs:
+              - output: pipelineArtifact
+                artifactName: unsigned_nuget
+                targetPath: $(Build.ArtifactStagingDirectory)/UnsignedNuget
+                displayName: Upload NuGet Packages For Signing
+              - output: nuget
+                displayName: NuGet push to Office
+                condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/release'))
+                publishVstsFeed: 86ec7889-a365-4cd1-90df-6e18cc2ea59f
+                packagesToPush: $(Build.ArtifactStagingDirectory)/Office/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.snupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg
+                packageParentPath: $(Build.ArtifactStagingDirectory)
+                allowPackageConflicts: true
+                publishPackageMetadata: false
+          steps:
+            - checkout: self
+              clean: true
+              fetchDepth: 1
+              persistCredentials: true
+            - task: DownloadPipelineArtifact@0
+              displayName: Download Binaries
+              inputs:
+                artifactName: binaries_signed
+                targetPath: bin
+            - template: /.github/pipelines/dotnet-initialize.yml@self
+            - task: DotNetCoreCLI@2
+              displayName: dotnet pack pre-release build
+              condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/release'))
+              inputs:
+                command: pack
+                searchPatternPack: "**/*.sln"
+                configurationToPack: Release
+                outputDir: $(Build.ArtifactStagingDirectory)/UnsignedNuget
+                nobuild: true
+                buildProperties: PreReleaseSuffix=$(Build.BuildNumber);IsReleaseBuild=false
+            - task: DotNetCoreCLI@2
+              displayName: dotnet pack release build
+              condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
+              inputs:
+                command: pack
+                searchPatternPack: "**/*.sln"
+                configurationToPack: Release
+                outputDir: $(Build.ArtifactStagingDirectory)/UnsignedNuget
+                nobuild: true
+                buildProperties: PreReleaseSuffix=$(Build.BuildNumber);IsReleaseBuild=true
+            - task: oenginternal.office-vsts-tasks-extension.918cfcff-ee9e-48b9-896b-da6d2df26b33.SetVSTSBuildVersion@2
+              displayName: Set VSTS Build Version
+              condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/release'))
+              inputs:
+                OfficialReleaseBranch: refs/heads/main
+                OfficialReleaseTypeNumber: "4"
+            - task: DotNetCoreCLI@2
+              displayName: dotnet pack for Office
+              condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/release'))
+              inputs:
+                command: pack
+                searchPatternPack: "**/*.sln"
+                configurationToPack: Release
+                outputDir: $(Build.ArtifactStagingDirectory)/Office
+                nobuild: true
+                versioningScheme: byBuildNumber
+                buildProperties: PreReleaseSuffix=$(Build.BuildNumber);IsReleaseBuild=false;IsInternalBuild=false
+        - job: Job_4
+          displayName: Sign NuGet packages
+          dependsOn: Job_3
+          templateContext:
+            outputs:
+              - output: pipelineArtifact
+                artifactName: signed_nuget_packages
+                targetPath: $(Build.ArtifactStagingDirectory)/UnsignedNuget
+                displayName: Publish Pipeline Artifact
+          steps:
+            - checkout: self
+              clean: true
+              fetchDepth: 1
+              persistCredentials: true
+            - task: DownloadPipelineArtifact@0
+              displayName: Download Unsigned NuGet Packages
+              inputs:
+                artifactName: unsigned_nuget
+                targetPath: $(Build.ArtifactStagingDirectory)/UnsignedNuget
+            - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@2
+              displayName: ESRP CodeSigning
+              inputs:
+                ConnectedServiceName: OmexOpenSourceESRP
+                FolderPath: $(Build.ArtifactStagingDirectory)/UnsignedNuget
+                Pattern: Microsoft.Omex*.nupkg
+                signConfigType: inlineSignParams
+                inlineOperation: |-
+                  [ 
+                     {
+                         "keyCode": "CP-401405",
+                         "operationSetCode": "NuGetSign",
+                         "parameters": [ ],
+                         "toolName": "sign",
+                         "toolVersion": "1.0"
+                     },
+                     {
+                         "keyCode": "CP-401405",
+                         "operationSetCode": "NuGetVerify",
+                         "parameters": [ ],
+                         "toolName": "sign",
+                         "toolVersion": "1.0"
+                     }
+                  ]
+        - job: Job_5
+          displayName: Release
+          dependsOn: Job_4
+          templateContext:
+            outputs:
+              - output: nuget
+                displayName: NuGet push to NuGet.org
+                condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
+                nuGetFeedType: external
+                packagesToPush: $(Build.ArtifactStagingDirectory)/SignedNuGet/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/SignedNuGet/**/*.snupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg
+                packageParentPath: $(Build.ArtifactStagingDirectory)
+                publishFeedCredentials: Omex NuGet.org
+          steps:
+            - checkout: self
+              clean: true
+              fetchDepth: 1
+              persistCredentials: true
+            - task: DownloadPipelineArtifact@0
+              displayName: Download Signed NuGet Packages
+              condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
+              inputs:
+                artifactName: signed_nuget_packages
+                targetPath: $(Build.ArtifactStagingDirectory)/SignedNuget
+            - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+              displayName: "Manifest Generator "
+              inputs:
+                BuildDropPath: $(Build.ArtifactStagingDirectory)
