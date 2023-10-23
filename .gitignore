@@ -333,3 +333,6 @@ ASALocalRun/
 
 # Disabling VSCode files
 .vscode/
+
+# Originals after merging
+.orig
