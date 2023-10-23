@@ -6,7 +6,7 @@ namespace Microsoft.Omex.Extensions.Logging
 	/// <summary>
 	/// Options for Omex logger
 	/// </summary>
-	public class OmexLoggingOptions
+	internal class OmexLoggingOptions
 	{
 		/// <summary>
 		/// Should logs wrapped by the Activity be stored and replayed at a higher severity, in the event of an error.

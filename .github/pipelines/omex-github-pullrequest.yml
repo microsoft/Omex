@@ -1,0 +1,66 @@
+# OMEX GitHub PullRequest Pipeline
+
+name: $(date:yyyyMMdd)$(rev:.r)
+variables:
+- name: BuildConfiguration
+  value: release
+- name: BuildPlatform
+  value: Any CPU
+- name: DisableCfsDetector
+  value: true
+- name: system.debug
+  value: false
+resources:
+  repositories:
+  - repository: OfficePipelineTemplates
+    type: git
+    name: OE/OfficePipelineTemplates
+    ref: refs/heads/main
+pr:
+- main
+trigger: none
+extends:
+  template: v1/Office.Unofficial.PipelineTemplate.yml@OfficePipelineTemplates
+  parameters:
+    pool:
+      os: windows
+      image: windows-2022
+      name: Azure-Pipelines-1ESPT-ExDShared
+    customBuildTags:
+      - ES365AIMigrationTooling
+    stages:
+    - stage: Stage
+      jobs:
+      - job: Job_1
+        displayName: Pull Request Validation
+        steps:
+        - checkout: self
+          clean: true
+          persistCredentials: true
+        - template: /.github/pipelines/dotnet-buildandtest.yml@self
+          parameters:
+            BuildPlatform: $(BuildPlatform)
+        - task: DotNetCoreCLI@2
+          displayName: dotnet pack pre-release build
+          condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/release'))
+          inputs:
+            command: pack
+            searchPatternPack: "**/*.sln"
+            configurationToPack: Release
+            nobuild: true
+            buildProperties: PreReleaseSuffix=$(Build.BuildNumber);IsReleaseBuild=false
+        - task: DotNetCoreCLI@2
+          displayName: dotnet pack release build
+          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
+          inputs:
+            command: pack
+            searchPatternPack: "**/*.sln"
+            configurationToPack: Release
+            nobuild: true
+            buildProperties: PreReleaseSuffix=$(Build.BuildNumber);IsReleaseBuild=true
+        - task: mspremier.BuildQualityChecks.QualityChecks-task.BuildQualityChecks@6
+          displayName: Check build quality
+          inputs:
+            checkWarnings: true
+            warningFailOption: fixed
+            warningTaskFilters: /^(((android|xcode|gradlew)\s+)?build|ant|maven|cmake|gulp)/i

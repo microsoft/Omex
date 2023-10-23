@@ -45,7 +45,8 @@ namespace Microsoft.Extensions.DependencyInjection
 			serviceCollection
 				.AddOptions<ActivityOption>()
 				.BindConfiguration(ActivityOption.MonitoringPath)
-				.ValidateDataAnnotations();
+				.ValidateDataAnnotations()
+				.ValidateOnStart();
 
 			serviceCollection.TryAddSingleton<IActivityListenerConfigurator, DefaultActivityListenerConfigurator>();
 			serviceCollection.TryAddSingleton(p => new ActivitySource(ActivitySourceName, ActivitySourceVersion));
