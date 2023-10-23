@@ -112,7 +112,7 @@ extends:
               inputs:
                 ConnectedServiceName: OmexOpenSourceESRP
                 FolderPath: $(Build.Repository.LocalPath)\bin
-                Pattern: Microsoft.Omex*.dll,Microsoft.Office.Web.OfficeMarketplace*.dll,Microsoft.Omex*.exe
+                Pattern: Microsoft.Omex*.dll,Microsoft.Omex*.exe
                 signConfigType: inlineSignParams
                 inlineOperation: |
                   [
