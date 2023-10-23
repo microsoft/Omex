@@ -80,4 +80,7 @@
     <!-- Maps paths injected by CallerFilePath attribute to be related and independent from repository location on hard drive -->
     <PathMap>$(MSBuildThisFileDirectory)=/</PathMap>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Internal.Analyzers " VersionOverride="2.9.7" IncludeAssets="analyzers" PrivateAssets="all" />
+  </ItemGroup>
 </Project>
