@@ -10,10 +10,10 @@ variables:
   value: false
 - group: OmexAcTokens
 schedules:
-  - cron: 0 1 * * 2
-    branches:
-      include:
-      - refs/heads/main
+- cron: 0 1 * * 2
+  branches:
+    include:
+    - refs/heads/main
 resources:
   repositories:
   - repository: self
