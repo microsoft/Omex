@@ -204,6 +204,10 @@ extends:
                 nobuild: true
                 versioningScheme: byBuildNumber
                 buildProperties: PreReleaseSuffix=$(Build.BuildNumber);IsReleaseBuild=false;IsInternalBuild=false
+            - task: RoslynAnalyzers@3
+              inputs:
+                copyLogsOnly: true
+                policyName: 'M365'
         - job: Job_4
           displayName: Sign NuGet packages
           dependsOn: Job_3
