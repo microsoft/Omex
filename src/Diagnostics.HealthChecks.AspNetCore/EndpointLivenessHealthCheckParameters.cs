@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 
@@ -16,6 +17,12 @@ public class EndpointLivenessHealthCheckParameters : HealthCheckParameters
 	/// The Service Fabric endpoint name, it will be used to fetch the service port.
 	/// </summary>
 	public string EndpointName { get; }
+
+	/// <summary>
+	/// The URI scheme that will be used to query the endpoint.
+	/// The default value will be equa to HTTP.
+	/// </summary>
+	public string UriScheme { get; } = Uri.UriSchemeHttp;
 
 	/// <summary>
 	/// The endpoint relative url at which the Service Fabric health check will be reachable.
@@ -49,6 +56,7 @@ public class EndpointLivenessHealthCheckParameters : HealthCheckParameters
 		string httpClientLogicalName,
 		string endpointRelativeUrl,
 		string host = "localhost",
+		string? uriScheme = null,
 		params KeyValuePair<string, object>[] reportData)
 		: base(reportData)
 	{
@@ -56,5 +64,6 @@ public class EndpointLivenessHealthCheckParameters : HealthCheckParameters
 		HttpClientLogicalName = httpClientLogicalName;
 		EndpointRelativeUri = endpointRelativeUrl;
 		Host = host;
+		UriScheme = uriScheme ?? Uri.UriSchemeHttp;
 	}
 }

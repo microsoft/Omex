@@ -91,7 +91,7 @@ public static class HealthCheckComposablesExtensions
 			httpClientLogicalName,
 			relativePath,
 			host,
-			reportData
+			reportData: reportData
 		);
 
 		return healthChecksBuilder.AddEndpointHttpHealthCheck(name, failureStatus, parameters);
