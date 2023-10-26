@@ -50,6 +50,11 @@ public class EndpointLivenessHealthCheckParameters : HealthCheckParameters
 	/// The endpoint relative url at which the Service Fabric health check will be reachable.
 	/// </param>
 	/// <param name="host">The host used to perform the health check HTTP call to the service.</param>
+	/// <param name="uriScheme">
+	/// The URI scheme to use to call the endpoint.
+	/// It is highly recommend to use <seealso cref="Uri.UriSchemeHttp"/> and <seealso cref="Uri.UriSchemeHttps"/>
+	/// to pass either value.
+	/// </param>
 	/// <param name="reportData">The report data.</param>
 	public EndpointLivenessHealthCheckParameters(
 		string endpointName,
