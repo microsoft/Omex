@@ -74,6 +74,12 @@ public static class HealthCheckComposablesExtensions
 	/// </param>
 	/// <param name="failureStatus">The status that will be reported if the Health Check fails.</param>
 	/// <param name="host">The service host.</param>
+	/// <param name="uriScheme">
+	/// The URI scheme to use to call the endpoint.
+	/// It is highly recommend to use <seealso cref="Uri.UriSchemeHttp"/> and <seealso cref="Uri.UriSchemeHttps"/>
+	/// to pass either value.
+	/// If not specified, the default value used will be <seealso cref="Uri.UriSchemeHttp"/>.
+	/// </param>
 	/// <param name="reportData">The report data parameters.</param>
 	/// <returns>The Health Check builder.</returns>
 	public static IHealthChecksBuilder AddEndpointHttpHealthCheck(
@@ -84,6 +90,7 @@ public static class HealthCheckComposablesExtensions
 		string httpClientLogicalName,
 		HealthStatus failureStatus = HealthStatus.Unhealthy,
 		string host = "localhost",
+		string? uriScheme = null,
 		params KeyValuePair<string, object>[] reportData)
 	{
 		EndpointLivenessHealthCheckParameters parameters = new(
@@ -91,6 +98,7 @@ public static class HealthCheckComposablesExtensions
 			httpClientLogicalName,
 			relativePath,
 			host,
+			uriScheme: uriScheme,
 			reportData: reportData
 		);
 
