@@ -17,6 +17,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			return context;
 		}
 
+		public static HttpContext GetContextWithEmail(string email)
+		{
+			(HttpContext context, _) = CreateHttpContext();
+			context.Request.Body = new System.IO.MemoryStream(System.Text.Encoding.UTF8.GetBytes($"{{\"Email\":\"{email}\"}}"));
+			return context;
+		}
+
 		public static (HttpContext context, HttpConnectionFeature feature) CreateHttpContext()
 		{
 			HttpConnectionFeature feature = new();

@@ -58,6 +58,29 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		}
 
 		[TestMethod]
+		public async Task CreateUserHash_UseStaticSalt()
+		{
+			HttpContext context = HttpContextHelper.GetContextWithEmail("Abc123@outlook.com");
+
+			Random random = new();
+			byte[] saltValue = new byte[128];
+
+			TestIdentityProvider provider = new ("ProviderWrapper", new EmailBasedUserIdentityProvider());
+			
+			random.NextBytes(saltValue);
+			TestStaticSaltProvider saltProvider1 = new(saltValue);
+			UserHashIdentityMiddleware middleware1 = GetMiddelware(saltProvider: saltProvider1, provider);
+			string initialHash = await middleware1.CreateUserHashAsync(context).ConfigureAwait(false);
+
+			random.NextBytes(saltValue);
+			TestStaticSaltProvider saltProvider2 = new(saltValue);
+			UserHashIdentityMiddleware middleware2 = GetMiddelware(saltProvider: saltProvider2, provider);
+			string changedHash = await middleware2.CreateUserHashAsync(context).ConfigureAwait(false);
+
+			Assert.AreNotEqual(changedHash, initialHash);
+		}
+
+		[TestMethod]
 		public async Task CreateUserHash_HandleConcurrentRequestProperly()
 		{
 			HttpContext[] contexts = new []
@@ -143,7 +166,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			public Task<(bool success, int bytesWritten)> TryWriteBytesAsync(HttpContext context, Memory<byte> memory)
 			{
 				Span<byte> span = memory.Span.Slice(0, MaxBytesInIdentity);
-				Assert.AreEqual(MaxBytesInIdentity, span.Length, "Wrond span size provided");
+				Assert.AreEqual(MaxBytesInIdentity, span.Length, "Wrong span size provided");
 				m_calls++;
 				int bytesWritten = IsApplicable ? MaxBytesInIdentity : 0;
 
@@ -184,6 +207,20 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			public byte[] Salt { get; } = new byte[SaltSize];
 
 			public int MaxBytesInSalt => SaltSize;
+
+			public void Dispose() { }
+			public ReadOnlySpan<byte> GetSalt() => Salt.AsSpan();
+		}
+
+		private class TestStaticSaltProvider : ISaltProvider
+		{
+			private const int SaltSize = 128;
+
+			public byte[] Salt { get; } = new byte[SaltSize];
+
+			public int MaxBytesInSalt => SaltSize;
+
+			public TestStaticSaltProvider(byte[] saltValue) => saltValue.CopyTo(Salt, 0);
 
 			public void Dispose() { }
 			public ReadOnlySpan<byte> GetSalt() => Salt.AsSpan();
