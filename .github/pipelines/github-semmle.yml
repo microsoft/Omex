@@ -1,0 +1,50 @@
+# Semmle Pipeline for OMEX Git
+
+name: $(Date:yyyyMMdd).$(Rev:r)
+variables:
+- name: BuildConfiguration
+  value: Release
+- name: BuildPlatform
+  value: Any CPU
+- name: DisableCfsDetector
+  value: true
+- name: system.debug
+  value: false
+resources:
+  repositories:
+  - repository: OfficePipelineTemplates
+    type: git
+    name: OE/OfficePipelineTemplates
+    ref: refs/heads/main
+trigger: none
+extends:
+  template: v1/Office.Unofficial.PipelineTemplate.yml@OfficePipelineTemplates
+  parameters:
+    pool:
+      os: windows
+      image: windows-2022
+      name: Azure-Pipelines-1ESPT-ExDShared
+    customBuildTags:
+      - ES365AIMigrationTooling
+    stages:
+      - stage: Stage
+        jobs:
+          - job: Job_1
+            displayName: Run Semmle
+            timeoutInMinutes: 120
+            steps:
+              - checkout: self
+                clean: true
+              - task: UseDotNet@2
+                displayName: Use .NET Core
+                inputs:
+                  useGlobalJson: true
+              - task: securedevelopmentteam.vss-secure-development-tools.build-task-semmle.Semmle@1
+                displayName: Run Semmle (csharp)
+              - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@2
+                displayName: Post Analysis
+                inputs:
+                  GdnBreakAllTools: false
+                  GdnBreakGdnToolSemmle: true
+              - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
+                displayName: Publish Security Analysis Logs
