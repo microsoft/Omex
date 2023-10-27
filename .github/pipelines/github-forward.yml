@@ -45,6 +45,13 @@ extends:
           inputs:
             targetType: inline
             script: |-
+              Write-Host "GITHUBBRANCH being used: '$env:GITHUBBRANCH'"
+              Write-Host "GITHUBCOMMIT being used: '$env:GITHUBCOMMIT'"
+              if ($env:GITHUBCOMMIT -eq "" -or $env:GITHUBBRANCH -eq "") {
+                Write-Host "No commit or branch specified, exiting."
+                Write-Host "##vso[task.setvariable variable=ChangesFound]0"
+                exit 0
+              }
               git remote add omexgithubremote https://$env:omexgitbotexternalpat@github.com/Microsoft/Omex
               git fetch omexgithubremote
               $files = git diff --name-only origin/$env:GITHUBBRANCH omexgithubremote/$env:GITHUBBRANCH
@@ -72,13 +79,14 @@ extends:
             omexgitbotexternalpat: $(omexgitbotexternalpat)
             SYSTEM_ACCESSTOKEN: $(PatToken)
             OMEX_PAT_TOKEN: $(PatToken)
-        - task: oenginternal.office-vsts-tasks-extension.e881ce1e-41bc-4f59-b8a2-9a6001f43efe.CreatePullRequest@9
+        - task: oenginternal.office-vsts-tasks-extension.e881ce1e-41bc-4f59-b8a2-9a6001f43efe.CreatePullRequest@10
           displayName: Create Pull Request
+          condition: and(succeeded(), ne(variables['ChangesFound'], 0))
           inputs:
             SourceBranchName: github-bridge-forward-$(GITHUBCOMMIT)
             TargetBranchName: $(GITHUBBRANCH)
             Title: GitHub Forward Integration - $(GITHUBCOMMIT)
-            Description: GitHub forward integration Pull Request for commit $(GITHUBCOMMIT)
+            Description: GitHub forward integration Pull Request for commit '$(GITHUBCOMMIT)'
             SkipIfNoChangesFound: false
             WorkItemId: "8430180"
             AutoCompleteUserId: 75d3c7a0-2045-6bf0-b50e-3ab2cf9ae644
