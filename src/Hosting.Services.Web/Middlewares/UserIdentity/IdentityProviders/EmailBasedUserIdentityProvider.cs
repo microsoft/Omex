@@ -22,27 +22,26 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		public Task<(bool success, int bytesWritten)> TryWriteBytesAsync(HttpContext context, Memory<byte> memory)
 		{
 			int bytesWritten = -1;
-			HttpRequest request = context.Request;
-            TextReader reader = new StreamReader(request.Body);
-            UserEmail? email = JsonSerializer.Deserialize<UserEmail>(reader.ReadToEnd());
-            reader.Close();
-
-            bool success = email != null;
-            if (email != null)
-            {
-                bytesWritten = 0;
-                foreach (char c in email.Email)
-                    {
-                        try {
+            try{
+                context.Request.Body.Seek(0, SeekOrigin.Begin);
+                TextReader reader = new StreamReader(context.Request.Body);
+                UserEmail? email = JsonSerializer.Deserialize<UserEmail>(reader.ReadToEnd());
+                reader.Close();
+                bool success = email != null;
+                if (email != null)
+                {
+                    bytesWritten = 0;
+                    foreach (char c in email.Email)
+                        {
                             success = success && BitConverter.TryWriteBytes(memory.Span.Slice(bytesWritten, MaxBytesPerChar), c);
                             bytesWritten += MaxBytesPerChar;
                         }
-                        catch {
-                            return Task.FromResult((false, -1));
-                        }
-                    }
+                }
+                return Task.FromResult((success, bytesWritten));
             }
-			return Task.FromResult((success, bytesWritten));
+            catch {
+                return Task.FromResult((false, -1));
+            }
 		}
 	}
 }

@@ -35,8 +35,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			byte[] hash2 = await GetIdentityAsync(provider, context2).ConfigureAwait(false);
 
 			CollectionAssert.AreNotEqual(hash1, hash2);
-			CollectionAssert.AreEqual(hash1, await GetIdentityAsync(provider, context1).ConfigureAwait(false));
-			CollectionAssert.AreEqual(hash2, await GetIdentityAsync(provider, context2).ConfigureAwait(false));
+
+            HttpContext context3 = HttpContextHelper.GetContextWithEmail("Abc123@outlook.com");
+            HttpContext context4 = HttpContextHelper.GetContextWithEmail("Abc456@gmail.com");
+
+			CollectionAssert.AreEqual(hash1, await GetIdentityAsync(provider, context3).ConfigureAwait(false));
+			CollectionAssert.AreEqual(hash2, await GetIdentityAsync(provider, context4).ConfigureAwait(false));
 		}
 
 		private async Task<byte[]> GetIdentityAsync(IUserIdentityProvider provider, HttpContext context)

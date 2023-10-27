@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
+using System.IO;
 using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -20,7 +22,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		public static HttpContext GetContextWithEmail(string email)
 		{
 			(HttpContext context, _) = CreateHttpContext();
-			context.Request.Body = new System.IO.MemoryStream(System.Text.Encoding.UTF8.GetBytes($"{{\"Email\":\"{email}\"}}"));
+			byte[] emailBytes = System.Text.Encoding.UTF8.GetBytes($"{{\"Email\":\"{email}\"}}");
+			context.Request.Body.Write(emailBytes, 0, emailBytes.Length);
 			return context;
 		}
 
@@ -31,8 +34,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			FeatureCollection features = new();
 			features.Set<IHttpConnectionFeature>(feature);
 
+			Stream requestBody = new MemoryStream();
+
 			Mock<HttpContext> contextMock = new();
 			contextMock.SetupGet(c => c.Features).Returns(features);
+			contextMock.SetupGet(c => c.Request.Body).Returns(requestBody);
 
 			return (contextMock.Object, feature);
 		}
