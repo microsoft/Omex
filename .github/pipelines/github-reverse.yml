@@ -74,7 +74,7 @@ extends:
             inputs:
               SourceBranchName: feature/github-bridge-reverse
               TargetBranchName: $(GITBRANCH)
-              Title: GitHub Reverse Integration $(date:yyyyMMdd)$(rev:.r)
+              Title: GitHub Reverse Integration
               Description: GitHub reverse integration Pull Request for commit
               SkipIfNoChangesFound: false
               Pat: $(omexgithubbotinternalpat)
