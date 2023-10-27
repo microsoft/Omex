@@ -8,8 +8,6 @@ variables:
   value: any cpu
 - name: DisableCfsDetector
   value: true
-- name: GitBranch
-  value: main
 - name: system.debug
   value: false
 - group: OmexOpenSourceInternal-VG
@@ -24,6 +22,7 @@ resources:
     name: OE/OfficePipelineTemplates
     ref: refs/heads/main
 trigger: none
+pr: none
 extends:
   template: v1/Office.Unofficial.PipelineTemplate.yml@OfficePipelineTemplates
   parameters:
@@ -48,6 +47,7 @@ extends:
             inputs:
               targetType: inline
               script: |-
+                Write-Host "GITBRANCH being used: '$env:GITBRANCH'"
                 $url = "https://omexac:{0}@dev.azure.com/office/OC/_git/OmexGitHubInternal" -f $env:OfficeOcCodeAccess
 
                 git remote add omexgithubinternalremote $url
@@ -74,7 +74,7 @@ extends:
             inputs:
               SourceBranchName: feature/github-bridge-reverse
               TargetBranchName: $(GITBRANCH)
-              Title: GitHub Reverse Integration
+              Title: GitHub Reverse Integration $(date:yyyyMMdd)$(rev:.r)
               Description: GitHub reverse integration Pull Request for commit
               SkipIfNoChangesFound: false
               Pat: $(omexgithubbotinternalpat)
