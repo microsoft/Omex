@@ -21,6 +21,7 @@ resources:
     name: OE/OfficePipelineTemplates
     ref: refs/heads/main
 trigger: none
+pr: none
 extends:
   template: v1/Office.Unofficial.PipelineTemplate.yml@OfficePipelineTemplates
   parameters:
