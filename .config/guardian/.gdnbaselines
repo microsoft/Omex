@@ -1,0 +1,37 @@
+{
+  "hydrated": false,
+  "properties": {
+    "helpUri": "https://eng.ms/docs/microsoft-security/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/microsoft-guardian/general/baselines",
+    "hydrationStatus": "This file does not contain identifying data. It is safe to check into your repo. To hydrate this file with identifying data, run `guardian hydrate --help` and follow the guidance."
+  },
+  "version": "1.0.0",
+  "baselines": {
+    "default": {
+      "name": "default",
+      "createdDate": "2023-10-27 10:41:05Z",
+      "lastUpdatedDate": "2023-10-27 10:41:05Z"
+    }
+  },
+  "results": {
+    "b91162f765d2e239e3f7f69dbac9263372ed7fb75a24801033d1cb035e608fa8": {
+      "signature": "b91162f765d2e239e3f7f69dbac9263372ed7fb75a24801033d1cb035e608fa8",
+      "alternativeSignatures": [],
+      "memberOf": [
+        "default"
+      ],
+      "createdDate": "2023-10-27 10:41:05Z",
+      "expirationDate": "2024-04-14 10:41:41Z",
+      "justification": "This error is baselined with an expiration date of 180 days from 2023-10-27 10:41:41Z"
+    },
+    "e420d5e0f206c5e8d48ed9cb1e7c17e71009931178120f65a55fa39c990b45c2": {
+      "signature": "e420d5e0f206c5e8d48ed9cb1e7c17e71009931178120f65a55fa39c990b45c2",
+      "alternativeSignatures": [],
+      "memberOf": [
+        "default"
+      ],
+      "createdDate": "2023-10-27 10:41:05Z",
+      "expirationDate": "2024-04-14 10:41:41Z",
+      "justification": "This error is baselined with an expiration date of 180 days from 2023-10-27 10:41:41Z"
+    }
+  }
+}
