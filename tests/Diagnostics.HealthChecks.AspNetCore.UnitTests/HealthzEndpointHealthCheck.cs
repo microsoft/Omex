@@ -101,4 +101,131 @@ public class HealthzEndpointHealthCheckTests
 			Assert.IsTrue(healthCheckResult.Description?.Contains(returnedStatusCode.ToString(), StringComparison.InvariantCulture));
 		}
 	}
+
+	[TestMethod]
+	public async Task HealthzEndpointHttpHealthCheck_ReturnsCorrectResponseWhenHttpExpected()
+	{
+		EndpointLivenessHealthCheckParameters healthCheckParameters = new(
+			nameof(EndpointLivenessHealthCheck),
+			$"{nameof(EndpointLivenessHealthCheck)}_HttpClient",
+			"healthz");
+
+		HealthCheckTestHelpers.SetLocalServiceInfo();
+		Mock<IHttpClientFactory> httpOnlyClientFactory = HealthCheckTestHelpers.GetHttpClientFactoryMock(
+			HealthCheckTestHelpers.GetHttpResponseMessageMock(HttpStatusCode.OK, "Response is OK."),
+			shouldThrowException: false,
+			requestMatch: request => request.RequestUri?.Scheme == Uri.UriSchemeHttp);
+
+		ActivitySource activitySourceMock = new(nameof(EndpointLivenessHealthCheck));
+
+		IHealthCheck healthCheck = new EndpointLivenessHealthCheck(
+			httpOnlyClientFactory.Object,
+			activitySourceMock,
+			GetLogger<EndpointLivenessHealthCheck>(),
+			healthCheckParameters);
+
+		CancellationTokenSource source = new();
+
+		HealthCheckResult healthCheckResult = await healthCheck.CheckHealthAsync(
+			HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
+			source.Token);
+
+		Assert.AreEqual(HealthStatus.Healthy, healthCheckResult.Status);
+	}
+
+	[TestMethod]
+	public async Task HealthzEndpointHttpHealthCheck_ReturnsErrorWhenHttpsExpected()
+	{
+		EndpointLivenessHealthCheckParameters healthCheckParameters = new(
+			nameof(EndpointLivenessHealthCheck),
+			$"{nameof(EndpointLivenessHealthCheck)}_HttpClient",
+			"healthz");
+
+		HealthCheckTestHelpers.SetLocalServiceInfo();
+		Mock<IHttpClientFactory> httpOnlyClientFactory = HealthCheckTestHelpers.GetHttpClientFactoryMock(
+			HealthCheckTestHelpers.GetHttpResponseMessageMock(HttpStatusCode.OK, "Response is OK."),
+			shouldThrowException: false,
+			requestMatch: request => request.RequestUri?.Scheme == Uri.UriSchemeHttps);
+
+		ActivitySource activitySourceMock = new(nameof(EndpointLivenessHealthCheck));
+
+		IHealthCheck healthCheck = new EndpointLivenessHealthCheck(
+			httpOnlyClientFactory.Object,
+			activitySourceMock,
+			GetLogger<EndpointLivenessHealthCheck>(),
+			healthCheckParameters);
+
+		CancellationTokenSource source = new();
+
+		HealthCheckResult healthCheckResult = await healthCheck.CheckHealthAsync(
+			HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
+			source.Token);
+
+		Assert.AreEqual(HealthStatus.Unhealthy, healthCheckResult.Status);
+	}
+
+	[TestMethod]
+	public async Task HealthzEndpointHttpHealthCheck_ReturnsCorrectResponseWhenHttpsExpected()
+	{
+		EndpointLivenessHealthCheckParameters healthCheckParameters = new(
+			nameof(EndpointLivenessHealthCheck),
+			$"{nameof(EndpointLivenessHealthCheck)}_HttpClient",
+			"healthz",
+			uriScheme: Uri.UriSchemeHttps);
+
+		HealthCheckTestHelpers.SetLocalServiceInfo();
+		Mock<IHttpClientFactory> httpOnlyClientFactory = HealthCheckTestHelpers.GetHttpClientFactoryMock(
+			HealthCheckTestHelpers.GetHttpResponseMessageMock(HttpStatusCode.OK, "Response is OK."),
+			shouldThrowException: false,
+			requestMatch: request => request.RequestUri?.Scheme == Uri.UriSchemeHttps);
+
+		ActivitySource activitySourceMock = new(nameof(EndpointLivenessHealthCheck));
+
+		IHealthCheck healthCheck = new EndpointLivenessHealthCheck(
+			httpOnlyClientFactory.Object,
+			activitySourceMock,
+			GetLogger<EndpointLivenessHealthCheck>(),
+			healthCheckParameters);
+
+		CancellationTokenSource source = new();
+
+		HealthCheckResult healthCheckResult = await healthCheck.CheckHealthAsync(
+			HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
+			source.Token);
+
+		Assert.AreEqual(HealthStatus.Healthy, healthCheckResult.Status);
+	}
+
+	[TestMethod]
+	public async Task HealthzEndpointHttpHealthCheck_ReturnsErrorWhenHttpExpected()
+	{
+		EndpointLivenessHealthCheckParameters healthCheckParameters = new(
+			nameof(EndpointLivenessHealthCheck),
+			$"{nameof(EndpointLivenessHealthCheck)}_HttpClient",
+			"healthz",
+			Uri.UriSchemeHttps);
+
+		HealthCheckTestHelpers.SetLocalServiceInfo();
+		Mock<IHttpClientFactory> httpOnlyClientFactory = HealthCheckTestHelpers.GetHttpClientFactoryMock(
+			HealthCheckTestHelpers.GetHttpResponseMessageMock(HttpStatusCode.OK, "Response is OK."),
+			shouldThrowException: true,
+			requestMatch: request => request.RequestUri?.Scheme == Uri.UriSchemeHttp);
+
+		ActivitySource activitySourceMock = new(nameof(EndpointLivenessHealthCheck));
+
+		IHealthCheck healthCheck = new EndpointLivenessHealthCheck(
+			httpOnlyClientFactory.Object,
+			activitySourceMock,
+			GetLogger<EndpointLivenessHealthCheck>(),
+			healthCheckParameters);
+
+		CancellationTokenSource source = new();
+
+		HealthCheckResult healthCheckResult = await healthCheck.CheckHealthAsync(
+			HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
+			source.Token);
+
+		Assert.AreEqual(HealthStatus.Healthy, healthCheckResult.Status);
+	}
 }
+
