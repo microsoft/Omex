@@ -90,13 +90,14 @@ public static class HealthCheckTestHelpers
 	public static Mock<IHttpClientFactory> GetHttpClientFactoryMock(
 		HttpResponseMessage message,
 		int? numberOfFailuresBeforeOk = null,
-		bool? shouldThrowException = false)
+		bool? shouldThrowException = false,
+		Func<HttpRequestMessage, bool>? requestMatch = null)
 	{
 		HttpClientHandler messageHandler =
 			(shouldThrowException, numberOfFailuresBeforeOk) switch
 			{
 				(true, _) => new MockedHttpExceptionMessageHandler(message),
-				(_, null) => new MockedHttpMessageHandler(message),
+				(_, null) => new MockedHttpMessageHandler(message, requestMatch),
 				(_, int n) => new MockedRepeatedErrorsHttpMessageHandler(message, n)
 			};
 		messageHandler.CheckCertificateRevocationList = true;
@@ -150,14 +151,26 @@ public static class HealthCheckTestHelpers
 internal class MockedHttpMessageHandler : HttpClientHandler
 {
 	private readonly HttpResponseMessage m_response;
+	private readonly Func<HttpRequestMessage, bool>? m_requestMatch;
 
-	public MockedHttpMessageHandler(HttpResponseMessage response)
+	public MockedHttpMessageHandler(
+		HttpResponseMessage response,
+		Func<HttpRequestMessage, bool>? requestMatch = null)
 	{
 		m_response = response;
+		m_requestMatch = requestMatch;
 	}
 
-	protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) =>
-		Task.FromResult(m_response);
+	protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+	{
+		if (m_requestMatch is null || m_requestMatch(request))
+		{
+			return Task.FromResult(m_response);
+		}
+
+		HttpResponseMessage notFoundResponse = new(HttpStatusCode.NotFound);
+		return Task.FromResult(notFoundResponse);
+	}
 }
 
 /// <summary>

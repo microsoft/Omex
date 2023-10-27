@@ -1,0 +1,86 @@
+# OMEX Git Bridge Forward Integration Pipeline
+
+name: $(date:yyyyMMdd)$(rev:.r)
+variables:
+- name: BuildConfiguration
+  value: release
+- name: BuildPlatform
+  value: any cpu
+- name: DisableCfsDetector
+  value: true
+- name: GitHubBranch
+  value: main
+- name: GitHubCommit
+  value: ""
+- name: system.debug
+  value: false
+- group: OmexOpenSourceExternal-VG
+- group: OmexAcTokens
+resources:
+  repositories:
+  - repository: OfficePipelineTemplates
+    type: git
+    name: OE/OfficePipelineTemplates
+    ref: refs/heads/main
+trigger: none
+extends:
+  template: v1/Office.Unofficial.PipelineTemplate.yml@OfficePipelineTemplates
+  parameters:
+    pool:
+      os: windows
+      image: windows-2022
+      name: Azure-Pipelines-1ESPT-ExDShared
+    customBuildTags:
+    - ES365AIMigrationTooling
+    stages:
+    - stage: Stage
+      jobs:
+      - job: Job_1
+        displayName: Create GitHub Bridge Forward Pull Request
+        steps:
+        - checkout: self
+          clean: true
+        - task: PowerShell@2
+          displayName: Check New Changes Exist
+          inputs:
+            targetType: inline
+            script: |-
+              git remote add omexgithubremote https://$env:omexgitbotexternalpat@github.com/Microsoft/Omex
+              git fetch omexgithubremote
+              $files = git diff --name-only origin/$env:GITHUBBRANCH omexgithubremote/$env:GITHUBBRANCH
+              if ($files.length -eq 0) {
+                Write-Host "No changes between 'origin/$env:GITHUBBRANCH' and 'omexgithubremote/$env:GITHUBBRANCH' found."
+                $ChangesFound=0
+              } else {
+                  Write-Host "Found changes between  'origin/$env:GITHUBBRANCH' and 'omexgithubremote/$env:GITHUBBRANCH'."
+                  $ChangesFound=1
+              }
+
+              Write-Host "##vso[task.setvariable variable=ChangesFound]$ChangesFound"
+          env:
+            omexgitbotexternalpat: $(omexgitbotexternalpat)
+        - task: PowerShell@2
+          displayName: Create Feature Branch For PR Task
+          condition: and(succeeded(), ne(variables['ChangesFound'], 0))
+          inputs:
+            targetType: inline
+            script: |-
+              $commit = $env:GITHUBCOMMIT
+              git fetch https://$env:omexgitbotexternalpat@github.com/Microsoft/Omex $env:GITHUBBRANCH
+              git checkout -b feature/github-bridge-forward $commit
+          env:
+            omexgitbotexternalpat: $(omexgitbotexternalpat)
+            SYSTEM_ACCESSTOKEN: $(PatToken)
+            OMEX_PAT_TOKEN: $(PatToken)
+        - task: oenginternal.office-vsts-tasks-extension.e881ce1e-41bc-4f59-b8a2-9a6001f43efe.CreatePullRequest@9
+          displayName: Create Pull Request
+          inputs:
+            SourceBranchName: github-bridge-forward-$(GITHUBCOMMIT)
+            TargetBranchName: $(GITHUBBRANCH)
+            Title: GitHub Forward Integration - $(GITHUBCOMMIT)
+            Description: GitHub forward integration Pull Request for commit $(GITHUBCOMMIT)
+            SkipIfNoChangesFound: false
+            WorkItemId: "8430180"
+            AutoCompleteUserId: 75d3c7a0-2045-6bf0-b50e-3ab2cf9ae644
+            Pat: $(OfficeOcCodeAccess)
+            MergeStrategy: noFastForward

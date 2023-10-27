@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 
@@ -16,6 +17,12 @@ public class EndpointLivenessHealthCheckParameters : HealthCheckParameters
 	/// The Service Fabric endpoint name, it will be used to fetch the service port.
 	/// </summary>
 	public string EndpointName { get; }
+
+	/// <summary>
+	/// The URI scheme that will be used to query the endpoint.
+	/// The default value will be equa to HTTP.
+	/// </summary>
+	public string UriScheme { get; } = Uri.UriSchemeHttp;
 
 	/// <summary>
 	/// The endpoint relative url at which the Service Fabric health check will be reachable.
@@ -43,12 +50,18 @@ public class EndpointLivenessHealthCheckParameters : HealthCheckParameters
 	/// The endpoint relative url at which the Service Fabric health check will be reachable.
 	/// </param>
 	/// <param name="host">The host used to perform the health check HTTP call to the service.</param>
+	/// <param name="uriScheme">
+	/// The URI scheme to use to call the endpoint.
+	/// It is highly recommend to use <seealso cref="Uri.UriSchemeHttp"/> and <seealso cref="Uri.UriSchemeHttps"/>
+	/// to pass either value.
+	/// </param>
 	/// <param name="reportData">The report data.</param>
 	public EndpointLivenessHealthCheckParameters(
 		string endpointName,
 		string httpClientLogicalName,
 		string endpointRelativeUrl,
 		string host = "localhost",
+		string? uriScheme = null,
 		params KeyValuePair<string, object>[] reportData)
 		: base(reportData)
 	{
@@ -56,5 +69,6 @@ public class EndpointLivenessHealthCheckParameters : HealthCheckParameters
 		HttpClientLogicalName = httpClientLogicalName;
 		EndpointRelativeUri = endpointRelativeUrl;
 		Host = host;
+		UriScheme = uriScheme ?? Uri.UriSchemeHttp;
 	}
 }
