@@ -15,10 +15,8 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 	/// </summary>
 	public class BaseExecutionContext : IExecutionContext
 	{
-		// Defined by Azure https://whatazurewebsiteenvironmentvariablesareavailable.azurewebsites.net/
+		// Set as an environment variable (e.g. through ARM template deployment)
 		internal const string RegionNameVariableName = "REGION_NAME";
-
-		// We define them
 		internal const string RegionShortNameVariableName = "REGION_SHORT_NAME";
 		internal const string ClusterNameVariableName = "CLUSTER_NAME";
 		internal const string SliceNameVariableName = "SLICE_NAME";
