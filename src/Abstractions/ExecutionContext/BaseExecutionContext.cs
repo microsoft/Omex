@@ -18,6 +18,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		// Defined by Azure https://whatazurewebsiteenvironmentvariablesareavailable.azurewebsites.net/
 		internal const string RegionNameVariableName = "REGION_NAME";
 
+		// Set as an environment varialbe (e.g. through ARM template deployment)
+		internal const string RegionShortNameVariableName = "REGION_SHORT_NAME";
+
 		// We define them
 		internal const string ClusterNameVariableName = "CLUSTER_NAME";
 		internal const string SliceNameVariableName = "SLICE_NAME";
@@ -42,6 +45,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 			ClusterIpAddress = GetIpAddress(MachineName);
 			
 			RegionName = GetVariable(RegionNameVariableName) ?? DefaultEmptyValue;
+			RegionShortName = GetVariable(RegionShortNameVariableName) ?? DefaultEmptyValue;
 			DeploymentSlice = GetVariable(SliceNameVariableName) ?? DefaultEmptyValue;
 
 			if (hostEnvironment != null)
@@ -102,6 +106,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 
 		/// <inheritdoc/>
 		public string RegionName { get; protected set; }
+
+		/// <inheritdoc/>
+		public string RegionShortName { get; protected set; }
 
 		/// <inheritdoc/>
 		public string ServiceName { get; protected set; }
