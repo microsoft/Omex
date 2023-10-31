@@ -18,10 +18,8 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		// Defined by Azure https://whatazurewebsiteenvironmentvariablesareavailable.azurewebsites.net/
 		internal const string RegionNameVariableName = "REGION_NAME";
 
-		// Set as an environment varialbe (e.g. through ARM template deployment)
-		internal const string RegionShortNameVariableName = "REGION_SHORT_NAME";
-
 		// We define them
+		internal const string RegionShortNameVariableName = "REGION_SHORT_NAME";
 		internal const string ClusterNameVariableName = "CLUSTER_NAME";
 		internal const string SliceNameVariableName = "SLICE_NAME";
 		internal const string AspNetCoreEnviromentVariableName = "ASPNETCORE_ENVIRONMENT";
