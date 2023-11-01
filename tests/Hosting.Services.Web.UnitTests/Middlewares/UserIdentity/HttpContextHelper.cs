@@ -17,6 +17,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		{
 			(HttpContext context, HttpConnectionFeature feature) = CreateHttpContext();
 			feature.RemoteIpAddress = IPAddress.Parse(address);
+			context.Request.Body.Close();
 			return context;
 		}
 
@@ -35,7 +36,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			FeatureCollection features = new();
 			features.Set<IHttpConnectionFeature>(feature);
 
-			using Stream requestBody = new MemoryStream();
+			Stream requestBody = new MemoryStream();
 
 			Mock<HttpContext> contextMock = new();
 			contextMock.SetupGet(c => c.Features).Returns(features);
