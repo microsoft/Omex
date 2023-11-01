@@ -13,40 +13,40 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 	public class EmailBasedUserIdentityProviderTests
 	{
 		[TestMethod]
-		public async Task TryWriteBytes_ReturnFalseIfNoEmail()
+		public async Task TryWriteBytes_NoEmail_ReturnFalse()
 		{
 			IUserIdentityProvider provider = new EmailBasedUserIdentityProvider();
 			(HttpContext context, _) = HttpContextHelper.CreateHttpContext();
 			Memory<byte> memory = new byte[provider.MaxBytesInIdentity];
-			(bool result, int bytesWritten) = await provider.TryWriteBytesAsync(context, memory).ConfigureAwait(false);
+			(bool result, int bytesWritten) = await provider.TryWriteBytesAsync(context, memory);
 			Assert.IsFalse(result);
 			Assert.AreEqual(-1, bytesWritten);
 		}
 
 		[TestMethod]
-		public async Task TryWriteBytes_ChangedBaseOnEmail()
+		public async Task TryWriteBytes_DifferentEmail_HashValueChanged()
 		{
 			IUserIdentityProvider provider = new EmailBasedUserIdentityProvider();
 
 			HttpContext context1 = HttpContextHelper.GetContextWithEmail("Abc123@outlook.com");
 			HttpContext context2 = HttpContextHelper.GetContextWithEmail("Abc456@gmail.com");
 
-			byte[] hash1 = await GetIdentityAsync(provider, context1).ConfigureAwait(false);
-			byte[] hash2 = await GetIdentityAsync(provider, context2).ConfigureAwait(false);
+			byte[] hash1 = await GetIdentityAsync(provider, context1);
+			byte[] hash2 = await GetIdentityAsync(provider, context2);
 
 			CollectionAssert.AreNotEqual(hash1, hash2);
 
             HttpContext context3 = HttpContextHelper.GetContextWithEmail("Abc123@outlook.com");
             HttpContext context4 = HttpContextHelper.GetContextWithEmail("Abc456@gmail.com");
 
-			CollectionAssert.AreEqual(hash1, await GetIdentityAsync(provider, context3).ConfigureAwait(false));
-			CollectionAssert.AreEqual(hash2, await GetIdentityAsync(provider, context4).ConfigureAwait(false));
+			CollectionAssert.AreEqual(hash1, await GetIdentityAsync(provider, context3));
+			CollectionAssert.AreEqual(hash2, await GetIdentityAsync(provider, context4));
 		}
 
 		private async Task<byte[]> GetIdentityAsync(IUserIdentityProvider provider, HttpContext context)
 		{
 			Memory<byte> memory = new byte[provider.MaxBytesInIdentity];
-			(_, int bytes) = await provider.TryWriteBytesAsync(context, memory).ConfigureAwait(false);
+			(_, int bytes) = await provider.TryWriteBytesAsync(context, memory);
 			Assert.IsTrue(provider.MaxBytesInIdentity >= bytes, "Written size bigger then max size");
 			return memory.Span.ToArray();
 		}

@@ -17,8 +17,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	internal class StaticSaltProvider : ISaltProvider
 	{
 		private readonly IMemoryOwner<byte> m_currentSaltMemory;
-		// string salt;
-		// byte[] saltValue = Encoding.UTF8.GetBytes(salt);
         private readonly byte[] m_saltValue;
 		private readonly ILogger<RotatingSaltProvider> m_logger;
 

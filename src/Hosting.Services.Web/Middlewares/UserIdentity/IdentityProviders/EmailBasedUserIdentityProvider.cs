@@ -11,10 +11,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 {
 	internal class EmailBasedUserIdentityProvider : IUserIdentityProvider
 	{
-        private static int MaxBytesPerChar { get; } = 4; // UTF-8
+        private const int MaxBytesPerChar = 4; // UTF-8
 		public int MaxBytesInIdentity { get; } = 256 * MaxBytesPerChar; // maximum email address length plus max bytes per char
 
-        public class UserEmail
+        private class UserEmail
         {
             public string Email { get; set; } = string.Empty;
         }
@@ -37,8 +37,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
                             bytesWritten += MaxBytesPerChar;
                         }
                 }
+
                 return Task.FromResult((success, bytesWritten));
             }
+
             catch {
                 return Task.FromResult((false, -1));
             }

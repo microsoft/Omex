@@ -68,12 +68,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			TestIdentityProvider provider = new ("ProviderWrapper", new EmailBasedUserIdentityProvider());
 			
 			random.NextBytes(saltValue);
-			TestStaticSaltProvider saltProvider1 = new(saltValue);
+			using TestStaticSaltProvider saltProvider1 = new(saltValue);
 			UserHashIdentityMiddleware middleware1 = GetMiddelware(saltProvider: saltProvider1, provider);
 			string initialHash = await middleware1.CreateUserHashAsync(context).ConfigureAwait(false);
 
 			random.NextBytes(saltValue);
-			TestStaticSaltProvider saltProvider2 = new(saltValue);
+			using TestStaticSaltProvider saltProvider2 = new(saltValue);
 			UserHashIdentityMiddleware middleware2 = GetMiddelware(saltProvider: saltProvider2, provider);
 			string changedHash = await middleware2.CreateUserHashAsync(context).ConfigureAwait(false);
 

@@ -7,6 +7,7 @@ using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Moq;
+using System.Text;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 {
@@ -22,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		public static HttpContext GetContextWithEmail(string email)
 		{
 			(HttpContext context, _) = CreateHttpContext();
-			byte[] emailBytes = System.Text.Encoding.UTF8.GetBytes($"{{\"Email\":\"{email}\"}}");
+			byte[] emailBytes = Encoding.UTF8.GetBytes($"{{\"Email\":\"{email}\"}}");
 			context.Request.Body.Write(emailBytes, 0, emailBytes.Length);
 			return context;
 		}
@@ -34,7 +35,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			FeatureCollection features = new();
 			features.Set<IHttpConnectionFeature>(feature);
 
-			Stream requestBody = new MemoryStream();
+			using Stream requestBody = new MemoryStream();
 
 			Mock<HttpContext> contextMock = new();
 			contextMock.SetupGet(c => c.Features).Returns(features);
