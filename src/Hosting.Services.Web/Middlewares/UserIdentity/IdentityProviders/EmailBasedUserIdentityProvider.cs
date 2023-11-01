@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
             try{
                 context.Request.Body.Seek(0, SeekOrigin.Begin);
                 TextReader reader = new StreamReader(context.Request.Body);
-                UserEmail? email = JsonSerializer.Deserialize<UserEmail>(reader.ReadToEnd());
+UserEmail? email = await JsonSerializer.DeserializeAsync<UserEmail>(reader);
                 reader.Close();
                 bool success = email != null;
                 if (email != null)
