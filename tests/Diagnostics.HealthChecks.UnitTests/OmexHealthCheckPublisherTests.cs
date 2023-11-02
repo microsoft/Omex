@@ -122,19 +122,19 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 		private static PublisherContext CreatePublisher(bool canInitizlize = true)
 		{
-			Dictionary<string, HealthStateInfo> reportedState = new();
-			Mock<IHealthStatusSender> mockSender = new();
+			Dictionary<string, HealthStateInfo> reportedState = new ();
+			Mock<IHealthStatusSender> mockSender = new ();
 			mockSender.Setup(s => s.IntializeAsync(It.IsAny<CancellationToken>())).Returns(Task.FromResult(canInitizlize));
 			mockSender.Setup(s_sendStatusExpression)
 				.Callback((string name, HealthStatus status, string description, CancellationToken token) =>
 					reportedState[name] = new HealthStateInfo(status, description))
 				.Returns(Task.CompletedTask);
 
-			OmexHealthCheckPublisher publisher = new(
+			OmexHealthCheckPublisher publisher = new (
 				mockSender.Object,
 				new DefaultObjectPoolProvider());
 
-			return new(publisher, mockSender, reportedState);
+			return new (publisher, mockSender, reportedState);
 		}
 
 		private record PublisherContext(

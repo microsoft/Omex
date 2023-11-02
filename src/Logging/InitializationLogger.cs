@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// </summary>
 		public static ILogger Instance { get; private set; } = LoggerFactory.Create(builder =>
 		 {
-			 builder.LoadInitializationLogger();
+			builder.LoadInitializationLogger();
 		 }).CreateLogger("Initial-Logging");
 
 		private static ILoggingBuilder LoadInitializationLogger(this ILoggingBuilder builder)
@@ -56,7 +56,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <param name="serviceNameForLogging">Service name for logging</param>
 		/// <param name="ex">Exception to log</param>
 		/// <param name="message">Message to log</param>
-		public static void LogInitializationFail(string serviceNameForLogging, Exception? ex = null, string message = "")
+		public static void LogInitializationFail(string serviceNameForLogging,  Exception? ex = null, string message = "")
 		{
 			ServiceInitializationEventSource.Instance.LogHostFailed(ex?.ToString() ?? string.Empty, serviceNameForLogging, message);
 			Instance.LogError(Tag.Create(), ex, message);

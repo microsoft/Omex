@@ -4,13 +4,13 @@
 using System;
 using System.Collections.Generic;
 using System.Fabric;
-using System.Fabric.Health;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Fabric.Health;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 {
@@ -171,7 +171,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 					reportedState[info.Property] = info;
 				}));
-
+			
 			return new SenderContext<IStatefulServicePartition>(partitionMock, reportedState);
 		}
 

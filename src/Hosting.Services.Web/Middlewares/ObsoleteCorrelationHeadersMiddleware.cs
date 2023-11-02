@@ -125,7 +125,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		private static readonly string[] s_officeClientQueryParameters = {
 			"client",					// Identifies the client application and platform
 			"av",						// Identifies the client application, platform and partial version
-			"app" };                    // Identifies the client application
+			"app" };					// Identifies the client application
 
 		private const string CorrelationHeader = "X-CorrelationId";
 

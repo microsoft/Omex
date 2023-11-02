@@ -133,7 +133,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		public void AddRegexLogScrubbingRule_Scrubs(string input, string expected)
 		{
 			ILoggingBuilder builder2 = new MockLoggingBuilder()
-				.AddRegexLogScrubbingRule(Regex, "REDACTED&");
+				.AddRegexLogScrubbingRule(Regex,"REDACTED&");
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder2.Services);
 

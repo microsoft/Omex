@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		[DataRow(int.MaxValue, "\u007f???")]
 		public void TagIdAsString_ConvertsProperly(int tagId, string expected)
 		{
-#pragma warning disable 618
+# pragma warning disable 618
 			Assert.AreEqual(expected, new EventId(tagId).ToTagId());
 #pragma warning restore 618
 		}

@@ -28,9 +28,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task StartAsync_WithoutPublishers_DoesNotStartTimer()
 		{
 			// Arrange
-			IHealthCheckPublisher[] publishers = Array.Empty<IHealthCheckPublisher>();
+			var publishers = Array.Empty<IHealthCheckPublisher>();
 
-			OmexHealthCheckPublisherHostedService service = CreateService(publishers);
+			var service = CreateService(publishers);
 
 			try
 			{
@@ -53,12 +53,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task StartAsync_WithPublishers_StartsTimer()
 		{
 			// Arrange
-			IHealthCheckPublisher[] publishers = new IHealthCheckPublisher[]
+			var publishers = new IHealthCheckPublisher[]
 			{
 				new TestPublisher(),
 			};
 
-			OmexHealthCheckPublisherHostedService service = CreateService(publishers);
+			var service = CreateService(publishers);
 
 			try
 			{
@@ -81,11 +81,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task StartAsync_WithPublishers_StartsTimer_RunsPublishers()
 		{
 			// Arrange
-			TaskCompletionSource<object?> unblock0 = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
-			TaskCompletionSource<object?> unblock1 = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
-			TaskCompletionSource<object?> unblock2 = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+			var unblock0 = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+			var unblock1 = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+			var unblock2 = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-			TestPublisher[] publishers = new TestPublisher[]
+			var publishers = new TestPublisher[]
 			{
 				new TestPublisher() { Wait = unblock0.Task, },
 				new TestPublisher() { Wait = unblock1.Task, },
@@ -126,9 +126,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task StopAsync_CancelsExecution()
 		{
 			// Arrange
-			TaskCompletionSource<object?> unblock = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+			var unblock = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-			TestPublisher[] publishers = new TestPublisher[]
+			var publishers = new TestPublisher[]
 			{
 				new TestPublisher() { Wait = unblock.Task, }
 			};
@@ -140,7 +140,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				await service.StartAsync();
 
 				// Start execution
-				Task running = service.RunAsync();
+				var running = service.RunAsync();
 
 				// Wait for the publisher to see the cancellation token
 				await publishers[0].Started.TimeoutAfter(TimeSpan.FromSeconds(10));
@@ -170,9 +170,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task RunAsync_WaitsForCompletion_Single()
 		{
 			// Arrange
-			TaskCompletionSource<object?> unblock = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+			var unblock = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-			TestPublisher[] publishers = new TestPublisher[]
+			var publishers = new TestPublisher[]
 			{
 				new TestPublisher() { Wait = unblock.Task, },
 			};
@@ -184,7 +184,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				await service.StartAsync();
 
 				// Act
-				Task running = service.RunAsync();
+				var running = service.RunAsync();
 
 				await publishers[0].Started.TimeoutAfter(TimeSpan.FromSeconds(10));
 
@@ -196,10 +196,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				Assert.IsTrue(service.IsTimerRunning);
 				Assert.IsFalse(service.IsStopping);
 
-				for (int i = 0; i < publishers.Length; i++)
+				for (var i = 0; i < publishers.Length; i++)
 				{
 					Assert.IsTrue(publishers[i].Entries.Count == 1);
-					HealthReport report = publishers[i].Entries.Single().report;
+					var report = publishers[i].Entries.Single().report;
 					CollectionAssert.AreEqual(new[] { "one", "two", }, report.Entries.Keys.OrderBy(k => k).ToArray());
 				}
 			}
@@ -217,15 +217,15 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			// Arrange
 			const string HealthyMessage = "Everything is A-OK";
 
-			TaskCompletionSource<object?> unblock = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
-			TaskCompletionSource<object?> unblockDelayedCheck = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+			var unblock = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+			var unblockDelayedCheck = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-			TestPublisher[] publishers = new TestPublisher[]
+			var publishers = new TestPublisher[]
 			{
 				new TestPublisher() { Wait = unblock.Task, },
 			};
 
-			OmexHealthCheckPublisherHostedService service = CreateService(publishers, configureBuilder: b =>
+			var service = CreateService(publishers, configureBuilder: b =>
 			{
 				b.AddAsyncCheck("CheckDefault", _ =>
 				{
@@ -264,7 +264,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				await service.StartAsync();
 
 				// Act
-				Task running = service.RunAsync();
+				var running = service.RunAsync();
 
 				await publishers[0].Started.TimeoutAfter(TimeSpan.FromSeconds(10));
 
@@ -278,10 +278,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				Assert.IsTrue(service.IsTimerRunning);
 				Assert.IsFalse(service.IsStopping);
 
-				for (int i = 0; i < publishers.Length; i++)
+				for (var i = 0; i < publishers.Length; i++)
 				{
 					Assert.IsTrue(publishers[i].Entries.Count == 4);
-					string[] entries = publishers[i].Entries.SelectMany(e => e.report.Entries.Select(e2 => e2.Key)).OrderBy(k => k).ToArray();
+					var entries = publishers[i].Entries.SelectMany(e => e.report.Entries.Select(e2 => e2.Key)).OrderBy(k => k).ToArray();
 					CollectionAssert.AreEqual(
 						new[] { "CheckDefault", "CheckDelay2Period18", "CheckDelay7Period11", "CheckDelay9Period5" },
 						entries);
@@ -299,11 +299,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task RunAsync_WaitsForCompletion_Multiple()
 		{
 			// Arrange
-			TaskCompletionSource<object?> unblock0 = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
-			TaskCompletionSource<object?> unblock1 = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
-			TaskCompletionSource<object?> unblock2 = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+			var unblock0 = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+			var unblock1 = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+			var unblock2 = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-			TestPublisher[] publishers = new TestPublisher[]
+			var publishers = new TestPublisher[]
 			{
 				new TestPublisher() { Wait = unblock0.Task, },
 				new TestPublisher() { Wait = unblock1.Task, },
@@ -317,7 +317,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				await service.StartAsync();
 
 				// Act
-				Task running = service.RunAsync();
+				var running = service.RunAsync();
 
 				await publishers[0].Started.TimeoutAfter(TimeSpan.FromSeconds(10));
 				await publishers[1].Started.TimeoutAfter(TimeSpan.FromSeconds(10));
@@ -333,10 +333,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				Assert.IsTrue(service.IsTimerRunning);
 				Assert.IsFalse(service.IsStopping);
 
-				for (int i = 0; i < publishers.Length; i++)
+				for (var i = 0; i < publishers.Length; i++)
 				{
 					Assert.IsTrue(publishers[i].Entries.Count == 1);
-					HealthReport report = publishers[i].Entries.Single().report;
+					var report = publishers[i].Entries.Single().report;
 					CollectionAssert.AreEqual(new[] { "one", "two", }, report.Entries.Keys.OrderBy(k => k).ToArray());
 				}
 			}
@@ -352,21 +352,21 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task RunAsync_PublishersCanTimeout()
 		{
 			// Arrange
-			TaskCompletionSource<object?> unblock = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+			var unblock = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-			TestPublisher[] publishers = new TestPublisher[]
+			var publishers = new TestPublisher[]
 			{
 				new TestPublisher() { Wait = unblock.Task, },
 			};
 
-			OmexHealthCheckPublisherHostedService service = CreateService(publishers);
+			var service = CreateService(publishers);
 
 			try
 			{
 				await service.StartAsync();
 
 				// Act
-				Task running = service.RunAsync();
+				var running = service.RunAsync();
 
 				await publishers[0].Started.TimeoutAfter(TimeSpan.FromSeconds(10));
 
@@ -394,13 +394,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task RunAsync_CanFilterHealthChecks()
 		{
 			// Arrange
-			TestPublisher[] publishers = new TestPublisher[]
+			var publishers = new TestPublisher[]
 			{
 				new TestPublisher(),
 				new TestPublisher(),
 			};
 
-			OmexHealthCheckPublisherHostedService service = CreateService(publishers, configurePublisherOptions: (options) =>
+			var service = CreateService(publishers, configurePublisherOptions: (options) =>
 			{
 				options.Predicate = (r) => r.Name == "one";
 			});
@@ -413,10 +413,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				await service.RunAsync().TimeoutAfter(TimeSpan.FromSeconds(10));
 
 				// Assert
-				for (int i = 0; i < publishers.Length; i++)
+				for (var i = 0; i < publishers.Length; i++)
 				{
 					Assert.IsTrue(publishers[i].Entries.Count == 1);
-					HealthReport report = publishers[i].Entries.Single().report;
+					var report = publishers[i].Entries.Single().report;
 					CollectionAssert.AreEqual(new[] { "one" }, report.Entries.Keys.OrderBy(k => k).ToArray());
 				}
 			}
@@ -434,15 +434,15 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			// Arrange
 			const string HealthyMessage = "Everything is A-OK";
 
-			TaskCompletionSource<object?> unblockDelayedCheck = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+			var unblockDelayedCheck = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-			TestPublisher[] publishers = new TestPublisher[]
+			var publishers = new TestPublisher[]
 			{
 				new TestPublisher(),
 				new TestPublisher(),
 			};
 
-			OmexHealthCheckPublisherHostedService service = CreateService(
+			var service = CreateService(
 				publishers,
 				configurePublisherOptions: (options) =>
 				{
@@ -492,9 +492,9 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				await unblockDelayedCheck.Task;
 
 				// Assert
-				for (int i = 0; i < publishers.Length; i++)
+				for (var i = 0; i < publishers.Length; i++)
 				{
-					string[] entries = publishers[i].Entries.SelectMany(e => e.report.Entries.Select(e2 => e2.Key)).OrderBy(k => k).ToArray();
+					var entries = publishers[i].Entries.SelectMany(e => e.report.Entries.Select(e2 => e2.Key)).OrderBy(k => k).ToArray();
 
 					Assert.IsTrue(entries.Count() == 3);
 					CollectionAssert.AreEqual(
@@ -514,12 +514,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task RunAsync_HandlesExceptions()
 		{
 			// Arrange
-			TestPublisher[] publishers = new TestPublisher[]
+			var publishers = new TestPublisher[]
 			{
 				new TestPublisher() { Exception = new InvalidTimeZoneException(), },
 			};
 
-			OmexHealthCheckPublisherHostedService service = CreateService(publishers);
+			var service = CreateService(publishers);
 
 			try
 			{
@@ -541,14 +541,14 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task RunAsync_HandlesExceptions_Multiple()
 		{
 			// Arrange
-			TestPublisher[] publishers = new TestPublisher[]
+			var publishers = new TestPublisher[]
 			{
 				new TestPublisher() { Exception = new InvalidTimeZoneException(), },
 				new TestPublisher(),
 				new TestPublisher() { Exception = new InvalidTimeZoneException(), },
 			};
 
-			OmexHealthCheckPublisherHostedService service = CreateService(publishers);
+			var service = CreateService(publishers);
 
 			try
 			{
@@ -597,7 +597,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 			if (publishers != null)
 			{
-				for (int i = 0; i < publishers.Length; i++)
+				for (var i = 0; i < publishers.Length; i++)
 				{
 					serviceCollection.AddSingleton(publishers[i]);
 				}
@@ -608,7 +608,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				serviceCollection.Configure(configurePublisherOptions);
 			}
 
-			ServiceProvider services = serviceCollection.BuildServiceProvider();
+			var services = serviceCollection.BuildServiceProvider();
 			return services.GetServices<IHostedService>().OfType<OmexHealthCheckPublisherHostedService>().Single();
 		}
 

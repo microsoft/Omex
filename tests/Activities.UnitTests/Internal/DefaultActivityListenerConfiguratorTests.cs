@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System.Diagnostics;
-using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 using Moq;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Omex.Extensions.Activities.UnitTests
 {
