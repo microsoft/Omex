@@ -4,6 +4,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -15,7 +16,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		[TestMethod]
 		public async Task TryWriteBytes_NoEmail_ReturnFalse()
 		{
-			IUserIdentityProvider provider = new EmailBasedUserIdentityProvider();
+			IUserIdentityProvider provider = new EmailBasedUserIdentityProvider(new NullLogger<EmailBasedUserIdentityProvider>());
 			(HttpContext context, _) = HttpContextHelper.CreateHttpContext();
 			Memory<byte> memory = new byte[provider.MaxBytesInIdentity];
 			(bool result, int bytesWritten) = await provider.TryWriteBytesAsync(context, memory);
@@ -26,7 +27,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		[TestMethod]
 		public async Task TryWriteBytes_DifferentEmail_HashValueChanged()
 		{
-			IUserIdentityProvider provider = new EmailBasedUserIdentityProvider();
+			IUserIdentityProvider provider = new EmailBasedUserIdentityProvider(new NullLogger<EmailBasedUserIdentityProvider>());
 
 			HttpContext context1 = HttpContextHelper.GetContextWithEmail("Abc123@outlook.com");
 			HttpContext context2 = HttpContextHelper.GetContextWithEmail("Abc456@gmail.com");

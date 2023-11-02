@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -65,7 +66,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			Random random = new();
 			byte[] saltValue = new byte[128];
 
-			TestIdentityProvider provider = new("ProviderWrapper", new EmailBasedUserIdentityProvider());
+			TestIdentityProvider provider = new("ProviderWrapper", new EmailBasedUserIdentityProvider(new NullLogger<EmailBasedUserIdentityProvider>()));
 
 			random.NextBytes(saltValue);
 			using TestStaticSaltProvider saltProvider1 = new(saltValue);
