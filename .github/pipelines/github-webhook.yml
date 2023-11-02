@@ -55,7 +55,7 @@ extends:
               $Commit = $env:BUILD_SOURCEVERSION
               Write-Host ("Running for commit id: {0} and branch {1}"  -f $Commit, $env:BUILD_SOURCEBRANCHNAME)
               $BuildParam ="{{`"GitHubCommit`":`"{0}`", `"GitHubBranch`":`"{1}`"}}" -f $Commit, $env:BUILD_SOURCEBRANCHNAME
-              $PipelineId = 26129 #this is the build id of the GitHubBridgeForward pipeline
+              $PipelineId = 26129 # this is the build id of the Forward pipeline
               $Payload = @{
                 definition = @{
                   id = $pipelineId

@@ -69,6 +69,11 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		string RegionName { get; }
 
 		/// <summary>
+		/// The short Azure region name
+		/// </summary>
+		string RegionShortName { get; }
+
+		/// <summary>
 		/// The service name
 		/// </summary>
 		string ServiceName { get; }

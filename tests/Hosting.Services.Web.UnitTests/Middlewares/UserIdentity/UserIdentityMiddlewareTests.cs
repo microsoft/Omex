@@ -2,11 +2,12 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 {
 	[TestClass]
-	public class UserIdentiyMiddlewareTests
+	public class UserIdentityMiddlewareTests
 	{
 		[TestMethod]
 		public void InvokeAsync_SetsActivityPropetry()
@@ -58,16 +59,39 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		}
 
 		[TestMethod]
+		public async Task CreateUserHash_UseStaticSalt()
+		{
+			HttpContext context = HttpContextHelper.GetContextWithEmail("Abc123@outlook.com");
+
+			Random random = new();
+			byte[] saltValue = new byte[128];
+
+			TestIdentityProvider provider = new("ProviderWrapper", new EmailBasedUserIdentityProvider(new NullLogger<EmailBasedUserIdentityProvider>()));
+
+			random.NextBytes(saltValue);
+			using TestStaticSaltProvider saltProvider1 = new(saltValue);
+			UserHashIdentityMiddleware middleware1 = GetMiddelware(saltProvider: saltProvider1, provider);
+			string initialHash = await middleware1.CreateUserHashAsync(context).ConfigureAwait(false);
+
+			random.NextBytes(saltValue);
+			using TestStaticSaltProvider saltProvider2 = new(saltValue);
+			UserHashIdentityMiddleware middleware2 = GetMiddelware(saltProvider: saltProvider2, provider);
+			string changedHash = await middleware2.CreateUserHashAsync(context).ConfigureAwait(false);
+
+			Assert.AreNotEqual(changedHash, initialHash);
+		}
+
+		[TestMethod]
 		public async Task CreateUserHash_HandleConcurrentRequestProperly()
 		{
-			HttpContext[] contexts = new []
+			HttpContext[] contexts = new[]
 			{
 				HttpContextHelper.GetContextWithIp("192.168.132.17"),
 				HttpContextHelper.GetContextWithIp("192.168.132.18"),
 				HttpContextHelper.GetContextWithIp("192.168.132.19")
 			};
 
-			TestIdentityProvider provider = new ("ProviderWrapper", new IpBasedUserIdentityProvider());
+			TestIdentityProvider provider = new("ProviderWrapper", new IpBasedUserIdentityProvider());
 			UserHashIdentityMiddleware middleware = GetMiddelware(saltProvider: null, provider);
 
 			ParallelQuery<Task<(int contextIndex, string hash)>> result = Enumerable.Range(0, 100).AsParallel()
@@ -94,8 +118,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		public async Task CreateUserHash_CallProvidersInOrder(bool firstApplicable, bool secondApplicable, bool firstShouldBeCalled, bool secondShouldBeCalled)
 		{
 			HttpContext context = HttpContextHelper.GetContextWithIp("192.168.201.1");
-			TestIdentityProvider mock1 = new ("Provider1", 15) { IsApplicable = firstApplicable };
-			TestIdentityProvider mock2 = new ("Procider2", 10) { IsApplicable = secondApplicable };
+			TestIdentityProvider mock1 = new("Provider1", 15) { IsApplicable = firstApplicable };
+			TestIdentityProvider mock2 = new("Procider2", 10) { IsApplicable = secondApplicable };
 			UserHashIdentityMiddleware middleware = GetMiddelware(saltProvider: null, mock1, mock2);
 
 			string hash = await middleware.CreateUserHashAsync(context).ConfigureAwait(false);
@@ -143,7 +167,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			public Task<(bool success, int bytesWritten)> TryWriteBytesAsync(HttpContext context, Memory<byte> memory)
 			{
 				Span<byte> span = memory.Span.Slice(0, MaxBytesInIdentity);
-				Assert.AreEqual(MaxBytesInIdentity, span.Length, "Wrond span size provided");
+				Assert.AreEqual(MaxBytesInIdentity, span.Length, "Wrong span size provided");
 				m_calls++;
 				int bytesWritten = IsApplicable ? MaxBytesInIdentity : 0;
 
@@ -184,6 +208,20 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			public byte[] Salt { get; } = new byte[SaltSize];
 
 			public int MaxBytesInSalt => SaltSize;
+
+			public void Dispose() { }
+			public ReadOnlySpan<byte> GetSalt() => Salt.AsSpan();
+		}
+
+		private class TestStaticSaltProvider : ISaltProvider
+		{
+			private const int SaltSize = 128;
+
+			public byte[] Salt { get; } = new byte[SaltSize];
+
+			public int MaxBytesInSalt => SaltSize;
+
+			public TestStaticSaltProvider(byte[] saltValue) => saltValue.CopyTo(Salt, 0);
 
 			public void Dispose() { }
 			public ReadOnlySpan<byte> GetSalt() => Salt.AsSpan();
