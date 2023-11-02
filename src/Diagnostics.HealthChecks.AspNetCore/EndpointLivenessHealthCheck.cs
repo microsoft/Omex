@@ -46,7 +46,7 @@ internal class EndpointLivenessHealthCheck : IHealthCheck
 	private HttpRequestMessage CreateHttpRequestMessage()
 	{
 		int port = SfConfigurationProvider.GetEndpointPort(m_parameters.EndpointName);
-		UriBuilder uriBuilder = new(Uri.UriSchemeHttp, m_parameters.Host, port, m_parameters.EndpointRelativeUri);
+		UriBuilder uriBuilder = new(m_parameters.UriScheme, m_parameters.Host, port, m_parameters.EndpointRelativeUri);
 		return new HttpRequestMessage(HttpMethod.Get, uriBuilder.Uri);
 	}
 }
