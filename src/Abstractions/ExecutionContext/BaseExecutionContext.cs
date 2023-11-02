@@ -40,7 +40,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 			BuildVersion = GetBuildVersion();
 
 			ClusterIpAddress = GetIpAddress(MachineName);
-			
+
 			RegionName = GetVariable(RegionNameVariableName) ?? DefaultEmptyValue;
 			DeploymentSlice = GetVariable(SliceNameVariableName) ?? DefaultEmptyValue;
 

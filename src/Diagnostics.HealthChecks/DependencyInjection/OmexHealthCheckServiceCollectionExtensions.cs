@@ -46,7 +46,14 @@ public static class OmexHealthCheckServiceCollectionExtensions
 	/// <param name="predicate"></param>
 	public static bool TryRemoveServiceByPredicate(this IServiceCollection @this, Func<ServiceDescriptor, bool> predicate)
 	{
+
+/* Unmerged change from project 'Microsoft.Omex.Extensions.Diagnostics.HealthChecks(netstandard2.0)'
+Before:
 		var descriptorToRemove = @this.SingleOrDefault(predicate);
+After:
+		ServiceDescriptor descriptorToRemove = @this.SingleOrDefault(predicate);
+*/
+		ServiceDescriptor? descriptorToRemove = @this.SingleOrDefault(predicate);
 		if (descriptorToRemove != null)
 		{
 			return @this.Remove(descriptorToRemove);

@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 using System;
@@ -17,22 +17,22 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	internal class StaticSaltProvider : ISaltProvider
 	{
 		private readonly IMemoryOwner<byte> m_currentSaltMemory;
-        private readonly byte[] m_saltValue;
+		private readonly byte[] m_saltValue;
 		private readonly ILogger<RotatingSaltProvider> m_logger;
 
 		public StaticSaltProvider(byte[] saltValue, ILogger<RotatingSaltProvider> logger)
 		{
 			m_currentSaltMemory = MemoryPool<byte>.Shared.Rent(saltValue.Length);
-            m_saltValue = saltValue;
-            m_logger = logger;
+			m_saltValue = saltValue;
+			m_logger = logger;
 		}
-        
-        public int MaxBytesInSalt => m_saltValue.Length;
+
+		public int MaxBytesInSalt => m_saltValue.Length;
 
 		public ReadOnlySpan<byte> GetSalt()
 		{
 			Span<byte> saltSpan = m_currentSaltMemory.Memory.Span;
-            m_saltValue.CopyTo(saltSpan);
+			m_saltValue.CopyTo(saltSpan);
 			return saltSpan;
 		}
 
@@ -40,6 +40,5 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		{
 			m_currentSaltMemory.Dispose();
 		}
-
 	}
 }

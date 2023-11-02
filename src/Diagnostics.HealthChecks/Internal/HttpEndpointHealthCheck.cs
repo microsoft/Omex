@@ -83,7 +83,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			}
 
 #if !NETCOREAPP3_1 && !NETSTANDARD2_0
-			clone.VersionPolicy =  message.VersionPolicy;
+			clone.VersionPolicy = message.VersionPolicy;
 
 			foreach (KeyValuePair<string, object?> option in message.Options)
 			{

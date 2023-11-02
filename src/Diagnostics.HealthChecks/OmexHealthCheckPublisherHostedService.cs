@@ -88,7 +88,7 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 		// actually tries to **run** health checks would be real baaaaad.
 		ValidateRegistrations(_healthCheckServiceOptions.Value.Registrations);
 
-		_defaultTimerOptions =  (_healthCheckPublisherOptions.Value.Delay, _healthCheckPublisherOptions.Value.Period, _healthCheckPublisherOptions.Value.Timeout);
+		_defaultTimerOptions = (_healthCheckPublisherOptions.Value.Delay, _healthCheckPublisherOptions.Value.Period, _healthCheckPublisherOptions.Value.Timeout);
 
 		// Group healthcheck registrations by Delay, Period and Timeout, to build a Dictionary<(TimeSpan, TimeSpan, TimeSpan), List<HealthCheckRegistration>>
 		// For HCs with no Delay, Period or Timeout, we default to the publisher values

@@ -8,8 +8,8 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests.Extensions
 {
@@ -41,7 +41,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests.Extension
 				throw new TimeoutException(CreateMessage(timeout, filePath, lineNumber));
 			}
 #else
-			var cts = new CancellationTokenSource();
+			CancellationTokenSource cts = new CancellationTokenSource();
 			if (task == await Task.WhenAny(task, Task.Delay(timeout, cts.Token)).ConfigureAwait(false))
 			{
 				cts.Cancel();

@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 using System;
@@ -39,8 +39,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 
 			CollectionAssert.AreNotEqual(hash1, hash2);
 
-            HttpContext context3 = HttpContextHelper.GetContextWithEmail("Abc123@outlook.com");
-            HttpContext context4 = HttpContextHelper.GetContextWithEmail("Abc456@gmail.com");
+			HttpContext context3 = HttpContextHelper.GetContextWithEmail("Abc123@outlook.com");
+			HttpContext context4 = HttpContextHelper.GetContextWithEmail("Abc456@gmail.com");
 
 			CollectionAssert.AreEqual(hash1, await GetIdentityAsync(provider, context3));
 			CollectionAssert.AreEqual(hash2, await GetIdentityAsync(provider, context4));
