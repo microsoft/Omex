@@ -22,10 +22,17 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 			this ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext> builder,
 			string name,
 			FabricTransportRemotingListenerSettings? settings = null)
-				where TService : class, IService =>
-					builder
-						.ConfigureServices((_, services) => services.TryAddTransient<TService>())
-						.AddRemotingListener(name, (provider, _) => provider.GetRequiredService<TService>(), settings);
+				where TService : class, IService
+		{
+			if (settings == null)
+			{
+				settings = new FabricTransportRemotingListenerSettings();
+			}
+			settings.ExceptionSerializationTechnique = FabricTransportRemotingListenerSettings.ExceptionSerialization.Default;
+			return builder
+				.ConfigureServices((_, services) => services.TryAddTransient<TService>())
+				.AddRemotingListener(name, (provider, _) => provider.GetRequiredService<TService>(), settings);
+		}
 
 		/// <summary>
 		/// Adds remote listener to stateless service
@@ -34,10 +41,17 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 			this ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext> builder,
 			string name,
 			FabricTransportRemotingListenerSettings? settings = null)
-				where TService : class, IService =>
-					builder
-						.ConfigureServices((_, services) => services.TryAddTransient<TService>())
-						.AddRemotingListener(name, (provider, _) => provider.GetRequiredService<TService>(), settings);
+				where TService : class, IService
+		{
+			if (settings == null)
+			{
+				settings = new FabricTransportRemotingListenerSettings();
+			}
+			settings.ExceptionSerializationTechnique = FabricTransportRemotingListenerSettings.ExceptionSerialization.Default;
+			return builder
+				.ConfigureServices((_, services) => services.TryAddTransient<TService>())
+				.AddRemotingListener(name, (provider, _) => provider.GetRequiredService<TService>(), settings);
+		}
 
 		/// <summary>
 		/// Adds remote listener to stateful service
@@ -64,8 +78,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 				Func<IServiceProvider, TService, IService> createService,
 				FabricTransportRemotingListenerSettings? settings = null)
 					where TService : IServiceFabricService<TContext>
-					where TContext : ServiceContext =>
-						builder.AddServiceListener(p =>
-							new GenericRemotingListenerBuilder<TService>(name, p, createService, settings));
+					where TContext : ServiceContext
+		{
+			if (settings == null)
+			{
+				settings = new FabricTransportRemotingListenerSettings();
+			}
+			settings.ExceptionSerializationTechnique = FabricTransportRemotingListenerSettings.ExceptionSerialization.Default;
+			return builder.AddServiceListener(p =>
+				new GenericRemotingListenerBuilder<TService>(name, p, createService, settings));
+		}
 	}
 }
