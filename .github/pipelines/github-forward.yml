@@ -48,6 +48,7 @@ extends:
                 Write-Host "##vso[task.setvariable variable=ChangesFound]0"
                 exit 0
               }
+               <#[SuppressMessage("Microsoft.Security", "CS001:SecretInline", Justification="Not a secret")]#>
               git remote add omexgithubremote https://$env:omexgitbotexternalpat@github.com/Microsoft/Omex
               git fetch omexgithubremote
               $files = git diff --name-only origin/$env:GITHUBBRANCH omexgithubremote/$env:GITHUBBRANCH
@@ -69,6 +70,7 @@ extends:
             targetType: inline
             script: |-
               $commit = $env:GITHUBCOMMIT
+              <#[SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Not a secret")]#>
               git fetch https://$env:omexgitbotexternalpat@github.com/Microsoft/Omex $env:GITHUBBRANCH
               git checkout -b feature/github-bridge-forward $commit
           env:
