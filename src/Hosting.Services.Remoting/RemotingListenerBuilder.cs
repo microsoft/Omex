@@ -29,6 +29,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 			string name,
 			FabricTransportRemotingListenerSettings? settings = null)
 		{
+			if (settings == null)
+			{
+				settings = new FabricTransportRemotingListenerSettings();
+			}
+			settings.ExceptionSerializationTechnique = FabricTransportRemotingListenerSettings.ExceptionSerialization.Default;
 			Name = name;
 			Settings = settings;
 		}

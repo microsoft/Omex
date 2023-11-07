@@ -30,6 +30,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 		/// </summary>
 		public static void WithCustomTransportSettings(FabricTransportRemotingSettings transportSettings)
 		{
+			transportSettings.ExceptionDeserializationTechnique = FabricTransportRemotingSettings.ExceptionDeserialization.Default;
 			s_serviceProxyFactory = new ServiceProxyFactory(handler =>
 				new OmexServiceRemotingClientFactory(
 					new FabricTransportServiceRemotingClientFactory(
