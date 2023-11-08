@@ -22,7 +22,11 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 		private static ServiceProxyFactory s_serviceProxyFactory = new(handler =>
 			new OmexServiceRemotingClientFactory(
 				new FabricTransportServiceRemotingClientFactory(
-					remotingCallbackMessageHandler: handler)));
+					remotingCallbackMessageHandler: handler,
+					remotingSettings: new FabricTransportRemotingSettings
+					{
+						ExceptionDeserializationTechnique = FabricTransportRemotingSettings.ExceptionDeserialization.Default
+					})));
 
 		/// <summary>
 		/// Binds custom transport settings to the service proxy factory.
