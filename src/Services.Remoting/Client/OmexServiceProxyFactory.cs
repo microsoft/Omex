@@ -3,6 +3,7 @@
 
 using Microsoft.ServiceFabric.Services.Remoting.Client;
 using Microsoft.ServiceFabric.Services.Remoting.FabricTransport;
+using Microsoft.ServiceFabric.Services.Remoting.FabricTransport.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting.V2.FabricTransport.Client;
 
 namespace Microsoft.Omex.Extensions.Services.Remoting.Client
@@ -21,8 +22,12 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 	{
 		private static ServiceProxyFactory s_serviceProxyFactory = new(handler =>
 		{
-			FabricTransportRemotingSettings remotingSettings = FabricTransportRemotingSettings.LoadFrom("TransportSettings") ?? new FabricTransportRemotingSettings();
-			remotingSettings.ExceptionDeserializationTechnique = FabricTransportRemotingSettings.ExceptionDeserialization.Default;
+			FabricTransportRemotingSettings remotingSettings;
+			if (!FabricTransportRemotingSettings.TryLoadFrom("TransportSettings", out remotingSettings))
+			{
+				remotingSettings = new FabricTransportRemotingSettings();
+			}
+			remotingSettings.ExceptionDeserializationTechnique = FabricTransportRemotingSettings.ExceptionDeserialization.Default
 			return new OmexServiceRemotingClientFactory(
 				new FabricTransportServiceRemotingClientFactory(
 					remotingCallbackMessageHandler: handler,
