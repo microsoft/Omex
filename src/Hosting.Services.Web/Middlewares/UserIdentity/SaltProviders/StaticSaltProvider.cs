@@ -3,10 +3,7 @@
 
 using System;
 using System.Buffers;
-using System.Fabric;
-using System.Security.Cryptography;
-using Microsoft.Extensions.Internal;
-using Microsoft.Extensions.Logging;
+using System.Text;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 {
@@ -18,13 +15,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 	{
 		private readonly IMemoryOwner<byte> m_currentSaltMemory;
 		private readonly byte[] m_saltValue;
-		private readonly ILogger<RotatingSaltProvider> m_logger;
 
-		public StaticSaltProvider(byte[] saltValue, ILogger<RotatingSaltProvider> logger)
+		public StaticSaltProvider(string saltValue)
 		{
-			m_currentSaltMemory = MemoryPool<byte>.Shared.Rent(saltValue.Length);
-			m_saltValue = saltValue;
-			m_logger = logger;
+			m_saltValue = Encoding.UTF8.GetBytes(saltValue);
+			m_currentSaltMemory = MemoryPool<byte>.Shared.Rent(m_saltValue.Length);
 		}
 
 		public int MaxBytesInSalt => m_saltValue.Length;
