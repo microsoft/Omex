@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares;
+using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares.UserIdentity.Options;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -43,6 +44,18 @@ namespace Microsoft.Extensions.DependencyInjection
 #pragma warning restore CS0618
 
 			return services;
+		}
+
+		/// <summary>
+		/// Register types for Omex middleware with email hash middleware
+		/// </summary>
+		public static IServiceCollection AddOmexMiddlewareWithEmailHash(this IServiceCollection services)
+		{
+			services.AddOptions<StaticSaltProviderOptions>();
+			services.TryAddSingleton<StaticSaltProvider>();
+			services.TryAddEnumerable(ServiceDescriptor.Singleton<IUserIdentityProvider, EmailBasedUserIdentityProvider>());
+			
+			return services.AddOmexMiddleware();
 		}
 	}
 }

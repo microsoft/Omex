@@ -4,6 +4,8 @@
 using System;
 using System.Buffers;
 using System.Text;
+using Microsoft.Extensions.Options;
+using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares.UserIdentity.Options;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 {
@@ -16,9 +18,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		private readonly IMemoryOwner<byte> m_currentSaltMemory;
 		private readonly byte[] m_saltValue;
 
-		public StaticSaltProvider(string saltValue)
+		public StaticSaltProvider(IOptions<StaticSaltProviderOptions> options)
 		{
-			m_saltValue = Encoding.UTF8.GetBytes(saltValue);
+			m_saltValue = Encoding.UTF8.GetBytes(options.Value.SaltValue);
 			m_currentSaltMemory = MemoryPool<byte>.Shared.Rent(m_saltValue.Length);
 		}
 
