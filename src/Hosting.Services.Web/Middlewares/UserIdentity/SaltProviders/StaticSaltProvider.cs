@@ -10,8 +10,7 @@ using Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares.UserIdentity.Op
 namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 {
 	/// <remarks>
-	/// Provider would change salt after 40 hours to make sure that hash could not be traced back to user.
-	/// Salt would be different in each instance so different replicas of the same service would create non-identical hashes for the same user.
+	/// Consumer provides the salt string, this provider then writes the salt to memory
 	/// </remarks>
 	internal class StaticSaltProvider : ISaltProvider
 	{
