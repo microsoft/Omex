@@ -27,6 +27,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 			{
 				remotingSettings = new FabricTransportRemotingSettings();
 			}
+			
 			remotingSettings.ExceptionDeserializationTechnique = FabricTransportRemotingSettings.ExceptionDeserialization.Default;
 			return new OmexServiceRemotingClientFactory(
 				new FabricTransportServiceRemotingClientFactory(
