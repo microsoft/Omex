@@ -72,5 +72,36 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 
 			Assert.IsInstanceOfType(saltProvider, typeof(EmptySaltProvider));
 		}
+
+		[TestMethod]
+		public void AddStaticSaltProvider_RegistersStaticSaltProvider()
+		{
+			ISaltProvider saltProvider = new HostBuilder()
+				.ConfigureServices((context, collection) =>
+				{
+					collection.AddStaticSaltProvider();
+					collection.AddOmexMiddleware();
+				})
+				.Build().Services
+				.GetRequiredService<ISaltProvider>();
+
+			Assert.IsInstanceOfType(saltProvider, typeof(StaticSaltProvider));
+		}
+
+		[TestMethod]
+		public void AddEmailBasedIdentityProvider_RegistersEmailProvider()
+		{
+			IUserIdentityProvider emailProvider = new HostBuilder()
+				.ConfigureServices((context, collection) =>
+				{
+					collection.AddStaticSaltProvider();
+					collection.AddOmexMiddleware();
+					collection.AddEmailBasedIdentityProvider();
+				})
+				.Build().Services
+				.GetRequiredService<IUserIdentityProvider>();
+
+			Assert.IsInstanceOfType(emailProvider, typeof(EmailBasedUserIdentityProvider));
+		}
 	}
 }

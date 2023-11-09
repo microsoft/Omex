@@ -15,10 +15,21 @@ namespace Microsoft.Extensions.DependencyInjection
 	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
-		/// <summary>
-		/// Register types for Omex middleware
-		/// </summary>
-		public static IServiceCollection AddOmexMiddleware(this IServiceCollection services)
+		private static IServiceCollection AddMiddlewares(this IServiceCollection services)
+		{
+			services
+				.AddSingleton<UserHashIdentityMiddleware>()
+				.AddSingleton<ActivityEnrichmentMiddleware>()
+				.AddSingleton<ResponseHeadersMiddleware>();
+
+#pragma warning disable CS0618 // We need to register all middlewares, even if obsolete
+			services.AddSingleton<ObsoleteCorrelationHeadersMiddleware>();
+#pragma warning restore CS0618
+
+			return services;
+		}
+
+		private static IServiceCollection AddDefaultProviders(this IServiceCollection services)
 		{
 			services.TryAddSingleton<ISystemClock, SystemClock>();
 			services.TryAddSingleton<EmptySaltProvider>();
@@ -33,29 +44,38 @@ namespace Microsoft.Extensions.DependencyInjection
 				};
 
 			services.TryAddTransient(getSaltProvider);
-
-			services
-				.AddSingleton<UserHashIdentityMiddleware>()
-				.AddSingleton<ActivityEnrichmentMiddleware>()
-				.AddSingleton<ResponseHeadersMiddleware>();
-
-#pragma warning disable CS0618 // We need to register all middlewares, even if obsolete
-			services.AddSingleton<ObsoleteCorrelationHeadersMiddleware>();
-#pragma warning restore CS0618
+			return services;
+		}
+		/// <summary>
+		/// Register types for Omex middleware
+		/// </summary>
+		public static IServiceCollection AddOmexMiddleware(this IServiceCollection services)
+		{
+			services.AddDefaultProviders();
+			services.AddMiddlewares();
 
 			return services;
 		}
 
 		/// <summary>
-		/// Register types for Omex middleware with email hash middleware
+		/// Register static salt provider, needs to be called before AddDefaultProviders to take effect
 		/// </summary>
-		public static IServiceCollection AddOmexMiddlewareWithEmailHash(this IServiceCollection services)
+		public static IServiceCollection AddStaticSaltProvider(this IServiceCollection services)
 		{
 			services.AddOptions<StaticSaltProviderOptions>();
-			services.TryAddSingleton<StaticSaltProvider>();
+			services.AddTransient<ISaltProvider, StaticSaltProvider>();
+
+			return services;
+		}
+
+		/// <summary>
+		/// Register email based identity provider, needs to be called after AddDefaultProviders to take effect
+		/// </summary>
+		public static IServiceCollection AddEmailBasedIdentityProvider(this IServiceCollection services)
+		{
 			services.TryAddEnumerable(ServiceDescriptor.Singleton<IUserIdentityProvider, EmailBasedUserIdentityProvider>());
-			
-			return services.AddOmexMiddleware();
+
+			return services;
 		}
 	}
 }
