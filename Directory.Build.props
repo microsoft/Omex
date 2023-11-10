@@ -11,7 +11,7 @@
   </PropertyGroup>
   <PropertyGroup Label="UnitTest Targets">
     <NetFrameworkVersion>net472</NetFrameworkVersion>
-    <UnitTestTargetFrameworks>$(NetCoreVersions);$(NetFrameworkVersion)</UnitTestTargetFrameworks>
+    <UnitTestTargetFrameworks>$(NetCoreVersions)</UnitTestTargetFrameworks>
     <UnitTestTargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions)</UnitTestTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="Project Settings" >
