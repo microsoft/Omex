@@ -10,7 +10,7 @@
     <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="UnitTest Targets">
-    <UnitTestTargetFrameworks>$(NetCoreVersions)</UnitTestTargetFrameworks>
+    <UnitTestTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</UnitTestTargetFrameworks>
     <UnitTestTargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions)</UnitTestTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="Project Settings" >
