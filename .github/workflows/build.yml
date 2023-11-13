@@ -27,6 +27,14 @@ jobs:
     - uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '7.0.x'
+    # Install SF SDK
+    - name: Install SF
+      shell: pwsh
+      run: |       
+        Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force -Scope CurrentUser   
+        $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -OutFile setup.exe -Uri https://download.microsoft.com/download/b/8/a/b8a2fb98-0ec1-41e5-be98-9d8b5abf7856/MicrosoftServiceFabric.10.0.1541.9590.exe
+        .\setup.exe  /accepteula /force /quiet
     - name: Build with dotnet
       run: dotnet build --configuration ${{ matrix.configuration }}
     - name: Run Unit Tests
