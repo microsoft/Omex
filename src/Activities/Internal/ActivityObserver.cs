@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.Activities
 		}
 
 		public void OnStart(Activity activity, object? payload = null) =>
-			m_logger.LogInformation(0x696e3739 /* tag_in79 */, $"Starting Activity {activity.OperationName} (Id:{activity.Id}; ParentId:{activity.ParentId})");
+			m_logger.LogDebug(0x696e3739 /* tag_in79 */, $"Starting Activity {activity.OperationName} (Id:{activity.Id}; ParentId:{activity.ParentId})");
 
 		public void OnStop(Activity activity, object? payload = null)
 		{
