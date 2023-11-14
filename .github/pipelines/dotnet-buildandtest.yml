@@ -13,6 +13,7 @@ parameters:
   type: string
   default: FullyQualifiedName!~CloudTests
 steps:
+- template: /.github/pipelines/sf-initialize.yml@self
 - template: /.github/pipelines/dotnet-build.yml@self
   parameters:
     BuildConfiguration: ${{parameters.BuildConfiguration}}
