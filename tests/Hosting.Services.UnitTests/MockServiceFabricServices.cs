@@ -28,7 +28,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 					Options.Create(new ServiceRegistratorOptions()),
 					new Accessor<StatefulServiceContext>(),
 					new Accessor<IStatefulServicePartition>(),
-					new Accessor<IReliableStateManager>(),
+					new Accessor<IReliableStateManager>(new MockReliableStateManager()),
 					Enumerable.Empty<IListenerBuilder<OmexStatefulService>>(),
 					Enumerable.Empty<IServiceAction<OmexStatefulService>>()),
 				MockStatefulServiceContextFactory.Default);
