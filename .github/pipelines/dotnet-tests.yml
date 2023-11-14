@@ -13,41 +13,13 @@ parameters:
     type: string
     default: FullyQualifiedName!~CloudTests
 steps:
-  - task: PowerShell@2
-    displayName: run dotnet test (workaround azure-pipelines-tasks/issues/18731)
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet test'
     inputs:
-      targetType: inline
-      script: |+
-        $buildDirectory = "$(Agent.BuildDirectory)\s\"
-        Write-Host "Searching for solution file in build directory: $buildDirectory"
-
-        # Identify solution file to target
-        $slnFile = (Get-ChildItem -Path $buildDirectory -Filter "*.sln").Name
-
-        Write-Host "Running dotnet test with code coverage enabled"
-        # Merge all streams into stdout
-        $result = C:\hostedtoolcache\windows\dotnet\dotnet.exe test $slnFile --collect "Code coverage" --logger trx --results-directory D:\a\_work\_temp -c Release -p:Platform=x64 --no-build --no-restore --filter FullyQualifiedName!~CloudTests --verbosity Detailed *>&1
-
-        # Write output
-        $output = $result -join [System.Environment]::NewLine
-        Write-Host $output
-
-        if($LASTEXITCODE -eq 0)
-        {
-            # Success
-        }
-        else
-        {
-            $LASTEXITCODE = 0
-            Write-Warning "Running dotnet test with code coverage enabled failed. Retrying with code coverage collection disabled."
-            $result = C:\hostedtoolcache\windows\dotnet\dotnet.exe test $slnFile --logger trx --results-directory D:\a\_work\_temp -c Release -p:Platform=x64 --no-build --no-restore --filter FullyQualifiedName!~CloudTests --verbosity Detailed *>&1
-
-            # Write output
-            $output = $result -join [System.Environment]::NewLine
-            Write-Host $output
-        }
-
-
+      command: test
+      projects: '**\*.sln'
+      arguments: '-c $(BuildConfiguration) -p:$(BuildParameters) --no-build --no-restore --collect "Code coverage" --filter $(TestFilter)'
+    timeoutInMinutes: 30
 
   - task: PublishTestResults@2
     displayName: Publish Test Results $(Agent.TempDirectory)\**\*.trx
