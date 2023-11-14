@@ -85,6 +85,7 @@ extends:
               inputs:
                 artifactName: binaries
                 targetPath: bin
+            - template: /.github/pipelines/sf-initialize.yml@self
             - template: /.github/pipelines/dotnet-initialize.yml@self
             - template: /.github/pipelines/dotnet-tests.yml@self
               parameters:
