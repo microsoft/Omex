@@ -21,18 +21,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 			IServiceProvider mockProvider = new Mock<IServiceProvider>().Object;
 			OmexStatefulService omexStatefulService = MockServiceFabricServices.MockOmexStatefulService;
 
-			GenericRemotingListenerBuilder<OmexStatefulService> builder =
-				new(name, mockProvider,
+			Assert.ThrowsException<InvalidOperationException>(() => new GenericRemotingListenerBuilder<OmexStatefulService>(name, mockProvider,
 					(p, s) =>
 					{
 						Assert.AreEqual(omexStatefulService, s);
 						Assert.AreEqual(mockProvider, p);
 						return mockService;
-					});
-
-			Assert.AreEqual(name, builder.Name);
-
-			Assert.ThrowsException<InvalidOperationException>(() => builder.BuildService(omexStatefulService));
+					}));
 		}
 		
 		[TestMethod]
