@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System;
 using System.Fabric;
+using Microsoft.Omex.Extensions.Services.Remoting;
 using Microsoft.Omex.Extensions.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting;
@@ -33,7 +33,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 		{
 			if (settings == null && !FabricTransportRemotingListenerSettings.TryLoadFrom("TransportSettings", out settings))
 			{
-				throw new InvalidOperationException("Transport security is required for Service Fabric Remoting connections. TransportSettings must be defined in settings.xml.");
+				throw new InsecureRemotingUnsupportedException();
 			}
 
 			settings.ExceptionSerializationTechnique = FabricTransportRemotingListenerSettings.ExceptionSerialization.Default;

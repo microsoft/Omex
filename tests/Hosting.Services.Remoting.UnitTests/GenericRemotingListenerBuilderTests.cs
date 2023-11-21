@@ -3,6 +3,7 @@
 
 using System;
 using Microsoft.Omex.Extensions.Hosting.Services.UnitTests;
+using Microsoft.Omex.Extensions.Services.Remoting;
 using Microsoft.ServiceFabric.Services.Remoting;
 using Microsoft.ServiceFabric.Services.Remoting.FabricTransport.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 			IServiceProvider mockProvider = new Mock<IServiceProvider>().Object;
 			OmexStatefulService omexStatefulService = MockServiceFabricServices.MockOmexStatefulService;
 
-			Assert.ThrowsException<InvalidOperationException>(() => new GenericRemotingListenerBuilder<OmexStatefulService>(name, mockProvider,
+			Assert.ThrowsException<InsecureRemotingUnsupportedException>(() => new GenericRemotingListenerBuilder<OmexStatefulService>(name, mockProvider,
 					(p, s) =>
 					{
 						Assert.AreEqual(omexStatefulService, s);
