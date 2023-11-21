@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using Microsoft.ServiceFabric.Services.Remoting.Client;
 using Microsoft.ServiceFabric.Services.Remoting.FabricTransport;
-using Microsoft.ServiceFabric.Services.Remoting.FabricTransport.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting.V2.FabricTransport.Client;
 
 namespace Microsoft.Omex.Extensions.Services.Remoting.Client
@@ -13,7 +13,7 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 	/// </summary>
 	/// <remarks>
 	/// This wrapper exists to bridge the gap between native service proxy constructs and Service Fabric remoting client creation.
-	/// The default Service Fabric remoting client initialization tries to load transport settings from a 'TransportSettings' section in the service manifest.
+	/// The default behaviour is to load transport settings from the 'TransportSettings' section in the service manifest.
 	/// References:
 	/// https://github.com/microsoft/service-fabric-services-and-actors-dotnet/blob/master/src/Microsoft.ServiceFabric.Services.Remoting/V2/FabricTransport/Client/FabricTransportServiceRemotingClientFactory.cs#L108
 	/// https://github.com/microsoft/service-fabric/blob/master/src/prod/src/managed/Microsoft.ServiceFabric.FabricTransport/FabricTransport/Common/FabricTransportSettings.cs#L300
@@ -22,12 +22,11 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 	{
 		private static ServiceProxyFactory s_serviceProxyFactory = new(handler =>
 		{
-			FabricTransportRemotingSettings remotingSettings;
-			if (!FabricTransportRemotingSettings.TryLoadFrom("TransportSettings", out remotingSettings))
+			if (!FabricTransportRemotingSettings.TryLoadFrom("TransportSettings", out FabricTransportRemotingSettings remotingSettings))
 			{
-				remotingSettings = new FabricTransportRemotingSettings();
+				throw new InvalidOperationException("Transport security is required for Service Fabric Remoting connections. TransportSettings must be defined in settings.xml.");
 			}
-			
+
 			remotingSettings.ExceptionDeserializationTechnique = FabricTransportRemotingSettings.ExceptionDeserialization.Default;
 			return new OmexServiceRemotingClientFactory(
 				new FabricTransportServiceRemotingClientFactory(
