@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System.Fabric;
+using Microsoft.Omex.Extensions.Services.Remoting;
 using Microsoft.Omex.Extensions.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting;
@@ -20,23 +21,21 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 		public string Name { get; }
 
 		// done internal for unit tests
-		internal FabricTransportRemotingListenerSettings? Settings { get; }
+		internal FabricTransportRemotingListenerSettings Settings { get; }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
+		/// <remarks>Transport security settings should be defined in TransportSettings of a service's settings.xml before creating a listener</remarks>
 		protected RemotingListenerBuilder(
 			string name,
 			FabricTransportRemotingListenerSettings? settings = null)
 		{
-			if (settings == null)
+			if (settings == null && !FabricTransportRemotingListenerSettings.TryLoadFrom("TransportSettings", out settings))
 			{
-				if (!FabricTransportRemotingListenerSettings.TryLoadFrom("TransportSettings", out settings))
-				{
-					settings = new FabricTransportRemotingListenerSettings();
-				}
+				throw new InsecureRemotingUnsupportedException();
 			}
-			
+
 			settings.ExceptionSerializationTechnique = FabricTransportRemotingListenerSettings.ExceptionSerialization.Default;
 			Name = name;
 			Settings = settings;
