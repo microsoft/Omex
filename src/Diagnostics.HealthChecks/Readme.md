@@ -105,3 +105,23 @@ public class CustomHealthCheck : IHealthCheck
 ```
 
 This approach offers more flexibility and customisation, but it introduces more complexity and coupling with this project.
+
+### Certificates Health Check
+
+The Certificates HealthCheck verifies whether certificates have been loaded correctly. To use it, the `CertificatesHealthCheck` class needs to be registered. Here's an example of how to register it using the `AddTypeActivatedCheck` method:
+
+```csharp
+services
+    .AddServiceFabricHealthChecks()
+    .AddTypeActivatedCheck<CertificatesHealthCheck>(
+        nameof(CertificatesHealthCheck),
+        new HealthCheckParameters(/* HealthCheck parameters specification */));
+```
+
+In order to specify the list of certificates to be validated, the `CertificatesHealthCheckOptions` class needs to be registered:
+
+```csharp
+services.Configure<CertificatesHealthCheckOptions>(options =>
+{
+    options.CertSubjectNames = new() { /* Certificates to validate */};
+});
