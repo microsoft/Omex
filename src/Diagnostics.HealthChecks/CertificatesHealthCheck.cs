@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
@@ -19,7 +18,7 @@ using Microsoft.Omex.Extensions.Hosting.Certificates;
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks;
 
 /// <summary>
-/// This health check verifies whether the certificates have been loaded correctly.
+/// This health check verifies whether certificates have been loaded correctly by checking their validity period and ensuring that they include a private key.
 /// </summary>
 public class CertificatesHealthCheck : IHealthCheck
 {
@@ -28,11 +27,14 @@ public class CertificatesHealthCheck : IHealthCheck
 	/// <summary>
 	/// The constructor.
 	/// </summary>
-	/// <param name="parameters"></param>
-	/// <param name="logger"></param>
-	/// <param name="activitySource"></param>
-	/// <param name="certificateReader"></param>
-	/// <param name="options"></param>
+	/// <param name="parameters">
+	/// The health check parameters passed at DI configuration time.
+	/// They can be used to specify escalation configuration (e.g. the IcM ticket severity, owning team),
+	/// </param>
+	/// <param name="logger">The logger.</param>
+	/// <param name="activitySource">The activity source.</param>
+	/// <param name="certificateReader">The certificate reader.</param>
+	/// <param name="options">Options</param>
 	public CertificatesHealthCheck(
 		HealthCheckParameters parameters,
 		ILogger<CertificatesHealthCheck> logger,

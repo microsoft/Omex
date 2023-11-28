@@ -108,7 +108,10 @@ This approach offers more flexibility and customisation, but it introduces more 
 
 ### Certificates Health Check
 
-The Certificates HealthCheck verifies whether certificates have been loaded correctly. To use it, the `CertificatesHealthCheck` class needs to be registered. Here's an example of how to register it using the `AddTypeActivatedCheck` method:
+The Certificates Health Check verifies whether certificates have been loaded correctly by checking their validity period and ensuring that they include a private key.
+If any of these factors are invalid or the certificate is not found, the health check will return an unhealthy state with a proper message.
+
+To use it, the `CertificatesHealthCheck` class needs to be registered. Here's an example of how to register it using the `AddTypeActivatedCheck` method:
 
 ```csharp
 services
@@ -118,10 +121,13 @@ services
         new HealthCheckParameters(/* HealthCheck parameters specification */));
 ```
 
-In order to specify the list of certificates to be validated, the `CertificatesHealthCheckOptions` class needs to be registered:
+In order to specify the list of certificates to be validated, the `CertificatesHealthCheckOptions` and `ICertificateReader` need to be registered:
 
 ```csharp
+services.AddCertificateReader();
+
 services.Configure<CertificatesHealthCheckOptions>(options =>
 {
     options.CertSubjectNames = new() { /* Certificates to validate */};
 });
+```

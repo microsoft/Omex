@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
-
 	/// <summary>
 	/// Represent the individual health check options associated with an <see cref="T:Microsoft.Omex.Extensions.Diagnostics.HealthChecks.CertificatesHealthCheck"/>.
 	/// </summary>
