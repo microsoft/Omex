@@ -36,7 +36,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		{
 			// Arrange
 			Guid obsoleteCorrelation = Guid.NewGuid();
-			TestHttpContext.Request.Headers.Add(correlationName, obsoleteCorrelation.ToString());
+			TestHttpContext.Request.Headers.Append(correlationName, obsoleteCorrelation.ToString());
 
 			// Act
 			await TestMiddleware.InvokeAsync(TestHttpContext, DummyDelegate);
