@@ -15,6 +15,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 		/// The subject names of the certificates that need to be validated.
 		/// </summary>
 		[Required]
-		public List<string> CertSubjectNames { get; set; } = new List<string>();
+		public List<string> CertSubjectNames { get; set; } = new();
 	}
 }
