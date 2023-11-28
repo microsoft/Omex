@@ -25,7 +25,7 @@ public class CertificatesHealthCheck : IHealthCheck
 	private readonly IHealthCheck m_healthCheck;
 
 	/// <summary>
-	/// The constructor.
+	/// Initializes a new instance of the <see cref="CertificatesHealthCheck"/> class.
 	/// </summary>
 	/// <param name="parameters">
 	/// The health check parameters passed at DI configuration time.
