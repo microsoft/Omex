@@ -23,8 +23,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 		private Task SetResponseHeaders(object state)
 		{
 			HttpResponse response = (HttpResponse)state;
-			response.Headers.Add("X-Machine", m_context.MachineId);
-			response.Headers.Add("X-BuildVersion", m_context.BuildVersion); //Renamed from X-OfficeVersion
+			response.Headers.Append("X-Machine", m_context.MachineId);
+			response.Headers.Append("X-BuildVersion", m_context.BuildVersion); //Renamed from X-OfficeVersion
 			return Task.CompletedTask;
 		}
 

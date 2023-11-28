@@ -18,5 +18,8 @@
 		}
 	},
 
-	"remoteUser": "vscode"
+	"remoteUser": "vscode",
+	"features": {
+		"ghcr.io/devcontainers/features/dotnet:2": {}
+	}
 }
