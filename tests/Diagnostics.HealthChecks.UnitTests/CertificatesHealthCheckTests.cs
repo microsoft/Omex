@@ -34,7 +34,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		[TestInitialize]
 		public void Initialize()
 		{
-			CertificatesHealthCheckOptions certificatesHealthCheckOptions = new() { CertSubjectNames = { "MockSubjectName" } };
+			CertificatesHealthCheckOptions certificatesHealthCheckOptions = new() { CertSubjectNames = { m_certSubjectName } };
 			m_certificatesHealthCheckOptionsMock.Setup(m => m.Value).Returns(certificatesHealthCheckOptions);
 		}
 
