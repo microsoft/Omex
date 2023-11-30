@@ -7,14 +7,14 @@ using System.ComponentModel.DataAnnotations;
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 {
 	/// <summary>
-	/// Represent the individual health check options associated with an <see cref="T:Microsoft.Omex.Extensions.Diagnostics.HealthChecks.CertificatesHealthCheck"/>.
+	/// Represent the individual health check options associated with an <see cref="T:Microsoft.Omex.Extensions.Diagnostics.HealthChecks.CertificatesValidityHealthCheck"/>.
 	/// </summary>
-	public class CertificatesHealthCheckOptions
+	public class CertificatesValidityHealthCheckOptions
 	{
 		/// <summary>
 		/// The subject names of the certificates that need to be validated.
 		/// </summary>
 		[Required]
-		public List<string> CertSubjectNames { get; set; } = new();
+		public List<string> CertificateCommonNames { get; set; } = new();
 	}
 }

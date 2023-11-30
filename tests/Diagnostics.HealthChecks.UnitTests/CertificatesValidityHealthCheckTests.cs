@@ -20,36 +20,36 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 {
 
 	[TestClass]
-	public class CertificatesHealthCheckTests
+	public class CertificatesValidityHealthCheckTests
 	{
-		private readonly ILogger<CertificatesHealthCheck> m_logger = new NullLogger<CertificatesHealthCheck>();
+		private readonly ILogger<CertificatesValidityHealthCheck> m_logger = new NullLogger<CertificatesValidityHealthCheck>();
 		private readonly ActivitySource m_activitySource = new(nameof(ObservableHealthCheckTests));
 		private readonly HealthCheckParameters m_parameters = new();
 		private readonly CancellationTokenSource m_cancellationTokenSource = new();
 		private readonly string m_certSubjectName = "MockSubjectName";
 
-		private Mock<IOptions<CertificatesHealthCheckOptions>> m_certificatesHealthCheckOptionsMock = new();
+		private Mock<IOptions<CertificatesValidityHealthCheckOptions>> m_certificatesValidityHealthCheckOptionsMock = new();
 		private Mock<ICertificateReader> m_certificateReaderMock = new();
 
 		[TestInitialize]
 		public void Initialize()
 		{
-			CertificatesHealthCheckOptions certificatesHealthCheckOptions = new() { CertSubjectNames = { m_certSubjectName } };
-			m_certificatesHealthCheckOptionsMock.Setup(m => m.Value).Returns(certificatesHealthCheckOptions);
+			CertificatesValidityHealthCheckOptions CertificatesValidityHealthCheckOptions = new() { CertificateCommonNames = { m_certSubjectName } };
+			m_certificatesValidityHealthCheckOptionsMock.Setup(m => m.Value).Returns(CertificatesValidityHealthCheckOptions);
 		}
 
 		[TestMethod]
 		public async Task CheckHealthAsync_ShouldReturnUnhealthy_WhenCertificatesListIsEmpty()
 		{
-			CertificatesHealthCheckOptions certificatesHealthCheckOptions = new() { CertSubjectNames = { } };
-			m_certificatesHealthCheckOptionsMock.Setup(m => m.Value).Returns(certificatesHealthCheckOptions);
+			CertificatesValidityHealthCheckOptions CertificatesValidityHealthCheckOptions = new() { CertificateCommonNames = { } };
+			m_certificatesValidityHealthCheckOptionsMock.Setup(m => m.Value).Returns(CertificatesValidityHealthCheckOptions);
 
-			CertificatesHealthCheck healthCheck = new(
+			CertificatesValidityHealthCheck healthCheck = new(
 				m_parameters,
+				m_certificatesValidityHealthCheckOptionsMock.Object,
 				m_logger,
-				m_activitySource,
-				m_certificateReaderMock.Object,
-				m_certificatesHealthCheckOptionsMock.Object);
+				m_certificateReaderMock.Object
+			);
 
 			HealthCheckResult result = await healthCheck.CheckHealthAsync(
 				HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
@@ -65,12 +65,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			m_certificateReaderMock.Setup(m => m.GetCertificateByCommonName(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<StoreName>()))
 				.Returns(CreateCert(m_certSubjectName));
 
-			CertificatesHealthCheck healthCheck = new(
+			CertificatesValidityHealthCheck healthCheck = new(
 				m_parameters,
+				m_certificatesValidityHealthCheckOptionsMock.Object,
 				m_logger,
-				m_activitySource,
-				m_certificateReaderMock.Object,
-				m_certificatesHealthCheckOptionsMock.Object);
+				m_certificateReaderMock.Object);
 
 			HealthCheckResult result = await healthCheck.CheckHealthAsync(
 				HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
@@ -86,12 +85,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			m_certificateReaderMock.Setup(m => m.GetCertificateByCommonName(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<StoreName>()))
 				.Returns(CreateCert(m_certSubjectName, null, DateTime.Now.AddDays(-1)));
 
-			CertificatesHealthCheck healthCheck = new(
+			CertificatesValidityHealthCheck healthCheck = new(
 				m_parameters,
+				m_certificatesValidityHealthCheckOptionsMock.Object,
 				m_logger,
-				m_activitySource,
-				m_certificateReaderMock.Object,
-				m_certificatesHealthCheckOptionsMock.Object);
+				m_certificateReaderMock.Object);
 
 			HealthCheckResult result = await healthCheck.CheckHealthAsync(
 				HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
@@ -107,12 +105,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			m_certificateReaderMock.Setup(m => m.GetCertificateByCommonName(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<StoreName>()))
 				.Returns(CreateCert(m_certSubjectName, DateTime.Now.AddDays(1)));
 
-			CertificatesHealthCheck healthCheck = new(
+			CertificatesValidityHealthCheck healthCheck = new(
 				m_parameters,
+				m_certificatesValidityHealthCheckOptionsMock.Object,
 				m_logger,
-				m_activitySource,
-				m_certificateReaderMock.Object,
-				m_certificatesHealthCheckOptionsMock.Object);
+				m_certificateReaderMock.Object);
 
 			HealthCheckResult result = await healthCheck.CheckHealthAsync(
 				HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
@@ -129,12 +126,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			m_certificateReaderMock.Setup(m => m.GetCertificateByCommonName(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<StoreName>()))
 				.Returns(certWithoutPrivateKey);
 
-			CertificatesHealthCheck healthCheck = new(
+			CertificatesValidityHealthCheck healthCheck = new(
 				m_parameters,
+				m_certificatesValidityHealthCheckOptionsMock.Object,
 				m_logger,
-				m_activitySource,
-				m_certificateReaderMock.Object,
-				m_certificatesHealthCheckOptionsMock.Object);
+				m_certificateReaderMock.Object);
 
 			HealthCheckResult result = await healthCheck.CheckHealthAsync(
 				HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
@@ -150,12 +146,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			m_certificateReaderMock.Setup(m => m.GetCertificateByCommonName(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<StoreName>()))
 				.Returns<X509Certificate2>(null);
 
-			CertificatesHealthCheck healthCheck = new(
+			CertificatesValidityHealthCheck healthCheck = new(
 				m_parameters,
+				m_certificatesValidityHealthCheckOptionsMock.Object,
 				m_logger,
-				m_activitySource,
-				m_certificateReaderMock.Object,
-				m_certificatesHealthCheckOptionsMock.Object);
+				m_certificateReaderMock.Object);
 
 			HealthCheckResult result = await healthCheck.CheckHealthAsync(
 				HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
