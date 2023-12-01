@@ -105,3 +105,28 @@ public class CustomHealthCheck : IHealthCheck
 ```
 
 This approach offers more flexibility and customisation, but it introduces more complexity and coupling with this project.
+
+### Certificates Health Check
+
+The Certificates Health Check verifies whether certificates have been loaded correctly by checking their validity period and ensuring that they include a private key.
+If any of these factors are invalid or the certificate is not found, the health check will return an unhealthy state with a proper message.
+
+#### Example usage
+
+To register `CertificatesValidityHealthCheck` as an observable health check, the `AddCertificatesValidity` method can be called along with the `HealthCheckParameters` as a parameter.
+
+The following parameters can be added additionally:
+- `healthCheckName`: The health check name. When not provided, the name of the health check is set to 'CertificatesValidityHealthCheck'.
+- `failureStatus`: The `HealthStatus` that should be reported when the health check fails. When not provided, the default status of `HealthStatus.Unhealthy` will be reported.
+- `tags`: An optional list of tags that can be used to filter sets of health checks.
+- `timeout`: An optional `TimeSpan` representing the timeout of the check.
+- `certificateReaderFactory`: An optional factory to obtain an `ICertificateReader` instance. If not provided, it is resolved from `IServiceProvider`.
+- `loggerFactory`: An optional factory to obtain an `ILogger<CertificatesValidityHealthCheck>` instance. If not provided, it is resolved from `IServiceProvider`.
+- `optionsFactory`: An optional factory to obtain an `IOptions<CertificatesValidityHealthCheckOptions>` instance. If not provided, it is resolved from `IServiceProvider`.
+- `activitySourceFactory`: An optional factory to obtain an `ActivitySource` instance. If not provided, it is resolved from `IServiceProvider`.
+```csharp
+services
+    .AddServiceFabricHealthChecks()
+    .AddCertificatesValidity(
+	    new HealthCheckParameters(/* HealthCheck parameters specification */));
+```
