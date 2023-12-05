@@ -4,7 +4,10 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Target Platforms" >
-    <NetCoreVersions>net7.0;net8.0</NetCoreVersions>
+    <LatestSupportedDotNetVersion>net8.0</LatestSupportedDotNetVersion>
+    <OldestSupportedDotNetVersion>net7.0</OldestSupportedDotNetVersion>
+    <NetCoreVersions>LatestSupportedDotNetVersion</NetCoreVersions>
+    <NetCoreVersions Condition="'$(LatestSupportedDotNetVersion)' != '$(OldestSupportedDotNetVersion)'">$(LatestSupportedDotNetVersion);$(OldestSupportedDotNetVersion)</NetCoreVersions>
     <NetStandardVersions>netstandard2.0</NetStandardVersions>
     <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
     <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
