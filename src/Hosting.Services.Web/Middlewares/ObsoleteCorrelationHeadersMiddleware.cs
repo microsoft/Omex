@@ -113,6 +113,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.Middlewares
 
 		private static readonly string[] s_transactionsNames = {
 			"corrtid",					// Correlation transaction query parameter
+   			"correlationId",
 			"X-TransactionId" };
 
 		private static readonly string[] s_correlationIdNames = {
