@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.ConstrainedExecution;
 using Microsoft.Extensions.Hosting;
 
 namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
@@ -140,10 +141,16 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		/// </summary>
 		protected static string GetBuildVersion()
 		{
+			string buildVersion = DefaultEmptyValue;
+
 			Assembly? assembly = Assembly.GetEntryAssembly();
-			return assembly != null
-				? FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion ?? DefaultEmptyValue
-				: DefaultEmptyValue;
+			if (assembly != null)
+			{
+				FileVersionInfo assemblyVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
+				buildVersion = $"{assemblyVersion.ProductMajorPart}.{assemblyVersion.ProductMinorPart}.{assemblyVersion.ProductBuildPart}.{assemblyVersion.ProductPrivatePart}";
+			}
+
+			return buildVersion;
 		}
 
 		/// <summary>
