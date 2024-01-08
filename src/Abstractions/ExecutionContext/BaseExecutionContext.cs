@@ -147,6 +147,8 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 			if (assembly != null)
 			{
 				FileVersionInfo assemblyVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
+				// We used assemblyVersion.ProductVersion previously, but in net8 it was changed to include commit hash.
+				// More details here: https://learn.microsoft.com/en-us/dotnet/core/compatibility/sdk/8.0/source-link
 				buildVersion = $"{assemblyVersion.ProductMajorPart}.{assemblyVersion.ProductMinorPart}.{assemblyVersion.ProductBuildPart}.{assemblyVersion.ProductPrivatePart}";
 			}
 
