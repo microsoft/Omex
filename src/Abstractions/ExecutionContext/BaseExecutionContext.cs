@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.ConstrainedExecution;
 using Microsoft.Extensions.Hosting;
 
 namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
@@ -140,10 +141,18 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		/// </summary>
 		protected static string GetBuildVersion()
 		{
+			string buildVersion = DefaultEmptyValue;
+
 			Assembly? assembly = Assembly.GetEntryAssembly();
-			return assembly != null
-				? FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion ?? DefaultEmptyValue
-				: DefaultEmptyValue;
+			if (assembly != null)
+			{
+				FileVersionInfo assemblyVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
+				// We used assemblyVersion.ProductVersion previously, but in net8 it was changed to include commit hash.
+				// More details here: https://learn.microsoft.com/en-us/dotnet/core/compatibility/sdk/8.0/source-link
+				buildVersion = $"{assemblyVersion.ProductMajorPart}.{assemblyVersion.ProductMinorPart}.{assemblyVersion.ProductBuildPart}.{assemblyVersion.ProductPrivatePart}";
+			}
+
+			return buildVersion;
 		}
 
 		/// <summary>
