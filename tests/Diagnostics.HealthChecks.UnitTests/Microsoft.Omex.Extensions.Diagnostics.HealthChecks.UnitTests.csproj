@@ -9,7 +9,4 @@
     <ProjectReference Include="..\..\src\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj" />
     <ProjectReference Include="..\Abstractions.UnitTests\Microsoft.Omex.Extensions.Abstractions.UnitTests.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="$(IsNetFramework)">
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
 </Project>
