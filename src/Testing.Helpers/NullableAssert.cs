@@ -12,6 +12,14 @@ namespace Microsoft.Omex.Extensions.Testing.Helpers
 	public static class NullableAssert
 	{
 		/// <summary>
+		/// Tests whether the specified object is non-null and throws an exception if it is null
+		/// </summary>
+		public static void IsNotNull([NotNull] object? value, string message = "", params object[] parameters) =>
+#pragma warning disable CS8777 // Assert.IsNotNull would throw if object is null
+			Assert.IsNotNull(value, message, parameters);
+#pragma warning restore CS8777
+
+		/// <summary>
 		/// Tests whether the specified condition is true and throws an exception if the condition is false.
 		/// </summary>
 		public static void IsTrue([DoesNotReturnIf(false)] bool value, string message = "", params object[] parameters) =>
