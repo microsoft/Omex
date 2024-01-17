@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			builder.Append(name).Append(':');
 
 		/// <summary>
-		/// Appends collection of key value pairs to StringBuilder, by calling ToSting on key and value
+		/// Appends collection of key value pairs to StringBuilder, by calling ToString on key and value
 		/// </summary>
 		/// <remarks>
 		/// TODO: should be replaced by AppendJoin when we remove netstandard target, since KeyValuePair also overrides ToString
