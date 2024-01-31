@@ -26,12 +26,6 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-  <PropertyGroup Label="Condition Variables" >
-    <IsNetStandard>$(NetStandardVersions.Contains('$(TargetFramework)'))</IsNetStandard>
-    <IsNetCore>$(NetCoreVersions.Contains('$(TargetFramework)'))</IsNetCore>
-    <IsNetFramework>false</IsNetFramework>
-    <IsNetFramework Condition="!$(IsNetStandard) And !$(IsNetCore)">true</IsNetFramework>
-  </PropertyGroup>
   <PropertyGroup Label="Signing" >
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
