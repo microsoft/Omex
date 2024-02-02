@@ -29,7 +29,7 @@ jobs:
         dotnet-version: '8.0.x'
     # Install SF SDK
     - name: Install SF
-      shell: pwsh
+      shell: powershell.exe
       run: |
         Write-Host "test-123"
         Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force -Scope CurrentUser
