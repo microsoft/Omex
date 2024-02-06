@@ -18,7 +18,4 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" />
   </ItemGroup>
-  <ItemGroup Condition="!$(IsNetCore)">
-    <PackageReference Include="System.Threading.Tasks.Extensions" />
-  </ItemGroup>
 </Project>

@@ -82,19 +82,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				clone.Headers.TryAddWithoutValidation(header.Key, header.Value);
 			}
 
-#if !NETCOREAPP3_1 && !NETSTANDARD2_0
 			clone.VersionPolicy =  message.VersionPolicy;
 
 			foreach (KeyValuePair<string, object?> option in message.Options)
 			{
 				clone.Options.Set(new HttpRequestOptionsKey<object?>(option.Key), option.Value);
 			}
-#else
-			foreach (KeyValuePair<string, object> prop in message.Properties)
-			{
-				clone.Properties.Add(prop.Key, prop.Value);
-			}
-#endif
 
 			return clone;
 		}

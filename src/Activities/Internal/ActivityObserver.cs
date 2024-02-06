@@ -53,8 +53,8 @@ namespace Microsoft.Omex.Extensions.Activities
 				.AppendObjStart()
 				.AppendParamName("Id").Append(activity.Id).AppendSeparator()
 				.AppendParamName("Duration").Append(activity.Duration.TotalMilliseconds).AppendSeparator()
-				.AppendParamName("Baggage").AppendPairs(activity.Baggage).AppendSeparator()
-				.AppendParamName("Tags").AppendPairs(activity.TagObjects).AppendSeparator()
+				.AppendParamName("Baggage").AppendJoin(':', activity.Baggage).AppendSeparator()
+				.AppendParamName("Tags").AppendJoin(':', activity.TagObjects).AppendSeparator()
 				.AppendObjEnd()
 				.ToString();
 
