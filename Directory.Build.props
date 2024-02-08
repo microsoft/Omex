@@ -12,7 +12,7 @@
     <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="UnitTest Targets">
-    <UnitTestTargetFrameworks>$(LatestSupportedDotNetVersion)</UnitTestTargetFrameworks>
+    <UnitTestTargetFrameworks>net8.0</UnitTestTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="Project Settings" >
     <Platforms>AnyCPU</Platforms>
