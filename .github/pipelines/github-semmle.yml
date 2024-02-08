@@ -36,6 +36,10 @@ extends:
               - checkout: self
                 clean: true
               - task: UseDotNet@2
+                displayName: Temporarily install .NET 7 SDK while dual targeting
+                inputs:
+                  version: "7.0.404"
+              - task: UseDotNet@2
                 displayName: Use .NET SDK from global.json
                 inputs:
                   useGlobalJson: true
