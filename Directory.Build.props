@@ -13,7 +13,6 @@
   </PropertyGroup>
   <PropertyGroup Label="UnitTest Targets">
     <UnitTestTargetFrameworks>$(NetCoreVersions)</UnitTestTargetFrameworks>
-    <UnitTestTargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions)</UnitTestTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="Project Settings" >
     <Platforms>AnyCPU</Platforms>
