@@ -9,21 +9,21 @@
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="8.0.1" />
-    <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="8.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageVersion Include="Microsoft.SourceLink.AzureRepos.Git" Version="8.0.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="8.0.0" />
-    <PackageVersion Include="System.Text.Json" Version="8.0.1" />
+    <PackageVersion Include="System.Text.Json" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup Label="Previous DotNet Package Versions." Condition="'$(TargetFramework)' == '$(OldestSupportedDotNetVersion)' And '$(OldestSupportedDotNetVersion)' != '$(LatestSupportedDotNetVersion)'">
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
@@ -47,8 +47,8 @@
     <PackageVersion Include="System.Text.Json" Version="7.0.4" />
   </ItemGroup>
   <ItemGroup Label="Package Versions. AutoUpdate">
-    <PackageVersion Include="MSTest.TestAdapter" Version="3.2.0" />
-    <PackageVersion Include="MSTest.TestFramework" Version="3.2.0" />
+    <PackageVersion Include="MSTest.TestAdapter" Version="3.2.1" />
+    <PackageVersion Include="MSTest.TestFramework" Version="3.2.1" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.8.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Csharp" Version="4.8.0" />
     <PackageVersion Include="Microsoft.Net.Test.Sdk" Version="17.9.0" />
