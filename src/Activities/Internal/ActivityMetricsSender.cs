@@ -40,6 +40,7 @@ namespace Microsoft.Omex.Extensions.Activities
 
 			TagList tagList = new()
 				{
+					{ "Tenant", $"{m_context.Cluster.ToLowerInvariant()}-{m_hostEnvironment.EnvironmentName.ToLowerInvariant()}-{m_context.DeploymentSlice}" },
 					{ "Name", activity.OperationName },
 					{ "RegionName", m_context.RegionName },
 					{ "ServiceName", m_context.ServiceName },
