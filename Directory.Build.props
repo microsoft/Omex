@@ -26,7 +26,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Label="Condition Variables" >
-    <IsNetCore>$(NetCoreVersions.Contains('$(TargetFramework)'))</IsNetCore>
     <IsNetStandard>$(NetStandardVersions.Contains('$(TargetFramework)'))</IsNetStandard>
   </PropertyGroup>
   <PropertyGroup Label="Signing" >
