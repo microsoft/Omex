@@ -23,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Abstractions
 		{
 			if (!string.IsNullOrWhiteSpace(value))
 			{
-				return value;
+				return value!; // `!` required because in netstandard2.0 IsNullOrWhiteSpace does not have proper attributes
 			}
 
 			_ = value ?? throw new ArgumentNullException(name);
