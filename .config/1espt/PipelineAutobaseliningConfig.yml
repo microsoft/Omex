@@ -5,39 +5,50 @@ pipelines:
     retail:
       source:
         credscan:
-          lastModifiedDate: 2023-10-23
+          lastModifiedDate: 2024-03-15
         eslint:
-          lastModifiedDate: 2023-10-23
+          lastModifiedDate: 2024-03-15
         armory:
-          lastModifiedDate: 2023-10-23
+          lastModifiedDate: 2024-03-15
+    usedNonDefaultBranch: true
   25752:
     retail:
       source:
         credscan:
-          lastModifiedDate: 2023-10-26
+          lastModifiedDate: 2024-03-03
         eslint:
-          lastModifiedDate: 2023-10-26
+          lastModifiedDate: 2024-03-03
         bandit:
-          lastModifiedDate: 2023-10-26
+          lastModifiedDate: 2024-03-03
         psscriptanalyzer:
-          lastModifiedDate: 2023-10-26
+          lastModifiedDate: 2024-03-03
         armory:
-          lastModifiedDate: 2023-10-26
+          lastModifiedDate: 2024-03-03
       binary:
         credscan:
-          lastModifiedDate: 2023-10-26
+          lastModifiedDate: 2024-03-03
         binskim:
-          lastModifiedDate: 2023-10-26
+          lastModifiedDate: 2024-03-03
         prefast:
-          lastModifiedDate: 2023-10-26
+          lastModifiedDate: 2024-03-03
         roslyn:
-          lastModifiedDate: 2023-10-26
+          lastModifiedDate: 2024-03-03
   26129:
     retail:
       source:
         credscan:
-          lastModifiedDate: 2023-10-27
+          lastModifiedDate: 2024-03-05
         eslint:
-          lastModifiedDate: 2023-10-27
+          lastModifiedDate: 2024-03-05
         armory:
-          lastModifiedDate: 2023-10-27
+          lastModifiedDate: 2024-03-05
+  26127:
+    usedNonDefaultBranch: true
+    retail:
+      source:
+        credscan:
+          lastModifiedDate: 2024-03-15
+        eslint:
+          lastModifiedDate: 2024-03-15
+        armory:
+          lastModifiedDate: 2024-03-15
