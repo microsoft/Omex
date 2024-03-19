@@ -6,10 +6,10 @@
   },
   "version": "1.0.0",
   "baselines": {
-    "default": {
-      "name": "default",
-      "createdDate": "2023-10-27 10:41:05Z",
-      "lastUpdatedDate": "2023-10-27 10:41:05Z"
+    "guardian-baseline": {
+      "name": "guardian-baseline",
+      "createdDate": "2023-10-29 20:06:35Z",
+      "lastUpdatedDate": "2023-10-29 20:06:35Z"
     }
   },
   "results": {}
