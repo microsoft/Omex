@@ -58,12 +58,12 @@
     <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
   <ItemGroup Label="ServiceFabric packages for Omex Extensions">
-    <PackageVersion Include="Microsoft.ServiceFabric" Version="10.1.1862" />
-    <PackageVersion Include="Microsoft.ServiceFabric.Actors" Version="7.1.1862" />
-    <PackageVersion Include="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="7.1.1862" />
+    <PackageVersion Include="Microsoft.ServiceFabric" Version="10.1.2141" />
+    <PackageVersion Include="Microsoft.ServiceFabric.Actors" Version="7.1.2141" />
+    <PackageVersion Include="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="7.1.2141" />
     <PackageVersion Include="Microsoft.ServiceFabric.Client.Http" Version="4.11.1" />
-    <PackageVersion Include="Microsoft.ServiceFabric.Services" Version="7.1.1862" />
-    <PackageVersion Include="Microsoft.ServiceFabric.Services.Remoting" Version="7.1.1862" />
+    <PackageVersion Include="Microsoft.ServiceFabric.Services" Version="7.1.2141" />
+    <PackageVersion Include="Microsoft.ServiceFabric.Services.Remoting" Version="7.1.2141" />
     <PackageVersion Include="ServiceFabric.Mocks" Version="7.1.2" />
   </ItemGroup>
   <ItemGroup Label="Moq pinned to 4.18.4 until SponsorLink is fully removed and new versions are deemed trustworty">
