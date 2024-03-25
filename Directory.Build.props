@@ -8,8 +8,8 @@
     <OldestSupportedDotNetVersion>net7.0</OldestSupportedDotNetVersion>
     <NetCoreVersions>$(LatestSupportedDotNetVersion)</NetCoreVersions>
     <NetCoreVersions Condition="'$(LatestSupportedDotNetVersion)' != '$(OldestSupportedDotNetVersion)'">$(LatestSupportedDotNetVersion);$(OldestSupportedDotNetVersion)</NetCoreVersions>
-    <LibraryTargetFrameworks>$(NetCoreVersions)</LibraryTargetFrameworks>
-    <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
+    <NetStandardVersions>netstandard2.0</NetStandardVersions>
+    <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="UnitTest Targets">
     <UnitTestTargetFrameworks>$(NetCoreVersions)</UnitTestTargetFrameworks>
@@ -24,6 +24,9 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <PropertyGroup Label="Condition Variables" >
+    <IsNetStandard>$(NetStandardVersions.Contains('$(TargetFramework)'))</IsNetStandard>
   </PropertyGroup>
   <PropertyGroup Label="Signing" >
     <SignAssembly>true</SignAssembly>

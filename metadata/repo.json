@@ -1,7 +1,7 @@
 {
     "contacts": [ "omexgithub@microsoft.com" ],
     "description": "Open source repository for nuget packages published by Omex",
-    "deployedToProduction": true,
+    "deployedToProduction": false,
     "complianceTypes": ["soc-2"],
     "inventoryId": ["a8c8b1bf-65a0-46be-9801-414ea4008b45"],
     "schema": {
