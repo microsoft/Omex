@@ -41,6 +41,7 @@ namespace Microsoft.Omex.Extensions.Activities
 
 			string subtype = NullPlaceholder;
 			string metadata = NullPlaceholder;
+			string dependent = NullPlaceholder;
 			string resultAsString = NullPlaceholder;
 			foreach (KeyValuePair<string, string?> pair in activity.Tags)
 			{
@@ -61,6 +62,10 @@ namespace Microsoft.Omex.Extensions.Activities
 				{
 					metadata = pair.Value;
 				}
+				else if (string.Equals(ActivityTagKeys.Dependent, pair.Key, StringComparison.Ordinal))
+				{
+					dependent = pair.Value;
+				}
 			}
 
 #pragma warning disable CS0618 // Until it's used we need to include correlationId into events
@@ -72,6 +77,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			string nameAsString = SanitizeString(name, nameof(name), name);
 			string subTypeAsString = SanitizeString(subtype, nameof(subtype), name);
 			string metaDataAsString = SanitizeString(metadata, nameof(metadata), name);
+			string dependentAsString = SanitizeString(dependent, nameof(dependent), name);
 			string userHashAsString = SanitizeString(userHash, nameof(userHash), name);
 			string serviceNameAsString = SanitizeString(serviceName, nameof(serviceName), name);
 			string correlationIdAsString = SanitizeString(correlationId, nameof(correlationId), name);
@@ -89,7 +95,8 @@ namespace Microsoft.Omex.Extensions.Activities
 					result: resultAsString,
 					correlationId: correlationIdAsString,
 					activityId: activityIdAsString,
-					durationMs: durationMsAsLong);
+					durationMs: durationMsAsLong,
+					dependent: dependentAsString);
 			}
 			else
 			{
@@ -103,7 +110,8 @@ namespace Microsoft.Omex.Extensions.Activities
 					result: resultAsString,
 					correlationId: correlationIdAsString,
 					activityId: activityIdAsString,
-					durationMs: durationMsAsLong);
+					durationMs: durationMsAsLong,
+					dependent: dependentAsString);
 			}
 		}
 

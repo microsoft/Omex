@@ -22,5 +22,10 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities.Processing
 		/// Activity metadata tag key
 		/// </summary>
 		public static string Metadata { get; } = "MetaData";
+
+		/// <summary>
+		/// Activity dependent tag key
+		/// </summary>
+		public static string Dependent { get; } = "Dependent";
 	}
 }

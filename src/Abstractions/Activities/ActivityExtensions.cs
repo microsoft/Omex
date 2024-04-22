@@ -105,6 +105,22 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 			activity.SetTag(ActivityTagKeys.Metadata, metadata);
 
 		/// <summary>
+		/// Set's the activities parent as the dependent property.
+		/// </summary>
+		/// <returns>This property will only be set if the parent exists.</returns>
+		public static Activity SetParentAsDependent(this Activity activity)
+		{
+			Activity? parent = activity.Parent;
+
+			if (parent != null && !string.IsNullOrEmpty(parent.OperationName))
+			{
+				activity.SetTag(ActivityTagKeys.Dependent, parent.OperationName);
+			}
+
+			return activity;
+		}
+
+		/// <summary>
 		/// Get correlation guid that is used by old Omex services
 		/// </summary>
 		[Obsolete(CorrelationIdObsoleteMessage, false)]

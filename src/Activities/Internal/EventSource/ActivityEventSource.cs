@@ -21,8 +21,9 @@ namespace Microsoft.Omex.Extensions.Activities
 			string result,
 			string correlationId,
 			string activityId,
-			long durationMs) =>
-			WriteEvent((int)EventSourcesEventIds.LogActivity, name, subType, metadata, userHash, serviceName, logCategory, result, correlationId, activityId, durationMs);
+			long durationMs,
+			string dependent) =>
+			WriteEvent((int)EventSourcesEventIds.LogActivity, name, subType, metadata, userHash, serviceName, logCategory, result, correlationId, activityId, durationMs, dependent);
 
 		[Event((int)EventSourcesEventIds.LogActivityTestContext, Level = EventLevel.Informational, Version = 4)]
 		public void WriteTimedScopeTestEvent(
@@ -34,8 +35,9 @@ namespace Microsoft.Omex.Extensions.Activities
 			string result,
 			string correlationId,
 			string activityId,
-			long durationMs) =>
-			WriteEvent((int)EventSourcesEventIds.LogActivityTestContext, name, subType, metadata, serviceName, logCategory, result, correlationId, activityId, durationMs);
+			long durationMs,
+			string dependent) =>
+			WriteEvent((int)EventSourcesEventIds.LogActivityTestContext, name, subType, metadata, serviceName, logCategory, result, correlationId, activityId, durationMs, dependent);
 
 		public static ActivityEventSource Instance { get; } = new ActivityEventSource();
 	}
