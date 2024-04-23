@@ -21,6 +21,6 @@ namespace Microsoft.Omex.Extensions.Activities
 		/// <summary>
 		/// Sets each activities parent name as a dimension value.
 		/// </summary>
-		public bool SetParentNameAsDimension { get; set; } = false;
+		public bool SetParentNameAsDimensionEnabled { get; set; } = false;
 	}
 }

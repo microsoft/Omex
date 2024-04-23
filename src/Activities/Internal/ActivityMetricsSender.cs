@@ -37,7 +37,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_healthCheckActivityHistogram = m_meter.CreateHistogram<long>("HealthCheckActivities");
 			m_customBaggageDimension = customBaggageDimensions.CustomDimensions;
 			m_customTagObjectsDimension = customTagObjectsDimensions.CustomDimensions;
-			m_isSetParentNameAsDimensionEnabled = activityOptions.Value.SetParentNameAsDimension;
+			m_isSetParentNameAsDimensionEnabled = activityOptions.Value.SetParentNameAsDimensionEnabled;
 		}
 
 		public void SendActivityMetric(Activity activity)

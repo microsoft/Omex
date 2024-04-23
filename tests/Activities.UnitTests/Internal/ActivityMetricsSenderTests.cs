@@ -166,7 +166,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			// 1. Arrange
 			ActivityOption activityOptions = new()
 			{
-				SetParentNameAsDimension = true
+				SetParentNameAsDimensionEnabled = true
 			};
 			(IExecutionContext context, IHostEnvironment environment, IOptions<ActivityOption> options) = PrepareEnvironment(activityOptions);
 
