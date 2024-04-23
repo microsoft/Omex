@@ -21,7 +21,7 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly IHostEnvironment m_hostEnvironment;
 		private readonly HashSet<string> m_customBaggageDimension;
 		private readonly HashSet<string> m_customTagObjectsDimension;
-		private readonly IOptions<ActivityOption> m_activityOptions;
+		private readonly bool m_isSetParentNameAsDimensionEnabled;
 
 		public ActivityMetricsSender(
 			IExecutionContext executionContext,
@@ -37,7 +37,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_healthCheckActivityHistogram = m_meter.CreateHistogram<long>("HealthCheckActivities");
 			m_customBaggageDimension = customBaggageDimensions.CustomDimensions;
 			m_customTagObjectsDimension = customTagObjectsDimensions.CustomDimensions;
-			m_activityOptions = activityOptions;
+			m_isSetParentNameAsDimensionEnabled = activityOptions.Value.SetParentNameAsDimension;
 		}
 
 		public void SendActivityMetric(Activity activity)
@@ -81,8 +81,7 @@ namespace Microsoft.Omex.Extensions.Activities
 				}
 			}
 
-			bool isSetParentNameAsDimensionEnabled = m_activityOptions.Value.SetParentNameAsDimension;
-			if(isSetParentNameAsDimensionEnabled)
+			if (m_isSetParentNameAsDimensionEnabled)
 			{
 				Activity? parent = activity.Parent;
 				if (parent != null && !string.IsNullOrEmpty(parent.OperationName))
