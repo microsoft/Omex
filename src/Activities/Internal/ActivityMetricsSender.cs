@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 
@@ -20,8 +21,14 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly IHostEnvironment m_hostEnvironment;
 		private readonly HashSet<string> m_customBaggageDimension;
 		private readonly HashSet<string> m_customTagObjectsDimension;
+		private readonly IOptions<ActivityOption> m_activityOptions;
 
-		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment, ICustomBaggageDimensions customBaggageDimensions, ICustomTagObjectsDimensions customTagObjectsDimensions)
+		public ActivityMetricsSender(
+			IExecutionContext executionContext,
+			IHostEnvironment hostEnvironment,
+			ICustomBaggageDimensions customBaggageDimensions,
+			ICustomTagObjectsDimensions customTagObjectsDimensions,
+			IOptions<ActivityOption> activityOptions)
 		{
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
@@ -30,6 +37,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_healthCheckActivityHistogram = m_meter.CreateHistogram<long>("HealthCheckActivities");
 			m_customBaggageDimension = customBaggageDimensions.CustomDimensions;
 			m_customTagObjectsDimension = customTagObjectsDimensions.CustomDimensions;
+			m_activityOptions = activityOptions;
 		}
 
 		public void SendActivityMetric(Activity activity)
@@ -70,6 +78,16 @@ namespace Microsoft.Omex.Extensions.Activities
 				if (tagItem != null)
 				{
 					tagList.Add(dimension, tagItem);
+				}
+			}
+
+			bool isSetParentNameAsDimensionEnabled = m_activityOptions.Value.SetParentNameAsDimension;
+			if(isSetParentNameAsDimensionEnabled)
+			{
+				Activity? parent = activity.Parent;
+				if (parent != null && !string.IsNullOrEmpty(parent.OperationName))
+				{
+					tagList.Add("ParentName", parent.OperationName);
 				}
 			}
 

@@ -197,40 +197,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			Assert.IsNull(activity2.GetTag(ActivityTagKeys.Metadata));
 		}
 
-		[TestMethod]
-		public void SetParentAsDependent_SetsValue()
-		{
-			ActivitySource activitySource = new("TestSource");
-			ActivityListener activityListener = new()
-			{
-				ShouldListenTo = s => true,
-				SampleUsingParentId = (ref ActivityCreationOptions<string> activityOptions) => ActivitySamplingResult.AllData,
-				Sample = (ref ActivityCreationOptions<ActivityContext> activityOptions) => ActivitySamplingResult.AllData
-			};
-			ActivitySource.AddActivityListener(activityListener);
-
-			string parentActivityName = nameof(parentActivityName);
-			using Activity parent = activitySource.StartActivity(parentActivityName)!;
-
-			using Activity activity = activitySource.StartActivity("SetDependentTest1")!;
-
-			activity.SetParentAsDependent();
-			CheckThatKeyNotDuplicated(activity.TagObjects);
-
-			Assert.AreEqual(parentActivityName, activity.GetTag(ActivityTagKeys.Dependent));
-		}
-
-		[TestMethod]
-		public void SetParentAsDependent_NoParent_DoesNotSetValue()
-		{
-			using Activity activity = new("SetDependentTest1")!;
-
-			activity.SetParentAsDependent();
-			CheckThatKeyNotDuplicated(activity.TagObjects);
-
-			Assert.IsNull(activity.GetTag(ActivityTagKeys.Dependent));
-		}
-
 		private void CheckThatKeyNotDuplicated<T>(IEnumerable<KeyValuePair<string, T?>> collection)
 			where T : class
 		{
