@@ -84,7 +84,7 @@ namespace Microsoft.Omex.Extensions.Activities
 			if (m_isSetParentNameAsDimensionEnabled)
 			{
 				Activity? parent = activity.Parent;
-				if (parent != null && !string.IsNullOrEmpty(parent.OperationName))
+				if (!string.IsNullOrEmpty(parent?.OperationName))
 				{
 					tagList.Add("ParentName", parent.OperationName);
 				}
