@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
@@ -25,13 +26,14 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		public void SendActivityMetric_NoCustomDimensions_ProduceMetricPointSuccessfully(bool isHealthCheck)
 		{
 			// 1. Arrange
-			(IExecutionContext context, IHostEnvironment environment) = PrepareEnvironment();
+			(IExecutionContext context, IHostEnvironment environment, IOptions<ActivityOption> options) = PrepareEnvironment();
 
 			ActivityMetricsSender sender = new(
 				context,
 				environment,
 				isHealthCheck ? new CustomBaggageDimensions(new HashSet<string> { "HealthCheckMarker" }) : new CustomBaggageDimensions(),
-				new CustomTagObjectsDimensions());
+				new CustomTagObjectsDimensions(),
+				options);
 			Listener listener = new();
 
 			Activity activity = new(nameof(activity));
@@ -59,7 +61,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		public void SendActivityMetric_CustomDimensionsAreRegistered_ProduceMetricPointWithRegisteredDimensions(bool isHealthCheck)
 		{
 			// 1. Arrange
-			(IExecutionContext context, IHostEnvironment environment) = PrepareEnvironment();
+			(IExecutionContext context, IHostEnvironment environment, IOptions<ActivityOption> options) = PrepareEnvironment();
 
 			const string testBaggage1 = "TestBaggage1";
 			const string testBaggage2 = "TestBaggage2";
@@ -76,7 +78,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 				{
 					ActivityTagKeys.Result, ActivityTagKeys.Metadata, ActivityTagKeys.SubType,
 					testTag1, testTag2
-				}));
+				}),
+				options);
 
 			Listener listener = new();
 
@@ -109,7 +112,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		public void SendActivityMetric_CustomDimensionsAreNotRegistered_FailToProduceMetricPoint()
 		{
 			// 1. Arrange
-			(IExecutionContext context, IHostEnvironment environment) = PrepareEnvironment();
+			(IExecutionContext context, IHostEnvironment environment, IOptions<ActivityOption> options) = PrepareEnvironment();
 
 			const string testBaggage1 = "TestBaggage1";
 			const string testBaggage2 = "TestBaggage2";
@@ -120,7 +123,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 				context,
 				environment,
 				new CustomBaggageDimensions(new HashSet<string>()), // Override by empty set
-				new CustomTagObjectsDimensions(new HashSet<string>())); // Override by empty set
+				new CustomTagObjectsDimensions(new HashSet<string>()),
+				options); // Override by empty set
 
 			Listener listener = new();
 
@@ -150,6 +154,52 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			foreach (KeyValuePair<string, string?> tagPair in activity.Baggage)
 			{
 				Assert.ThrowsException<KeyNotFoundException>(() => result.Tags[tagPair.Key]);
+			}
+		}
+
+		[TestMethod]
+		[DataRow(true, true, true, DisplayName = "Parent Name emmitted when parent is present and has a name")]
+		[DataRow(true, false, false, DisplayName = "Parent Name not emmitted when parent is present but has no name")]
+		[DataRow(false, false, false, DisplayName = "Parent Name not emmitted when parent is not present")]
+		public void SendActivityMetric_WithSendParentName_ProducesMetricPointWithParentName(bool hasParentActivity, bool hasParentName, bool expectParentNameToBeEmitted)
+		{
+			// 1. Arrange
+			ActivityOption activityOptions = new()
+			{
+				SetParentNameAsDimensionEnabled = true
+			};
+			(IExecutionContext context, IHostEnvironment environment, IOptions<ActivityOption> options) = PrepareEnvironment(activityOptions);
+
+			ActivityMetricsSender sender = new(
+				context,
+				environment,
+				new CustomBaggageDimensions([]),
+				new CustomTagObjectsDimensions([]),
+				options);
+			Listener listener = new();
+
+			string? parentName = hasParentName ? nameof(parentName) : null;
+			if (hasParentActivity)
+			{
+				Activity parent = new(parentName!);
+				parent.Start();
+			}
+
+			Activity activity = new(nameof(activity));
+			activity.Start().Stop();
+
+			sender.SendActivityMetric(activity);
+
+			// 3. Assert
+			MeasurementResult result = listener.Results.First(m => environment.EnvironmentName.Equals(m.Tags[s_environmentTagName]));
+
+			if(expectParentNameToBeEmitted)
+			{
+				AssertTag(result, "ParentName", nameof(parentName));
+			}
+			else
+			{
+				AssertTagNotExist(result, "ParentName");
 			}
 		}
 
@@ -185,8 +235,10 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 
 		private static void AssertTag(MeasurementResult result, string key, object? expectedValue) => Assert.AreEqual(expectedValue, result.Tags[key]);
 
+		private static void AssertTagNotExist(MeasurementResult result, string key) => CollectionAssert.DoesNotContain(result.Tags.Keys, key);
 
-		private (IExecutionContext, IHostEnvironment) PrepareEnvironment()
+
+		private (IExecutionContext, IHostEnvironment, IOptions<ActivityOption>) PrepareEnvironment(ActivityOption? options = null)
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 			Activity.ForceDefaultIdFormat = true;
@@ -207,7 +259,12 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			Mock<IHostEnvironment> environmentMock = new();
 			environmentMock.Setup(e => e.EnvironmentName).Returns("TestEnv");
 			IHostEnvironment environment = environmentMock.Object;
-			return (context, environment);
+
+			Mock<IOptions<ActivityOption>> optionsMock = new();
+			optionsMock.Setup(mock => mock.Value).Returns(options ?? new ActivityOption());
+			IOptions<ActivityOption> activityOptions = optionsMock.Object;
+
+			return (context, environment, activityOptions);
 		}
 
 		private static readonly string s_environmentTagName = "Environment";
