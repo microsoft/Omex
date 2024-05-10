@@ -41,7 +41,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>
 		/// Registering Dependency Injection classes that will provide Service Fabric specific information for logging
 		/// </summary>
-		[Obsolete($"This method also adds Legacy OmexLogger and ActivityEventSender and they are deprecated. This legacy telemetry is pending for removal by 1 July 2024. Consider adding a different telemetry solution. Code: 8913598")]
+		[Obsolete($"This method also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. Code: 8913598")]
 		public static IServiceCollection AddOmexServiceFabricDependencies<TContext>(this IServiceCollection collection)
 			where TContext : ServiceContext
 		{
@@ -88,14 +88,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				IHost host = builder
 					.ConfigureServices((context, collection) =>
 					{
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 // AddOmexServiceFabricDependencies also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. Code: 8913598
+						collection.AddOmexServiceFabricDependencies<TContext>();
+#pragma warning restore CS0618 // AddOmexServiceFabricDependencies also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. Code: 8913598
+
 						collection
 							.Configure<ServiceRegistratorOptions>(options =>
 							{
 								options.ServiceTypeName = serviceName;
 							})
-							.AddOmexServiceFabricDependencies<TContext>()
-#pragma warning restore CS0618 // Type or member is obsolete
 							.AddSingleton<IOmexServiceRegistrator, TRunner>()
 							.AddHostedService<OmexHostedService>();
 					})
