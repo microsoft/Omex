@@ -24,8 +24,11 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		public void AddOmexServiceContext_OverridesContextType()
 		{
 			IServiceCollection collection = new ServiceCollection()
-				.AddOmexServiceContext<MockServiceContext>()
-				.AddOmexLogging();
+				.AddOmexServiceContext<MockServiceContext>();
+
+#pragma warning disable CS0618 // Type or member is obsolete
+			collection.AddOmexLogging();
+#pragma warning restore CS0618 // Type or member is obsolete
 
 			IServiceContext context = ValidateTypeRegistration<IServiceContext>(collection);
 
@@ -35,6 +38,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete]
 		public void AddOmexLoggerOnServiceCollection_RegistersLogger()
 		{
 			IServiceCollection collection = new ServiceCollection().AddOmexLogging();
@@ -42,6 +46,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete]
 		public void AddOmexLoggerOnLogBuilder_RegistersLogger()
 		{
 			ILoggingBuilder builder = new MockLoggingBuilder().AddOmexLogging();
@@ -51,8 +56,10 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		private T ValidateTypeRegistration<T>(IServiceCollection collection)
 			where T : class
 		{
+#pragma warning disable CS0618 // Type or member is obsolete
 			T obj = collection
 				.AddOmexLogging()
+#pragma warning restore CS0618 // Type or member is obsolete
 				.BuildServiceProvider(new ServiceProviderOptions
 				{
 					ValidateOnBuild = true,

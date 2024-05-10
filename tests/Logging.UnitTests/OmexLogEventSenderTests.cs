@@ -15,6 +15,7 @@ using Moq;
 
 namespace Microsoft.Omex.Extensions.Logging.UnitTests
 {
+	[Obsolete("InitializationLogger using OmexLogger is obsolete and is pending for removal by 1 July 2024. Code: 8913598.")]
 	[TestClass]
 	public class OmexLogEventSenderTests
 	{

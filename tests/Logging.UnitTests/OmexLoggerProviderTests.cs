@@ -11,6 +11,7 @@ using Moq;
 namespace Microsoft.Omex.Extensions.Logging.UnitTests
 {
 	[TestClass]
+	[Obsolete]
 	public class OmexLoggerProviderTests
 	{
 		[TestMethod]
