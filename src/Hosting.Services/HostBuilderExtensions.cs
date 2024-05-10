@@ -114,9 +114,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			}
 			catch (Exception e)
 			{
-#pragma warning disable CS0618 // InitializationLogger is obsolete. Code: 8913598
+#pragma warning disable CS0618 // InitializationLogger using OmexLogger is obsolete. Code: 8913598
 				InitializationLogger.LogInitializationFail(serviceNameForLogging, e);
-#pragma warning restore CS0618 // InitializationLogger is obsolete. Code: 8913598
+#pragma warning restore CS0618 // InitializationLogger using OmexLogger is obsolete. Code: 8913598
+
 				throw;
 			}
 		}
