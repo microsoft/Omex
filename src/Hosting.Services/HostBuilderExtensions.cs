@@ -7,6 +7,7 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
@@ -41,7 +42,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>
 		/// Registering Dependency Injection classes that will provide Service Fabric specific information for logging
 		/// </summary>
-		[Obsolete($"This method also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. Code: 8913598")]
 		public static IServiceCollection AddOmexServiceFabricDependencies<TContext>(this IServiceCollection collection)
 			where TContext : ServiceContext
 		{
@@ -61,7 +61,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 			collection.TryAddSingleton<IServiceContext, OmexServiceFabricContext>();
 			collection.TryAddSingleton<IExecutionContext, ServiceFabricExecutionContext>();
+
+			collection.AddLogging();
+
+			collection.TryAddTransient<IServiceContext, EmptyServiceContext>();
+			collection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
+			collection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
+
+#pragma warning disable CS0618 // This method also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. Code: 8913598
 			return collection.AddOmexServices();
+#pragma warning restore CS0618 // This method also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. Code: 8913598
 		}
 
 		private static IHost BuildServiceFabricService<TRunner, TService, TContext>(
