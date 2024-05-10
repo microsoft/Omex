@@ -11,7 +11,7 @@ using Moq;
 namespace Microsoft.Omex.Extensions.Logging.UnitTests
 {
 	[TestClass]
-	[Obsolete]
+	[Obsolete("OmexLogger is Obsolete and pending for removal on 1 July 2024. Code: 8913598.")]
 	public class OmexLoggerProviderTests
 	{
 		[TestMethod]

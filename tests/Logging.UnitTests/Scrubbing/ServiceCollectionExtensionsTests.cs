@@ -142,10 +142,10 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 
 		private static ILogScrubbingRule[] GetTypeRegistrations(IServiceCollection collection)
 		{
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 // AddOmexLogging uses OmexLogger and OmexLogEventSource which are obsolete and pending for removal by 1 July 2024. Code: 8913598.
 			IEnumerable<ILogScrubbingRule> objects = collection
 				.AddOmexLogging()
-#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore CS0618 // AddOmexLogging uses OmexLogger and OmexLogEventSource which are obsolete and pending for removal by 1 July 2024. Code: 8913598.
 				.BuildServiceProvider(new ServiceProviderOptions
 				{
 					ValidateOnBuild = true,
