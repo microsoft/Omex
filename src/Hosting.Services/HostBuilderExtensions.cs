@@ -23,25 +23,41 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>
 		/// Configures host to run service fabric stateless service with initialized Omex dependencies
 		/// </summary>
+		/// <param name="builder">Host builder</param>
+		/// <param name="serviceName"> Service name</param>
+		/// <param name="builderAction">Action to configure Service fabric Host</param>
+		/// <param name="disableOmexLogging">Disable OmexLogger if you want to use your custom logger, eg: OpenTelemetry</param>
+		/// <returns>Host builder</returns>
 		public static IHost BuildStatelessService(
 			this IHostBuilder builder,
 			string serviceName,
-			Action<ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext>> builderAction) =>
-				builder.BuildServiceFabricService<OmexStatelessServiceRegistrator, OmexStatelessService, StatelessServiceContext>(serviceName, builderAction);
+			Action<ServiceFabricHostBuilder<OmexStatelessService, StatelessServiceContext>> builderAction,
+			bool disableOmexLogging = false) =>
+				builder.BuildServiceFabricService<OmexStatelessServiceRegistrator, OmexStatelessService, StatelessServiceContext>(serviceName, builderAction, disableOmexLogging);
 
 		/// <summary>
 		/// Configures host to run service fabric stateful service with initialized Omex dependencies
 		/// </summary>
+		/// <param name="builder">Host builder</param>
+		/// <param name="serviceName"> Service name</param>
+		/// <param name="builderAction">Action to configure Service fabric Host</param>
+		/// <param name="disableOmexLogging">Disable OmexLogger if you want to use your custom logger, eg: OpenTelemetry</param>
+		/// <returns>Host builder</returns>
 		public static IHost BuildStatefulService(
 			this IHostBuilder builder,
 			string serviceName,
-			Action<ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext>> builderAction) =>
-				builder.BuildServiceFabricService<OmexStatefulServiceRegistrator, OmexStatefulService, StatefulServiceContext>(serviceName, builderAction);
+			Action<ServiceFabricHostBuilder<OmexStatefulService, StatefulServiceContext>> builderAction,
+			bool disableOmexLogging = false) =>
+				builder.BuildServiceFabricService<OmexStatefulServiceRegistrator, OmexStatefulService, StatefulServiceContext>(serviceName, builderAction, disableOmexLogging);
 
 		/// <summary>
 		/// Registering Dependency Injection classes that will provide Service Fabric specific information for logging
 		/// </summary>
-		public static IServiceCollection AddOmexServiceFabricDependencies<TContext>(this IServiceCollection collection)
+		/// <param name="collection">Service collection for DI</param>
+		/// <param name="disableOmexLogging">Disable OmexLogger if you want to use your custom logger, eg: OpenTelemetry</param>
+		/// <returns>Service collection for DI after adding Service Fabric specific information for logging</returns>
+		public static IServiceCollection AddOmexServiceFabricDependencies<TContext>(this IServiceCollection collection,
+			bool disableOmexLogging = false)
 			where TContext : ServiceContext
 		{
 			bool isStatefulService = typeof(StatefulServiceContext).IsAssignableFrom(typeof(TContext));
@@ -60,13 +76,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 			collection.TryAddSingleton<IServiceContext, OmexServiceFabricContext>();
 			collection.TryAddSingleton<IExecutionContext, ServiceFabricExecutionContext>();
-			return collection.AddOmexServices();
+			return collection.AddOmexServices(disableOmexLogging);
 		}
 
 		private static IHost BuildServiceFabricService<TRunner, TService, TContext>(
 			this IHostBuilder builder,
 			string serviceName,
-			Action<ServiceFabricHostBuilder<TService, TContext>> builderAction)
+			Action<ServiceFabricHostBuilder<TService, TContext>> builderAction,
+			bool disableOmexLogging = false)
 				where TRunner : OmexServiceRegistrator<TService, TContext>
 				where TService : IServiceFabricService<TContext>
 				where TContext : ServiceContext
@@ -92,7 +109,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 							{
 								options.ServiceTypeName = serviceName;
 							})
-							.AddOmexServiceFabricDependencies<TContext>()
+							.AddOmexServiceFabricDependencies<TContext>(disableOmexLogging)
 							.AddSingleton<IOmexServiceRegistrator, TRunner>()
 							.AddHostedService<OmexHostedService>();
 					})
