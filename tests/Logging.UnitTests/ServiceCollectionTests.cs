@@ -46,7 +46,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		}
 
 		[TestMethod]
-		[Obsolete]
+		[Obsolete("AddOmexLogging method is obsolete. Code: 8913598")]
 		public void AddOmexLoggerOnLogBuilder_RegistersLogger()
 		{
 			ILoggingBuilder builder = new MockLoggingBuilder().AddOmexLogging();
@@ -56,10 +56,10 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		private T ValidateTypeRegistration<T>(IServiceCollection collection)
 			where T : class
 		{
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 // AddOmexLogging method is obsolete. Code: 8913598
 			T obj = collection
 				.AddOmexLogging()
-#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore CS0618 // AddOmexLogging method is obsolete. Code: 8913598
 				.BuildServiceProvider(new ServiceProviderOptions
 				{
 					ValidateOnBuild = true,
