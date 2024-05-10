@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.Hosting
 		/// <summary>
 		/// Add Omex Logging and ActivitySource dependencies
 		/// </summary>
-		[Obsolete($"Please do not use {nameof(AddOmexServices)} if you just want to use Legacy OmexLogger and ActivityEventSender because they are deprecated. Consider using a different telemetry solution. This method is pending for removal by 1 July 2024. Code: 8913598.")]
+		[Obsolete($"Please do not use {nameof(AddOmexServices)} if you just want to use Legacy OmexLogger and ActivityEventSender because they are deprecated. Consider using a different telemetry solution. This method is pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 		public static IHostBuilder AddOmexServices(this IHostBuilder builder) =>
 			builder
 				.ConfigureServices((context, collection) => collection.AddOmexServices());
@@ -26,7 +26,7 @@ namespace Microsoft.Omex.Extensions.Hosting
 		/// <summary>
 		/// Add Omex Logging and ActivitySource dependencies
 		/// </summary>
-		[Obsolete($"Please do not use {nameof(AddOmexServices)} if you just want to use Legacy OmexLogger and ActivityEventSender because they are deprecated. Consider using a different telemetry solution. This method is pending for removal by 1 July 2024. Code: 8913598.")]
+		[Obsolete($"Please do not use {nameof(AddOmexServices)} if you just want to use Legacy OmexLogger and ActivityEventSender because they are deprecated. Consider using a different telemetry solution. This method is pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 		public static IServiceCollection AddOmexServices(this IServiceCollection collection) =>
 			collection
 				.AddOmexLogging()

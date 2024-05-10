@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Logging
 	/// InitializationLogger is the logger to be used before the proper ILogger from DI is set.
 	/// Not to be used as main logger.
 	/// </summary>
-	[Obsolete($"{nameof(InitializationLogger)} using {nameof(OmexLogger)} is obsolete and is pending for removal by 1 July 2024. Code: 8913598.")]
+	[Obsolete($"{nameof(InitializationLogger)} using {nameof(OmexLogger)} is obsolete and is pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 	public static class InitializationLogger
 	{
 		/// <summary>
@@ -56,7 +56,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <param name="serviceNameForLogging">Service name for logging</param>
 		/// <param name="ex">Exception to log</param>
 		/// <param name="message">Message to log</param>
-		[Obsolete("InitializationLogger using OmexLogger is obsolete and is pending for removal by 1 July 2024. Code: 8913598.")]
+		[Obsolete("InitializationLogger using OmexLogger is obsolete and is pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 		public static void LogInitializationFail(string serviceNameForLogging,  Exception? ex = null, string message = "")
 		{
 			ServiceInitializationEventSource.Instance.LogHostFailed(ex?.ToString() ?? string.Empty, serviceNameForLogging, message);

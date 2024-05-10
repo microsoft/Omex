@@ -15,7 +15,7 @@ using Microsoft.Omex.Extensions.Activities;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
-	[Obsolete($"{nameof(ActivityEventSender)} is obsolete and pending for removal by 1 July 2024. Code: 8913598")]
+	[Obsolete($"{nameof(ActivityEventSender)} is obsolete and pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 	internal sealed class ActivityEventSender : IActivitiesEventSender
 	{
 		public ActivityEventSender(ActivityEventSource eventSource, IExecutionContext executionContext, ILogger<ActivityEventSender> logger, IOptions<ActivityOption> options)

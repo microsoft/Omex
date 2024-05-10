@@ -16,8 +16,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Certificates
 		/// <summary>
 		/// Instance of CertificateReader
 		/// </summary>
-#pragma warning disable CS0618 // InitializationLogger using OmexLogger is obsolete and is pending for removal by 1 July 2024. Code: 8913598
+#pragma warning disable OMEX188 // InitializationLogger using OmexLogger is obsolete and is pending for removal by 1 July 2024. DiagnosticId = "OMEX188"
 		public static ICertificateReader Instance { get; } = new CertificateReader(new CertificateStore(), InitializationLogger.Instance);
-#pragma warning restore CS0618 // InitializationLogger using OmexLogger is obsolete and is pending for removal by 1 July 2024. Code: 8913598
+#pragma warning restore OMEX188 // InitializationLogger using OmexLogger is obsolete and is pending for removal by 1 July 2024. DiagnosticId = "OMEX188"
 	}
 }

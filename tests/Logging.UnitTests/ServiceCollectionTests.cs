@@ -26,9 +26,9 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			IServiceCollection collection = new ServiceCollection()
 				.AddOmexServiceContext<MockServiceContext>();
 
-#pragma warning disable CS0618 // AddOmexLogging method is obsolete. Code: 8913598
+#pragma warning disable OMEX188 // AddOmexLogging method is obsolete. DiagnosticId = "OMEX188"
 			collection.AddOmexLogging();
-#pragma warning restore CS0618 // AddOmexLogging method is obsolete. Code: 8913598
+#pragma warning restore OMEX188 // AddOmexLogging method is obsolete. DiagnosticId = "OMEX188"
 
 			IServiceContext context = ValidateTypeRegistration<IServiceContext>(collection);
 
@@ -38,7 +38,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		}
 
 		[TestMethod]
-		[Obsolete("AddOmexLogging method is obsolete. Code: 8913598")]
+		[Obsolete("AddOmexLogging method is obsolete.", DiagnosticId = "OMEX188")]
 		public void AddOmexLoggerOnServiceCollection_RegistersLogger()
 		{
 			IServiceCollection collection = new ServiceCollection().AddOmexLogging();
@@ -46,7 +46,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		}
 
 		[TestMethod]
-		[Obsolete("AddOmexLogging method is obsolete. Code: 8913598")]
+		[Obsolete("AddOmexLogging method is obsolete.", DiagnosticId = "OMEX188")]
 		public void AddOmexLoggerOnLogBuilder_RegistersLogger()
 		{
 			ILoggingBuilder builder = new MockLoggingBuilder().AddOmexLogging();
@@ -56,10 +56,10 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		private T ValidateTypeRegistration<T>(IServiceCollection collection)
 			where T : class
 		{
-#pragma warning disable CS0618 // AddOmexLogging method is obsolete. Code: 8913598
+#pragma warning disable OMEX188 // AddOmexLogging method is obsolete. DiagnosticId = "OMEX188"
 			T obj = collection
 				.AddOmexLogging()
-#pragma warning restore CS0618 // AddOmexLogging method is obsolete. Code: 8913598
+#pragma warning restore OMEX188 // AddOmexLogging method is obsolete. DiagnosticId = "OMEX188"
 				.BuildServiceProvider(new ServiceProviderOptions
 				{
 					ValidateOnBuild = true,

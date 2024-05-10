@@ -8,7 +8,7 @@ using Microsoft.Omex.Extensions.Abstractions.EventSources;
 namespace Microsoft.Omex.Extensions.Activities
 {
 	// Renamed from Microsoft-OMEX-TimedScopes to avoid conflict with sources in other libraries
-	[Obsolete($"{nameof(ActivityEventSource)} is obsolete and pending for removal by 1 July 2024. Code: 8913598")]
+	[Obsolete($"{nameof(ActivityEventSource)} is obsolete and pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 	[EventSource(Name = "Microsoft-OMEX-TimedScopes-Ext")]
 	internal sealed class ActivityEventSource : EventSource
 	{

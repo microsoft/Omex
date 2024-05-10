@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 		[DataTestMethod]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>))]
 		[DataRow(typeof(ActivitySource))]
-		[Obsolete("AddOmexServices is Obsolete and pending for removal on 1 July 2024. Code: 8913598.")]
+		[Obsolete("AddOmexServices is Obsolete and pending for removal on 1 July 2024.", DiagnosticId = "OMEX188")]
 		public void AddOmexServices_TypesRegistered(Type type)
 		{
 			object? collectionObj = new ServiceCollection()

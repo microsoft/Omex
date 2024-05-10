@@ -68,9 +68,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			collection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
 			collection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
 
-#pragma warning disable CS0618 // This method also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. Code: 8913598
+#pragma warning disable OMEX188 // This method also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. DiagnosticId = "OMEX188"
 			return collection.AddOmexServices();
-#pragma warning restore CS0618 // This method also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. Code: 8913598
+#pragma warning restore OMEX188 // This method also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. DiagnosticId = "OMEX188"
 		}
 
 		private static IHost BuildServiceFabricService<TRunner, TService, TContext>(
@@ -97,9 +97,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				IHost host = builder
 					.ConfigureServices((context, collection) =>
 					{
-#pragma warning disable CS0618 // AddOmexServiceFabricDependencies also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. Code: 8913598
 						collection.AddOmexServiceFabricDependencies<TContext>();
-#pragma warning restore CS0618 // AddOmexServiceFabricDependencies also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. Code: 8913598
 
 						collection
 							.Configure<ServiceRegistratorOptions>(options =>
@@ -116,17 +114,17 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 					})
 					.Build();
 
-#pragma warning disable CS0618 // InitializationLogger using OmexLogger is obsolete. Code: 8913598
+#pragma warning disable OMEX188 // InitializationLogger using OmexLogger is obsolete. DiagnosticId = "OMEX188"
 				InitializationLogger.LogInitializationSucceed(serviceNameForLogging);
-#pragma warning restore CS0618 // InitializationLogger using OmexLogger is obsolete. Code: 8913598
+#pragma warning restore OMEX188 // InitializationLogger using OmexLogger is obsolete. DiagnosticId = "OMEX188"
 
 				return host;
 			}
 			catch (Exception e)
 			{
-#pragma warning disable CS0618 // InitializationLogger using OmexLogger is obsolete. Code: 8913598
+#pragma warning disable OMEX188 // InitializationLogger using OmexLogger is obsolete. DiagnosticId = "OMEX188"
 				InitializationLogger.LogInitializationFail(serviceNameForLogging, e);
-#pragma warning restore CS0618 // InitializationLogger using OmexLogger is obsolete. Code: 8913598
+#pragma warning restore OMEX188 // InitializationLogger using OmexLogger is obsolete. DiagnosticId = "OMEX188"
 
 				throw;
 			}

@@ -10,7 +10,7 @@ using Microsoft.Omex.Extensions.Logging.Scrubbing;
 namespace Microsoft.Omex.Extensions.Logging
 {
 	[ProviderAlias("Omex")]
-	[Obsolete($"{nameof(OmexLogger)} and {nameof(OmexLogEventSource)} are obsolete and pending for removal by 1 July 2024. Please consider using a different logging solution. Code: 8913598.")]
+	[Obsolete($"{nameof(OmexLogger)} and {nameof(OmexLogEventSource)} are obsolete and pending for removal by 1 July 2024. Please consider using a different logging solution.", DiagnosticId = "OMEX188")]
 	internal class OmexLoggerProvider : ILoggerProvider, ISupportExternalScope
 	{
 		public OmexLoggerProvider(
