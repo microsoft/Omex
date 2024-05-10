@@ -37,11 +37,11 @@ namespace Microsoft.Extensions.DependencyInjection
 
 			serviceCollection.TryAddSingleton<ActivityMetricsSender>();
 
-#pragma warning disable CS0612 // ActivityEventSender and AggregatedActivitiesEventSender are obsolete and pending for removal by 1 July 2024. Code: 8913598")]
+#pragma warning disable CS0618 // ActivityEventSender and AggregatedActivitiesEventSender are obsolete and pending for removal by 1 July 2024. Code: 8913598.
 			serviceCollection.TryAddSingleton<ActivityEventSender>();
 			serviceCollection.TryAddSingleton<IActivitiesEventSender, AggregatedActivitiesEventSender>();
 			serviceCollection.TryAddSingleton(p => ActivityEventSource.Instance);
-#pragma warning restore CS0612 // Type or member is obsolete
+#pragma warning restore CS0618 // ActivityEventSender and AggregatedActivitiesEventSender are obsolete and pending for removal by 1 July 2024. Code: 8913598.
 
 			serviceCollection.TryAddSingleton<ICustomBaggageDimensions>(_ => new CustomBaggageDimensions());
 			serviceCollection.TryAddSingleton<ICustomTagObjectsDimensions>(_ => new CustomTagObjectsDimensions());
