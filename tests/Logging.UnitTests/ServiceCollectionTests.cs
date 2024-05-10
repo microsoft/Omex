@@ -26,9 +26,9 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			IServiceCollection collection = new ServiceCollection()
 				.AddOmexServiceContext<MockServiceContext>();
 
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 // AddOmexLogging method is obsolete. Code: 8913598
 			collection.AddOmexLogging();
-#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore CS0618 // AddOmexLogging method is obsolete. Code: 8913598
 
 			IServiceContext context = ValidateTypeRegistration<IServiceContext>(collection);
 
@@ -38,7 +38,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 		}
 
 		[TestMethod]
-		[Obsolete]
+		[Obsolete("AddOmexLogging method is obsolete. Code: 8913598")]
 		public void AddOmexLoggerOnServiceCollection_RegistersLogger()
 		{
 			IServiceCollection collection = new ServiceCollection().AddOmexLogging();
