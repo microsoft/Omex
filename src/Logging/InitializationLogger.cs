@@ -56,7 +56,6 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <param name="serviceNameForLogging">Service name for logging</param>
 		/// <param name="ex">Exception to log</param>
 		/// <param name="message">Message to log</param>
-		[Obsolete("InitializationLogger using OmexLogger is obsolete and is pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 		public static void LogInitializationFail(string serviceNameForLogging,  Exception? ex = null, string message = "")
 		{
 			ServiceInitializationEventSource.Instance.LogHostFailed(ex?.ToString() ?? string.Empty, serviceNameForLogging, message);
