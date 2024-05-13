@@ -13,13 +13,14 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 	/// <remarks>
 	/// Please prefer using instance resolved from DI container.
 	/// </remarks>
-	[Obsolete("InitializationLogger using OmexLogger is obsolete and is pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 	public class ServiceFabricClientFactory
 	{
 		/// <summary>
 		/// Creates service fabric client wrapper instance and returns it.
 		/// </summary>
 		public static IServiceFabricClientWrapper Create(ServiceFabricRestClientOptions options) =>
+#pragma warning disable OMEX188 // InitializationCertificateReader using OmexLogger is obsolete. DiagnosticId = "OMEX188"
 			new ServiceFabricClientWrapper(Options.Create(options), InitializationCertificateReader.Instance);
+#pragma warning restore OMEX188 // InitializationCertificateReader using OmexLogger is obsolete. DiagnosticId = "OMEX188"
 	}
 }
