@@ -53,20 +53,14 @@ namespace Microsoft.Omex.Extensions.Logging
 			serviceCollection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
 			serviceCollection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
 
-			AddOmexLegacyLogging(serviceCollection);
-
-			return serviceCollection;
-		}
-
-		[Obsolete($"{nameof(OmexLogger)} and {nameof(OmexLogEventSource)} are obsolete and pending for removal by 1 July 2024. Please consider using a different Logger.", DiagnosticId = "OMEX188")]
-		private static void AddOmexLegacyLogging(IServiceCollection serviceCollection)
-		{
 			serviceCollection.TryAddSingleton(_ => OmexLogEventSource.Instance);
 			serviceCollection.TryAddSingleton<ILogEventReplayer, OmexLogEventReplayer>();
 			serviceCollection.TryAddSingleton<ILogEventSender, OmexLogEventSender>();
 
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ReplayableActivityStopObserver>());
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
+
+			return serviceCollection;
 		}
 	}
 }

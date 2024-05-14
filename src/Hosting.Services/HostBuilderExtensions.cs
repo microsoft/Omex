@@ -64,9 +64,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 			collection.AddLogging();
 
-			collection.TryAddTransient<IServiceContext, EmptyServiceContext>();
 			collection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
-			collection.TryAddTransient<IExternalScopeProvider, LoggerExternalScopeProvider>();
 
 #pragma warning disable OMEX188 // This method also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. DiagnosticId = "OMEX188"
 			return collection.AddOmexServices();
