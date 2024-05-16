@@ -89,13 +89,12 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 				IHost host = builder
 					.ConfigureServices((context, collection) =>
 					{
-						collection.AddOmexServiceFabricDependencies<TContext>();
-
 						collection
 							.Configure<ServiceRegistratorOptions>(options =>
 							{
 								options.ServiceTypeName = serviceName;
 							})
+							.AddOmexServiceFabricDependencies<TContext>()
 							.AddSingleton<IOmexServiceRegistrator, TRunner>()
 							.AddHostedService<OmexHostedService>();
 					})
