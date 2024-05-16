@@ -89,4 +89,4 @@ extends:
             failOnStderr: true
             showWarnings: true
           env:
-            PAT: $(OfficeOcCodeAccess)
+            PAT: $(OfficeOcCodeAccessCorpNet)
