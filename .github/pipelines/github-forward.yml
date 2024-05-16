@@ -88,5 +88,5 @@ extends:
             SkipIfNoChangesFound: false
             WorkItemId: "8430180"
             AutoCompleteUserId: 75d3c7a0-2045-6bf0-b50e-3ab2cf9ae644
-            Pat: $(OfficeOcCodeAccess)
+            Pat: $(OfficeOcCodeAccessCorpNet)
             MergeStrategy: noFastForward
