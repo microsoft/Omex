@@ -11,6 +11,7 @@ using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 
 namespace Microsoft.Omex.Extensions.Logging
 {
+	[Obsolete($"{nameof(OmexLogEventSender)} is obsolete and pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 	internal sealed class OmexLogEventSender : ILogEventSender
 	{
 		static OmexLogEventSender()
