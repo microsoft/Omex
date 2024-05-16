@@ -29,10 +29,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		{
 			void CheckTypeRegistration<TContext>() where TContext : ServiceContext
 			{
-#pragma warning disable CS0618 // AddOmexServiceFabricDependencies also adds Legacy OmexLogger and ActivityEventSender and they are deprecated. This legacy telemetry is pending for removal by 1 July 2024. Consider adding a different telemetry solution. DiagnosticId = "OMEX188"
 				object? obj = new ServiceCollection()
 					.AddOmexServiceFabricDependencies<TContext>()
-#pragma warning restore CS0618 // AddOmexServiceFabricDependencies also adds Legacy OmexLogger and ActivityEventSender and they are deprecated. This legacy telemetry is pending for removal by 1 July 2024. Consider adding a different telemetry solution. DiagnosticId = "OMEX188"
 					.AddSingleton(new Mock<IHostEnvironment>().Object)
 					.BuildServiceProvider()
 					.GetService(typeToResolve);

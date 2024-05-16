@@ -62,13 +62,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			collection.TryAddSingleton<IServiceContext, OmexServiceFabricContext>();
 			collection.TryAddSingleton<IExecutionContext, ServiceFabricExecutionContext>();
 
-			collection.AddLogging();
-
-			collection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
-
-#pragma warning disable OMEX188 // This method also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. DiagnosticId = "OMEX188"
 			return collection.AddOmexServices();
-#pragma warning restore OMEX188 // This method also adds Legacy OmexLogger and ActivityEventSender which are deprecated. They are pending for removal by 1 July 2024. Consider adding a different telemetry solution. DiagnosticId = "OMEX188"
 		}
 
 		private static IHost BuildServiceFabricService<TRunner, TService, TContext>(
