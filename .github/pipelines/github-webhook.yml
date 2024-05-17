@@ -30,6 +30,7 @@ trigger:
     - refs/heads/main
     - main
   batch: true
+pr: none
 extends:
   template: v1/Office.Unofficial.PipelineTemplate.yml@OfficePipelineTemplates
   parameters:
