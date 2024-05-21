@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Extensions.Activities
 		/// <summary>
 		/// Disable ActivityEventSender so Activity metric is only sent via ActivityMetricsSender
 		/// </summary>
-		public bool ActivityEventSenderEnabled { get; set; } = true;
+		public bool ActivityEventSenderEnabled { get; set; } = false;
 
 		/// <summary>
 		/// Sets each activities parent name as a dimension value.
