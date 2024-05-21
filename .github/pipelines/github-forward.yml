@@ -11,7 +11,7 @@ variables:
 - name: system.debug
   value: false
 - group: OmexOpenSourceExternal-VG
-- group: OmexAcTokens
+- group: OmexAcTokensCorpNet
 resources:
   repositories:
   - repository: OfficePipelineTemplates
@@ -19,6 +19,7 @@ resources:
     name: OE/OfficePipelineTemplates
     ref: refs/heads/main
 trigger: none
+pr: none
 extends:
   template: v1/Office.Unofficial.PipelineTemplate.yml@OfficePipelineTemplates
   parameters:
@@ -88,5 +89,5 @@ extends:
             SkipIfNoChangesFound: false
             WorkItemId: "8430180"
             AutoCompleteUserId: 75d3c7a0-2045-6bf0-b50e-3ab2cf9ae644
-            Pat: $(OfficeOcCodeAccess)
+            Pat: $(OfficeOcCodeAccessCorpNet)
             MergeStrategy: noFastForward
