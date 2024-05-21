@@ -103,6 +103,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 						options.ValidateOnBuild = true;
 						options.ValidateScopes = true;
 					})
+#pragma warning disable OMEX188 // AddOmexLogging using OmexLogger is obsolete. DiagnosticId = "OMEX188"
+					.ConfigureLogging(builder => builder.AddOmexLogging())
+#pragma warning restore OMEX188 // AddOmexLogging using OmexLogger is obsolete. DiagnosticId = "OMEX188"
 					.Build();
 
 #pragma warning disable OMEX188 // InitializationLogger using OmexLogger is obsolete. DiagnosticId = "OMEX188"
