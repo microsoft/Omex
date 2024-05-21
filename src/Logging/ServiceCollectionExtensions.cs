@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -30,6 +31,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// Adds Omex event logger to the factory
 		/// </summary>
 		/// <param name="builder">The extension method argument</param>
+		[Obsolete("OmexLogger and OmexLogEventSource are obsolete and pending for removal by 1 July 2024. Please consider using a different Logger.", DiagnosticId = "OMEX188")]
 		public static ILoggingBuilder AddOmexLogging(this ILoggingBuilder builder)
 		{
 			builder.AddConfiguration();
@@ -42,6 +44,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// </summary>
 		/// <param name="serviceCollection">The extension method argument</param>
 		/// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained</returns>
+		[Obsolete("OmexLogger and OmexLogEventSource are obsolete and pending for removal by 1 July 2024. Please consider using a different Logger.", DiagnosticId = "OMEX188")]
 		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection)
 		{
 			serviceCollection.AddLogging();

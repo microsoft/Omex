@@ -17,6 +17,7 @@ using Moq;
 namespace Microsoft.Omex.Extensions.Activities.UnitTests
 {
 	[TestClass]
+	[Obsolete($"{nameof(ActivityEventSender)} is obsolete and pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 	public class ActivitiesEventSourceTests
 	{
 		[DataTestMethod]

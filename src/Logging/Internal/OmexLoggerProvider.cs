@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Logging.Replayable;
@@ -9,6 +10,7 @@ using Microsoft.Omex.Extensions.Logging.Scrubbing;
 namespace Microsoft.Omex.Extensions.Logging
 {
 	[ProviderAlias("Omex")]
+	[Obsolete($"{nameof(OmexLogger)} and {nameof(OmexLogEventSource)} are obsolete and pending for removal by 1 July 2024. Please consider using a different logging solution.", DiagnosticId = "OMEX188")]
 	internal class OmexLoggerProvider : ILoggerProvider, ISupportExternalScope
 	{
 		public OmexLoggerProvider(
