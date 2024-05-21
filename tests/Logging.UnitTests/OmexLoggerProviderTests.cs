@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Logging.Scrubbing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -15,14 +16,22 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 	public class OmexLoggerProviderTests
 	{
 		[TestMethod]
-		public void CreateLogger_PropagatesCategory()
+		[DataTestMethod]
+		[DataRow(true)]
+		[DataRow(false)]
+		public void CreateLogger_PropagatesCategory(bool omexLoggerEnabled)
 		{
 			const string testCategory = "SomeCategoryName";
 			const string testMessage = "TestMessage";
 			Mock<ILogEventSender> mockEventSource = new();
 			IExternalScopeProvider mockExternalScopeProvider = new Mock<IExternalScopeProvider>().Object;
 
-			ILoggerProvider loggerProvider = new OmexLoggerProvider(mockEventSource.Object, mockExternalScopeProvider, Array.Empty<ILogScrubbingRule>());
+			Mock<IOptions<OmexLoggingOptions>> mockOmexLoggingOption = new();
+			OmexLoggingOptions omexLoggingOptions = new OmexLoggingOptions();
+			omexLoggingOptions.OmexLoggerEnabled = omexLoggerEnabled;
+			mockOmexLoggingOption.Setup(m => m.Value).Returns(omexLoggingOptions);
+
+			ILoggerProvider loggerProvider = new OmexLoggerProvider(mockEventSource.Object, mockExternalScopeProvider, Array.Empty<ILogScrubbingRule>(), mockOmexLoggingOption.Object);
 			ILogger logger = loggerProvider.CreateLogger(testCategory);
 
 			Assert.IsInstanceOfType(logger, typeof(OmexLogger));
@@ -31,7 +40,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 
 			logger.LogError(testMessage);
 
-			mockEventSource.Verify(e => e.LogMessage(It.IsAny<Activity>(), testCategory, LogLevel.Error, It.IsAny<EventId>(), It.IsAny<int>(), testMessage, It.IsAny<Exception>()), Times.Once);
+			mockEventSource.Verify(e => e.LogMessage(It.IsAny<Activity>(), testCategory, LogLevel.Error, It.IsAny<EventId>(), It.IsAny<int>(), testMessage, It.IsAny<Exception>()), omexLoggerEnabled ? Times.Once : Times.Never);
 		}
 	}
 }
