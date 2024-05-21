@@ -23,5 +23,10 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// Maximum number of events that activity can store for replay
 		/// </summary>
 		public uint MaxReplayedEventsPerActivity { get; set; } = 1000;
+
+		/// <summary>
+		/// Enable or disable OmexLogger
+		/// </summary>
+		public bool OmexLoggerEnabled { get; set; } = false;
 	}
 }
