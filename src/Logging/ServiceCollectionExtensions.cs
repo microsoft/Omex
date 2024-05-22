@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
-using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.Omex.Extensions.Logging.Replayable;
@@ -61,7 +60,11 @@ namespace Microsoft.Omex.Extensions.Logging
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ReplayableActivityStopObserver>());
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
 
-			serviceCollection.AddSingleton<IConfigureOptions<OmexLoggingOptions>, OmexLoggerOptionsSetup>();
+			serviceCollection
+				.AddOptions<OmexLoggingOptions>()
+				.BindConfiguration(OmexLoggingOptions.OmexLoggingOptionPath);
+
+
 			return serviceCollection;
 		}
 	}
