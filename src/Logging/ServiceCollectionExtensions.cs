@@ -68,7 +68,6 @@ namespace Microsoft.Omex.Extensions.Logging
 			<IOptionsChangeTokenSource<OmexLoggingOptions>,
 				LoggerProviderOptionsChangeTokenSource<OmexLoggingOptions, OmexLoggerProvider>>());
 
-			// LoggerProviderOptions.RegisterProviderOptions<OmexLoggingOptions, OmexLoggerProvider>(serviceCollection);
 
 			return serviceCollection;
 		}

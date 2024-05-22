@@ -36,7 +36,9 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			contextMock.Setup(c => c.ServiceName).Returns("TestService");
 
 			Mock<IOptions<ActivityOption>> mockOptions = new();
-			mockOptions.Setup(m => m.Value).Returns(new ActivityOption());
+			ActivityOption activityOption = new ActivityOption();
+			activityOption.ActivityEventSenderEnabled = true;
+			mockOptions.Setup(m => m.Value).Returns(activityOption);
 
 			ActivityEventSender logEventSource = new(
 				ActivityEventSource.Instance,
@@ -100,6 +102,35 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			logEventSource.SendActivityMetric(activity);
 
 			Assert.AreEqual(0, listener.EventsInformation.Count);
+		}
+
+		[TestMethod]
+		public void LogActivityEndEvent_ActivityEventSender_Disabled()
+		{
+			using TestEventListener listener = new();
+			listener.EnableEvents(ActivityEventSource.Instance, EventLevel.Informational);
+
+			const string name = "TestName";
+
+			Mock<IExecutionContext> contextMock = new();
+			contextMock.Setup(c => c.ServiceName).Returns("TestService");
+
+			Mock<IOptions<ActivityOption>> mockOptions = new();
+			ActivityOption activityOption = new ActivityOption();
+			activityOption.ActivityEventSenderEnabled = false;
+			mockOptions.Setup(m => m.Value).Returns(activityOption);
+
+			ActivityEventSender logEventSource = new(
+				ActivityEventSource.Instance,
+				contextMock.Object,
+				new NullLogger<ActivityEventSender>(),
+				mockOptions.Object);
+
+			using Activity activity = new Activity(name).Start();
+
+			logEventSource.SendActivityMetric(activity);
+
+			Assert.AreEqual(listener.EventsInformation.Count, 0);
 		}
 	}
 }

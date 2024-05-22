@@ -32,14 +32,7 @@ namespace Microsoft.Omex.Extensions.Logging
 
 		public IDisposable? BeginScope<TState>(TState state) where TState : notnull => m_externalScopeProvider.Push(state);
 
-		public bool IsEnabled(LogLevel logLevel)
-		{
-			if (m_omexLoggingOptions.OmexLoggerEnabled && m_logsEventSender.IsEnabled(logLevel))
-			{
-				return true;
-			}
-			return false;
-		}
+		public bool IsEnabled(LogLevel logLevel) => m_omexLoggingOptions.OmexLoggerEnabled && m_logsEventSender.IsEnabled(logLevel);
 
 		public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
 		{
