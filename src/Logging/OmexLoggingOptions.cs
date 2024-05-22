@@ -25,14 +25,8 @@ namespace Microsoft.Omex.Extensions.Logging
 		public uint MaxReplayedEventsPerActivity { get; set; } = 1000;
 
 		/// <summary>
-		/// Enable or disable OmexLogEventSender to forward log to an event source
+		/// Enable or disable OmexLogger
 		/// </summary>
-		public bool OmexLogEventSenderEnabled { get; set; } = false;
-
-		/// <summary>
-		/// OmexLoggerPath
-		/// </summary>
-		public static string OmexLoggingOptionPath = "Logging.Omex.Options";
-
+		public bool OmexLoggerEnabled { get; set; } = false;
 	}
 }
