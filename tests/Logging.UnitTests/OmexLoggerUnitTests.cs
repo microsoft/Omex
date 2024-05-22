@@ -196,7 +196,9 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			[CallerMemberName] string suffix = "")
 		{
 			Mock<IExternalScopeProvider> scopeProviderMock = new();
-			ILogger logger = new OmexLogger(eventSourceMock.Object, scopeProviderMock.Object, textScrubbers, GetLogCategory(suffix), logEventReplayer);
+			OmexLoggingOptions omexLoggingOptions = new OmexLoggingOptions();
+			omexLoggingOptions.OmexLoggerEnabled = true;
+			ILogger logger = new OmexLogger(eventSourceMock.Object, scopeProviderMock.Object, textScrubbers, GetLogCategory(suffix), omexLoggingOptions, logEventReplayer);
 
 			logger.LogError(CreateEventId(eventId, suffix), s_expectedPropagatedException, GetLogMessage(suffix));
 

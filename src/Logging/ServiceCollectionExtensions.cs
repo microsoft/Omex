@@ -48,7 +48,8 @@ namespace Microsoft.Omex.Extensions.Logging
 		[Obsolete("OmexLogger and OmexLogEventSource are obsolete and pending for removal by 1 July 2024. Please consider using a different Logger.", DiagnosticId = "OMEX188")]
 		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection)
 		{
-			serviceCollection.AddLogging();
+			serviceCollection.AddLogging(builder =>
+				builder.AddConfiguration());
 
 			serviceCollection.TryAddTransient<IServiceContext, EmptyServiceContext>();
 			serviceCollection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
@@ -67,7 +68,7 @@ namespace Microsoft.Omex.Extensions.Logging
 			<IOptionsChangeTokenSource<OmexLoggingOptions>,
 				LoggerProviderOptionsChangeTokenSource<OmexLoggingOptions, OmexLoggerProvider>>());
 
-			LoggerProviderOptions.RegisterProviderOptions<OmexLoggingOptions, OmexLoggerProvider>(serviceCollection);
+			// LoggerProviderOptions.RegisterProviderOptions<OmexLoggingOptions, OmexLoggerProvider>(serviceCollection);
 
 			return serviceCollection;
 		}
