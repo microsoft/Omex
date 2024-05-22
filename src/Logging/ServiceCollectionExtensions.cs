@@ -64,9 +64,6 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton
 				<IConfigureOptions<OmexLoggingOptions>, OmexLoggerOptionsSetup>());
-			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton
-			<IOptionsChangeTokenSource<OmexLoggingOptions>,
-				LoggerProviderOptionsChangeTokenSource<OmexLoggingOptions, OmexLoggerProvider>>());
 
 			return serviceCollection;
 		}
