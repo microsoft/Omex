@@ -16,10 +16,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 	public class OmexLoggerProviderTests
 	{
 		[TestMethod]
-		[DataTestMethod]
-		[DataRow(true)]
-		[DataRow(false)]
-		public void CreateLogger_PropagatesCategory(bool omexLoggerEnabled)
+		public void CreateLogger_PropagatesCategory()
 		{
 			const string testCategory = "SomeCategoryName";
 			const string testMessage = "TestMessage";
@@ -27,8 +24,34 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			IExternalScopeProvider mockExternalScopeProvider = new Mock<IExternalScopeProvider>().Object;
 
 			Mock<IOptions<OmexLoggingOptions>> mockOmexLoggingOption = new();
-			OmexLoggingOptions omexLoggingOptions = new OmexLoggingOptions();
-			omexLoggingOptions.OmexLoggerEnabled = omexLoggerEnabled;
+			OmexLoggingOptions omexLoggingOptions = new OmexLoggingOptions() {OmexLoggerEnabled = true};
+			mockOmexLoggingOption.Setup(m => m.Value).Returns(omexLoggingOptions);
+
+			ILoggerProvider loggerProvider = new OmexLoggerProvider(mockEventSource.Object, mockExternalScopeProvider, Array.Empty<ILogScrubbingRule>(), mockOmexLoggingOption.Object);
+			ILogger logger = loggerProvider.CreateLogger(testCategory);
+
+			Assert.IsInstanceOfType(logger, typeof(OmexLogger));
+
+			mockEventSource.Setup(e => e.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+
+			logger.LogError(testMessage);
+
+			mockEventSource.Verify(e => e.LogMessage(It.IsAny<Activity>(), testCategory, LogLevel.Error, It.IsAny<EventId>(), It.IsAny<int>(), testMessage, It.IsAny<Exception>()), Times.Once);
+		}
+
+		[TestMethod]
+		[DataTestMethod]
+		[DataRow(true)]
+		[DataRow(false)]
+		public void CreateLogger_Control_OmexLoggerEnabledBoolean_LogProducedAccordingly(bool omexLoggerEnabled)
+		{
+			const string testCategory = "SomeCategoryName";
+			const string testMessage = "TestMessage";
+			Mock<ILogEventSender> mockEventSource = new();
+			IExternalScopeProvider mockExternalScopeProvider = new Mock<IExternalScopeProvider>().Object;
+
+			Mock<IOptions<OmexLoggingOptions>> mockOmexLoggingOption = new();
+			OmexLoggingOptions omexLoggingOptions = new OmexLoggingOptions() { OmexLoggerEnabled = omexLoggerEnabled };
 			mockOmexLoggingOption.Setup(m => m.Value).Returns(omexLoggingOptions);
 
 			ILoggerProvider loggerProvider = new OmexLoggerProvider(mockEventSource.Object, mockExternalScopeProvider, Array.Empty<ILogScrubbingRule>(), mockOmexLoggingOption.Object);
