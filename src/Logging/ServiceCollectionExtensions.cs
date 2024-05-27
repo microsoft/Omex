@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
 using Microsoft.Omex.Extensions.Logging.Replayable;
@@ -47,7 +48,8 @@ namespace Microsoft.Omex.Extensions.Logging
 		[Obsolete("OmexLogger and OmexLogEventSource are obsolete and pending for removal by 1 July 2024. Please consider using a different Logger.", DiagnosticId = "OMEX188")]
 		public static IServiceCollection AddOmexLogging(this IServiceCollection serviceCollection)
 		{
-			serviceCollection.AddLogging();
+			serviceCollection.AddLogging(builder =>
+				builder.AddConfiguration());
 
 			serviceCollection.TryAddTransient<IServiceContext, EmptyServiceContext>();
 			serviceCollection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
@@ -59,6 +61,9 @@ namespace Microsoft.Omex.Extensions.Logging
 
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Transient<IActivityStopObserver, ReplayableActivityStopObserver>());
 			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, OmexLoggerProvider>());
+
+			serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton
+				<IConfigureOptions<OmexLoggingOptions>, OmexLoggerOptionsSetup>());
 
 			return serviceCollection;
 		}
