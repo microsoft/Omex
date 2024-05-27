@@ -36,8 +36,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			contextMock.Setup(c => c.ServiceName).Returns("TestService");
 
 			Mock<IOptions<ActivityOption>> mockOptions = new();
-			ActivityOption activityOption = new ActivityOption();
-			activityOption.ActivityEventSenderEnabled = true;
+			ActivityOption activityOption = new() { ActivityEventSenderEnabled = true };
 			mockOptions.Setup(m => m.Value).Returns(activityOption);
 
 			ActivityEventSender logEventSource = new(
