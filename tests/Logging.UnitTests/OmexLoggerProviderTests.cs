@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			IExternalScopeProvider mockExternalScopeProvider = new Mock<IExternalScopeProvider>().Object;
 
 			Mock<IOptions<OmexLoggingOptions>> mockOmexLoggingOption = new();
-			OmexLoggingOptions omexLoggingOptions = new OmexLoggingOptions() {OmexLoggerEnabled = true};
+			OmexLoggingOptions omexLoggingOptions = new OmexLoggingOptions() { OmexLoggerEnabled = true };
 			mockOmexLoggingOption.Setup(m => m.Value).Returns(omexLoggingOptions);
 
 			ILoggerProvider loggerProvider = new OmexLoggerProvider(mockEventSource.Object, mockExternalScopeProvider, Array.Empty<ILogScrubbingRule>(), mockOmexLoggingOption.Object);
