@@ -1,12 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Diagnostics.Tracing;
 using Microsoft.Omex.Extensions.Abstractions.EventSources;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
 	// Renamed from Microsoft-OMEX-TimedScopes to avoid conflict with sources in other libraries
+	[Obsolete($"{nameof(ActivityEventSource)} is obsolete and pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 	[EventSource(Name = "Microsoft-OMEX-TimedScopes-Ext")]
 	internal sealed class ActivityEventSource : EventSource
 	{

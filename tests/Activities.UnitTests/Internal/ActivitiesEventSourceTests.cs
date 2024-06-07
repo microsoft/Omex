@@ -17,6 +17,7 @@ using Moq;
 namespace Microsoft.Omex.Extensions.Activities.UnitTests
 {
 	[TestClass]
+	[Obsolete($"{nameof(ActivityEventSender)} is obsolete and pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 	public class ActivitiesEventSourceTests
 	{
 		[DataTestMethod]
@@ -35,7 +36,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			contextMock.Setup(c => c.ServiceName).Returns("TestService");
 
 			Mock<IOptions<ActivityOption>> mockOptions = new();
-			mockOptions.Setup(m => m.Value).Returns(new ActivityOption());
+			ActivityOption activityOption = new() { ActivityEventSenderEnabled = true };
+			mockOptions.Setup(m => m.Value).Returns(activityOption);
 
 			ActivityEventSender logEventSource = new(
 				ActivityEventSource.Instance,

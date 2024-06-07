@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -25,8 +26,10 @@ namespace Microsoft.Omex.Extensions.Hosting
 		/// Add Omex Logging and ActivitySource dependencies
 		/// </summary>
 		public static IServiceCollection AddOmexServices(this IServiceCollection collection) =>
+#pragma warning disable OMEX188 // OmexLogger and OmexLogEventSource are obsolete and pending for removal by 1 July 2024. Please consider using a different Logger.
 			collection
 				.AddOmexLogging()
+#pragma warning restore OMEX188 // OmexLogger and OmexLogEventSource are obsolete and pending for removal by 1 July 2024. Please consider using a different Logger.
 				.AddOmexActivitySource();
 
 		/// <summary>

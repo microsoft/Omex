@@ -8,6 +8,7 @@ using Microsoft.Omex.Extensions.Abstractions.EventSources;
 namespace Microsoft.Omex.Extensions.Logging
 {
 	// Renamed from Microsoft-OMEX-Logs to avoid conflict with sources in other libraries
+	[Obsolete($"{nameof(OmexLogEventSource)} is obsolete and pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 	[EventSource(Name = "Microsoft-OMEX-Logs-Ext")]
 	internal sealed class OmexLogEventSource : EventSource
 	{

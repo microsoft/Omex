@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 
@@ -12,6 +11,7 @@ namespace Microsoft.Omex.Extensions.Logging
 	/// InitializationLogger is the logger to be used before the proper ILogger from DI is set.
 	/// Not to be used as main logger.
 	/// </summary>
+	[Obsolete($"{nameof(InitializationLogger)} using {nameof(OmexLogger)} is obsolete and is pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 	public static class InitializationLogger
 	{
 		/// <summary>
