@@ -74,7 +74,10 @@
     <!-- Optional: Include the PDB in the built .nupkg -->
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <SourceRootLocation>$(MSBuildThisFileDirectory)</SourceRootLocation>
-    <!-- Maps paths injected by CallerFilePath attribute to be related and independent from repository location on hard drive -->
-    <PathMap>$(MSBuildThisFileDirectory)=/</PathMap>
+    <!-- 
+      Maps paths injected by CallerFilePath attribute to be related and independent from repository location on hard drive to keep automatic log tags independent of the build location.
+      Doing this prevents debugger from finding symbols, so setting is disabled for debug builds.
+    -->
+    <PathMap Condition="'$(Configuration)' != 'Debug'">$(MSBuildThisFileDirectory)=/</PathMap>
   </PropertyGroup>
 </Project>
