@@ -49,8 +49,8 @@
   <ItemGroup Label="Package Versions. AutoUpdate">
     <PackageVersion Include="MSTest.TestAdapter" Version="3.5.2" />
     <PackageVersion Include="MSTest.TestFramework" Version="3.5.2" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.10.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Csharp" Version="4.10.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.11.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Csharp" Version="4.11.0" />
     <PackageVersion Include="Microsoft.Net.Test.Sdk" Version="17.10.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
