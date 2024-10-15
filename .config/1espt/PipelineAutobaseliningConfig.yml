@@ -61,3 +61,12 @@ pipelines:
           lastModifiedDate: 2024-10-03
         armory:
           lastModifiedDate: 2024-10-03
+  26131:
+    retail:
+      source:
+        credscan:
+          lastModifiedDate: 2024-10-15
+        eslint:
+          lastModifiedDate: 2024-10-15
+        armory:
+          lastModifiedDate: 2024-10-15
