@@ -30,14 +30,14 @@
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.10" PreserveMajor="true" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.11" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.1" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.1" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.1" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="8.0.1" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="8.0.10" PreserveMajor="true" />
+    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="8.0.11" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.2" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" PreserveMajor="true" />
