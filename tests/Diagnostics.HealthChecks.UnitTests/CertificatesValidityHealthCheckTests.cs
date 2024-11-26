@@ -122,7 +122,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		[TestMethod]
 		public async Task CheckHealthAsync_ShouldReturnUnhealthy_WhenCertificateDoesNotHavePrivateKey()
 		{
-#if NET9_0
+#if NET9_0_OR_GREATER
 			X509Certificate2 certWithoutPrivateKey = X509CertificateLoader.LoadCertificate(CreateCert(m_certSubjectName).Export(X509ContentType.Cert));
 #else
 			X509Certificate2 certWithoutPrivateKey = new(CreateCert(m_certSubjectName).Export(X509ContentType.Cert));
