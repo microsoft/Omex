@@ -40,7 +40,7 @@ extends:
               - task: UseDotNet@2
                 displayName: Temporarily install .NET 8 SDK while dual targeting
                 inputs:
-                  version: "8.0.404"
+                  version: "8.0.x"
               - task: UseDotNet@2
                 displayName: Use .NET SDK from global.json
                 inputs:
