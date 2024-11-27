@@ -179,14 +179,13 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			Listener listener = new();
 
 			string? parentName = hasParentName ? nameof(parentName) : null;
-			if (hasParentActivity)
-			{
-				Activity parent = new(parentName!);
-				parent.Start();
-			}
+			using Activity? parent = hasParentActivity ? new(parentName!) : null;
+			parent?.Start();
 
-			Activity activity = new(nameof(activity));
+			using Activity activity = new(nameof(activity));
 			activity.Start().Stop();
+
+			parent?.Stop();
 
 			sender.SendActivityMetric(activity);
 
