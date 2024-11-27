@@ -73,6 +73,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Omex.Extensions.Diagnostics.HealthChecks.AspNetCore.UnitTests", "tests\Diagnostics.HealthChecks.AspNetCore.UnitTests\Microsoft.Omex.Extensions.Diagnostics.HealthChecks.AspNetCore.UnitTests.csproj", "{43CE835D-5A71-4689-9297-942EF1233175}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests", "tests\ServiceFabricGuest.Abstractions.UnitTests\Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests.csproj", "{66F677BB-D314-4DA0-9173-6CA74E88AAF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -265,6 +267,14 @@ Global
 		{43CE835D-5A71-4689-9297-942EF1233175}.Release|Any CPU.Build.0 = Release|Any CPU
 		{43CE835D-5A71-4689-9297-942EF1233175}.Release|x64.ActiveCfg = Release|Any CPU
 		{43CE835D-5A71-4689-9297-942EF1233175}.Release|x64.Build.0 = Release|Any CPU
+		{66F677BB-D314-4DA0-9173-6CA74E88AAF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66F677BB-D314-4DA0-9173-6CA74E88AAF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66F677BB-D314-4DA0-9173-6CA74E88AAF2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{66F677BB-D314-4DA0-9173-6CA74E88AAF2}.Debug|x64.Build.0 = Debug|Any CPU
+		{66F677BB-D314-4DA0-9173-6CA74E88AAF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66F677BB-D314-4DA0-9173-6CA74E88AAF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66F677BB-D314-4DA0-9173-6CA74E88AAF2}.Release|x64.ActiveCfg = Release|Any CPU
+		{66F677BB-D314-4DA0-9173-6CA74E88AAF2}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -293,6 +303,7 @@ Global
 		{A07BF64C-1B19-4972-83DB-B22BFF26E6B0} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
 		{7FD8C746-9DB1-4B33-B4A6-95AF5FEF2CCD} = {3249ADDB-50EC-4C21-A8F0-65EF444662EE}
 		{43CE835D-5A71-4689-9297-942EF1233175} = {551C93F8-6E89-4954-8905-7F5AC7173285}
+		{66F677BB-D314-4DA0-9173-6CA74E88AAF2} = {551C93F8-6E89-4954-8905-7F5AC7173285}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6FB7BCB-BF07-4F19-ACBA-457479D421BB}
