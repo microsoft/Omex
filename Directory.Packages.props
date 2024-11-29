@@ -66,6 +66,6 @@
   </ItemGroup>
   <ItemGroup Label="Moq">
     <!-- Pinning moq due to [SponsorLink privacy concerns](https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/secure-supply-chain/moq-incident-and-remediation) -->
-    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="Moq" Version="4.18.4" />
   </ItemGroup>
 </Project>
