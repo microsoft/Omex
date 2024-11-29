@@ -64,8 +64,7 @@
     <PackageVersion Include="Microsoft.ServiceFabric.Services.Remoting" Version="7.1.2448" />
     <PackageVersion Include="ServiceFabric.Mocks" Version="7.2.8" />
   </ItemGroup>
-  <ItemGroup Label="Moq">
-    <!-- Pinning moq due to [SponsorLink privacy concerns](https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/secure-supply-chain/moq-incident-and-remediation) -->
+  <ItemGroup Label="Moq pinned to 4.18.4 until SponsorLink is fully removed and new versions are deemed trustworty">
     <PackageVersion Include="Moq" Version="4.18.4" />
   </ItemGroup>
 </Project>
