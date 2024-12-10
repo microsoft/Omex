@@ -61,7 +61,8 @@ public sealed class ObservableHealthCheck : IHealthCheck
 			{
 				activity?.SetTag("HealthCheckResult", result.Status.ToString());
 			}
-			catch (Exception ex) {
+			catch (Exception ex)
+			{
 				m_logger.LogError(Tag.Create(), ex, "'{registrationName}' health check tag addition failed", context.Registration.Name);
 			}
 
