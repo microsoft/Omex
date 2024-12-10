@@ -52,7 +52,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			// check that Activity from Diagnostic listener also captured
 			using (DiagnosticListener listener = new(nameof(ActivityListeners_ControlsActivityCreation)))
 			{
-				Activity activity = new("DiagnosticsListenerActivity");
+				using Activity activity = new("DiagnosticsListenerActivity");
 
 				listener.StartActivity(activity, null);
 				mockStartObserver.Verify(s => s.OnStart(activity, null), Times.Once);

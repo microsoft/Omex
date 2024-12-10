@@ -87,7 +87,7 @@ extends:
             Title: GitHub Forward Integration - $(GITHUBCOMMIT)
             Description: GitHub forward integration Pull Request for commit '$(GITHUBCOMMIT)'
             SkipIfNoChangesFound: false
-            WorkItemId: "8430180"
+            WorkItemId: "9421495"
             AutoCompleteUserId: 75d3c7a0-2045-6bf0-b50e-3ab2cf9ae644
             Pat: $(OfficeOcCodeAccessCorpNet)
             MergeStrategy: noFastForward
