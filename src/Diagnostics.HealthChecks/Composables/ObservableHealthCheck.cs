@@ -56,10 +56,19 @@ public sealed class ObservableHealthCheck : IHealthCheck
 		try
 		{
 			HealthCheckResult result = await m_wrappedHealthCheck.CheckHealthAsync(context, cancellationToken);
+
+			try
+			{
+				activity?.SetTag("HealthCheckResult", result.Status.ToString());
+			}
+			catch (Exception ex) {
+				m_logger.LogError(Tag.Create(), ex, "'{0}' health check tag addition failed", context.Registration.Name);
+			}
+
 			activity?.MarkAsSuccess();
 
 			// The health status for the health check result: if the status is healthy, it will be returned as it is,
-			// if not then then registration failure status will be sent in its place.
+			// if not then registration failure status will be sent in its place.
 			HealthStatus healthCheckStatus = result.Status == HealthStatus.Healthy
 				? result.Status
 				: context.Registration.FailureStatus;
