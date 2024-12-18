@@ -8,6 +8,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Composables;
 
@@ -59,7 +60,7 @@ public sealed class ObservableHealthCheck : IHealthCheck
 
 			try
 			{
-				activity?.SetTag("HealthCheckResult", result.Status.ToString());
+				activity?.SetTag(ActivityTagKeys.HealthCheckResult, result.Status.ToString());
 			}
 			catch (Exception ex)
 			{

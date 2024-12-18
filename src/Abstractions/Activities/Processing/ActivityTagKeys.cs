@@ -14,6 +14,11 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities.Processing
 		public static string Result { get; } = "Result";
 
 		/// <summary>
+		/// Health Check result tag key
+		/// </summary>
+		public static string HealthCheckResult { get; } = "HealthCheckResult";
+
+		/// <summary>
 		/// Activity sub type tag key
 		/// </summary>
 		public static string SubType { get; } = "SubType";
@@ -22,5 +27,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities.Processing
 		/// Activity metadata tag key
 		/// </summary>
 		public static string Metadata { get; } = "MetaData";
+
+
 	}
 }
