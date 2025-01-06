@@ -74,13 +74,6 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 			activity.SetTag(ActivityTagKeys.Result, ActivityResultStrings.ResultToString(result));
 
 		/// <summary>
-		/// Set health check result
-		/// </summary>
-		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
-		public static Activity SetHealthCheckResult(this Activity activity, HealthStatus result) =>
-			activity.SetTag(ActivityTagKeys.HealthCheckResult, result.ToString());
-
-		/// <summary>
 		/// Set activity result to Success
 		/// </summary>
 		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
@@ -111,6 +104,13 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <remarks>This property won't be transfered to child activity or via web requests</remarks>
 		public static Activity SetMetadata(this Activity activity, string metadata) =>
 			activity.SetTag(ActivityTagKeys.Metadata, metadata);
+
+		/// <summary>
+		/// Set health check result
+		/// </summary>
+		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
+		public static Activity SetHealthCheckResult(this Activity activity, HealthStatus result) =>
+			activity.SetTag(ActivityTagKeys.HealthCheckResult, result.ToString());
 
 		/// <summary>
 		/// Get correlation guid that is used by old Omex services
