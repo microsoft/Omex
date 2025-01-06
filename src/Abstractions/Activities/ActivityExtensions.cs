@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.Abstractions.Activities
@@ -71,6 +72,13 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
 		public static Activity SetResult(this Activity activity, ActivityResult result) =>
 			activity.SetTag(ActivityTagKeys.Result, ActivityResultStrings.ResultToString(result));
+
+		/// <summary>
+		/// Set health check result
+		/// </summary>
+		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
+		public static Activity SetHealthCheckResult(this Activity activity, HealthStatus result) =>
+			activity.SetTag(ActivityTagKeys.HealthCheckResult, result.ToString());
 
 		/// <summary>
 		/// Set activity result to Success

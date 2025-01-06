@@ -1,4 +1,5 @@
-﻿// Copyright (C) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
 using System;
 using System.Diagnostics;
@@ -66,7 +67,7 @@ public sealed class ObservableHealthCheck : IHealthCheck
 				? result.Status
 				: context.Registration.FailureStatus;
 
-			activity?.SetTag(ActivityTagKeys.HealthCheckResult, healthCheckStatus.ToString());
+			activity?.SetHealthCheckResult(healthCheckStatus);
 
 			return new HealthCheckResult(
 				healthCheckStatus,
