@@ -1,4 +1,5 @@
-﻿// Copyright (C) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
 using System;
 using System.Diagnostics;
@@ -58,15 +59,6 @@ public sealed class ObservableHealthCheck : IHealthCheck
 		{
 			HealthCheckResult result = await m_wrappedHealthCheck.CheckHealthAsync(context, cancellationToken);
 
-			try
-			{
-				activity?.SetTag(ActivityTagKeys.HealthCheckResult, result.Status.ToString());
-			}
-			catch (Exception ex)
-			{
-				m_logger.LogError(Tag.Create(), ex, "'{registrationName}' health check tag addition failed", context.Registration.Name);
-			}
-
 			activity?.MarkAsSuccess();
 
 			// The health status for the health check result: if the status is healthy, it will be returned as it is,
@@ -74,6 +66,8 @@ public sealed class ObservableHealthCheck : IHealthCheck
 			HealthStatus healthCheckStatus = result.Status == HealthStatus.Healthy
 				? result.Status
 				: context.Registration.FailureStatus;
+
+			activity?.SetHealthCheckResult(healthCheckStatus);
 
 			return new HealthCheckResult(
 				healthCheckStatus,
