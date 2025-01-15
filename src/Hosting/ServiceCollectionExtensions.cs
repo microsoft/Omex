@@ -28,8 +28,10 @@ namespace Microsoft.Omex.Extensions.Hosting
 		/// </summary>
 		[Obsolete($"Please do not use {nameof(AddOmexServices)} if you just want to use Legacy OmexLogger and ActivityEventSender because they are deprecated. Consider using a different telemetry solution. This method is pending for removal by 1 July 2024. Code: 8913598.")]
 		public static IServiceCollection AddOmexServices(this IServiceCollection collection) =>
+#pragma warning disable OMEX188 // OmexLogger and OmexLogEventSource are obsolete and pending for removal by 1 July 2024. Please consider using a different Logger.
 			collection
 				.AddOmexLogging()
+#pragma warning restore OMEX188 // OmexLogger and OmexLogEventSource are obsolete and pending for removal by 1 July 2024. Please consider using a different Logger.
 				.AddOmexActivitySource();
 
 		/// <summary>

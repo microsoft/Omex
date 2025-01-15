@@ -1,4 +1,5 @@
-﻿// Copyright (C) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
 using System;
 using System.Diagnostics;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Composables;
 
@@ -56,13 +58,16 @@ public sealed class ObservableHealthCheck : IHealthCheck
 		try
 		{
 			HealthCheckResult result = await m_wrappedHealthCheck.CheckHealthAsync(context, cancellationToken);
+
 			activity?.MarkAsSuccess();
 
 			// The health status for the health check result: if the status is healthy, it will be returned as it is,
-			// if not then then registration failure status will be sent in its place.
+			// if not then registration failure status will be sent in its place.
 			HealthStatus healthCheckStatus = result.Status == HealthStatus.Healthy
 				? result.Status
 				: context.Registration.FailureStatus;
+
+			activity?.SetHealthCheckResult(healthCheckStatus);
 
 			return new HealthCheckResult(
 				healthCheckStatus,

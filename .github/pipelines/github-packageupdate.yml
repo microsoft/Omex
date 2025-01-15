@@ -53,6 +53,6 @@ extends:
             TargetBranchName: main
             Title: Automatic NuGet package update
             Description: update of NuGet packages
-            WorkItemId: "8969215"
+            WorkItemId: "9421495"
             Pat: $(omexgithubbotinternalpat)
             MergeStrategy: "0"

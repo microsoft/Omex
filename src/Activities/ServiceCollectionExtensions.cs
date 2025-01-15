@@ -35,10 +35,14 @@ namespace Microsoft.Extensions.DependencyInjection
 
 			serviceCollection.TryAddSingleton<IExecutionContext, BaseExecutionContext>();
 
-			// eventually ActivityMetricsSender will be default implementation of IActivitiesEventSender and we should remove ActivityEventSender, and AggregatedActivitiesEventSender
 			serviceCollection.TryAddSingleton<ActivityMetricsSender>();
+
+#pragma warning disable OMEX188 // ActivityEventSender and AggregatedActivitiesEventSender are obsolete and pending for removal by 1 July 2024. DiagnosticId = "OMEX188"
 			serviceCollection.TryAddSingleton<ActivityEventSender>();
 			serviceCollection.TryAddSingleton<IActivitiesEventSender, AggregatedActivitiesEventSender>();
+			serviceCollection.TryAddSingleton(p => ActivityEventSource.Instance);
+#pragma warning restore OMEX188 // ActivityEventSender and AggregatedActivitiesEventSender are obsolete and pending for removal by 1 July 2024. DiagnosticId = "OMEX188"
+
 			serviceCollection.TryAddSingleton<ICustomBaggageDimensions>(_ => new CustomBaggageDimensions());
 			serviceCollection.TryAddSingleton<ICustomTagObjectsDimensions>(_ => new CustomTagObjectsDimensions());
 
@@ -50,7 +54,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
 			serviceCollection.TryAddSingleton<IActivityListenerConfigurator, DefaultActivityListenerConfigurator>();
 			serviceCollection.TryAddSingleton(p => new ActivitySource(ActivitySourceName, ActivitySourceVersion));
-			serviceCollection.TryAddSingleton(p => ActivityEventSource.Instance);
 
 			return serviceCollection;
 		}

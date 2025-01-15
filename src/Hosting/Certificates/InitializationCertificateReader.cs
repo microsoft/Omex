@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using Microsoft.Omex.Extensions.Logging;
 
 namespace Microsoft.Omex.Extensions.Hosting.Certificates
@@ -16,8 +17,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Certificates
 		/// <summary>
 		/// Instance of CertificateReader
 		/// </summary>
-#pragma warning disable CS0618 // InitializationLogger using OmexLogger is obsolete and is pending for removal by 1 July 2024. Code: 8913598
+#pragma warning disable OMEX188 // InitializationLogger using OmexLogger is obsolete and is pending for removal by 1 July 2024.
 		public static ICertificateReader Instance { get; } = new CertificateReader(new CertificateStore(), InitializationLogger.Instance);
-#pragma warning restore CS0618 // InitializationLogger using OmexLogger is obsolete and is pending for removal by 1 July 2024. Code: 8913598
+#pragma warning restore OMEX188 // InitializationLogger using OmexLogger is obsolete and is pending for removal by 1 July 2024.
 	}
 }

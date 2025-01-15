@@ -10,9 +10,9 @@ namespace Microsoft.Omex.Extensions.Activities
 	public class CustomTagObjectsDimensions : ICustomTagObjectsDimensions
 	{
 		/// <summary>
-		/// Default constructor which has <seealso cref="ActivityTagKeys.Result"/>, <seealso cref="ActivityTagKeys.SubType"/>, <seealso cref="ActivityTagKeys.Metadata"/>
+		/// Default constructor which has <seealso cref="ActivityTagKeys.Result"/>, <seealso cref="ActivityTagKeys.SubType"/>, <seealso cref="ActivityTagKeys.Metadata"/>, <seealso cref="ActivityTagKeys.HealthCheckResult"/>
 		/// </summary>
-		public CustomTagObjectsDimensions() => CustomDimensions = new HashSet<string>() { ActivityTagKeys.Result, ActivityTagKeys.SubType, ActivityTagKeys.Metadata };
+		public CustomTagObjectsDimensions() => CustomDimensions = new HashSet<string>() { ActivityTagKeys.Result, ActivityTagKeys.SubType, ActivityTagKeys.Metadata, ActivityTagKeys.HealthCheckResult };
 
 		/// <summary>
 		/// Override the default constructor to specify custom dimension set.
