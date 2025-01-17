@@ -149,7 +149,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		public async Task CheckHealthAsync_ShouldReturnUnhealthy_WhenCertificateNotExists()
 		{
 			m_certificateReaderMock.Setup(m => m.GetCertificateByCommonName(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<StoreName>()))
-				.Returns<X509Certificate2>(null);
+				.Returns<X509Certificate2>(null!);
 
 			CertificatesValidityHealthCheck healthCheck = new(
 				m_parameters,
