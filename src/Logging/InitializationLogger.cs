@@ -11,27 +11,28 @@ namespace Microsoft.Omex.Extensions.Logging
 	/// InitializationLogger is the logger to be used before the proper ILogger from DI is set.
 	/// Not to be used as main logger.
 	/// </summary>
-	[Obsolete($"{nameof(InitializationLogger)} using {nameof(OmexLogger)} is obsolete and is pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 	public static class InitializationLogger
 	{
 		/// <summary>
 		/// Instance of logger
 		/// </summary>
 		public static ILogger Instance { get; private set; } = LoggerFactory.Create(builder =>
-		 {
-			builder.LoadInitializationLogger();
-		 }).CreateLogger("Initial-Logging");
-
-		private static ILoggingBuilder LoadInitializationLogger(this ILoggingBuilder builder)
 		{
 			if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
 			{
 				builder.AddConsole();
 			}
 
-			builder.AddOmexLogging();
-			return builder;
-		}
+			s_loggingBuilderAction?.Invoke(builder);
+		}).CreateLogger("Initial-Logging");
+
+		/// <summary>
+		/// Action to customize the initialization logger builder
+		/// </summary>
+		/// <param name="action"></param>
+		public static void CustomizeInitializationLoggerBuilder(Action<ILoggingBuilder> action) => s_loggingBuilderAction = action;
+
+		private static Action<ILoggingBuilder>? s_loggingBuilderAction;
 
 		/// <summary>
 		/// Log on successful building
@@ -56,7 +57,7 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <param name="serviceNameForLogging">Service name for logging</param>
 		/// <param name="ex">Exception to log</param>
 		/// <param name="message">Message to log</param>
-		public static void LogInitializationFail(string serviceNameForLogging,  Exception? ex = null, string message = "")
+		public static void LogInitializationFail(string serviceNameForLogging, Exception? ex = null, string message = "")
 		{
 			ServiceInitializationEventSource.Instance.LogHostFailed(ex?.ToString() ?? string.Empty, serviceNameForLogging, message);
 			Instance.LogError(Tag.Create(), ex, message);

@@ -8,9 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Abstractions.ServiceContext;
 using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Data;
 
@@ -97,20 +99,20 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 							.AddOmexServiceFabricDependencies<TContext>()
 							.AddSingleton<IOmexServiceRegistrator, TRunner>()
 							.AddHostedService<OmexHostedService>();
+						collection.TryAddTransient<IServiceContext, EmptyServiceContext>();
+						collection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
 					})
 					.UseDefaultServiceProvider(options =>
 					{
 						options.ValidateOnBuild = true;
 						options.ValidateScopes = true;
 					})
-#pragma warning disable OMEX188 // AddOmexLogging using OmexLogger is obsolete. DiagnosticId = "OMEX188"
-					.ConfigureLogging(builder => builder.AddOmexLogging())
-#pragma warning restore OMEX188 // AddOmexLogging using OmexLogger is obsolete. DiagnosticId = "OMEX188"
+					.ConfigureLogging(builder => builder.AddConfiguration())
 					.Build();
 
-#pragma warning disable OMEX188 // InitializationLogger using OmexLogger is obsolete. DiagnosticId = "OMEX188"
+				InitializationLogger.CustomizeInitializationLoggerBuilder(loggingBuilder => loggingBuilder.AddConsole());
+
 				InitializationLogger.LogInitializationSucceed(serviceNameForLogging);
-#pragma warning restore OMEX188 // InitializationLogger using OmexLogger is obsolete. DiagnosticId = "OMEX188"
 
 				return host;
 			}

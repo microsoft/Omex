@@ -4,6 +4,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions.ServiceContext;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.Logging.UnitTests
@@ -26,10 +27,6 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 			IServiceCollection collection = new ServiceCollection()
 				.AddOmexServiceContext<MockServiceContext>();
 
-#pragma warning disable OMEX188 // AddOmexLogging method is obsolete. DiagnosticId = "OMEX188"
-			collection.AddOmexLogging();
-#pragma warning restore OMEX188 // AddOmexLogging method is obsolete. DiagnosticId = "OMEX188"
-
 			IServiceContext context = ValidateTypeRegistration<IServiceContext>(collection);
 
 			Assert.IsInstanceOfType(context,
@@ -37,29 +34,10 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests
 				"Call of AddOmexServiceContext before AddOmexLogging should override IServiceCollection implementation");
 		}
 
-		[TestMethod]
-		[Obsolete("AddOmexLogging method is obsolete.", DiagnosticId = "OMEX188")]
-		public void AddOmexLoggerOnServiceCollection_RegistersLogger()
-		{
-			IServiceCollection collection = new ServiceCollection().AddOmexLogging();
-			ValidateTypeRegistration<ILogger<ServiceCollectionTests>>(collection);
-		}
-
-		[TestMethod]
-		[Obsolete("AddOmexLogging method is obsolete.", DiagnosticId = "OMEX188")]
-		public void AddOmexLoggerOnLogBuilder_RegistersLogger()
-		{
-			ILoggingBuilder builder = new MockLoggingBuilder().AddOmexLogging();
-			ValidateTypeRegistration<ILogger<ServiceCollectionTests>>(builder.Services);
-		}
-
 		private T ValidateTypeRegistration<T>(IServiceCollection collection)
 			where T : class
 		{
-#pragma warning disable OMEX188 // AddOmexLogging method is obsolete. DiagnosticId = "OMEX188"
 			T obj = collection
-				.AddOmexLogging()
-#pragma warning restore OMEX188 // AddOmexLogging method is obsolete. DiagnosticId = "OMEX188"
 				.BuildServiceProvider(new ServiceProviderOptions
 				{
 					ValidateOnBuild = true,

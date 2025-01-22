@@ -3,7 +3,7 @@
 
 using System.Fabric;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
-using Microsoft.Omex.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions.ServiceContext;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ServiceFabric.Mocks;
 

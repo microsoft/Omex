@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Hosting.Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,10 +20,10 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 		[DataTestMethod]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>))]
 		[DataRow(typeof(ActivitySource))]
-		[Obsolete("Obsolete")]
 		public void AddOmexServices_TypesRegistered(Type type)
 		{
 			object? collectionObj = new ServiceCollection()
+				.AddLogging(builder => builder.AddProvider(NullLoggerProvider.Instance))
 				.AddSingleton<IConfiguration>(new ConfigurationBuilder().Build()) // Added IConfiguration because one of the dependency depends on IOptions which in turn depends on IConfiguration
 				.AddSingleton<IHostEnvironment>(new HostingEnvironment())
 				.AddOmexServices()

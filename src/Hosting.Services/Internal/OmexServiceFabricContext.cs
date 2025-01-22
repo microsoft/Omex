@@ -4,7 +4,7 @@
 using System;
 using System.Fabric;
 using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions.ServiceContext;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {

@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using Microsoft.Omex.Extensions.Abstractions.ServiceContext;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.Logging.UnitTests

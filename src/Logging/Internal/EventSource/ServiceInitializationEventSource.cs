@@ -11,7 +11,6 @@ namespace Microsoft.Omex.Extensions.Logging
 	/// Service Fabric event source
 	/// </summary>
 	[EventSource(Name = "Microsoft-OMEX-HostLogs")]
-	[Obsolete($"{nameof(ServiceInitializationEventSource)} is obsolete and is pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 	internal sealed class ServiceInitializationEventSource : EventSource
 	{
 		/// <summary>
