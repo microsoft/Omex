@@ -79,6 +79,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 			try
 			{
+				InitializationLogger.CustomizeInitializationLoggerBuilder(loggingBuilder => loggingBuilder.AddConsole());
+
 				if (string.IsNullOrWhiteSpace(serviceName))
 				{
 					// use executing assembly name for logging since application name not available
@@ -110,18 +112,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 					.ConfigureLogging(builder => builder.AddConfiguration())
 					.Build();
 
-				InitializationLogger.CustomizeInitializationLoggerBuilder(loggingBuilder => loggingBuilder.AddConsole());
-
 				InitializationLogger.LogInitializationSucceed(serviceNameForLogging);
 
 				return host;
 			}
 			catch (Exception e)
 			{
-#pragma warning disable OMEX188 // InitializationLogger using OmexLogger is obsolete. DiagnosticId = "OMEX188"
 				InitializationLogger.LogInitializationFail(serviceNameForLogging, e);
-#pragma warning restore OMEX188 // InitializationLogger using OmexLogger is obsolete. DiagnosticId = "OMEX188"
-
 				throw;
 			}
 		}

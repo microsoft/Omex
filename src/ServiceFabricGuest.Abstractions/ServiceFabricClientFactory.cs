@@ -19,8 +19,6 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 		/// Creates service fabric client wrapper instance and returns it.
 		/// </summary>
 		public static IServiceFabricClientWrapper Create(ServiceFabricRestClientOptions options) =>
-#pragma warning disable OMEX188 // InitializationCertificateReader using OmexLogger is obsolete. DiagnosticId = "OMEX188"
 			new ServiceFabricClientWrapper(Options.Create(options), InitializationCertificateReader.Instance);
-#pragma warning restore OMEX188 // InitializationCertificateReader using OmexLogger is obsolete. DiagnosticId = "OMEX188"
 	}
 }
