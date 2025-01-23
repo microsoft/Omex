@@ -79,8 +79,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 			try
 			{
-				InitializationLogger.CustomizeInitializationLoggerBuilder(loggingBuilder => loggingBuilder.AddConsole());
-
 				if (string.IsNullOrWhiteSpace(serviceName))
 				{
 					// use executing assembly name for logging since application name not available
