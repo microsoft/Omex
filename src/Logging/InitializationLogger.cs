@@ -16,15 +16,19 @@ namespace Microsoft.Omex.Extensions.Logging
 		/// <summary>
 		/// Instance of logger
 		/// </summary>
-		public static ILogger Instance { get; private set; } = LoggerFactory.Create(builder =>
+		public static ILogger Instance
 		{
-			if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
-			{
-				builder.AddConsole();
-			}
+			get =>
+				LoggerFactory.Create(builder =>
+				{
+					if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+					{
+						builder.AddConsole();
+					}
 
-			s_loggingBuilderAction?.Invoke(builder);
-		}).CreateLogger("Initial-Logging");
+					s_loggingBuilderAction?.Invoke(builder);
+				}).CreateLogger("Initial-Logging");
+		}
 
 		/// <summary>
 		/// Action to customize the initialization logger builder
