@@ -170,7 +170,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 				.Setup(expression)
 				.Returns(certificates.Select(cert => new CertificateInformation(cert)));
 
-			return (new CertificateReader(storeMock.Object, new NullLogger<CertificateReader>()),
+			return (new CertificateReader(storeMock.Object),
 				(times, message) =>
 				{
 					storeMock.Verify(expression, times, message);

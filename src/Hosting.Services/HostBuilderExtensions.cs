@@ -77,49 +77,39 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		{
 			string serviceNameForLogging = serviceName;
 
-			try
+			if (string.IsNullOrWhiteSpace(serviceName))
 			{
-				if (string.IsNullOrWhiteSpace(serviceName))
+				// use executing assembly name for logging since application name not available
+				serviceNameForLogging = Assembly.GetExecutingAssembly().GetName().FullName;
+				throw new ArgumentException("Service type name is null of whitespace", nameof(serviceName));
+			}
+
+			builderAction(new ServiceFabricHostBuilder<TService, TContext>(builder));
+
+			IHost host = builder
+				.ConfigureServices((context, collection) =>
 				{
-					// use executing assembly name for logging since application name not available
-					serviceNameForLogging = Assembly.GetExecutingAssembly().GetName().FullName;
-					throw new ArgumentException("Service type name is null of whitespace", nameof(serviceName));
-				}
+					collection
+						.Configure<ServiceRegistratorOptions>(options =>
+						{
+							options.ServiceTypeName = serviceName;
+						})
+						.AddOmexServiceFabricDependencies<TContext>()
+						.AddSingleton<IOmexServiceRegistrator, TRunner>()
+						.AddHostedService<OmexHostedService>();
+					// If specific context constructs are not registered, add defaults for telemetry purposes
+					collection.TryAddTransient<IServiceContext, EmptyServiceContext>();
+					collection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
+				})
+				.UseDefaultServiceProvider(options =>
+				{
+					options.ValidateOnBuild = true;
+					options.ValidateScopes = true;
+				})
+				.ConfigureLogging(builder => builder.AddConfiguration())
+				.Build();
 
-				builderAction(new ServiceFabricHostBuilder<TService, TContext>(builder));
-
-				IHost host = builder
-					.ConfigureServices((context, collection) =>
-					{
-						collection
-							.Configure<ServiceRegistratorOptions>(options =>
-							{
-								options.ServiceTypeName = serviceName;
-							})
-							.AddOmexServiceFabricDependencies<TContext>()
-							.AddSingleton<IOmexServiceRegistrator, TRunner>()
-							.AddHostedService<OmexHostedService>();
-						// If specific context constructs are not registered, add defaults for telemetry purposes
-						collection.TryAddTransient<IServiceContext, EmptyServiceContext>();
-						collection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
-					})
-					.UseDefaultServiceProvider(options =>
-					{
-						options.ValidateOnBuild = true;
-						options.ValidateScopes = true;
-					})
-					.ConfigureLogging(builder => builder.AddConfiguration())
-					.Build();
-
-				InitializationLogger.LogInitializationSucceed(serviceNameForLogging);
-
-				return host;
-			}
-			catch (Exception e)
-			{
-				InitializationLogger.LogInitializationFail(serviceNameForLogging, e);
-				throw;
-			}
+			return host;
 		}
 
 		internal static IServiceCollection TryAddAccessor<TValue, TBase>(this IServiceCollection collection)

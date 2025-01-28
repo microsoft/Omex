@@ -17,6 +17,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Certificates
 		/// <summary>
 		/// Instance of CertificateReader
 		/// </summary>
-		public static ICertificateReader Instance { get; } = new CertificateReader(new CertificateStore(), InitializationLogger.Instance);
+		public static ICertificateReader Instance { get; } = new CertificateReader(new CertificateStore());
 	}
 }
