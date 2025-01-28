@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Abstractions.ServiceContext;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -22,7 +21,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 	public class HostBuilderExtensionsTests
 	{
 		[DataTestMethod]
-		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ActivitySource), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
@@ -50,7 +48,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		}
 
 		[DataTestMethod]
-		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ActivitySource), null)]
 		[DataRow(typeof(IHostedService), typeof(OmexHostedService))]
@@ -75,7 +72,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		}
 
 		[DataTestMethod]
-		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ActivitySource), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]

@@ -7,13 +7,9 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Abstractions.ServiceContext;
-using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Data;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
@@ -60,8 +56,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			}
 
 			collection.TryAddAccessor<TContext, ServiceContext>();
-
-			collection.TryAddSingleton<IServiceContext, OmexServiceFabricContext>();
 			collection.TryAddSingleton<IExecutionContext, ServiceFabricExecutionContext>();
 
 			return collection.AddOmexServices();
@@ -98,7 +92,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 						.AddSingleton<IOmexServiceRegistrator, TRunner>()
 						.AddHostedService<OmexHostedService>();
 					// If specific context constructs are not registered, add defaults for telemetry purposes
-					collection.TryAddTransient<IServiceContext, EmptyServiceContext>();
 					collection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
 				})
 				.UseDefaultServiceProvider(options =>
@@ -106,7 +99,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 					options.ValidateOnBuild = true;
 					options.ValidateScopes = true;
 				})
-				.ConfigureLogging(builder => builder.AddConfiguration())
 				.Build();
 
 			return host;
