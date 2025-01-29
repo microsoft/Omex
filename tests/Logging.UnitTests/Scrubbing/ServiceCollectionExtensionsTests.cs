@@ -133,7 +133,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 		public void AddRegexLogScrubbingRule_Scrubs(string input, string expected)
 		{
 			ILoggingBuilder builder2 = new MockLoggingBuilder()
-				.AddRegexLogScrubbingRule(Regex,"REDACTED&");
+				.AddRegexLogScrubbingRule(Regex, "REDACTED&");
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder2.Services);
 
@@ -142,10 +142,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 
 		private static ILogScrubbingRule[] GetTypeRegistrations(IServiceCollection collection)
 		{
-#pragma warning disable OMEX188 // AddOmexLogging uses OmexLogger and OmexLogEventSource which are obsolete and pending for removal by 1 July 2024. DiagnosticId = "OMEX188"
 			IEnumerable<ILogScrubbingRule> objects = collection
-				.AddOmexLogging()
-#pragma warning restore OMEX188 // AddOmexLogging uses OmexLogger and OmexLogEventSource which are obsolete and pending for removal by 1 July 2024. DiagnosticId = "OMEX188"
 				.BuildServiceProvider(new ServiceProviderOptions
 				{
 					ValidateOnBuild = true,
