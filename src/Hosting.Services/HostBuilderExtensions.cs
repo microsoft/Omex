@@ -91,8 +91,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 						.AddOmexServiceFabricDependencies<TContext>()
 						.AddSingleton<IOmexServiceRegistrator, TRunner>()
 						.AddHostedService<OmexHostedService>();
-					// If specific context constructs are not registered, add defaults for telemetry purposes
-					collection.TryAddTransient<IExecutionContext, BaseExecutionContext>();
 				})
 				.UseDefaultServiceProvider(options =>
 				{
