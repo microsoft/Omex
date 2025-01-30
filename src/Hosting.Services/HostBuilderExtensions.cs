@@ -7,11 +7,9 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Data;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
@@ -58,8 +56,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			}
 
 			collection.TryAddAccessor<TContext, ServiceContext>();
-
-			collection.TryAddSingleton<IServiceContext, OmexServiceFabricContext>();
 			collection.TryAddSingleton<IExecutionContext, ServiceFabricExecutionContext>();
 
 			return collection.AddOmexServices();
@@ -75,53 +71,35 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		{
 			string serviceNameForLogging = serviceName;
 
-			try
+			if (string.IsNullOrWhiteSpace(serviceName))
 			{
-				if (string.IsNullOrWhiteSpace(serviceName))
+				// use executing assembly name for logging since application name not available
+				serviceNameForLogging = Assembly.GetExecutingAssembly().GetName().FullName;
+				throw new ArgumentException("Service type name is null of whitespace", nameof(serviceName));
+			}
+
+			builderAction(new ServiceFabricHostBuilder<TService, TContext>(builder));
+
+			IHost host = builder
+				.ConfigureServices((context, collection) =>
 				{
-					// use executing assembly name for logging since application name not available
-					serviceNameForLogging = Assembly.GetExecutingAssembly().GetName().FullName;
-					throw new ArgumentException("Service type name is null of whitespace", nameof(serviceName));
-				}
+					collection
+						.Configure<ServiceRegistratorOptions>(options =>
+						{
+							options.ServiceTypeName = serviceName;
+						})
+						.AddOmexServiceFabricDependencies<TContext>()
+						.AddSingleton<IOmexServiceRegistrator, TRunner>()
+						.AddHostedService<OmexHostedService>();
+				})
+				.UseDefaultServiceProvider(options =>
+				{
+					options.ValidateOnBuild = true;
+					options.ValidateScopes = true;
+				})
+				.Build();
 
-				builderAction(new ServiceFabricHostBuilder<TService, TContext>(builder));
-
-				IHost host = builder
-					.ConfigureServices((context, collection) =>
-					{
-						collection
-							.Configure<ServiceRegistratorOptions>(options =>
-							{
-								options.ServiceTypeName = serviceName;
-							})
-							.AddOmexServiceFabricDependencies<TContext>()
-							.AddSingleton<IOmexServiceRegistrator, TRunner>()
-							.AddHostedService<OmexHostedService>();
-					})
-					.UseDefaultServiceProvider(options =>
-					{
-						options.ValidateOnBuild = true;
-						options.ValidateScopes = true;
-					})
-#pragma warning disable OMEX188 // AddOmexLogging using OmexLogger is obsolete. DiagnosticId = "OMEX188"
-					.ConfigureLogging(builder => builder.AddOmexLogging())
-#pragma warning restore OMEX188 // AddOmexLogging using OmexLogger is obsolete. DiagnosticId = "OMEX188"
-					.Build();
-
-#pragma warning disable OMEX188 // InitializationLogger using OmexLogger is obsolete. DiagnosticId = "OMEX188"
-				InitializationLogger.LogInitializationSucceed(serviceNameForLogging);
-#pragma warning restore OMEX188 // InitializationLogger using OmexLogger is obsolete. DiagnosticId = "OMEX188"
-
-				return host;
-			}
-			catch (Exception e)
-			{
-#pragma warning disable OMEX188 // InitializationLogger using OmexLogger is obsolete. DiagnosticId = "OMEX188"
-				InitializationLogger.LogInitializationFail(serviceNameForLogging, e);
-#pragma warning restore OMEX188 // InitializationLogger using OmexLogger is obsolete. DiagnosticId = "OMEX188"
-
-				throw;
-			}
+			return host;
 		}
 
 		internal static IServiceCollection TryAddAccessor<TValue, TBase>(this IServiceCollection collection)
