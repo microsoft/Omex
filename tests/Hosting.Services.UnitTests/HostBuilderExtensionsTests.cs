@@ -7,10 +7,10 @@ using System.Fabric;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Logging;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -21,7 +21,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 	public class HostBuilderExtensionsTests
 	{
 		[DataTestMethod]
-		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ActivitySource), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
@@ -31,6 +30,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			{
 #pragma warning disable CS0618 // Type or member is obsolete
 				object? obj = new ServiceCollection()
+					.AddLogging(builder => builder.AddProvider(NullLoggerProvider.Instance))
 					.AddOmexServiceFabricDependencies<TContext>()
 #pragma warning restore CS0618 // Type or member is obsolete
 					.AddSingleton(new Mock<IHostEnvironment>().Object)
@@ -50,10 +50,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		}
 
 		[DataTestMethod]
-		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ActivitySource), null)]
-		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
 		[DataRow(typeof(IHostedService), typeof(OmexHostedService))]
 		[DataRow(typeof(IOmexServiceRegistrator), typeof(OmexStatelessServiceRegistrator))]
 		[DataRow(typeof(IAccessor<StatelessServiceContext>), typeof(Accessor<StatelessServiceContext>))]
@@ -76,7 +74,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		}
 
 		[DataTestMethod]
-		[DataRow(typeof(IServiceContext), typeof(OmexServiceFabricContext))]
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ActivitySource), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
