@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 using Microsoft.Extensions.Logging;
@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 		private static void AssertTagNames(string expectedTag, string? actualTag, string message)
 		{
 #if DEBUG
-			StringAssert.EndsWith(actualTag?.Replace('\\','/'), expectedTag, message);
+			StringAssert.EndsWith(actualTag?.Replace('\\', '/'), expectedTag, message);
 #else
 			Assert.AreEqual(expectedTag, actualTag, message);
 #endif

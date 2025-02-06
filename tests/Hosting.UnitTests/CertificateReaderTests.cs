@@ -175,7 +175,8 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 				{
 					storeMock.Verify(expression, times, message);
 					storeMock.Invocations.Clear();
-				});
+				}
+			);
 		}
 	}
 }
