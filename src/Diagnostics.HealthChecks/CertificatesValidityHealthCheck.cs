@@ -71,7 +71,6 @@ public class CertificatesValidityHealthCheck : IHealthCheck
 
 	private void ValidateCertificate(X509Certificate2? certificate, string certName, StringBuilder message, HealthCheckContext context, ref HealthStatus healthStatus)
 	{
-		
 		string errorMessage = string.Empty;
 		DateTime localNow = DateTime.Now;
 

@@ -192,7 +192,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			// 3. Assert
 			MeasurementResult result = listener.Results.First(m => environment.EnvironmentName.Equals(m.Tags[s_environmentTagName]));
 
-			if(expectParentNameToBeEmitted)
+			if (expectParentNameToBeEmitted)
 			{
 				AssertTag(result, "ParentName", nameof(parentName));
 			}

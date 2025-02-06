@@ -82,7 +82,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				clone.Headers.TryAddWithoutValidation(header.Key, header.Value);
 			}
 
-			clone.VersionPolicy =  message.VersionPolicy;
+			clone.VersionPolicy = message.VersionPolicy;
 
 			foreach (KeyValuePair<string, object?> option in message.Options)
 			{
