@@ -28,11 +28,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		{
 			void CheckTypeRegistration<TContext>() where TContext : ServiceContext
 			{
-#pragma warning disable CS0618 // Type or member is obsolete
 				object? obj = new ServiceCollection()
 					.AddLogging(builder => builder.AddProvider(NullLoggerProvider.Instance))
 					.AddOmexServiceFabricDependencies<TContext>()
-#pragma warning restore CS0618 // Type or member is obsolete
 					.AddSingleton(new Mock<IHostEnvironment>().Object)
 					.BuildServiceProvider()
 					.GetService(typeToResolve);

@@ -58,7 +58,7 @@ public static class OmexHealthChecksBuilderDelegateExtensions
 			return (IOmexHealthChecksBuilder)HealthChecksBuilderDelegateExtensions.AddCheck(builder, name, check, tags, timeout);
 		}
 
-		DelegateHealthCheck? instance = new DelegateHealthCheck((ct) => new ValueTask<HealthCheckResult>(check()));
+		DelegateHealthCheck instance = new((ct) => new ValueTask<HealthCheckResult>(check()));
 		return builder.Add(new HealthCheckRegistration(name, instance, failureStatus: default, tags, timeout), parameters);
 	}
 
@@ -101,7 +101,7 @@ public static class OmexHealthChecksBuilderDelegateExtensions
 			return (IOmexHealthChecksBuilder)HealthChecksBuilderDelegateExtensions.AddCheck(builder, name, check, tags, timeout);
 		}
 
-		DelegateHealthCheck? instance = new DelegateHealthCheck((ct) => new ValueTask<HealthCheckResult>(check(ct)));
+		DelegateHealthCheck instance = new((ct) => new ValueTask<HealthCheckResult>(check(ct)));
 		return builder.Add(new HealthCheckRegistration(name, instance, failureStatus: default, tags, timeout), parameters);
 	}
 
@@ -144,7 +144,7 @@ public static class OmexHealthChecksBuilderDelegateExtensions
 			return (IOmexHealthChecksBuilder)HealthChecksBuilderDelegateExtensions.AddAsyncCheck(builder, name, check().AsTask, tags, timeout);
 		}
 
-		DelegateHealthCheck? instance = new DelegateHealthCheck((ct) => check());
+		DelegateHealthCheck instance = new((ct) => check());
 		return builder.Add(new HealthCheckRegistration(name, instance, failureStatus: default, tags, timeout), parameters);
 	}
 
@@ -187,7 +187,7 @@ public static class OmexHealthChecksBuilderDelegateExtensions
 			return (IOmexHealthChecksBuilder)HealthChecksBuilderDelegateExtensions.AddAsyncCheck(builder, name, ct => check(ct).AsTask(), tags, timeout);
 		}
 
-		DelegateHealthCheck? instance = new DelegateHealthCheck((ct) => check(ct));
+		DelegateHealthCheck instance = new((ct) => check(ct));
 		return builder.Add(new HealthCheckRegistration(name, instance, failureStatus: default, tags, timeout), parameters);
 	}
 }
