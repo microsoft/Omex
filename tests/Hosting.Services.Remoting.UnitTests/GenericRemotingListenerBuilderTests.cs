@@ -30,7 +30,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 						return mockService;
 					}));
 		}
-		
+
 		[TestMethod]
 		public void GenericRemotingListenerBuilder_WithTransportSettigns_PropagatesParameters()
 		{
