@@ -20,7 +20,6 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 		[DataTestMethod]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>))]
 		[DataRow(typeof(ActivitySource))]
-		[Obsolete("Obsolete")]
 		public void AddOmexServices_TypesRegistered(Type type)
 		{
 			object? collectionObj = new ServiceCollection()
