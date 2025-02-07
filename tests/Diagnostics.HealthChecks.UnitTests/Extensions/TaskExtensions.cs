@@ -8,8 +8,8 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests.Extensions
 {

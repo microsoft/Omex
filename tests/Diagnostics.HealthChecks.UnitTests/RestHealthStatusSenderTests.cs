@@ -97,7 +97,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			Mock<IExecutionContext> mockContext = new();
 			mockContext.SetupGet(c => c.NodeName).Returns("TestNodeName");
 
-			RestHealthStatusSender sender = new (sfClientWrapper.Object, mockContext.Object);
+			RestHealthStatusSender sender = new(sfClientWrapper.Object, mockContext.Object);
 
 			return new SenderInfo(sender, sfClientWrapper, reportedState);
 		}
