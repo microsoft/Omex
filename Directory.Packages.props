@@ -50,6 +50,7 @@
     <PackageVersion Include="MSTest.TestAdapter" Version="3.8.1" />
     <PackageVersion Include="MSTest.TestFramework" Version="3.8.1" />
 
+
     <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.13.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Csharp" Version="4.13.0" />
     <PackageVersion Include="Microsoft.Net.Test.Sdk" Version="17.13.0" />
@@ -59,15 +60,15 @@
     <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.6.0" />
   </ItemGroup>
   <ItemGroup Label="ServiceFabric packages for Omex Extensions">
-    <PackageVersion Include="Microsoft.ServiceFabric" Version="10.1.2493" />
-    <PackageVersion Include="Microsoft.ServiceFabric.Actors" Version="7.1.2493" />
+    <PackageVersion Include="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="7.1.2493" />
 
     <PackageVersion Include="Microsoft.ServiceFabric.Services" Version="7.1.2493" />
     <PackageVersion Include="Microsoft.ServiceFabric.Services.Remoting" Version="7.1.2493" />
-
-  <ItemGroup Label="Moq pinned to 4.20.72, Moq updates are reviewed and made manually.">
-    <PackageVersion Include="Moq" Version="4.20.72" />
   </ItemGroup>
+  <ItemGroup Label="Moq pinned to 4.20.72, Moq updates are reviewed and made manually.">
+  <ItemGroup Label="Moq pinned to 4.20.72, Moq updates are reviewed and made manually.">
+  </ItemGroup>
+
     <PackageVersion Include="Microsoft.ServiceFabric.Client.Http" Version="5.0.1" />
     <PackageVersion Include="Moq" Version="4.20.72" />
 
