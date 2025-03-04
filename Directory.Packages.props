@@ -65,8 +65,10 @@
     <PackageVersion Include="Microsoft.ServiceFabric.Services" Version="7.1.2493" />
     <PackageVersion Include="Microsoft.ServiceFabric.Services.Remoting" Version="7.1.2493" />
     <PackageVersion Include="ServiceFabric.Mocks" Version="7.2.11" />
+
   </ItemGroup>
   <ItemGroup Label="Moq pinned to 4.20.72, Moq updates are reviewed and made manually.">
     <PackageVersion Include="Moq" Version="4.20.72" />
-  </ItemGroup>
 </Project>
+</Project>
+
