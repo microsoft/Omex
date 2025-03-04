@@ -67,6 +67,8 @@
     <PackageVersion Include="ServiceFabric.Mocks" Version="7.2.11" />
   </ItemGroup>
   <ItemGroup Label="Moq pinned to 4.18.4, Moq updates are reviewed and made manually.">
-    <PackageVersion Include="Moq" Version="4.18.4" />
+    <PackageVersion Include="Moq" Version="4.18.4" /
+  </ItemGroup>>
+
   </ItemGroup>
 </Project>
