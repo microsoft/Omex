@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
+using static Microsoft.Omex.Extensions.Hosting.Services.OmexStatefulServiceRegistrator;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
@@ -33,6 +34,13 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		{
 			m_serviceRegistrator.PartitionAccessor.SetValue(Partition);
 			return base.OnOpenAsync(openMode, cancellationToken);
+		}
+
+		/// <inheritdoc/>
+		protected override Task OnChangeRoleAsync(ReplicaRole newRole, CancellationToken cancellationToken)
+		{
+			m_serviceRegistrator.RoleAccessor.SetValue(new ReplicaRoleWrapper { Role = newRole });
+			return base.OnChangeRoleAsync(newRole, cancellationToken);
 		}
 
 		/// <inheritdoc />

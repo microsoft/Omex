@@ -19,12 +19,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			IAccessorSetter<StatefulServiceContext> contextAccessor,
 			IAccessorSetter<IStatefulServicePartition> partitionAccessor,
 			IAccessorSetter<IReliableStateManager> stateAccessor,
+			IAccessorSetter<ReplicaRoleWrapper> roleAccessor,
 			IEnumerable<IListenerBuilder<OmexStatefulService>> listenerBuilders,
 			IEnumerable<IServiceAction<OmexStatefulService>> serviceActions)
 				: base(options, contextAccessor, listenerBuilders, serviceActions)
 		{
 			PartitionAccessor = partitionAccessor;
 			StateAccessor = stateAccessor;
+			RoleAccessor = roleAccessor;
 		}
 
 		public override Task RegisterAsync(CancellationToken cancellationToken) =>
@@ -33,5 +35,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public IAccessorSetter<IReliableStateManager> StateAccessor { get; }
 
 		public IAccessorSetter<IStatefulServicePartition> PartitionAccessor { get; }
+
+		public IAccessorSetter<ReplicaRoleWrapper> RoleAccessor { get; }
+
+		// 'ReplicaRole' must be a reference type in order to use it as parameter 'TValue' in the generic type or method. That's why we use this wrapper class
+		public class ReplicaRoleWrapper
+		{
+			public ReplicaRole Role { get; set; }
+		}
+
 	}
 }

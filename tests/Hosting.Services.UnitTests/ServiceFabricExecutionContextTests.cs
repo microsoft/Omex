@@ -12,18 +12,21 @@ using ServiceFabric.Mocks;
 namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 {
 	[TestClass]
-	public class ServiceFabricExecutionContextTests
-	{
-		[TestMethod]
-		public void Constructor_InitializesPropertiesProperly()
-		{
-			ServiceContext context = MockStatelessServiceContextFactory.Default;
-			Accessor<ServiceContext> accessor = new();
-			((IAccessorSetter<ServiceContext>)accessor).SetValue(context);
+    public class ServiceFabricExecutionContextTests
+    {
+        [TestMethod]
+        public void Constructor_InitializesPropertiesProperly()
+        {
+            ServiceContext context = MockStatelessServiceContextFactory.Default;
+            Accessor<ServiceContext> accessor = new();
+            ((IAccessorSetter<ServiceContext>)accessor).SetValue(context);
 
-			IExecutionContext info = new ServiceFabricExecutionContext(new Mock<IHostEnvironment>().Object, accessor);
+            Accessor<OmexStatefulServiceRegistrator.ReplicaRoleWrapper> replicaRoleAccessor = new();
+            ((IAccessorSetter<OmexStatefulServiceRegistrator.ReplicaRoleWrapper>)replicaRoleAccessor).SetValue(new OmexStatefulServiceRegistrator.ReplicaRoleWrapper());
 
-			Assert.AreEqual(context.CodePackageActivationContext.CodePackageVersion, info.BuildVersion);
-		}
-	}
+            IExecutionContext info = new ServiceFabricExecutionContext(new Mock<IHostEnvironment>().Object, accessor, replicaRoleAccessor);
+
+            Assert.AreEqual(context.CodePackageActivationContext.CodePackageVersion, info.BuildVersion);
+        }
+    }
 }
