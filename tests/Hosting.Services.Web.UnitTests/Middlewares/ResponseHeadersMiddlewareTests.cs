@@ -22,11 +22,11 @@ namespace Hosting.Services.Web.UnitTests
 			string machineId = "MachineIdTestValue";
 			string buildVersion = "BuildVersionTestValue";
 
-			Mock<IExecutionContext> mock = new Mock<IExecutionContext>();
+			Mock<IExecutionContext> mock = new();
 			mock.SetupGet(c => c.MachineId).Returns(machineId);
 			mock.SetupGet(c => c.BuildVersion).Returns(buildVersion);
 
-			ResponseFeatureForCallbacks feature = new ResponseFeatureForCallbacks();
+			ResponseFeatureForCallbacks feature = new();
 			HttpContext context = new DefaultHttpContext();
 			context.Features.Set<IHttpResponseFeature>(feature);
 			IMiddleware middleware = new ResponseHeadersMiddleware(mock.Object);

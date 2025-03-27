@@ -26,12 +26,12 @@ namespace Services.Remoting
 			ResolvedServicePartition partition = MockQueryPartitionFactory.CreateResolvedServicePartition(
 				new Uri("https://localhost"),
 				new List<ResolvedServiceEndpoint>());
-			Mock<IServiceRemotingClient> clientMock = new Mock<IServiceRemotingClient>();
+			Mock<IServiceRemotingClient> clientMock = new();
 			clientMock.SetupGet(c => c.ListenerName).Returns(listenerName);
 			clientMock.SetupGet(c => c.Endpoint).Returns(endpoint);
 			clientMock.SetupGet(c => c.ResolvedServicePartition).Returns(partition);
 
-			ServiceRemotingClientWrapper wrapper = new ServiceRemotingClientWrapper(clientMock.Object);
+			ServiceRemotingClientWrapper wrapper = new(clientMock.Object);
 			Assert.AreEqual(clientMock.Object, wrapper.Client);
 			Assert.AreEqual(listenerName, wrapper.ListenerName);
 			Assert.AreEqual(endpoint, wrapper.Endpoint);
@@ -42,8 +42,8 @@ namespace Services.Remoting
 		public void Constructor_SendOneWay_PropagateCalls()
 		{
 			IServiceRemotingRequestMessage messsageMock = CreateMessage();
-			Mock<IServiceRemotingClient> clientMock = new Mock<IServiceRemotingClient>();
-			ServiceRemotingClientWrapper wrapper = new ServiceRemotingClientWrapper(clientMock.Object);
+			Mock<IServiceRemotingClient> clientMock = new();
+			ServiceRemotingClientWrapper wrapper = new(clientMock.Object);
 
 			wrapper.SendOneWay(messsageMock);
 
@@ -55,10 +55,10 @@ namespace Services.Remoting
 		{
 			IServiceRemotingResponseMessage expectedResponce = new Mock<IServiceRemotingResponseMessage>().Object;
 			IServiceRemotingRequestMessage messsageMock = CreateMessage();
-			Mock<IServiceRemotingClient> clientMock = new Mock<IServiceRemotingClient>();
+			Mock<IServiceRemotingClient> clientMock = new();
 			clientMock.Setup(c => c.RequestResponseAsync(messsageMock)).Returns(Task.FromResult(expectedResponce));
 
-			ServiceRemotingClientWrapper wrapper = new ServiceRemotingClientWrapper(clientMock.Object);
+			ServiceRemotingClientWrapper wrapper = new(clientMock.Object);
 
 			IServiceRemotingResponseMessage responce = await wrapper.RequestResponseAsync(messsageMock);
 
@@ -69,12 +69,12 @@ namespace Services.Remoting
 		[TestMethod]
 		public void Constructor_SendOneWay_ReportsException()
 		{
-			ArithmeticException exception = new ArithmeticException();
+			ArithmeticException exception = new();
 			IServiceRemotingRequestMessage messsageMock = CreateMessage();
-			Mock<IServiceRemotingClient> clientMock = new Mock<IServiceRemotingClient>();
+			Mock<IServiceRemotingClient> clientMock = new();
 			clientMock.Setup(c => c.SendOneWay(messsageMock)).Throws(exception);
 			(DiagnosticListener listener, MockObserver observer) = MockObserver.CreateListener();
-			ServiceRemotingClientWrapper wrapper = new ServiceRemotingClientWrapper(clientMock.Object, listener);
+			ServiceRemotingClientWrapper wrapper = new(clientMock.Object, listener);
 
 			Assert.ThrowsException<ArithmeticException>(() => wrapper.SendOneWay(messsageMock));
 			observer.AssertException(exception);
@@ -83,12 +83,12 @@ namespace Services.Remoting
 		[TestMethod]
 		public async Task Constructor_RequestResponseAsync_ReportsException()
 		{
-			ArithmeticException exception = new ArithmeticException();
+			ArithmeticException exception = new();
 			IServiceRemotingRequestMessage messsageMock = CreateMessage();
-			Mock<IServiceRemotingClient> clientMock = new Mock<IServiceRemotingClient>();
+			Mock<IServiceRemotingClient> clientMock = new();
 			clientMock.Setup(c => c.RequestResponseAsync(messsageMock)).Throws(exception);
 			(DiagnosticListener listener, MockObserver observer) = MockObserver.CreateListener();
-			ServiceRemotingClientWrapper wrapper = new ServiceRemotingClientWrapper(clientMock.Object, listener);
+			ServiceRemotingClientWrapper wrapper = new(clientMock.Object, listener);
 
 			await Assert.ThrowsExceptionAsync<ArithmeticException>(() => wrapper.RequestResponseAsync(messsageMock));
 			observer.AssertException(exception);
@@ -96,7 +96,7 @@ namespace Services.Remoting
 
 		private IServiceRemotingRequestMessage CreateMessage()
 		{
-			Mock<IServiceRemotingRequestMessage> messsageMock = new Mock<IServiceRemotingRequestMessage>();
+			Mock<IServiceRemotingRequestMessage> messsageMock = new();
 			messsageMock.Setup(m => m.GetHeader()).Returns(new Mock<IServiceRemotingRequestMessageHeader>().Object);
 			return messsageMock.Object;
 		}

@@ -15,7 +15,4 @@
     <PackageReference Include="Newtonsoft.Json" /> <!-- Bump version of transitive dependency -->
     <PackageReference Include="ServiceFabric.Mocks" />
   </ItemGroup>
-  <ItemGroup Condition="$(IsNetFramework)">
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
 </Project>

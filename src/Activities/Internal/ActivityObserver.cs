@@ -25,7 +25,7 @@ namespace Microsoft.Omex.Extensions.Activities
 		}
 
 		public void OnStart(Activity activity, object? payload = null) =>
-			m_logger.LogInformation(0x696e3739 /* tag_in79 */, $"Starting Activity {activity.OperationName} (Id:{activity.Id}; ParentId:{activity.ParentId})");
+			m_logger.LogDebug(0x696e3739 /* tag_in79 */, $"Starting Activity {activity.OperationName} (Id:{activity.Id}; ParentId:{activity.ParentId})");
 
 		public void OnStop(Activity activity, object? payload = null)
 		{
@@ -53,8 +53,8 @@ namespace Microsoft.Omex.Extensions.Activities
 				.AppendObjStart()
 				.AppendParamName("Id").Append(activity.Id).AppendSeparator()
 				.AppendParamName("Duration").Append(activity.Duration.TotalMilliseconds).AppendSeparator()
-				.AppendParamName("Baggage").AppendPairs(activity.Baggage).AppendSeparator()
-				.AppendParamName("Tags").AppendPairs(activity.TagObjects).AppendSeparator()
+				.AppendParamName("Baggage").AppendJoin(':', activity.Baggage).AppendSeparator()
+				.AppendParamName("Tags").AppendJoin(':', activity.TagObjects).AppendSeparator()
 				.AppendObjEnd()
 				.ToString();
 

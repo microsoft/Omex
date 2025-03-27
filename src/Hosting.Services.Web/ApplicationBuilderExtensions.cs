@@ -75,7 +75,7 @@ namespace Microsoft.AspNetCore.Builder
 		/// </summary>
 		public static IApplicationBuilder UseOmexExceptionHandler(this IApplicationBuilder builder, IHostEnvironment environment) =>
 			builder.UseOmexExceptionHandler(environment.IsDevelopment());
-		
+
 		/// <summary>
 		/// Adds the default exception handling logic that will display a developer exception page in develop and a short message during deployment
 		/// </summary>
@@ -96,7 +96,7 @@ namespace Microsoft.AspNetCore.Builder
 
 						IExceptionHandlerFeature? contextFeature = context.Features.Get<IExceptionHandlerFeature>();
 
-						Dictionary<string, string> errorDict = new Dictionary<string, string>
+						Dictionary<string, string> errorDict = new()
 						{
 							{ "Message", "Internal Server Error" },
 							{ "ErrorMessage", contextFeature?.Error?.Message ?? string.Empty },

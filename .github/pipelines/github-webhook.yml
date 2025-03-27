@@ -1,0 +1,93 @@
+# OMEX GitHub WebHook
+
+name: $(date:yyyyMMdd)$(rev:.r)
+variables:
+- name: BuildConfiguration
+  value: release
+- name: BuildPlatform
+  value: any cpu
+- name: system.debug
+  value: false
+- group: OmexAcTokensCorpNet
+schedules:
+- cron: 0 1 * * 2
+  branches:
+    include:
+    - refs/heads/main
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: refs/heads/main
+  - repository: OfficePipelineTemplates
+    type: git
+    name: OE/OfficePipelineTemplates
+    ref: refs/heads/main
+trigger:
+  branches:
+    include:
+    - release
+    - refs/heads/main
+    - main
+  batch: true
+pr: none
+extends:
+  template: v1/Office.Unofficial.PipelineTemplate.yml@OfficePipelineTemplates
+  parameters:
+    pool:
+      os: windows
+      image: windows-2022
+      name: Azure-Pipelines-1ESPT-ExDShared
+    customBuildTags:
+    - ES365AIMigrationTooling
+    stages:
+    - stage: Stage
+      jobs:
+      - job: Job_1
+        displayName: Agent job
+        steps:
+        - checkout: self
+          fetchTags: true
+        - task: PowerShell@2
+          displayName: Queue GitHub Bridge Forward Build
+          inputs:
+            targetType: inline
+            script: |-
+              $Commit = $env:BUILD_SOURCEVERSION
+              Write-Host ("Running for commit id: {0} and branch {1}"  -f $Commit, $env:BUILD_SOURCEBRANCHNAME)
+              $BuildParam ="{{`"GitHubCommit`":`"{0}`", `"GitHubBranch`":`"{1}`"}}" -f $Commit, $env:BUILD_SOURCEBRANCHNAME
+              $PipelineId = 26129 # this is the build id of the Forward pipeline
+              $Payload = @{
+                definition = @{
+                  id = $pipelineId
+                }
+                parameters=$BuildParam
+              }
+              $Body=$Payload | convertto-json
+              Write-Host $Body
+
+              $PAT = $env:PAT
+              $text = "{0}:{1}" -f @("", $PAT)
+              $B64Pat = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($text))
+
+              $headers = @{
+                  "Content-Type" = "application/json";
+                  "Authorization" = "Basic $B64Pat"
+              }
+              $Response = Invoke-WebRequest -Method 'POST' -Body $Body -Uri "https://office.visualstudio.com/OC/_apis/build/builds?api-version=5.0" -Headers $headers
+
+              if ($Response.StatusCode -ne 200) {
+                      Write-Warning "Non-200 status code encountered."
+
+                      Write-Host "Headers:"
+                      foreach ($key in $Response.Headers.Keys) { 
+                              Write-Host "$($key): $($Response.Headers[$key])" 
+                      } 
+
+                      Write-Host "`nRawContent:`n$($Response.RawContent)`n"
+                      Write-Error "Status code $($Response.StatusCode) does not indicate success."
+              }
+            failOnStderr: true
+            showWarnings: true
+          env:
+            PAT: $(OfficeOcCodeAccessCorpNet)

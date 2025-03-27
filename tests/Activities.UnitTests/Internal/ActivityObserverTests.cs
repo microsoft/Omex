@@ -22,7 +22,7 @@ namespace Hosting.Services.UnitTests
 		[TestMethod]
 		public void OnStop_CallsLogActivityStop()
 		{
-			Activity activity = new(nameof(OnStop_CallsLogActivityStop));
+			using Activity activity = new(nameof(OnStop_CallsLogActivityStop));
 			(ActivityObserver observer, _, Mock<IActivitiesEventSender> senderMock) = CreateObserver();
 
 			observer.OnStop(activity, null);
@@ -53,7 +53,7 @@ namespace Hosting.Services.UnitTests
 		[DataRow(false, ActivityResult.ExpectedError)]
 		public void OnStop_LogsStop(bool isSuccesful, ActivityResult? result)
 		{
-			Activity activity = new Activity(nameof(OnStop_LogsStop))
+			using Activity activity = new Activity(nameof(OnStop_LogsStop))
 				.Start()
 				.SetBaggage("SomeValue", "BaggageValue")
 				.SetTag("SomeTag", "TagValue");

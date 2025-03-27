@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using Microsoft.Omex.Extensions.Logging;
 
 namespace Microsoft.Omex.Extensions.Hosting.Certificates
@@ -16,6 +17,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Certificates
 		/// <summary>
 		/// Instance of CertificateReader
 		/// </summary>
-		public static ICertificateReader Instance { get; } = new CertificateReader(new CertificateStore(), InitializationLogger.Instance);
+		public static ICertificateReader Instance { get; } = new CertificateReader(new CertificateStore());
 	}
 }

@@ -1,0 +1,16 @@
+# Service Fabric Initialization
+
+parameters:
+  - name: SdkVersion
+    type: string
+    default: "10.1.2493.9590"
+steps:
+  - task: PowerShell@2
+    displayName: Install SF ${{parameters.SdkVersion}}
+    inputs:
+      targetType: 'inline'
+      script: |
+        Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force -Scope CurrentUser
+        $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -OutFile setup.exe -Uri https://download.microsoft.com/download/b/8/a/b8a2fb98-0ec1-41e5-be98-9d8b5abf7856/MicrosoftServiceFabric.${{parameters.SdkVersion}}.exe
+        .\setup.exe  /accepteula /force /quiet

@@ -1,0 +1,33 @@
+# .NET UnitTests
+
+parameters:
+  - name: BuildConfiguration
+    type: string
+    default: $(BuildConfiguration)
+  - name: BuildParameters
+    type: string
+  - name: BuildPlatform
+    type: string
+    default: $(BuildPlatform)
+  - name: TestFilter
+    type: string
+    default: FullyQualifiedName!~CloudTests
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet test'
+    inputs:
+      command: test
+      projects: '**\*.sln'
+      arguments: '-c $(BuildConfiguration) -p:${{ parameters.BuildParameters }} --no-build --no-restore --collect "Code coverage" --filter ${{ parameters.TestFilter }}'
+    timeoutInMinutes: 30
+
+  - task: PublishTestResults@2
+    displayName: Publish Test Results $(Agent.TempDirectory)\**\*.trx
+    condition: succeededOrFailed()
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: $(Agent.TempDirectory)\**\*.trx
+      searchFolder: $(Common.TestResultsDirectory)
+      mergeTestResults: true
+      platform: ${{parameters.BuildPlatform}}
+      configuration: ${{parameters.BuildConfiguration}}

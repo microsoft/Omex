@@ -14,11 +14,12 @@
     <Content Include="BuildTransitive\*" Pack="true" PackagePath="buildTransitive" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" />
   </ItemGroup>
-  <ItemGroup Condition="!$(IsNetCore)">
+  <ItemGroup Condition="$(IsNetStandard)">
     <PackageReference Include="System.Threading.Tasks.Extensions" />
   </ItemGroup>
 </Project>

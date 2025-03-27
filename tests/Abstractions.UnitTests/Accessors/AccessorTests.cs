@@ -14,8 +14,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[TestMethod]
 		public void ValuePassedInConstructor_ProperlyHandlesActions()
 		{
-			object value = new object();
-			Accessor<object> accessor = new Accessor<object>(value);
+			object value = new();
+			Accessor<object> accessor = new(value);
 			IAccessor<object> publicAccessor = accessor;
 
 			Assert.AreEqual(value, publicAccessor.Value);
@@ -28,8 +28,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		[TestMethod]
 		public void ValueAfterInitialization_ProperlyHandlesActions()
 		{
-			object value = new object();
-			Accessor<object> accessor = new Accessor<object>();
+			object value = new();
+			Accessor<object> accessor = new();
 			IAccessor<object> publicAccessor = accessor;
 			IAccessorSetter<object> setter = accessor;
 

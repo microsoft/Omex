@@ -13,7 +13,6 @@ using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Testing.Helpers;
 using Microsoft.Omex.Extensions.Testing.Helpers.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 {
@@ -21,6 +20,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 	public class AbstractHealthCheckTests
 	{
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public async Task AbstractHealthCheck_PropagatesParametersAndResult()
 		{
 			HealthCheckResult expectedResult = HealthCheckResult.Healthy("test");
@@ -43,9 +43,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public async Task AbstractHealthCheck_WhenExceptionThrown_ReturnsUnhealtyState()
 		{
-			using TestActivityListener listener = new TestActivityListener();
+			using TestActivityListener listener = new();
 			Activity? activity = null;
 			Exception exception = new ArrayTypeMismatchException();
 
@@ -65,9 +66,10 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public async Task AbstractHealthCheck_MarksActivityWithHealthCheckFlag()
 		{
-			using TestActivityListener listener = new TestActivityListener();
+			using TestActivityListener listener = new();
 			Activity? activity = null;
 
 			HealthCheckResult actualResult = await new TestHealthCheck((c, t) =>
@@ -82,6 +84,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			activity.AssertResult(ActivityResult.Success);
 		}
 
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		private class TestHealthCheck : AbstractHealthCheck<HealthCheckParameters>
 		{
 			private readonly Func<HealthCheckContext, CancellationToken, HealthCheckResult> m_internalFunction;

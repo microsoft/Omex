@@ -3,11 +3,9 @@
 
 using System.Fabric;
 using System.Linq;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.ServiceFabric.Data;
-using Moq;
 using ServiceFabric.Mocks;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
@@ -30,7 +28,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 					Options.Create(new ServiceRegistratorOptions()),
 					new Accessor<StatefulServiceContext>(),
 					new Accessor<IStatefulServicePartition>(),
-					new Accessor<IReliableStateManager>(),
+					new Accessor<IReliableStateManager>(new MockReliableStateManager()),
 					Enumerable.Empty<IListenerBuilder<OmexStatefulService>>(),
 					Enumerable.Empty<IServiceAction<OmexStatefulService>>()),
 				MockStatefulServiceContextFactory.Default);

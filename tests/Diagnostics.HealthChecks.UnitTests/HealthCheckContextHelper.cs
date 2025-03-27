@@ -10,7 +10,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 	public static class HealthCheckContextHelper
 	{
 		public static HealthCheckContext CreateCheckContext() =>
-			new HealthCheckContext
+			new()
 			{
 				Registration = new HealthCheckRegistration(
 					"TestName",

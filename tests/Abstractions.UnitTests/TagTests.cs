@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System;
-using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -24,8 +22,17 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 
 
 			string relativePath = "/tests/Abstractions.UnitTests/" + nameof(TagTests) + ".cs"; //This value should be change in case of changing file path or name
-			Assert.AreEqual(tag1.Name, relativePath, "tag1 Name should point to current file");
-			Assert.AreEqual(tag2.Name, relativePath, "tag2 Name should point to current file");
+			AssertTagNames(relativePath, tag1.Name, "tag1 Name should point to current file");
+			AssertTagNames(relativePath, tag2.Name, "tag2 Name should point to current file");
+		}
+
+		private static void AssertTagNames(string expectedTag, string? actualTag, string message)
+		{
+#if DEBUG
+			StringAssert.EndsWith(actualTag?.Replace('\\', '/'), expectedTag, message);
+#else
+			Assert.AreEqual(expectedTag, actualTag, message);
+#endif
 		}
 
 		[DataTestMethod]

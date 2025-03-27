@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.ConstrainedExecution;
 using Microsoft.Extensions.Hosting;
 
 namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
@@ -15,10 +16,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 	/// </summary>
 	public class BaseExecutionContext : IExecutionContext
 	{
-		// Defined by Azure https://whatazurewebsiteenvironmentvariablesareavailable.azurewebsites.net/
+		// Set as an environment variable (e.g. through ARM template deployment)
 		internal const string RegionNameVariableName = "REGION_NAME";
-
-		// We define them
+		internal const string RegionShortNameVariableName = "REGION_SHORT_NAME";
 		internal const string ClusterNameVariableName = "CLUSTER_NAME";
 		internal const string SliceNameVariableName = "SLICE_NAME";
 		internal const string AspNetCoreEnviromentVariableName = "ASPNETCORE_ENVIRONMENT";
@@ -40,8 +40,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 			BuildVersion = GetBuildVersion();
 
 			ClusterIpAddress = GetIpAddress(MachineName);
-			
+
 			RegionName = GetVariable(RegionNameVariableName) ?? DefaultEmptyValue;
+			RegionShortName = GetVariable(RegionShortNameVariableName) ?? DefaultEmptyValue;
 			DeploymentSlice = GetVariable(SliceNameVariableName) ?? DefaultEmptyValue;
 
 			if (hostEnvironment != null)
@@ -104,6 +105,9 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		public string RegionName { get; protected set; }
 
 		/// <inheritdoc/>
+		public string RegionShortName { get; protected set; }
+
+		/// <inheritdoc/>
 		public string ServiceName { get; protected set; }
 
 		/// <inheritdoc/>
@@ -137,10 +141,18 @@ namespace Microsoft.Omex.Extensions.Abstractions.ExecutionContext
 		/// </summary>
 		protected static string GetBuildVersion()
 		{
+			string buildVersion = DefaultEmptyValue;
+
 			Assembly? assembly = Assembly.GetEntryAssembly();
-			return assembly != null
-				? FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion ?? DefaultEmptyValue
-				: DefaultEmptyValue;
+			if (assembly != null)
+			{
+				FileVersionInfo assemblyVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
+				// We used assemblyVersion.ProductVersion previously, but in net8 it was changed to include commit hash.
+				// More details here: https://learn.microsoft.com/en-us/dotnet/core/compatibility/sdk/8.0/source-link
+				buildVersion = $"{assemblyVersion.ProductMajorPart}.{assemblyVersion.ProductMinorPart}.{assemblyVersion.ProductBuildPart}.{assemblyVersion.ProductPrivatePart}";
+			}
+
+			return buildVersion;
 		}
 
 		/// <summary>

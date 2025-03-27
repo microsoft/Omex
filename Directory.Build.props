@@ -2,19 +2,18 @@
   <PropertyGroup>
     <RepoRoot Condition="'$(RepoRoot)' == ''">$([System.IO.Path]::GetDirectoryName($([MSBuild]::GetPathOfFileAbove('global.json', '$(MSBuildProjectDirectory)'))))</RepoRoot>
   </PropertyGroup>
-
-  <PropertyGroup Label="Target Platforms" >
-    <NetCoreVersions>net7.0</NetCoreVersions>
+  <PropertyGroup Label="Target Platforms">
+    <LatestSupportedDotNetVersion>net9.0</LatestSupportedDotNetVersion>
+    <OldestSupportedDotNetVersion>net8.0</OldestSupportedDotNetVersion>
+    <NetCoreVersions>$(LatestSupportedDotNetVersion)</NetCoreVersions>
+    <NetCoreVersions Condition="'$(LatestSupportedDotNetVersion)' != '$(OldestSupportedDotNetVersion)'">$(LatestSupportedDotNetVersion);$(OldestSupportedDotNetVersion)</NetCoreVersions>
     <NetStandardVersions>netstandard2.0</NetStandardVersions>
     <LibraryTargetFrameworks>$(NetCoreVersions);$(NetStandardVersions)</LibraryTargetFrameworks>
-    <ExecutableTargetFrameworks>$(NetCoreVersions)</ExecutableTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="UnitTest Targets">
-    <NetFrameworkVersion>net472</NetFrameworkVersion>
-    <UnitTestTargetFrameworks>$(NetCoreVersions);$(NetFrameworkVersion)</UnitTestTargetFrameworks>
-    <UnitTestTargetFrameworks Condition="'$(OS)' != 'Windows_NT'">$(NetCoreVersions)</UnitTestTargetFrameworks>
+    <UnitTestTargetFrameworks>$(NetCoreVersions)</UnitTestTargetFrameworks>
   </PropertyGroup>
-  <PropertyGroup Label="Project Settings" >
+  <PropertyGroup Label="Project Settings">
     <Platforms>AnyCPU</Platforms>
     <TargetPlatform>AnyCPU</TargetPlatform>
     <ErrorReport>prompt</ErrorReport>
@@ -25,19 +24,16 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-  <PropertyGroup Label="Condition Variables" >
+  <PropertyGroup Label="Condition Variables">
     <IsNetStandard>$(NetStandardVersions.Contains('$(TargetFramework)'))</IsNetStandard>
-    <IsNetCore>$(NetCoreVersions.Contains('$(TargetFramework)'))</IsNetCore>
-    <IsNetFramework>false</IsNetFramework>
-    <IsNetFramework Condition="!$(IsNetStandard) And !$(IsNetCore)">true</IsNetFramework>
   </PropertyGroup>
-  <PropertyGroup Label="Signing" >
+  <PropertyGroup Label="Signing">
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\OmexOpenSource.snk</AssemblyOriginatorKeyFile>
     <StrongNameSuffix>, PublicKey=00240000048000009400000006020000002400005253413100040000010001004d77aff3ec12650e8979fb873e4b409556a1a650482e6d4dfcf9fea3c87dc334dc2f08ab4820ad3555b949a172553484f5f8fecd302db2907a5d8e3c33d394276c05e18865c5776e0c1f04bba8c4d3e4b12bc44b70e70dc076cc69611b04368d7eff2e83f5b016db366f9d572dad24f09adc6ae732802958048b69727561d1bd</StrongNameSuffix>
   </PropertyGroup>
-  <PropertyGroup Label="Build Output" >
+  <PropertyGroup Label="Build Output">
     <BaseOutputPath>$(MSBuildThisFileDirectory)\bin\$(MSBuildProjectName)</BaseOutputPath>
     <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
     <PackageOutputPath>$(MSBuildThisFileDirectory)\nuget</PackageOutputPath>
@@ -61,7 +57,7 @@
     <Description>$(MSBuildProjectName)</Description>
     <Tags>Omex</Tags>
   </PropertyGroup>
-  <PropertyGroup Label="Debug Information" >
+  <PropertyGroup Label="Debug Information">
     <EnableSourceControlManagerQueries Condition="'$(CommitSha)' != ''">false</EnableSourceControlManagerQueries>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/microsoft/Omex</RepositoryUrl>
@@ -77,7 +73,10 @@
     <!-- Optional: Include the PDB in the built .nupkg -->
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <SourceRootLocation>$(MSBuildThisFileDirectory)</SourceRootLocation>
-    <!-- Maps paths injected by CallerFilePath attribute to be related and independent from repository location on hard drive -->
-    <PathMap>$(MSBuildThisFileDirectory)=/</PathMap>
+    <!--
+      Maps paths injected by CallerFilePath attribute to be related and independent from repository location on hard drive to keep automatic log tags independent of the build location.
+      Doing this prevents debugger from finding symbols, so setting is disabled for debug builds.
+    -->
+    <PathMap Condition="'$(Configuration)' != 'Debug'">$(MSBuildThisFileDirectory)=/</PathMap>
   </PropertyGroup>
 </Project>

@@ -2,105 +2,97 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
-using System.Linq;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using Microsoft.Omex.Extensions.Abstractions.Option;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
 	internal sealed class ActivityMetricsSender : IActivitiesEventSender, IDisposable
 	{
 		private readonly Meter m_meter;
-		private readonly Counter<double> m_activityCounter;
-		private readonly Counter<double> m_healthCheckActivityCounter;
-		private readonly Histogram<double> m_activityHistogram;
-		private readonly Histogram<double> m_healthCheckActivityHistogram;
+		private readonly Histogram<long> m_activityHistogram;
+		private readonly Histogram<long> m_healthCheckActivityHistogram;
 		private readonly IExecutionContext m_context;
 		private readonly IHostEnvironment m_hostEnvironment;
-		private readonly IOptions<MonitoringOption> m_monitoringOption;
-		private readonly ArrayPool<KeyValuePair<string, object?>> m_arrayPool;
+		private readonly HashSet<string> m_customBaggageDimension;
+		private readonly HashSet<string> m_customTagObjectsDimension;
+		private readonly bool m_isSetParentNameAsDimensionEnabled;
 
-		public ActivityMetricsSender(IExecutionContext executionContext, IHostEnvironment hostEnvironment, IOptions<MonitoringOption> monitoringOption)
+		public ActivityMetricsSender(
+			IExecutionContext executionContext,
+			IHostEnvironment hostEnvironment,
+			ICustomBaggageDimensions customBaggageDimensions,
+			ICustomTagObjectsDimensions customTagObjectsDimensions,
+			IOptions<ActivityOption> activityOptions)
 		{
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
-			m_monitoringOption = monitoringOption;
 			m_meter = new Meter("Microsoft.Omex.Activities", "1.0.0");
-			m_activityCounter = m_meter.CreateCounter<double>("Activities");
-			m_healthCheckActivityCounter = m_meter.CreateCounter<double>("HealthCheckActivities");
-			m_activityHistogram = m_meter.CreateHistogram<double>("Activities");
-			m_healthCheckActivityHistogram = m_meter.CreateHistogram<double>("HealthCheckActivities");
-			m_arrayPool = ArrayPool<KeyValuePair<string, object?>>.Create();
+			m_activityHistogram = m_meter.CreateHistogram<long>("Activities");
+			m_healthCheckActivityHistogram = m_meter.CreateHistogram<long>("HealthCheckActivities");
+			m_customBaggageDimension = customBaggageDimensions.CustomDimensions;
+			m_customTagObjectsDimension = customTagObjectsDimensions.CustomDimensions;
+			m_isSetParentNameAsDimensionEnabled = activityOptions.Value.SetParentNameAsDimensionEnabled;
 		}
 
 		public void SendActivityMetric(Activity activity)
 		{
-			double durationMs = activity.Duration.TotalMilliseconds;
+			Histogram<long> histogram = activity.IsHealthCheck() ? m_healthCheckActivityHistogram : m_activityHistogram;
 
-			int tagsCount = s_customTags.Length + activity.TagObjects.Count() + activity.Baggage.Count();
+			long durationMs = Convert.ToInt64(activity.Duration.TotalMilliseconds);
 
-			KeyValuePair<string, object?>[] tags = m_arrayPool.Rent(tagsCount);
+			TagList tagList = new()
+				{
+					{ "Tenant", $"{m_context.Cluster.ToLowerInvariant()}-{m_hostEnvironment.EnvironmentName.ToLowerInvariant()}-{m_context.DeploymentSlice}" },
+					{ "Name", activity.OperationName },
+					{ "RegionName", m_context.RegionName },
+					{ "ServiceName", m_context.ServiceName },
+					{ "BuildVersion", m_context.BuildVersion },
+					{ "Environment", m_hostEnvironment.EnvironmentName },
+					{ "Cluster", m_context.Cluster },
+					{ "ApplicationName", m_context.ApplicationName },
+					{ "NodeName", m_context.NodeName },
+					{ "MachineId", m_context.MachineId },
+					{ "DeploymentSlice", m_context.DeploymentSlice },
+					{ "IsCanary", m_context.IsCanary },
+					{ "IsPrivateDeployment", m_context.IsPrivateDeployment }
+				};
 
-			int index = 0;
-
-			foreach (Func<ActivityMetricsSender, Activity, KeyValuePair<string, object?>> getter in s_customTags)
+			foreach (string dimension in m_customBaggageDimension)
 			{
-				tags[index++] = getter(this, activity);
+				string? baggageItem = activity.GetBaggageItem(dimension);
+				if (!string.IsNullOrWhiteSpace(baggageItem))
+				{
+					tagList.Add(dimension, baggageItem);
+				}
 			}
 
-			foreach (KeyValuePair<string, string?> baggage in activity.Baggage)
+			foreach (string dimension in m_customTagObjectsDimension)
 			{
-				tags[index++] = CreatePair(baggage.Key, baggage.Value);
+				object? tagItem = activity.GetTagItem(dimension);
+				if (tagItem != null)
+				{
+					tagList.Add(dimension, tagItem);
+				}
 			}
 
-			foreach (KeyValuePair<string, object?> tag in activity.TagObjects)
+			if (m_isSetParentNameAsDimensionEnabled)
 			{
-				tags[index++] = tag;
+				Activity? parent = activity.Parent;
+				if (!string.IsNullOrEmpty(parent?.OperationName))
+				{
+					tagList.Add("ParentName", parent.OperationName);
+				}
 			}
 
-			ReadOnlySpan<KeyValuePair<string, object?>> tagsSpan = MemoryExtensions.AsSpan(tags, 0, tagsCount);
-
-			Histogram<double> histogram = activity.IsHealthCheck() ? m_healthCheckActivityHistogram : m_activityHistogram;
-			Counter<double> counter = activity.IsHealthCheck() ? m_healthCheckActivityCounter : m_activityCounter;
-
-			if (m_monitoringOption.Value.UseHistogramForActivityMonitoring)
-			{
-				histogram.Record(durationMs, tagsSpan);
-			}
-			else
-			{
-				counter.Add(durationMs, tagsSpan);
-			}
-
-			m_arrayPool.Return(tags, clearArray: true);
+			histogram.Record(durationMs, tagList);
 		}
 
 		public void Dispose() => m_meter.Dispose();
-
-		private static readonly Func<ActivityMetricsSender, Activity, KeyValuePair<string, object?>>[] s_customTags = new Func<ActivityMetricsSender, Activity, KeyValuePair<string, object?>>[]
-		{
-			static (sender, activity) => CreatePair("Name", activity.OperationName),
-			static (sender, activity) => CreatePair("Environment", sender.m_hostEnvironment.EnvironmentName),
-			static (sender, activity) => CreatePair("RegionName", sender.m_context.RegionName),
-			static (sender, activity) => CreatePair("Cluster", sender.m_context.Cluster),
-			static (sender, activity) => CreatePair("ApplicationName", sender.m_context.ApplicationName),
-			static (sender, activity) => CreatePair("ServiceName", sender.m_context.ServiceName),
-			static (sender, activity) => CreatePair("BuildVersion", sender.m_context.BuildVersion),
-			static (sender, activity) => CreatePair("NodeName", sender.m_context.NodeName),
-			static (sender, activity) => CreatePair("MachineId", sender.m_context.MachineId),
-			static (sender, activity) => CreatePair("DeploymentSlice", sender.m_context.DeploymentSlice),
-			static (sender, activity) => CreatePair("IsCanary", sender.m_context.IsCanary),
-			static (sender, activity) => CreatePair("IsPrivateDeployment", sender.m_context.IsPrivateDeployment)
-		};
-
-		private static KeyValuePair<string, object?> CreatePair(string key, object? value) => new(key, value);
 	}
 }

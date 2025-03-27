@@ -1,0 +1,24 @@
+# .NET Build
+
+parameters:
+  - name: BuildConfiguration
+    type: string
+    default: $(BuildConfiguration)
+  - name: BuildParameters
+    type: string
+  - name: BuildPlatform
+    type: string
+steps:
+  - template: /.github/pipelines/dotnet-initialize.yml@self
+    parameters:
+      BuildConfiguration: ${{parameters.BuildConfiguration}}
+      BuildParameters: Platform="${{parameters.BuildPlatform}}"
+  - task: DotNetCoreCLI@2
+    displayName: dotnet build
+    inputs:
+      projects: "**\\*.sln"
+      arguments: -c ${{parameters.BuildConfiguration}} -p:${{parameters.BuildParameters}} --no-restore
+  - task: RoslynAnalyzers@3
+    inputs:
+      copyLogsOnly: true
+      policyName: 'M365'

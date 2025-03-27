@@ -20,12 +20,13 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 	public class HttpEndpointHealthCheckTests
 	{
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public async Task CheckHealthAsync_WhenExpectedStatus_ReturnsHealthy()
 		{
 			string contentText = nameof(CheckHealthAsync_WhenExpectedStatus_ReturnsHealthy);
 			HttpStatusCode status = HttpStatusCode.Found;
 			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
-			HttpResponseMessage response = new HttpResponseMessage(status)
+			HttpResponseMessage response = new(status)
 			{
 				Content = new StringContent(contentText)
 			};
@@ -45,11 +46,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public async Task CheckHealthAsync_WhenWrongStatusAndDefaultRegistrationFailureStatus_ReturnsUnhealthy()
 		{
 			string contentText = nameof(CheckHealthAsync_WhenWrongStatusAndDefaultRegistrationFailureStatus_ReturnsUnhealthy);
 			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
-			HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+			HttpResponseMessage response = new(HttpStatusCode.InternalServerError)
 			{
 				Content = new StringContent(contentText)
 			};
@@ -69,11 +71,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public async Task CheckHealthAsync_WhenWrongStatusAndExplicitRegistrationFailureStatus_ReturnsRegistrationFailureStatus()
 		{
 			string contentText = nameof(CheckHealthAsync_WhenWrongStatusAndExplicitRegistrationFailureStatus_ReturnsRegistrationFailureStatus);
 			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
-			HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+			HttpResponseMessage response = new(HttpStatusCode.InternalServerError)
 			{
 				Content = new StringContent(contentText)
 			};
@@ -93,11 +96,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public async Task CheckHealthAsync_WithAdditionalCheck_ReturnsOverridenResult()
 		{
 			string contentText = nameof(CheckHealthAsync_WithAdditionalCheck_ReturnsOverridenResult);
 			KeyValuePair<string, object>[] reportData = new KeyValuePair<string, object>[0];
-			HttpResponseMessage expectedResponse = new HttpResponseMessage(HttpStatusCode.Ambiguous)
+			HttpResponseMessage expectedResponse = new(HttpStatusCode.Ambiguous)
 			{
 				Content = new StringContent(contentText)
 			};
@@ -126,16 +130,17 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			CollectionAssert.AreEquivalent(reportData, result.Data.ToArray(), "Provided result should have proper data");
 		}
 
+		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		private async Task<(MockClient, HealthCheckResult)> RunHealthCheckAsync(
 			HttpHealthCheckParameters parameters, HttpResponseMessage response, HealthStatus failureStatus = HealthStatus.Unhealthy)
 		{
 			Mock<IHttpClientFactory> factoryMock = new();
 			MockClient clientMock = new(response);
 
-			factoryMock.Setup(f => f.CreateClient(HttpEndpointHealthCheck.HttpClientLogicalName))
+			factoryMock.Setup(f => f.CreateClient(HealthCheckConstants.HttpClientLogicalName))
 				.Returns(clientMock);
 
-			HttpEndpointHealthCheck healthCheck = new HttpEndpointHealthCheck(
+			HttpEndpointHealthCheck healthCheck = new(
 				parameters,
 				factoryMock.Object,
 				new NullLogger<HttpEndpointHealthCheck>(),

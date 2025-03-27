@@ -164,18 +164,19 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 			Expression<Func<ICertificateStore, IEnumerable<CertificateInformation>>> expression = store =>
 				store.GetAllCertificates(storeName, StoreLocation.LocalMachine);
 
-			Mock<ICertificateStore> storeMock = new Mock<ICertificateStore>();
+			Mock<ICertificateStore> storeMock = new();
 
 			storeMock
 				.Setup(expression)
 				.Returns(certificates.Select(cert => new CertificateInformation(cert)));
 
-			return (new CertificateReader(storeMock.Object, new NullLogger<CertificateReader>()),
+			return (new CertificateReader(storeMock.Object),
 				(times, message) =>
 				{
 					storeMock.Verify(expression, times, message);
 					storeMock.Invocations.Clear();
-				});
+				}
+			);
 		}
 	}
 }

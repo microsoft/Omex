@@ -1,0 +1,80 @@
+# OMEX Git Bridge Reverse Integration Pipeline
+
+name: $(date:yyyyMMdd)$(rev:.r)
+variables:
+- name: BuildConfiguration
+  value: release
+- name: BuildPlatform
+  value: any cpu
+- name: DisableCfsDetector
+  value: true
+- name: system.debug
+  value: false
+- group: OmexOpenSourceInternal-VG
+- group: OmexAcTokensCorpNet
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: refs/heads/main
+  - repository: OfficePipelineTemplates
+    type: git
+    name: OE/OfficePipelineTemplates
+    ref: refs/heads/main
+trigger: none
+pr: none
+extends:
+  template: v1/Office.Unofficial.PipelineTemplate.yml@OfficePipelineTemplates
+  parameters:
+    pool:
+      os: windows
+      image: windows-2022
+      name: Azure-Pipelines-1ESPT-ExDShared
+    customBuildTags:
+      - ES365AIMigrationTooling
+    stages:
+    - stage: Stage
+      jobs:
+        - job: Job_2
+          displayName: Create GitHub Pull Request Job
+          steps:
+          - checkout: self
+            clean: true
+            fetchTags: false
+          - task: PowerShell@2
+            displayName: Check new changes exist and Switch to branch from GitHubInternal
+            condition: and(succeeded(), ne(variables['IntegrationChangesLength'], 0))
+            inputs:
+              targetType: inline
+              script: |-
+                Write-Host "GITBRANCH being used: '$env:GITBRANCH'"
+                $url = "https://omexac:{0}@dev.azure.com/office/OC/_git/OmexGitHubInternal" -f $env:OfficeOcCodeAccessCorpNet
+
+                git remote add omexgithubinternalremote $url
+                git fetch omexgithubinternalremote
+
+                Write-Host "Switching to GitHubInternalBranch to create PR."
+                git checkout  --track omexgithubinternalremote/$env:GITBRANCH
+
+                $files = git diff --name-only omexgithubinternalremote/$env:GITBRANCH origin/$env:GITBRANCH
+                if ($files.length -eq 0) {
+                  Write-Host "No changes between 'origin/$env:GITBRANCH' and 'omexgithubinternalremote/$env:GITBRANCH' found."
+                  $ChangesFound=0
+                } else {
+                    Write-Host "Found changes between  'origin/$env:GITBRANCH' and 'omexgithubinternalremote/$env:GITBRANCH'."
+                    $ChangesFound=1
+                }
+
+                Write-Host "##vso[task.setvariable variable=ChangesFound]$ChangesFound"
+            env:
+              OfficeOcCodeAccessCorpNet: $(OfficeOcCodeAccessCorpNet)
+          - task: oenginternal.office-vsts-tasks-extension.e881ce1e-41bc-4f59-b8a2-9a6001f43efe.CreatePullRequest@10
+            displayName: Create Pull Request
+            condition: and(succeeded(), ne(variables['ChangesFound'], 0))
+            inputs:
+              SourceBranchName: feature/github-bridge-reverse
+              TargetBranchName: $(GITBRANCH)
+              Title: GitHub Reverse Integration
+              Description: GitHub reverse integration Pull Request for commit
+              SkipIfNoChangesFound: false
+              Pat: $(omexgithubbotinternalpat)

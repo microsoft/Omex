@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using System.Net;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +27,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			// It add added here instead of AddHttpEndpointCheck method to avoid creating new configuration each time new health check added.
 			// It would be nice to register this HttpClient configuration once and only if HttpEndpointCheck used.
 			serviceCollection
-				.AddHttpClient(HttpEndpointHealthCheck.HttpClientLogicalName)
+				.AddHttpClient(HealthCheckConstants.HttpClientLogicalName)
 				.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
 				{
 					AllowAutoRedirect = false,

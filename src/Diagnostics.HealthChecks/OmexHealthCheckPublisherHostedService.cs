@@ -88,7 +88,7 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 		// actually tries to **run** health checks would be real baaaaad.
 		ValidateRegistrations(_healthCheckServiceOptions.Value.Registrations);
 
-		_defaultTimerOptions =  (_healthCheckPublisherOptions.Value.Delay, _healthCheckPublisherOptions.Value.Period, _healthCheckPublisherOptions.Value.Timeout);
+		_defaultTimerOptions = (_healthCheckPublisherOptions.Value.Delay, _healthCheckPublisherOptions.Value.Period, _healthCheckPublisherOptions.Value.Timeout);
 
 		// Group healthcheck registrations by Delay, Period and Timeout, to build a Dictionary<(TimeSpan, TimeSpan, TimeSpan), List<HealthCheckRegistration>>
 		// For HCs with no Delay, Period or Timeout, we default to the publisher values
@@ -97,7 +97,7 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 
 	private (TimeSpan Delay, TimeSpan Period, TimeSpan Timeout) GetTimerOptionsOrDefault(string registrationName)
 	{
-		_healthCheckRegistrationOptions.Value.RegistrationParameters.TryGetValue(registrationName, out var registrationParameters);
+		_healthCheckRegistrationOptions.Value.RegistrationParameters.TryGetValue(registrationName, out HealthCheckRegistrationParameters? registrationParameters);
 
 		return (registrationParameters?.Delay ?? _healthCheckPublisherOptions.Value.Delay, registrationParameters?.Period ?? _healthCheckPublisherOptions.Value.Period, registrationParameters?.Timeout ?? _healthCheckPublisherOptions.Value.Timeout);
 	}
@@ -138,7 +138,7 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 
 		if (_timersByOptions != null)
 		{
-			foreach (var timer in _timersByOptions.Values)
+			foreach (Timer timer in _timersByOptions.Values)
 			{
 				timer.Dispose();
 			}
@@ -180,13 +180,13 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 	{
 		timerOptions ??= _defaultTimerOptions;
 
-		var duration = ValueStopwatch.StartNew();
+		ValueStopwatch duration = ValueStopwatch.StartNew();
 		Logger.HealthCheckPublisherProcessingBegin(_logger);
 
 		CancellationTokenSource? cancellation = null;
 		try
 		{
-			var timeout = timerOptions.Value.Timeout;
+			TimeSpan timeout = timerOptions.Value.Timeout;
 
 			cancellation = CancellationTokenSource.CreateLinkedTokenSource(_stopping.Token);
 			_runTokenSource = cancellation;
@@ -218,18 +218,18 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 		await Task.Yield();
 
 		// Concatenate predicates - we only run HCs at the set delay, period and timeout, and that are enabled
-		var withOptionsPredicate = (HealthCheckRegistration r) =>
+		Func<HealthCheckRegistration, bool> withOptionsPredicate = (HealthCheckRegistration r) =>
 		{
 			// Check whether the current timer options correspond to the ones of the HC registration
-			var rOptions = GetTimerOptionsOrDefault(r.Name);
-			var hasOptions = rOptions == timerOptions;
+			(TimeSpan Delay, TimeSpan Period, TimeSpan Timeout) rOptions = GetTimerOptionsOrDefault(r.Name);
+			bool hasOptions = rOptions == timerOptions;
 			if (!hasOptions)
 			{
 				return false;
 			}
 
 			// Check if HC is enabled
-			if (_healthCheckRegistrationOptions.Value.RegistrationParameters.TryGetValue(r.Name, out var hcrParams) && !hcrParams.IsEnabled)
+			if (_healthCheckRegistrationOptions.Value.RegistrationParameters.TryGetValue(r.Name, out HealthCheckRegistrationParameters? hcrParams) && !hcrParams.IsEnabled)
 			{
 				return false;
 			}
@@ -244,11 +244,11 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 		};
 
 		// The health checks service does it's own logging, and doesn't throw exceptions.
-		var report = await _healthCheckService.CheckHealthAsync(withOptionsPredicate, cancellationToken).ConfigureAwait(false);
+		HealthReport report = await _healthCheckService.CheckHealthAsync(withOptionsPredicate, cancellationToken).ConfigureAwait(false);
 
-		var publishers = _publishers;
-		var tasks = new Task[publishers.Length];
-		for (var i = 0; i < publishers.Length; i++)
+		IHealthCheckPublisher[] publishers = _publishers;
+		Task[] tasks = new Task[publishers.Length];
+		for (int i = 0; i < publishers.Length; i++)
 		{
 			tasks[i] = RunPublisherAsync(publishers[i], report, cancellationToken);
 		}
@@ -258,7 +258,7 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 
 	private async Task RunPublisherAsync(IHealthCheckPublisher publisher, HealthReport report, CancellationToken cancellationToken)
 	{
-		var duration = ValueStopwatch.StartNew();
+		ValueStopwatch duration = ValueStopwatch.StartNew();
 
 		try
 		{
@@ -289,9 +289,9 @@ internal sealed partial class OmexHealthCheckPublisherHostedService : IHostedSer
 		// Scan the list for duplicate names to provide a better error if there are duplicates.
 
 		StringBuilder? builder = null;
-		var distinctRegistrations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+		HashSet<string> distinctRegistrations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-		foreach (var registration in registrations)
+		foreach (HealthCheckRegistration registration in registrations)
 		{
 			if (!distinctRegistrations.Add(registration.Name))
 			{

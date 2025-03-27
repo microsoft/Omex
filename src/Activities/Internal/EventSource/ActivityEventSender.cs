@@ -6,25 +6,29 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Activities;
 
 namespace Microsoft.Omex.Extensions.Activities
 {
+	[Obsolete($"{nameof(ActivityEventSender)} is obsolete and pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 	internal sealed class ActivityEventSender : IActivitiesEventSender
 	{
-		public ActivityEventSender(ActivityEventSource eventSource, IExecutionContext executionContext, ILogger<ActivityEventSender> logger)
+		public ActivityEventSender(ActivityEventSource eventSource, IExecutionContext executionContext, ILogger<ActivityEventSender> logger, IOptions<ActivityOption> options)
 		{
 			m_eventSource = eventSource;
 			m_serviceName = executionContext.ServiceName;
 			m_logger = logger;
+			m_options = options;
 		}
 
 		public void SendActivityMetric(Activity activity)
 		{
-			if (!m_eventSource.IsEnabled())
+			if (!m_options.Value.ActivityEventSenderEnabled || !m_eventSource.IsEnabled())
 			{
 				return;
 			}
@@ -122,6 +126,7 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly ActivityEventSource m_eventSource;
 		private readonly string m_serviceName;
 		private readonly ILogger<ActivityEventSender> m_logger;
+		private readonly IOptions<ActivityOption> m_options;
 		private static readonly string s_logCategory = typeof(ActivityEventSource).FullName ?? nameof(ActivityEventSource);
 		private const string NullPlaceholder = "null";
 	}

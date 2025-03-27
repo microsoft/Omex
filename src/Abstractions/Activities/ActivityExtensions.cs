@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 
 namespace Microsoft.Omex.Extensions.Abstractions.Activities
@@ -103,6 +104,13 @@ namespace Microsoft.Omex.Extensions.Abstractions.Activities
 		/// <remarks>This property won't be transfered to child activity or via web requests</remarks>
 		public static Activity SetMetadata(this Activity activity, string metadata) =>
 			activity.SetTag(ActivityTagKeys.Metadata, metadata);
+
+		/// <summary>
+		/// Set health check result
+		/// </summary>
+		/// <remarks>This property won't be transferred to child activity or via web requests</remarks>
+		public static Activity SetHealthCheckResult(this Activity activity, HealthStatus result) =>
+			activity.SetTag(ActivityTagKeys.HealthCheckResult, result.ToString());
 
 		/// <summary>
 		/// Get correlation guid that is used by old Omex services

@@ -34,8 +34,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 		[TestMethod]
 		public async Task BuildStatelessWebService_RegisterListeners()
 		{
-			(string name, int port) httpListener1 = ("httpListener", 20080);
-			(string name, int port) httpListener2 = ("httpsListener", 20443);
+			// Use random ports from private range.
+			Random random = new Random();
+			(string name, int port) httpListener1 = ("httpListener", random.Next(49152, 65535));
+			(string name, int port) httpListener2 = ("httpsListener", random.Next(49152, 65535));
 
 			SfConfigurationProviderHelper.SetPublishAddress();
 			SfConfigurationProviderHelper.SetPortVariable(httpListener1.name, httpListener1.port);

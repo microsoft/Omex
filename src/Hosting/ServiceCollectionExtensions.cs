@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Hosting.Certificates;
-using Microsoft.Omex.Extensions.Logging;
 
 namespace Microsoft.Omex.Extensions.Hosting
 {
@@ -25,9 +24,7 @@ namespace Microsoft.Omex.Extensions.Hosting
 		/// Add Omex Logging and ActivitySource dependencies
 		/// </summary>
 		public static IServiceCollection AddOmexServices(this IServiceCollection collection) =>
-			collection
-				.AddOmexLogging()
-				.AddOmexActivitySource();
+			collection.AddOmexActivitySource();
 
 		/// <summary>
 		/// Add Omex Logging and ActivitySource dependencies

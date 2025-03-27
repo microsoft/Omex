@@ -1,0 +1,58 @@
+# OMEX Git Package Update
+
+name: $(Date:yyyyMMdd).$(Rev:r)
+variables:
+- name: system.debug
+  value: false
+- group: OmexOpenSourceInternal-VG
+schedules:
+- cron: 0 7 * * 3
+  branches:
+    include:
+    - main
+  always: true
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: refs/heads/main
+  - repository: OfficePipelineTemplates
+    type: git
+    name: OE/OfficePipelineTemplates
+    ref: refs/heads/main
+trigger: none
+pr: none
+extends:
+  template: v1/Office.Unofficial.PipelineTemplate.yml@OfficePipelineTemplates
+  parameters:
+    pool:
+      os: windows
+      image: windows-2022
+      name: Azure-Pipelines-1ESPT-ExDShared
+    customBuildTags:
+    - ES365AIMigrationTooling
+    stages:
+    - stage: Stage
+      jobs:
+      - job: Job_1
+        displayName: Update packages
+        steps:
+        - checkout: self
+          fetchTags: false
+        - task: NuGetToolInstaller@1
+          displayName: "Use NuGet "
+        - task: oenginternal.office-vsts-tasks-extension.fd6c6224-ef28-490c-acf7-5ef094f037df.UpdateNuGetDependencies@2
+          displayName: Update NuGet Dependencies File
+          inputs:
+            NuGetConfigPath: NuGet.Config
+            PropsFilePath: Directory.Packages.props
+        - task: oenginternal.office-vsts-tasks-extension.e881ce1e-41bc-4f59-b8a2-9a6001f43efe.CreatePullRequest@10
+          displayName: Create Pull Request
+          inputs:
+            SourceBranchName: nuget_packages_update
+            TargetBranchName: main
+            Title: Automatic NuGet package update
+            Description: update of NuGet packages
+            WorkItemId: "9678684"
+            Pat: $(omexgithubbotinternalpat)
+            MergeStrategy: "0"

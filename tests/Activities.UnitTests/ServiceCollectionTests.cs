@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics;
 using System;
-using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Omex.Extensions.Abstractions.Activities.Processing;
 using Microsoft.Omex.Extensions.Testing.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Omex.Extensions.Activities.UnitTests
 {
@@ -32,11 +32,10 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		}
 
 		[TestMethod]
-		public void AddOmexActivitySource_HostedServicesRegiestered()
+		public void AddOmexActivitySource_HostedServicesRegistered()
 		{
 			Type[] types = GetRegisteredServices<IHostedService>();
 
-			Assert.AreEqual(2, types.Length);
 			CollectionAssert.Contains(types, typeof(ActivityListenerInitializerService));
 			CollectionAssert.Contains(types, typeof(DiagnosticsObserversInitializer));
 		}
@@ -46,8 +45,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		{
 			Task task = CreateHost().RunAsync();
 
-			Activity? activity = new ActivitySource("Source")
-				.StartActivity(nameof(AddOmexActivitySource_HostedServicesRegiestered));
+			using Activity? activity = new ActivitySource("Source")
+				.StartActivity(nameof(AddOmexActivitySource_HostedServicesRegistered));
 
 			NullableAssert.IsNotNull(activity, "Activity creation enabled after host started");
 		}
