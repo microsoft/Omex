@@ -33,5 +33,5 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 					Enumerable.Empty<IListenerBuilder<OmexStatefulService>>(),
 					Enumerable.Empty<IServiceAction<OmexStatefulService>>()),
 				MockStatefulServiceContextFactory.Default);
-    }
+	}
 }
