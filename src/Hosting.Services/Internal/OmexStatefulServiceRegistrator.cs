@@ -12,7 +12,7 @@ using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal sealed class OmexStatefulServiceRegistrator : OmexServiceRegistrator<OmexStatefulService, StatefulServiceContext>
+	internal sealed partial class OmexStatefulServiceRegistrator : OmexServiceRegistrator<OmexStatefulService, StatefulServiceContext>
 	{
 		public OmexStatefulServiceRegistrator(
 			IOptions<ServiceRegistratorOptions> options,
@@ -37,12 +37,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public IAccessorSetter<IStatefulServicePartition> PartitionAccessor { get; }
 
 		public IAccessorSetter<ReplicaRoleWrapper> RoleAccessor { get; }
-
-		// 'ReplicaRole' must be a reference type in order to use it as parameter 'TValue' in the generic type or method. That's why we use this wrapper class
-		public class ReplicaRoleWrapper
-		{
-			public ReplicaRole Role { get; set; }
-		}
 
 	}
 }

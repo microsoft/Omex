@@ -22,16 +22,16 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		private readonly IAccessor<ReplicaRoleWrapper> m_replicaRoleAccessor;
 		
 		internal OmexStatefulService(
-		    OmexStatefulServiceRegistrator serviceRegistrator,
-		    StatefulServiceContext serviceContext)
-		        : base(serviceContext)
+			OmexStatefulServiceRegistrator serviceRegistrator,
+			StatefulServiceContext serviceContext)
+				: base(serviceContext)
 		{
 			serviceRegistrator.ContextAccessor.SetValue(Context);
 			serviceRegistrator.StateAccessor.SetValue(StateManager);
 			m_serviceRegistrator = serviceRegistrator;
 			m_replicaRoleAccessor = (IAccessor<ReplicaRoleWrapper>)serviceRegistrator.RoleAccessor;
 		}
-		
+
 		/// <inheritdoc />
 		protected override Task OnOpenAsync(ReplicaOpenMode openMode, CancellationToken cancellationToken)
 		{
@@ -49,7 +49,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <inheritdoc />
 		protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners() =>
 			m_serviceRegistrator.ListenerBuilders.Select(b => new ServiceReplicaListener(c => b.Build(this), b.Name));
-		
+
 		/// <inheritdoc />
 		protected override Task RunAsync(CancellationToken cancellationToken) =>
 			Task.WhenAll(m_serviceRegistrator.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));

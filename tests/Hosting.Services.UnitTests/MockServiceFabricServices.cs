@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 	{
 		public static OmexStatelessService MockOmexStatelessService { get; } =
 			new OmexStatelessService(
-			new OmexStatelessServiceRegistrator(
+				new OmexStatelessServiceRegistrator(
 					Options.Create(new ServiceRegistratorOptions()),
 					new Accessor<StatelessServiceContext>(),
 					new Accessor<IStatelessServicePartition>(),
