@@ -5,7 +5,6 @@ using System.Fabric;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
-using static Microsoft.Omex.Extensions.Hosting.Services.OmexStatefulServiceRegistrator;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
@@ -13,11 +12,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	internal sealed class ServiceFabricExecutionContext : BaseExecutionContext
 	{
 		public ServiceFabricExecutionContext(IHostEnvironment hostEnvironment, IAccessor<ServiceContext> accessor)
-			: base(hostEnvironment)
-		{
-			accessor.OnFirstSet(UpdateState);
-
-		}
+			: base(hostEnvironment) =>
+				accessor.OnFirstSet(UpdateState);
 
 		private void UpdateState(ServiceContext context) =>
 			BuildVersion = context.CodePackageActivationContext.CodePackageVersion;
