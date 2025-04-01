@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 using static Microsoft.Omex.Extensions.Hosting.Services.OmexStatefulServiceRegistrator;
@@ -19,17 +20,22 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	public sealed class OmexStatefulService : StatefulService, IServiceFabricService<StatefulServiceContext>
 	{
 		private readonly OmexStatefulServiceRegistrator m_serviceRegistrator;
-		private readonly IAccessor<ReplicaRoleWrapper> m_replicaRoleAccessor;
-		
-		internal OmexStatefulService(
-			OmexStatefulServiceRegistrator serviceRegistrator,
-			StatefulServiceContext serviceContext)
-				: base(serviceContext)
+		private readonly IAccessorSetter<ReplicaRoleWrapper> m_replicaRoleAccessor;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="OmexStatefulService"/> class.
+		/// </summary>
+		/// <param name="serviceRegistrator">The service registrator.</param>
+		/// <param name="serviceContext">The stateful service context.</param>
+		public OmexStatefulService(
+									OmexStatefulServiceRegistrator serviceRegistrator,
+									StatefulServiceContext serviceContext)
+									: base(serviceContext)
 		{
 			serviceRegistrator.ContextAccessor.SetValue(Context);
 			serviceRegistrator.StateAccessor.SetValue(StateManager);
 			m_serviceRegistrator = serviceRegistrator;
-			m_replicaRoleAccessor = (IAccessor<ReplicaRoleWrapper>)serviceRegistrator.RoleAccessor;
+			m_replicaRoleAccessor = serviceRegistrator.RoleAccessor;
 		}
 
 		/// <inheritdoc />
@@ -53,10 +59,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <inheritdoc />
 		protected override Task RunAsync(CancellationToken cancellationToken) =>
 			Task.WhenAll(m_serviceRegistrator.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
-		
+
 		/// <summary>
 		/// Gets the current replica role.
 		/// </summary>
-		public ReplicaRole GetCurrentReplicaRole() => m_replicaRoleAccessor.Value?.Role ?? ReplicaRole.Unknown;
+		public ReplicaRole GetCurrentReplicaRole()
+		{
+			ReplicaRoleWrapper roleWrapper = new OmexStatefulServiceRegistrator.ReplicaRoleWrapper();
+			m_replicaRoleAccessor.SetValue(roleWrapper);
+			return roleWrapper.Role;
+		}
 	}
 }

@@ -5,13 +5,20 @@ using System.Fabric;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	internal sealed partial class OmexStatefulServiceRegistrator
+	/// <summary>
+	/// Registrator for OmexStatefulService.
+	/// </summary>
+	public sealed partial class OmexStatefulServiceRegistrator
 	{
-		// 'ReplicaRole' must be a reference type in order to use it as parameter 'TValue' in the generic type or method. That's why we use this wrapper class
+		/// <summary>
+		/// Wrapper class for the ReplicaRole to be used as a parameter in generic types or methods.
+		/// </summary>
 		public class ReplicaRoleWrapper
 		{
+			/// <summary>
+			/// Gets or sets the role of the replica.
+			/// </summary>
 			public ReplicaRole Role { get; set; }
 		}
-
 	}
 }
