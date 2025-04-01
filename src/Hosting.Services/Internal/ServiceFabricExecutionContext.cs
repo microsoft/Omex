@@ -12,18 +12,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	// TODO: should be removed after our services will set service executable version properly
 	internal sealed class ServiceFabricExecutionContext : BaseExecutionContext
 	{
-		private readonly IAccessor<ReplicaRoleWrapper> m_replicaRoleAccessor;
-		public ServiceFabricExecutionContext(IHostEnvironment hostEnvironment, IAccessor<ServiceContext> accessor, IAccessor<ReplicaRoleWrapper> replicaRoleAccessor)
+		public ServiceFabricExecutionContext(IHostEnvironment hostEnvironment, IAccessor<ServiceContext> accessor)
 			: base(hostEnvironment)
 		{
 			accessor.OnFirstSet(UpdateState);
-			m_replicaRoleAccessor = replicaRoleAccessor;
 
 		}
 
 		private void UpdateState(ServiceContext context) =>
 			BuildVersion = context.CodePackageActivationContext.CodePackageVersion;
-
-		public ReplicaRole CurrentReplicaRole => m_replicaRoleAccessor.Value?.Role ?? ReplicaRole.Unknown;
 	}
 }

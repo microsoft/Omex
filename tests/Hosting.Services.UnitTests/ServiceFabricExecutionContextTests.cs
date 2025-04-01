@@ -21,12 +21,9 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
             Accessor<ServiceContext> accessor = new();
             ((IAccessorSetter<ServiceContext>)accessor).SetValue(context);
 
-            Accessor<OmexStatefulServiceRegistrator.ReplicaRoleWrapper> replicaRoleAccessor = new();
-            ((IAccessorSetter<OmexStatefulServiceRegistrator.ReplicaRoleWrapper>)replicaRoleAccessor).SetValue(new OmexStatefulServiceRegistrator.ReplicaRoleWrapper());
+			IExecutionContext info = new ServiceFabricExecutionContext(new Mock<IHostEnvironment>().Object, accessor);
 
-            IExecutionContext info = new ServiceFabricExecutionContext(new Mock<IHostEnvironment>().Object, accessor, replicaRoleAccessor);
-
-            Assert.AreEqual(context.CodePackageActivationContext.CodePackageVersion, info.BuildVersion);
+			Assert.AreEqual(context.CodePackageActivationContext.CodePackageVersion, info.BuildVersion);
         }
     }
 }

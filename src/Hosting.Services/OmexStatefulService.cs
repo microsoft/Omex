@@ -6,49 +6,57 @@ using System.Fabric;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 using static Microsoft.Omex.Extensions.Hosting.Services.OmexStatefulServiceRegistrator;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	/// <summary>
-	/// Omex implementation of stateful service fabric service
-	/// </summary>
-	public sealed class OmexStatefulService : StatefulService, IServiceFabricService<StatefulServiceContext>
-	{
-		private readonly OmexStatefulServiceRegistrator m_serviceRegistrator;
+    /// <summary>
+    /// Omex implementation of stateful service fabric service
+    /// </summary>
+    public sealed class OmexStatefulService : StatefulService, IServiceFabricService<StatefulServiceContext>
+    {
+        private readonly OmexStatefulServiceRegistrator m_serviceRegistrator;
+        private readonly IAccessor<ReplicaRoleWrapper> m_replicaRoleAccessor;
 
-		internal OmexStatefulService(
-			OmexStatefulServiceRegistrator serviceRegistrator,
-			StatefulServiceContext serviceContext)
-				: base(serviceContext)
-		{
-			serviceRegistrator.ContextAccessor.SetValue(Context);
-			serviceRegistrator.StateAccessor.SetValue(StateManager);
-			m_serviceRegistrator = serviceRegistrator;
-		}
+        internal OmexStatefulService(
+            OmexStatefulServiceRegistrator serviceRegistrator,
+            StatefulServiceContext serviceContext)
+                : base(serviceContext)
+        {
+            serviceRegistrator.ContextAccessor.SetValue(Context);
+            serviceRegistrator.StateAccessor.SetValue(StateManager);
+            m_serviceRegistrator = serviceRegistrator;
+            m_replicaRoleAccessor = (IAccessor<ReplicaRoleWrapper>)serviceRegistrator.RoleAccessor;
+        }
 
-		/// <inheritdoc />
-		protected override Task OnOpenAsync(ReplicaOpenMode openMode, CancellationToken cancellationToken)
-		{
-			m_serviceRegistrator.PartitionAccessor.SetValue(Partition);
-			return base.OnOpenAsync(openMode, cancellationToken);
-		}
+        /// <inheritdoc />
+        protected override Task OnOpenAsync(ReplicaOpenMode openMode, CancellationToken cancellationToken)
+        {
+            m_serviceRegistrator.PartitionAccessor.SetValue(Partition);
+            return base.OnOpenAsync(openMode, cancellationToken);
+        }
 
-		/// <inheritdoc/>
-		protected override Task OnChangeRoleAsync(ReplicaRole newRole, CancellationToken cancellationToken)
-		{
-			m_serviceRegistrator.RoleAccessor.SetValue(new ReplicaRoleWrapper { Role = newRole });
-			return base.OnChangeRoleAsync(newRole, cancellationToken);
-		}
+        /// <inheritdoc/>
+        protected override Task OnChangeRoleAsync(ReplicaRole newRole, CancellationToken cancellationToken)
+        {
+            m_serviceRegistrator.RoleAccessor.SetValue(new ReplicaRoleWrapper { Role = newRole });
+            return base.OnChangeRoleAsync(newRole, cancellationToken);
+        }
 
-		/// <inheritdoc />
-		protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners() =>
-			m_serviceRegistrator.ListenerBuilders.Select(b => new ServiceReplicaListener(c => b.Build(this), b.Name));
+        /// <inheritdoc />
+        protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners() =>
+            m_serviceRegistrator.ListenerBuilders.Select(b => new ServiceReplicaListener(c => b.Build(this), b.Name));
 
-		/// <inheritdoc />
-		protected override Task RunAsync(CancellationToken cancellationToken) =>
-			Task.WhenAll(m_serviceRegistrator.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
-	}
+        /// <inheritdoc />
+        protected override Task RunAsync(CancellationToken cancellationToken) =>
+            Task.WhenAll(m_serviceRegistrator.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
+
+        /// <summary>
+        /// Gets the current replica role.
+        /// </summary>
+        public ReplicaRole GetCurrentReplicaRole() => m_replicaRoleAccessor.Value?.Role ?? ReplicaRole.Unknown;
+    }
 }
