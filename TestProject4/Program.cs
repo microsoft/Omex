@@ -10,7 +10,7 @@ using ServiceFabric.Mocks;
 
 public class Program
 {
-	public static void Main(string[] args)
+	public static async Task Main(string[] args)
 	{
 		// Initialize the stateful service registrator
 		ServiceRegistratorOptions serviceRegistratorOptions = new ServiceRegistratorOptions { ServiceTypeName = "MyServiceType" };
@@ -49,6 +49,9 @@ public class Program
 
 		// Initialize the OmexStatefulService
 		OmexStatefulService statefulService = new OmexStatefulService(serviceRegistrator, context);
+
+		// Call OnChangeRoleAsync with appropriate parameters
+		await statefulService.ChangeRoleAsyncTest(ReplicaRole.Primary, CancellationToken.None);
 
 		// Get the current replica role
 		ReplicaRole currentRole = statefulService.GetCurrentReplicaRole();

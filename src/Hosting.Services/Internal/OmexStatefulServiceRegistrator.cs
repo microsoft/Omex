@@ -45,7 +45,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
 		/// <returns>A task that represents the asynchronous registration operation.</returns>
 		public override Task RegisterAsync(CancellationToken cancellationToken) =>
-									ServiceRuntime.RegisterServiceAsync(Options.ServiceTypeName, context => new OmexStatefulService(this, context), cancellationToken: cancellationToken);
+			ServiceRuntime.RegisterServiceAsync(Options.ServiceTypeName, context => new OmexStatefulService(this, context), cancellationToken: cancellationToken);
 
 		/// <summary>
 		/// Gets the accessor for the reliable state manager.

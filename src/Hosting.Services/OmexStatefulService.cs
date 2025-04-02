@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	public sealed class OmexStatefulService : StatefulService, IServiceFabricService<StatefulServiceContext>
 	{
 		private readonly OmexStatefulServiceRegistrator m_serviceRegistrator;
-		private readonly IAccessorSetter<ReplicaRoleWrapper> m_replicaRoleAccessor;
+		private readonly IAccessor<ReplicaRoleWrapper> m_replicaRoleAccessor;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="OmexStatefulService"/> class.
@@ -28,14 +28,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <param name="serviceRegistrator">The service registrator.</param>
 		/// <param name="serviceContext">The stateful service context.</param>
 		public OmexStatefulService(
-									OmexStatefulServiceRegistrator serviceRegistrator,
-									StatefulServiceContext serviceContext)
-									: base(serviceContext)
+			OmexStatefulServiceRegistrator serviceRegistrator,
+			StatefulServiceContext serviceContext)
+			: base(serviceContext)
 		{
 			serviceRegistrator.ContextAccessor.SetValue(Context);
 			serviceRegistrator.StateAccessor.SetValue(StateManager);
 			m_serviceRegistrator = serviceRegistrator;
-			m_replicaRoleAccessor = serviceRegistrator.RoleAccessor;
+			m_replicaRoleAccessor = new AccessorWrapper<ReplicaRoleWrapper>(serviceRegistrator.RoleAccessor);
 		}
 
 		/// <inheritdoc />
@@ -51,10 +51,17 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			m_serviceRegistrator.RoleAccessor.SetValue(new ReplicaRoleWrapper { Role = newRole });
 			return base.OnChangeRoleAsync(newRole, cancellationToken);
 		}
-		
+
+		/// <inheritdoc />
+		public Task ChangeRoleAsyncTest(ReplicaRole newRole, CancellationToken cancellationToken)
+		{
+			m_serviceRegistrator.RoleAccessor.SetValue(new ReplicaRoleWrapper { Role = newRole });
+			return Task.CompletedTask;
+		}
+
 		/// <inheritdoc />
 		protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners() =>
-			m_serviceRegistrator.ListenerBuilders.Select(b => new ServiceReplicaListener(c => b.Build(this), b.Name));
+					m_serviceRegistrator.ListenerBuilders.Select(b => new ServiceReplicaListener(c => b.Build(this), b.Name));
 
 		/// <inheritdoc />
 		protected override Task RunAsync(CancellationToken cancellationToken) =>
@@ -65,9 +72,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// </summary>
 		public ReplicaRole GetCurrentReplicaRole()
 		{
-			ReplicaRoleWrapper roleWrapper = new OmexStatefulServiceRegistrator.ReplicaRoleWrapper();
-			m_replicaRoleAccessor.SetValue(roleWrapper);
-			return roleWrapper.Role;
+			ReplicaRoleWrapper? value = m_replicaRoleAccessor.Value;
+			return value?.Role ?? ReplicaRole.Unknown;
 		}
 	}
 }
