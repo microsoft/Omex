@@ -6,7 +6,6 @@ using System.Fabric;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 using static Microsoft.Omex.Extensions.Hosting.Services.OmexStatefulServiceRegistrator;
@@ -19,8 +18,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	public sealed class OmexStatefulService : StatefulService, IServiceFabricService<StatefulServiceContext>
 	{
 		private readonly OmexStatefulServiceRegistrator m_serviceRegistrator;
-		private readonly IAccessor<ReplicaRoleWrapper> m_replicaRoleAccessor;
-		
+		private ReplicaRoleWrapper m_replicaRoleWrapper = new ReplicaRoleWrapper();
+
 		internal OmexStatefulService(
 			OmexStatefulServiceRegistrator serviceRegistrator,
 			StatefulServiceContext serviceContext)
@@ -29,7 +28,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			serviceRegistrator.ContextAccessor.SetValue(Context);
 			serviceRegistrator.StateAccessor.SetValue(StateManager);
 			m_serviceRegistrator = serviceRegistrator;
-			m_replicaRoleAccessor = (IAccessor<ReplicaRoleWrapper>)serviceRegistrator.RoleAccessor;
 		}
 
 		/// <inheritdoc />
@@ -42,7 +40,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <inheritdoc/>
 		protected override Task OnChangeRoleAsync(ReplicaRole newRole, CancellationToken cancellationToken)
 		{
-			m_serviceRegistrator.RoleAccessor.SetValue(new ReplicaRoleWrapper { Role = newRole });
+			m_replicaRoleWrapper = new ReplicaRoleWrapper { Role = newRole };
+			m_serviceRegistrator.RoleAccessor.SetValue(m_replicaRoleWrapper);
 			return base.OnChangeRoleAsync(newRole, cancellationToken);
 		}
 		
@@ -53,10 +52,10 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <inheritdoc />
 		protected override Task RunAsync(CancellationToken cancellationToken) =>
 			Task.WhenAll(m_serviceRegistrator.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
-		
+
 		/// <summary>
 		/// Gets the current replica role.
 		/// </summary>
-		public ReplicaRole GetCurrentReplicaRole() => m_replicaRoleAccessor.Value?.Role ?? ReplicaRole.Unknown;
+		public ReplicaRole GetCurrentReplicaRole() => m_replicaRoleWrapper?.Role ?? ReplicaRole.Unknown;
 	}
 }
