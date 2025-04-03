@@ -6,7 +6,6 @@ using System.Fabric;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 using Microsoft.Omex.Extensions.Hosting.Services;
@@ -20,8 +19,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	public sealed class OmexStatefulService : StatefulService, IServiceFabricService<StatefulServiceContext>
 	{
 		private readonly OmexStatefulServiceRegistrator m_serviceRegistrator;
-		private readonly IAccessorSetter<ReplicaRoleWrapper> m_replicaRoleAccessor;
-		// Add a default initialization for m_replicaRoleWrapper to avoid CS8618
 		private ReplicaRoleWrapper m_replicaRoleWrapper = new ReplicaRoleWrapper();
 
 		/// <summary>
@@ -37,7 +34,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			serviceRegistrator.ContextAccessor.SetValue(Context);
 			serviceRegistrator.StateAccessor.SetValue(StateManager);
 			m_serviceRegistrator = serviceRegistrator;
-			m_replicaRoleAccessor = serviceRegistrator.RoleAccessor;
 		}
 
 		/// <inheritdoc />
