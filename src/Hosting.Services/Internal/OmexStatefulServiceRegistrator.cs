@@ -7,12 +7,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
+using Microsoft.Omex.Extensions.Hosting.Services.Internal;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	public sealed partial class OmexStatefulServiceRegistrator : OmexServiceRegistrator<OmexStatefulService, StatefulServiceContext>
+	/// <summary>
+	/// Registers OmexStatefulService with the Service Fabric runtime.
+	/// </summary>
+	public sealed class OmexStatefulServiceRegistrator : OmexServiceRegistrator<OmexStatefulService, StatefulServiceContext>
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="OmexStatefulServiceRegistrator"/> class.
@@ -29,7 +33,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			IAccessorSetter<StatefulServiceContext> contextAccessor,
 			IAccessorSetter<IStatefulServicePartition> partitionAccessor,
 			IAccessorSetter<IReliableStateManager> stateAccessor,
-			IAccessorSetter<ReplicaRoleWrapper> roleAccessor,
+			IAccessorSetter<OmexStateManager> roleAccessor,
 			IEnumerable<IListenerBuilder<OmexStatefulService>> listenerBuilders,
 			IEnumerable<IServiceAction<OmexStatefulService>> serviceActions)
 				: base(options, contextAccessor, listenerBuilders, serviceActions)
@@ -58,9 +62,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		public IAccessorSetter<IStatefulServicePartition> PartitionAccessor { get; }
 
 		/// <summary>
-		/// Gets the accessor for the replica role wrapper.
+		/// Gets the accessor for the Omex state manager.
 		/// </summary>
-		public IAccessorSetter<ReplicaRoleWrapper> RoleAccessor { get; }
-
+		public IAccessorSetter<OmexStateManager> RoleAccessor { get; }
 	}
 }

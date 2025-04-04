@@ -5,20 +5,16 @@ using System.Fabric;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
-	/// <summary>
-	/// Registrator for OmexStatefulService.
-	/// </summary>
-	public sealed partial class OmexStatefulServiceRegistrator
-	{
-		/// <summary>
-		/// Wrapper class for the ReplicaRole to be used as a parameter in generic types or methods.
-		/// </summary>
-		public class ReplicaRoleWrapper
-		{
-			/// <summary>
-			/// Gets or sets the role of the replica.
-			/// </summary>
-			public ReplicaRole Role { get; set; }
-		}
-	}
+
+	///// <summary>
+	///// Wrapper class for the ReplicaRole to be used as a parameter in generic types or methods.
+	///// </summary>
+	//internal class ReplicaRoleWrapper
+	//{
+	//	/// <summary>
+	//	/// Gets or sets the role of the replica.
+	//	/// </summary>
+	//	protected ReplicaRole Role { get; set; }
+	//}
+	
 }

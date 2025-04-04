@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<StartupServicesManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="ReplicaTestApp_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ReplicaTestApp_PartitionCount" DefaultValue="1" />
+    <Parameter Name="ReplicaTestApp_TargetReplicaSetSize" DefaultValue="3" />
+  </Parameters>
+  <Services>
+    <!-- The section below creates instances of service types, when an instance of this 
+         application type is created. You can also create one or more instances of service type using the 
+         ServiceFabric PowerShell module.
+
+         The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
+    <Service Name="ReplicaTestApp" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="ReplicaTestAppType" TargetReplicaSetSize="[ReplicaTestApp_TargetReplicaSetSize]" MinReplicaSetSize="[ReplicaTestApp_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[ReplicaTestApp_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+  </Services>
+</StartupServicesManifest>

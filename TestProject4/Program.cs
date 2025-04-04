@@ -10,54 +10,54 @@ using ServiceFabric.Mocks;
 
 public class Program
 {
-	public static async Task Main(string[] args)
+	public static void Main(string[] args)
 	{
 		// Initialize the stateful service registrator
-		ServiceRegistratorOptions serviceRegistratorOptions = new ServiceRegistratorOptions { ServiceTypeName = "MyServiceType" };
-		IOptions<ServiceRegistratorOptions> options = Options.Create(serviceRegistratorOptions);
-		IAccessorSetter<StatefulServiceContext> contextAccessor = new AccessorSetter<StatefulServiceContext>(); // Initialize appropriately
-		IAccessorSetter<IStatefulServicePartition> partitionAccessor = new AccessorSetter<IStatefulServicePartition>(); // Initialize appropriately
-		IAccessorSetter<IReliableStateManager> stateAccessor = new AccessorSetter<IReliableStateManager>(); // Initialize appropriately
-		IAccessorSetter<OmexStatefulServiceRegistrator.ReplicaRoleWrapper> roleAccessor = new AccessorSetter<OmexStatefulServiceRegistrator.ReplicaRoleWrapper>(); // Initialize appropriately
-		IEnumerable<IListenerBuilder<OmexStatefulService>> listenerBuilders = new List<IListenerBuilder<OmexStatefulService>>(); // Initialize appropriately
-		IEnumerable<IServiceAction<OmexStatefulService>> serviceActions = new List<IServiceAction<OmexStatefulService>>(); // Initialize appropriately
+		//ServiceRegistratorOptions serviceRegistratorOptions = new ServiceRegistratorOptions { ServiceTypeName = "MyServiceType" };
+		//IOptions<ServiceRegistratorOptions> options = Options.Create(serviceRegistratorOptions);
+		//IAccessorSetter<StatefulServiceContext> contextAccessor = new AccessorSetter<StatefulServiceContext>(); // Initialize appropriately
+		//IAccessorSetter<IStatefulServicePartition> partitionAccessor = new AccessorSetter<IStatefulServicePartition>(); // Initialize appropriately
+		//IAccessorSetter<IReliableStateManager> stateAccessor = new AccessorSetter<IReliableStateManager>(); // Initialize appropriately
+		////IAccessorSetter<OmexStatefulServiceRegistrator.ReplicaRoleWrapper> roleAccessor = new AccessorSetter<OmexStatefulServiceRegistrator.ReplicaRoleWrapper>(); // Initialize appropriately
+		//IEnumerable<IListenerBuilder<OmexStatefulService>> listenerBuilders = new List<IListenerBuilder<OmexStatefulService>>(); // Initialize appropriately
+		//IEnumerable<IServiceAction<OmexStatefulService>> serviceActions = new List<IServiceAction<OmexStatefulService>>(); // Initialize appropriately
 
-		OmexStatefulServiceRegistrator serviceRegistrator = new OmexStatefulServiceRegistrator(
-			options,
-			contextAccessor,
-			partitionAccessor,
-			stateAccessor,
-			roleAccessor,
-			listenerBuilders,
-			serviceActions);
+		//OmexStatefulServiceRegistrator serviceRegistrator = new OmexStatefulServiceRegistrator(
+		//	options,
+		//	contextAccessor,
+		//	partitionAccessor,
+		//	stateAccessor,
+		//	//roleAccessor,
+		//	listenerBuilders,
+		//	serviceActions);
 
 		// Create a mock StatefulServiceContext
-		NodeContext nodeContext = new NodeContext("nodeName", new NodeId(0, 0), 0, "nodeType", "ipAddress");
-		ICodePackageActivationContext codePackageActivationContext = new MockCodePackageActivationContext(
-			"applicationName",
-			"applicationTypeName",
-			"codePackageName",
-			"codePackageVersion",
-			"contextId",
-			"logDirectory",
-			"tempDirectory",
-			"workDirectory",
-			"serviceManifestName",
-			"serviceManifestVersion"
-		);
-		StatefulServiceContext context = new StatefulServiceContext(nodeContext, codePackageActivationContext, "serviceTypeName", new Uri("fabric:/AppName/ServiceName"), null, Guid.NewGuid(), long.MaxValue);
+		//NodeContext nodeContext = new NodeContext("nodeName", new NodeId(0, 0), 0, "nodeType", "ipAddress");
+		//ICodePackageActivationContext codePackageActivationContext = new MockCodePackageActivationContext(
+		//	"applicationName",
+		//	"applicationTypeName",
+		//	"codePackageName",
+		//	"codePackageVersion",
+		//	"contextId",
+		//	"logDirectory",
+		//	"tempDirectory",
+		//	"workDirectory",
+		//	"serviceManifestName",
+		//	"serviceManifestVersion"
+		//);
+		//StatefulServiceContext context = new StatefulServiceContext(nodeContext, codePackageActivationContext, "serviceTypeName", new Uri("fabric:/AppName/ServiceName"), null, Guid.NewGuid(), long.MaxValue);
 
 		// Initialize the OmexStatefulService
-		OmexStatefulService statefulService = new OmexStatefulService(serviceRegistrator, context);
+		//OmexStatefulService statefulService = new OmexStatefulService(serviceRegistrator, context);
 
 		// Call OnChangeRoleAsync with appropriate parameters
-		await statefulService.ChangeRoleAsyncTest(ReplicaRole.Primary, CancellationToken.None);
+		//await statefulService.ChangeRoleAsyncTest(ReplicaRole.Primary, CancellationToken.None);
 
 		// Get the current replica role
-		ReplicaRole currentRole = statefulService.GetCurrentReplicaRole();
-		Console.WriteLine($"Current Replica Role: {currentRole}");
+		//ReplicaRole currentRole = statefulService.GetCurrentReplicaRole();
+		Console.WriteLine($"Test");
+		}
 	}
-}
 
 public class AccessorSetter<T> : IAccessorSetter<T> where T : class
 {

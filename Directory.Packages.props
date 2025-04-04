@@ -20,6 +20,7 @@
     <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.3" />
+    <PackageVersion Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" Version="7.1.2493" />
     <PackageVersion Include="Microsoft.SourceLink.AzureRepos.Git" Version="8.0.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.3" />

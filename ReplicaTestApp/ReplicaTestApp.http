@@ -1,0 +1,6 @@
+@ReplicaTestApp_HostAddress = http://localhost:5051
+
+GET {{ReplicaTestApp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
