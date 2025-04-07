@@ -50,7 +50,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			{
 				collection.TryAddAccessor<IReliableStateManager>();
 				collection.TryAddAccessor<IStatefulServicePartition, IServicePartition>();
-				collection.TryAddAccessor<ReplicaRoleWrapper>();
+				collection.TryAddAccessor<OmexStateManager>();
 			}
 			else
 			{

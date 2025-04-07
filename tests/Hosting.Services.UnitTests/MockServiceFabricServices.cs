@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 					new Accessor<StatefulServiceContext>(),
 					new Accessor<IStatefulServicePartition>(),
 					new Accessor<IReliableStateManager>(new MockReliableStateManager()),
-					new Accessor<OmexStatefulServiceRegistrator.ReplicaRoleWrapper>(),
+					new Accessor<OmexStateManager>(),
 					Enumerable.Empty<IListenerBuilder<OmexStatefulService>>(),
 					Enumerable.Empty<IServiceAction<OmexStatefulService>>()),
 				MockStatefulServiceContextFactory.Default);

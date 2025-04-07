@@ -19,7 +19,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			IAccessorSetter<StatefulServiceContext> contextAccessor,
 			IAccessorSetter<IStatefulServicePartition> partitionAccessor,
 			IAccessorSetter<IReliableStateManager> stateAccessor,
-			IAccessorSetter<ReplicaRoleWrapper> roleAccessor,
+			IAccessorSetter<OmexStateManager> roleAccessor,
 			IEnumerable<IListenerBuilder<OmexStatefulService>> listenerBuilders,
 			IEnumerable<IServiceAction<OmexStatefulService>> serviceActions)
 				: base(options, contextAccessor, listenerBuilders, serviceActions)
@@ -36,7 +36,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 		public IAccessorSetter<IStatefulServicePartition> PartitionAccessor { get; }
 
-		public IAccessorSetter<ReplicaRoleWrapper> RoleAccessor { get; }
+		public IAccessorSetter<OmexStateManager> RoleAccessor { get; }
 
 	}
 }

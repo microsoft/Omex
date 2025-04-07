@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	public sealed class OmexStatefulService : StatefulService, IServiceFabricService<StatefulServiceContext>
 	{
 		private readonly OmexStatefulServiceRegistrator m_serviceRegistrator;
-		private ReplicaRoleWrapper m_replicaRoleWrapper = new ReplicaRoleWrapper();
+		private OmexStateManager m_omexStateManager;
 
 		internal OmexStatefulService(
 			OmexStatefulServiceRegistrator serviceRegistrator,
@@ -28,6 +28,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			serviceRegistrator.ContextAccessor.SetValue(Context);
 			serviceRegistrator.StateAccessor.SetValue(StateManager);
 			m_serviceRegistrator = serviceRegistrator;
+			m_omexStateManager = new OmexStateManager(StateManager, ReplicaRole.Unknown);
 		}
 
 		/// <inheritdoc />
@@ -40,8 +41,8 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <inheritdoc/>
 		protected override Task OnChangeRoleAsync(ReplicaRole newRole, CancellationToken cancellationToken)
 		{
-			m_replicaRoleWrapper = new ReplicaRoleWrapper { Role = newRole };
-			m_serviceRegistrator.RoleAccessor.SetValue(m_replicaRoleWrapper);
+			m_omexStateManager = new OmexStateManager(StateManager, newRole);
+			m_serviceRegistrator.RoleAccessor.SetValue(m_omexStateManager);
 			return base.OnChangeRoleAsync(newRole, cancellationToken);
 		}
 		
@@ -56,6 +57,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <summary>
 		/// Gets the current replica role.
 		/// </summary>
-		public ReplicaRole GetCurrentReplicaRole() => m_replicaRoleWrapper?.Role ?? ReplicaRole.Unknown;
+		/// <returns>The current replica role.</returns>
+		public ReplicaRole GetCurrentReplicaRole() => m_omexStateManager?.GetRole() ?? ReplicaRole.Unknown;
 	}
 }
