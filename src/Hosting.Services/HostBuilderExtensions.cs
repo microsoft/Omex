@@ -10,7 +10,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.Omex.Extensions.Abstractions.ExecutionContext;
+using Microsoft.Omex.Extensions.Hosting.Services.Internal;
 using Microsoft.ServiceFabric.Data;
+using static Microsoft.Omex.Extensions.Hosting.Services.OmexStatefulServiceRegistrator;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services
 {
@@ -49,6 +51,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			{
 				collection.TryAddAccessor<IReliableStateManager>();
 				collection.TryAddAccessor<IStatefulServicePartition, IServicePartition>();
+				collection.TryAddAccessor<OmexStateManager>();
 			}
 			else
 			{
