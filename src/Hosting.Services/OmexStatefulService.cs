@@ -53,11 +53,5 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// <inheritdoc />
 		protected override Task RunAsync(CancellationToken cancellationToken) =>
 			Task.WhenAll(m_serviceRegistrator.ServiceActions.Select(r => r.RunAsync(this, cancellationToken)));
-
-		/// <summary>
-		/// Gets the current replica role.
-		/// </summary>
-		/// <returns>The current replica role.</returns>
-		public ReplicaRole GetCurrentReplicaRole() => m_omexStateManager?.GetRole() ?? ReplicaRole.Unknown;
 	}
 }
