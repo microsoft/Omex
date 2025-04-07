@@ -27,7 +27,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		/// </summary>
 		/// <param name="serviceRegistrator">The service registrator.</param>
 		/// <param name="serviceContext">The stateful service context.</param>
-		public OmexStatefulService(
+		internal OmexStatefulService(
 			OmexStatefulServiceRegistrator serviceRegistrator,
 			StatefulServiceContext serviceContext)
 			: base(serviceContext)

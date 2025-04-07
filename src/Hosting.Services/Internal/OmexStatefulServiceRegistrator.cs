@@ -16,7 +16,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// <summary>
 	/// Registers OmexStatefulService with the Service Fabric runtime.
 	/// </summary>
-	public sealed class OmexStatefulServiceRegistrator : OmexServiceRegistrator<OmexStatefulService, StatefulServiceContext>
+	internal sealed class OmexStatefulServiceRegistrator : OmexServiceRegistrator<OmexStatefulService, StatefulServiceContext>
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="OmexStatefulServiceRegistrator"/> class.

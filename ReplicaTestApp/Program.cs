@@ -27,7 +27,7 @@ namespace ReplicaTestApp
 		/// <summary>
 		/// This is the entry point of the service host process.
 		/// </summary>
-		private static async Task Main()
+		private static void Main()
         {
             try
             {
@@ -54,14 +54,14 @@ namespace ReplicaTestApp
 				IEnumerable<IListenerBuilder<OmexStatefulService>> listenerBuilders = new List<IListenerBuilder<OmexStatefulService>>(); // Initialize appropriately
 				IEnumerable<IServiceAction<OmexStatefulService>> serviceActions = new List<IServiceAction<OmexStatefulService>>(); // Initialize appropriately
 
-				OmexStatefulServiceRegistrator serviceRegistrator = new OmexStatefulServiceRegistrator(
-					options,
-					contextAccessor,
-					partitionAccessor,
-					stateAccessor,
-					roleAccessor,
-					listenerBuilders,
-					serviceActions);
+				//OmexStatefulServiceRegistrator serviceRegistrator = new OmexStatefulServiceRegistrator(
+				//	options,
+				//	contextAccessor,
+				//	partitionAccessor,
+				//	stateAccessor,
+				//	roleAccessor,
+				//	listenerBuilders,
+				//	serviceActions);
 
 				// Create a mock StatefulServiceContext
 				NodeContext nodeContext = new NodeContext("nodeName", new NodeId(0, 0), 0, "nodeType", "ipAddress");
@@ -79,14 +79,16 @@ namespace ReplicaTestApp
 				);
 				StatefulServiceContext context = new StatefulServiceContext(nodeContext, codePackageActivationContext, "serviceTypeName", new Uri("fabric:/AppName/ServiceName"), null, Guid.NewGuid(), long.MaxValue);
 
-				// Initialize the OmexStatefulService
-				OmexStatefulService statefulService = new OmexStatefulService(serviceRegistrator, context);
+				IReliableStateManager reliableStateManager = new MockReliableStateManager();
+				OmexStateManager omexStateManager = new(reliableStateManager, ReplicaRole.Primary);
 
 				// Call OnChangeRoleAsync with appropriate parameters
-				await statefulService.ChangeRoleAsyncTest(ReplicaRole.Primary, CancellationToken.None);
+				//await statefulService.ChangeRoleAsyncTest(ReplicaRole.Primary, CancellationToken.None);
 
-				ReplicaRole currentRole = statefulService.GetCurrentReplicaRole();
+				ReplicaRole currentRole = omexStateManager.GetRole();
 				Console.WriteLine($"Current Replica Role: {currentRole}");
+				Console.WriteLine($"IsReadable {omexStateManager.IsReadable}");
+				Console.WriteLine($"IsWritablee {omexStateManager.IsWritable}");
 
 
 				Thread.Sleep(Timeout.Infinite);
