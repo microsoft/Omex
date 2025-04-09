@@ -9,7 +9,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	/// <summary>
 	/// Manages the state of the Omex service.
 	/// </summary>
-	public sealed class OmexStateManager
+	public sealed class OmexStateManager : IOmexStateManager
 	{
 		private readonly IReliableStateManager m_stateManager;
 		private ReplicaRole m_role;
