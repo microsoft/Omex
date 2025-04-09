@@ -17,6 +17,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 	public sealed class OmexStatefulService : StatefulService, IServiceFabricService<StatefulServiceContext>
 	{
 		private readonly OmexStatefulServiceRegistrator m_serviceRegistrator;
+		private OmexStateManager m_omexStateManager;
 
 		internal OmexStatefulService(
 			OmexStatefulServiceRegistrator serviceRegistrator,
@@ -26,6 +27,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			serviceRegistrator.ContextAccessor.SetValue(Context);
 			serviceRegistrator.StateAccessor.SetValue(StateManager);
 			m_serviceRegistrator = serviceRegistrator;
+			m_omexStateManager = new OmexStateManager(StateManager, ReplicaRole.Unknown);
 		}
 
 		/// <inheritdoc />
@@ -34,7 +36,15 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			m_serviceRegistrator.PartitionAccessor.SetValue(Partition);
 			return base.OnOpenAsync(openMode, cancellationToken);
 		}
-
+		
+		/// <inheritdoc/>
+		protected override Task OnChangeRoleAsync(ReplicaRole newRole, CancellationToken cancellationToken)
+		{
+			m_omexStateManager = new OmexStateManager(StateManager, newRole);
+			m_serviceRegistrator.RoleAccessor.SetValue(m_omexStateManager);
+			return base.OnChangeRoleAsync(newRole, cancellationToken);
+		}
+		
 		/// <inheritdoc />
 		protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners() =>
 			m_serviceRegistrator.ListenerBuilders.Select(b => new ServiceReplicaListener(c => b.Build(this), b.Name));
