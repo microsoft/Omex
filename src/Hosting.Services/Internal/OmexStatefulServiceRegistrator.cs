@@ -19,14 +19,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			IAccessorSetter<StatefulServiceContext> contextAccessor,
 			IAccessorSetter<IStatefulServicePartition> partitionAccessor,
 			IAccessorSetter<IReliableStateManager> stateAccessor,
-			IAccessorSetter<OmexStateManager> roleAccessor,
+			IAccessorSetter<OmexStateManager> stateManagerAccessor,
 			IEnumerable<IListenerBuilder<OmexStatefulService>> listenerBuilders,
 			IEnumerable<IServiceAction<OmexStatefulService>> serviceActions)
 				: base(options, contextAccessor, listenerBuilders, serviceActions)
 		{
 			PartitionAccessor = partitionAccessor;
 			StateAccessor = stateAccessor;
-			RoleAccessor = roleAccessor;
+			StateManagerAccessor = stateManagerAccessor;
 		}
 
 		public override Task RegisterAsync(CancellationToken cancellationToken) =>
@@ -36,7 +36,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 
 		public IAccessorSetter<IStatefulServicePartition> PartitionAccessor { get; }
 
-		public IAccessorSetter<OmexStateManager> RoleAccessor { get; }
-
+		public IAccessorSetter<OmexStateManager> StateManagerAccessor { get; }
 	}
 }
