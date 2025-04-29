@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Accessors;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
@@ -172,25 +173,33 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 		{
 			StatefulServiceContext serviceContext = MockStatefulServiceContextFactory.Default;
 
-			Mock<IAccessorSetter<StatefulServiceContext>> contextAccessorMock = new();
-			Mock<IAccessorSetter<IReliableStateManager>> stateAccessorMock = new();
-			Mock<IAccessorSetter<OmexStateManager>> stateManagerAccessorMock = new();
+			Accessor<StatefulServiceContext> contextAccessor = new();
+			Accessor<IReliableStateManager> stateAccessor = new();
+			Accessor<OmexStateManager> stateManagerAccessor = new();
+			Accessor<IStatefulServicePartition> statefulServiceAccessor = new();
 
 			OmexStatefulServiceRegistrator serviceRegistrator = new OmexStatefulServiceRegistrator(
-				Mock.Of<IOptions<ServiceRegistratorOptions>>(),
-				contextAccessorMock.Object,
-				new Mock<IAccessorSetter<IStatefulServicePartition>>().Object,
-				stateAccessorMock.Object,
-				stateManagerAccessorMock.Object,
-				Enumerable.Empty<IListenerBuilder<OmexStatefulService>>(),
-				Enumerable.Empty<IServiceAction<OmexStatefulService>>());
+			Options.Create(new ServiceRegistratorOptions()),
+			contextAccessor,
+			statefulServiceAccessor,
+			stateAccessor,
+			stateManagerAccessor,
+			Enumerable.Empty<IListenerBuilder<OmexStatefulService>>(),
+			Enumerable.Empty<IServiceAction<OmexStatefulService>>());
 
 			OmexStatefulService service = new OmexStatefulService(serviceRegistrator, serviceContext);
 
 			Assert.IsNotNull(service);
-			contextAccessorMock.Verify(m => m.SetValue(serviceContext), Times.Once);
-			stateAccessorMock.Verify(m => m.SetValue(It.IsAny<IReliableStateManager>()), Times.Once);
-			stateManagerAccessorMock.Verify(m => m.SetValue(It.Is<OmexStateManager>(manager => manager.IsReadable == false && manager.IsWritable == false)), Times.Once);
+
+			Assert.AreEqual(serviceContext, ((IAccessor<StatefulServiceContext>)contextAccessor).Value);
+			Assert.IsNotNull(((IAccessor<IReliableStateManager>)stateAccessor).Value);
+			Assert.IsNotNull(((IAccessor<OmexStateManager>)stateManagerAccessor).Value);
+
+			OmexStateManager stateManager = ((IAccessor<OmexStateManager>)stateManagerAccessor).Value;
+			Assert.IsNotNull(stateManager);
+			Assert.IsFalse(stateManager.IsReadable);
+			Assert.IsFalse(stateManager.IsWritable);
+
 		}
 
 		private class TestTypeToResolve { }
