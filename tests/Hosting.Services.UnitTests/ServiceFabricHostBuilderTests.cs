@@ -3,13 +3,18 @@
 
 using System;
 using System.Fabric;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Microsoft.Omex.Extensions.Abstractions.Accessors;
+using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using ServiceFabric.Mocks;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 {
@@ -160,6 +165,32 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			TestTypeToResolve obj = hostBuilder.Build().Services.GetRequiredService<TestTypeToResolve>();
 
 			Assert.IsNotNull(obj);
+		}
+
+		[TestMethod]
+		public void OmexStatefulService_Constructor_SetsOmexStateManagerWithUnknownRole()
+		{
+			StatefulServiceContext serviceContext = MockStatefulServiceContextFactory.Default;
+
+			Mock<IAccessorSetter<StatefulServiceContext>> contextAccessorMock = new();
+			Mock<IAccessorSetter<IReliableStateManager>> stateAccessorMock = new();
+			Mock<IAccessorSetter<OmexStateManager>> stateManagerAccessorMock = new();
+
+			OmexStatefulServiceRegistrator serviceRegistrator = new OmexStatefulServiceRegistrator(
+				Mock.Of<IOptions<ServiceRegistratorOptions>>(),
+				contextAccessorMock.Object,
+				new Mock<IAccessorSetter<IStatefulServicePartition>>().Object,
+				stateAccessorMock.Object,
+				stateManagerAccessorMock.Object,
+				Enumerable.Empty<IListenerBuilder<OmexStatefulService>>(),
+				Enumerable.Empty<IServiceAction<OmexStatefulService>>());
+
+			OmexStatefulService service = new OmexStatefulService(serviceRegistrator, serviceContext);
+
+			Assert.IsNotNull(service);
+			contextAccessorMock.Verify(m => m.SetValue(serviceContext), Times.Once);
+			stateAccessorMock.Verify(m => m.SetValue(It.IsAny<IReliableStateManager>()), Times.Once);
+			stateManagerAccessorMock.Verify(m => m.SetValue(It.Is<OmexStateManager>(manager => manager.IsReadable == false && manager.IsWritable == false)), Times.Once);
 		}
 
 		private class TestTypeToResolve { }
