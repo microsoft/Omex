@@ -25,6 +25,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 		{
 			serviceRegistrator.ContextAccessor.SetValue(Context);
 			serviceRegistrator.StateAccessor.SetValue(StateManager);
+
+			// Create OmexStateManager with Unknown role
+			OmexStateManager omexStateManager = new OmexStateManager(StateManager, ReplicaRole.Unknown);
+			serviceRegistrator.StateManagerAccessor.SetValue(omexStateManager);
+
 			m_serviceRegistrator = serviceRegistrator;
 		}
 

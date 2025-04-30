@@ -3,13 +3,19 @@
 
 using System;
 using System.Fabric;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Microsoft.Omex.Extensions.Abstractions;
+using Microsoft.Omex.Extensions.Abstractions.Accessors;
+using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using ServiceFabric.Mocks;
 
 namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 {
@@ -160,6 +166,40 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			TestTypeToResolve obj = hostBuilder.Build().Services.GetRequiredService<TestTypeToResolve>();
 
 			Assert.IsNotNull(obj);
+		}
+
+		[TestMethod]
+		public void OmexStatefulService_Constructor_SetsOmexStateManagerWithUnknownRole()
+		{
+			StatefulServiceContext serviceContext = MockStatefulServiceContextFactory.Default;
+
+			Accessor<StatefulServiceContext> contextAccessor = new();
+			Accessor<IReliableStateManager> stateAccessor = new();
+			Accessor<OmexStateManager> stateManagerAccessor = new();
+			Accessor<IStatefulServicePartition> statefulServiceAccessor = new();
+
+			OmexStatefulServiceRegistrator serviceRegistrator = new OmexStatefulServiceRegistrator(
+			Options.Create(new ServiceRegistratorOptions()),
+			contextAccessor,
+			statefulServiceAccessor,
+			stateAccessor,
+			stateManagerAccessor,
+			Enumerable.Empty<IListenerBuilder<OmexStatefulService>>(),
+			Enumerable.Empty<IServiceAction<OmexStatefulService>>());
+
+			OmexStatefulService service = new OmexStatefulService(serviceRegistrator, serviceContext);
+
+			Assert.IsNotNull(service);
+
+			Assert.AreEqual(serviceContext, ((IAccessor<StatefulServiceContext>)contextAccessor).Value);
+			Assert.IsNotNull(((IAccessor<IReliableStateManager>)stateAccessor).Value);
+			Assert.IsNotNull(((IAccessor<OmexStateManager>)stateManagerAccessor).Value);
+
+			OmexStateManager stateManager = ((IAccessor<OmexStateManager>)stateManagerAccessor).Value;
+			Assert.IsNotNull(stateManager);
+			Assert.IsFalse(stateManager.IsReadable);
+			Assert.IsFalse(stateManager.IsWritable);
+
 		}
 
 		private class TestTypeToResolve { }
