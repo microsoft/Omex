@@ -111,7 +111,7 @@ extends:
             - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@5
               displayName: ESRP CodeSigning OSS
               inputs:
-                ConnectedServiceName: 'OmexCodeSigningESRP'
+                ConnectedServiceName: 'OmexCodeSigningESRP-Torus'
                 AppRegistrationClientId: '4c68f028-7d39-46f6-8fa8-907818c786e1'
                 AppRegistrationTenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
                 AuthAKVName: 'ESRPSigningCertificate'
@@ -236,7 +236,7 @@ extends:
             - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@5
               displayName: ESRP CodeSigning Nuget
               inputs:
-                ConnectedServiceName: OmexCodeSigningESRP
+                ConnectedServiceName: 'OmexCodeSigningESRP-Torus'
                 AppRegistrationClientId: '4c68f028-7d39-46f6-8fa8-907818c786e1'
                 AppRegistrationTenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
                 AuthAKVName: 'ESRPSigningCertificate'
