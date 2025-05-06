@@ -112,10 +112,11 @@ extends:
               displayName: ESRP CodeSigning OSS
               inputs:
                 ConnectedServiceName: 'OmexCodeSigningESRP-Torus'
-                AppRegistrationClientId: '4c68f028-7d39-46f6-8fa8-907818c786e1'
-                AppRegistrationTenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
+                UseMSIAuthentication: true
+                AppRegistrationClientId: '63addb14-a822-43e7-80d0-e0c9530e337f'
+                AppRegistrationTenantId: 'cdc5aeea-15c5-4db6-b079-fcadd2505dc2'
+                EsrpClientId: 4c68f028-7d39-46f6-8fa8-907818c786e1
                 AuthAKVName: 'ESRPSigningCertificate'
-                AuthCertName: 'CodeSignAuth'
                 AuthSignCertName: 'ESRPOmexGitHub'
                 FolderPath: $(Build.Repository.LocalPath)\bin
                 Pattern: Microsoft.Omex*.dll,Microsoft.Omex*.exe
@@ -237,10 +238,11 @@ extends:
               displayName: ESRP CodeSigning Nuget
               inputs:
                 ConnectedServiceName: 'OmexCodeSigningESRP-Torus'
-                AppRegistrationClientId: '4c68f028-7d39-46f6-8fa8-907818c786e1'
-                AppRegistrationTenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
+                UseMSIAuthentication: true
+                AppRegistrationClientId: '63addb14-a822-43e7-80d0-e0c9530e337f'
+                AppRegistrationTenantId: 'cdc5aeea-15c5-4db6-b079-fcadd2505dc2'
+                EsrpClientId: 4c68f028-7d39-46f6-8fa8-907818c786e1
                 AuthAKVName: 'ESRPSigningCertificate'
-                AuthCertName: 'CodeSignAuth'
                 AuthSignCertName: 'ESRPOmexGitHub'
                 FolderPath: $(Build.ArtifactStagingDirectory)/UnsignedNuget
                 Pattern: Microsoft.Omex*.nupkg
