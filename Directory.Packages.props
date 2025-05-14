@@ -5,39 +5,39 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup Label="Latest DotNet Package Versions. AutoUpdate" Condition="'$(TargetFramework)' == '$(LatestSupportedDotNetVersion)' OR '$(IsNetStandard)'">
-    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.5" />
     <PackageVersion Include="Microsoft.SourceLink.AzureRepos.Git" Version="8.0.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
-    <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.4" />
-    <PackageVersion Include="System.Text.Json" Version="9.0.4" />
+    <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.5" />
+    <PackageVersion Include="System.Text.Json" Version="9.0.5" />
   </ItemGroup>
   <ItemGroup Label="Previous DotNet Package Versions. AutoUpdate" Condition="'$(TargetFramework)' == '$(OldestSupportedDotNetVersion)' And '$(OldestSupportedDotNetVersion)' != '$(LatestSupportedDotNetVersion)'">
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.15" PreserveMajor="true" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.16" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.1" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.1" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.1" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.3" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="8.0.1" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="8.0.15" PreserveMajor="true" />
+    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="8.0.16" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.2" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" PreserveMajor="true" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" PreserveMajor="true" />
