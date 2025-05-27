@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>$(NetCoreVersions)</TargetFrameworks>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>$(TargetPlatform)</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Label="NuGet Properties">
     <Title>Microsoft.Omex.Extensions.Diagnostics.HealthChecks</Title>
