@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
-    <PlatformTarget>$(TargetPlatform)</PlatformTarget>
+    <PlatformTargets>$(Platforms)</PlatformTargets>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Hosting.Services.Remoting\Microsoft.Omex.Extensions.Hosting.Services.Remoting.csproj" />

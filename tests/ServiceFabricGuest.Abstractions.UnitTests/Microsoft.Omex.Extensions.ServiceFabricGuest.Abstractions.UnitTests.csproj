@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
-    <PlatformTarget>$(TargetPlatform)</PlatformTarget>
+    <PlatformTargets>$(Platforms)</PlatformTargets>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Hosting\Microsoft.Omex.Extensions.Hosting.csproj" />
