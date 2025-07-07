@@ -48,7 +48,6 @@ public class HttpEndpointHealthCheckTests
 			HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
 			source.Token);
 
-		Assert.IsNotNull(result);
 		Assert.AreEqual(expectedHealthStatus, result.Status);
 	}
 
@@ -81,7 +80,6 @@ public class HttpEndpointHealthCheckTests
 			HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
 			source.Token);
 
-		Assert.IsNotNull(result);
 		Assert.AreEqual(expectedHealthStatus, result.Status);
 	}
 
@@ -109,7 +107,6 @@ public class HttpEndpointHealthCheckTests
 			HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
 			source.Token);
 
-		Assert.IsNotNull(result);
 		Assert.AreEqual(expectedHealthStatus, result.Status);
 	}
 }

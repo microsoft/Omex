@@ -22,9 +22,6 @@ public class HealthzEndpointHealthCheckTests
 {
 	private static ILogger<T> GetLogger<T>() => new NullLogger<T>();
 
-	private const string RelativeUri = "/healthz";
-	private const string HttpClientLogicalName = "HealthzEndpointHttpHealthCheckHttpClient";
-
 	[TestInitialize]
 	public void Setup() => Environment.SetEnvironmentVariable($"Fabric_Endpoint_{nameof(EndpointLivenessHealthCheck)}", "1234");
 
@@ -40,6 +37,41 @@ public class HealthzEndpointHealthCheckTests
 			nameof(EndpointLivenessHealthCheck),
 			$"{nameof(EndpointLivenessHealthCheck)}_HttpClient",
 			"healthz");
+
+		HealthCheckTestHelpers.SetLocalServiceInfo();
+		Mock<IHttpClientFactory> clientFactory = HealthCheckTestHelpers.GetHttpClientFactoryMock(
+			HealthCheckTestHelpers.GetHttpResponseMessageMock(returnedStatusCode, message: string.Empty));
+
+		ActivitySource activitySourceMock = new(nameof(EndpointLivenessHealthCheck));
+
+		IHealthCheck healthCheck = new EndpointLivenessHealthCheck(
+			clientFactory.Object,
+			activitySourceMock,
+			GetLogger<EndpointLivenessHealthCheck>(),
+			healthCheckParameters);
+
+		CancellationTokenSource source = new();
+
+		HealthCheckResult healthCheckResult = await healthCheck.CheckHealthAsync(
+			HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
+			source.Token);
+
+		Assert.AreEqual(expectedHealthStatus, healthCheckResult.Status);
+	}
+
+	[TestMethod]
+	[DataRow(HttpStatusCode.OK, HealthStatus.Healthy)]
+	[DataRow(HttpStatusCode.InternalServerError, HealthStatus.Unhealthy)]
+	[DataRow(HttpStatusCode.NotFound, HealthStatus.Unhealthy)]
+	[DataRow(HttpStatusCode.Unauthorized, HealthStatus.Unhealthy)]
+	[DataRow(HttpStatusCode.Forbidden, HealthStatus.Unhealthy)]
+	public async Task HealthzEndpointHttpHealthCheck_ReturnsExpectedStatus2(HttpStatusCode returnedStatusCode, HealthStatus expectedHealthStatus)
+	{
+		EndpointLivenessHealthCheckParameters healthCheckParameters = new(
+			nameof(EndpointLivenessHealthCheck),
+			$"{nameof(EndpointLivenessHealthCheck)}_HttpClient",
+			"healthz",
+			[returnedStatusCode]);
 
 		HealthCheckTestHelpers.SetLocalServiceInfo();
 		Mock<IHttpClientFactory> clientFactory = HealthCheckTestHelpers.GetHttpClientFactoryMock(
@@ -203,6 +235,7 @@ public class HealthzEndpointHealthCheckTests
 			nameof(EndpointLivenessHealthCheck),
 			$"{nameof(EndpointLivenessHealthCheck)}_HttpClient",
 			"healthz",
+			null,
 			Uri.UriSchemeHttps);
 
 		HealthCheckTestHelpers.SetLocalServiceInfo();
