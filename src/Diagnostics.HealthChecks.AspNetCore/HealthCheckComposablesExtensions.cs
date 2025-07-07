@@ -28,6 +28,7 @@ public static class HealthCheckComposablesExtensions
 		Func<HttpRequestMessage> requestBuilder,
 		ActivitySource activitySource,
 		IHttpClientFactory httpClientFactory,
+		
 		string? httpClientName = "") =>
 			Composables.HealthCheckComposablesExtensions.CreateHttpHealthCheck(
 				requestBuilder,
@@ -45,6 +46,7 @@ public static class HealthCheckComposablesExtensions
 	/// <param name="failureStatus">
 	/// The health check failure status that will be reported if the health check fails.
 	/// </param>
+	/// <param name="expectedStatus">Collection of allowed HttpStatusCode Responses for a check to succeed, default is HttpsStatusCode.OK</param>
 	/// <param name="parameters">
 	/// The health check parameters. Notice that these parameters will have to be an instance of the <see cref="EndpointLivenessHealthCheckParameters"/> class.
 	/// </param>
@@ -53,11 +55,13 @@ public static class HealthCheckComposablesExtensions
 		this IHealthChecksBuilder healthChecksBuilder,
 		string name,
 		HealthStatus? failureStatus,
+		HttpStatusCode[] expectedStatus = [],
 		EndpointLivenessHealthCheckParameters parameters) =>
 		healthChecksBuilder
 			.AddTypeActivatedCheck<EndpointLivenessHealthCheck>(
 				name,
 				failureStatus,
+				expectedStatus
 				parameters);
 
 	/// <summary>
@@ -80,6 +84,7 @@ public static class HealthCheckComposablesExtensions
 	/// to pass either value.
 	/// If not specified, the default value used will be <seealso cref="Uri.UriSchemeHttp"/>.
 	/// </param>
+	/// <param name="expectedStatus">Collection of allowed HttpStatusCode Responses for a check to succeed, default is HttpsStatusCode.OK</param>
 	/// <param name="reportData">The report data parameters.</param>
 	/// <returns>The Health Check builder.</returns>
 	public static IHealthChecksBuilder AddEndpointHttpHealthCheck(
@@ -91,6 +96,7 @@ public static class HealthCheckComposablesExtensions
 		HealthStatus failureStatus = HealthStatus.Unhealthy,
 		string host = "localhost",
 		string? uriScheme = null,
+		HttpStatusCode[] expectedStatus = [],
 		params KeyValuePair<string, object>[] reportData)
 	{
 		EndpointLivenessHealthCheckParameters parameters = new(
