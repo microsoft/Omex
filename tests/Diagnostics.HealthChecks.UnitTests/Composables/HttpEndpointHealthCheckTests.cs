@@ -7,8 +7,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Omex.Extensions.Diagnostics.HealthChecks.Composables;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -19,8 +17,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests.Composabl
 public class HttpEndpointHealthCheckTests
 {
 	private static readonly ActivitySource s_activitySource = new(nameof(ObservableHealthCheckTests));
-
-	private static readonly ILogger s_logger = NullLogger.Instance;
 
 	[TestMethod]
 	[DataRow(HttpStatusCode.OK, HealthStatus.Healthy)]
