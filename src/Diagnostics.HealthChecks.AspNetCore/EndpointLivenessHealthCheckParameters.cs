@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 
 namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.AspNetCore;
@@ -19,8 +20,13 @@ public class EndpointLivenessHealthCheckParameters : HealthCheckParameters
 	public string EndpointName { get; }
 
 	/// <summary>
+	/// The expected HTTP status code that will be returned by the endpoint.
+	/// </summary>
+	public HttpStatusCode[] ExpectedStatus { get; } = [HttpStatusCode.OK];
+
+	/// <summary>
 	/// The URI scheme that will be used to query the endpoint.
-	/// The default value will be equa to HTTP.
+	/// The default value will be equal to HTTP.
 	/// </summary>
 	public string UriScheme { get; } = Uri.UriSchemeHttp;
 
@@ -49,6 +55,7 @@ public class EndpointLivenessHealthCheckParameters : HealthCheckParameters
 	/// <param name="endpointRelativeUrl">
 	/// The endpoint relative url at which the Service Fabric health check will be reachable.
 	/// </param>
+	/// <param name="expectedStatus">Collection of allowed HttpStatusCode Responses for a check to succeed, default is HttpStatusCode.OK</param>
 	/// <param name="host">The host used to perform the health check HTTP call to the service.</param>
 	/// <param name="uriScheme">
 	/// The URI scheme to use to call the endpoint.
@@ -60,6 +67,7 @@ public class EndpointLivenessHealthCheckParameters : HealthCheckParameters
 		string endpointName,
 		string httpClientLogicalName,
 		string endpointRelativeUrl,
+		HttpStatusCode[]? expectedStatus = null,
 		string host = "localhost",
 		string? uriScheme = null,
 		params KeyValuePair<string, object>[] reportData)
@@ -68,6 +76,7 @@ public class EndpointLivenessHealthCheckParameters : HealthCheckParameters
 		EndpointName = endpointName;
 		HttpClientLogicalName = httpClientLogicalName;
 		EndpointRelativeUri = endpointRelativeUrl;
+		ExpectedStatus = expectedStatus ?? [HttpStatusCode.OK];
 		Host = host;
 		UriScheme = uriScheme ?? Uri.UriSchemeHttp;
 	}
