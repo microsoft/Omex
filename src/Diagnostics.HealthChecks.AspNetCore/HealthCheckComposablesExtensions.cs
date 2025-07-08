@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -22,16 +23,18 @@ public static class HealthCheckComposablesExtensions
 	/// <param name="requestBuilder">The request builder.</param>
 	/// <param name="activitySource">The activity source.</param>
 	/// <param name="httpClientFactory">The http client factory.</param>
+	/// <param name="expectedStatus">Collection of allowed HttpStatusCode Responses for a check to succeed, default is HttpStatusCode.OK</param>
 	/// <param name="httpClientName">The HTTP Client name, if a client with that name was registered in particular.</param>
 	/// <returns>The HTTP endpoint checker health check.</returns>
 	public static IHealthCheck CreateLivenessHttpHealthCheck(
 		Func<HttpRequestMessage> requestBuilder,
 		ActivitySource activitySource,
 		IHttpClientFactory httpClientFactory,
+		HttpStatusCode[]? expectedStatus = null,
 		string? httpClientName = "") =>
 			Composables.HealthCheckComposablesExtensions.CreateHttpHealthCheck(
 				requestBuilder,
-				async (context, response, _) => await Composables.HealthCheckComposablesExtensions.CheckResponseStatusCodeAsync(context, response),
+				async (context, response, _) => await Composables.HealthCheckComposablesExtensions.CheckResponseStatusCodeAsync(context, response, expectedStatus),
 				activitySource,
 				httpClientFactory,
 				httpClientName: httpClientName,
@@ -80,6 +83,7 @@ public static class HealthCheckComposablesExtensions
 	/// to pass either value.
 	/// If not specified, the default value used will be <seealso cref="Uri.UriSchemeHttp"/>.
 	/// </param>
+	/// <param name="expectedStatus">Collection of allowed HttpStatusCode Responses for a check to succeed, default is HttpsStatusCode.OK</param>
 	/// <param name="reportData">The report data parameters.</param>
 	/// <returns>The Health Check builder.</returns>
 	public static IHealthChecksBuilder AddEndpointHttpHealthCheck(
@@ -91,12 +95,14 @@ public static class HealthCheckComposablesExtensions
 		HealthStatus failureStatus = HealthStatus.Unhealthy,
 		string host = "localhost",
 		string? uriScheme = null,
+		HttpStatusCode[]? expectedStatus = null,
 		params KeyValuePair<string, object>[] reportData)
 	{
 		EndpointLivenessHealthCheckParameters parameters = new(
 			endpointName,
 			httpClientLogicalName,
 			relativePath,
+			expectedStatus,
 			host,
 			uriScheme: uriScheme,
 			reportData: reportData
