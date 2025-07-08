@@ -494,12 +494,12 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 				for (int i = 0; i < publishers.Length; i++)
 				{
-					string[] entries = [.. publishers[i].Entries.SelectMany(e => e.report.Entries.Select(e2 => e2.Key)).OrderBy(k => k)];
+					IEnumerable<string> entries = publishers[i].Entries.SelectMany(e => e.report.Entries.Select(e2 => e2.Key)).OrderBy(k => k);
 
-					Assert.AreEqual(3, entries.Length);
+					Assert.AreEqual(3, entries.Count());
 					CollectionAssert.AreEqual(
 						new[] { "CheckDelay2Period18", "CheckDelay7Period11", "CheckDelay9Period5" },
-						entries);
+						entries.ToArray());
 				}
 			}
 			finally
