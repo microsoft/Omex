@@ -35,6 +35,7 @@ internal class EndpointLivenessHealthCheck : IHealthCheck
 			CreateHttpRequestMessage,
 			activitySource,
 			httpClientFactory,
+			expectedStatus: parameters.ExpectedStatus,
 			httpClientName: parameters.HttpClientLogicalName)
 				.AsObservableHealthCheck(activitySource, logger, parameters: parameters);
 	}
