@@ -96,7 +96,7 @@ public static class HealthCheckComposablesExtensions
 	{
 		if (allowedStatusCodes == null || allowedStatusCodes.Length == 0)
 		{
-			allowedStatusCodes = new[] { HttpStatusCode.OK };
+			allowedStatusCodes = [HttpStatusCode.OK];
 		}
 
 		if (allowedStatusCodes.Contains(response.StatusCode))
