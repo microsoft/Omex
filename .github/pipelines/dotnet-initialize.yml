@@ -22,7 +22,7 @@ steps:
     displayName: dotnet restore
     inputs:
       command: restore
-      projects: "**\\*.sln"
+      projects: "**\\*.slnx"
       restoreArguments: /p:Configuration="${{parameters.BuildConfiguration}}" -p:${{parameters.BuildParameters}}
       feedRestore: Office
       includeNuGetOrg: false

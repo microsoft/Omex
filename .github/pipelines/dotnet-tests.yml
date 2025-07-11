@@ -17,7 +17,7 @@ steps:
     displayName: 'dotnet test'
     inputs:
       command: test
-      projects: '**\*.sln'
+      projects: '**\*.slnx'
       arguments: '-c $(BuildConfiguration) -p:${{ parameters.BuildParameters }} --no-build --no-restore --collect "Code coverage" --filter ${{ parameters.TestFilter }}'
     timeoutInMinutes: 30
 

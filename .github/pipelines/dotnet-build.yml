@@ -16,7 +16,7 @@ steps:
   - task: DotNetCoreCLI@2
     displayName: dotnet build
     inputs:
-      projects: "**\\*.sln"
+      projects: "**\\*.slnx"
       arguments: -c ${{parameters.BuildConfiguration}} -p:${{parameters.BuildParameters}} --no-restore
   - task: RoslynAnalyzers@3
     inputs:
