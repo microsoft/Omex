@@ -179,7 +179,7 @@ extends:
               condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/release'))
               inputs:
                 command: pack
-                searchPatternPack: "**/*.sln"
+                searchPatternPack: "**/*.slnx"
                 configurationToPack: Release
                 outputDir: $(Build.ArtifactStagingDirectory)/UnsignedNuget
                 nobuild: true
@@ -189,7 +189,7 @@ extends:
               condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
               inputs:
                 command: pack
-                searchPatternPack: "**/*.sln"
+                searchPatternPack: "**/*.slnx"
                 configurationToPack: Release
                 outputDir: $(Build.ArtifactStagingDirectory)/UnsignedNuget
                 nobuild: true
@@ -205,7 +205,7 @@ extends:
               condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/release'))
               inputs:
                 command: pack
-                searchPatternPack: "**/*.sln"
+                searchPatternPack: "**/*.slnx"
                 configurationToPack: Release
                 outputDir: $(Build.ArtifactStagingDirectory)/Office
                 nobuild: true
