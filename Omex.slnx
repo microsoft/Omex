@@ -1,0 +1,48 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".github/workflows/build.yml" />
+    <File Path=".github/workflows/codeql-analysis.yml" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="NuGet.Config" />
+    <File Path="README.md" />
+    <File Path="ship.snk" />
+  </Folder>
+  <Folder Name="/src/">
+    <File Path="src/Directory.Build.props" />
+    <Project Path="src/Abstractions/Microsoft.Omex.Extensions.Abstractions.csproj" />
+    <Project Path="src/Activities/Microsoft.Omex.Extensions.Activities.csproj" />
+    <Project Path="src/Diagnostics.HealthChecks.AspNetCore/Microsoft.Omex.Extensions.Diagnostics.HealthChecks.AspNetCore.csproj" />
+    <Project Path="src/Diagnostics.HealthChecks/Microsoft.Omex.Extensions.Diagnostics.HealthChecks.csproj" />
+    <Project Path="src/Hosting.Services.Remoting/Microsoft.Omex.Extensions.Hosting.Services.Remoting.csproj" />
+    <Project Path="src/Hosting.Services.Web/Microsoft.Omex.Extensions.Hosting.Services.Web.csproj" />
+    <Project Path="src/Hosting.Services/Microsoft.Omex.Extensions.Hosting.Services.csproj" />
+    <Project Path="src/Hosting/Microsoft.Omex.Extensions.Hosting.csproj" />
+    <Project Path="src/Logging/Microsoft.Omex.Extensions.Logging.csproj" />
+    <Project Path="src/ServiceFabricGuest.Abstractions/Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.csproj" />
+    <Project Path="src/Services.Remoting/Microsoft.Omex.Extensions.Services.Remoting.csproj" />
+    <Project Path="src/Testing.Helpers/Microsoft.Omex.Extensions.Testing.Helpers.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <File Path="tests/Directory.Build.props" />
+    <Project Path="tests/Abstractions.UnitTests/Microsoft.Omex.Extensions.Abstractions.UnitTests.csproj" />
+    <Project Path="tests/Activities.UnitTests/Microsoft.Omex.Extensions.Activities.UnitTests.csproj" />
+    <Project Path="tests/Diagnostics.HealthChecks.AspNetCore.UnitTests/Microsoft.Omex.Extensions.Diagnostics.HealthChecks.AspNetCore.UnitTests.csproj" />
+    <Project Path="tests/Diagnostics.HealthChecks.UnitTests/Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests.csproj" />
+    <Project Path="tests/Hosting.Services.Remoting.UnitTests/Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests.csproj" />
+    <Project Path="tests/Hosting.Services.UnitTests/Microsoft.Omex.Extensions.Hosting.Services.UnitTests.csproj" />
+    <Project Path="tests/Hosting.Services.Web.UnitTests/Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.csproj" />
+    <Project Path="tests/Hosting.UnitTests/Microsoft.Omex.Extensions.Hosting.UnitTests.csproj" />
+    <Project Path="tests/Logging.UnitTests/Microsoft.Omex.Extensions.Logging.UnitTests.csproj" />
+    <Project Path="tests/ServiceFabricGuest.Abstractions.UnitTests/Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests.csproj" />
+    <Project Path="tests/Services.Remoting.UnitTests/Microsoft.Omex.Extensions.Services.Remoting.UnitTests.csproj" />
+    <Project Path="tests/Testing.Helpers.UnitTests/Microsoft.Omex.Extensions.Testing.Helpers.UnitTests.csproj" />
+  </Folder>
+</Solution>
