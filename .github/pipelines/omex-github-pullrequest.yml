@@ -45,7 +45,7 @@ extends:
           condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/release'))
           inputs:
             command: pack
-            searchPatternPack: "**/*.sln"
+            searchPatternPack: "**/*.slnx"
             configurationToPack: Release
             nobuild: true
             buildProperties: PreReleaseSuffix=$(Build.BuildNumber);IsReleaseBuild=false
@@ -54,7 +54,7 @@ extends:
           condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
           inputs:
             command: pack
-            searchPatternPack: "**/*.sln"
+            searchPatternPack: "**/*.slnx"
             configurationToPack: Release
             nobuild: true
             buildProperties: PreReleaseSuffix=$(Build.BuildNumber);IsReleaseBuild=true
