@@ -33,6 +33,11 @@ namespace Microsoft.Omex.Extensions.Activities
 		/// </summary>
 		public const string HealthCheckActivitiesHistogramName = "HealthCheckActivities";
 
+		/// <summary>
+		/// The name of the Meter that is used to record activity metrics.
+		/// </summary>
+		public const string MeterName = "Microsoft.Omex.Activities";
+
 		public ActivityMetricsSender(
 			IExecutionContext executionContext,
 			IHostEnvironment hostEnvironment,
@@ -42,7 +47,7 @@ namespace Microsoft.Omex.Extensions.Activities
 		{
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
-			m_meter = new Meter("Microsoft.Omex.Activities", "1.0.0");
+			m_meter = new Meter(MeterName, "1.0.0");
 			m_activityHistogram = m_meter.CreateHistogram<long>(ActivitiesHistogramName);
 			m_healthCheckActivityHistogram = m_meter.CreateHistogram<long>(HealthCheckActivitiesHistogramName);
 			m_customBaggageDimension = customBaggageDimensions.CustomDimensions;
