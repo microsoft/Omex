@@ -23,21 +23,6 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly HashSet<string> m_customTagObjectsDimension;
 		private readonly bool m_isSetParentNameAsDimensionEnabled;
 
-		/// <summary>
-		/// The name of the activities histogram metric.
-		/// </summary>
-		public const string ActivitiesHistogramName = "Activities";
-
-		/// <summary>
-		/// The name of the HealtchCheck activities histogram metric.
-		/// </summary>
-		public const string HealthCheckActivitiesHistogramName = "HealthCheckActivities";
-
-		/// <summary>
-		/// The name of the Meter that is used to record activity metrics.
-		/// </summary>
-		public const string MeterName = "Microsoft.Omex.Activities";
-
 		public ActivityMetricsSender(
 			IExecutionContext executionContext,
 			IHostEnvironment hostEnvironment,
@@ -47,9 +32,9 @@ namespace Microsoft.Omex.Extensions.Activities
 		{
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
-			m_meter = new Meter(MeterName, "1.0.0");
-			m_activityHistogram = m_meter.CreateHistogram<long>(ActivitiesHistogramName);
-			m_healthCheckActivityHistogram = m_meter.CreateHistogram<long>(HealthCheckActivitiesHistogramName);
+			m_meter = new Meter(OmexActivityConfiguration.MeterName, "1.0.0");
+			m_activityHistogram = m_meter.CreateHistogram<long>(OmexActivityConfiguration.ActivitiesHistogramName);
+			m_healthCheckActivityHistogram = m_meter.CreateHistogram<long>(OmexActivityConfiguration.HealthCheckActivitiesHistogramName);
 			m_customBaggageDimension = customBaggageDimensions.CustomDimensions;
 			m_customTagObjectsDimension = customTagObjectsDimensions.CustomDimensions;
 			m_isSetParentNameAsDimensionEnabled = activityOptions.Value.SetParentNameAsDimensionEnabled;

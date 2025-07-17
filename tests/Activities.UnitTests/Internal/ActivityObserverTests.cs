@@ -99,7 +99,7 @@ namespace Hosting.Services.UnitTests
 
 		private class TestLogger : ILogger<ActivityObserver>
 		{
-			public List<(EventId id, LogLevel level, string message)> Messages = new();
+			public List<(EventId id, LogLevel level, string message)> Messages = [];
 
 			public IDisposable? BeginScope<TState>(TState state) where TState : notnull => throw new NotImplementedException();
 
