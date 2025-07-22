@@ -31,7 +31,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			ActivityMetricsSender sender = new(
 				context,
 				environment,
-				isHealthCheck ? new CustomBaggageDimensions(new HashSet<string> { "HealthCheckMarker" }) : new CustomBaggageDimensions(),
+				isHealthCheck ? new CustomBaggageDimensions(["HealthCheckMarker"]) : new CustomBaggageDimensions(),
 				new CustomTagObjectsDimensions(),
 				options);
 			Listener listener = new();
@@ -51,7 +51,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			sender.SendActivityMetric(activity);
 
 			// 3. Assert
-			VerifyTagsExist(listener, activity, context, environment, isHealthCheck ? s_heathCheckActivityMetricName : s_activityMetricName);
+			VerifyTagsExist(listener, activity, context, environment, isHealthCheck ? OmexActivityConfiguration.HealthCheckActivitiesHistogramName : OmexActivityConfiguration.ActivitiesHistogramName);
 		}
 
 		[TestMethod]
@@ -72,13 +72,13 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 				context,
 				environment,
 				isHealthCheck ?
-					new CustomBaggageDimensions(new HashSet<string> { "HealthCheckMarker", testBaggage1, testBaggage2 })
-					: new CustomBaggageDimensions(new HashSet<string>() { testBaggage1, testBaggage2 }),
-				new CustomTagObjectsDimensions(new HashSet<string>()
-				{
+					new CustomBaggageDimensions(["HealthCheckMarker", testBaggage1, testBaggage2])
+					: new CustomBaggageDimensions([testBaggage1, testBaggage2]),
+				new CustomTagObjectsDimensions(
+				[
 					ActivityTagKeys.Result, ActivityTagKeys.Metadata, ActivityTagKeys.SubType,
 					testTag1, testTag2
-				}),
+				]),
 				options);
 
 			Listener listener = new();
@@ -105,7 +105,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			sender.SendActivityMetric(activity);
 
 			// 3. Assert
-			VerifyTagsExist(listener, activity, context, environment, isHealthCheck ? s_heathCheckActivityMetricName : s_activityMetricName);
+			VerifyTagsExist(listener, activity, context, environment, isHealthCheck ? OmexActivityConfiguration.HealthCheckActivitiesHistogramName : OmexActivityConfiguration.ActivitiesHistogramName);
 		}
 
 		[TestMethod]
@@ -122,8 +122,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			ActivityMetricsSender sender = new(
 				context,
 				environment,
-				new CustomBaggageDimensions(new HashSet<string>()), // Override by empty set
-				new CustomTagObjectsDimensions(new HashSet<string>()),
+				new CustomBaggageDimensions([]), // Override by empty set
+				new CustomTagObjectsDimensions([]),
 				options); // Override by empty set
 
 			Listener listener = new();
@@ -148,12 +148,12 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 
 			foreach (KeyValuePair<string, object?> tagPair in activity.TagObjects)
 			{
-				Assert.ThrowsException<KeyNotFoundException>(() => result.Tags[tagPair.Key]);
+				Assert.ThrowsExactly<KeyNotFoundException>(() => result.Tags[tagPair.Key]);
 			}
 
 			foreach (KeyValuePair<string, string?> tagPair in activity.Baggage)
 			{
-				Assert.ThrowsException<KeyNotFoundException>(() => result.Tags[tagPair.Key]);
+				Assert.ThrowsExactly<KeyNotFoundException>(() => result.Tags[tagPair.Key]);
 			}
 		}
 
@@ -202,7 +202,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			}
 		}
 
-		private void VerifyTagsExist(Listener listener, Activity activity, IExecutionContext context, IHostEnvironment environment, string instrumentationName)
+		private static void VerifyTagsExist(Listener listener, Activity activity, IExecutionContext context, IHostEnvironment environment, string instrumentationName)
 		{
 			MeasurementResult result = listener.Results.First(m => environment.EnvironmentName.Equals(m.Tags[s_environmentTagName]));
 
@@ -237,7 +237,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		private static void AssertTagNotExist(MeasurementResult result, string key) => CollectionAssert.DoesNotContain(result.Tags.Keys, key);
 
 
-		private (IExecutionContext, IHostEnvironment, IOptions<ActivityOption>) PrepareEnvironment(ActivityOption? options = null)
+		private static (IExecutionContext, IHostEnvironment, IOptions<ActivityOption>) PrepareEnvironment(ActivityOption? options = null)
 		{
 			Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 			Activity.ForceDefaultIdFormat = true;
@@ -268,26 +268,24 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 
 		private static readonly string s_environmentTagName = "Environment";
 
-		private static readonly string s_activityMetricName = "Activities";
-
-		private static readonly string s_heathCheckActivityMetricName = "HealthCheckActivities";
-
 		private class Listener
 		{
 			public Listener()
 			{
-				MeterListener listener = new();
-				listener.InstrumentPublished = (instrument, meterListener) =>
+				MeterListener listener = new()
 				{
-					if ((instrument.Name == s_activityMetricName || instrument.Name == s_heathCheckActivityMetricName)
-						&& instrument.Meter.Name == "Microsoft.Omex.Activities"
-						&& instrument.Meter.Version == "1.0.0")
+					InstrumentPublished = (instrument, meterListener) =>
 					{
-						meterListener.EnableMeasurementEvents(instrument, null);
+						if ((instrument.Name == OmexActivityConfiguration.ActivitiesHistogramName || instrument.Name == OmexActivityConfiguration.HealthCheckActivitiesHistogramName)
+							&& instrument.Meter.Name == OmexActivityConfiguration.MeterName
+							&& instrument.Meter.Version == "1.0.0")
+						{
+							meterListener.EnableMeasurementEvents(instrument, null);
+						}
 					}
 				};
 
-				Results = new List<MeasurementResult>();
+				Results = [];
 
 				listener.SetMeasurementEventCallback<long>((instrument, measurement, tags, state) =>
 				{

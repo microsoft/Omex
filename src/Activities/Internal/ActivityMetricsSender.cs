@@ -32,9 +32,9 @@ namespace Microsoft.Omex.Extensions.Activities
 		{
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
-			m_meter = new Meter("Microsoft.Omex.Activities", "1.0.0");
-			m_activityHistogram = m_meter.CreateHistogram<long>("Activities");
-			m_healthCheckActivityHistogram = m_meter.CreateHistogram<long>("HealthCheckActivities");
+			m_meter = new Meter(OmexActivityConfiguration.MeterName, "1.0.0");
+			m_activityHistogram = m_meter.CreateHistogram<long>(OmexActivityConfiguration.ActivitiesHistogramName);
+			m_healthCheckActivityHistogram = m_meter.CreateHistogram<long>(OmexActivityConfiguration.HealthCheckActivitiesHistogramName);
 			m_customBaggageDimension = customBaggageDimensions.CustomDimensions;
 			m_customTagObjectsDimension = customTagObjectsDimensions.CustomDimensions;
 			m_isSetParentNameAsDimensionEnabled = activityOptions.Value.SetParentNameAsDimensionEnabled;

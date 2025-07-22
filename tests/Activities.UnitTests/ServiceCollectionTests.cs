@@ -51,19 +51,18 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			NullableAssert.IsNotNull(activity, "Activity creation enabled after host started");
 		}
 
-		private IHost CreateHost() =>
+		private static IHost CreateHost() =>
 			new HostBuilder().ConfigureServices(collection =>
 			{
 				collection.AddOmexActivitySource();
 			})
 			.Build();
 
-		private Type[] GetRegisteredServices<T>()
+		private static Type[] GetRegisteredServices<T>()
 			where T : class =>
-				CreateHost()
+				[.. CreateHost()
 					.Services
 					.GetRequiredService<IEnumerable<T>>()
-					.Select(s => s.GetType())
-					.ToArray();
+					.Select(s => s.GetType())];
 	}
 }
