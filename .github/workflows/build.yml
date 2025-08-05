@@ -38,7 +38,7 @@ jobs:
       run: |
         Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force -Scope CurrentUser
         $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -Uri https://download.microsoft.com/download/b/8/a/b8a2fb98-0ec1-41e5-be98-9d8b5abf7856/MicrosoftServiceFabric.11.1.208.1.exe
+        Invoke-WebRequest -OutFile MicrosoftServiceFabric.11.1.208.1.exe -Uri https://download.microsoft.com/download/b/8/a/b8a2fb98-0ec1-41e5-be98-9d8b5abf7856/MicrosoftServiceFabric.11.1.208.1.exe
         .\MicrosoftServiceFabric.11.1.208.1.exe /accepteula /force /quiet
     - name: Build with dotnet
       run: dotnet build --configuration ${{ matrix.configuration }}
