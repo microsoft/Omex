@@ -28,11 +28,11 @@ jobs:
     - name: Install .NET 8 SDK
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.x'
+        dotnet-version: '8.0.315'
     - name: Install .NET 9 SDK
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.x'
+        dotnet-version: '9.0.303'
     - name: Install SF SDK
       shell: powershell
       run: |
