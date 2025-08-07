@@ -15,7 +15,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 	[TestClass]
 	public class OmexKestrelListenerTests
 	{
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow("somehost1", 483, new[] { "https://[::]:20081", "https://[::]:80", "https://[::]:483" }, "https://somehost1:483")]
 		[DataRow("somehost2", 8082, new[] { "https://+:8081", "https://+:8082", "https://+:8083" }, "https://somehost2:8082")]
 		public async Task OpenAsync_ReturnsProperAddress(string host, int port, string[] addresses, string expected)

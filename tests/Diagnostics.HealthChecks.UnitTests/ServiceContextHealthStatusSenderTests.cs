@@ -94,22 +94,22 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			Task act() => sender.IntializeAsync(default);
 
 			// Assert.
-			ArgumentException actualException = await Assert.ThrowsExceptionAsync<ArgumentException>(act);
+			ArgumentException actualException = await Assert.ThrowsExactlyAsync<ArgumentException>(act);
 			StringAssert.Contains(actualException.Message, partition.GetType().ToString());
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DynamicData(nameof(StatusSenders), DynamicDataSourceType.Method)]
 		public async Task SendStatusAsync_WhenUnsupportedStateUsed_Trows(SenderContext context)
 		{
 			await context.Sender.IntializeAsync(default);
 			HealthStatus unsupportedHealthStatus = (HealthStatus)int.MinValue;
 
-			await Assert.ThrowsExceptionAsync<ArgumentException>(() =>
+			await Assert.ThrowsExactlyAsync<ArgumentException>(() =>
 				context.Sender.SendStatusAsync("HealthCheckName", unsupportedHealthStatus, "SomeDescription", default));
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DynamicData(nameof(StatusSenders), DynamicDataSourceType.Method)]
 		public async Task SendStatusAsync_ReportsHealthCorrectly(SenderContext context)
 		{
@@ -137,11 +137,11 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			}
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DynamicData(nameof(StatusSenders), DynamicDataSourceType.Method)]
 		public async Task SendStatusAsync_WhenNotInitialized_Throws(SenderContext context)
 		{
-			await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+			await Assert.ThrowsExactlyAsync<InvalidOperationException>(() =>
 				context.Sender.SendStatusAsync("HealthCheckName", HealthStatus.Healthy, "SomeDescription", default));
 		}
 

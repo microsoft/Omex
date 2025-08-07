@@ -112,7 +112,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			Assert.AreNotEqual(updatedId, activity2.GetObsoleteTransactionId());
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(ActivityResult.SystemError)]
 		[DataRow(ActivityResult.ExpectedError)]
 		[DataRow(ActivityResult.Success)]

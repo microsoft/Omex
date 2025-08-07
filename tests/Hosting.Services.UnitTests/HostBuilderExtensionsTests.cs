@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 	[TestClass]
 	public class HostBuilderExtensionsTests
 	{
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ActivitySource), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]
@@ -47,7 +47,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			CheckTypeRegistration<StatefulServiceContext>();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ActivitySource), null)]
 		[DataRow(typeof(IHostedService), typeof(OmexHostedService))]
@@ -71,7 +71,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 			}
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(typeof(IExecutionContext), typeof(ServiceFabricExecutionContext))]
 		[DataRow(typeof(ActivitySource), null)]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>), null)]

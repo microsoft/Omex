@@ -39,14 +39,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services
 			m_serviceRegistrator.PartitionAccessor.SetValue(Partition);
 			return base.OnOpenAsync(openMode, cancellationToken);
 		}
-		
+
 		/// <inheritdoc/>
 		protected override Task OnChangeRoleAsync(ReplicaRole newRole, CancellationToken cancellationToken)
 		{
 			m_serviceRegistrator.StateManagerAccessor.SetValue(new OmexStateManager(StateManager, newRole));
 			return base.OnChangeRoleAsync(newRole, cancellationToken);
 		}
-		
+
 		/// <inheritdoc />
 		protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners() =>
 			m_serviceRegistrator.ListenerBuilders.Select(b => new ServiceReplicaListener(c => b.Build(this), b.Name));

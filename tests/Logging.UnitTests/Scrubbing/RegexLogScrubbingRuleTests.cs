@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 	[TestCategory("Shared")]
 	public class RegexLogScrubbingRuleTests
 	{
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow("", "")]
 		[DataRow(" ", " ")]
 		[DataRow("input", "[REDACTED]")]
@@ -28,7 +28,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 			Assert.AreEqual(expected, scrubber.Scrub(input));
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow("/api/path?q1=v1&q2=v2&q3=v3", "/api/path?REDACTED&REDACTED&q3=v3")]
 		[DataRow("/api/path?q1=v1&q2=v2", "/api/path?REDACTED&REDACTED&")]
 		[DataRow("/api/path?q3=v3", "/api/path?q3=v3")]
@@ -39,7 +39,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 			Assert.AreEqual(expected, scrubber.Scrub(input));
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow("/api/path?q1=v1&q2=v2&q3=v3", "/api/path?q1=REDACTED&q2=REDACTED&q3=v3")]
 		[DataRow("/api/path?q1=v1&q2=v2", "/api/path?q1=REDACTED&q2=REDACTED")]
 		[DataRow("/api/path?q3=v3", "/api/path?q3=v3")]

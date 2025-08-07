@@ -111,7 +111,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 			}
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(true, true, true, false)]
 		[DataRow(false, true, true, true)]
 		[DataRow(false, false, true, true)]
