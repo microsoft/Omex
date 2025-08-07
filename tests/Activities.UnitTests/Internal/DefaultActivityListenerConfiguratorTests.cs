@@ -11,7 +11,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 	[TestClass]
 	public class DefaultActivityListenerConfiguratorTests
 	{
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(true, ActivitySamplingResult.AllData, ActivitySamplingResult.None)]
 		[DataRow(false, ActivitySamplingResult.None, ActivitySamplingResult.AllData)]
 		public void AddOmexActivitySource_ActivityCreationEnabled(bool shouldListen, ActivitySamplingResult sample, ActivitySamplingResult sampleUsingParent)

@@ -23,7 +23,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 	[TestClass]
 	public class HealthChecksBuilderExtensionsTests
 	{
-		[DataTestMethod]
+		[TestMethod]
 		[DynamicData(nameof(GetHeaders), DynamicDataSourceType.Method)]
 		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public void AddServiceFabricHealthChecks_RegisterPublisherAndChecks(IReadOnlyDictionary<string, IEnumerable<string>> headers)
@@ -55,14 +55,14 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			CollectionAssert.AreEquivalent(reportData, parameters.ReportData.ToArray(), nameof(HttpHealthCheckParameters.ReportData));
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow("https://localhost")]
 		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public void AddServiceFabricHealthChecks_InvalidPath_ThrowException(string path)
 		{
 			string endpoitName = "EndpointName";
 			SfConfigurationProviderHelper.SetPortVariable(endpoitName, 80);
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 				GetBuilder().AddHttpEndpointCheck("ChecKName", endpoitName, path, scheme: Uri.UriSchemeHttps));
 		}
 
@@ -72,7 +72,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		{
 			string endpoitName = "EndpointName";
 			SfConfigurationProviderHelper.SetPortVariable(endpoitName, 80);
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 				GetBuilder().AddHttpEndpointCheck("ChecKName", endpoitName, "/", scheme: Uri.UriSchemeHttps,
 					headers: new Dictionary<string, IEnumerable<string>>
 					{

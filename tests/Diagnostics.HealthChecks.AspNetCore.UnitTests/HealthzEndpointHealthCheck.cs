@@ -59,43 +59,43 @@ public class HealthzEndpointHealthCheckTests
 		Assert.AreEqual(expectedHealthStatus, healthCheckResult.Status);
 	}
 
-    [TestMethod]
-    [DataRow(new[] { HttpStatusCode.OK }, HttpStatusCode.OK, HealthStatus.Healthy)]
-    [DataRow(new[] { HttpStatusCode.Unauthorized }, HttpStatusCode.Unauthorized, HealthStatus.Healthy)]
-    [DataRow(new[] { HttpStatusCode.NotFound }, HttpStatusCode.OK, HealthStatus.Unhealthy)]
-    [DataRow(new[] { HttpStatusCode.NotFound }, HttpStatusCode.NotFound, HealthStatus.Healthy)]
-    [DataRow(new[] { HttpStatusCode.NotFound, HttpStatusCode.OK }, HttpStatusCode.NotFound, HealthStatus.Healthy)]
-    [DataRow(new[] { HttpStatusCode.NotFound, HttpStatusCode.OK }, HttpStatusCode.Unauthorized, HealthStatus.Unhealthy)]
+	[TestMethod]
+	[DataRow(new[] { HttpStatusCode.OK }, HttpStatusCode.OK, HealthStatus.Healthy)]
+	[DataRow(new[] { HttpStatusCode.Unauthorized }, HttpStatusCode.Unauthorized, HealthStatus.Healthy)]
+	[DataRow(new[] { HttpStatusCode.NotFound }, HttpStatusCode.OK, HealthStatus.Unhealthy)]
+	[DataRow(new[] { HttpStatusCode.NotFound }, HttpStatusCode.NotFound, HealthStatus.Healthy)]
+	[DataRow(new[] { HttpStatusCode.NotFound, HttpStatusCode.OK }, HttpStatusCode.NotFound, HealthStatus.Healthy)]
+	[DataRow(new[] { HttpStatusCode.NotFound, HttpStatusCode.OK }, HttpStatusCode.Unauthorized, HealthStatus.Unhealthy)]
 	public async Task HealthzEndpointHttpHealthCheckWithExpectedStatusCodes_ReturnsExpectedStatus(HttpStatusCode[] expectedStatusCode, HttpStatusCode returnedStatusCode, HealthStatus expectedHealthStatus)
-    {
-        EndpointLivenessHealthCheckParameters healthCheckParameters = new(
-            nameof(EndpointLivenessHealthCheck),
-            $"{nameof(EndpointLivenessHealthCheck)}_HttpClient",
-            "healthz",
-            expectedStatusCode);
+	{
+		EndpointLivenessHealthCheckParameters healthCheckParameters = new(
+			nameof(EndpointLivenessHealthCheck),
+			$"{nameof(EndpointLivenessHealthCheck)}_HttpClient",
+			"healthz",
+			expectedStatusCode);
 
-        HealthCheckTestHelpers.SetLocalServiceInfo();
-        Mock<IHttpClientFactory> clientFactory = HealthCheckTestHelpers.GetHttpClientFactoryMock(
-            HealthCheckTestHelpers.GetHttpResponseMessageMock(returnedStatusCode, message: string.Empty));
+		HealthCheckTestHelpers.SetLocalServiceInfo();
+		Mock<IHttpClientFactory> clientFactory = HealthCheckTestHelpers.GetHttpClientFactoryMock(
+			HealthCheckTestHelpers.GetHttpResponseMessageMock(returnedStatusCode, message: string.Empty));
 
-        ActivitySource activitySourceMock = new(nameof(EndpointLivenessHealthCheck));
+		ActivitySource activitySourceMock = new(nameof(EndpointLivenessHealthCheck));
 
-        EndpointLivenessHealthCheck healthCheck = new(
-            clientFactory.Object,
-            activitySourceMock,
-            GetLogger<EndpointLivenessHealthCheck>(),
-            healthCheckParameters);
+		EndpointLivenessHealthCheck healthCheck = new(
+			clientFactory.Object,
+			activitySourceMock,
+			GetLogger<EndpointLivenessHealthCheck>(),
+			healthCheckParameters);
 
-        CancellationTokenSource source = new();
+		CancellationTokenSource source = new();
 
-        HealthCheckResult healthCheckResult = await healthCheck.CheckHealthAsync(
-            HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
-            source.Token);
+		HealthCheckResult healthCheckResult = await healthCheck.CheckHealthAsync(
+			HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
+			source.Token);
 
-        Assert.AreEqual(expectedHealthStatus, healthCheckResult.Status);
-    }
+		Assert.AreEqual(expectedHealthStatus, healthCheckResult.Status);
+	}
 
- 
+
 	[TestMethod]
 	[DataRow(HttpStatusCode.OK, HealthStatus.Healthy)]
 	[DataRow(HttpStatusCode.InternalServerError, HealthStatus.Unhealthy)]

@@ -43,7 +43,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 			Assert.IsInstanceOfType(logScrubbingRules[0], typeof(RegexLogScrubbingRule));
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow("", "")]
 		[DataRow(" ", " ")]
 		[DataRow("input", "input")]
@@ -71,7 +71,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 			Assert.IsInstanceOfType(logScrubbingRules[0], typeof(RegexLogScrubbingRule));
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow("", "")]
 		[DataRow(" ", " ")]
 		[DataRow("input", "input")]
