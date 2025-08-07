@@ -35,7 +35,7 @@ namespace Microsoft.Omex.Extensions.Abstractions.UnitTests
 #endif
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(-19)]
 		[DataRow(0)]
 		[DataRow(13)]

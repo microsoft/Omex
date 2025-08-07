@@ -15,6 +15,6 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions
 		/// <summary>
 		/// Returns stored object from wrapper
 		/// </summary>
-		public Task<IServiceFabricClient> GetAsync(CancellationToken token);
+		Task<IServiceFabricClient> GetAsync(CancellationToken token);
 	}
 }

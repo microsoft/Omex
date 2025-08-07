@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 		[TestMethod]
 		public void BuildStatelessWebService_UseUniqueServiceUrl_Failing()
 		{
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				new HostBuilder().BuildStatelessWebService<MockStartup>(
 					"someService1",

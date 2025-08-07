@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 	[TestClass]
 	public class ServiceCollectionTests
 	{
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(typeof(ActivitySource), typeof(ActivitySource))]
 		[DataRow(typeof(IActivityStartObserver), typeof(ActivityObserver))]
 		[DataRow(typeof(IActivityStopObserver), typeof(ActivityObserver))]

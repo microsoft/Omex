@@ -14,7 +14,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 	[TestClass]
 	public class ServiceCollectionExtensionsTests
 	{
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(typeof(ActivityEnrichmentMiddleware))]
 		[DataRow(typeof(ResponseHeadersMiddleware))]
 		[DataRow(typeof(UserHashIdentityMiddleware))]

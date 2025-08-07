@@ -20,13 +20,13 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void IsNotNull_IfNull_Throws()
 		{
-			Assert.ThrowsException<AssertFailedException>(() => NullableAssert.IsNotNull(null));
+			Assert.ThrowsExactly<AssertFailedException>(() => NullableAssert.IsNotNull(null));
 		}
 
 		[TestMethod]
 		public void IsNotNull_PropagatesErrorMessage()
 		{
-			AssertFailedException exception = Assert.ThrowsException<AssertFailedException>(
+			AssertFailedException exception = Assert.ThrowsExactly<AssertFailedException>(
 				() => NullableAssert.IsNotNull(null, s_message, s_parameters));
 
 			StringAssert.Contains(exception.Message, s_expectedMessage);
@@ -41,13 +41,13 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void IsTrue_IfFalse_Throws()
 		{
-			Assert.ThrowsException<AssertFailedException>(() => NullableAssert.IsTrue(false));
+			Assert.ThrowsExactly<AssertFailedException>(() => NullableAssert.IsTrue(false));
 		}
 
 		[TestMethod]
 		public void IsTrue_PropagatesErrorMessage()
 		{
-			AssertFailedException exception = Assert.ThrowsException<AssertFailedException>(
+			AssertFailedException exception = Assert.ThrowsExactly<AssertFailedException>(
 				() => NullableAssert.IsTrue(false, s_message, s_parameters));
 
 			StringAssert.Contains(exception.Message, s_expectedMessage);
@@ -62,13 +62,13 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void IsFalse_IfTrue_Throws()
 		{
-			Assert.ThrowsException<AssertFailedException>(() => NullableAssert.IsFalse(true));
+			Assert.ThrowsExactly<AssertFailedException>(() => NullableAssert.IsFalse(true));
 		}
 
 		[TestMethod]
 		public void IsFalse_PropagatesErrorMessage()
 		{
-			AssertFailedException exception = Assert.ThrowsException<AssertFailedException>(
+			AssertFailedException exception = Assert.ThrowsExactly<AssertFailedException>(
 				() => NullableAssert.IsFalse(true, s_message, s_parameters));
 
 			StringAssert.Contains(exception.Message, s_expectedMessage);
@@ -78,13 +78,13 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		[TestMethod]
 		public void Fail_Throws()
 		{
-			Assert.ThrowsException<AssertFailedException>(() => NullableAssert.Fail());
+			Assert.ThrowsExactly<AssertFailedException>(() => NullableAssert.Fail());
 		}
 
 		[TestMethod]
 		public void Fail_PropagatesErrorMessage()
 		{
-			AssertFailedException exception = Assert.ThrowsException<AssertFailedException>(
+			AssertFailedException exception = Assert.ThrowsExactly<AssertFailedException>(
 				() => NullableAssert.Fail(s_message, s_parameters));
 
 			StringAssert.Contains(exception.Message, s_expectedMessage);

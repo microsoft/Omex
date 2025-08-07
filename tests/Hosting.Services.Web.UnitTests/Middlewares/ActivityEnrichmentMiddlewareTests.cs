@@ -16,7 +16,7 @@ namespace Hosting.Services.Web.UnitTests
 	[TestCategory("MiddlewareTests")]
 	public class ActivityEnrichmentMiddlewareTests
 	{
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(99, ActivityResult.SystemError)]
 		[DataRow(100, ActivityResult.Success)]
 		[DataRow(101, ActivityResult.Success)]

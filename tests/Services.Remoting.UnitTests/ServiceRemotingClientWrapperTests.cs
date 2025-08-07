@@ -76,7 +76,7 @@ namespace Services.Remoting
 			(DiagnosticListener listener, MockObserver observer) = MockObserver.CreateListener();
 			ServiceRemotingClientWrapper wrapper = new(clientMock.Object, listener);
 
-			Assert.ThrowsException<ArithmeticException>(() => wrapper.SendOneWay(messsageMock));
+			Assert.ThrowsExactly<ArithmeticException>(() => wrapper.SendOneWay(messsageMock));
 			observer.AssertException(exception);
 		}
 
@@ -90,7 +90,7 @@ namespace Services.Remoting
 			(DiagnosticListener listener, MockObserver observer) = MockObserver.CreateListener();
 			ServiceRemotingClientWrapper wrapper = new(clientMock.Object, listener);
 
-			await Assert.ThrowsExceptionAsync<ArithmeticException>(() => wrapper.RequestResponseAsync(messsageMock));
+			await Assert.ThrowsExactlyAsync<ArithmeticException>(() => wrapper.RequestResponseAsync(messsageMock));
 			observer.AssertException(exception);
 		}
 

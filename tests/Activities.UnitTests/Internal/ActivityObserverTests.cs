@@ -46,7 +46,7 @@ namespace Hosting.Services.UnitTests
 			StringAssert.Contains(message, activity.ParentId);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(true, null)]
 		[DataRow(true, ActivityResult.Success)]
 		[DataRow(false, ActivityResult.SystemError)]

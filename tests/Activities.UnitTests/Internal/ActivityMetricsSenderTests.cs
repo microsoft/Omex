@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 	public class ActivityMetricsSenderTests
 	{
 		[TestMethod]
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(false)]
 		[DataRow(true)]
 		public void SendActivityMetric_NoCustomDimensions_ProduceMetricPointSuccessfully(bool isHealthCheck)
@@ -55,7 +55,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		}
 
 		[TestMethod]
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(false)]
 		[DataRow(true)]
 		public void SendActivityMetric_CustomDimensionsAreRegistered_ProduceMetricPointWithRegisteredDimensions(bool isHealthCheck)

@@ -22,7 +22,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 			IServiceProvider mockProvider = new Mock<IServiceProvider>().Object;
 			OmexStatefulService omexStatefulService = MockServiceFabricServices.MockOmexStatefulService;
 
-			Assert.ThrowsException<InsecureRemotingUnsupportedException>(() => new GenericRemotingListenerBuilder<OmexStatefulService>(name, mockProvider,
+			Assert.ThrowsExactly<InsecureRemotingUnsupportedException>(() => new GenericRemotingListenerBuilder<OmexStatefulService>(name, mockProvider,
 					(p, s) =>
 					{
 						Assert.AreEqual(omexStatefulService, s);
