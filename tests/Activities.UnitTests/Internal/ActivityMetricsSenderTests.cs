@@ -20,7 +20,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 	public class ActivityMetricsSenderTests
 	{
 		[TestMethod]
-		[DataTestMethod]
 		[DataRow(false)]
 		[DataRow(true)]
 		public void SendActivityMetric_NoCustomDimensions_ProduceMetricPointSuccessfully(bool isHealthCheck)
@@ -55,7 +54,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		}
 
 		[TestMethod]
-		[DataTestMethod]
 		[DataRow(false)]
 		[DataRow(true)]
 		public void SendActivityMetric_CustomDimensionsAreRegistered_ProduceMetricPointWithRegisteredDimensions(bool isHealthCheck)
@@ -235,7 +233,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		private static void AssertTag(MeasurementResult result, string key, object? expectedValue) => Assert.AreEqual(expectedValue, result.Tags[key]);
 
 		private static void AssertTagNotExist(MeasurementResult result, string key) => CollectionAssert.DoesNotContain(result.Tags.Keys, key);
-
 
 		private static (IExecutionContext, IHostEnvironment, IOptions<ActivityOption>) PrepareEnvironment(ActivityOption? options = null)
 		{

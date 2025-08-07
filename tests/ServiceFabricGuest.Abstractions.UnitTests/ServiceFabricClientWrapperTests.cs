@@ -41,7 +41,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 			IServiceFabricClientWrapper wrapper = new ServiceFabricClientWrapper(options, new Mock<ICertificateReader>().Object);
 
 			// Assert.
-			await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => wrapper.GetAsync(default));
+			await Assert.ThrowsExactlyAsync<InvalidOperationException>(() => wrapper.GetAsync(default));
 		}
 
 		[TestMethod]
@@ -55,7 +55,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 			IServiceFabricClientWrapper wrapper = new ServiceFabricClientWrapper(options, new Mock<ICertificateReader>().Object);
 
 			// Assert.
-			await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => wrapper.GetAsync(default));
+			await Assert.ThrowsExactlyAsync<InvalidOperationException>(() => wrapper.GetAsync(default));
 		}
 	}
 }

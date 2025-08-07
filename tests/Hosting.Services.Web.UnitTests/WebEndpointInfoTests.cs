@@ -47,21 +47,21 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 
 		[TestMethod]
 		[Obsolete]
-		public void CreateHttp_WithEmptyEndpointName_Throws() => Assert.ThrowsException<ArgumentException>(() => WebEndpointInfo.CreateHttp(string.Empty));
+		public void CreateHttp_WithEmptyEndpointName_Throws() => Assert.ThrowsExactly<ArgumentException>(() => WebEndpointInfo.CreateHttp(string.Empty));
 
 		[TestMethod]
 		[Obsolete]
-		public void CreateHttp_WithWrongEndpointName_Throws() => Assert.ThrowsException<SfConfigurationException>(() => WebEndpointInfo.CreateHttp("UnexistingEndpoint"));
+		public void CreateHttp_WithWrongEndpointName_Throws() => Assert.ThrowsExactly<SfConfigurationException>(() => WebEndpointInfo.CreateHttp("UnexistingEndpoint"));
 
 		[TestMethod]
-		public void CreateHttps_WithEmptyEndpointName_Throws() => Assert.ThrowsException<ArgumentException>(() => WebEndpointInfo.CreateHttps(string.Empty));
+		public void CreateHttps_WithEmptyEndpointName_Throws() => Assert.ThrowsExactly<ArgumentException>(() => WebEndpointInfo.CreateHttps(string.Empty));
 
 		[TestMethod]
 		public void CreateHttps_WithoutCertSettings_Throws()
 		{
 			string someEndpoint = "SomeTestEndpoint";
 			SfConfigurationProviderHelper.SetPortVariable(someEndpoint, 8080);
-			Assert.ThrowsException<ArgumentException>(() => WebEndpointInfo.CreateHttps(someEndpoint, string.Empty));
+			Assert.ThrowsExactly<ArgumentException>(() => WebEndpointInfo.CreateHttps(someEndpoint, string.Empty));
 		}
 	}
 }

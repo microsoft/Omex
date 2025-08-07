@@ -17,7 +17,7 @@ namespace Microsoft.Omex.Extensions.Hosting.UnitTests
 	[TestClass]
 	public class HostBuilderExtensionsTests
 	{
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(typeof(ILogger<HostBuilderExtensionsTests>))]
 		[DataRow(typeof(ActivitySource))]
 		public void AddOmexServices_TypesRegistered(Type type)

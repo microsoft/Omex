@@ -9,7 +9,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 	[TestClass]
 	public class RemotingSettingsTests
 	{
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow("")]
 		[DataRow("TestEndpointName")]
 		public void WithEndpoint_SetsProperValues(string value)

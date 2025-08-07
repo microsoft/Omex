@@ -13,7 +13,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 	[TestClass]
 	public class BaseExecutionContextTests
 	{
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow("Development", true)]
 		[DataRow("Prod", false)]
 		public void Constructor_InitializesPropertiesProperly(string enviroment, bool isPrivate)

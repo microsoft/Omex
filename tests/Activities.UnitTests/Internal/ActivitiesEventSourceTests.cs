@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 	[Obsolete($"{nameof(ActivityEventSender)} is obsolete and pending for removal by 1 July 2024.", DiagnosticId = "OMEX188")]
 	public class ActivitiesEventSourceTests
 	{
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(EventSourcesEventIds.LogActivityTestContext, true)]
 		[DataRow(EventSourcesEventIds.LogActivity, false)]
 		public void LogActivityEndEvent_CreatesEvent(EventSourcesEventIds eventId, bool isHealthCheck)
@@ -68,7 +68,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			eventInfo.AssertPayload("correlationId", correlationId.ToString());
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(EventSourcesEventIds.LogActivityTestContext, true)]
 		[DataRow(EventSourcesEventIds.LogActivity, false)]
 		public void LogActivityEndEvent_DisableByOption_CreatesNoEvent(EventSourcesEventIds eventId, bool isHealthCheck)
