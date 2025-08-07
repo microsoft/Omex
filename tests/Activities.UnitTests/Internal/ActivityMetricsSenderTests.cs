@@ -20,7 +20,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 	public class ActivityMetricsSenderTests
 	{
 		[TestMethod]
-		[TestMethod]
 		[DataRow(false)]
 		[DataRow(true)]
 		public void SendActivityMetric_NoCustomDimensions_ProduceMetricPointSuccessfully(bool isHealthCheck)
@@ -54,7 +53,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 			VerifyTagsExist(listener, activity, context, environment, isHealthCheck ? OmexActivityConfiguration.HealthCheckActivitiesHistogramName : OmexActivityConfiguration.ActivitiesHistogramName);
 		}
 
-		[TestMethod]
 		[TestMethod]
 		[DataRow(false)]
 		[DataRow(true)]
@@ -235,7 +233,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		private static void AssertTag(MeasurementResult result, string key, object? expectedValue) => Assert.AreEqual(expectedValue, result.Tags[key]);
 
 		private static void AssertTagNotExist(MeasurementResult result, string key) => CollectionAssert.DoesNotContain(result.Tags.Keys, key);
-
 
 		private static (IExecutionContext, IHostEnvironment, IOptions<ActivityOption>) PrepareEnvironment(ActivityOption? options = null)
 		{
