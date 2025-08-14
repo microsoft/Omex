@@ -1,12 +1,12 @@
 ﻿// Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace Microsoft.Omex.Extensions.FeatureManagement.Filters.Filter.Settings
+namespace Microsoft.Omex.Extensions.FeatureManagement.Filters.Settings
 {
 	/// <summary>
 	/// The configuration settings for the rollout feature.
 	/// </summary>
-	internal sealed class RolloutFilterSettings
+	public sealed class RolloutFilterSettings
 	{
 		/// <summary>
 		/// Gets or sets the rollout percentage for the feature.

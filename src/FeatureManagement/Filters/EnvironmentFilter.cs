@@ -6,9 +6,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.FeatureManagement;
 using Microsoft.Omex.Extensions.Abstractions;
-using Microsoft.Omex.Extensions.FeatureManagement.Configuration;
 using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
-using Microsoft.Omex.Extensions.FeatureManagement.Filters.Filter.Settings;
+using Microsoft.Omex.Extensions.FeatureManagement.Filters.Settings;
 
 namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
 {
@@ -18,7 +17,7 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
 	/// <param name="settings">The settings.</param>
 	/// <param name="logger">The logger.</param>
 	[FilterAlias("Environment")]
-	internal sealed class EnvironmentFilter(
+	public sealed class EnvironmentFilter(
 		IOptionsMonitor<ClusterSettings> settings,
 		ILogger<EnvironmentFilter> logger) : IFeatureFilter
 	{

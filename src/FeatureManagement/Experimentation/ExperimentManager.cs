@@ -13,7 +13,7 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Experimentation
 	internal sealed class EmptyExperimentManager : IExperimentManager
 	{
 		/// <inheritdoc />
-		public Task<IDictionary<string, bool>> GetExperimentStatusesAsync(ExperimentFilters filters, CancellationToken cancellationToken) =>
-			Task.FromResult<IDictionary<string, bool>>(new Dictionary<string, bool>());
+		public Task<IDictionary<string, object>> GetFlightsAsync(IDictionary<string, object> filters, CancellationToken cancellationToken) =>
+			Task.FromResult<IDictionary<string, object>>(new Dictionary<string, object>());
 	}
 }

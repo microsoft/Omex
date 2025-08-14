@@ -6,7 +6,7 @@ namespace Microsoft.Omex.Extensions.FeatureManagement
 	/// <summary>
 	/// The feature override settings.
 	/// </summary>
-	internal sealed class FeatureOverrideSettings
+	public sealed class FeatureOverrideSettings
 	{
 		/// <summary>
 		/// Gets or sets the set of features that are always off regardless of their filter evaluation.

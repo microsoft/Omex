@@ -46,7 +46,6 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Extensions
 				.AddFeatureFilter<ParentFilter>();
 
 			services.AddScoped<IExtendedFeatureManager, ExtendedFeatureManager>();
-			services.AddScoped<IFeatureGatesConsolidator, FeatureGatesConsolidator>();
 			services.AddScoped<IFeatureGatesService, FeatureGatesService>();
 
 			return services;

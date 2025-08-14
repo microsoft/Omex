@@ -3,12 +3,12 @@
 
 using System.Collections.Generic;
 
-namespace Microsoft.Omex.Extensions.FeatureManagement.Filters.Filter.Settings
+namespace Microsoft.Omex.Extensions.FeatureManagement.Filters.Settings
 {
 	/// <summary>
 	/// The configuration settings for the campaign filter.
 	/// </summary>
-	internal sealed class CampaignFilterSettings
+	public sealed class CampaignFilterSettings
 	{
 		/// <summary>
 		/// Gets or sets the list of campaigns for which the feature should be disabled.

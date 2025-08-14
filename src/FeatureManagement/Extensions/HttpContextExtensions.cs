@@ -1,16 +1,10 @@
 ﻿// Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System;
-using System.Linq;
 using System.Net;
-using DeviceDetectorNET;
-using DeviceDetectorNET.Results.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using Microsoft.Net.Http.Headers;
 using Microsoft.Omex.Extensions.FeatureManagement.Constants;
-using Microsoft.Omex.Extensions.FeatureManagement.Types;
 
 namespace Microsoft.Omex.Extensions.FeatureManagement.Extensions
 {
@@ -19,51 +13,6 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Extensions
 	/// </summary>
 	internal static class HttpContextExtensions
 	{
-		/// <summary>
-		/// Gets the browser information from the HTTP context.
-		/// </summary>
-		/// <param name="httpContext">The HTTP context.</param>
-		/// <returns>The browser information.</returns>
-		public static string GetBrowser(this HttpContext httpContext)
-		{
-			if (!httpContext.Request.Headers.TryGetValue(HeaderNames.UserAgent, out StringValues userAgent) ||
-				string.IsNullOrWhiteSpace(userAgent.ToString()))
-			{
-				return string.Empty;
-			}
-
-			DeviceDetector deviceDetector = new(userAgent);
-			deviceDetector.Parse();
-			BrowserMatchResult match = deviceDetector.GetBrowserClient().Match;
-			return match == null
-				? string.Empty
-				: match.Name;
-		}
-
-		/// <summary>
-		/// Gets the device type from the HTTP context.
-		/// </summary>
-		/// <param name="httpContext">The HTTP context.</param>
-		/// <returns>The device type.</returns>
-		public static DeviceType GetDeviceType(this HttpContext httpContext)
-		{
-			if (!httpContext.Request.Headers.TryGetValue(HeaderNames.UserAgent, out StringValues userAgent) ||
-				string.IsNullOrWhiteSpace(userAgent.ToString()))
-			{
-				return DeviceType.Unknown;
-			}
-
-			return httpContext switch
-			{
-				_ when httpContext.IsDesktopClient(userAgent) =>
-					DeviceType.Desktop,
-				_ when httpContext.IsMobileClient(userAgent) =>
-					DeviceType.Mobile,
-				_ =>
-					DeviceType.Unknown
-			};
-		}
-
 		/// <summary>
 		/// Retrieves the partner from the HTTP context headers.
 		/// </summary>
@@ -101,21 +50,6 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Extensions
 			}
 
 			return platform.ToString().Trim();
-		}
-
-		/// <summary>
-		/// Retrieves the partner and platform information from the HTTP context headers.
-		/// </summary>
-		/// <param name="httpContext">The HTTP context.</param>
-		/// <param name="headerPrefix">The optional HTTP header prefix.</param>
-		/// <param name="defaultPlatform">The default platform if not overridden.</param>
-		/// <returns>A string containing the partner and platform information in the format of "partner/platform"</returns>
-		public static string GetPartnerInfo(this HttpContext httpContext, string? headerPrefix = null, string? defaultPlatform = null)
-		{
-			string partner = httpContext.GetPartner(headerPrefix);
-			string platform = httpContext.GetPlatform(headerPrefix, defaultPlatform);
-
-			return string.Join("/", new[] { partner, platform }.Where(s => !string.IsNullOrWhiteSpace(s)));
 		}
 
 		/// <summary>
@@ -182,19 +116,6 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Extensions
 			}
 
 			return IPAddress.None;
-		}
-
-		private static bool IsDesktopClient(this HttpContext httpContext, StringValues userAgent) =>
-			IsClientType(httpContext, userAgent, detector => detector.IsDesktop());
-
-		private static bool IsMobileClient(this HttpContext httpContext, StringValues userAgent) =>
-			IsClientType(httpContext, userAgent, detector => detector.IsMobile());
-
-		private static bool IsClientType(HttpContext httpContext, StringValues userAgent, Func<DeviceDetector, bool> deviceCheck)
-		{
-			DeviceDetector deviceDetector = new(userAgent);
-			deviceDetector.Parse();
-			return deviceCheck(deviceDetector);
 		}
 
 		private static string GetPartnerHeader(string? headerPrefix) =>

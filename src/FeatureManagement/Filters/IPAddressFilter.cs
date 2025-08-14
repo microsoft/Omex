@@ -10,7 +10,7 @@ using Microsoft.FeatureManagement;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
 using Microsoft.Omex.Extensions.FeatureManagement.Filters.Configuration;
-using Microsoft.Omex.Extensions.FeatureManagement.Filters.Filter.Settings;
+using Microsoft.Omex.Extensions.FeatureManagement.Filters.Settings;
 
 namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
 {
@@ -21,7 +21,7 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
 	/// <param name="ipRangeProvider">The IP range provider.</param>
 	/// <param name="logger">The logger.</param>
 	[FilterAlias("IPAddress")]
-	internal sealed class IPAddressFilter(
+	public sealed class IPAddressFilter(
 		IHttpContextAccessor httpContextAccessor,
 		IIPRangeProvider ipRangeProvider,
 		ILogger<IPAddressFilter> logger) : IFeatureFilter

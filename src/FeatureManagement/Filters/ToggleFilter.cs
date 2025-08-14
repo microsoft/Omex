@@ -21,7 +21,7 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
 	/// <param name="logger">The logger.</param>
 	/// <param name="settings">The settings.</param>
 	[FilterAlias("Toggle")]
-	internal sealed class ToggleFilter(
+	public sealed class ToggleFilter(
 		IHttpContextAccessor httpContextAccessor,
 		ILogger<ToggleFilter> logger,
 		IOptionsMonitor<FeatureOverrideSettings> settings) : IFeatureFilter

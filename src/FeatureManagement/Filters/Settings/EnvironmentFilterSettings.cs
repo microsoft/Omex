@@ -3,12 +3,12 @@
 
 using System.Collections.Generic;
 
-namespace Microsoft.Omex.Extensions.FeatureManagement.Filters.Filter.Settings
+namespace Microsoft.Omex.Extensions.FeatureManagement.Filters.Settings
 {
 	/// <summary>
 	/// The configuration settings for the environment filter.
 	/// </summary>
-	internal sealed class EnvironmentFilterSettings
+	public sealed class EnvironmentFilterSettings
 	{
 		/// <summary>
 		/// Gets or sets the list of environments for which the feature should be enabled.

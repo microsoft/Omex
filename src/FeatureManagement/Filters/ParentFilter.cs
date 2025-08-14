@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
-using Microsoft.Omex.Extensions.FeatureManagement.Filters.Filter.Settings;
+using Microsoft.Omex.Extensions.FeatureManagement.Filters.Settings;
 
 
 namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
 	/// <param name="logger">The logger.</param>
 	/// <param name="serviceProvider">The service provider.</param>
 	[FilterAlias("Parent")]
-	internal sealed class ParentFilter(
+	public sealed class ParentFilter(
 		ILogger<ParentFilter> logger,
 		IServiceProvider serviceProvider) : IFeatureFilter
 	{

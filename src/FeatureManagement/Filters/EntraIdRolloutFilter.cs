@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
-using Microsoft.Omex.Extensions.FeatureManagement.Filters.Filter.Settings;
+using Microsoft.Omex.Extensions.FeatureManagement.Filters.Settings;
 
 
 namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
 	/// <param name="httpContextAccessor">The HTTP context accessor.</param>
 	/// <param name="logger">The logger.</param>
 	[FilterAlias("EntraIdRollout")]
-	internal sealed class EntraIdRolloutFilter(
+	public sealed class EntraIdRolloutFilter(
 		IHttpContextAccessor httpContextAccessor,
 		ILogger<EntraIdRolloutFilter> logger) : IFeatureFilter
 	{

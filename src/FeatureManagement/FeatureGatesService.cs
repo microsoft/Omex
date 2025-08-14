@@ -4,8 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.FeatureManagement.Constants;
 using Microsoft.Omex.Extensions.FeatureManagement.Experimentation;
@@ -18,10 +21,12 @@ namespace Microsoft.Omex.Extensions.FeatureManagement
 	/// <param name="activitySource">The activity source.</param>
 	/// <param name="experimentManager">The experiment manager.</param>
 	/// <param name="featureManager">The feature manager.</param>
+	/// <param name="logger">The logger.</param>
 	internal sealed class FeatureGatesService(
 		ActivitySource activitySource,
 		IExperimentManager experimentManager,
-		IExtendedFeatureManager featureManager) : IFeatureGatesService
+		IExtendedFeatureManager featureManager,
+		ILogger<FeatureGatesService> logger) : IFeatureGatesService
 	{
 		private const string FrontendFeaturePrefix = "FE_";
 
@@ -34,13 +39,13 @@ namespace Microsoft.Omex.Extensions.FeatureManagement
 			featureManager.DisabledFeatures;
 
 		/// <inheritdoc/>
-		public async Task<IDictionary<string, bool>> GetFeatureGatesAsync()
+		public async Task<IDictionary<string, object>> GetFeatureGatesAsync()
 		{
 			using Activity? activity = activitySource
 				.StartActivity(FeatureManagementActivityNames.FeatureGatesService.GetFeatureGatesAsync)?
 				.MarkAsSystemError();
 
-			Dictionary<string, bool> featureGates = new(StringComparer.OrdinalIgnoreCase);
+			Dictionary<string, object> featureGates = new(StringComparer.OrdinalIgnoreCase);
 			await foreach (string feature in featureManager.GetFeatureNamesAsync())
 			{
 				if (feature.StartsWith(FrontendFeaturePrefix, StringComparison.OrdinalIgnoreCase))
@@ -55,6 +60,49 @@ namespace Microsoft.Omex.Extensions.FeatureManagement
 
 			activity?.MarkAsSuccess();
 			return featureGates;
+		}
+
+		/// <inheritdoc/>
+		public async Task<IDictionary<string, object>> GetExperimentalFeaturesAsync(IDictionary<string, object> filters, CancellationToken cancellationToken)
+		{
+			using Activity? activity = activitySource
+				.StartActivity(FeatureManagementActivityNames.FeatureGatesService.GetExperimentalFeaturesAsync)?
+				.MarkAsSystemError();
+
+			IEnumerable<string> filtersUsed = filters.Select(item => $"{item.Key}:{item.Value}");
+			logger.LogInformation(Tag.Create(), $"{nameof(FeatureGatesService)}.{nameof(GetExperimentalFeaturesAsync)} allocating experiment with the following filters: {{Filters}}", string.Join(',', filtersUsed));
+
+			IDictionary<string, object> response = await experimentManager.GetFlightsAsync(filters, cancellationToken);
+			activity?.MarkAsSuccess();
+			return response;
+		}
+
+		/// <inheritdoc />
+		public async Task<FeatureGateResult> GetExperimentFeatureValueAsync(string featureGate, IDictionary<string, object> filters, CancellationToken cancellationToken)
+		{
+			ArgumentException.ThrowIfNullOrWhiteSpace(featureGate);
+
+			IDictionary<string, object> features = await GetExperimentalFeaturesAsync(filters, cancellationToken);
+			if (!features.TryGetValue(featureGate, out object? value))
+			{
+				return new(false);
+			}
+
+			string? featureGateValue = value.ToString();
+			if (string.IsNullOrWhiteSpace(featureGateValue))
+			{
+				return new(false);
+			}
+
+			if (bool.TryParse(featureGateValue, out bool valueAsBool))
+			{
+				return new(valueAsBool);
+			}
+
+			// We received a feature gate value for the experiment, so the customer user is allocated. The value could
+			// not be parsed so assume that the values have alternative meanings. For this to work, experiments should
+			// be setup to return "false" for the control feature gate.
+			return new(true, featureGateValue);
 		}
 
 		/// <inheritdoc/>
@@ -73,7 +121,7 @@ namespace Microsoft.Omex.Extensions.FeatureManagement
 		}
 
 		/// <inheritdoc />
-		public async Task<bool> IsExperimentApplicableAsync(string featureGate, ExperimentFilters filters, CancellationToken cancellationToken)
+		public async Task<bool> IsExperimentApplicableAsync(string featureGate, IDictionary<string, object> filters, CancellationToken cancellationToken)
 		{
 			ArgumentException.ThrowIfNullOrWhiteSpace(featureGate);
 
@@ -88,9 +136,10 @@ namespace Microsoft.Omex.Extensions.FeatureManagement
 				return queryParamOverride.Value;
 			}
 
-			IDictionary<string, bool> features = await experimentManager.GetExperimentStatusesAsync(filters, cancellationToken);
+			IDictionary<string, object> features = await GetExperimentalFeaturesAsync(filters, cancellationToken);
 			bool isKeyPresent = features.ContainsKey(featureGate);
-			if (!isKeyPresent)
+			string? featureGateValue = isKeyPresent ? features[featureGate].ToString() : string.Empty;
+			if (string.IsNullOrWhiteSpace(featureGateValue))
 			{
 				if (await featureManager.IsEnabledAsync(featureGate))
 				{
@@ -102,10 +151,18 @@ namespace Microsoft.Omex.Extensions.FeatureManagement
 			}
 
 			activity?.SetMetadata($"FromExperiment_{featureGate}").MarkAsSuccess();
-			return features[featureGate];
+			if (!bool.TryParse(featureGateValue, out bool variable))
+			{
+				// We received a feature gate value for the experiment, so the customer user is allocated. The value could
+				// not be parsed so assume that the values have alternative meanings. For this to work, experiments should
+				// be setup to return "false" for the control feature gate.
+				return true;
+			}
+
+			return variable;
 		}
 
-		private static void UpdateFeatureMap(Dictionary<string, bool> featureGates, IEnumerable<string> features, bool overrideValue)
+		private static void UpdateFeatureMap(Dictionary<string, object> featureGates, IEnumerable<string> features, bool overrideValue)
 		{
 			foreach (string feature in features)
 			{

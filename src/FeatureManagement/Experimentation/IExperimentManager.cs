@@ -14,11 +14,11 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Experimentation
 	public interface IExperimentManager
 	{
 		/// <summary>
-		/// Gets the status of all experiments based on the provided filters.
+		/// Gets the status of all flights based on the provided filters.
 		/// </summary>
 		/// <param name="filters">The experiment filters to apply.</param>
 		/// <param name="cancellationToken">The cancellation token for gracefully cancelling long-running asynchronous operations.</param>
-		/// <returns>A dictionary mapping feature gates to the values for the specified filters.</returns>
-		Task<IDictionary<string, bool>> GetExperimentStatusesAsync(ExperimentFilters filters, CancellationToken cancellationToken);
+		/// <returns>A dictionary mapping flights to the values for the specified filters.</returns>
+		Task<IDictionary<string, object>> GetFlightsAsync(IDictionary<string, object> filters, CancellationToken cancellationToken);
 	}
 }

@@ -13,14 +13,6 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Extensions
 	internal static class ClaimsPrincipalExtensions
 	{
 		/// <summary>
-		/// Determines whether the specified <see cref="ClaimsPrincipal"/> is authenticated.
-		/// </summary>
-		/// <param name="claimsPrincipal">The object to check for authentication.</param>
-		/// <returns><see langword="true"/> if the customer is authenticated; <see langword="false"/> otherwise.</returns>
-		public static bool IsAuthenticated(this ClaimsPrincipal claimsPrincipal) =>
-			claimsPrincipal.Identity?.IsAuthenticated ?? false;
-
-		/// <summary>
 		/// Tries to get a customer's Entra ID from their token claims.
 		/// </summary>
 		/// <param name="claimsPrincipal">The object from which to retrieve the Entra ID.</param>

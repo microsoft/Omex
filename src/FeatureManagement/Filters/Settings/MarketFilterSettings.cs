@@ -3,12 +3,12 @@
 
 using System.Collections.Generic;
 
-namespace Microsoft.Omex.Extensions.FeatureManagement.Filters.Filter.Settings
+namespace Microsoft.Omex.Extensions.FeatureManagement.Filters.Settings
 {
 	/// <summary>
 	/// The configuration settings for the market filter.
 	/// </summary>
-	internal sealed class MarketFilterSettings
+	public sealed class MarketFilterSettings
 	{
 		/// <summary>
 		/// Gets or sets the list of markets for which the feature should be disabled.

@@ -2,10 +2,8 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Globalization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using Microsoft.Omex.Extensions.FeatureManagement.Constants;
 
 namespace Microsoft.Omex.Extensions.FeatureManagement.Extensions
 {
@@ -37,43 +35,6 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Extensions
 			}
 
 			return string.Empty;
-		}
-
-		/// <summary>
-		/// Gets the correlation ID from the request context.
-		/// </summary>
-		/// <param name="contextAccessor">The HTTP request context accessor.</param>
-		/// <returns>The correlation ID, or a random GUID if the correlation ID cannot be retrieved.</returns>
-		public static Guid GetCorrelationId(this IHttpContextAccessor contextAccessor)
-		{
-			string parameterValue = contextAccessor.GetParameter(RequestParameters.Query.CorrelationId);
-			if (Guid.TryParse(parameterValue, out Guid correlationId))
-			{
-				return correlationId;
-			}
-
-			// If the correlation ID is not present or invalid, return the empty GUID. This was chosen to ensure the
-			// behavior is deterministic, as generating a random GUID would result in different values on each call.
-			return Guid.Empty;
-		}
-
-		/// <summary>
-		/// Gets the language from the request context.
-		/// </summary>
-		/// <param name="contextAccessor">The HTTP request context accessor.</param>
-		/// <returns>The language, or <see cref="CultureInfo.InvariantCulture"/> if the language cannot be retrieved.</returns>
-		public static CultureInfo GetLanguage(this IHttpContextAccessor contextAccessor)
-		{
-			string language = contextAccessor.GetParameter(RequestParameters.Query.Language);
-
-			try
-			{
-				return CultureInfo.GetCultureInfo(language);
-			}
-			catch (CultureNotFoundException)
-			{
-				return CultureInfo.InvariantCulture;
-			}
 		}
 	}
 }

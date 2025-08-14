@@ -8,7 +8,7 @@ using Microsoft.FeatureManagement;
 using Microsoft.Omex.Extensions.Abstractions;
 using Microsoft.Omex.Extensions.FeatureManagement.Constants;
 using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
-using Microsoft.Omex.Extensions.FeatureManagement.Filters.Filter.Settings;
+using Microsoft.Omex.Extensions.FeatureManagement.Filters.Settings;
 
 namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
 {
@@ -18,7 +18,7 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
 	/// <param name="httpContextAccessor">The HTTP context accessor.</param>
 	/// <param name="logger">The logger.</param>
 	[FilterAlias("Market")]
-	internal sealed class MarketFilter(
+	public sealed class MarketFilter(
 		IHttpContextAccessor httpContextAccessor,
 		ILogger<MarketFilter> logger) : IFeatureFilter
 	{
