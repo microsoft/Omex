@@ -4,6 +4,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
+using Microsoft.Omex.Extensions.FeatureManagement.Experimentation;
 using Microsoft.Omex.Extensions.FeatureManagement.Filters;
 using Microsoft.Omex.Extensions.FeatureManagement.Filters.Configuration;
 
@@ -19,30 +20,33 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Extensions
 		/// </summary>
 		/// <param name="services">The <see cref="IServiceCollection"/> to which to register the classes.</param>
 		/// <param name="configuration">The configuration.</param>
-		/// <param name="ipRangeProvider">The IP range provider. If null, the <see cref="EmptyIPRangeProvider"/> will be used.</param>
+		/// <param name="experimentManager">The experiment manager. If <c>null</c>, the <see cref="EmptyExperimentManager"/> will be used.</param>
+		/// <param name="ipRangeProvider">The IP range provider. If <c>null</c>, the <see cref="EmptyIPRangeProvider"/> will be used.</param>
 		/// <returns>The updated <see cref="IServiceCollection"/>.</returns>
 		public static IServiceCollection ConfigureFeatureManagement(
 			this IServiceCollection services,
 			IConfiguration configuration,
+			IExperimentManager? experimentManager = null,
 			IIPRangeProvider? ipRangeProvider = null)
 		{
 			services.AddOptions<FeatureOverrideSettings>()
 				.Bind(configuration.GetSection(nameof(FeatureOverrideSettings)))
 				.ValidateDataAnnotations();
 
-			// Register the IP range provider.
+			services.AddSingleton(experimentManager ?? new EmptyExperimentManager());
 			services.AddSingleton(ipRangeProvider ?? new EmptyIPRangeProvider());
 
 			services.AddFeatureManagement()
 				.AddFeatureFilter<CampaignFilter>()
+				.AddFeatureFilter<EntraIdRolloutFilter>()
 				.AddFeatureFilter<EnvironmentFilter>()
 				.AddFeatureFilter<ToggleFilter>()
 				.AddFeatureFilter<IPAddressFilter>()
 				.AddFeatureFilter<MarketFilter>()
-				.AddFeatureFilter<ParentFilter>()
-				.AddFeatureFilter<RolloutFilter>();
+				.AddFeatureFilter<ParentFilter>();
 
 			services.AddScoped<IExtendedFeatureManager, ExtendedFeatureManager>();
+			services.AddScoped<IFeatureGatesConsolidator, FeatureGatesConsolidator>();
 			services.AddScoped<IFeatureGatesService, FeatureGatesService>();
 
 			return services;

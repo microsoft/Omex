@@ -14,20 +14,21 @@ using Microsoft.Omex.Extensions.FeatureManagement.Filters.Filter.Settings;
 namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
 {
 	/// <summary>
-	/// The rollout filter, which is used to manage the rollout percentage exposure of a feature.
+	/// The rollout filter, which is used to manage the rollout percentage exposure of a feature based on the Entra ID
+	/// of the customer.
 	/// </summary>
 	/// <param name="httpContextAccessor">The HTTP context accessor.</param>
 	/// <param name="logger">The logger.</param>
-	[FilterAlias("Rollout")]
-	internal sealed class RolloutFilter(
+	[FilterAlias("EntraIdRollout")]
+	internal sealed class EntraIdRolloutFilter(
 		IHttpContextAccessor httpContextAccessor,
-		ILogger<RolloutFilter> logger) : IFeatureFilter
+		ILogger<EntraIdRolloutFilter> logger) : IFeatureFilter
 	{
 		/// <inheritdoc/>
 		public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context)
 		{
 			bool isEnabled = Evaluate(context);
-			logger.LogInformation(Tag.Create(), $"{nameof(RolloutFilter)} returning {{IsEnabled}} for '{{FeatureName}}'.", isEnabled, context.FeatureName);
+			logger.LogInformation(Tag.Create(), $"{nameof(EntraIdRolloutFilter)} returning {{IsEnabled}} for '{{FeatureName}}'.", isEnabled, context.FeatureName);
 			return Task.FromResult(isEnabled);
 		}
 
@@ -37,7 +38,7 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
 			if (httpContextAccessor.HttpContext is null ||
 				!httpContextAccessor.HttpContext.User.TryGetEntraId(out Guid entraId))
 			{
-				logger.LogInformation(Tag.Create(), $"{nameof(RolloutFilter)} could not fetch the Entra ID.");
+				logger.LogInformation(Tag.Create(), $"{nameof(EntraIdRolloutFilter)} could not fetch the Entra ID.");
 				return false;
 			}
 

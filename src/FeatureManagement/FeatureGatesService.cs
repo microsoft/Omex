@@ -4,9 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Omex.Extensions.Abstractions.Activities;
 using Microsoft.Omex.Extensions.FeatureManagement.Constants;
+using Microsoft.Omex.Extensions.FeatureManagement.Experimentation;
 
 namespace Microsoft.Omex.Extensions.FeatureManagement
 {
@@ -14,9 +16,11 @@ namespace Microsoft.Omex.Extensions.FeatureManagement
 	/// The service managing the feature gates.
 	/// </summary>
 	/// <param name="activitySource">The activity source.</param>
+	/// <param name="experimentManager">The experiment manager.</param>
 	/// <param name="featureManager">The feature manager.</param>
 	internal sealed class FeatureGatesService(
 		ActivitySource activitySource,
+		IExperimentManager experimentManager,
 		IExtendedFeatureManager featureManager) : IFeatureGatesService
 	{
 		private const string FrontendFeaturePrefix = "FE_";
@@ -30,13 +34,13 @@ namespace Microsoft.Omex.Extensions.FeatureManagement
 			featureManager.DisabledFeatures;
 
 		/// <inheritdoc/>
-		public async Task<IDictionary<string, object>> GetFeatureGatesAsync()
+		public async Task<IDictionary<string, bool>> GetFeatureGatesAsync()
 		{
 			using Activity? activity = activitySource
 				.StartActivity(FeatureManagementActivityNames.FeatureGatesService.GetFeatureGatesAsync)?
 				.MarkAsSystemError();
 
-			Dictionary<string, object> featureGates = new(StringComparer.OrdinalIgnoreCase);
+			Dictionary<string, bool> featureGates = new(StringComparer.OrdinalIgnoreCase);
 			await foreach (string feature in featureManager.GetFeatureNamesAsync())
 			{
 				if (feature.StartsWith(FrontendFeaturePrefix, StringComparison.OrdinalIgnoreCase))
@@ -68,7 +72,40 @@ namespace Microsoft.Omex.Extensions.FeatureManagement
 			return result;
 		}
 
-		private static void UpdateFeatureMap(Dictionary<string, object> featureGates, IEnumerable<string> features, bool overrideValue)
+		/// <inheritdoc />
+		public async Task<bool> IsExperimentApplicableAsync(string featureGate, ExperimentFilters filters, CancellationToken cancellationToken)
+		{
+			ArgumentException.ThrowIfNullOrWhiteSpace(featureGate);
+
+			using Activity? activity = activitySource
+				.StartActivity(FeatureManagementActivityNames.FeatureGatesService.IsExperimentApplicableAsync)?
+				.MarkAsExpectedError();
+
+			bool? queryParamOverride = featureManager.GetOverride(featureGate);
+			if (queryParamOverride.HasValue)
+			{
+				activity?.SetMetadata($"FromOverride_{featureGate}").MarkAsSuccess();
+				return queryParamOverride.Value;
+			}
+
+			IDictionary<string, bool> features = await experimentManager.GetExperimentStatusesAsync(filters, cancellationToken);
+			bool isKeyPresent = features.ContainsKey(featureGate);
+			if (!isKeyPresent)
+			{
+				if (await featureManager.IsEnabledAsync(featureGate))
+				{
+					activity?.SetMetadata($"FromFeatureManager_{featureGate}").MarkAsSuccess();
+					return true;
+				}
+
+				return false;
+			}
+
+			activity?.SetMetadata($"FromExperiment_{featureGate}").MarkAsSuccess();
+			return features[featureGate];
+		}
+
+		private static void UpdateFeatureMap(Dictionary<string, bool> featureGates, IEnumerable<string> features, bool overrideValue)
 		{
 			foreach (string feature in features)
 			{

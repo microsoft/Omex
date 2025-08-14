@@ -12,7 +12,7 @@ namespace Microsoft.Omex.Extensions.FeatureManagement
 	/// query-string parameters and configuration settings. This is particularly useful for scenarios where you want to
 	/// enable or disable features for specific requests, such as for testing, gradual rollouts, or customer-specific
 	/// toggling.</remarks>
-	internal interface IExtendedFeatureManager : IFeatureManager
+	public interface IExtendedFeatureManager : IFeatureManager
 	{
 		/// <summary>
 		/// Gets the list of features which are explicitly disabled for this request as a <see cref="string"/>.

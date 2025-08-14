@@ -3,13 +3,14 @@
 
 using System;
 using System.Globalization;
+using Microsoft.Omex.Extensions.FeatureManagement.Types;
 
-namespace Microsoft.Omex.Extensions.FeatureManagement
+namespace Microsoft.Omex.Extensions.FeatureManagement.Experimentation
 {
 	/// <summary>
 	/// The filters that can be used by experiments.
 	/// </summary>
-	internal sealed class ExperimentFilters
+	public sealed class ExperimentFilters
 	{
 		/// <summary>
 		/// Gets or sets target browser, e.g., "Edge" or "Chrome".
@@ -25,6 +26,11 @@ namespace Microsoft.Omex.Extensions.FeatureManagement
 		/// Gets or sets the correlation ID.
 		/// </summary>
 		public Guid CorrelationId { get; set; } = Guid.Empty;
+
+		/// <summary>
+		/// Gets or sets the customer ID.
+		/// </summary>
+		public CustomerId CustomerId { get; set; } = new();
 
 		/// <summary>
 		/// Gets or sets the type of device, e.g., "Mobile" or "Desktop".
@@ -51,12 +57,14 @@ namespace Microsoft.Omex.Extensions.FeatureManagement
 			string.Join(';',
 			[
 				CreateToStringEntry(nameof(Browser), Browser),
-			CreateToStringEntry(nameof(Campaign), Campaign),
-			CreateToStringEntry(nameof(CorrelationId), CorrelationId.ToString()),
-			CreateToStringEntry(nameof(DeviceType), DeviceType),
-			CreateToStringEntry(nameof(Language), Language.Name),
-			CreateToStringEntry(nameof(Market), Market),
-			CreateToStringEntry(nameof(Platform), Platform),
+				CreateToStringEntry(nameof(Campaign), Campaign),
+				CreateToStringEntry(nameof(CorrelationId), CorrelationId.ToString()),
+				CreateToStringEntry($"{nameof(CustomerId)}.{nameof(CustomerId.Id)}", CustomerId.Id),
+				CreateToStringEntry($"{nameof(CustomerId)}.{nameof(CustomerId.Type)}", CustomerId.Type),
+				CreateToStringEntry(nameof(DeviceType), DeviceType),
+				CreateToStringEntry(nameof(Language), Language.Name),
+				CreateToStringEntry(nameof(Market), Market),
+				CreateToStringEntry(nameof(Platform), Platform),
 			]);
 
 		private string CreateToStringEntry(string fieldName, string value) =>
