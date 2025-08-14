@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(NetCoreVersions)</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Label="NuGet Properties">
+    <Title>Microsoft.Omex.Extensions.FeatureManagement</Title>
+    <Summary>Microsoft Omex Extensions Feature Management</Summary>
+    <Description>This library comprises wrappers to extend the functionality of the Microsoft.FeatureManagement package.</Description>
+    <ReleaseNotes>Initial release.</ReleaseNotes>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/FeatureManagement</PackageProjectUrl>
+    <PackageTags>Microsoft;Omex;Extensions;Features</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DeviceDetector.NET" />
+    <PackageReference Include="Microsoft.FeatureManagement" />
+    <ProjectReference Include="..\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

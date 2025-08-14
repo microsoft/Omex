@@ -20,9 +20,11 @@
     <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.7" />
     <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.7" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.FeatureManagement" Version="4.2.1" />
     <PackageVersion Include="Microsoft.SourceLink.AzureRepos.Git" Version="8.0.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.7" />
+    <PackageVersion Include="System.Linq.Async" Version="6.0.3" />
     <PackageVersion Include="System.Text.Json" Version="9.0.7" />
   </ItemGroup>
   <ItemGroup Label="Previous DotNet Package Versions. AutoUpdate" Condition="'$(TargetFramework)' == '$(OldestSupportedDotNetVersion)' And '$(OldestSupportedDotNetVersion)' != '$(LatestSupportedDotNetVersion)'">
@@ -69,5 +71,8 @@
   <ItemGroup Label="Moq pinned to 4.20.72, Moq updates are reviewed and made manually.">
     <PackageVersion Include="Moq" Version="4.20.72" />
   </ItemGroup>
+  <ItemGroup Label="DeviceDetector.NET pinned to 4.2.0, which is the last version with a strong name.">
+    <PackageVersion Include="DeviceDetector.NET" Version="4.2.0" />
+   </ItemGroup>
 </Project>
 
