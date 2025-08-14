@@ -1,6 +1,5 @@
 ﻿// Copyright (C) Microsoft Corporation. All rights reserved.
-
-namespace Microsoft.Omex.Extensions.FeatureManagement.Filters;
+// Licensed under the MIT license.
 
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -11,28 +10,31 @@ using Microsoft.Omex.Extensions.FeatureManagement.Constants;
 using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
 using Microsoft.Omex.Extensions.FeatureManagement.Filters.Filter.Settings;
 
-/// <summary>
-/// The campaign filter, to manage the inclusion or exclusion of some or all campaigns from a rolled out feature.
-/// </summary>
-/// <param name="httpContextAccessor">The HTTP context accessor.</param>
-/// <param name="logger">The logger.</param>
-[FilterAlias("Campaign")]
-public sealed class CampaignFilter(
-	IHttpContextAccessor httpContextAccessor,
-	ILogger<CampaignFilter> logger) : IFeatureFilter
+namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
 {
-	/// <inheritdoc/>
-	public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context)
+	/// <summary>
+	/// The campaign filter, to manage the inclusion or exclusion of some or all campaigns from a rolled out feature.
+	/// </summary>
+	/// <param name="httpContextAccessor">The HTTP context accessor.</param>
+	/// <param name="logger">The logger.</param>
+	[FilterAlias("Campaign")]
+	internal sealed class CampaignFilter(
+		IHttpContextAccessor httpContextAccessor,
+		ILogger<CampaignFilter> logger) : IFeatureFilter
 	{
-		bool isExcluded = context.Evaluate<CampaignFilterSettings>(httpContextAccessor, RequestParameters.Query.Campaign, s => s.Disabled);
-		if (isExcluded)
+		/// <inheritdoc/>
+		public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context)
 		{
-			logger.LogInformation(Tag.Create(), $"{nameof(CampaignFilter)} returning false for '{{FeatureName}}' as campaign is excluded.", context.FeatureName);
-			return Task.FromResult(false);
-		}
+			bool isExcluded = context.Evaluate<CampaignFilterSettings>(httpContextAccessor, RequestParameters.Query.Campaign, s => s.Disabled);
+			if (isExcluded)
+			{
+				logger.LogInformation(Tag.Create(), $"{nameof(CampaignFilter)} returning false for '{{FeatureName}}' as campaign is excluded.", context.FeatureName);
+				return Task.FromResult(false);
+			}
 
-		bool isIncluded = context.Evaluate<CampaignFilterSettings>(httpContextAccessor, RequestParameters.Query.Campaign, s => s.Enabled);
-		logger.LogInformation(Tag.Create(), $"{nameof(CampaignFilter)} returning {{IsEnabled}} for '{{FeatureName}}' as campaign is included.", isIncluded, context.FeatureName);
-		return Task.FromResult(isIncluded);
+			bool isIncluded = context.Evaluate<CampaignFilterSettings>(httpContextAccessor, RequestParameters.Query.Campaign, s => s.Enabled);
+			logger.LogInformation(Tag.Create(), $"{nameof(CampaignFilter)} returning {{IsEnabled}} for '{{FeatureName}}' as campaign is included.", isIncluded, context.FeatureName);
+			return Task.FromResult(isIncluded);
+		}
 	}
 }

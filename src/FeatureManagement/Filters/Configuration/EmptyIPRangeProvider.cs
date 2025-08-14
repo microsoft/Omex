@@ -1,15 +1,17 @@
 ﻿// Copyright (C) Microsoft Corporation. All rights reserved.
-
-namespace Microsoft.Omex.Extensions.FeatureManagement.Filters.Configuration;
+// Licensed under the MIT license.
 
 using System.Net;
 
-/// <summary>
-/// Provides an empty implementation of the IP range provider that returns no IP ranges.
-/// </summary>
-public sealed class EmptyIPRangeProvider : IIPRangeProvider
+namespace Microsoft.Omex.Extensions.FeatureManagement.Filters.Configuration
 {
-	/// <inheritdoc/>
-	public IPNetwork[]? GetIPRanges(string rangeName) =>
-		null;
+	/// <summary>
+	/// Provides an empty implementation of the IP range provider that returns no IP ranges.
+	/// </summary>
+	internal sealed class EmptyIPRangeProvider : IIPRangeProvider
+	{
+		/// <inheritdoc/>
+		public IPNetwork[]? GetIPRanges(string rangeName) =>
+			null;
+	}
 }

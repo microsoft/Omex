@@ -1,21 +1,23 @@
 ﻿// Copyright (C) Microsoft Corporation. All rights reserved.
-
-namespace Microsoft.Omex.Extensions.FeatureManagement.Filters.Filter.Settings;
+// Licensed under the MIT license.
 
 using System.Collections.Generic;
 
-/// <summary>
-/// The configuration settings for the market filter.
-/// </summary>
-public sealed class MarketFilterSettings
+namespace Microsoft.Omex.Extensions.FeatureManagement.Filters.Filter.Settings
 {
 	/// <summary>
-	/// Gets or sets the list of markets for which the feature should be disabled.
+	/// The configuration settings for the market filter.
 	/// </summary>
-	public List<string> Disabled { get; set; } = [];
+	internal sealed class MarketFilterSettings
+	{
+		/// <summary>
+		/// Gets or sets the list of markets for which the feature should be disabled.
+		/// </summary>
+		public List<string> Disabled { get; set; } = [];
 
-	/// <summary>
-	/// Gets or sets the list of markets for which the feature should be enabled.
-	/// </summary>
-	public List<string> Enabled { get; set; } = [];
+		/// <summary>
+		/// Gets or sets the list of markets for which the feature should be enabled.
+		/// </summary>
+		public List<string> Enabled { get; set; } = [];
+	}
 }

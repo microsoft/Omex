@@ -1,6 +1,5 @@
 ﻿// Copyright (C) Microsoft Corporation. All rights reserved.
-
-namespace Microsoft.Omex.Extensions.FeatureManagement.Filters;
+// Licensed under the MIT license.
 
 using System;
 using System.Net;
@@ -13,54 +12,57 @@ using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
 using Microsoft.Omex.Extensions.FeatureManagement.Filters.Configuration;
 using Microsoft.Omex.Extensions.FeatureManagement.Filters.Filter.Settings;
 
-/// <summary>
-/// The IP address filter.
-/// </summary>
-/// <param name="httpContextAccessor">The HTTP context accessor.</param>
-/// <param name="ipRangeProvider">The IP range provider.</param>
-/// <param name="logger">The logger.</param>
-[FilterAlias("IPAddress")]
-public sealed class IPAddressFilter(
-	IHttpContextAccessor httpContextAccessor,
-	IIPRangeProvider ipRangeProvider,
-	ILogger<IPAddressFilter> logger) : IFeatureFilter
+namespace Microsoft.Omex.Extensions.FeatureManagement.Filters
 {
-	/// <inheritdoc/>
-	public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context)
+	/// <summary>
+	/// The IP address filter.
+	/// </summary>
+	/// <param name="httpContextAccessor">The HTTP context accessor.</param>
+	/// <param name="ipRangeProvider">The IP range provider.</param>
+	/// <param name="logger">The logger.</param>
+	[FilterAlias("IPAddress")]
+	internal sealed class IPAddressFilter(
+		IHttpContextAccessor httpContextAccessor,
+		IIPRangeProvider ipRangeProvider,
+		ILogger<IPAddressFilter> logger) : IFeatureFilter
 	{
-		bool isEnabled = Evaluate(context);
-		logger.LogInformation(Tag.Create(), $"{nameof(IPAddressFilter)} returning {{IsEnabled}} for '{{FeatureName}}'.", isEnabled, context.FeatureName);
-		return Task.FromResult(isEnabled);
-	}
-
-	private bool Evaluate(FeatureFilterEvaluationContext context)
-	{
-		IPAddressFilterSettings filterSettings = context.Parameters.GetOrCreate<IPAddressFilterSettings>();
-		if (string.IsNullOrWhiteSpace(filterSettings.AllowedRange) ||
-			httpContextAccessor.HttpContext is null)
+		/// <inheritdoc/>
+		public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context)
 		{
-			return false;
+			bool isEnabled = Evaluate(context);
+			logger.LogInformation(Tag.Create(), $"{nameof(IPAddressFilter)} returning {{IsEnabled}} for '{{FeatureName}}'.", isEnabled, context.FeatureName);
+			return Task.FromResult(isEnabled);
 		}
 
-		if (httpContextAccessor.HttpContext.IsLocal())
+		private bool Evaluate(FeatureFilterEvaluationContext context)
 		{
-			return true;
+			IPAddressFilterSettings filterSettings = context.Parameters.GetOrCreate<IPAddressFilterSettings>();
+			if (string.IsNullOrWhiteSpace(filterSettings.AllowedRange) ||
+				httpContextAccessor.HttpContext is null)
+			{
+				return false;
+			}
+
+			if (httpContextAccessor.HttpContext.IsLocal())
+			{
+				return true;
+			}
+
+			IPAddress remoteAddress = httpContextAccessor.HttpContext.GetForwardedAddress();
+			bool isInRange = IsInIPRange(filterSettings.AllowedRange, remoteAddress);
+			logger.LogInformation(Tag.Create(), $"{nameof(IPAddressFilter)} {{Verb}} access to '{{FeatureName}}'.", isInRange ? "allowed" : "blocked", context.FeatureName);
+			return isInRange;
 		}
 
-		IPAddress remoteAddress = httpContextAccessor.HttpContext.GetForwardedAddress();
-		bool isInRange = IsInIPRange(filterSettings.AllowedRange, remoteAddress);
-		logger.LogInformation(Tag.Create(), $"{nameof(IPAddressFilter)} {{Verb}} access to '{{FeatureName}}'.", isInRange ? "allowed" : "blocked", context.FeatureName);
-		return isInRange;
-	}
-
-	private bool IsInIPRange(string rangeName, IPAddress callerAddress)
-	{
-		IPNetwork[]? ipRanges = ipRangeProvider.GetIPRanges(rangeName);
-		if (ipRanges is null)
+		private bool IsInIPRange(string rangeName, IPAddress callerAddress)
 		{
-			return false;
-		}
+			IPNetwork[]? ipRanges = ipRangeProvider.GetIPRanges(rangeName);
+			if (ipRanges is null)
+			{
+				return false;
+			}
 
-		return Array.Exists(ipRanges, network => network.Contains(callerAddress));
+			return Array.Exists(ipRanges, network => network.Contains(callerAddress));
+		}
 	}
 }

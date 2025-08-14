@@ -1,14 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
-namespace Microsoft.Omex.Extensions.FeatureManagement.Configuration;
-
-/// <summary>
-/// The cluster settings.
-/// </summary>
-public sealed class ClusterSettings
+namespace Microsoft.Omex.Extensions.FeatureManagement.Configuration
 {
 	/// <summary>
-	/// Gets or sets the environment.
+	/// The cluster settings.
 	/// </summary>
-	public string Environment { get; set; } = string.Empty;
+	internal sealed class ClusterSettings
+	{
+		/// <summary>
+		/// Gets or sets the environment.
+		/// </summary>
+		public string Environment { get; set; } = string.Empty;
+	}
 }
