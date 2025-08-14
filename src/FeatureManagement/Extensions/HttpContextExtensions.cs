@@ -1,6 +1,7 @@
 ﻿// Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
@@ -50,6 +51,21 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.Extensions
 			}
 
 			return platform.ToString().Trim();
+		}
+
+		/// <summary>
+		/// Retrieves the partner and platform information from the HTTP context headers.
+		/// </summary>
+		/// <param name="httpContext">The HTTP context.</param>
+		/// <param name="headerPrefix">The optional HTTP header prefix.</param>
+		/// <param name="defaultPlatform">The default platform if not overridden.</param>
+		/// <returns>A string containing the partner and platform information in the format of "partner/platform"</returns>
+		public static string GetPartnerInfo(this HttpContext httpContext, string? headerPrefix = null, string? defaultPlatform = null)
+		{
+			string partner = httpContext.GetPartner(headerPrefix);
+			string platform = httpContext.GetPlatform(headerPrefix, defaultPlatform);
+
+			return string.Join("/", new[] { partner, platform }.Where(s => !string.IsNullOrWhiteSpace(s)));
 		}
 
 		/// <summary>
