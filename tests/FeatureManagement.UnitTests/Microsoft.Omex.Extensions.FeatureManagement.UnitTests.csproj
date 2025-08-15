@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Linq.Async" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\src\FeatureManagement\Microsoft.Omex.Extensions.FeatureManagement.csproj" />
   </ItemGroup>
 
