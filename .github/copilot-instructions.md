@@ -67,7 +67,7 @@ Use `OmexEnvironments` constants instead of magic strings:
 ### Build Configuration
 
 - `Directory.Build.props` enforces: nullable reference types, treat warnings as errors, strong naming
-- Tests use MSTest framework with Moq (pinned to 4.20.72)
+- Tests use MSTest framework with Moq
 - Service Fabric SDK required for SF-related projects
 
 ### Validation & Tagging
