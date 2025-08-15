@@ -41,11 +41,6 @@ internal static class RequestParameters
 		public const string Campaign = "campaign";
 
 		/// <summary>
-		/// The correlation ID query-string parameter.
-		/// </summary>
-		public const string CorrelationId = "correlationId";
-
-		/// <summary>
 		/// The disabled features query-string parameter.
 		/// </summary>
 		public const string DisabledFeatures = "disabledFeatures";
@@ -54,11 +49,6 @@ internal static class RequestParameters
 		/// The enabled features query-string parameter.
 		/// </summary>
 		public const string EnabledFeatures = "enabledFeatures";
-
-		/// <summary>
-		/// The languages query-string parameter.
-		/// </summary>
-		public const string Language = "language";
 
 		/// <summary>
 		/// The market query-string parameter.
