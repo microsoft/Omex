@@ -42,7 +42,7 @@ internal sealed class FeatureGatesConsolidator(
 			throw new InvalidOperationException($"{nameof(HttpContext)} is null. Ensure {nameof(IHttpContextAccessor)} is properly configured.");
 		}
 
-		IDictionary<string, object>? experimentalFeatures = await GetExperimentalFeaturesAsync(
+		IDictionary<string, object> experimentalFeatures = await GetExperimentalFeaturesAsync(
 			httpContextAccessor.HttpContext,
 			filters,
 			headerPrefix,
@@ -55,7 +55,7 @@ internal sealed class FeatureGatesConsolidator(
 		return result;
 	}
 
-	private async Task<IDictionary<string, object>?> GetExperimentalFeaturesAsync(
+	private async Task<IDictionary<string, object>> GetExperimentalFeaturesAsync(
 		HttpContext httpContext,
 		IDictionary<string, object> filters,
 		string? headerPrefix,
@@ -84,13 +84,8 @@ internal sealed class FeatureGatesConsolidator(
 		return experimentalFeatures;
 	}
 
-	private static void MergeExperimentalFeatures(IDictionary<string, object> target, IDictionary<string, object>? source)
+	private static void MergeExperimentalFeatures(IDictionary<string, object> target, IDictionary<string, object> source)
 	{
-		if (source == null)
-		{
-			return;
-		}
-
 		// Experimental features take precedence over the existing feature gate values.
 		foreach (KeyValuePair<string, object> feature in source)
 		{
