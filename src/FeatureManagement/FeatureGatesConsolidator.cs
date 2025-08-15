@@ -19,10 +19,30 @@ using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
 /// <summary>
 /// A consolidator of feature gate information from multiple sources including appsettings.json and an experiment manager.
 /// </summary>
-/// <param name="activitySource">The activity source.</param>
-/// <param name="featureGatesService">The feature gates service.</param>
-/// <param name="httpContextAccessor">The HTTP context accessor.</param>
-/// <param name="logger">The logger.</param>
+/// <remarks>
+/// This implementation of IFeatureGatesConsolidator serves as the primary aggregation point for feature-gate
+/// information in web applications. It combines:
+///
+/// 1. Static feature flags from configuration (appsettings.json)
+/// 2. Dynamic experimental features based on customer targeting
+/// 3. Query-string overrides for testing and debugging
+///
+/// Key responsibilities:
+/// - Orchestrates calls to IFeatureGatesService for both static and dynamic features
+/// - Extracts partner information from HTTP headers for experiment targeting
+/// - Merges results with experimental features taking precedence
+/// - Provides comprehensive logging for debugging and monitoring
+///
+/// HTTP Context Dependency:
+/// This service requires an active HTTP context to function properly. It uses the context to:
+/// - Extract partner information from headers (e.g., X-Partner, X-Platform)
+/// - Provide request-specific context for experiment allocation
+/// - Support header prefix customization
+/// </remarks>
+/// <param name="activitySource">The activity source for distributed tracing.</param>
+/// <param name="featureGatesService">The feature gates service for retrieving static and experimental features.</param>
+/// <param name="httpContextAccessor">The HTTP context accessor for accessing request-specific information.</param>
+/// <param name="logger">The logger for diagnostic information and debugging.</param>
 internal sealed class FeatureGatesConsolidator(
 	ActivitySource activitySource,
 	IFeatureGatesService featureGatesService,
@@ -31,13 +51,24 @@ internal sealed class FeatureGatesConsolidator(
 ) : IFeatureGatesConsolidator
 {
 	/// <inheritdoc/>
+	/// <remarks>
+	/// 1. Validates that HttpContext is available (throws InvalidOperationException if null)
+	/// 2. Calls GetExperimentalFeaturesAsync to retrieve customer-specific experimental features
+	///    - Extracts partner information from HTTP headers using the specified prefix
+	///    - Uses the provided filters for experiment allocation
+	///    - Logs the experimental features retrieved (or warns if none)
+	/// 3. Calls IFeatureGatesService.GetFeatureGatesAsync for static features
+	/// 4. Merges results using MergeExperimentalFeatures helper method
+	///    - Experimental features override static features with the same name
+	/// 5. Logs the final consolidated feature gates at Information level
+	/// </remarks>
 	public async Task<IDictionary<string, object>> GetFeatureGatesAsync(
 		IDictionary<string, object> filters,
 		string? headerPrefix = null,
 		string? defaultPlatform = null,
 		CancellationToken cancellationToken = default)
 	{
-		if (httpContextAccessor.HttpContext == null)
+		if (httpContextAccessor.HttpContext is null)
 		{
 			throw new InvalidOperationException($"{nameof(HttpContext)} is null. Ensure {nameof(IHttpContextAccessor)} is properly configured.");
 		}
