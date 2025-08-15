@@ -1,6 +1,6 @@
 ﻿//// Copyright (C) Microsoft Corporation. All rights reserved.
 
-//namespace Microsoft.Omex.FeatureManagement.Tests;
+//namespace Microsoft.Omex.Extensions.FeatureManagement.UnitTests;
 
 //using System;
 //using System.Collections.Generic;

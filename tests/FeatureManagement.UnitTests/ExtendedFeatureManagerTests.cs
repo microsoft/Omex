@@ -1,6 +1,7 @@
 ﻿// Copyright (C) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
-namespace Microsoft.Omex.FeatureManagement.Tests;
+namespace Microsoft.Omex.Extensions.FeatureManagement.UnitTests;
 
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.FeatureManagement;
 using Microsoft.Omex.Extensions.FeatureManagement;
 using Microsoft.Omex.Extensions.FeatureManagement.Constants;
-using Microsoft.Omex.FeatureManagement.Tests.TestUtilities;
+using Microsoft.Omex.Extensions.FeatureManagement.UnitTests.TestUtilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

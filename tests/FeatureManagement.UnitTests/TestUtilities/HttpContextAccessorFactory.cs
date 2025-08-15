@@ -1,6 +1,7 @@
 ﻿// Copyright (C) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
-namespace Microsoft.Omex.FeatureManagement.Tests.TestUtilities;
+namespace Microsoft.Omex.Extensions.FeatureManagement.UnitTests.TestUtilities;
 
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
