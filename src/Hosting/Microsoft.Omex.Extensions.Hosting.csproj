@@ -7,7 +7,7 @@
     <Summary>Microsoft Omex Extensions Hosting</Summary>
     <Description>This library contains functionality to configure the Service Fabric host.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
-    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Hosting</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Hosting</PackageProjectUrl>
     <PackageTags>Microsoft;Omex;Extensions;Hosting</PackageTags>
   </PropertyGroup>
   <ItemGroup>

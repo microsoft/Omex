@@ -8,7 +8,7 @@
     <Summary>Microsoft Omex Extensions Diagnostics HealthChecks</Summary>
     <Description>This library faciliates creating and running health checks in Service Fabric.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
-    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Diagnostics.HealthChecks</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Diagnostics.HealthChecks</PackageProjectUrl>
     <PackageTags>Microsoft;Omex;Extensions;HealthChecks</PackageTags>
   </PropertyGroup>
   <ItemGroup>

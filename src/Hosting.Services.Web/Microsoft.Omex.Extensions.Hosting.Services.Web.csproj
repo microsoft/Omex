@@ -8,7 +8,7 @@
     <Summary>Microsoft Omex Extensions Hosting Services Web</Summary>
     <Description>This library contains functionality to configure the Service Fabric Kestrel listeners, and additional middleware to enable tracing.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
-    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Hosting.Services.Web</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Hosting.Services.Web</PackageProjectUrl>
     <PackageTags>Microsoft;Omex;Extensions;Hosting;Services;Web</PackageTags>
   </PropertyGroup>
   <ItemGroup>
