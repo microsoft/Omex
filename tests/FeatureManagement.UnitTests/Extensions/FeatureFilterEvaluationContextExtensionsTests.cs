@@ -1,4 +1,4 @@
-﻿// Copyright (C) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 namespace Microsoft.Omex.Extensions.FeatureManagement.UnitTests.Extensions;
