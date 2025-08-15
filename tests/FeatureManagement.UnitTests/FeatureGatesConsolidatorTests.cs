@@ -276,7 +276,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 		Dictionary<string, object> basicFeatures = new();
 		Dictionary<string, object> experimentalFeatures = new();
 
-		// Add many features.e
+		// Add many features.
 		for (int i = 0; i < 100; i++)
 		{
 			basicFeatures[$"BasicFeature{i}"] = i % 2 == 0;

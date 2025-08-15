@@ -17,7 +17,7 @@ using Microsoft.Omex.Extensions.FeatureManagement.Constants;
 using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
 
 /// <summary>
-/// A consolidator of feature gate information from multiple sources including appsettings.json and an experiment manager.
+/// A consolidator of feature-gate information from multiple sources including appsettings.json and an experiment manager.
 /// </summary>
 /// <remarks>
 /// This implementation of IFeatureGatesConsolidator serves as the primary aggregation point for feature-gate
@@ -40,7 +40,7 @@ using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
 /// - Support header prefix customization
 /// </remarks>
 /// <param name="activitySource">The activity source for distributed tracing.</param>
-/// <param name="featureGatesService">The feature gates service for retrieving static and experimental features.</param>
+/// <param name="featureGatesService">The feature-gates service for retrieving static and experimental features.</param>
 /// <param name="httpContextAccessor">The HTTP context accessor for accessing request-specific information.</param>
 /// <param name="logger">The logger for diagnostic information and debugging.</param>
 internal sealed class FeatureGatesConsolidator(
@@ -117,7 +117,7 @@ internal sealed class FeatureGatesConsolidator(
 
 	private static void MergeExperimentalFeatures(IDictionary<string, object> target, IDictionary<string, object> source)
 	{
-		// Experimental features take precedence over the existing feature gate values.
+		// Experimental features take precedence over the existing feature-gate values.
 		foreach (KeyValuePair<string, object> feature in source)
 		{
 			target[feature.Key] = feature.Value;

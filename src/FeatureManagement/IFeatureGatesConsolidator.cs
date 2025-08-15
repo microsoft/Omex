@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
 /// <summary>
-/// A consolidator of feature gate information from multiple sources including appsettings.json and an experiment manager.
+/// A consolidator of feature-gate information from multiple sources including appsettings.json and an experiment manager.
 /// </summary>
 /// <remarks>
-/// This service acts as a unified entry point for retrieving feature gate values, consolidating information
+/// This service acts as a unified entry point for retrieving feature-gate values, consolidating information
 /// from multiple sources in a prioritized manner. It combines:
 ///
 /// 1. Static feature flags from configuration (appsettings.json)
