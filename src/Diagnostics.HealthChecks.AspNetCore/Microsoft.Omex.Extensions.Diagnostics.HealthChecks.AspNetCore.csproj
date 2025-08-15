@@ -8,7 +8,7 @@
     <Summary>Microsoft Omex Extensions Diagnostics HealthChecks.AspNetCore</Summary>
     <Description>This library adds support to Omex Health Checks to ASP.NET Core controllers.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
-    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Diagnostics.HealthChecks</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Diagnostics.HealthChecks.AspNetCore</PackageProjectUrl>
     <PackageTags>Microsoft;Omex;Extensions;HealthChecks;AspNetCore</PackageTags>
   </PropertyGroup>
   <ItemGroup>
