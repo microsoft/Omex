@@ -24,7 +24,6 @@
     <PackageVersion Include="Microsoft.SourceLink.AzureRepos.Git" Version="8.0.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.7" />
-    <PackageVersion Include="System.Linq.Async" Version="6.0.3" />
     <PackageVersion Include="System.Text.Json" Version="9.0.7" />
   </ItemGroup>
   <ItemGroup Label="Previous DotNet Package Versions. AutoUpdate" Condition="'$(TargetFramework)' == '$(OldestSupportedDotNetVersion)' And '$(OldestSupportedDotNetVersion)' != '$(LatestSupportedDotNetVersion)'">
