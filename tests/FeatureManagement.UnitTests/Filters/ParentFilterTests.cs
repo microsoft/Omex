@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
-using Microsoft.Omex.FeatureManagement.Filters;
+using Microsoft.Omex.Extensions.FeatureManagement;
+using Microsoft.Omex.Extensions.FeatureManagement.Filters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

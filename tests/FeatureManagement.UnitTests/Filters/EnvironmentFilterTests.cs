@@ -9,8 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.FeatureManagement;
-using Microsoft.Omex.FeatureManagement.Configuration;
-using Microsoft.Omex.FeatureManagement.Filters;
+using Microsoft.Omex.Extensions.FeatureManagement.Filters;
+using Microsoft.Omex.Extensions.FeatureManagement.Filters.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

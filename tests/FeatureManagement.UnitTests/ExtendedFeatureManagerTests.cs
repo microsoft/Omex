@@ -11,7 +11,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.FeatureManagement;
-using Microsoft.Omex.FeatureManagement.Constants;
+using Microsoft.Omex.Extensions.FeatureManagement;
+using Microsoft.Omex.Extensions.FeatureManagement.Constants;
 using Microsoft.Omex.FeatureManagement.Tests.TestUtilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -185,7 +186,7 @@ public sealed class ExtendedFeatureManagerTests
 		Func<bool?> action = () => m_extendedFeatureManager.GetOverride(featureName);
 
 		// ASSERT
-		ArgumentException exception = Assert.ThrowsException<ArgumentException>(() => action());
+		ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => action());
 		Assert.Contains("feature", exception.Message);
 	}
 
@@ -301,7 +302,7 @@ public sealed class ExtendedFeatureManagerTests
 		Func<Task> action = async () => await m_extendedFeatureManager.IsEnabledAsync(featureName);
 
 		// ASSERT
-		ArgumentException exception = await Assert.ThrowsExceptionAsync<ArgumentException>(action);
+		ArgumentException exception = await Assert.ThrowsExactlyAsync<ArgumentException>(action);
 		Assert.Contains("feature", exception.Message);
 	}
 
@@ -337,7 +338,7 @@ public sealed class ExtendedFeatureManagerTests
 		Func<Task> action = async () => await m_extendedFeatureManager.IsEnabledAsync(featureName, context);
 
 		// ASSERT
-		ArgumentException exception = await Assert.ThrowsExceptionAsync<ArgumentException>(action);
+		ArgumentException exception = await Assert.ThrowsExactlyAsync<ArgumentException>(action);
 		Assert.Contains("feature", exception.Message);
 	}
 

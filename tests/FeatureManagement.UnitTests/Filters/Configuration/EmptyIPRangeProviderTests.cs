@@ -3,7 +3,7 @@
 namespace Microsoft.Omex.FeatureManagement.Tests.Filters.Configuration;
 
 using System.Net;
-using Microsoft.Omex.FeatureManagement.Filters.Configuration;
+using Microsoft.Omex.Extensions.FeatureManagement.Filters.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [TestClass]

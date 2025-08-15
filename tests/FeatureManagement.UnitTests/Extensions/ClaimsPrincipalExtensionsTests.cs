@@ -4,57 +4,12 @@ namespace Microsoft.Omex.FeatureManagement.Tests.Extensions;
 
 using System;
 using System.Security.Claims;
-using Microsoft.Omex.FeatureManagement.Extensions;
+using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [TestClass]
 public sealed class ClaimsPrincipalExtensionsTests
 {
-	#region IsAuthenticated
-
-	[TestMethod]
-	public void IsAuthenticated_WhenIdentityIsNull_ReturnsFalse()
-	{
-		// ARRANGE
-		ClaimsPrincipal principal = new();
-
-		// ACT
-		bool result = principal.IsAuthenticated();
-
-		// ASSERT
-		Assert.IsFalse(result);
-	}
-
-	[TestMethod]
-	public void IsAuthenticated_WhenIdentityIsNotAuthenticated_ReturnsFalse()
-	{
-		// ARRANGE
-		ClaimsIdentity identity = new();
-		ClaimsPrincipal principal = new(identity);
-
-		// ACT
-		bool result = principal.IsAuthenticated();
-
-		// ASSERT
-		Assert.IsFalse(result);
-	}
-
-	[TestMethod]
-	public void IsAuthenticated_WhenIdentityIsAuthenticated_ReturnsTrue()
-	{
-		// ARRANGE
-		ClaimsIdentity identity = new("Bearer");
-		ClaimsPrincipal principal = new(identity);
-
-		// ACT
-		bool result = principal.IsAuthenticated();
-
-		// ASSERT
-		Assert.IsTrue(result);
-	}
-
-	#endregion
-
 	#region TryGetEntraId
 
 	[TestMethod]

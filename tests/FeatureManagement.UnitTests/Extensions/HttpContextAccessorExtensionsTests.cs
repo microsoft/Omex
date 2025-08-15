@@ -3,11 +3,9 @@
 namespace Microsoft.Omex.FeatureManagement.Tests.Extensions;
 
 using System;
-using System.Globalization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using Microsoft.Omex.FeatureManagement.Constants;
-using Microsoft.Omex.FeatureManagement.Extensions;
+using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -131,154 +129,6 @@ public sealed class HttpContextAccessorExtensionsTests
 
 		// ASSERT
 		Assert.AreEqual(string.Empty, result);
-	}
-
-	#endregion
-
-	#region GetCorrelationId
-
-	[TestMethod]
-	public void GetCorrelationId_WhenValidGuidIsProvided_ReturnsCorrelationId()
-	{
-		// ARRANGE
-		Guid expectedGuid = Guid.NewGuid();
-		Mock<IHttpContextAccessor> mockAccessor = CreateHttpContextAccessorWithParameter(RequestParameters.Query.CorrelationId, expectedGuid.ToString());
-
-		// ACT
-		Guid result = mockAccessor.Object.GetCorrelationId();
-
-		// ASSERT
-		Assert.AreEqual(expectedGuid, result);
-	}
-
-	[TestMethod]
-	[DataRow("invalid-guid")]
-	[DataRow("")]
-	public void GetCorrelationId_WhenInvalidGuidIsProvided_ReturnsEmptyGuid(string correlationId)
-	{
-		// ARRANGE
-		Mock<IHttpContextAccessor> mockAccessor = CreateHttpContextAccessorWithParameter(RequestParameters.Query.CorrelationId, correlationId);
-
-		// ACT
-		Guid result = mockAccessor.Object.GetCorrelationId();
-
-		// ASSERT
-		Assert.AreEqual(Guid.Empty, result);
-	}
-
-	[TestMethod]
-	public void GetCorrelationId_WhenParameterIsNotPresent_ReturnsEmptyGuid()
-	{
-		// ARRANGE
-		Mock<IHttpContextAccessor> mockAccessor = CreateHttpContextAccessorWithoutParameter();
-
-		// ACT
-		Guid result = mockAccessor.Object.GetCorrelationId();
-
-		// ASSERT
-		Assert.AreEqual(Guid.Empty, result);
-	}
-
-	[TestMethod]
-	public void GetCorrelationId_WhenHttpContextIsNull_ReturnsEmptyGuid()
-	{
-		// ARRANGE
-		Mock<IHttpContextAccessor> mockAccessor = new();
-		mockAccessor.Setup(m => m.HttpContext).Returns((HttpContext?)null);
-
-		// ACT
-		Guid result = mockAccessor.Object.GetCorrelationId();
-
-		// ASSERT
-		Assert.AreEqual(Guid.Empty, result);
-	}
-
-	#endregion
-
-	#region GetLanguage
-
-	[TestMethod]
-	public void GetLanguage_WhenValidLanguageCodeIsProvided_ReturnsCultureInfo()
-	{
-		// ARRANGE
-		const string languageCode = "en-US";
-		Mock<IHttpContextAccessor> mockAccessor = CreateHttpContextAccessorWithParameter(RequestParameters.Query.Language, languageCode);
-
-		// ACT
-		CultureInfo result = mockAccessor.Object.GetLanguage();
-
-		// ASSERT
-		Assert.AreEqual(languageCode, result.Name);
-	}
-
-	[TestMethod]
-	public void GetLanguage_WhenInvalidLanguageCodeIsProvided_ReturnsInvariantCulture()
-	{
-		// ARRANGE
-		Mock<IHttpContextAccessor> mockAccessor = CreateHttpContextAccessorWithParameter(RequestParameters.Query.Language, "invalid-language");
-
-		// ACT
-		CultureInfo result = mockAccessor.Object.GetLanguage();
-
-		// ASSERT
-		Assert.AreEqual(CultureInfo.InvariantCulture, result);
-	}
-
-	[TestMethod]
-	public void GetLanguage_WhenEmptyStringIsProvided_ReturnsInvariantCulture()
-	{
-		// ARRANGE
-		Mock<IHttpContextAccessor> mockAccessor = CreateHttpContextAccessorWithParameter(RequestParameters.Query.Language, string.Empty);
-
-		// ACT
-		CultureInfo result = mockAccessor.Object.GetLanguage();
-
-		// ASSERT
-		Assert.AreEqual(CultureInfo.InvariantCulture, result);
-	}
-
-	[TestMethod]
-	public void GetLanguage_WhenParameterIsNotPresent_ReturnsInvariantCulture()
-	{
-		// ARRANGE
-		Mock<IHttpContextAccessor> mockAccessor = CreateHttpContextAccessorWithoutParameter();
-
-		// ACT
-		CultureInfo result = mockAccessor.Object.GetLanguage();
-
-		// ASSERT
-		Assert.AreEqual(CultureInfo.InvariantCulture, result);
-	}
-
-	[TestMethod]
-	public void GetLanguage_WhenHttpContextIsNull_ReturnsInvariantCulture()
-	{
-		// ARRANGE
-		Mock<IHttpContextAccessor> mockAccessor = new();
-		mockAccessor.Setup(m => m.HttpContext).Returns((HttpContext?)null);
-
-		// ACT
-		CultureInfo result = mockAccessor.Object.GetLanguage();
-
-		// ASSERT
-		Assert.AreEqual(CultureInfo.InvariantCulture, result);
-	}
-
-	[TestMethod]
-	[DataRow("fr-FR")]
-	[DataRow("de-DE")]
-	[DataRow("es-ES")]
-	[DataRow("ja-JP")]
-	public void GetLanguage_WhenVariousValidLanguageCodesAreProvided_ReturnsCultureInfo(string languageCode)
-	{
-		// ARRANGE
-		Mock<IHttpContextAccessor> mockAccessor = CreateHttpContextAccessorWithParameter(RequestParameters.Query.Language, languageCode);
-
-		// ACT
-		CultureInfo result = mockAccessor.Object.GetLanguage();
-
-		// ASSERT
-		Assert.AreEqual(languageCode, result.Name);
 	}
 
 	#endregion

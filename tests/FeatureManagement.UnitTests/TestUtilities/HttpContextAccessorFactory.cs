@@ -9,7 +9,7 @@ using Microsoft.Extensions.Primitives;
 /// <summary>
 /// A factory for creating <see cref="HttpContextAccessor"/>s for unit testing.
 /// </summary>
-public static class HttpContextAccessorFactory
+internal static class HttpContextAccessorFactory
 {
 	/// <summary>
 	/// Creates a new <see cref="HttpContextAccessor"/>.

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.FeatureManagement;
-using Microsoft.Omex.FeatureManagement.Extensions;
+using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [TestClass]

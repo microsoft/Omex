@@ -4,7 +4,7 @@ namespace Microsoft.Omex.FeatureManagement.Tests.Extensions;
 
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Omex.FeatureManagement.Extensions;
+using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [TestClass]
