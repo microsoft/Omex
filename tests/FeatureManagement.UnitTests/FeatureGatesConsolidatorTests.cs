@@ -31,7 +31,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 
 	public FeatureGatesConsolidatorTests()
 	{
-		m_activitySource = new("UnitTestSource");
+		m_activitySource = new(nameof(FeatureGatesConsolidatorTests));
 		m_featureGatesServiceMock = new();
 		m_httpContextAccessorMock = new();
 		m_loggerMock = new();
@@ -40,7 +40,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 
 		m_activityListener = new()
 		{
-			ShouldListenTo = source => source.Name == "UnitTestSource",
+			ShouldListenTo = source => source.Name == nameof(FeatureGatesConsolidatorTests),
 			Sample = (ref ActivityCreationOptions<ActivityContext> options) => ActivitySamplingResult.AllData,
 			ActivityStarted = activity => m_capturedActivities.Add(activity),
 		};
