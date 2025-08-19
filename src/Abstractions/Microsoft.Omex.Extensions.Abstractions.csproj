@@ -7,7 +7,7 @@
     <Summary>Microsoft Omex Extensions Abstractions</Summary>
     <Description>This library contains abstraction interfaces used in the Omex Extensions.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
-    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Abstractions</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Abstractions</PackageProjectUrl>
     <PackageTags>Microsoft;Omex;Extensions</PackageTags>
   </PropertyGroup>
   <ItemGroup>
