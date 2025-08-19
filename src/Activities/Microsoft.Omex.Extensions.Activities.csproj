@@ -8,7 +8,7 @@
     <Summary>Microsoft Omex Extensions Activities</Summary>
     <Description>This library facilitates emitting of activities.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
-    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Activities</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Activities</PackageProjectUrl>
     <PackageTags>Microsoft;Omex;Extensions;Activities</PackageTags>
   </PropertyGroup>
   <ItemGroup>

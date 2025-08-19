@@ -9,7 +9,7 @@
     <Summary>Microsoft Omex Extensions ServiceFabricGuest Abstractions</Summary>
     <Description>This library contains abstractions for Service Fabric Guest Executables</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
-    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Abstractions</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/ServiceFabricGuest.Abstractions</PackageProjectUrl>
     <PackageTags>Microsoft;Omex;Extensions;ServiceFabricGuest;Abstractions</PackageTags>
   </PropertyGroup>
 
