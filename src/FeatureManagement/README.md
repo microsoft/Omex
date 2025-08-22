@@ -178,23 +178,6 @@ The market filter considers the `market` query-string parameter. `Disabled` take
 }
 ```
 
-#### Rollout
-
-The rollout filter enables a feature for an integer percentage of customers. By default, this will only work if the customer is signed in with an Entra ID, as the sign in credentials will be used to determine the bucket to which they are allocated. This can be overridden for other authentication methods by inheriting from [`ICustomerIdProvider`](Authentication/ICustomerIdProvider.cs)and passing the class when calling `ConfigureFeatureManagement()`.
-
-```JSON
-"FeatureRolloutA": {
-  "EnabledFor": [
-    {
-      "Name": "Rollout",
-      "Parameters": {
-        "ExposurePercentage": 50
-      }
-    }
-  ]
-}
-```
-
 #### Percentage
 
 The percentage filter is [provided by the library](https://github.com/microsoft/FeatureManagement-Dotnet/blob/main/src/Microsoft.FeatureManagement/FeatureFilters/PercentageFilter.cs).
