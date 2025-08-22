@@ -11,7 +11,7 @@ Built on top of [Microsoft's Feature Management library](https://github.com/micr
 - **Feature Flags**: Toggle features on/off without code deployment
 - **Gradual Rollouts**: Control feature exposure percentage
 - **A/B Testing**: Run experiments with customer targeting
-- **Multiple Filter Types**: Environment, time window, percentage, market, campaign, and more
+- **Multiple Filter Types**: Time window, percentage, market, campaign, and more
 - **Runtime Overrides**: Temporarily enable/disable features via query parameters
 - **Frontend Support**: Automatic handling of frontend-specific features
 - **Custom Filters**: Extensible filter system for custom logic
@@ -129,25 +129,6 @@ The campaign filter considers the `campaign` query-string parameter. `Disabled` 
         "Enabled": [
           "Campaign1",
           "Campaign2"
-        ]
-      }
-    }
-  ]
-}
-```
-
-#### Environment
-
-The environment filter considers the environment in which the application is running.
-
-```JSON
-"FeatureEnvironmentA": {
-  "EnabledFor": [
-    {
-      "Name": "Environment",
-      "Parameters": {
-        "Environments": [
-          "Development"
         ]
       }
     }

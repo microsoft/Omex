@@ -47,7 +47,6 @@ public static class ServiceCollectionExtensions
 
 		services.AddFeatureManagement()
 			.AddFeatureFilter<CampaignFilter>()
-			.AddFeatureFilter<EnvironmentFilter>()
 			.AddFeatureFilter<ToggleFilter>()
 			.AddFeatureFilter<IPAddressFilter>()
 			.AddFeatureFilter<MarketFilter>()
