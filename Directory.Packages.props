@@ -5,71 +5,70 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup Label="Latest DotNet Package Versions. AutoUpdate" Condition="'$(TargetFramework)' == '$(LatestSupportedDotNetVersion)' OR '$(IsNetStandard)'">
-    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.FeatureManagement" Version="4.2.1" />
-    <PackageVersion Include="Microsoft.SourceLink.AzureRepos.Git" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
-    <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.7" />
-    <PackageVersion Include="System.Linq.Async" Version="6.0.3" />
-    <PackageVersion Include="System.Text.Json" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.8"/>
+    <PackageVersion Include="Microsoft.FeatureManagement" Version="4.1.0"/>
+    <PackageVersion Include="Microsoft.SourceLink.AzureRepos.Git" Version="8.0.0"/>
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0"/>
+    <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.8"/>
+    <PackageVersion Include="System.Linq.Async" Version="6.0.3"/>
+    <PackageVersion Include="System.Text.Json" Version="9.0.8"/>
   </ItemGroup>
   <ItemGroup Label="Previous DotNet Package Versions. AutoUpdate" Condition="'$(TargetFramework)' == '$(OldestSupportedDotNetVersion)' And '$(OldestSupportedDotNetVersion)' != '$(LatestSupportedDotNetVersion)'">
-    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.18" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.1" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.1" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.1" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.3" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="8.0.1" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="8.0.18" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.2" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.SourceLink.AzureRepos.Git" Version="8.0.0" PreserveMajor="true" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PreserveMajor="true" />
-    <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="8.0.1" PreserveMajor="true" />
-    <PackageVersion Include="System.Text.Json" Version="8.0.6" PreserveMajor="true" />
+    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.19" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.1" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.1" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.1" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.3" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="8.0.1" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="8.0.19" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.2" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.SourceLink.AzureRepos.Git" Version="8.0.0" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PreserveMajor="true"/>
+    <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="8.0.1" PreserveMajor="true"/>
+    <PackageVersion Include="System.Text.Json" Version="8.0.6" PreserveMajor="true"/>
   </ItemGroup>
   <ItemGroup Label="Package Versions. AutoUpdate">
-    <PackageVersion Include="MSTest.TestAdapter" Version="3.10.0" />
-    <PackageVersion Include="MSTest.TestFramework" Version="3.10.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.14.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Csharp" Version="4.14.0" />
-    <PackageVersion Include="Microsoft.Net.Test.Sdk" Version="17.14.1" />
-    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
-    <PackageVersion Include="System.Threading.Tasks" Version="4.3.0" />
-    <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
+    <PackageVersion Include="MSTest.TestAdapter" Version="3.10.2"/>
+    <PackageVersion Include="MSTest.TestFramework" Version="3.10.2"/>
+    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.14.0"/>
+    <PackageVersion Include="Microsoft.CodeAnalysis.Csharp" Version="4.14.0"/>
+    <PackageVersion Include="Microsoft.Net.Test.Sdk" Version="17.14.1"/>
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3"/>
+    <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0"/>
+    <PackageVersion Include="System.Threading.Tasks" Version="4.3.0"/>
+    <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.6.3"/>
   </ItemGroup>
   <ItemGroup Label="ServiceFabric packages for Omex Extensions">
-    <PackageVersion Include="Microsoft.ServiceFabric" Version="10.1.2841" />
-    <PackageVersion Include="Microsoft.ServiceFabric.Actors" Version="7.1.2841" />
-    <PackageVersion Include="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="7.1.2841" />
-    <PackageVersion Include="Microsoft.ServiceFabric.Client.Http" Version="5.0.1" />
-    <PackageVersion Include="Microsoft.ServiceFabric.Services" Version="7.1.2841" />
-    <PackageVersion Include="Microsoft.ServiceFabric.Services.Remoting" Version="7.1.2841" />
-    <PackageVersion Include="ServiceFabric.Mocks" Version="7.2.14" />
+    <PackageVersion Include="Microsoft.ServiceFabric" Version="10.1.2841"/>
+    <PackageVersion Include="Microsoft.ServiceFabric.Actors" Version="7.1.2841"/>
+    <PackageVersion Include="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="7.1.2841"/>
+    <PackageVersion Include="Microsoft.ServiceFabric.Client.Http" Version="5.0.1"/>
+    <PackageVersion Include="Microsoft.ServiceFabric.Services" Version="7.1.2841"/>
+    <PackageVersion Include="Microsoft.ServiceFabric.Services.Remoting" Version="7.1.2841"/>
+    <PackageVersion Include="ServiceFabric.Mocks" Version="7.2.14"/>
   </ItemGroup>
   <ItemGroup Label="Moq pinned to 4.20.72, Moq updates are reviewed and made manually.">
-    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="Moq" Version="4.20.72"/>
   </ItemGroup>
 </Project>
-
