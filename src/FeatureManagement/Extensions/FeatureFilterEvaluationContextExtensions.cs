@@ -33,23 +33,6 @@ internal static class FeatureFilterEvaluationContextExtensions
 		where TSettings : new()
 	{
 		string parameterValue = httpContextAccessor.GetParameter(queryParameter);
-		return context.Evaluate<TSettings>(parameterValue, extractSettingValue);
-	}
-
-	/// <summary>
-	/// Determines whether a filter is active based on the current context.
-	/// </summary>
-	/// <typeparam name="TSettings">The settings type.</typeparam>
-	/// <param name="context">The feature filter evaluation context.</param>
-	/// <param name="value">The value that should be checked.</param>
-	/// <param name="extractSettingValue">The function to retrieve the list of values from the setting.</param>
-	/// <returns><c>true</c> if the feature is active.</returns>
-	public static bool Evaluate<TSettings>(
-		this FeatureFilterEvaluationContext context,
-		string value,
-		Func<TSettings, List<string>> extractSettingValue)
-		where TSettings : new()
-	{
 		TSettings filterSettings = context.Parameters.GetOrCreate<TSettings>();
 		List<string> list = extractSettingValue(filterSettings);
 		if (list.Count == 1 && string.Equals(list[0], Wildcard, StringComparison.Ordinal))
@@ -57,6 +40,6 @@ internal static class FeatureFilterEvaluationContextExtensions
 			return true;
 		}
 
-		return list.Any(element => string.Equals(element, value, StringComparison.OrdinalIgnoreCase));
+		return list.Any(element => string.Equals(element, parameterValue, StringComparison.OrdinalIgnoreCase));
 	}
 }

@@ -71,7 +71,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 		Dictionary<string, object> filters = new() { { "test", "value" } };
 
 		// ACT
-		Func<Task> function = async () => await m_consolidator.GetFeatureGatesAsync(filters);
+		async Task function() => await m_consolidator.GetFeatureGatesAsync(filters);
 
 		// ASSERT
 		InvalidOperationException exception = await Assert.ThrowsExactlyAsync<InvalidOperationException>(function);
@@ -92,9 +92,9 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters);
 
 		// ASSERT
-		Assert.AreEqual(2, result.Count);
-		Assert.AreEqual(true, result["Feature1"]);
-		Assert.AreEqual(false, result["Feature2"]);
+		Assert.HasCount(2, result);
+		Assert.IsTrue((bool?)result["Feature1"]);
+		Assert.IsFalse((bool?)result["Feature2"]);
 		VerifyLoggerCalled(LogLevel.Information, "Successfully retrieved feature gates: Feature1=True;Feature2=False");
 		VerifyLoggerCalled(LogLevel.Warning, "Experimental features returned no results");
 		VerifyActivityMetadata("No applicable experiments.");

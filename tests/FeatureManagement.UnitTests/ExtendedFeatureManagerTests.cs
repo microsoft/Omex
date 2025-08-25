@@ -21,11 +21,14 @@ using Moq;
 [TestClass]
 public sealed class ExtendedFeatureManagerTests
 {
+	public TestContext TestContext { get; set; }
+
 	private readonly Mock<IFeatureManager> m_featureManagerMock;
 	private HttpContextAccessor m_httpContextAccessorMock;
 	private readonly Mock<ILogger<ExtendedFeatureManager>> m_loggerMock;
 	private readonly Mock<IOptionsMonitor<FeatureOverrideSettings>> m_settingsMock;
 	private readonly ExtendedFeatureManager m_extendedFeatureManager;
+	private static readonly string[] s_expected = ["feature1", "feature2", "feature3"];
 
 	public ExtendedFeatureManagerTests()
 	{
@@ -79,7 +82,7 @@ public sealed class ExtendedFeatureManagerTests
 		string[] result = m_extendedFeatureManager.DisabledFeaturesList;
 
 		// ASSERT
-		Assert.AreEqual(0, result.Length);
+		Assert.IsEmpty(result);
 	}
 
 	[TestMethod]
@@ -93,7 +96,7 @@ public sealed class ExtendedFeatureManagerTests
 		string[] result = m_extendedFeatureManager.DisabledFeaturesList;
 
 		// ASSERT
-		CollectionAssert.AreEqual(new[] { "feature1", "feature2", "feature3" }, result);
+		CollectionAssert.AreEqual(s_expected, result);
 	}
 
 	[TestMethod]
@@ -107,7 +110,7 @@ public sealed class ExtendedFeatureManagerTests
 		string[] result = m_extendedFeatureManager.DisabledFeaturesList;
 
 		// ASSERT
-		CollectionAssert.AreEqual(new[] { "feature1", "feature2", "feature3" }, result);
+		CollectionAssert.AreEqual(s_expected, result);
 	}
 
 	#endregion
@@ -143,7 +146,7 @@ public sealed class ExtendedFeatureManagerTests
 		string[] result = m_extendedFeatureManager.EnabledFeaturesList;
 
 		// ASSERT
-		Assert.AreEqual(0, result.Length);
+		Assert.IsEmpty(result);
 	}
 
 	[TestMethod]
@@ -157,7 +160,7 @@ public sealed class ExtendedFeatureManagerTests
 		string[] result = m_extendedFeatureManager.EnabledFeaturesList;
 
 		// ASSERT
-		CollectionAssert.AreEqual(new[] { "feature1", "feature2", "feature3" }, result);
+		CollectionAssert.AreEqual(s_expected, result);
 	}
 
 	[TestMethod]
@@ -171,7 +174,7 @@ public sealed class ExtendedFeatureManagerTests
 		string[] result = m_extendedFeatureManager.EnabledFeaturesList;
 
 		// ASSERT
-		CollectionAssert.AreEqual(new[] { "feature1", "feature2", "feature3" }, result);
+		CollectionAssert.AreEqual(s_expected, result);
 	}
 
 	#endregion
@@ -184,7 +187,7 @@ public sealed class ExtendedFeatureManagerTests
 	public void GetOverride_WithEmptyOrWhitespaceFeatureName_ThrowsArgumentException(string featureName)
 	{
 		// ARRANGE
-		Func<bool?> action = () => m_extendedFeatureManager.GetOverride(featureName);
+		bool? action() => m_extendedFeatureManager.GetOverride(featureName);
 
 		// ASSERT
 		ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => action());
@@ -278,16 +281,16 @@ public sealed class ExtendedFeatureManagerTests
 	public async Task GetFeatureNamesAsync_WhenCalled_DelegatesCallToFeatureManager()
 	{
 		// ARRANGE
-		IAsyncEnumerable<string> expectedNames = new[] { "Feature1", "Feature2" }.ToAsyncEnumerable();
+		IAsyncEnumerable<string> expectedNames = s_expected.ToAsyncEnumerable();
 		m_featureManagerMock.Setup(m => m.GetFeatureNamesAsync()).Returns(expectedNames);
 
 		// ACT
 		IAsyncEnumerable<string> result = m_extendedFeatureManager.GetFeatureNamesAsync();
-		List<string> resultList = await result.ToListAsync();
+		List<string> resultList = await result.ToListAsync(TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		m_featureManagerMock.Verify(m => m.GetFeatureNamesAsync(), Times.Once);
-		CollectionAssert.AreEqual(await expectedNames.ToListAsync(), resultList);
+		CollectionAssert.AreEqual(await expectedNames.ToListAsync(TestContext.CancellationTokenSource.Token), resultList);
 	}
 
 	#endregion
@@ -300,7 +303,7 @@ public sealed class ExtendedFeatureManagerTests
 	public async Task IsEnabledAsync_WithEmptyOrWhitespaceFeatureName_ThrowsArgumentException(string featureName)
 	{
 		// ARRANGE
-		Func<Task> action = async () => await m_extendedFeatureManager.IsEnabledAsync(featureName);
+		async Task action() => await m_extendedFeatureManager.IsEnabledAsync(featureName);
 
 		// ASSERT
 		ArgumentException exception = await Assert.ThrowsExactlyAsync<ArgumentException>(action);
@@ -336,7 +339,7 @@ public sealed class ExtendedFeatureManagerTests
 	{
 		// ARRANGE
 		const int context = 0;
-		Func<Task> action = async () => await m_extendedFeatureManager.IsEnabledAsync(featureName, context);
+		async Task action() => await m_extendedFeatureManager.IsEnabledAsync(featureName, context);
 
 		// ASSERT
 		ArgumentException exception = await Assert.ThrowsExactlyAsync<ArgumentException>(action);

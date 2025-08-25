@@ -20,14 +20,14 @@ public sealed class EmptyExperimentManagerTests
 	public async Task GetFlightsAsync_WithEmptyFilters_ReturnsEmptyDictionary()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = new();
+		Dictionary<string, object> filters = [];
 
 		// ACT
 		IDictionary<string, object> result = await m_experimentManager.GetFlightsAsync(filters, CancellationToken.None);
 
 		// ASSERT
 		Assert.IsNotNull(result);
-		Assert.AreEqual(0, result.Count);
+		Assert.IsEmpty(result);
 	}
 
 	[TestMethod]
@@ -46,7 +46,7 @@ public sealed class EmptyExperimentManagerTests
 
 		// ASSERT
 		Assert.IsNotNull(result);
-		Assert.AreEqual(0, result.Count);
+		Assert.IsEmpty(result);
 	}
 
 	[TestMethod]
@@ -64,14 +64,14 @@ public sealed class EmptyExperimentManagerTests
 
 		// ASSERT
 		Assert.IsNotNull(result);
-		Assert.AreEqual(0, result.Count);
+		Assert.IsEmpty(result);
 	}
 
 	[TestMethod]
 	public async Task GetFlightsAsync_WithCancelledToken_ReturnsEmptyDictionary()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = new();
+		Dictionary<string, object> filters = [];
 		using CancellationTokenSource cts = new();
 		cts.Cancel();
 
@@ -80,7 +80,7 @@ public sealed class EmptyExperimentManagerTests
 
 		// ASSERT
 		Assert.IsNotNull(result);
-		Assert.AreEqual(0, result.Count);
+		Assert.IsEmpty(result);
 	}
 
 	[TestMethod]
@@ -98,15 +98,15 @@ public sealed class EmptyExperimentManagerTests
 		Assert.IsNotNull(result1);
 		Assert.IsNotNull(result2);
 		Assert.AreNotSame(result1, result2, "Each call should return a new dictionary instance");
-		Assert.AreEqual(0, result1.Count);
-		Assert.AreEqual(0, result2.Count);
+		Assert.IsEmpty(result1);
+		Assert.IsEmpty(result2);
 	}
 
 	[TestMethod]
 	public void GetFlightsAsync_WhenCalled_ReturnsCompletedTask()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = new();
+		Dictionary<string, object> filters = [];
 
 		// ACT
 		Task<IDictionary<string, object>> task = m_experimentManager.GetFlightsAsync(filters, CancellationToken.None);

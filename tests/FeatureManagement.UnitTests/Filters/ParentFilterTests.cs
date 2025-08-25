@@ -76,7 +76,7 @@ public sealed class ParentFilterTests
 
 		Dictionary<string, string?> configValues = new()
 		{
-			{ "Feature", (string?)null },
+			{ "Feature", null },
 		};
 
 		IConfiguration configuration = new ConfigurationBuilder()
@@ -221,7 +221,7 @@ public sealed class ParentFilterTests
 			.ThrowsAsync(new InvalidOperationException("Test exception"));
 
 		// ACT
-		Func<Task> function = async () => await m_filter.EvaluateAsync(m_context);
+		async Task function() => await m_filter.EvaluateAsync(m_context);
 
 		// ASSERT
 		InvalidOperationException exception = await Assert.ThrowsAsync<InvalidOperationException>(function);

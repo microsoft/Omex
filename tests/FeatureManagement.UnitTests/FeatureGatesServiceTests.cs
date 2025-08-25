@@ -18,6 +18,8 @@ using Moq;
 [TestClass]
 public sealed class FeatureGatesServiceTests
 {
+	public TestContext TestContext { get; set; }
+
 	private readonly ActivitySource m_activitySourceMock;
 	private readonly Mock<IExperimentManager> m_experimentManagerMock;
 	private readonly Mock<IExtendedFeatureManager> m_featureManagerMock;
@@ -89,9 +91,9 @@ public sealed class FeatureGatesServiceTests
 		IDictionary<string, object> result = await m_featureGatesService.GetFeatureGatesAsync();
 
 		// ASSERT
-		Assert.AreEqual(2, result.Count);
-		Assert.AreEqual(false, result["Test1"]); // DisabledFeaturesList overrides to false.
-		Assert.AreEqual(true, result["Test2"]);  // EnabledFeaturesList overrides to true.
+		Assert.HasCount(2, result);
+		Assert.IsFalse((bool)result["Test1"]); // DisabledFeaturesList overrides to false.
+		Assert.IsTrue((bool)result["Test2"]);  // EnabledFeaturesList overrides to true.
 	}
 
 	[TestMethod]
@@ -107,7 +109,7 @@ public sealed class FeatureGatesServiceTests
 		IDictionary<string, object> result = await m_featureGatesService.GetFeatureGatesAsync();
 
 		// ASSERT
-		Assert.AreEqual(0, result.Count);
+		Assert.IsEmpty(result);
 	}
 
 	[TestMethod]
@@ -125,8 +127,8 @@ public sealed class FeatureGatesServiceTests
 		IDictionary<string, object> result = await m_featureGatesService.GetFeatureGatesAsync();
 
 		// ASSERT
-		Assert.AreEqual(1, result.Count);
-		Assert.AreEqual(true, result["Test1"]); // First value wins due to TryAdd.
+		Assert.HasCount(1, result);
+		Assert.IsTrue((bool)result["Test1"]); // First value wins due to TryAdd.
 	}
 
 	[TestMethod]
@@ -142,9 +144,9 @@ public sealed class FeatureGatesServiceTests
 		IDictionary<string, object> result = await m_featureGatesService.GetFeatureGatesAsync();
 
 		// ASSERT
-		Assert.AreEqual(2, result.Count);
-		Assert.AreEqual(true, result["Test1"]);
-		Assert.AreEqual(true, result["Test2"]);
+		Assert.HasCount(2, result);
+		Assert.IsTrue((bool)result["Test1"]);
+		Assert.IsTrue((bool)result["Test2"]);
 	}
 
 	[TestMethod]
@@ -160,9 +162,9 @@ public sealed class FeatureGatesServiceTests
 		IDictionary<string, object> result = await m_featureGatesService.GetFeatureGatesAsync();
 
 		// ASSERT
-		Assert.AreEqual(2, result.Count);
-		Assert.AreEqual(false, result["Test1"]);
-		Assert.AreEqual(false, result["Test2"]);
+		Assert.HasCount(2, result);
+		Assert.IsFalse((bool)result["Test1"]);
+		Assert.IsFalse((bool)result["Test2"]);
 	}
 
 	#endregion
@@ -188,11 +190,11 @@ public sealed class FeatureGatesServiceTests
 		};
 
 		// ACT
-		IDictionary<string, object> result = await m_featureGatesService.GetExperimentalFeaturesAsync(filters, CancellationToken.None);
+		IDictionary<string, object> result = await m_featureGatesService.GetExperimentalFeaturesAsync(filters, TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
-		Assert.AreEqual(2, result.Count);
-		Assert.AreEqual(true, result["Gate1"]);
+		Assert.HasCount(2, result);
+		Assert.IsTrue((bool)result["Gate1"]);
 		Assert.AreEqual("value", result["Gate2"]);
 	}
 
@@ -210,7 +212,7 @@ public sealed class FeatureGatesServiceTests
 		};
 
 		// ACT
-		await m_featureGatesService.GetExperimentalFeaturesAsync(filters, CancellationToken.None);
+		await m_featureGatesService.GetExperimentalFeaturesAsync(filters, TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		m_loggerMock.Verify(
@@ -233,7 +235,7 @@ public sealed class FeatureGatesServiceTests
 	public async Task GetExperimentFeatureValueAsync_WhenFeatureGateIsEmptyOrWhitespace_ThrowsArgumentException(string featureGate) =>
 		// ACT & ASSERT
 		await Assert.ThrowsExactlyAsync<ArgumentException>(
-			() => m_featureGatesService.GetExperimentFeatureValueAsync(featureGate, new Dictionary<string, object>(), CancellationToken.None));
+			() => m_featureGatesService.GetExperimentFeatureValueAsync(featureGate, new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token));
 
 	[TestMethod]
 	public async Task GetExperimentFeatureValueAsync_WhenFeatureNotPresent_ReturnsFalse()
@@ -243,7 +245,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(new Dictionary<string, object>());
 
 		// ACT
-		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result.InTreatment);
@@ -261,7 +263,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result.InTreatment);
@@ -277,7 +279,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result.InTreatment);
@@ -293,7 +295,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result.InTreatment);
@@ -309,7 +311,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result.InTreatment);
@@ -325,7 +327,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result.InTreatment);
@@ -341,7 +343,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result.InTreatment);
@@ -396,7 +398,7 @@ public sealed class FeatureGatesServiceTests
 	public async Task IsExperimentApplicableAsync_WhenFeatureGateIsEmpty_ThrowsArgumentException(string featureGate) =>
 		// ACT & ASSERT
 		await Assert.ThrowsExactlyAsync<ArgumentException>(
-			() => m_featureGatesService.IsExperimentApplicableAsync(featureGate, new Dictionary<string, object>(), CancellationToken.None));
+			() => m_featureGatesService.IsExperimentApplicableAsync(featureGate, new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token));
 
 	[TestMethod]
 	public async Task IsExperimentApplicableAsync_WhenOverrideExistsTrue_ReturnsTrue()
@@ -405,7 +407,7 @@ public sealed class FeatureGatesServiceTests
 		m_featureManagerMock.Setup(m => m.GetOverride("Gate1")).Returns(true);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result);
@@ -419,7 +421,7 @@ public sealed class FeatureGatesServiceTests
 		m_featureManagerMock.Setup(m => m.GetOverride("Gate1")).Returns(false);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result);
@@ -436,7 +438,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(new Dictionary<string, object>());
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result);
@@ -453,7 +455,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result);
@@ -469,7 +471,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result);
@@ -485,7 +487,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result);
@@ -501,7 +503,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result);
@@ -517,7 +519,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result);
@@ -533,7 +535,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result);
@@ -550,7 +552,7 @@ public sealed class FeatureGatesServiceTests
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), CancellationToken.None);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result);

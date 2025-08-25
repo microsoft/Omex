@@ -39,7 +39,7 @@ public sealed class ConfigurationExtensionsTests
 
 		// ASSERT
 		Assert.IsNotNull(result);
-		Assert.IsInstanceOfType(result, typeof(MockSettings));
+		Assert.IsInstanceOfType<MockSettings>(result);
 		Assert.AreEqual(string.Empty, result.Value);
 	}
 

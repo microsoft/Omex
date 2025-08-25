@@ -24,7 +24,7 @@ public sealed class HttpContextAccessorExtensionsTests
 		Mock<IHttpContextAccessor> mockAccessor = new();
 
 		// ACT
-		Func<string> action = () => mockAccessor.Object.GetParameter(paramName);
+		string action() => mockAccessor.Object.GetParameter(paramName);
 
 		// ASSERT
 		ArgumentException exception = Assert.ThrowsExactly<ArgumentException>(() => action());
@@ -130,50 +130,6 @@ public sealed class HttpContextAccessorExtensionsTests
 
 		// ASSERT
 		Assert.AreEqual(string.Empty, result);
-	}
-
-	#endregion
-
-	#region Helper Methods
-
-	private static Mock<IHttpContextAccessor> CreateHttpContextAccessorWithParameter(string paramName, string paramValue)
-	{
-		StringValues paramValues = new(paramValue);
-
-		Mock<IQueryCollection> mockQuery = new();
-		mockQuery.Setup(m => m.TryGetValue(paramName, out paramValues)).Returns(true);
-
-		Mock<HttpRequest> mockRequest = new();
-		mockRequest.Setup(m => m.Query).Returns(mockQuery.Object);
-
-		Mock<HttpContext> mockContext = new();
-		mockContext.Setup(m => m.Request).Returns(mockRequest.Object);
-
-		Mock<IHttpContextAccessor> mockAccessor = new();
-		mockAccessor.Setup(m => m.HttpContext).Returns(mockContext.Object);
-
-		return mockAccessor;
-	}
-
-	private static Mock<IHttpContextAccessor> CreateHttpContextAccessorWithoutParameter()
-	{
-		Mock<IQueryCollection> mockQuery = new();
-		mockQuery.Setup(m => m.TryGetValue(It.IsAny<string>(), out It.Ref<StringValues>.IsAny)).Returns(false);
-
-		Mock<IHeaderDictionary> mockHeaders = new();
-		mockHeaders.Setup(m => m.TryGetValue(It.IsAny<string>(), out It.Ref<StringValues>.IsAny)).Returns(false);
-
-		Mock<HttpRequest> mockRequest = new();
-		mockRequest.Setup(m => m.Query).Returns(mockQuery.Object);
-		mockRequest.Setup(m => m.Headers).Returns(mockHeaders.Object);
-
-		Mock<HttpContext> mockContext = new();
-		mockContext.Setup(m => m.Request).Returns(mockRequest.Object);
-
-		Mock<IHttpContextAccessor> mockAccessor = new();
-		mockAccessor.Setup(m => m.HttpContext).Returns(mockContext.Object);
-
-		return mockAccessor;
 	}
 
 	#endregion

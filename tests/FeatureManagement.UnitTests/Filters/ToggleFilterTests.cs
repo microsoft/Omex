@@ -106,7 +106,7 @@ public sealed class ToggleFilterTests
 	public async Task EvaluateAsync_WhenNoToggleSourcesAreActive_ReturnsFalse()
 	{
 		// ARRANGE
-		// Default setup with no toggled features
+		// Default setup with no toggled features.
 
 		// ACT
 		bool result = await m_filter.EvaluateAsync(m_context);
