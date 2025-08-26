@@ -49,35 +49,37 @@ internal sealed class ExtendedFeatureManager(
 	{
 		ArgumentException.ThrowIfNullOrWhiteSpace(feature);
 
-		logger.LogInformation(Tag.Create(), $"{nameof(ExtendedFeatureManager)}.{nameof(GetOverride)} checking '{{Feature}}'.", feature);
+		const string methodName = $"{nameof(ExtendedFeatureManager)}.{nameof(GetOverride)}";
+
+		logger.LogInformation(Tag.Create(), $"{methodName} checking '{{Feature}}'.", feature);
 
 		// Each option below ignores any filters applied to the feature.
 
 		// Checks for the feature in the disabled feature query string, which would always turn the feature off.
 		if (DisabledFeaturesList.Contains(feature, StringComparer.OrdinalIgnoreCase))
 		{
-			logger.LogInformation(Tag.Create(), $"{nameof(ExtendedFeatureManager)}.{nameof(GetOverride)} returned false for '{{Feature}}' as it is switched off via the query-string parameter '{{DisableFeatures}}'.", feature, RequestParameters.Query.DisabledFeatures);
+			logger.LogInformation(Tag.Create(), $"{methodName} returned false for '{{Feature}}' as it is switched off via the query-string parameter '{{DisableFeatures}}'.", feature, RequestParameters.Query.DisabledFeatures);
 			return false;
 		}
 
 		// Checks if the feature is disabled in the settings, which would always turn the feature off.
 		if (settings.CurrentValue.Disabled.Contains(feature, StringComparer.OrdinalIgnoreCase))
 		{
-			logger.LogInformation(Tag.Create(), $"{nameof(ExtendedFeatureManager)}.{nameof(GetOverride)} returned true for '{{Feature}}' as it is overridden in the {nameof(settings.CurrentValue.Disabled)} setting.", feature);
+			logger.LogInformation(Tag.Create(), $"{methodName} returned true for '{{Feature}}' as it is overridden in the {nameof(settings.CurrentValue.Disabled)} setting.", feature);
 			return false;
 		}
 
 		// Checks for the feature in the enabled feature query string, which would always turn the feature on.
 		if (EnabledFeaturesList.Contains(feature, StringComparer.OrdinalIgnoreCase))
 		{
-			logger.LogInformation(Tag.Create(), $"{nameof(ExtendedFeatureManager)}.{nameof(GetOverride)} returned true for '{{Feature}}' as it is switched on via the query-string parameter '{{EnabledFeatures}}'.", feature, RequestParameters.Query.EnabledFeatures);
+			logger.LogInformation(Tag.Create(), $"{methodName} returned true for '{{Feature}}' as it is switched on via the query-string parameter '{{EnabledFeatures}}'.", feature, RequestParameters.Query.EnabledFeatures);
 			return true;
 		}
 
 		// Checks if the feature is enabled in the settings, which would always turn the feature on.
 		if (settings.CurrentValue.Enabled.Contains(feature, StringComparer.OrdinalIgnoreCase))
 		{
-			logger.LogInformation(Tag.Create(), $"{nameof(ExtendedFeatureManager)}.{nameof(GetOverride)} returned true for '{{Feature}}' as it is overridden in the {nameof(settings.CurrentValue.Enabled)} setting.", feature);
+			logger.LogInformation(Tag.Create(), $"{methodName} returned true for '{{Feature}}' as it is overridden in the {nameof(settings.CurrentValue.Enabled)} setting.", feature);
 			return true;
 		}
 
@@ -89,30 +91,39 @@ internal sealed class ExtendedFeatureManager(
 		featureManager.GetFeatureNamesAsync();
 
 	/// <inheritdoc/>
-	public async Task<bool> IsEnabledAsync(string feature)
-	{
-		ArgumentException.ThrowIfNullOrWhiteSpace(feature);
-
-		logger.LogInformation(Tag.Create(), $"{nameof(ExtendedFeatureManager)}.{nameof(IsEnabledAsync)} checking '{{Feature}}'.", feature);
-
-		bool? overrideValue = GetOverride(feature);
-		bool result = overrideValue.HasValue
-			? overrideValue.GetValueOrDefault()
-			: await featureManager.IsEnabledAsync(feature);
-		logger.LogInformation(Tag.Create(), $"{nameof(ExtendedFeatureManager)}.{nameof(IsEnabledAsync)} returned {{IsEnabled}} for '{{Feature}}'.", result, feature);
-		return result;
-	}
+	public Task<bool> IsEnabledAsync(string feature) =>
+		IsEnabledInternalAsync<object?>(feature, null);
 
 	///<inheritdoc/>
-	public Task<bool> IsEnabledAsync<TContext>(string feature, TContext context)
-	{
-		ArgumentException.ThrowIfNullOrWhiteSpace(feature);
-
-		return featureManager.IsEnabledAsync(feature, context);
-	}
+	public Task<bool> IsEnabledAsync<TContext>(string feature, TContext context) =>
+		IsEnabledInternalAsync(feature, context);
 
 	private static string[] SplitFeatures(string features) =>
 		string.IsNullOrWhiteSpace(features)
 			? []
 			: features.Split(';', StringSplitOptions.RemoveEmptyEntries);
+
+	private async Task<bool> IsEnabledInternalAsync<TContext>(string feature, TContext? context)
+	{
+		ArgumentException.ThrowIfNullOrWhiteSpace(feature);
+
+		const string methodName = $"{nameof(ExtendedFeatureManager)}.{nameof(IsEnabledAsync)}";
+
+		logger.LogInformation(Tag.Create(), $"{methodName} checking '{{Feature}}'.", feature);
+		bool? overrideValue = GetOverride(feature);
+		bool result;
+		if (overrideValue.HasValue)
+		{
+			result = overrideValue.GetValueOrDefault();
+		}
+		else
+		{
+			result = context is null
+				? await featureManager.IsEnabledAsync(feature)
+				: await featureManager.IsEnabledAsync(feature, context);
+		}
+
+		logger.LogInformation(Tag.Create(), $"{methodName} returned {{IsEnabled}} for '{{Feature}}'.", result, feature);
+		return result;
+	}
 }

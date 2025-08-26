@@ -328,6 +328,64 @@ public sealed class ExtendedFeatureManagerTests
 		m_featureManagerMock.Verify(m => m.IsEnabledAsync(featureName), Times.Once);
 	}
 
+	[TestMethod]
+	public async Task IsEnabledAsync_WhenFeatureInEnabledFeatures_ReturnsTrue()
+	{
+		// ARRANGE
+		const string featureName = "TestFeature";
+		InitializeHttpContextAccessor(RequestParameters.Query.EnabledFeatures, featureName);
+
+		// ACT
+		bool result = await m_extendedFeatureManager.IsEnabledAsync(featureName);
+
+		// ASSERT
+		Assert.IsTrue(result);
+		m_featureManagerMock.Verify(m => m.IsEnabledAsync(It.IsAny<string>()), Times.Never);
+	}
+
+	[TestMethod]
+	public async Task IsEnabledAsync_WhenFeatureInDisabledFeatures_ReturnsFalse()
+	{
+		// ARRANGE
+		const string featureName = "TestFeature";
+		InitializeHttpContextAccessor(RequestParameters.Query.DisabledFeatures, featureName);
+
+		// ACT
+		bool result = await m_extendedFeatureManager.IsEnabledAsync(featureName);
+
+		// ASSERT
+		Assert.IsFalse(result);
+		m_featureManagerMock.Verify(m => m.IsEnabledAsync(It.IsAny<string>()), Times.Never);
+	}
+
+	[TestMethod]
+	public async Task IsEnabledAsync_WhenFeatureInOverrideEnabled_ReturnsTrue()
+	{
+		// ARRANGE
+		const string featureName = "EnabledFeature1";
+
+		// ACT
+		bool result = await m_extendedFeatureManager.IsEnabledAsync(featureName);
+
+		// ASSERT
+		Assert.IsTrue(result);
+		m_featureManagerMock.Verify(m => m.IsEnabledAsync(It.IsAny<string>()), Times.Never);
+	}
+
+	[TestMethod]
+	public async Task IsEnabledAsync_WhenFeatureInOverrideDisabled_ReturnsFalse()
+	{
+		// ARRANGE
+		const string featureName = "DisabledFeature1";
+
+		// ACT
+		bool result = await m_extendedFeatureManager.IsEnabledAsync(featureName);
+
+		// ASSERT
+		Assert.IsFalse(result);
+		m_featureManagerMock.Verify(m => m.IsEnabledAsync(It.IsAny<string>()), Times.Never);
+	}
+
 	#endregion
 
 	#region GetFeatureNamesAsync<TContext>
@@ -349,7 +407,7 @@ public sealed class ExtendedFeatureManagerTests
 	[TestMethod]
 	[DataRow(true)]
 	[DataRow(false)]
-	public async Task IsEnabledAsyncWithContext_WhenCalled_DelegatesCallToFeatureManager(bool featureManagerResult)
+	public async Task IsEnabledAsyncWithContext_WhenNoOverrideExists_DelegatesCallToFeatureManager(bool featureManagerResult)
 	{
 		// ARRANGE
 		const string featureName = "TestFeature";
@@ -363,6 +421,68 @@ public sealed class ExtendedFeatureManagerTests
 		// ASSERT
 		Assert.AreEqual(featureManagerResult, result);
 		m_featureManagerMock.Verify(m => m.IsEnabledAsync(featureName, context), Times.Once);
+	}
+
+	[TestMethod]
+	public async Task IsEnabledAsyncWithContext_WhenFeatureInEnabledFeatures_ReturnsTrue()
+	{
+		// ARRANGE
+		const string featureName = "TestFeature";
+		const int context = 0;
+		InitializeHttpContextAccessor(RequestParameters.Query.EnabledFeatures, featureName);
+
+		// ACT
+		bool result = await m_extendedFeatureManager.IsEnabledAsync(featureName, context);
+
+		// ASSERT
+		Assert.IsTrue(result);
+		m_featureManagerMock.Verify(m => m.IsEnabledAsync(It.IsAny<string>(), It.IsAny<object>()), Times.Never);
+	}
+
+	[TestMethod]
+	public async Task IsEnabledAsyncWithContext_WhenFeatureInDisabledFeatures_ReturnsFalse()
+	{
+		// ARRANGE
+		const string featureName = "TestFeature";
+		const int context = 0;
+		InitializeHttpContextAccessor(RequestParameters.Query.DisabledFeatures, featureName);
+
+		// ACT
+		bool result = await m_extendedFeatureManager.IsEnabledAsync(featureName, context);
+
+		// ASSERT
+		Assert.IsFalse(result);
+		m_featureManagerMock.Verify(m => m.IsEnabledAsync(It.IsAny<string>(), It.IsAny<object>()), Times.Never);
+	}
+
+	[TestMethod]
+	public async Task IsEnabledAsyncWithContext_WhenFeatureInOverrideEnabled_ReturnsTrue()
+	{
+		// ARRANGE
+		const string featureName = "EnabledFeature1";
+		const int context = 0;
+
+		// ACT
+		bool result = await m_extendedFeatureManager.IsEnabledAsync(featureName, context);
+
+		// ASSERT
+		Assert.IsTrue(result);
+		m_featureManagerMock.Verify(m => m.IsEnabledAsync(It.IsAny<string>(), It.IsAny<object>()), Times.Never);
+	}
+
+	[TestMethod]
+	public async Task IsEnabledAsyncWithContext_WhenFeatureInOverrideDisabled_ReturnsFalse()
+	{
+		// ARRANGE
+		const string featureName = "DisabledFeature1";
+		const int context = 0;
+
+		// ACT
+		bool result = await m_extendedFeatureManager.IsEnabledAsync(featureName, context);
+
+		// ASSERT
+		Assert.IsFalse(result);
+		m_featureManagerMock.Verify(m => m.IsEnabledAsync(It.IsAny<string>(), It.IsAny<object>()), Times.Never);
 	}
 
 	#endregion
