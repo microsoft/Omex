@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace Microsoft.Omex.Extensions.FeatureManagement.UnitTests.TestUtilities;
+namespace Microsoft.Omex.Extensions.Testing.Helpers.HttpContext;
 
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 
 /// <summary>
-/// A factory for creating <see cref="HttpContextAccessor"/>s for unit testing.
+/// A factory for creating <see cref="HttpContextAccessor"/>s for testing.
 /// </summary>
-internal static class HttpContextAccessorFactory
+public static class HttpContextAccessorFactory
 {
 	/// <summary>
 	/// Creates a new <see cref="HttpContextAccessor"/>.

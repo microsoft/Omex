@@ -298,8 +298,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 
 	#endregion
 
-	private void VerifyLoggerCalled(LogLevel logLevel, string expectedMessage)
-	{
+	private void VerifyLoggerCalled(LogLevel logLevel, string expectedMessage) =>
 		m_loggerMock.Verify(
 			x => x.Log(
 				logLevel,
@@ -308,7 +307,6 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 				It.IsAny<Exception>(),
 				It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
 			Times.AtLeastOnce);
-	}
 
 	private void VerifyActivityMetadata(string expectedMetadata)
 	{

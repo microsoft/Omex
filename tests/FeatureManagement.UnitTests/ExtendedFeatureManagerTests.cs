@@ -14,7 +14,7 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.FeatureManagement;
 using Microsoft.Omex.Extensions.FeatureManagement;
 using Microsoft.Omex.Extensions.FeatureManagement.Constants;
-using Microsoft.Omex.Extensions.FeatureManagement.UnitTests.TestUtilities;
+using Microsoft.Omex.Extensions.Testing.Helpers.HttpContext;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

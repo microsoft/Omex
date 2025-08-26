@@ -15,25 +15,6 @@ using Microsoft.Omex.Extensions.FeatureManagement.Constants;
 internal static class HttpContextExtensions
 {
 	/// <summary>
-	/// Retrieves the partner from the HTTP context headers.
-	/// </summary>
-	/// <param name="httpContext">The HTTP context.</param>
-	/// <param name="headerPrefix">The optional HTTP header prefix.</param>
-	/// <returns>The partner.</returns>
-	public static string GetPartner(this HttpContext httpContext, string? headerPrefix = null) =>
-		GetHeaderValue(httpContext, RequestParameters.Header.Partner, headerPrefix);
-
-	/// <summary>
-	/// Retrieves the platform from the HTTP context headers.
-	/// </summary>
-	/// <param name="httpContext">The HTTP context.</param>
-	/// <param name="headerPrefix">The optional HTTP header prefix.</param>
-	/// <param name="defaultPlatform">The default platform if not overridden.</param>
-	/// <returns>The platform.</returns>
-	public static string GetPlatform(this HttpContext httpContext, string? headerPrefix = null, string? defaultPlatform = null) =>
-		GetHeaderValue(httpContext, RequestParameters.Header.Platform, headerPrefix, defaultPlatform);
-
-	/// <summary>
 	/// Retrieves the partner and platform information from the HTTP context headers.
 	/// </summary>
 	/// <param name="httpContext">The HTTP context.</param>
@@ -109,7 +90,13 @@ internal static class HttpContextExtensions
 		return IPAddress.None;
 	}
 
-	private static string GetHeaderValue(HttpContext httpContext, string header, string? headerPrefix, string? defaultValue = null)
+	private static string GetPartner(this HttpContext httpContext, string? headerPrefix) =>
+		GetHeaderValue(httpContext, RequestParameters.Header.Partner, headerPrefix, null);
+
+	private static string GetPlatform(this HttpContext httpContext, string? headerPrefix, string? defaultPlatform) =>
+		GetHeaderValue(httpContext, RequestParameters.Header.Platform, headerPrefix, defaultPlatform);
+
+	private static string GetHeaderValue(HttpContext httpContext, string header, string? headerPrefix, string? defaultValue)
 	{
 		string headerName = string.IsNullOrWhiteSpace(headerPrefix)
 			? header

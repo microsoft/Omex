@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj" />
     <ProjectReference Include="..\..\src\FeatureManagement\Microsoft.Omex.Extensions.FeatureManagement.csproj" />
   </ItemGroup>
 
