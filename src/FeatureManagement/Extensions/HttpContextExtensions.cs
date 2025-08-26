@@ -15,6 +15,25 @@ using Microsoft.Omex.Extensions.FeatureManagement.Constants;
 internal static class HttpContextExtensions
 {
 	/// <summary>
+	/// Retrieves the partner from the HTTP context headers.
+	/// </summary>
+	/// <param name="httpContext">The HTTP context.</param>
+	/// <param name="headerPrefix">The optional HTTP header prefix.</param>
+	/// <returns>The partner.</returns>
+	public static string GetPartner(this HttpContext httpContext, string? headerPrefix = null) =>
+		GetHeaderValue(httpContext, RequestParameters.Header.Partner, headerPrefix);
+
+	/// <summary>
+	/// Retrieves the platform from the HTTP context headers.
+	/// </summary>
+	/// <param name="httpContext">The HTTP context.</param>
+	/// <param name="headerPrefix">The optional HTTP header prefix.</param>
+	/// <param name="defaultPlatform">The default platform if not overridden.</param>
+	/// <returns>The platform.</returns>
+	public static string GetPlatform(this HttpContext httpContext, string? headerPrefix = null, string? defaultPlatform = null) =>
+		GetHeaderValue(httpContext, RequestParameters.Header.Platform, headerPrefix, defaultPlatform);
+
+	/// <summary>
 	/// Retrieves the partner and platform information from the HTTP context headers.
 	/// </summary>
 	/// <param name="httpContext">The HTTP context.</param>
@@ -62,12 +81,7 @@ internal static class HttpContextExtensions
 	/// <returns>The forwarded addresses or <see cref="IPAddress.None"/> if none was present.</returns>
 	public static IPAddress GetForwardedAddress(this HttpContext httpContext)
 	{
-		if (
-			!httpContext.Request.Headers.TryGetValue(
-				RequestParameters.Header.ForwardedFor,
-				out StringValues headerValues
-			)
-		)
+		if (!httpContext.Request.Headers.TryGetValue(RequestParameters.Header.ForwardedFor, out StringValues headerValues))
 		{
 			return IPAddress.None;
 		}
@@ -95,34 +109,20 @@ internal static class HttpContextExtensions
 		return IPAddress.None;
 	}
 
-	private static string GetPartner(this HttpContext httpContext, string? headerPrefix = null)
+	private static string GetHeaderValue(HttpContext httpContext, string header, string? headerPrefix, string? defaultValue = null)
 	{
-		string headerName = GetHeader(RequestParameters.Header.Partner, headerPrefix);
-		if (!httpContext.Request.Headers.TryGetValue(headerName, out StringValues partner) ||
-			string.IsNullOrWhiteSpace(partner.ToString()))
-		{
-			return string.Empty;
-		}
-
-		return partner.ToString().Trim();
-	}
-
-	private static string GetPlatform(this HttpContext httpContext, string? headerPrefix = null, string? defaultPlatform = null)
-	{
-		string headerName = GetHeader(RequestParameters.Header.Platform, headerPrefix);
-		if (!httpContext.Request.Headers.TryGetValue(headerName, out StringValues platform) ||
-			string.IsNullOrWhiteSpace(platform.ToString()))
-		{
-			return string.IsNullOrWhiteSpace(defaultPlatform)
-				? string.Empty
-				: defaultPlatform;
-		}
-
-		return platform.ToString().Trim();
-	}
-
-	private static string GetHeader(string header, string? headerPrefix) =>
-		string.IsNullOrWhiteSpace(headerPrefix)
+		string headerName = string.IsNullOrWhiteSpace(headerPrefix)
 			? header
 			: $"{headerPrefix}-{header}";
+
+		if (!httpContext.Request.Headers.TryGetValue(headerName, out StringValues value) ||
+			string.IsNullOrWhiteSpace(value.ToString()))
+		{
+			return string.IsNullOrWhiteSpace(defaultValue)
+				? string.Empty
+				: defaultValue;
+		}
+
+		return value.ToString().Trim();
+	}
 }

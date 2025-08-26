@@ -20,6 +20,8 @@ using Moq;
 [TestClass]
 public sealed class FeatureGatesConsolidatorTests : IDisposable
 {
+	public TestContext TestContext { get; set; }
+
 	private readonly ActivitySource m_activitySource;
 	private readonly Mock<IFeatureGatesService> m_featureGatesServiceMock;
 	private readonly Mock<IHttpContextAccessor> m_httpContextAccessorMock;
@@ -36,7 +38,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 		m_httpContextAccessorMock = new();
 		m_loggerMock = new();
 		m_httpContext = new DefaultHttpContext();
-		m_capturedActivities = new();
+		m_capturedActivities = [];
 
 		m_activityListener = new()
 		{
@@ -71,7 +73,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 		Dictionary<string, object> filters = new() { { "test", "value" } };
 
 		// ACT
-		async Task function() => await m_consolidator.GetFeatureGatesAsync(filters);
+		async Task function() => await m_consolidator.GetFeatureGatesAsync(filters, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		InvalidOperationException exception = await Assert.ThrowsExactlyAsync<InvalidOperationException>(function);
@@ -89,12 +91,12 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 			.ReturnsAsync(new Dictionary<string, object>());
 
 		// ACT
-		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters);
+		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.HasCount(2, result);
-		Assert.IsTrue((bool?)result["Feature1"]);
-		Assert.IsFalse((bool?)result["Feature2"]);
+		Assert.IsTrue((bool)result["Feature1"]);
+		Assert.IsFalse((bool)result["Feature2"]);
 		VerifyLoggerCalled(LogLevel.Information, "Successfully retrieved feature gates: Feature1=True;Feature2=False");
 		VerifyLoggerCalled(LogLevel.Warning, "Experimental features returned no results");
 		VerifyActivityMetadata("No applicable experiments.");
@@ -112,12 +114,12 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 			.ReturnsAsync(experimentalFeatures);
 
 		// ACT
-		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters);
+		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
-		Assert.AreEqual(3, result.Count);
-		Assert.AreEqual(true, result["Feature1"]);
-		Assert.AreEqual(true, result["Feature2"]); // Experimental overrides basic.
+		Assert.HasCount(3, result);
+		Assert.IsTrue((bool)result["Feature1"]);
+		Assert.IsTrue((bool)result["Feature2"]); // Experimental overrides basic.
 		Assert.AreEqual("experimental", result["Feature3"]);
 		VerifyLoggerCalled(LogLevel.Information, "Successfully retrieved feature gates: Feature1=True;Feature2=True;Feature3=experimental");
 		VerifyLoggerCalled(LogLevel.Information, "Retrieved experimental features: Feature2=True;Feature3=experimental");
@@ -141,7 +143,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters, cancellationToken: cts.Token);
 
 		// ASSERT
-		Assert.AreEqual(2, result.Count);
+		Assert.HasCount(2, result);
 		m_featureGatesServiceMock.Verify(x => x.GetExperimentalFeaturesAsync(filters, cts.Token), Times.Once);
 	}
 
@@ -160,11 +162,11 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 			.ReturnsAsync(experimentalFeatures);
 
 		// ACT
-		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters, headerPrefix, defaultPlatform);
+		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters, headerPrefix, defaultPlatform, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
-		Assert.AreEqual(2, result.Count);
-		Assert.AreEqual(1, m_capturedActivities.Count);
+		Assert.HasCount(2, result);
+		Assert.HasCount(1, m_capturedActivities);
 		Activity activity = m_capturedActivities[0];
 		Assert.AreEqual(FeatureManagementActivityNames.FeatureGatesConsolidator.GetExperimentalFeaturesAsync, activity.OperationName);
 	}
@@ -187,10 +189,10 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 			.ReturnsAsync(experimentalFeatures);
 
 		// ACT
-		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters);
+		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
-		Assert.AreEqual(2, result.Count);
+		Assert.HasCount(2, result);
 		VerifyLoggerCalled(LogLevel.Information, "Requesting experimental features with filters:");
 	}
 
@@ -217,11 +219,11 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 			.ReturnsAsync(experimentalFeatures);
 
 		// ACT
-		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters);
+		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
-		Assert.AreEqual(3, result.Count);
-		Assert.AreEqual(true, result["Feature1"]);
+		Assert.HasCount(3, result);
+		Assert.IsTrue((bool)result["Feature1"]);
 		Assert.AreEqual("experimental", result["Feature2"]);
 		Assert.AreEqual(456, result["Feature3"]);
 	}
@@ -239,10 +241,10 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 			.ReturnsAsync(experimentalFeatures);
 
 		// ACT
-		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters);
+		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
-		Assert.AreEqual(2, result.Count);
+		Assert.HasCount(2, result);
 		m_featureGatesServiceMock.Verify(x => x.GetExperimentalFeaturesAsync(filters, It.IsAny<CancellationToken>()), Times.Once);
 	}
 
@@ -259,10 +261,10 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 			.ReturnsAsync(experimentalFeatures);
 
 		// ACT
-		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters);
+		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
-		Assert.AreEqual(1, m_capturedActivities.Count);
+		Assert.HasCount(1, m_capturedActivities);
 		Activity activity = m_capturedActivities[0];
 		string? activityResult = activity.Tags.FirstOrDefault(tag => string.Equals(tag.Key, ActivityTagKeys.Result, StringComparison.Ordinal)).Value;
 		Assert.AreEqual("Success", activityResult);
@@ -288,10 +290,10 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 			.ReturnsAsync(experimentalFeatures);
 
 		// ACT
-		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters);
+		IDictionary<string, object> result = await m_consolidator.GetFeatureGatesAsync(filters, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
-		Assert.AreEqual(200, result.Count);
+		Assert.HasCount(200, result);
 	}
 
 	#endregion
@@ -310,7 +312,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 
 	private void VerifyActivityMetadata(string expectedMetadata)
 	{
-		Assert.IsTrue(m_capturedActivities.Count > 0, "No activities were captured.");
+		Assert.IsGreaterThan(0, m_capturedActivities.Count, "No activities were captured.");
 		Activity activity = m_capturedActivities.Last();
 		string? metadata = activity.Tags.FirstOrDefault(tag => string.Equals(tag.Key, ActivityTagKeys.Metadata, StringComparison.Ordinal)).Value;
 		Assert.AreEqual(expectedMetadata, metadata);
