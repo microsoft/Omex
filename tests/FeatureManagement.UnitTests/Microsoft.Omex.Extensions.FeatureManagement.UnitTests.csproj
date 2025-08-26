@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Linq.Async" />
+    <PackageReference Include="System.Linq.Async"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj" />
-    <ProjectReference Include="..\..\src\FeatureManagement\Microsoft.Omex.Extensions.FeatureManagement.csproj" />
+    <ProjectReference Include="..\..\src\FeatureManagement\Microsoft.Omex.Extensions.FeatureManagement.csproj"/>
+    <ProjectReference Include="..\..\src\Testing.Helpers\Microsoft.Omex.Extensions.Testing.Helpers.csproj"/>
   </ItemGroup>
 
 </Project>
