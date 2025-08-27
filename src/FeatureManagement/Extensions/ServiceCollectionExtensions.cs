@@ -23,7 +23,7 @@ public static class ServiceCollectionExtensions
 	/// <param name="experimentManager">The experiment manager. If <c>null</c>, the <see cref="EmptyExperimentManager"/> will be used.</param>
 	/// <param name="ipRangeProvider">The IP range provider. If <c>null</c>, the <see cref="EmptyIPRangeProvider"/> will be used.</param>
 	/// <returns>The updated <see cref="IServiceCollection"/>.</returns>
-	public static IServiceCollection ConfigureFeatureManagement(
+	public static IServiceCollection AddOmexFeatureManagement(
 		this IServiceCollection services,
 		IConfiguration configuration,
 		IExperimentManager? experimentManager = null,

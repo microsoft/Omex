@@ -9,7 +9,6 @@ Built on top of [Microsoft's Feature Management library](https://github.com/micr
 ## Key Features
 
 - **Feature Flags**: Toggle features on/off without code deployment
-- **Gradual Rollouts**: Control feature exposure percentage
 - **A/B Testing**: Run experiments with customer targeting
 - **Multiple Filter Types**: Time window, percentage, market, campaign, and more
 - **Runtime Overrides**: Temporarily enable/disable features via query parameters

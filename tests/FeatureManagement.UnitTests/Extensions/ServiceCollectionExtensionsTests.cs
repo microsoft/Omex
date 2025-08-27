@@ -15,10 +15,10 @@ using Moq;
 [TestClass]
 public sealed class ServiceCollectionExtensionsTests
 {
-	#region ConfigureFeatureManagement
+	#region AddOmexFeatureManagement
 
 	[TestMethod]
-	public void ConfigureFeatureManagement_WhenCalled_RegistersAllServices()
+	public void AddOmexFeatureManagement_WhenCalled_RegistersAllServices()
 	{
 		// ARRANGE
 		IServiceCollection services = new ServiceCollection();
@@ -28,7 +28,7 @@ public sealed class ServiceCollectionExtensionsTests
 		mockConfiguration.Setup(c => c.GetSection(nameof(FeatureOverrideSettings))).Returns(mockFeatureOverrideSection.Object);
 
 		// ACT
-		IServiceCollection result = services.ConfigureFeatureManagement(mockConfiguration.Object);
+		IServiceCollection result = services.AddOmexFeatureManagement(mockConfiguration.Object);
 
 		// ASSERT
 		Assert.IsNotNull(result);
