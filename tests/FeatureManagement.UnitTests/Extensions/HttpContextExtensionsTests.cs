@@ -201,6 +201,84 @@ public sealed class HttpContextExtensionsTests
 		Assert.IsFalse(result);
 	}
 
+	[TestMethod]
+	public void IsLocal_WhenForwardedIPv6IsLoopback_ReturnsTrue()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		context.Request.Headers[RequestParameters.Header.ForwardedFor] = "::1";
+		context.Connection.RemoteIpAddress = IPAddress.IPv6Loopback;
+		context.Connection.LocalIpAddress = IPAddress.IPv6Loopback;
+
+		// ACT
+		bool result = context.IsLocal();
+
+		// ASSERT
+		Assert.IsTrue(result);
+	}
+
+	[TestMethod]
+	public void IsLocal_WhenForwardedIPv6IsNotLoopback_ReturnsFalse()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		context.Request.Headers[RequestParameters.Header.ForwardedFor] = "2001:db8::1";
+		context.Connection.RemoteIpAddress = IPAddress.IPv6Loopback;
+		context.Connection.LocalIpAddress = IPAddress.IPv6Loopback;
+
+		// ACT
+		bool result = context.IsLocal();
+
+		// ASSERT
+		Assert.IsFalse(result);
+	}
+
+	[TestMethod]
+	public void IsLocal_WhenRemoteEqualsLocal_IPv6_ReturnsTrue()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		IPAddress address = IPAddress.Parse("fe80::1");
+		context.Connection.RemoteIpAddress = address;
+		context.Connection.LocalIpAddress = address;
+
+		// ACT
+		bool result = context.IsLocal();
+
+		// ASSERT
+		Assert.IsTrue(result);
+	}
+
+	[TestMethod]
+	public void IsLocal_WhenRemoteIsIPv6LoopbackAndLocalIsNull_ReturnsTrue()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		context.Connection.RemoteIpAddress = IPAddress.IPv6Loopback;
+		context.Connection.LocalIpAddress = null;
+
+		// ACT
+		bool result = context.IsLocal();
+
+		// ASSERT
+		Assert.IsTrue(result);
+	}
+
+	[TestMethod]
+	public void IsLocal_WhenRemoteIsIPv6AndLocalIsNull_RemoteIsNotLoopback_ReturnsFalse()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		context.Connection.RemoteIpAddress = IPAddress.Parse("2001:db8::1234");
+		context.Connection.LocalIpAddress = null;
+
+		// ACT
+		bool result = context.IsLocal();
+
+		// ASSERT
+		Assert.IsFalse(result);
+	}
+
 	#endregion
 
 	#region GetForwardedAddress
