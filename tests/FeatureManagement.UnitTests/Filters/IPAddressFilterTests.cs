@@ -396,6 +396,31 @@ public sealed class IPAddressFilterTests
 		}
 	}
 
+	[TestMethod]
+	public async Task EvaluateAsync_WhenHeaderHasMultipleForwardedIPs_UsesFirstIP()
+	{
+		// ARRANGE
+		Dictionary<string, string?> configValues = new()
+			{
+				{ "AllowedRange", "TESTIPS" },
+			};
+		IConfiguration configuration = new ConfigurationBuilder()
+			.AddInMemoryCollection(configValues)
+			.Build();
+		m_context.Parameters = configuration;
+
+		// First IP in list is within allowed range, whereas the second is not.
+		m_httpContext.Request.Headers[RequestParameters.Header.ForwardedFor] = "10.1.1.1,203.0.113.10";
+
+		// ACT
+		bool result = await m_filter.EvaluateAsync(m_context);
+
+		// ASSERT
+		Assert.IsTrue(result);
+		VerifyLogging(true);
+		VerifyIPRangeLogging(true);
+	}
+
 	#endregion
 
 	private void VerifyLogging(bool expectedIsEnabled) =>

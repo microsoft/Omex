@@ -98,9 +98,9 @@ internal static class HttpContextExtensions
 	{
 		string[] addresses = headerValue.Split(',');
 
-		// Where multiple proxies are involved, the last IP address in the list is typically the client's
-		// IP address. Iterate through the list in reverse order to prioritize the most relevant IP address.
-		for (int i = addresses.Length - 1; i >= 0; i--)
+		// Where multiple proxies are involved, the first IP address in the list is typically the originating client's IP address.
+		// Iterate through the list in forward order to prioritize the original caller rather than intermediary proxies.
+		for (int i = 0; i < addresses.Length; i++)
 		{
 			string address = addresses[i].Trim();
 
