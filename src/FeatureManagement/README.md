@@ -239,7 +239,17 @@ An example of the filter is shown below, although this example does not make sen
 
 ##### Toggle
 
-The toggle filter switches the status of a feature. The concept is to disable the feature by default and to use your experimentation service to enable it at runtime, as documented in [Experimental Features](#experimental-features). Enabling can also be performed using the `toggledFeatures` query-string parameter, which is a semicolon-separated list of features to toggle. The concept is to allow a feature to be enabled while retaining all other config logic, i.e., it doesn't force a feature on but just enables the feature.
+The toggle filter enables you to pre-define complex feature logic in `appsettings.json` while keeping the feature disabled by default. This pattern is particularly useful when you want to prepare sophisticated feature configurations (with multiple filters, conditions, and rules) ahead of time, then activate them on-demand without modifying the configuration.
+
+How it works:
+
+- Define your complete feature logic in `appsettings.json` with all necessary filters (time windows, percentages, markets, etc).
+- Add the `Toggle` filter to keep the feature disabled by default.
+- Activate the feature at runtime through:
+  - The `toggledFeatures` query-string parameter (semicolon-separated list).
+  - Or your experimentation service (see [Experimental Features](#experimental-features)).
+
+This approach allows you to specify and deploy complex feature logic that could not be defined through query-string parameters alone. When activated, the feature evaluates all its configured filters normally – the toggle simply acts as a main switch.
 
 ```JSON
 "FeatureToggleA": {
