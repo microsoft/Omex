@@ -97,7 +97,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 		Assert.HasCount(2, result);
 		Assert.IsTrue((bool)result["Feature1"]);
 		Assert.IsFalse((bool)result["Feature2"]);
-		VerifyLoggerCalled(LogLevel.Information, "Successfully retrieved feature gates: Feature1=True;Feature2=False");
+		VerifyLoggerCalled(LogLevel.Information, "Successfully retrieved feature gates: 'Feature1=True;Feature2=False'.");
 		VerifyLoggerCalled(LogLevel.Warning, "Experimental features returned no results");
 		VerifyActivityMetadata("No applicable experiments.");
 	}
@@ -121,8 +121,8 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 		Assert.IsTrue((bool)result["Feature1"]);
 		Assert.IsTrue((bool)result["Feature2"]); // Experimental overrides basic.
 		Assert.AreEqual("experimental", result["Feature3"]);
-		VerifyLoggerCalled(LogLevel.Information, "Successfully retrieved feature gates: Feature1=True;Feature2=True;Feature3=experimental");
-		VerifyLoggerCalled(LogLevel.Information, "Retrieved experimental features: Feature2=True;Feature3=experimental");
+		VerifyLoggerCalled(LogLevel.Information, "Successfully retrieved feature gates: 'Feature1=True;Feature2=True;Feature3=experimental'.");
+		VerifyLoggerCalled(LogLevel.Information, "Retrieved experimental features: 'Feature2=True;Feature3=experimental'.");
 		VerifyActivityMetadata("Feature2=True;Feature3=experimental");
 	}
 

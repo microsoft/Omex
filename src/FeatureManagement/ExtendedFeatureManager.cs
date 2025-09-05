@@ -123,7 +123,7 @@ internal sealed class ExtendedFeatureManager(
 				: await featureManager.IsEnabledAsync(feature, context);
 		}
 
-		logger.LogInformation(Tag.Create(), $"{methodName} returned {{IsEnabled}} for '{{Feature}}'.", result, feature);
+		logger.LogInformation(Tag.Create(), $"{methodName} returned '{{IsEnabled}}' for '{{Feature}}'.", result, feature);
 		return result;
 	}
 }

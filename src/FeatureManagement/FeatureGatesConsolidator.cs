@@ -82,7 +82,7 @@ internal sealed class FeatureGatesConsolidator(
 		IDictionary<string, object> result = await featureGatesService.GetFeatureGatesAsync();
 		MergeExperimentalFeatures(result, experimentalFeatures);
 
-		logger.LogInformation(Tag.Create(), "Successfully retrieved feature gates: {FeatureGates}", FormatDictionary(result));
+		logger.LogInformation(Tag.Create(), "Successfully retrieved feature gates: '{FeatureGates}'.", FormatDictionary(result));
 		return result;
 	}
 
@@ -97,7 +97,7 @@ internal sealed class FeatureGatesConsolidator(
 			.SetSubType(httpContext.GetPartnerInfo(headerPrefix, defaultPlatform))?
 			.MarkAsSystemError();
 
-		logger.LogInformation(Tag.Create(), "Requesting experimental features with filters: {Filters}", filters);
+		logger.LogInformation(Tag.Create(), "Requesting experimental features with filters: '{Filters}'.", filters);
 		IDictionary<string, object> experimentalFeatures = await featureGatesService.GetExperimentalFeaturesAsync(filters, cancellationToken);
 		if (experimentalFeatures.Count == 0)
 		{
@@ -107,7 +107,7 @@ internal sealed class FeatureGatesConsolidator(
 		else
 		{
 			string experimentalFeaturesString = FormatDictionary(experimentalFeatures);
-			logger.LogInformation(Tag.Create(), "Retrieved experimental features: {ExperimentalFeatures}", experimentalFeaturesString);
+			logger.LogInformation(Tag.Create(), "Retrieved experimental features: '{ExperimentalFeatures}'.", experimentalFeaturesString);
 			activity?.SetMetadata(experimentalFeaturesString);
 		}
 

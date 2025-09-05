@@ -30,7 +30,7 @@ public sealed class ToggleFilter(
 	public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context)
 	{
 		bool isEnabled = Evaluate(context);
-		logger.LogInformation(Tag.Create(), $"{nameof(ToggleFilter)} returning {{IsEnabled}} for '{{FeatureName}}'.", isEnabled, context.FeatureName);
+		logger.LogInformation(Tag.Create(), $"{nameof(ToggleFilter)} returning '{{IsEnabled}}' for '{{FeatureName}}'.", isEnabled, context.FeatureName);
 		return Task.FromResult(isEnabled);
 	}
 

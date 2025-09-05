@@ -358,7 +358,7 @@ public sealed class CampaignFilterTests
 			logger => logger.Log(
 				LogLevel.Information,
 				It.IsAny<EventId>(),
-				It.Is<It.IsAnyType>((v, t) => string.Equals(v.ToString(), $"CampaignFilter returning {expectedIsEnabled} for '{TestFeatureName}' as campaign is included.", StringComparison.Ordinal)),
+				It.Is<It.IsAnyType>((v, t) => string.Equals(v.ToString(), $"CampaignFilter returning '{expectedIsEnabled}' for '{TestFeatureName}' as campaign is included.", StringComparison.Ordinal)),
 				It.IsAny<Exception>(),
 				It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
 			Times.Once);

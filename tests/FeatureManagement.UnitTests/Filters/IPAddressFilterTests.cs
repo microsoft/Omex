@@ -370,7 +370,7 @@ public sealed class IPAddressFilterTests
 			logger => logger.Log(
 				LogLevel.Information,
 				It.IsAny<EventId>(),
-				It.Is<It.IsAnyType>((v, t) => string.Equals(v.ToString(), $"IPAddressFilter returning {expectedIsEnabled} for '{TestFeatureName}'.", StringComparison.Ordinal)),
+				It.Is<It.IsAnyType>((v, t) => string.Equals(v.ToString(), $"IPAddressFilter returning '{expectedIsEnabled}' for '{TestFeatureName}'.", StringComparison.Ordinal)),
 				It.IsAny<Exception>(),
 				It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
 			Times.Once);
@@ -382,7 +382,7 @@ public sealed class IPAddressFilterTests
 			logger => logger.Log(
 				LogLevel.Information,
 				It.IsAny<EventId>(),
-				It.Is<It.IsAnyType>((v, t) => string.Equals(v.ToString(), $"IPAddressFilter {verb} access to '{TestFeatureName}'.", StringComparison.Ordinal)),
+				It.Is<It.IsAnyType>((v, t) => string.Equals(v.ToString(), $"IPAddressFilter '{verb}' access to '{TestFeatureName}'.", StringComparison.Ordinal)),
 				It.IsAny<Exception>(),
 				It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
 			Times.Once);

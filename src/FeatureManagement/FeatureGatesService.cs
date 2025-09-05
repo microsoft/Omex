@@ -102,7 +102,7 @@ internal sealed class FeatureGatesService(
 			.MarkAsSystemError();
 
 		IEnumerable<string> filtersUsed = filters.Select(item => $"{item.Key}:{item.Value}");
-		logger.LogInformation(Tag.Create(), $"{nameof(FeatureGatesService)}.{nameof(GetExperimentalFeaturesAsync)} allocating experiment with the following filters: {{Filters}}", string.Join(',', filtersUsed));
+		logger.LogInformation(Tag.Create(), $"{nameof(FeatureGatesService)}.{nameof(GetExperimentalFeaturesAsync)} allocating experiment with the following filters: '{{Filters}}'.", string.Join(',', filtersUsed));
 
 		IDictionary<string, object> response = await experimentManager.GetFlightsAsync(filters, cancellationToken);
 		activity?.MarkAsSuccess();

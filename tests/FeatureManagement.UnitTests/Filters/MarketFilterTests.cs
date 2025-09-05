@@ -358,7 +358,7 @@ public sealed class MarketFilterTests
 			logger => logger.Log(
 				LogLevel.Information,
 				It.IsAny<EventId>(),
-				It.Is<It.IsAnyType>((v, t) => string.Equals(v.ToString(), $"MarketFilter returning {expectedIsEnabled} for '{TestFeatureName}' as market is included.", StringComparison.Ordinal)),
+				It.Is<It.IsAnyType>((v, t) => string.Equals(v.ToString(), $"MarketFilter returning '{expectedIsEnabled}' for '{TestFeatureName}' as market is included.", StringComparison.Ordinal)),
 				It.IsAny<Exception>(),
 				It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
 			Times.Once);

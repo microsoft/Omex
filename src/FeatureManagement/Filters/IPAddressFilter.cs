@@ -30,7 +30,7 @@ public sealed class IPAddressFilter(
 	public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context)
 	{
 		bool isEnabled = Evaluate(context);
-		logger.LogInformation(Tag.Create(), $"{nameof(IPAddressFilter)} returning {{IsEnabled}} for '{{FeatureName}}'.", isEnabled, context.FeatureName);
+		logger.LogInformation(Tag.Create(), $"{nameof(IPAddressFilter)} returning '{{IsEnabled}}' for '{{FeatureName}}'.", isEnabled, context.FeatureName);
 		return Task.FromResult(isEnabled);
 	}
 
@@ -50,7 +50,7 @@ public sealed class IPAddressFilter(
 
 		IPAddress remoteAddress = httpContextAccessor.HttpContext.GetForwardedAddress();
 		bool isInRange = IsInIPRange(filterSettings.AllowedRange, remoteAddress);
-		logger.LogInformation(Tag.Create(), $"{nameof(IPAddressFilter)} {{Verb}} access to '{{FeatureName}}'.", isInRange ? "allowed" : "blocked", context.FeatureName);
+		logger.LogInformation(Tag.Create(), $"{nameof(IPAddressFilter)} '{{Verb}}' access to '{{FeatureName}}'.", isInRange ? "allowed" : "blocked", context.FeatureName);
 		return isInRange;
 	}
 

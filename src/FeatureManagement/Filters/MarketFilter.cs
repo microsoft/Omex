@@ -33,7 +33,7 @@ public sealed class MarketFilter(
 		}
 
 		bool isIncluded = context.Evaluate<MarketFilterSettings>(httpContextAccessor, RequestParameters.Query.Market, s => s.Enabled);
-		logger.LogInformation(Tag.Create(), $"{nameof(MarketFilter)} returning {{IsEnabled}} for '{{FeatureName}}' as market is included.", isIncluded, context.FeatureName);
+		logger.LogInformation(Tag.Create(), $"{nameof(MarketFilter)} returning '{{IsEnabled}}' for '{{FeatureName}}' as market is included.", isIncluded, context.FeatureName);
 		return Task.FromResult(isIncluded);
 	}
 }

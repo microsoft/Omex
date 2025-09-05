@@ -3,6 +3,8 @@
 
 namespace Microsoft.Omex.Extensions.FeatureManagement.Extensions;
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +16,14 @@ using Microsoft.Omex.Extensions.FeatureManagement.Constants;
 /// </summary>
 internal static class HttpContextExtensions
 {
+	private static readonly Dictionary<IPAddressType, Func<string, IPAddress?>> s_ipParseStrategies = new()
+	{
+		[IPAddressType.IPv4] = TryParseIPAddress,
+		[IPAddressType.IPv4WithPort] = ParseIPv4WithPort,
+		[IPAddressType.IPv6] = TryParseIPAddress,
+		[IPAddressType.IPv6WithPort] = ParseIPv6WithPort,
+	};
+
 	/// <summary>
 	/// Retrieves the partner and platform information from the HTTP context headers.
 	/// </summary>
@@ -69,25 +79,41 @@ internal static class HttpContextExtensions
 
 		foreach (string? headerValue in headerValues)
 		{
-			if (!string.IsNullOrWhiteSpace(headerValue))
+			if (string.IsNullOrWhiteSpace(headerValue))
 			{
-				string[] addresses = headerValue.Split(',');
+				continue;
+			}
 
-				// Where multiple proxies are involved, the last IP address in the list is typically the client's
-				// IP address. Iterate through the list in reverse order to prioritize the most relevant IP address.
-				for (int i = addresses.Length - 1; i >= 0; i--)
-				{
-					// The application gateway appends the port on which the request was received to the client IP.
-					string[] headerParts = addresses[i].Split(':');
-					if (IPAddress.TryParse(headerParts[0], out IPAddress? result))
-					{
-						return result;
-					}
-				}
+			IPAddress? result = ParseForwardedHeaderValue(headerValue);
+			if (result != null)
+			{
+				return result;
 			}
 		}
 
 		return IPAddress.None;
+	}
+
+	private static IPAddress? ParseForwardedHeaderValue(string headerValue)
+	{
+		string[] addresses = headerValue.Split(',');
+
+		// Where multiple proxies are involved, the last IP address in the list is typically the client's
+		// IP address. Iterate through the list in reverse order to prioritize the most relevant IP address.
+		for (int i = addresses.Length - 1; i >= 0; i--)
+		{
+			string address = addresses[i].Trim();
+
+			// The application gateway appends the port on which the request was received to the client IP.
+			IPAddressType addressType = DetermineIPAddressType(address);
+			IPAddress? result = s_ipParseStrategies[addressType](address);
+			if (result != null)
+			{
+				return result;
+			}
+		}
+
+		return null;
 	}
 
 	private static string GetPartner(this HttpContext httpContext, string? headerPrefix) =>
@@ -111,5 +137,48 @@ internal static class HttpContextExtensions
 		}
 
 		return value.ToString().Trim();
+	}
+
+	private static IPAddressType DetermineIPAddressType(string address)
+	{
+		// Handle IPv6 with port, e.g., [::1]:8080.
+		if (address.StartsWith('[') && address.Contains(']'))
+		{
+			return IPAddressType.IPv6WithPort;
+		}
+
+		int colonCount = address.Count(c => c == ':');
+		return colonCount switch
+		{
+			0 => IPAddressType.IPv4,
+			1 => IPAddressType.IPv4WithPort,
+			_ => IPAddressType.IPv6,
+		};
+	}
+
+	private static IPAddress? TryParseIPAddress(string address) =>
+		IPAddress.TryParse(address, out IPAddress? result)
+			? result
+			: null;
+
+	private static IPAddress? ParseIPv4WithPort(string address)
+	{
+		string[] headerParts = address.Split(':');
+		return TryParseIPAddress(headerParts[0]);
+	}
+
+	private static IPAddress? ParseIPv6WithPort(string address)
+	{
+		int bracketEnd = address.IndexOf(']');
+		string ipv6Address = address[1..bracketEnd];
+		return TryParseIPAddress(ipv6Address);
+	}
+
+	private enum IPAddressType
+	{
+		IPv4,
+		IPv4WithPort,
+		IPv6,
+		IPv6WithPort,
 	}
 }

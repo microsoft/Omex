@@ -33,7 +33,7 @@ public sealed class CampaignFilter(
 		}
 
 		bool isIncluded = context.Evaluate<CampaignFilterSettings>(httpContextAccessor, RequestParameters.Query.Campaign, s => s.Enabled);
-		logger.LogInformation(Tag.Create(), $"{nameof(CampaignFilter)} returning {{IsEnabled}} for '{{FeatureName}}' as campaign is included.", isIncluded, context.FeatureName);
+		logger.LogInformation(Tag.Create(), $"{nameof(CampaignFilter)} returning '{{IsEnabled}}' for '{{FeatureName}}' as campaign is included.", isIncluded, context.FeatureName);
 		return Task.FromResult(isIncluded);
 	}
 }

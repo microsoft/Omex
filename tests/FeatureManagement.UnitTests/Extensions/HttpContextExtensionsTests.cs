@@ -233,7 +233,7 @@ public sealed class HttpContextExtensionsTests
 	}
 
 	[TestMethod]
-	public void GetForwardedAddress_WhenHeaderHasSingleIp_ReturnsIp()
+	public void GetForwardedAddress_WhenHeaderHasSingleIP_ReturnsIP()
 	{
 		// ARRANGE
 		DefaultHttpContext context = new();
@@ -247,7 +247,7 @@ public sealed class HttpContextExtensionsTests
 	}
 
 	[TestMethod]
-	public void GetForwardedAddress_WhenHeaderHasMultipleIps_ReturnsLastIp()
+	public void GetForwardedAddress_WhenHeaderHasMultipleIPs_ReturnsLastIP()
 	{
 		// ARRANGE
 		DefaultHttpContext context = new();
@@ -261,7 +261,7 @@ public sealed class HttpContextExtensionsTests
 	}
 
 	[TestMethod]
-	public void GetForwardedAddress_WhenHeaderHasIpWithPort_ReturnsIp()
+	public void GetForwardedAddress_WhenHeaderHasIPWithPort_ReturnsIP()
 	{
 		// ARRANGE
 		DefaultHttpContext context = new();
@@ -275,7 +275,7 @@ public sealed class HttpContextExtensionsTests
 	}
 
 	[TestMethod]
-	public void GetForwardedAddress_WhenHeaderHasInvalidIp_ReturnsNone()
+	public void GetForwardedAddress_WhenHeaderHasInvalidIP_ReturnsNone()
 	{
 		// ARRANGE
 		DefaultHttpContext context = new();
@@ -289,7 +289,7 @@ public sealed class HttpContextExtensionsTests
 	}
 
 	[TestMethod]
-	public void GetForwardedAddress_WhenHeaderHasMultipleValues_ReturnsLastValidIp()
+	public void GetForwardedAddress_WhenHeaderHasMultipleValues_ReturnsLastValidIP()
 	{
 		// ARRANGE
 		DefaultHttpContext context = new();
@@ -300,6 +300,147 @@ public sealed class HttpContextExtensionsTests
 
 		// ASSERT
 		Assert.AreEqual(IPAddress.Parse("8.8.8.8"), result);
+	}
+
+	[TestMethod]
+	public void GetForwardedAddress_WhenHeaderHasIPv6WithPort_ReturnsIPv6()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		context.Request.Headers[RequestParameters.Header.ForwardedFor] = "[::1]:8080";
+
+		// ACT
+		IPAddress result = context.GetForwardedAddress();
+
+		// ASSERT
+		Assert.AreEqual(IPAddress.Parse("::1"), result);
+	}
+
+	[TestMethod]
+	public void GetForwardedAddress_WhenHeaderHasIPv6WithoutPort_ReturnsIPv6()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		context.Request.Headers[RequestParameters.Header.ForwardedFor] = "::1";
+
+		// ACT
+		IPAddress result = context.GetForwardedAddress();
+
+		// ASSERT
+		Assert.AreEqual(IPAddress.Parse("::1"), result);
+	}
+
+	[TestMethod]
+	public void GetForwardedAddress_WhenHeaderHasIPv6WithPortAndIPv4_ReturnsIPv4()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		context.Request.Headers[RequestParameters.Header.ForwardedFor] = "[2001:db8::1]:8080,8.8.8.8";
+
+		// ACT
+		IPAddress result = context.GetForwardedAddress();
+
+		// ASSERT
+		Assert.AreEqual(IPAddress.Parse("8.8.8.8"), result);
+	}
+
+	[TestMethod]
+	public void GetForwardedAddress_WhenHeaderHasMultipleIPv6Addresses_ReturnsLastIPv6()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		context.Request.Headers[RequestParameters.Header.ForwardedFor] = "[2001:db8::1]:8080,[fe80::1]:1234";
+
+		// ACT
+		IPAddress result = context.GetForwardedAddress();
+
+		// ASSERT
+		Assert.AreEqual(IPAddress.Parse("fe80::1"), result);
+	}
+
+	[TestMethod]
+	public void GetForwardedAddress_WhenHeaderHasIPv6WithoutPortAndIPv4WithPort_ReturnsIPv4()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		context.Request.Headers[RequestParameters.Header.ForwardedFor] = "::1,8.8.8.8:12345";
+
+		// ACT
+		IPAddress result = context.GetForwardedAddress();
+
+		// ASSERT
+		Assert.AreEqual(IPAddress.Parse("8.8.8.8"), result);
+	}
+
+	[TestMethod]
+	public void GetForwardedAddress_WhenHeaderHasIPv6WithMultipleColons_ReturnsIPv6()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		context.Request.Headers[RequestParameters.Header.ForwardedFor] = "2001:db8:85a3::8a2e:370:7334";
+
+		// ACT
+		IPAddress result = context.GetForwardedAddress();
+
+		// ASSERT
+		Assert.AreEqual(IPAddress.Parse("2001:db8:85a3::8a2e:370:7334"), result);
+	}
+
+	[TestMethod]
+	public void GetForwardedAddress_WhenHeaderHasWhitespaceValues_SkipsThem()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		context.Request.Headers[RequestParameters.Header.ForwardedFor] = "   ,8.8.8.8";
+
+		// ACT
+		IPAddress result = context.GetForwardedAddress();
+
+		// ASSERT
+		Assert.AreEqual(IPAddress.Parse("8.8.8.8"), result);
+	}
+
+	[TestMethod]
+	public void GetForwardedAddress_WhenHeaderHasInvalidIPv6_ReturnsNone()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		context.Request.Headers[RequestParameters.Header.ForwardedFor] = "[invalid]:8080";
+
+		// ACT
+		IPAddress result = context.GetForwardedAddress();
+
+		// ASSERT
+		Assert.AreEqual(IPAddress.None, result);
+	}
+
+	[TestMethod]
+	public void GetForwardedAddress_WhenHeaderHasInvalidIPv4WithPort_ReturnsNone()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		context.Request.Headers[RequestParameters.Header.ForwardedFor] = "invalid:12345";
+
+		// ACT
+		IPAddress result = context.GetForwardedAddress();
+
+		// ASSERT
+		Assert.AreEqual(IPAddress.None, result);
+	}
+
+	[TestMethod]
+	public void GetForwardedAddress_WhenHeaderHasMultipleHeaderValues_ReturnsFirstValidFromLastHeader()
+	{
+		// ARRANGE
+		DefaultHttpContext context = new();
+		context.Request.Headers[RequestParameters.Header.ForwardedFor] = new(["not-an-ip", "[::1]:8080", "8.8.8.8:12345"]);
+
+		// ACT
+		IPAddress result = context.GetForwardedAddress();
+
+		// ASSERT
+		// Should return ::1 from the second header value, as it's the first valid found in reverse order.
+		Assert.AreEqual(IPAddress.Parse("::1"), result);
 	}
 
 	#endregion
