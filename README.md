@@ -14,6 +14,7 @@ Additional source code from the OMEX team can be located at <https://github.com/
 ### Projects in this repository
 
 * [__Diagnostics.HealthChecks__](https://github.com/microsoft/Omex/tree/main/src/Diagnostics.HealthChecks) - This library offers a set of default composable classes to implement custom health checks implementing the .NET `IHealthCheck` interface.
+* [__FeatureManagement__](https://github.com/microsoft/Omex/tree/main/src/FeatureManagement) - This library offers an expansion of the `Microsoft.FeatureManagement` library, providing additional filters and allowing for combination with an experimentation service.
 
 Please contribute to this repository via [pull requests](https://github.com/Microsoft/Omex/pulls) against the __main__ branch.
 
