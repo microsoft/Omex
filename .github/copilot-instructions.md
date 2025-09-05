@@ -33,7 +33,7 @@ public static IServiceCollection AddOmexServices(this IServiceCollection collect
 }
 ```
 
-Key examples: `src/Hosting/ServiceCollectionExtensions.cs`, `src/Activities/ServiceCollectionExtensions.cs`
+See `src/Hosting/ServiceCollectionExtensions.cs` for the canonical example.
 
 #### Accessor Pattern
 

@@ -5,6 +5,7 @@ namespace Microsoft.Omex.Extensions.FeatureManagement.UnitTests.Filters;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -361,6 +362,38 @@ public sealed class IPAddressFilterTests
 		Assert.IsFalse(result);
 		VerifyLogging(false);
 		VerifyIPRangeLogging(false);
+	}
+
+	[TestMethod]
+	[DataRow("10.1.1.1")]
+	[DataRow("203.0.113.10")]
+	[DataRow("127.0.0.1")]
+	public async Task EvaluateAsync_WhenCalled_DoesNotLogIPAddress(string ipAddress)
+	{
+		// ARRANGE
+		Dictionary<string, string?> configValues = new()
+		{
+			{ "AllowedRange", "TESTIPS" },
+		};
+
+		IConfiguration configuration = new ConfigurationBuilder()
+			.AddInMemoryCollection(configValues)
+			.Build();
+
+		m_context.Parameters = configuration;
+		m_httpContext.Request.Headers[RequestParameters.Header.ForwardedFor] = ipAddress;
+
+		// ACT
+		await m_filter.EvaluateAsync(m_context);
+
+		// ASSERT
+		// Ensure that none of the logged messages contain the literal IP address.
+		IEnumerable<string> loggedMessages = m_loggerMock.Invocations
+			.Select(i => i.Arguments[2]?.ToString() ?? string.Empty);
+		foreach (string message in loggedMessages)
+		{
+			Assert.IsFalse(message.Contains(ipAddress, StringComparison.Ordinal), $"Log message should not contain IP address '{ipAddress}', but was: '{message}'.");
+		}
 	}
 
 	#endregion
