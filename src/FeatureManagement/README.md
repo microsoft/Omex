@@ -27,7 +27,14 @@ dotnet add package Microsoft.Omex.Extensions.FeatureManagement
 ### Service Registration
 
 ```csharp
-services.ConfigureFeatureManagement(configuration);
+services.AddOmexFeatureManagement(configuration);
+```
+
+It is recommended that you follow this call with calls to register explicit custom implementations of `IExperimentManager` and `IIPRangeProvider` to override the default empty implementations. For example:
+
+```csharp
+services.AddSingleton<IExperimentManager, MyExperimentManager>();
+services.AddSingleton<IIPRangeProvider, MyIPRangeProvider>();
 ```
 
 ### Adding to Codebase

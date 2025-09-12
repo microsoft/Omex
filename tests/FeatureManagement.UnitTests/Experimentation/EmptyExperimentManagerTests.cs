@@ -20,7 +20,7 @@ public sealed class EmptyExperimentManagerTests
 	public async Task GetFlightsAsync_WithEmptyFilters_ReturnsEmptyDictionary()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = [];
+		Dictionary<string, string> filters = [];
 
 		// ACT
 		IDictionary<string, object> result = await m_experimentManager.GetFlightsAsync(filters, CancellationToken.None);
@@ -34,7 +34,7 @@ public sealed class EmptyExperimentManagerTests
 	public async Task GetFlightsAsync_WithFilters_ReturnsEmptyDictionary()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = new()
+		Dictionary<string, string> filters = new()
 		{
 			{ "customerId", "customer123" },
 			{ "market", "en-US" },
@@ -53,7 +53,7 @@ public sealed class EmptyExperimentManagerTests
 	public async Task GetFlightsAsync_WithCancellationToken_ReturnsEmptyDictionary()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = new()
+		Dictionary<string, string> filters = new()
 		{
 			{ "experimentId", "exp123" },
 		};
@@ -71,7 +71,7 @@ public sealed class EmptyExperimentManagerTests
 	public async Task GetFlightsAsync_WithCancelledToken_ReturnsEmptyDictionary()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = [];
+		Dictionary<string, string> filters = [];
 		using CancellationTokenSource cts = new();
 		cts.Cancel();
 
@@ -87,8 +87,8 @@ public sealed class EmptyExperimentManagerTests
 	public async Task GetFlightsAsync_MultipleCallsWithDifferentParameters_AlwaysReturnsNewEmptyDictionary()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters1 = new() { { "key1", "value1" } };
-		Dictionary<string, object> filters2 = new() { { "key2", "value2" } };
+		Dictionary<string, string> filters1 = new() { { "key1", "value1" } };
+		Dictionary<string, string> filters2 = new() { { "key2", "value2" } };
 
 		// ACT
 		IDictionary<string, object> result1 = await m_experimentManager.GetFlightsAsync(filters1, CancellationToken.None);
@@ -106,7 +106,7 @@ public sealed class EmptyExperimentManagerTests
 	public void GetFlightsAsync_WhenCalled_ReturnsCompletedTask()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = [];
+		Dictionary<string, string> filters = [];
 
 		// ACT
 		Task<IDictionary<string, object>> task = m_experimentManager.GetFlightsAsync(filters, CancellationToken.None);

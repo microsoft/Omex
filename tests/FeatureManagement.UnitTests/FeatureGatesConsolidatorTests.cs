@@ -70,7 +70,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 	{
 		// ARRANGE
 		m_httpContextAccessorMock.Setup(x => x.HttpContext).Returns((HttpContext?)null);
-		Dictionary<string, object> filters = new() { { "test", "value" } };
+		Dictionary<string, string> filters = new() { { "test", "value" } };
 
 		// ACT
 		async Task function() => await m_consolidator.GetFeatureGatesAsync(filters, cancellationToken: TestContext.CancellationTokenSource.Token);
@@ -84,10 +84,10 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 	public async Task GetFeatureGatesAsync_WithEmptyExperimentalFeatures_ReturnsOnlyBasicFeatures()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = new() { { "filter1", "value1" } };
+		Dictionary<string, string> filters = new() { { "filter1", "value1" } };
 		Dictionary<string, object> basicFeatures = new() { { "Feature1", true }, { "Feature2", false } };
 		m_featureGatesServiceMock.Setup(x => x.GetFeatureGatesAsync()).ReturnsAsync(basicFeatures);
-		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(new Dictionary<string, object>());
 
 		// ACT
@@ -106,11 +106,11 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 	public async Task GetFeatureGatesAsync_WithExperimentalFeatures_MergesWithBasicFeatures()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = new() { { "filter1", "value1" } };
+		Dictionary<string, string> filters = new() { { "filter1", "value1" } };
 		Dictionary<string, object> basicFeatures = new() { { "Feature1", true }, { "Feature2", false } };
 		Dictionary<string, object> experimentalFeatures = new() { { "Feature2", true }, { "Feature3", "experimental" } };
 		m_featureGatesServiceMock.Setup(x => x.GetFeatureGatesAsync()).ReturnsAsync(basicFeatures);
-		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(experimentalFeatures);
 
 		// ACT
@@ -130,7 +130,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 	public async Task GetFeatureGatesAsync_WithCancellationToken_PassesTokenToService()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = new() { { "filter1", "value1" } };
+		Dictionary<string, string> filters = new() { { "filter1", "value1" } };
 		Dictionary<string, object> basicFeatures = new() { { "Feature1", true } };
 		Dictionary<string, object> experimentalFeatures = new() { { "Exp1", "value1" } };
 		using CancellationTokenSource cts = new();
@@ -151,14 +151,14 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 	public async Task GetFeatureGatesAsync_WithHeaderPrefixAndDefaultPlatform_SetsActivitySubType()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = new() { { "filter1", "value1" } };
+		Dictionary<string, string> filters = new() { { "filter1", "value1" } };
 		Dictionary<string, object> basicFeatures = new() { { "Feature1", true } };
 		Dictionary<string, object> experimentalFeatures = new() { { "Exp1", "value1" } };
 		const string headerPrefix = "X-Test-";
 		const string defaultPlatform = "TestPlatform";
 
 		m_featureGatesServiceMock.Setup(x => x.GetFeatureGatesAsync()).ReturnsAsync(basicFeatures);
-		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(experimentalFeatures);
 
 		// ACT
@@ -175,17 +175,17 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 	public async Task GetFeatureGatesAsync_WhenCalled_LogsFiltersCorrectly()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = new()
+		Dictionary<string, string> filters = new()
 		{
 			{ "userId", "user123" },
 			{ "market", "US" },
-			{ "version", 2 },
+			{ "version", "2" },
 		};
 		Dictionary<string, object> basicFeatures = new() { { "Feature1", true } };
 		Dictionary<string, object> experimentalFeatures = new() { { "Exp1", "value1" } };
 
 		m_featureGatesServiceMock.Setup(x => x.GetFeatureGatesAsync()).ReturnsAsync(basicFeatures);
-		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(experimentalFeatures);
 
 		// ACT
@@ -200,12 +200,12 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 	public async Task GetFeatureGatesAsync_WhenExperimentalFeatureOverridesBasicFeature_ExperimentalTakesPrecedence()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = new() { { "filter1", "value1" } };
+		Dictionary<string, string> filters = new() { { "filter1", "value1" } };
 		Dictionary<string, object> basicFeatures = new()
 		{
 			{ "Feature1", false },
 			{ "Feature2", "basic" },
-			{ "Feature3", 123 },
+			{ "Feature3", "123" },
 		};
 		Dictionary<string, object> experimentalFeatures = new()
 		{
@@ -215,7 +215,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 		};
 
 		m_featureGatesServiceMock.Setup(x => x.GetFeatureGatesAsync()).ReturnsAsync(basicFeatures);
-		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(experimentalFeatures);
 
 		// ACT
@@ -232,12 +232,12 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 	public async Task GetFeatureGatesAsync_WithEmptyFilters_StillCallsExperimentalFeatures()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = new();
+		Dictionary<string, string> filters = new();
 		Dictionary<string, object> basicFeatures = new() { { "Feature1", true } };
 		Dictionary<string, object> experimentalFeatures = new() { { "Exp1", "value1" } };
 
 		m_featureGatesServiceMock.Setup(x => x.GetFeatureGatesAsync()).ReturnsAsync(basicFeatures);
-		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(experimentalFeatures);
 
 		// ACT
@@ -252,12 +252,12 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 	public async Task GetFeatureGatesAsync_WhenCalled_ActivityIsMarkedAsSuccess()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = new() { { "filter1", "value1" } };
+		Dictionary<string, string> filters = new() { { "filter1", "value1" } };
 		Dictionary<string, object> basicFeatures = new() { { "Feature1", true } };
 		Dictionary<string, object> experimentalFeatures = new() { { "Exp1", "value1" } };
 
 		m_featureGatesServiceMock.Setup(x => x.GetFeatureGatesAsync()).ReturnsAsync(basicFeatures);
-		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(experimentalFeatures);
 
 		// ACT
@@ -274,7 +274,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 	public async Task GetFeatureGatesAsync_WithLargeNumberOfFeatures_HandlesCorrectly()
 	{
 		// ARRANGE
-		Dictionary<string, object> filters = new() { { "filter1", "value1" } };
+		Dictionary<string, string> filters = new() { { "filter1", "value1" } };
 		Dictionary<string, object> basicFeatures = new();
 		Dictionary<string, object> experimentalFeatures = new();
 
@@ -286,7 +286,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 		}
 
 		m_featureGatesServiceMock.Setup(x => x.GetFeatureGatesAsync()).ReturnsAsync(basicFeatures);
-		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_featureGatesServiceMock.Setup(x => x.GetExperimentalFeaturesAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(experimentalFeatures);
 
 		// ACT

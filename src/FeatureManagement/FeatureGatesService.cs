@@ -95,7 +95,7 @@ internal sealed class FeatureGatesService(
 	/// - Delegates to IExperimentManager.GetFlightsAsync for actual experiment allocation
 	/// - Returns the raw response from the experiment manager without modification
 	/// </remarks>
-	public async Task<IDictionary<string, object>> GetExperimentalFeaturesAsync(IDictionary<string, object> filters, CancellationToken cancellationToken)
+	public async Task<IDictionary<string, object>> GetExperimentalFeaturesAsync(IDictionary<string, string> filters, CancellationToken cancellationToken)
 	{
 		using Activity? activity = activitySource
 			.StartActivity(FeatureManagementActivityNames.FeatureGatesService.GetExperimentalFeaturesAsync)?
@@ -123,7 +123,7 @@ internal sealed class FeatureGatesService(
 	/// The non-Boolean string handling allows experiments to return configuration values (e.g., "variant_a",
 	/// "high_performance") rather than just on/off states.
 	/// </remarks>
-	public async Task<FeatureGateResult> GetExperimentFeatureValueAsync(string featureGate, IDictionary<string, object> filters, CancellationToken cancellationToken)
+	public async Task<FeatureGateResult> GetExperimentFeatureValueAsync(string featureGate, IDictionary<string, string> filters, CancellationToken cancellationToken)
 	{
 		ArgumentException.ThrowIfNullOrWhiteSpace(featureGate);
 
@@ -194,7 +194,7 @@ internal sealed class FeatureGatesService(
 	///    - Checks IExtendedFeatureManager.IsEnabledAsync
 	///    - Sets Activity metadata to "FromFeatureManager_{featureGate}"
 	/// </remarks>
-	public async Task<bool> IsExperimentApplicableAsync(string featureGate, IDictionary<string, object> filters, CancellationToken cancellationToken)
+	public async Task<bool> IsExperimentApplicableAsync(string featureGate, IDictionary<string, string> filters, CancellationToken cancellationToken)
 	{
 		ArgumentException.ThrowIfNullOrWhiteSpace(featureGate);
 

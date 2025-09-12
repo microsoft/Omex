@@ -103,7 +103,7 @@ public interface IFeatureGatesService
 	/// var experiments = await GetExperimentalFeaturesAsync(filters, cancellationToken);
 	/// // Returns: { "NewCheckout": true, "Theme": "dark", "MaxItems": 100 }
 	/// </example>
-	Task<IDictionary<string, object>> GetExperimentalFeaturesAsync(IDictionary<string, object> filters, CancellationToken cancellationToken);
+	Task<IDictionary<string, object>> GetExperimentalFeaturesAsync(IDictionary<string, string> filters, CancellationToken cancellationToken);
 
 	/// <summary>
 	/// Gets the feature-gate value associated with the assigned experiment flight.
@@ -147,7 +147,7 @@ public interface IFeatureGatesService
 	///     }
 	/// }
 	/// </example>
-	Task<FeatureGateResult> GetExperimentFeatureValueAsync(string featureGate, IDictionary<string, object> filters, CancellationToken cancellationToken);
+	Task<FeatureGateResult> GetExperimentFeatureValueAsync(string featureGate, IDictionary<string, string> filters, CancellationToken cancellationToken);
 
 	/// <summary>
 	/// Checks if the feature gate is active based on static configuration.
@@ -213,5 +213,5 @@ public interface IFeatureGatesService
 	/// // 2. Experiment allocation for customer 12345
 	/// // 3. Static configuration in appsettings.json
 	/// </example>
-	Task<bool> IsExperimentApplicableAsync(string featureGate, IDictionary<string, object> filters, CancellationToken cancellationToken);
+	Task<bool> IsExperimentApplicableAsync(string featureGate, IDictionary<string, string> filters, CancellationToken cancellationToken);
 }

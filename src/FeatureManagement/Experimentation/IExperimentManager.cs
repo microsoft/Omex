@@ -19,5 +19,5 @@ public interface IExperimentManager
 	/// <param name="filters">The experiment filters to apply.</param>
 	/// <param name="cancellationToken">The cancellation token for gracefully cancelling long-running asynchronous operations.</param>
 	/// <returns>A dictionary mapping flights to the values for the specified filters.</returns>
-	Task<IDictionary<string, object>> GetFlightsAsync(IDictionary<string, object> filters, CancellationToken cancellationToken);
+	Task<IDictionary<string, object>> GetFlightsAsync(IDictionary<string, string> filters, CancellationToken cancellationToken);
 }

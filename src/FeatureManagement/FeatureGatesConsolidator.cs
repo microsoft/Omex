@@ -63,7 +63,7 @@ internal sealed class FeatureGatesConsolidator(
 	/// 5. Logs the final consolidated feature gates at Information level
 	/// </remarks>
 	public async Task<IDictionary<string, object>> GetFeatureGatesAsync(
-		IDictionary<string, object> filters,
+		IDictionary<string, string> filters,
 		string? headerPrefix = null,
 		string? defaultPlatform = null,
 		CancellationToken cancellationToken = default)
@@ -88,7 +88,7 @@ internal sealed class FeatureGatesConsolidator(
 
 	private async Task<IDictionary<string, object>> GetExperimentalFeaturesAsync(
 		HttpContext httpContext,
-		IDictionary<string, object> filters,
+		IDictionary<string, string> filters,
 		string? headerPrefix,
 		string? defaultPlatform,
 		CancellationToken cancellationToken)
