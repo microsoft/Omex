@@ -180,10 +180,10 @@ public sealed class FeatureGatesServiceTests
 			{ "Gate1", true },
 			{ "Gate2", "value" },
 		};
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(expectedResponse);
 
-		Dictionary<string, object> filters = new()
+		Dictionary<string, string> filters = new()
 		{
 			{ "CustomerId", "12345" },
 			{ "Market", "US" },
@@ -202,10 +202,10 @@ public sealed class FeatureGatesServiceTests
 	public async Task GetExperimentalFeaturesAsync_WhenCalled_LogsFiltersCorrectly()
 	{
 		// ARRANGE
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(new Dictionary<string, object>());
 
-		Dictionary<string, object> filters = new()
+		Dictionary<string, string> filters = new()
 		{
 			{ "CustomerId", "12345" },
 			{ "Market", "US" },
@@ -235,17 +235,17 @@ public sealed class FeatureGatesServiceTests
 	public async Task GetExperimentFeatureValueAsync_WhenFeatureGateIsEmptyOrWhitespace_ThrowsArgumentException(string featureGate) =>
 		// ACT & ASSERT
 		await Assert.ThrowsExactlyAsync<ArgumentException>(
-			() => m_featureGatesService.GetExperimentFeatureValueAsync(featureGate, new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token));
+			() => m_featureGatesService.GetExperimentFeatureValueAsync(featureGate, new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token));
 
 	[TestMethod]
 	public async Task GetExperimentFeatureValueAsync_WhenFeatureNotPresent_ReturnsFalse()
 	{
 		// ARRANGE
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(new Dictionary<string, object>());
 
 		// ACT
-		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result.InTreatment);
@@ -259,11 +259,11 @@ public sealed class FeatureGatesServiceTests
 	{
 		// ARRANGE
 		Dictionary<string, object> featureFlags = new() { { "Gate1", featureValue } };
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result.InTreatment);
@@ -275,11 +275,11 @@ public sealed class FeatureGatesServiceTests
 	{
 		// ARRANGE
 		Dictionary<string, object> featureFlags = new() { { "Gate1", true } };
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result.InTreatment);
@@ -291,11 +291,11 @@ public sealed class FeatureGatesServiceTests
 	{
 		// ARRANGE
 		Dictionary<string, object> featureFlags = new() { { "Gate1", false } };
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result.InTreatment);
@@ -307,11 +307,11 @@ public sealed class FeatureGatesServiceTests
 	{
 		// ARRANGE
 		Dictionary<string, object> featureFlags = new() { { "Gate1", "true" } };
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result.InTreatment);
@@ -323,11 +323,11 @@ public sealed class FeatureGatesServiceTests
 	{
 		// ARRANGE
 		Dictionary<string, object> featureFlags = new() { { "Gate1", "false" } };
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result.InTreatment);
@@ -339,11 +339,11 @@ public sealed class FeatureGatesServiceTests
 	{
 		// ARRANGE
 		Dictionary<string, object> featureFlags = new() { { "Gate1", "custom" } };
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		FeatureGateResult result = await m_featureGatesService.GetExperimentFeatureValueAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result.InTreatment);
@@ -398,7 +398,7 @@ public sealed class FeatureGatesServiceTests
 	public async Task IsExperimentApplicableAsync_WhenFeatureGateIsEmpty_ThrowsArgumentException(string featureGate) =>
 		// ACT & ASSERT
 		await Assert.ThrowsExactlyAsync<ArgumentException>(
-			() => m_featureGatesService.IsExperimentApplicableAsync(featureGate, new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token));
+			() => m_featureGatesService.IsExperimentApplicableAsync(featureGate, new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token));
 
 	[TestMethod]
 	public async Task IsExperimentApplicableAsync_WhenOverrideExistsTrue_ReturnsTrue()
@@ -407,11 +407,11 @@ public sealed class FeatureGatesServiceTests
 		m_featureManagerMock.Setup(m => m.GetOverride("Gate1")).Returns(true);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result);
-		m_experimentManagerMock.Verify(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()), Times.Never);
+		m_experimentManagerMock.Verify(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()), Times.Never);
 	}
 
 	[TestMethod]
@@ -421,11 +421,11 @@ public sealed class FeatureGatesServiceTests
 		m_featureManagerMock.Setup(m => m.GetOverride("Gate1")).Returns(false);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result);
-		m_experimentManagerMock.Verify(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()), Times.Never);
+		m_experimentManagerMock.Verify(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()), Times.Never);
 	}
 
 	[TestMethod]
@@ -434,11 +434,11 @@ public sealed class FeatureGatesServiceTests
 		// ARRANGE
 		m_featureManagerMock.Setup(m => m.GetOverride("Gate1")).Returns((bool?)null);
 		m_featureManagerMock.Setup(m => m.IsEnabledAsync("Gate1")).ReturnsAsync(true);
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(new Dictionary<string, object>());
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result);
@@ -451,11 +451,11 @@ public sealed class FeatureGatesServiceTests
 		m_featureManagerMock.Setup(m => m.GetOverride("Gate1")).Returns((bool?)null);
 		m_featureManagerMock.Setup(m => m.IsEnabledAsync("Gate1")).ReturnsAsync(true);
 		Dictionary<string, object> featureFlags = new() { { "Gate1", string.Empty } };
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result);
@@ -467,11 +467,11 @@ public sealed class FeatureGatesServiceTests
 		// ARRANGE
 		m_featureManagerMock.Setup(m => m.GetOverride("Gate1")).Returns((bool?)null);
 		Dictionary<string, object> featureFlags = new() { { "Gate1", "true" } };
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result);
@@ -483,11 +483,11 @@ public sealed class FeatureGatesServiceTests
 		// ARRANGE
 		m_featureManagerMock.Setup(m => m.GetOverride("Gate1")).Returns((bool?)null);
 		Dictionary<string, object> featureFlags = new() { { "Gate1", "false" } };
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result);
@@ -499,11 +499,11 @@ public sealed class FeatureGatesServiceTests
 		// ARRANGE
 		m_featureManagerMock.Setup(m => m.GetOverride("Gate1")).Returns((bool?)null);
 		Dictionary<string, object> featureFlags = new() { { "Gate1", true } };
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result);
@@ -515,11 +515,11 @@ public sealed class FeatureGatesServiceTests
 		// ARRANGE
 		m_featureManagerMock.Setup(m => m.GetOverride("Gate1")).Returns((bool?)null);
 		Dictionary<string, object> featureFlags = new() { { "Gate1", false } };
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result);
@@ -531,11 +531,11 @@ public sealed class FeatureGatesServiceTests
 		// ARRANGE
 		m_featureManagerMock.Setup(m => m.GetOverride("Gate1")).Returns((bool?)null);
 		Dictionary<string, object> featureFlags = new() { { "Gate1", "custom" } };
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsTrue(result);
@@ -548,11 +548,11 @@ public sealed class FeatureGatesServiceTests
 		m_featureManagerMock.Setup(m => m.GetOverride("Gate1")).Returns((bool?)null);
 		m_featureManagerMock.Setup(m => m.IsEnabledAsync("Gate1")).ReturnsAsync(false);
 		Dictionary<string, object> featureFlags = new() { { "Gate1", "   " } };
-		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+		m_experimentManagerMock.Setup(e => e.GetFlightsAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
 			.ReturnsAsync(featureFlags);
 
 		// ACT
-		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, object>(), TestContext.CancellationTokenSource.Token);
+		bool result = await m_featureGatesService.IsExperimentApplicableAsync("Gate1", new Dictionary<string, string>(), TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		Assert.IsFalse(result);

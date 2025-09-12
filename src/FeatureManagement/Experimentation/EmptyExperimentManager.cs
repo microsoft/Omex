@@ -13,6 +13,6 @@ using System.Threading.Tasks;
 internal sealed class EmptyExperimentManager : IExperimentManager
 {
 	/// <inheritdoc />
-	public Task<IDictionary<string, object>> GetFlightsAsync(IDictionary<string, object> filters, CancellationToken cancellationToken) =>
+	public Task<IDictionary<string, object>> GetFlightsAsync(IDictionary<string, string> filters, CancellationToken cancellationToken) =>
 		Task.FromResult<IDictionary<string, object>>(new Dictionary<string, object>());
 }
