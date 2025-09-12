@@ -11,7 +11,7 @@ using Microsoft.Omex.Extensions.FeatureManagement.Filters;
 using Microsoft.Omex.Extensions.FeatureManagement.Filters.Configuration;
 
 /// <summary>
-/// Extension methods for <see cref="ServiceCollectionExtensions"/>.
+/// Extension methods for <see cref="IServiceCollection"/>.
 /// </summary>
 public static class ServiceCollectionExtensions
 {
