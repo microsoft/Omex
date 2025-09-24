@@ -97,7 +97,7 @@ public interface IFeatureGatesConsolidator
 	/// // }
 	/// </example>
 	Task<IDictionary<string, object>> GetFeatureGatesAsync(
-		IDictionary<string, object> filters,
+		IDictionary<string, string> filters,
 		string? headerPrefix = null,
 		string? defaultPlatform = null,
 		CancellationToken cancellationToken = default);
