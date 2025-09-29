@@ -60,16 +60,17 @@
     <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
   </ItemGroup>
   <ItemGroup Label="ServiceFabric packages for Omex Extensions">
-    <PackageVersion Include="Microsoft.ServiceFabric" Version="11.0.2707" />
-    <PackageVersion Include="Microsoft.ServiceFabric.Actors" Version="8.0.2707" />
-    <PackageVersion Include="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="8.0.2707" />
+    <PackageVersion Include="Microsoft.ServiceFabric" Version="11.2.274" />
+    <PackageVersion Include="Microsoft.ServiceFabric.Actors" Version="8.2.274" />
+    <PackageVersion Include="Microsoft.ServiceFabric.AspNetCore.Abstractions" Version="8.2.274" />
     <PackageVersion Include="Microsoft.ServiceFabric.Client.Http" Version="5.0.1" />
-    <PackageVersion Include="Microsoft.ServiceFabric.Services" Version="8.0.2707" />
-    <PackageVersion Include="Microsoft.ServiceFabric.Services.Remoting" Version="8.0.2707" />
-    <PackageVersion Include="ServiceFabric.Mocks" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.ServiceFabric.Services" Version="8.2.274" />
+    <PackageVersion Include="Microsoft.ServiceFabric.Services.Remoting" Version="8.2.274" />
+    <PackageVersion Include="ServiceFabric.Mocks" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup Label="Moq pinned to 4.20.72, Moq updates are reviewed and made manually.">
     <PackageVersion Include="Moq" Version="4.20.72"/>
   </ItemGroup>
 </Project>
+
 
