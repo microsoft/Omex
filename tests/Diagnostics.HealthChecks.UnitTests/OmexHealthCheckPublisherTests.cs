@@ -26,7 +26,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			async Task act() => await publisherContext.Publisher.PublishAsync(HealthReportBuilder.EmptyHealthReport, new CancellationToken(true));
 
 			// Assert.
-			await Assert.ThrowsExceptionAsync<OperationCanceledException>(act);
+			await Assert.ThrowsExactlyAsync<OperationCanceledException>(act);
 		}
 
 		[TestMethod]
@@ -42,7 +42,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			publisherContext.MockStatusSender.Verify(s_sendStatusExpression, Times.Never);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(HealthStatus.Degraded)]
 		[DataRow(HealthStatus.Unhealthy)]
 		[DataRow(HealthStatus.Healthy)]

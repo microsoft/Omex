@@ -27,7 +27,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		}
 
 		[Obsolete]
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow("MS-CorrelationId")]
 		[DataRow("ms-correlationid")]
 		[DataRow("corr")]

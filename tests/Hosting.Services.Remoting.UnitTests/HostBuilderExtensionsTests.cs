@@ -92,7 +92,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests
 
 			IListenerBuilder<OmexStatelessService> value = builder.Build().Services.GetRequiredService<IListenerBuilder<OmexStatelessService>>();
 
-			InvalidOperationException exception = Assert.ThrowsException<InvalidOperationException>(() => value.Build(MockServiceFabricServices.MockOmexStatelessService));
+			InvalidOperationException exception = Assert.ThrowsExactly<InvalidOperationException>(() => value.Build(MockServiceFabricServices.MockOmexStatelessService));
 			StringAssert.Contains(exception.Message, typeof(MockServiceWithDependencies).FullName);
 			StringAssert.Contains(exception.Message, typeof(IMockServiceDependency).FullName);
 		}

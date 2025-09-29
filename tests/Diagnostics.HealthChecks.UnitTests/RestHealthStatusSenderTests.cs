@@ -35,7 +35,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		{
 			SenderInfo context = GetRestHealthStatusSender();
 
-			await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+			await Assert.ThrowsExactlyAsync<InvalidOperationException>(() =>
 				context.Sender.SendStatusAsync("HealthCheckName", HealthStatus.Healthy, "SomeDescription", default));
 		}
 
@@ -46,7 +46,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			HealthStatus unsupportedHealthStatus = (HealthStatus)int.MinValue;
 
 			await context.Sender.IntializeAsync(default);
-			await Assert.ThrowsExceptionAsync<ArgumentException>(() =>
+			await Assert.ThrowsExactlyAsync<ArgumentException>(() =>
 				context.Sender.SendStatusAsync("HealthCheckName", unsupportedHealthStatus, "SomeDescription", default));
 		}
 

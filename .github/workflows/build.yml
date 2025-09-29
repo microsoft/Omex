@@ -13,6 +13,22 @@ on:
       - published
 
 jobs:
+  pr-metrics:
+    name: PR Metrics
+    runs-on: windows-latest
+    permissions:
+      pull-requests: write
+      statuses: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+    - name: PR Metrics
+      uses: microsoft/PR-Metrics@v1.7.6
+      env:
+        PR_METRICS_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -24,13 +40,13 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Install .NET 8 SDK
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: '8.0.x'
     - name: Install .NET 9 SDK
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: '9.0.x'
     - name: Install SF SDK

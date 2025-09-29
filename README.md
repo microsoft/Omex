@@ -13,11 +13,8 @@ Additional source code from the OMEX team can be located at <https://github.com/
 
 ### Projects in this repository
 
-* [__DocumentDb__](https://github.com/microsoft/Omex/tree/main/src/DocumentDb) - This library contains wrapper APIs over Microsoft Azure Document Db .Net Client SDK.
-* [__System__](https://github.com/microsoft/Omex/tree/main/src/System) - This library contains shared code for OMEX libraries. You'll find there utilities for logging,
-argument validation, resource management, caching and more.
-* [__System.UnitTests.Shared__](https://github.com/microsoft/Omex/tree/main/src/System.UnitTests.Shared) - This library contains abstractions and utilities used for creating unit tests.
 * [__Diagnostics.HealthChecks__](https://github.com/microsoft/Omex/tree/main/src/Diagnostics.HealthChecks) - This library offers a set of default composable classes to implement custom health checks implementing the .NET `IHealthCheck` interface.
+* [__FeatureManagement__](https://github.com/microsoft/Omex/tree/main/src/FeatureManagement) - This library offers an expansion of the `Microsoft.FeatureManagement` library, providing additional filters and allowing for combination with an experimentation service.
 
 Please contribute to this repository via [pull requests](https://github.com/Microsoft/Omex/pulls) against the __main__ branch.
 
@@ -85,5 +82,6 @@ The pre-release NuGet packages which are built from the main branch and could be
 The release packages are available for download from NuGet.org
 
     https://www.nuget.org/packages?q=omex
+
 
 

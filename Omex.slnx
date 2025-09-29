@@ -21,6 +21,7 @@
     <Project Path="src/Activities/Microsoft.Omex.Extensions.Activities.csproj" />
     <Project Path="src/Diagnostics.HealthChecks.AspNetCore/Microsoft.Omex.Extensions.Diagnostics.HealthChecks.AspNetCore.csproj" />
     <Project Path="src/Diagnostics.HealthChecks/Microsoft.Omex.Extensions.Diagnostics.HealthChecks.csproj" />
+    <Project Path="src/FeatureManagement/Microsoft.Omex.Extensions.FeatureManagement.csproj" />
     <Project Path="src/Hosting.Services.Remoting/Microsoft.Omex.Extensions.Hosting.Services.Remoting.csproj" />
     <Project Path="src/Hosting.Services.Web/Microsoft.Omex.Extensions.Hosting.Services.Web.csproj" />
     <Project Path="src/Hosting.Services/Microsoft.Omex.Extensions.Hosting.Services.csproj" />
@@ -36,6 +37,7 @@
     <Project Path="tests/Activities.UnitTests/Microsoft.Omex.Extensions.Activities.UnitTests.csproj" />
     <Project Path="tests/Diagnostics.HealthChecks.AspNetCore.UnitTests/Microsoft.Omex.Extensions.Diagnostics.HealthChecks.AspNetCore.UnitTests.csproj" />
     <Project Path="tests/Diagnostics.HealthChecks.UnitTests/Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests.csproj" />
+    <Project Path="tests/FeatureManagement.UnitTests/Microsoft.Omex.Extensions.FeatureManagement.UnitTests.csproj" />
     <Project Path="tests/Hosting.Services.Remoting.UnitTests/Microsoft.Omex.Extensions.Hosting.Services.Remoting.UnitTests.csproj" />
     <Project Path="tests/Hosting.Services.UnitTests/Microsoft.Omex.Extensions.Hosting.Services.UnitTests.csproj" />
     <Project Path="tests/Hosting.Services.Web.UnitTests/Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.csproj" />
