@@ -26,7 +26,6 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 				throw new InsecureRemotingUnsupportedException();
 			}
 
-			remotingSettings.ExceptionDeserializationTechnique = FabricTransportRemotingSettings.ExceptionDeserialization.Default;
 			return new OmexServiceRemotingClientFactory(
 				new FabricTransportServiceRemotingClientFactory(
 					remotingCallbackMessageHandler: handler,
@@ -39,7 +38,6 @@ namespace Microsoft.Omex.Extensions.Services.Remoting.Client
 		/// </summary>
 		public static void WithCustomTransportSettings(FabricTransportRemotingSettings transportSettings)
 		{
-			transportSettings.ExceptionDeserializationTechnique = FabricTransportRemotingSettings.ExceptionDeserialization.Default;
 			s_serviceProxyFactory = new ServiceProxyFactory(handler =>
 				new OmexServiceRemotingClientFactory(
 					new FabricTransportServiceRemotingClientFactory(
