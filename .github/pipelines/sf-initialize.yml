@@ -3,7 +3,7 @@
 parameters:
   - name: SdkVersion
     type: string
-    default: "10.1.2841.9590"
+    default: "11.2.274.1"
 steps:
   - task: PowerShell@2
     displayName: Install SF ${{parameters.SdkVersion}}
