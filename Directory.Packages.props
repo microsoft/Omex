@@ -54,7 +54,7 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.14.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Csharp" Version="4.14.0" />
     <PackageVersion Include="Microsoft.Net.Test.Sdk" Version="17.14.1" />
-    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageVersion Include="System.Threading.Tasks" Version="4.3.0" />
     <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
@@ -72,3 +72,4 @@
     <PackageVersion Include="Moq" Version="4.20.72"/>
   </ItemGroup>
 </Project>
+
