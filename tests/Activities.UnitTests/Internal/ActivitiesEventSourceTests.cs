@@ -69,7 +69,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 		}
 
 		[TestMethod]
-		[DoNotParallelize]
 		[DataRow(EventSourcesEventIds.LogActivityTestContext, true)]
 		[DataRow(EventSourcesEventIds.LogActivity, false)]
 		public void LogActivityEndEvent_DisableByOption_CreatesNoEvent(EventSourcesEventIds eventId, bool isHealthCheck)
