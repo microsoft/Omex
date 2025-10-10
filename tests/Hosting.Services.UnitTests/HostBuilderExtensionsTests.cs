@@ -35,11 +35,11 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.UnitTests
 					.BuildServiceProvider()
 					.GetService(typeToResolve);
 
-				Assert.IsNotNull(obj, "Failed to resolve for {0}", typeof(TContext));
+				Assert.IsNotNull(obj, $"Failed to resolve for {typeof(TContext)}");
 
 				if (expectedImplementationType != null)
 				{
-					Assert.IsInstanceOfType(obj, expectedImplementationType, "Wrong implementation type for {0}", typeof(TContext));
+					Assert.IsInstanceOfType(obj, expectedImplementationType, $"Wrong implementation type for {typeof(TContext)}");
 				}
 			}
 
