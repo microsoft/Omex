@@ -49,11 +49,11 @@
     <PackageVersion Include="System.Text.Json" Version="8.0.6" PreserveMajor="true"/>
   </ItemGroup>
   <ItemGroup Label="Package Versions. AutoUpdate">
-    <PackageVersion Include="MSTest.TestAdapter" Version="3.10.4" />
-    <PackageVersion Include="MSTest.TestFramework" Version="3.10.4" />
+    <PackageVersion Include="MSTest.TestAdapter" Version="4.0.0" />
+    <PackageVersion Include="MSTest.TestFramework" Version="4.0.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.14.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Csharp" Version="4.14.0" />
-    <PackageVersion Include="Microsoft.Net.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="Microsoft.Net.Test.Sdk" Version="18.0.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageVersion Include="System.Threading.Tasks" Version="4.3.0" />
@@ -72,4 +72,5 @@
     <PackageVersion Include="Moq" Version="4.20.72"/>
   </ItemGroup>
 </Project>
+
 
