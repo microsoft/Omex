@@ -67,7 +67,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 			int port = options.ClusterEndpointPort;
 
 			// Assert.
-			Assert.AreEqual(port, defaultPort);
+			Assert.AreEqual(defaultPort, port);
 		}
 
 		[TestMethod]
@@ -85,7 +85,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 			string fqdn = options.ClusterEndpointFQDN;
 
 			// Assert.
-			Assert.AreEqual(fqdn, overrideFQDN);
+			Assert.AreEqual(overrideFQDN, fqdn);
 		}
 
 		[TestMethod]

@@ -58,7 +58,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 			).CheckHealthAsync(HealthCheckContextHelper.CreateCheckContext());
 
 			Assert.AreEqual(actualResult.Exception, exception);
-			Assert.AreEqual(actualResult.Status, HealthStatus.Unhealthy);
+			Assert.AreEqual(HealthStatus.Unhealthy, actualResult.Status);
 			CollectionAssert.AreEquivalent(actualResult.Data.ToArray(), TestHealthCheck.TestParameters);
 			NullableAssert.IsNotNull(activity);
 			Assert.IsTrue(activity.IsHealthCheck(), "Activity should be marked as HealthCheck activity");
@@ -78,7 +78,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				return HealthCheckResult.Healthy();
 			}).CheckHealthAsync(HealthCheckContextHelper.CreateCheckContext());
 
-			Assert.AreEqual(actualResult.Status, HealthStatus.Healthy);
+			Assert.AreEqual(HealthStatus.Healthy, actualResult.Status);
 			NullableAssert.IsNotNull(activity);
 			Assert.IsTrue(activity!.IsHealthCheck(), "Activity should be marked as HealthCheck activity");
 			activity.AssertResult(ActivityResult.Success);

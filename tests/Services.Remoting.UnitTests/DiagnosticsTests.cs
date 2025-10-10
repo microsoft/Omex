@@ -74,10 +74,7 @@ namespace Services.Remoting
 		[TestMethod]
 		public void DiagnosticListenerName_CorrespondsAssemblyName()
 		{
-			Assert.AreEqual(
-				typeof(Diagnostics).Assembly.GetName().Name,
-				Diagnostics.DiagnosticListenerName,
-				"DiagnosticListenerName should be the same as assembly name");
+			Assert.AreEqual(Diagnostics.DiagnosticListenerName, typeof(Diagnostics).Assembly.GetName().Name, "DiagnosticListenerName should be the same as assembly name");
 		}
 	}
 }

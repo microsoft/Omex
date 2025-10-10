@@ -65,7 +65,7 @@ public class HealthCheckActivityMarkersTests
 
 		filterAttribute.OnActionExecuting(context);
 
-		Assert.IsTrue(context.Result is null);
+		Assert.IsNull(context.Result);
 
 		Activity.Current = null;
 	}

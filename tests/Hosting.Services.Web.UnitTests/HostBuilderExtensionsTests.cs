@@ -52,14 +52,14 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 				});
 
 			IListenerBuilder<OmexStatelessService>[] builders = host.Services.GetRequiredService<IEnumerable<IListenerBuilder<OmexStatelessService>>>().ToArray();
-			Assert.AreEqual(2, builders.Length, "Two endpoints should be registered as listeners");
+			Assert.HasCount(2, builders, "Two endpoints should be registered as listeners");
 			Assert.IsTrue(builders.Any(b => b.Name == httpListener1.name), $"Listener builder for {httpListener1.name} not found");
 			Assert.IsTrue(builders.Any(b => b.Name == httpListener2.name), $"Listener builder for {httpListener2.name} not found");
 
 			await host.StartAsync();
 
 			ICollection<string>? addresses = host.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>()?.Addresses;
-			Assert.AreEqual(2, builders.Length, "Two addresses should be registered");
+			Assert.HasCount(2, builders, "Two addresses should be registered");
 			Assert.IsNotNull(addresses, "Addresses should be registered");
 			Assert.IsTrue(addresses.Any(address => address.EndsWith($":{httpListener1.port}")), $"Address for {httpListener1.name} not found");
 			Assert.IsTrue(addresses.Any(address => address.EndsWith($":{httpListener2.port}")), $"Address for {httpListener2.name} not found");
