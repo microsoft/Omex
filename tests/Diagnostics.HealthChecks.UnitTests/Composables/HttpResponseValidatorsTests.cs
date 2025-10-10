@@ -66,7 +66,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests.Composabl
 			HealthCheckResult result = await HealthCheckComposablesExtensions.CheckResponseStatusCodeAsync(context, response);
 
 			Assert.AreEqual(registeredHealthStatus, result.Status);
-			Assert.AreEqual(true, result.Description?.Contains(responseStatusCode.ToString()));
+			Assert.IsTrue(result.Description?.Contains(responseStatusCode.ToString()));
 		}
 	}
 }

@@ -36,9 +36,7 @@ namespace Microsoft.Omex.Extensions.Testing.Helpers
 		/// </summary>
 		[DoesNotReturn]
 		public static void Fail(string message = "", params object[] parameters) =>
-#pragma warning disable CS8763 // Assert.Fail will throw exception so method will never return
 			Assert.Fail(string.Format(message, parameters));
-#pragma warning restore CS8763
 	}
 }
 
