@@ -38,6 +38,7 @@ namespace Microsoft.Omex.Extensions.ServiceFabricGuest.Abstractions.UnitTests
 		}
 
 		[TestMethod]
+		[DoNotParallelize]
 		public void ServiceFabricRestClientOptions_Default_FQDN_Valid_Multi()
 		{
 			// Arrange.

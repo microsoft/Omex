@@ -81,6 +81,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 	}
 
 	[TestMethod]
+	[DoNotParallelize]
 	public async Task GetFeatureGatesAsync_WithEmptyExperimentalFeatures_ReturnsOnlyBasicFeatures()
 	{
 		// ARRANGE
@@ -103,6 +104,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 	}
 
 	[TestMethod]
+	[DoNotParallelize]
 	public async Task GetFeatureGatesAsync_WithExperimentalFeatures_MergesWithBasicFeatures()
 	{
 		// ARRANGE
@@ -148,6 +150,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 	}
 
 	[TestMethod]
+	[DoNotParallelize]
 	public async Task GetFeatureGatesAsync_WithHeaderPrefixAndDefaultPlatform_SetsActivitySubType()
 	{
 		// ARRANGE
@@ -249,6 +252,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 	}
 
 	[TestMethod]
+	[DoNotParallelize]
 	public async Task GetFeatureGatesAsync_WhenCalled_ActivityIsMarkedAsSuccess()
 	{
 		// ARRANGE

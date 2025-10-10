@@ -16,6 +16,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 	public class ActivityListenerInitializerServiceTests
 	{
 		[TestMethod]
+		[DoNotParallelize] // ActivitySource is static and shared between tests
 		public async Task ActivityListeners_ControlsActivityCreation()
 		{
 			Mock<IActivityStartObserver> mockStartObserver = new();
@@ -29,8 +30,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			options.SampleUsingParentId = ActivitySamplingResult.AllDataAndRecorded;
 
 			ActivityListenerInitializerService service = new(
-				new IActivityStartObserver[] { mockStartObserver.Object },
-				new IActivityStopObserver[] { mockStopObserver.Object },
+				[mockStartObserver.Object],
+				[mockStopObserver.Object],
 				new DefaultActivityListenerConfigurator(optionsMonitor));
 
 			ActivitySource source = new(nameof(ActivityListeners_ControlsActivityCreation));
