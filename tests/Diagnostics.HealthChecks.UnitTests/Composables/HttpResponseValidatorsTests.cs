@@ -31,7 +31,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests.Composabl
 		public async Task CheckResponseStatusCodeAsync_ReturnsHealthy_WhenStatusCodeIsAmongSpecifiedOnes(HealthStatus faultStatus)
 		{
 			Mock<IHealthCheck> mockedHealthCheck = new();
-			HttpStatusCode[] allowedStatusCodes = new[] { HttpStatusCode.OK, HttpStatusCode.BadRequest };
+			HttpStatusCode[] allowedStatusCodes = [HttpStatusCode.OK, HttpStatusCode.BadRequest];
 			HealthCheckContext context = HealthCheckTestHelpers.GetHealthCheckContext(mockedHealthCheck.Object, faultStatus);
 			HttpResponseMessage response1 = new(HttpStatusCode.OK);
 			HttpResponseMessage response2 = new(HttpStatusCode.BadRequest);
@@ -66,7 +66,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests.Composabl
 			HealthCheckResult result = await HealthCheckComposablesExtensions.CheckResponseStatusCodeAsync(context, response);
 
 			Assert.AreEqual(registeredHealthStatus, result.Status);
-			Assert.IsTrue(result.Description?.Contains(responseStatusCode.ToString()) == true);
+			Assert.IsTrue(result.Description?.Contains(responseStatusCode.ToString()));
 		}
 	}
 }

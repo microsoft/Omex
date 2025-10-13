@@ -60,7 +60,7 @@ namespace Hosting.Services.UnitTests
 
 				Exception exception = new ArithmeticException();
 				listener.Write(ExceptionEventName, exception);
-				Assert.IsTrue(logger.Exceptions.Contains(exception), "Should log exception event");
+				Assert.Contains(exception, logger.Exceptions, "Should log exception event");
 			}
 			catch
 			{

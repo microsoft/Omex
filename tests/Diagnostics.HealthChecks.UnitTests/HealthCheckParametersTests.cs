@@ -12,7 +12,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 	public class HealthCheckParametersTests
 	{
 		[TestMethod]
-		[DynamicData(nameof(GetData), DynamicDataSourceType.Method)]
+		[DynamicData(nameof(GetData))]
 		public void Constructor_SetsReportData(KeyValuePair<string, object>[] reportData)
 		{
 			HealthCheckParameters parameters = new(reportData);
