@@ -20,7 +20,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 	public class ActivityMetricsSenderTests
 	{
 		[TestMethod]
-		[DoNotParallelize]
 		[DataRow(false)]
 		[DataRow(true)]
 		public void SendActivityMetric_NoCustomDimensions_ProduceMetricPointSuccessfully(bool isHealthCheck)
@@ -57,7 +56,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		[TestMethod]
 		[DataRow(false)]
 		[DataRow(true)]
-		[DoNotParallelize] // MeterListener is static and shared between tests
 		public void SendActivityMetric_CustomDimensionsAreRegistered_ProduceMetricPointWithRegisteredDimensions(bool isHealthCheck)
 		{
 			// 1. Arrange
@@ -159,7 +157,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		}
 
 		[TestMethod]
-		[DoNotParallelize]
 		[DataRow(true, true, true, DisplayName = "Parent Name emmitted when parent is present and has a name")]
 		[DataRow(true, false, false, DisplayName = "Parent Name not emmitted when parent is present but has no name")]
 		[DataRow(false, false, false, DisplayName = "Parent Name not emmitted when parent is not present")]

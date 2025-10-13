@@ -16,7 +16,6 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 	public class ActivityListenerInitializerServiceTests
 	{
 		[TestMethod]
-		[DoNotParallelize] // ActivitySource is static and shared between tests
 		public async Task ActivityListeners_ControlsActivityCreation()
 		{
 			Mock<IActivityStartObserver> mockStartObserver = new();
