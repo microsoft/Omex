@@ -28,8 +28,8 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		private readonly CancellationTokenSource m_cancellationTokenSource = new();
 		private readonly string m_certSubjectName = "MockSubjectName";
 
-		private Mock<IOptions<CertificatesValidityHealthCheckOptions>> m_certificatesValidityHealthCheckOptionsMock = new();
-		private Mock<ICertificateReader> m_certificateReaderMock = new();
+		private readonly Mock<IOptions<CertificatesValidityHealthCheckOptions>> m_certificatesValidityHealthCheckOptionsMock = new();
+		private readonly Mock<ICertificateReader> m_certificateReaderMock = new();
 
 		[TestInitialize]
 		public void Initialize()
@@ -55,7 +55,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
 				m_cancellationTokenSource.Token);
 
-			Assert.IsNotNull(result);
 			Assert.AreEqual(HealthStatus.Unhealthy, result.Status);
 		}
 
@@ -75,7 +74,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
 				m_cancellationTokenSource.Token);
 
-			Assert.IsNotNull(result);
 			Assert.AreEqual(HealthStatus.Healthy, result.Status);
 		}
 
@@ -95,7 +93,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
 				m_cancellationTokenSource.Token);
 
-			Assert.IsNotNull(result);
 			Assert.AreEqual(HealthStatus.Unhealthy, result.Status);
 		}
 
@@ -115,7 +112,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
 				m_cancellationTokenSource.Token);
 
-			Assert.IsNotNull(result);
 			Assert.AreEqual(HealthStatus.Unhealthy, result.Status);
 		}
 
@@ -141,7 +137,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
 				m_cancellationTokenSource.Token);
 
-			Assert.IsNotNull(result);
 			Assert.AreEqual(HealthStatus.Unhealthy, result.Status);
 		}
 
@@ -161,7 +156,6 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				HealthCheckTestHelpers.GetHealthCheckContext(healthCheck),
 				m_cancellationTokenSource.Token);
 
-			Assert.IsNotNull(result);
 			Assert.AreEqual(HealthStatus.Unhealthy, result.Status);
 		}
 

@@ -100,7 +100,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 
 			logEventSource.SendActivityMetric(activity);
 
-			Assert.AreEqual(0, listener.EventsInformation.Count);
+			Assert.IsEmpty(listener.EventsInformation);
 		}
 	}
 }

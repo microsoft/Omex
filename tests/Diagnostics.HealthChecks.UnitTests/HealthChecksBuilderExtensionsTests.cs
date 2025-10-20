@@ -24,7 +24,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 	public class HealthChecksBuilderExtensionsTests
 	{
 		[TestMethod]
-		[DynamicData(nameof(GetHeaders), DynamicDataSourceType.Method)]
+		[DynamicData(nameof(GetHeaders))]
 		[Obsolete("The health check implementation based on AbstractHealthCheck is obsolete.")]
 		public void AddServiceFabricHealthChecks_RegisterPublisherAndChecks(IReadOnlyDictionary<string, IEnumerable<string>> headers)
 		{
@@ -50,7 +50,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 			HttpHealthCheckParameters parameters = GetParameters(provider, checkName);
 
-			Assert.AreEqual(code, parameters.ExpectedStatus, nameof(HttpHealthCheckParameters.ExpectedStatus));
+			Assert.AreEqual(parameters.ExpectedStatus, code, nameof(HttpHealthCheckParameters.ExpectedStatus));
 			Assert.AreEqual(additionalCheck, parameters.AdditionalCheck, nameof(HttpHealthCheckParameters.AdditionalCheck));
 			CollectionAssert.AreEquivalent(reportData, parameters.ReportData.ToArray(), nameof(HttpHealthCheckParameters.ReportData));
 		}
