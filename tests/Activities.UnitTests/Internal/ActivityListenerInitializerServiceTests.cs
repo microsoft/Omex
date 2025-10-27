@@ -29,8 +29,8 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests
 			options.SampleUsingParentId = ActivitySamplingResult.AllDataAndRecorded;
 
 			ActivityListenerInitializerService service = new(
-				new IActivityStartObserver[] { mockStartObserver.Object },
-				new IActivityStopObserver[] { mockStopObserver.Object },
+				[mockStartObserver.Object],
+				[mockStopObserver.Object],
 				new DefaultActivityListenerConfigurator(optionsMonitor));
 
 			ActivitySource source = new(nameof(ActivityListeners_ControlsActivityCreation));

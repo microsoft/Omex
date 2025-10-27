@@ -107,6 +107,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 		}
 
 		[TestMethod]
+		[DoNotParallelize] // MeterListener is static and shared between tests
 		public void SendActivityMetric_CustomDimensionsAreNotRegistered_FailToProduceMetricPoint()
 		{
 			// 1. Arrange

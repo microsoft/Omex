@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Abstractions\Microsoft.Omex.Extensions.Abstractions.csproj" />
