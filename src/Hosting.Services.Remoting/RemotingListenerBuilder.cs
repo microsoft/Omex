@@ -36,7 +36,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Remoting
 				throw new InsecureRemotingUnsupportedException();
 			}
 
-			settings.ExceptionSerializationTechnique = FabricTransportRemotingListenerSettings.ExceptionSerialization.Default;
 			Name = name;
 			Settings = settings;
 		}
