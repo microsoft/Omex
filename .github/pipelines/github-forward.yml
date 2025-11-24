@@ -11,7 +11,6 @@ variables:
 - name: system.debug
   value: false
 - group: OmexOpenSourceExternal-VG
-- group: OmexAcTokensCorpNet
 resources:
   repositories:
   - repository: OfficePipelineTemplates
