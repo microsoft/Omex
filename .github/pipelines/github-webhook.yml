@@ -8,7 +8,6 @@ variables:
   value: any cpu
 - name: system.debug
   value: false
-- group: OmexAcTokensCorpNet
 schedules:
 - cron: 0 1 * * 2
   branches:
@@ -90,4 +89,4 @@ extends:
             failOnStderr: true
             showWarnings: true
           env:
-            PAT: $(OfficeOcCodeAccessCorpNet)
+            PAT: $(System.AccessToken)
