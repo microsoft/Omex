@@ -22,6 +22,10 @@ resources:
     type: git
     name: OE/OfficePipelineTemplates
     ref: refs/heads/main
+  - repository: OmexPipelines
+    type: git
+    name: OC/OmexPipelines
+    ref: refs/heads/main
 trigger:
   branches:
     include:
@@ -47,6 +51,11 @@ extends:
         steps:
         - checkout: self
           fetchTags: true
+        - template: pipelines/templates/git-authenticate-steps-wif.yml@OmexPipelines
+          parameters:
+            azureServiceConnection: 'OmexGitHubInternal_AdoContributor_UAMI'
+            userEmail: 'omexac@microsoft.com'
+            username: 'Omex Service Account'
         - task: PowerShell@2
           displayName: Queue GitHub Bridge Forward Build
           inputs:
@@ -65,15 +74,11 @@ extends:
               $Body=$Payload | convertto-json
               Write-Host $Body
 
-              $PAT = $env:PAT
-              $text = "{0}:{1}" -f @("", $PAT)
-              $B64Pat = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($text))
-
               $headers = @{
                   "Content-Type" = "application/json";
-                  "Authorization" = "Basic $B64Pat"
+                  "Authorization" = "Bearer $env:UAMI_TOKEN"
               }
-              $Response = Invoke-WebRequest -Method 'POST' -Body $Body -Uri "https://office.visualstudio.com/OC/_apis/build/builds?api-version=5.0" -Headers $headers
+              $Response = Invoke-WebRequest -Method 'POST' -Body $Body -Uri "https://office.visualstudio.com/OC/_apis/build/builds?api-version=7.1" -Headers $headers
 
               if ($Response.StatusCode -ne 200) {
                       Write-Warning "Non-200 status code encountered."
@@ -89,4 +94,4 @@ extends:
             failOnStderr: true
             showWarnings: true
           env:
-            PAT: $(System.AccessToken)
+            UAMI_TOKEN: $(UAMI_Token)
