@@ -20,6 +20,10 @@ resources:
     type: git
     name: OE/OfficePipelineTemplates
     ref: refs/heads/main
+  - repository: OmexPipelines
+    type: git
+    name: OC/OmexPipelines
+    ref: refs/heads/main
 trigger: none
 pr: none
 extends:
@@ -40,6 +44,11 @@ extends:
           - checkout: self
             clean: true
             fetchTags: false
+          - template: pipelines/templates/git-authenticate-steps-wif.yml@OmexPipelines
+            parameters:
+              azureServiceConnection: 'OmexGitHubInternal_AdoContributor_UAMI'
+              userEmail: 'omexac@microsoft.com'
+              username: 'Omex Service Account'
           - task: PowerShell@2
             displayName: Check new changes exist and Switch to branch from GitHubInternal
             condition: and(succeeded(), ne(variables['IntegrationChangesLength'], 0))
@@ -47,9 +56,8 @@ extends:
               targetType: inline
               script: |-
                 Write-Host "GITBRANCH being used: '$env:GITBRANCH'"
-                $url = "https://omexac:{0}@dev.azure.com/office/OC/_git/OmexGitHubInternal" -f $env:SYSTEM_ACCESSTOKEN
 
-                git remote add omexgithubinternalremote $url
+                git remote add omexgithubinternalremote https://dev.azure.com/office/OC/_git/OmexGitHubInternal
                 git fetch omexgithubinternalremote
 
                 Write-Host "Switching to GitHubInternalBranch to create PR."
@@ -65,8 +73,6 @@ extends:
                 }
 
                 Write-Host "##vso[task.setvariable variable=ChangesFound]$ChangesFound"
-            env:
-              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
           - task: oenginternal.office-vsts-tasks-extension.e881ce1e-41bc-4f59-b8a2-9a6001f43efe.CreatePullRequest@10
             displayName: Create Pull Request
             condition: and(succeeded(), ne(variables['ChangesFound'], 0))
