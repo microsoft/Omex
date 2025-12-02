@@ -3,7 +3,7 @@
     <RepoRoot Condition="'$(RepoRoot)' == ''">$([System.IO.Path]::GetDirectoryName($([MSBuild]::GetPathOfFileAbove('global.json', '$(MSBuildProjectDirectory)'))))</RepoRoot>
   </PropertyGroup>
   <PropertyGroup Label="Target Platforms">
-    <LatestSupportedDotNetVersion>net9.0</LatestSupportedDotNetVersion>
+    <LatestSupportedDotNetVersion>net10.0</LatestSupportedDotNetVersion>
     <OldestSupportedDotNetVersion>net9.0</OldestSupportedDotNetVersion>
     <NetCoreVersions>$(LatestSupportedDotNetVersion)</NetCoreVersions>
     <NetCoreVersions Condition="'$(LatestSupportedDotNetVersion)' != '$(OldestSupportedDotNetVersion)'">$(LatestSupportedDotNetVersion);$(OldestSupportedDotNetVersion)</NetCoreVersions>

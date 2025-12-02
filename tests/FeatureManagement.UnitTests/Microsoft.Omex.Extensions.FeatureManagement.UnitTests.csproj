@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Linq.Async"/>
+    <!-- System.Linq.Async is needed for .NET 9 but conflicts with built-in support in .NET 10 -->
+    <PackageReference Include="System.Linq.Async" Condition="'$(TargetFramework)' == '$(OldestSupportedDotNetVersion)'" />
   </ItemGroup>
 
   <ItemGroup>

@@ -43,9 +43,11 @@
     <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.2" PreserveMajor="true"/>
     <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" PreserveMajor="true"/>
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" PreserveMajor="true"/>
+    <PackageVersion Include="Microsoft.FeatureManagement" Version="4.3.0" PreserveMajor="true"/>
     <PackageVersion Include="Microsoft.SourceLink.AzureRepos.Git" Version="8.0.0" PreserveMajor="true"/>
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PreserveMajor="true"/>
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="8.0.1" PreserveMajor="true"/>
+    <PackageVersion Include="System.Linq.Async" Version="6.0.3" PreserveMajor="true"/>
     <PackageVersion Include="System.Text.Json" Version="8.0.6" PreserveMajor="true"/>
   </ItemGroup>
   <ItemGroup Label="Package Versions. AutoUpdate">

@@ -280,17 +280,17 @@ public sealed class ExtendedFeatureManagerTests
 	[TestMethod]
 	public async Task GetFeatureNamesAsync_WhenCalled_DelegatesCallToFeatureManager()
 	{
-		// ARRANGE
-		IAsyncEnumerable<string> expectedNames = s_expected.ToAsyncEnumerable();
-		m_featureManagerMock.Setup(m => m.GetFeatureNamesAsync()).Returns(expectedNames);
+	// ARRANGE
+	IAsyncEnumerable<string> expectedNames = s_expected.ToAsyncEnumerable();
+	m_featureManagerMock.Setup(m => m.GetFeatureNamesAsync()).Returns(expectedNames);
 
-		// ACT
-		IAsyncEnumerable<string> result = m_extendedFeatureManager.GetFeatureNamesAsync();
-		List<string> resultList = await result.ToListAsync(TestContext.CancellationTokenSource.Token);
+	// ACT
+	IAsyncEnumerable<string> result = m_extendedFeatureManager.GetFeatureNamesAsync();
+	List<string> resultList = await result.ToListAsync(TestContext.CancellationTokenSource.Token);
 
-		// ASSERT
-		m_featureManagerMock.Verify(m => m.GetFeatureNamesAsync(), Times.Once);
-		CollectionAssert.AreEqual(await expectedNames.ToListAsync(TestContext.CancellationTokenSource.Token), resultList);
+	// ASSERT
+	m_featureManagerMock.Verify(m => m.GetFeatureNamesAsync(), Times.Once);
+	CollectionAssert.AreEqual(await expectedNames.ToListAsync(TestContext.CancellationTokenSource.Token), resultList);
 	}
 
 	#endregion

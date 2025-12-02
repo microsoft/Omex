@@ -97,12 +97,12 @@ namespace Microsoft.Extensions.Hosting
 							{
 								options.Listen(IPAddress.IPv6Any, endpoint.Port, listenOptions =>
 								{
-									if (endpoint.UseHttps)
-									{
-										string settingForCertificateCommonName = Validation.ThrowIfNullOrWhiteSpace(endpoint.SettingForCertificateCommonName);
-										string certificateSubject = Validation.ThrowIfNullOrWhiteSpace(context.Configuration.GetValue<string>(settingForCertificateCommonName));
-										listenOptions.UseHttps(StoreName.My, certificateSubject, true, StoreLocation.LocalMachine);
-									}
+								if (endpoint.UseHttps)
+								{
+									string settingForCertificateCommonName = Microsoft.Omex.Extensions.Abstractions.Validation.ThrowIfNullOrWhiteSpace(endpoint.SettingForCertificateCommonName);
+									string certificateSubject = Microsoft.Omex.Extensions.Abstractions.Validation.ThrowIfNullOrWhiteSpace(context.Configuration.GetValue<string>(settingForCertificateCommonName));
+									listenOptions.UseHttps(StoreName.My, certificateSubject, true, StoreLocation.LocalMachine);
+								}
 								});
 							}
 
