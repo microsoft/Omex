@@ -20,9 +20,6 @@
     <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.0" PreserveMajor="true"/>
     <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.0" PreserveMajor="true"/>
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.0" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.FeatureManagement" Version="4.3.0"/>
-    <PackageVersion Include="Microsoft.SourceLink.AzureRepos.Git" Version="8.0.0"/>
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0"/>
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="10.0.0" PreserveMajor="true"/>
     <PackageVersion Include="System.Text.Json" Version="10.0.0" PreserveMajor="true"/>
   </ItemGroup>
@@ -42,11 +39,7 @@
     <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.11" PreserveMajor="true"/>
     <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.11" PreserveMajor="true"/>
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.11" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.FeatureManagement" Version="4.3.0" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.SourceLink.AzureRepos.Git" Version="8.0.0" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PreserveMajor="true"/>
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.11" PreserveMajor="true"/>
-    <PackageVersion Include="System.Linq.Async" Version="6.0.3" PreserveMajor="true"/>
     <PackageVersion Include="System.Text.Json" Version="9.0.11" PreserveMajor="true"/>
   </ItemGroup>
   <ItemGroup Label="Package Versions. AutoUpdate">
@@ -54,9 +47,13 @@
     <PackageVersion Include="MSTest.TestFramework" Version="4.0.2" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.14.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Csharp" Version="4.14.0" />
+    <PackageVersion Include="Microsoft.FeatureManagement" Version="4.3.0"/>
     <PackageVersion Include="Microsoft.Net.Test.Sdk" Version="18.0.1" />
+    <PackageVersion Include="Microsoft.SourceLink.AzureRepos.Git" Version="8.0.0"/>
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0"/>
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageVersion Include="System.Linq.Async" Version="6.0.3"/>
     <PackageVersion Include="System.Threading.Tasks" Version="4.3.0" />
     <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
   </ItemGroup>
