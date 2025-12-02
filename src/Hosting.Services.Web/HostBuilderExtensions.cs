@@ -18,6 +18,8 @@ using Microsoft.Omex.Extensions.Hosting.Services;
 using Microsoft.Omex.Extensions.Hosting.Services.Web;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 
+using OmexValidation = Microsoft.Omex.Extensions.Abstractions.Validation;
+
 namespace Microsoft.Extensions.Hosting
 {
 	/// <summary>
@@ -99,8 +101,8 @@ namespace Microsoft.Extensions.Hosting
 								{
 									if (endpoint.UseHttps)
 									{
-										string settingForCertificateCommonName = Microsoft.Omex.Extensions.Abstractions.Validation.ThrowIfNullOrWhiteSpace(endpoint.SettingForCertificateCommonName);
-										string certificateSubject = Microsoft.Omex.Extensions.Abstractions.Validation.ThrowIfNullOrWhiteSpace(context.Configuration.GetValue<string>(settingForCertificateCommonName));
+										string settingForCertificateCommonName = OmexValidation.ThrowIfNullOrWhiteSpace(endpoint.SettingForCertificateCommonName);
+										string certificateSubject = OmexValidation.ThrowIfNullOrWhiteSpace(context.Configuration.GetValue<string>(settingForCertificateCommonName));
 										listenOptions.UseHttps(StoreName.My, certificateSubject, true, StoreLocation.LocalMachine);
 									}
 								});
