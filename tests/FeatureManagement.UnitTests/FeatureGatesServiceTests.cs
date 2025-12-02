@@ -136,7 +136,7 @@ public sealed class FeatureGatesServiceTests
 	{
 		// ARRANGE
 		List<string> features = [];
-		m_featureManagerMock.Setup(m => m.GetFeatureNamesAsync()).Returns(AsyncEnumerable.ToAsyncEnumerable(features));
+		m_featureManagerMock.Setup(m => m.GetFeatureNamesAsync()).Returns(features.ToAsyncEnumerable());
 		m_featureManagerMock.Setup(m => m.EnabledFeaturesList).Returns(["Test1", "FE_Test2"]);
 		m_featureManagerMock.Setup(m => m.DisabledFeaturesList).Returns([]);
 
@@ -154,7 +154,7 @@ public sealed class FeatureGatesServiceTests
 	{
 		// ARRANGE
 		List<string> features = [];
-		m_featureManagerMock.Setup(m => m.GetFeatureNamesAsync()).Returns(AsyncEnumerable.ToAsyncEnumerable(features));
+		m_featureManagerMock.Setup(m => m.GetFeatureNamesAsync()).Returns(features.ToAsyncEnumerable());
 		m_featureManagerMock.Setup(m => m.EnabledFeaturesList).Returns([]);
 		m_featureManagerMock.Setup(m => m.DisabledFeaturesList).Returns(["Test1", "FE_Test2"]);
 
