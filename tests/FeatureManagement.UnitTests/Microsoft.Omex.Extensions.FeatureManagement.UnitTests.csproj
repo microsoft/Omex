@@ -4,8 +4,13 @@
     <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
   </PropertyGroup>
 
+  <!-- 
+   TODO 10880196 - Remove this package when migrating directly to .NET 10.
+   Please refer to this article for more information about this specific migration instance:
+   https://learn.microsoft.com/en-us/dotnet/core/compatibility/core-libraries/10.0/asyncenumerable
+   -->
   <ItemGroup>
-    <PackageReference Include="System.Linq.Async"/>
+    <PackageReference Include="System.Linq.Async" Aliases="SystemLinqAsync"/>
   </ItemGroup>
 
   <ItemGroup>
