@@ -35,7 +35,7 @@ extends:
     - stage: Stage
       jobs:
       - job: Job_1
-        displayName: Update packages
+        displayName: Update packages for GitHub
         steps:
         - checkout: self
           fetchTags: false
@@ -46,6 +46,7 @@ extends:
           inputs:
             NuGetConfigPath: NuGet.Config
             PropsFilePath: Directory.Packages.props
+            SdkChannel: 'LTS'
         - task: oenginternal.office-vsts-tasks-extension.e881ce1e-41bc-4f59-b8a2-9a6001f43efe.CreatePullRequest@10
           displayName: Create Pull Request
           inputs:
