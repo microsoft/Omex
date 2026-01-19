@@ -19,7 +19,6 @@ using Microsoft.Omex.Extensions.FeatureManagement.Constants;
 using Microsoft.Omex.Extensions.Testing.Helpers.HttpContext;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using LinqAsync = SystemLinqAsync::System.Linq.AsyncEnumerable;
 
 [TestClass]
 public sealed class ExtendedFeatureManagerTests
@@ -284,16 +283,16 @@ public sealed class ExtendedFeatureManagerTests
 	public async Task GetFeatureNamesAsync_WhenCalled_DelegatesCallToFeatureManager()
 	{
 		// ARRANGE
-		IAsyncEnumerable<string> expectedNames = LinqAsync.ToAsyncEnumerable(s_expected);
+		IAsyncEnumerable<string> expectedNames = AsyncEnumerable.ToAsyncEnumerable(s_expected);
 		m_featureManagerMock.Setup(m => m.GetFeatureNamesAsync()).Returns(expectedNames);
 
 		// ACT
 		IAsyncEnumerable<string> result = m_extendedFeatureManager.GetFeatureNamesAsync();
-		List<string> resultList = await LinqAsync.ToListAsync(result, TestContext.CancellationTokenSource.Token);
+		List<string> resultList = await AsyncEnumerable.ToListAsync(result, TestContext.CancellationTokenSource.Token);
 
 		// ASSERT
 		m_featureManagerMock.Verify(m => m.GetFeatureNamesAsync(), Times.Once);
-		CollectionAssert.AreEqual(await LinqAsync.ToListAsync(expectedNames, TestContext.CancellationTokenSource.Token), resultList);
+		CollectionAssert.AreEqual(await AsyncEnumerable.ToListAsync(expectedNames, TestContext.CancellationTokenSource.Token), resultList);
 	}
 
 	#endregion
