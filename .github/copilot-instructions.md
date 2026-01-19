@@ -109,7 +109,7 @@ logger.LogInformation(eventId, "Message");
 - All projects use `Microsoft.Omex.Extensions.*` naming convention
 - Source in `src/`, tests in `tests/` with matching directory structure
 - Central package management via `Directory.Packages.props` with version conditions
-- Multi-targeting: .NET 9.0 + netstandard2.0 for broad compatibility
+- Multi-targeting: .NET 10.0 + netstandard2.0 for broad compatibility
 - Strong naming with `OmexOpenSource.snk`
 
 ### Build Configuration
