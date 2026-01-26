@@ -36,7 +36,7 @@ jobs:
         os: [windows-latest] # [ubuntu-latest, windows-latest, macOS-latest]
         configuration: [Release, Debug]
     env:
-      IsReleaseBuild: ${{ matrix.configuration == 'Release' && github.event_name == 'release' && !github.event.release.prerelease && github.ref == 'refs/heads/master' }}
+      IsReleaseBuild: ${{ matrix.configuration == 'Release' && github.event_name == 'release' && !github.event.release.prerelease && github.ref == 'refs/heads/main' }}
 
     steps:
     - name: Checkout repository
@@ -57,11 +57,11 @@ jobs:
     - name: Build with dotnet
       run: dotnet build --configuration ${{ matrix.configuration }} --no-restore
     - name: Run Unit Tests
-      run: dotnet test --no-build --configuration ${{ matrix.configuration }}
+      run: dotnet test --no-build --configuration ${{ matrix.configuration }} --no-restore
     - name: Create NuGet packages
-      run: dotnet pack --no-build --configuration ${{ matrix.configuration }}
+      run: dotnet pack --no-build --configuration ${{ matrix.configuration }} --no-restore
     - name: Add GitHub package source
       run: dotnet nuget add source https://nuget.pkg.github.com/microsoft/index.json --name "github" --username NotUsed --password ${{ secrets.GITHUB_TOKEN }}
     - name: Publish NuGet packages
       run: dotnet nuget push nuget\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate --no-symbols true
-      if: matrix.configuration == 'Release' && github.event_name == 'release' && github.ref == 'refs/heads/master'
+      if: matrix.configuration == 'Release' && github.event_name == 'release' && github.ref == 'refs/heads/main'
