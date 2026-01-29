@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
+    <TargetFrameworks>$(UnitTestTargetFrameworks);$(SyntheticsCompatibilityVersion)</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>

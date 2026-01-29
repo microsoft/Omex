@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
+    <TargetFrameworks>$(UnitTestTargetFrameworks);$(SyntheticsCompatibilityVersion)</TargetFrameworks>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
   <ItemGroup>
