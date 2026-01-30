@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(NetCoreVersions);$(SyntheticsCompatibilityVersion)</TargetFrameworks>
+    <TargetFrameworks>$(NetCoreVersions)</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="NuGet Properties">
     <Title>Microsoft.Omex.Extensions.Activities</Title>

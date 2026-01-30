@@ -42,25 +42,6 @@
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.12" PreserveMajor="true"/>
     <PackageVersion Include="System.Text.Json" Version="9.0.12" PreserveMajor="true"/>
   </ItemGroup>
-  <ItemGroup Label="Synthetics Compatibility Package Versions. AutoUpdate" Condition="'$(TargetFramework)' == '$(SyntheticsCompatibilityVersion)'">
-    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.12" PreserveMajor="true"/>
-    <PackageVersion Include="System.Text.Json" Version="9.0.12" PreserveMajor="true"/>
-  </ItemGroup>
   <ItemGroup Label="Package Versions. AutoUpdate">
     <PackageVersion Include="MSTest.TestAdapter" Version="4.0.2" />
     <PackageVersion Include="MSTest.TestFramework" Version="4.0.2" />
