@@ -14,6 +14,10 @@ steps:
     displayName: Use .NET SDK from global.json
     inputs:
       useGlobalJson: true
+  - task: UseDotNet@2
+    displayName: Temporarily install .NET 9 SDK while dual targeting
+    inputs:
+      version: "9.0.x"
   - task: DotNetCoreCLI@2
     displayName: dotnet restore
     inputs:
