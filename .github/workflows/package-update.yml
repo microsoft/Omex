@@ -26,6 +26,11 @@ jobs:
         with:
           version: 'latest'
 
+      - name: Install .NET 10 SDK
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+
       - name: Run PowerShell script
         shell: pwsh
         run: |
