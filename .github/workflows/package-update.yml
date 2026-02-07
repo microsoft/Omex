@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - scripts/**.ps1   # adjust as you like
+      - .github/scripts/**.ps1   # adjust as you like
 
 permissions:
   contents: write
@@ -30,7 +30,7 @@ jobs:
       - name: Run PowerShell script
         shell: pwsh
         run: |
-          ./scripts/Update-Stuff.ps1 -Verbose
+          ./.github/scripts/Update-NuGetPackageVersions.ps1 -Verbose
 
       - name: Create branch, commit, push
         shell: pwsh
