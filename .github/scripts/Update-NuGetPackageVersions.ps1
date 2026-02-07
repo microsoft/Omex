@@ -47,9 +47,15 @@ param(
     [bool]$FailOnError = $false
 )
 
-# Auto-detect verbose logging from Azure Pipelines System.Debug variable
-$EnableVerboseLogging = ($env:SYSTEM_DEBUG -eq 'true') -or ($env:SYSTEM_DEBUG -eq '1')
+# Determine whether verbose logging should be enabled:
+# - Prefer the standard -Verbose common parameter when explicitly passed
+# - Fall back to Azure Pipelines System.Debug variable for backwards compatibility
+$isVerboseParameterSet = $PSBoundParameters.ContainsKey('Verbose') -and $PSBoundParameters['Verbose']
+$EnableVerboseLogging = $isVerboseParameterSet -or ($env:SYSTEM_DEBUG -eq 'true') -or ($env:SYSTEM_DEBUG -eq '1')
 
+if ($EnableVerboseLogging) {
+    $VerbosePreference = 'Continue'
+}
 $ErrorActionPreference = if ($FailOnError) { "Stop" } else { "Continue" }
 
 # Helper function for version comparison (from VersionUtils.ps1)
