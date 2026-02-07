@@ -170,7 +170,7 @@ function Get-LatestPackageVersion {
             Write-Host "  [VERBOSE] Executing: $searchCmd"
         }
         
-        Write-Host ("Searching for package: {0} {1}" -f $PackageId, (if ($MajorVersion) { "(major version {0}.*)" -f $MajorVersion } else { "" }))
+        Write-Host ("Searching for package: {0} {1}" -f $PackageId, ($MajorVersion ? ('(major version {0}.*)' -f $MajorVersion) : ''))
         
         $output = Invoke-Expression $searchCmd 2>&1 | Out-String
         
