@@ -41,7 +41,17 @@ param(
     [string]$PropsFilePath = "Directory.Packages.props",
 
     [Parameter(Mandatory = $false)]
-    [string]$SourcesDirectory = $env:BUILD_SOURCESDIRECTORY,
+    [string]$SourcesDirectory = $(
+        if ($env:BUILD_SOURCESDIRECTORY) {
+            $env:BUILD_SOURCESDIRECTORY
+        }
+        elseif ($env:GITHUB_WORKSPACE) {
+            $env:GITHUB_WORKSPACE
+        }
+        else {
+            (Get-Location).Path
+        }
+    ),
 
     [Parameter(Mandatory = $false)]
     [bool]$FailOnError = $false
