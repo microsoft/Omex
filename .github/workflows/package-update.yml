@@ -1,0 +1,64 @@
+name: Package Updates (GitHub)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - scripts/**.ps1   # adjust as you like
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  run-script-and-pr:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Install GitHub CLI
+        uses: cli/cli-action@v2
+        with:
+          version: 'latest'
+
+      - name: Run PowerShell script
+        shell: pwsh
+        run: |
+          ./scripts/Update-Stuff.ps1 -Verbose
+
+      - name: Create branch, commit, push
+        shell: pwsh
+        run: |
+          $branch = "automation/package-update-${{ github.run_id }}"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git checkout -b $branch
+          git add -A
+
+          if (git diff --cached --quiet) {
+            echo "No changes detected; exiting."
+            exit 0
+          }
+
+          git commit -m "chore(automation): apply PowerShell updates"
+          git push --set-upstream origin $branch
+
+      - name: Open PR with gh
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr create `
+            --title "Automated Package Update" `
+            --body "This PR was created automatically by the workflow run ${{ github.run_id }}." `
+            --base main `
+            --head "automation/ps-update-${{ github.run_id }}" `
+            --label automation --label powershell `
+            --assignee "${{ github.actor }}"
