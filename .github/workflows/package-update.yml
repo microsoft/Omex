@@ -53,7 +53,7 @@ jobs:
       - name: Open PR with gh
         if: steps.commit.outputs.has-changes == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.CREATE_PULLREQUEST }}
         run: |
           gh pr create `
             --title "Automated Package Update" `
@@ -62,5 +62,3 @@ jobs:
             --head "automation/package-update-${{ github.run_id }}" `
             --label automation `
             --assignee "${{ github.actor }}"
-          with:
-            token: ${{secrets.CREATE_PULLREQUEST}}
