@@ -14,10 +14,9 @@ jobs:
   run-script-and-pr:
     runs-on: windows-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v6
         with:
-          persist-credentials: true
           fetch-depth: 0
 
       - name: Install GitHub CLI
