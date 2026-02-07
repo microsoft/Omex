@@ -47,6 +47,23 @@ param(
     [bool]$FailOnError = $false
 )
 
+# Normalize and validate SourcesDirectory so it is always a valid root directory
+if ([string]::IsNullOrWhiteSpace($SourcesDirectory)) {
+    # GitHub Actions default
+    $SourcesDirectory = $env:GITHUB_WORKSPACE
+}
+
+if ([string]::IsNullOrWhiteSpace($SourcesDirectory)) {
+    # Local or generic PowerShell fallback
+    $SourcesDirectory = (Get-Location).Path
+}
+
+if (-not (Test-Path -LiteralPath $SourcesDirectory -PathType Container)) {
+    throw "SourcesDirectory '$SourcesDirectory' does not exist or is not a directory. Specify a valid -SourcesDirectory path."
+}
+
+# Resolve to a fully qualified, normalized path
+$SourcesDirectory = (Resolve-Path -LiteralPath $SourcesDirectory).ProviderPath
 # Determine whether verbose logging should be enabled:
 # - Prefer the standard -Verbose common parameter when explicitly passed
 # - Fall back to Azure Pipelines System.Debug variable for backwards compatibility
