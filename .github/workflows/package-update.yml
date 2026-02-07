@@ -19,11 +19,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install GitHub CLI
-        uses: cli/cli-action@v2
-        with:
-          version: 'latest'
-
       - name: Install .NET 10 SDK
         uses: actions/setup-dotnet@v5
         with:
