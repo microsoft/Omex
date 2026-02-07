@@ -60,5 +60,5 @@ jobs:
             --body "This PR was created automatically by the workflow run ${{ github.run_id }}." `
             --base main `
             --head "automation/package-update-${{ github.run_id }}" `
-            --label automation --label powershell `
+            --label powershell `
             --assignee "${{ github.actor }}"
