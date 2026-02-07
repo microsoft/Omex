@@ -1,12 +1,8 @@
 name: Package Updates (GitHub)
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - .github/scripts/**.ps1   # adjust as you like
+  schedule:
+    - cron: "0 6 * * 1"
 
 permissions:
   contents: write
