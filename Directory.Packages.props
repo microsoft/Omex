@@ -69,7 +69,4 @@
   <ItemGroup Label="Moq pinned to 4.20.72, Moq updates are reviewed and made manually.">
     <PackageVersion Include="Moq" Version="4.20.72"/>
   </ItemGroup>
-
 </Project>
-
-
