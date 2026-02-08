@@ -29,6 +29,11 @@ jobs:
         run: |
           ./.github/scripts/Update-NuGetPackageVersions.ps1 -Verbose
 
+      - name: Run PowerShell script
+        shell: pwsh
+        run: |
+          ./.github/scripts/Update-DotNetSdkVersions.ps1 -Verbose
+
       - name: Create branch, commit, push
         id: commit
         shell: pwsh
