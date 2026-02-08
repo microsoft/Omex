@@ -1,0 +1,65 @@
+name: Package Updates (GitHub)
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  run-script-and-pr:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install .NET 10 SDK
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Run PowerShell script
+        shell: pwsh
+        run: |
+          ./.github/scripts/Update-NuGetPackageVersions.ps1 -Verbose
+
+      - name: Create branch, commit, push
+        id: commit
+        shell: pwsh
+        run: |
+          $branch = "automation/package-update-${{ github.run_id }}"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git checkout -b $branch
+          git add -A
+
+          if (git diff --cached --quiet) {
+            echo "No changes detected; skipping commit and PR creation."
+            echo "has-changes=false" >> $env:GITHUB_OUTPUT
+            exit 0
+          }
+
+          git commit -m "chore(automation): apply PowerShell updates"
+          git push --set-upstream origin $branch
+          echo "has-changes=true" >> $env:GITHUB_OUTPUT
+
+      - name: Open PR with gh
+        if: steps.commit.outputs.has-changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.CREATE_PULLREQUEST }}
+        shell: pwsh
+        run: |
+          gh pr create `
+            --title "Automated Package Update" `
+            --body "This PR was created automatically by the workflow run ${{ github.run_id }}." `
+            --base main `
+            --head "automation/package-update-${{ github.run_id }}" `
+            --label automation `
+            --assignee "${{ github.actor }}"
