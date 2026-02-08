@@ -54,6 +54,7 @@ jobs:
         if: steps.commit.outputs.has-changes == 'true'
         env:
           GH_TOKEN: ${{ secrets.CREATE_PULLREQUEST }}
+        shell: pwsh
         run: |
           gh pr create `
             --title "Automated Package Update" `
