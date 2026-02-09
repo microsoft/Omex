@@ -10,7 +10,7 @@ permissions:
 
 concurrency:
   group: package-updates
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   run-script-and-pr:
