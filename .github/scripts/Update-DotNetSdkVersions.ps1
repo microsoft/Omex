@@ -16,7 +16,7 @@
 
 .PARAMETER SourcesDirectory
     The root source directory containing the global.json file.
-    Default: $env:BUILD_SOURCESDIRECTORY (Azure Pipelines variable)
+    Default: $env:BUILD_SOURCESDIRECTORY (Azure Pipelines) or $env:GITHUB_WORKSPACE (GitHub Actions) or current directory
 
 .PARAMETER FailOnError
     If $true, throws an exception on SDK lookup failures. If $false, logs warnings and continues.
@@ -47,11 +47,39 @@ param(
     [string]$SdkChannel = "STS",
 
     [Parameter(Mandatory = $false)]
-    [string]$SourcesDirectory = $env:BUILD_SOURCESDIRECTORY,
+    [string]$SourcesDirectory = $(
+        if ($env:BUILD_SOURCESDIRECTORY) {
+            $env:BUILD_SOURCESDIRECTORY
+        }
+        elseif ($env:GITHUB_WORKSPACE) {
+            $env:GITHUB_WORKSPACE
+        }
+        else {
+            (Get-Location).Path
+        }
+    ),
 
     [Parameter(Mandatory = $false)]
     [bool]$FailOnError = $false
 )
+
+# Normalize and validate SourcesDirectory so it is always a valid root directory
+if ([string]::IsNullOrWhiteSpace($SourcesDirectory)) {
+    # GitHub Actions default
+    $SourcesDirectory = $env:GITHUB_WORKSPACE
+}
+
+if ([string]::IsNullOrWhiteSpace($SourcesDirectory)) {
+    # Local or generic PowerShell fallback
+    $SourcesDirectory = (Get-Location).Path
+}
+
+if (-not (Test-Path -LiteralPath $SourcesDirectory -PathType Container)) {
+    throw "SourcesDirectory '$SourcesDirectory' does not exist or is not a directory. Specify a valid -SourcesDirectory path."
+}
+
+# Resolve to a fully qualified, normalized path
+$SourcesDirectory = (Resolve-Path -LiteralPath $SourcesDirectory).ProviderPath
 
 # Auto-detect verbose logging from Azure Pipelines System.Debug variable
 $EnableVerboseLogging = ($env:SYSTEM_DEBUG -eq 'true') -or ($env:SYSTEM_DEBUG -eq '1')
