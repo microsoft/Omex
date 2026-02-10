@@ -60,8 +60,6 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 			// Starting binds real sockets and can intermittently fail in CI with:
 			// "An attempt was made to access a socket in a way forbidden by its access permissions".
 			// This test's purpose is verifying listener registration, not OS networking behavior.
-
-			await host.StopAsync();
 		}
 	}
 }
