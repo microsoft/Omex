@@ -44,7 +44,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests.Internal
 			SfConfigurationProviderHelper.SetPortVariable(name, port);
 			SfConfigurationProviderHelper.SetPortVariable(httpListener2.name, httpListener2.port);
 
-			IHost host = new HostBuilder().BuildStatelessWebService<MockStartup>(
+			using IHost host = new HostBuilder().BuildStatelessWebService<MockStartup>(
 				"someService2",
 				[
 					new WebEndpointInfo(name, settingForCertificateCommonName: null),
