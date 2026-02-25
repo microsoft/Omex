@@ -8,13 +8,13 @@ permissions:
   contents: write
   pull-requests: write
 
-concurrency:
-  group: package-updates
-  cancel-in-progress: true
-
 jobs:
   run-script-and-pr:
+    if: github.event_name == 'schedule'
     runs-on: windows-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
