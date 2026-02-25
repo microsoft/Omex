@@ -290,7 +290,7 @@ if (-not (Test-Path $globalJsonFile)) {
         throw $errorMsg
     } else {
         Write-Warning $errorMsg
-        exit 1
+        exit 0
     }
 }
 
