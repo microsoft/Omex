@@ -53,7 +53,7 @@ jobs:
             exit 0
           }
 
-          git commit -m "chore(automation): apply PowerShell updates"
+          git commit -m "chore(automation): update NuGet packages and .NET SDK versions"
           git push --set-upstream origin $branch
           echo "has-changes=true" >> $env:GITHUB_OUTPUT
 
