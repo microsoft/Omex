@@ -60,7 +60,7 @@ jobs:
       - name: Open PR with gh
         if: steps.commit.outputs.has-changes == 'true'
         env:
-          GH_TOKEN: ${{ secrets.CREATE_PULLREQUEST }}
+          GH_TOKEN: ${{ secrets.CREATE_PACKAGEUPDATE }}
         shell: pwsh
         run: |
           gh pr create `
