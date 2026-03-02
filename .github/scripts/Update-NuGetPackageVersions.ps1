@@ -85,7 +85,7 @@ if ($EnableVerboseLogging) {
 }
 $ErrorActionPreference = if ($FailOnError) { "Stop" } else { "Continue" }
 
-# Helper function for version comparison (from VersionUtils.ps1)
+# Helper function for version comparison
 function Get-LatestVersionFromString {
     param (
         [string]$First,
