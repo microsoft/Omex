@@ -194,9 +194,9 @@ function Get-LatestPackageVersion {
     try {
         $prereleaseFlag = if ($IncludePrerelease) { "--prerelease" } else { "" }
         
-        # Prefer NuGet-GitHub.Config (used on GitHub runners) when present, otherwise fall back to NuGet.config
+        # Prefer NuGet-GitHub.Config (used on GitHub runners) when present, otherwise fall back to NuGet.Config
         $nugetGithubConfigPath = Join-Path $SourcesDirectory "NuGet-GitHub.Config"
-        $nugetConfigPath = Join-Path $SourcesDirectory "NuGet.config"
+        $nugetConfigPath = Join-Path $SourcesDirectory "NuGet.Config"
         $configSourceFlag = ""
         if (Test-Path $nugetGithubConfigPath) {
             $configSourceFlag = "--configfile `"$nugetGithubConfigPath`""
@@ -207,11 +207,11 @@ function Get-LatestPackageVersion {
         elseif (Test-Path $nugetConfigPath) {
             $configSourceFlag = "--configfile `"$nugetConfigPath`""
             if ($EnableVerboseLogging) {
-                Write-Host "  [VERBOSE] Using NuGet.config from: $nugetConfigPath"
+                Write-Host "  [VERBOSE] Using NuGet.Config from: $nugetConfigPath"
             }
         }
         else {
-            Write-Warning "NuGet-GitHub.Config or NuGet.config not found at: $SourcesDirectory - search may not find required feeds"
+            Write-Warning "NuGet-GitHub.Config or NuGet.Config not found at: $SourcesDirectory - search may not find required feeds"
         }
         
         $searchCmd = "dotnet package search `"$PackageId`" --exact-match --format json $prereleaseFlag $configSourceFlag"
