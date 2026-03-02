@@ -303,7 +303,7 @@ if (-not (Test-Path $propsFile)) {
         throw $errorMsg
     } else {
         Write-Warning $errorMsg
-        exit 1
+        return
     }
 }
 
@@ -314,11 +314,20 @@ $xml = New-Object System.Xml.XmlDocument
 $xml.PreserveWhitespace = $true
 $xml.Load($propsFile)
 
+# Configure XML namespace manager for MSBuild default namespace
+$namespaceManager = New-Object System.Xml.XmlNamespaceManager($xml.NameTable)
+if ($xml.DocumentElement -and $xml.DocumentElement.NamespaceURI) {
+    $namespaceManager.AddNamespace("msb", $xml.DocumentElement.NamespaceURI)
+} else {
+    $namespaceManager.AddNamespace("msb", "http://schemas.microsoft.com/developer/msbuild/2003")
+}
+
 $updateCount = 0
 
-# Find all ItemGroups with AutoUpdate label
-$autoUpdateGroups = $xml.Project.ItemGroup | Where-Object { 
-    $null -ne $_.Label -and $_.Label -match 'AutoUpdate' 
+# Find all ItemGroups with AutoUpdate label (namespace-aware)
+$autoUpdateGroups = $xml.SelectNodes('/msb:Project/msb:ItemGroup[@Label and contains(@Label, "AutoUpdate")]', $namespaceManager)
+if ($null -eq $autoUpdateGroups) {
+    $autoUpdateGroups = @()
 }
 
 Write-Host "Found $($autoUpdateGroups.Count) ItemGroups with AutoUpdate label"
