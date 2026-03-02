@@ -85,7 +85,7 @@ if ($EnableVerboseLogging) {
 }
 $ErrorActionPreference = if ($FailOnError) { "Stop" } else { "Continue" }
 
-# Helper function for version comparison (from VersionUtils.ps1)
+# Helper function for version comparison
 function Get-LatestVersionFromString {
     param (
         [string]$First,
@@ -325,12 +325,13 @@ if ($null -eq $autoUpdateGroups) {
 Write-Host "Found $($autoUpdateGroups.Count) ItemGroups with AutoUpdate label"
 
 foreach ($itemGroup in $autoUpdateGroups) {
-    $packageVersions = $itemGroup.PackageVersion
+    # Select PackageVersion elements using namespace-agnostic XPath
+    $packageVersions = $itemGroup.SelectNodes('./*[local-name()="PackageVersion"]')
     
-    if (-not $packageVersions) { continue }
+    if ($null -eq $packageVersions -or $packageVersions.Count -eq 0) { continue }
     
     if ($EnableVerboseLogging) {
-        Write-Host "[VERBOSE] Processing ItemGroup with $(@($packageVersions).Count) packages"
+        Write-Host "[VERBOSE] Processing ItemGroup with $($packageVersions.Count) packages"
     }
     
     foreach ($packageVersion in $packageVersions) {
