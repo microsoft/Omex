@@ -123,13 +123,63 @@ function Get-LatestVersionFromString {
         return [PSCustomObject]@{ Version = $version; Suffix = $suffix }
     }
     
+    function Compare-PreReleaseSuffix {
+        param (
+            [string]$FirstSuffix,
+            [string]$SecondSuffix
+        )
+
+        if ($FirstSuffix -eq $SecondSuffix) { return 0 }
+
+        # Trim leading '-' if present
+        if ($FirstSuffix.StartsWith('-')) { $FirstSuffix = $FirstSuffix.Substring(1) }
+        if ($SecondSuffix.StartsWith('-')) { $SecondSuffix = $SecondSuffix.Substring(1) }
+
+        $firstIdentifiers = $FirstSuffix -split '\.'
+        $secondIdentifiers = $SecondSuffix -split '\.'
+
+        $maxLength = [Math]::Max($firstIdentifiers.Length, $secondIdentifiers.Length)
+
+        for ($i = 0; $i -lt $maxLength; $i++) {
+            if ($i -ge $firstIdentifiers.Length) { return -1 }  # fewer identifiers => lower precedence
+            if ($i -ge $secondIdentifiers.Length) { return 1 }  # more identifiers => higher precedence
+
+            $firstId = $firstIdentifiers[$i]
+            $secondId = $secondIdentifiers[$i]
+
+            if ($firstId -eq $secondId) { continue }
+
+            $firstNum = 0
+            $secondNum = 0
+            $firstIsNumeric = [int]::TryParse($firstId, [ref]$firstNum)
+            $secondIsNumeric = [int]::TryParse($secondId, [ref]$secondNum)
+
+            if ($firstIsNumeric -and $secondIsNumeric) {
+                if ($firstNum -lt $secondNum) { return -1 }
+                if ($firstNum -gt $secondNum) { return 1 }
+                continue
+            }
+
+            if ($firstIsNumeric -and -not $secondIsNumeric) { return -1 } # numeric < non-numeric
+            if (-not $firstIsNumeric -and $secondIsNumeric) { return 1 }  # non-numeric > numeric
+
+            $stringCompare = [string]::CompareOrdinal($firstId, $secondId)
+            if ($stringCompare -lt 0) { return -1 }
+            if ($stringCompare -gt 0) { return 1 }
+        }
+
+        return 0
+    }
+
     $firstVersionObject = Get-VersionFromString $First
     $secondVersionObject = Get-VersionFromString $Second
     
     if ($firstVersionObject.Version -eq $secondVersionObject.Version) {
         if (-not $firstVersionObject.Suffix) { return $First }
         if (-not $secondVersionObject.Suffix) { return $Second }
-        if ($firstVersionObject.Suffix -lt $secondVersionObject.Suffix) { return $Second }
+
+        $suffixComparison = Compare-PreReleaseSuffix -FirstSuffix $firstVersionObject.Suffix -SecondSuffix $secondVersionObject.Suffix
+        if ($suffixComparison -lt 0) { return $Second }
         return $First
     }
     
