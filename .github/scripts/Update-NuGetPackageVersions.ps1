@@ -387,7 +387,7 @@ foreach ($itemGroup in $autoUpdateGroups) {
         }
         
         if ($selectedVersion -ne $currentVersion) {
-            Write-Host "##[section]Updating '$packageId' from '$currentVersion' to '$latestVersion'"
+            Write-Host "::notice::Updating '$packageId' from '$currentVersion' to '$latestVersion'"
             $packageVersion.Version = $latestVersion
             $updateCount++
         } else {
@@ -397,7 +397,7 @@ foreach ($itemGroup in $autoUpdateGroups) {
 }
 
 if ($updateCount -gt 0) {
-    Write-Host "##[section]Saving $updateCount package updates to $propsFile"
+    Write-Host "::notice::Saving $updateCount package updates to $propsFile"
     $xml.Save($propsFile)
     Write-Host "Successfully updated $updateCount packages"
 } else {
