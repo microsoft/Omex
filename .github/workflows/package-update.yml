@@ -26,12 +26,12 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
-      - name: Run PowerShell script
+      - name: Update Nuget Packages
         shell: pwsh
         run: |
           ./.github/scripts/Update-NuGetPackageVersions.ps1 -Verbose
 
-      - name: Run PowerShell script
+      - name: Update .NET SDK
         shell: pwsh
         run: |
           ./.github/scripts/Update-DotNetSdkVersions.ps1 -Verbose
