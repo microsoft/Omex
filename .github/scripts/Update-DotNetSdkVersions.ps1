@@ -295,29 +295,55 @@ function Get-LatestPackageVersion {
         
         $searchCmd = "dotnet package search `"$PackageId`" --exact-match --format json $prereleaseFlag $configSourceFlag"
         
+        $dotnetArgs = @(
+            'package'
+            'search'
+            $PackageId
+            '--prerelease'
+            '--format'
+            'json'
+        )
+
         if ($EnableVerboseLogging) {
-            Write-Host "  [VERBOSE] Executing: $searchCmd"
+            Write-Host "  [VERBOSE] Executing: dotnet $($dotnetArgs -join ' ')"
         }
         
         Write-Host "Searching for MSBuild SDK: $PackageId"
+
+        $stderrFile = New-TemporaryFile
+        try {
+            $outputLines = & dotnet @dotnetArgs 2> $stderrFile
+            $output = $outputLines | Out-String
+
+            if ($LASTEXITCODE -ne 0) {
+                $errorDetail = ''
+                if (Test-Path $stderrFile) {
+                    $errorDetail = Get-Content -Path $stderrFile -Raw
+                }
+                if ([string]::IsNullOrWhiteSpace($errorDetail)) {
+                    $errorDetail = $output
+                }
+
+                $errorMsg = "Failed to search for package '$PackageId': $errorDetail"
+                if ($FailOnError) {
+                    throw $errorMsg
+                } else {
+                    Write-Warning $errorMsg
+                    return $null
+                }
+            }
         
-        $output = Invoke-Expression $searchCmd 2>&1 | Out-String
+            if ($EnableVerboseLogging) {
+                Write-Host "  [VERBOSE] Raw output: $output"
+            }
         
-        if ($LASTEXITCODE -ne 0) {
-            $errorMsg = "Failed to search for package '$PackageId': $output"
-            if ($FailOnError) {
-                throw $errorMsg
-            } else {
-                Write-Warning $errorMsg
-                return $null
+            $result = $output | ConvertFrom-Json
+        }
+        finally {
+            if (Test-Path $stderrFile) {
+                Remove-Item $stderrFile -ErrorAction SilentlyContinue
             }
         }
-        
-        if ($EnableVerboseLogging) {
-            Write-Host "  [VERBOSE] Raw output: $output"
-        }
-        
-        $result = $output | ConvertFrom-Json
         
         if (-not $result.searchResult -or $result.searchResult.Count -eq 0) {
             $errorMsg = "Package '$PackageId' not found in any configured feed"
