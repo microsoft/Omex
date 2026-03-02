@@ -267,15 +267,13 @@ function Get-LatestPackageVersion {
     )
     
     try {
-        $prereleaseFlag = if ($IncludePrerelease) { "--prerelease" } else { "" }
-        
         # Check for NuGet configuration files in the sources directory
-        $configSourceFlag = ""
+        $configFilePath = $null
 
         # Prefer a GitHub-specific config if present, fall back to the repo-wide NuGet.Config
         $nugetGitHubConfigPath = Join-Path $SourcesDirectory "NuGet-GitHub.Config"
         if (Test-Path $nugetGitHubConfigPath) {
-            $configSourceFlag = "--configfile `"$nugetGitHubConfigPath`""
+            $configFilePath = $nugetGitHubConfigPath
             if ($EnableVerboseLogging) {
                 Write-Host "  [VERBOSE] Using NuGet-GitHub.Config from: $nugetGitHubConfigPath"
             }
@@ -283,7 +281,7 @@ function Get-LatestPackageVersion {
         else {
             $nugetConfigPath = Join-Path $SourcesDirectory "NuGet.Config"
             if (Test-Path $nugetConfigPath) {
-                $configSourceFlag = "--configfile `"$nugetConfigPath`""
+                $configFilePath = $nugetConfigPath
                 if ($EnableVerboseLogging) {
                     Write-Host "  [VERBOSE] Using NuGet.Config from: $nugetConfigPath"
                 }
@@ -292,17 +290,24 @@ function Get-LatestPackageVersion {
                 Write-Warning "NuGet-GitHub.Config or NuGet.Config not found under: $SourcesDirectory - search may not find private feeds"
             }
         }
-        
-        $searchCmd = "dotnet package search `"$PackageId`" --exact-match --format json $prereleaseFlag $configSourceFlag"
-        
+
         $dotnetArgs = @(
             'package'
             'search'
             $PackageId
-            '--prerelease'
+            '--exact-match'
             '--format'
             'json'
         )
+
+        if ($IncludePrerelease) {
+            $dotnetArgs += '--prerelease'
+        }
+
+        if ($configFilePath) {
+            $dotnetArgs += '--configfile'
+            $dotnetArgs += $configFilePath
+        }
 
         if ($EnableVerboseLogging) {
             Write-Host "  [VERBOSE] Executing: dotnet $($dotnetArgs -join ' ')"
