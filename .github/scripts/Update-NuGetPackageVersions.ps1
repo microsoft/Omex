@@ -314,18 +314,10 @@ $xml = New-Object System.Xml.XmlDocument
 $xml.PreserveWhitespace = $true
 $xml.Load($propsFile)
 
-# Configure XML namespace manager for MSBuild default namespace
-$namespaceManager = New-Object System.Xml.XmlNamespaceManager($xml.NameTable)
-if ($xml.DocumentElement -and $xml.DocumentElement.NamespaceURI) {
-    $namespaceManager.AddNamespace("msb", $xml.DocumentElement.NamespaceURI)
-} else {
-    $namespaceManager.AddNamespace("msb", "http://schemas.microsoft.com/developer/msbuild/2003")
-}
-
 $updateCount = 0
 
-# Find all ItemGroups with AutoUpdate label (namespace-aware)
-$autoUpdateGroups = $xml.SelectNodes('/msb:Project/msb:ItemGroup[@Label and contains(@Label, "AutoUpdate")]', $namespaceManager)
+# Find all ItemGroups with AutoUpdate label using namespace-agnostic XPath
+$autoUpdateGroups = $xml.SelectNodes('/*[local-name()="Project"]/*[local-name()="ItemGroup"][@Label and contains(@Label, "AutoUpdate")]')
 if ($null -eq $autoUpdateGroups) {
     $autoUpdateGroups = @()
 }
