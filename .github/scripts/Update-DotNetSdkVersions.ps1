@@ -81,8 +81,15 @@ if (-not (Test-Path -LiteralPath $SourcesDirectory -PathType Container)) {
 # Resolve to a fully qualified, normalized path
 $SourcesDirectory = (Resolve-Path -LiteralPath $SourcesDirectory).ProviderPath
 
-# Auto-detect verbose logging from Azure Pipelines System.Debug variable
-$EnableVerboseLogging = ($env:SYSTEM_DEBUG -eq 'true') -or ($env:SYSTEM_DEBUG -eq '1')
+# Determine verbose logging:
+# 1. Prefer explicit -Verbose parameter (from CmdletBinding/common parameters)
+# 2. Fall back to Azure Pipelines System.Debug variable
+if ($PSBoundParameters.ContainsKey('Verbose')) {
+    $EnableVerboseLogging = [bool]$PSBoundParameters['Verbose']
+}
+else {
+    $EnableVerboseLogging = ($env:SYSTEM_DEBUG -eq 'true') -or ($env:SYSTEM_DEBUG -eq '1')
+}
 
 $ErrorActionPreference = if ($FailOnError) { "Stop" } else { "Continue" }
 
@@ -153,8 +160,28 @@ function Get-LatestSdkVersion {
             Write-Host "  [VERBOSE] Response headers: $($response.Headers | ConvertTo-Json -Compress)"
         }
         
-        # PowerShell Core: Get final URL from response object
-        $finalUrl = $response.BaseResponse.RequestMessage.RequestUri.AbsoluteUri
+        # Determine final URL from response object in a way that works in both
+        # PowerShell Core and Windows PowerShell 5.1.
+        $finalUrl = $null
+        
+        # Preferred (PowerShell Core): RequestMessage.RequestUri
+        if ($response.BaseResponse -and
+            $response.BaseResponse.RequestMessage -and
+            $response.BaseResponse.RequestMessage.RequestUri) {
+            $finalUrl = $response.BaseResponse.RequestMessage.RequestUri.AbsoluteUri
+        }
+        
+        # Fallback: Location header (some environments expose final URI here)
+        if (-not $finalUrl -and $response.Headers -and $response.Headers.Location) {
+            $finalUrl = $response.Headers.Location.ToString()
+        }
+        
+        # Fallback (Windows PowerShell 5.1): BaseResponse.ResponseUri
+        if (-not $finalUrl -and
+            $response.BaseResponse -and
+            $response.BaseResponse.ResponseUri) {
+            $finalUrl = $response.BaseResponse.ResponseUri.AbsoluteUri
+        }
         
         if (-not $finalUrl) {
             throw "Could not determine final redirect URL from response"
@@ -192,16 +219,28 @@ function Get-LatestPackageVersion {
     try {
         $prereleaseFlag = if ($IncludePrerelease) { "--prerelease" } else { "" }
         
-        # Check if NuGet.config exists in the sources directory
-        $nugetConfigPath = Join-Path $SourcesDirectory "NuGet.config"
+        # Check for NuGet configuration files in the sources directory
         $configSourceFlag = ""
-        if (Test-Path $nugetConfigPath) {
-            $configSourceFlag = "--configfile `"$nugetConfigPath`""
+
+        # Prefer a GitHub-specific config if present, fall back to the repo-wide NuGet.Config
+        $nugetGitHubConfigPath = Join-Path $SourcesDirectory "NuGet-GitHub.Config"
+        if (Test-Path $nugetGitHubConfigPath) {
+            $configSourceFlag = "--configfile `"$nugetGitHubConfigPath`""
             if ($EnableVerboseLogging) {
-                Write-Host "  [VERBOSE] Using NuGet.config from: $nugetConfigPath"
+                Write-Host "  [VERBOSE] Using NuGet-GitHub.Config from: $nugetGitHubConfigPath"
             }
-        } else {
-            Write-Warning "NuGet.config not found at: $nugetConfigPath - search may not find private feeds"
+        }
+        else {
+            $nugetConfigPath = Join-Path $SourcesDirectory "NuGet.Config"
+            if (Test-Path $nugetConfigPath) {
+                $configSourceFlag = "--configfile `"$nugetConfigPath`""
+                if ($EnableVerboseLogging) {
+                    Write-Host "  [VERBOSE] Using NuGet.Config from: $nugetConfigPath"
+                }
+            }
+            else {
+                Write-Warning "NuGet-GitHub.Config or NuGet.Config not found under: $SourcesDirectory - search may not find private feeds"
+            }
         }
         
         $searchCmd = "dotnet package search `"$PackageId`" --exact-match --format json $prereleaseFlag $configSourceFlag"
@@ -376,7 +415,7 @@ if ($updateCount -gt 0) {
     Write-Host "##[section]Saving $updateCount SDK updates to $globalJsonFile"
     
     # Save with consistent JSON formatting (2-space indent)
-    $globalJson | ConvertTo-Json -Depth 10 | Set-Content $globalJsonFile -NoNewline
+    $globalJson | ConvertTo-Json -Depth 10 | Set-Content $globalJsonFile
     Write-Host "Successfully updated $updateCount SDK(s)"
 } else {
     Write-Host "No SDK updates needed"
