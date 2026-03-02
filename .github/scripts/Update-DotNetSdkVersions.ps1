@@ -203,7 +203,7 @@ function Get-LatestSdkVersion {
         }
         
         # Follow redirects automatically and get final URL
-        $response = Invoke-WebRequest -Uri $sdkRedirectUrl -Method HEAD -MaximumRedirection 10 -UseBasicParsing
+        $response = Invoke-WebRequest -Uri $sdkRedirectUrl -Method HEAD -MaximumRedirection 10
         
         if ($EnableVerboseLogging) {
             Write-Host "  [VERBOSE] Response status: $($response.StatusCode)"
