@@ -54,7 +54,11 @@ param(
     ),
 
     [Parameter(Mandatory = $false)]
-    [bool]$FailOnError = $false
+    [bool]$FailOnError = $false,
+
+    # (Nuget Config to use)
+    [Parameter(Mandatory = $false)]
+    [string]$NugetConfigPath = "NuGet.Config"
 )
 
 # Normalize and validate SourcesDirectory so it is always a valid root directory
@@ -196,22 +200,16 @@ function Get-LatestPackageVersion {
         
         # Prefer NuGet-GitHub.Config (used on GitHub runners) when present, otherwise fall back to NuGet.Config
         $nugetGithubConfigPath = Join-Path $SourcesDirectory "NuGet-GitHub.Config"
-        $nugetConfigPath = Join-Path $SourcesDirectory "NuGet.Config"
+        $nugetConfigPath = Join-Path $SourcesDirectory $NugetConfigPath
         $configSourceFlag = ""
         if (Test-Path $nugetGithubConfigPath) {
             $configSourceFlag = "--configfile `"$nugetGithubConfigPath`""
             if ($EnableVerboseLogging) {
-                Write-Host "  [VERBOSE] Using NuGet-GitHub.Config from: $nugetGithubConfigPath"
-            }
-        }
-        elseif (Test-Path $nugetConfigPath) {
-            $configSourceFlag = "--configfile `"$nugetConfigPath`""
-            if ($EnableVerboseLogging) {
-                Write-Host "  [VERBOSE] Using NuGet.Config from: $nugetConfigPath"
+                Write-Host "  [VERBOSE] Using '$NugetConfigPath' from: '$nugetGithubConfigPath'."
             }
         }
         else {
-            Write-Warning "NuGet-GitHub.Config or NuGet.Config not found at: $SourcesDirectory - search may not find required feeds"
+            Write-Warning "$NugetConfigPath not found at: $SourcesDirectory - search may not find required feeds"
         }
         
         $searchCmd = "dotnet package search `"$PackageId`" --exact-match --format json $prereleaseFlag $configSourceFlag"

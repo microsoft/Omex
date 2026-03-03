@@ -60,7 +60,11 @@ param(
     ),
 
     [Parameter(Mandatory = $false)]
-    [bool]$FailOnError = $false
+    [bool]$FailOnError = $false,
+
+    # (Nuget Config to use)
+    [Parameter(Mandatory = $false)]
+    [string]$NugetConfigPath = "NuGet.Config"
 )
 
 # Normalize and validate SourcesDirectory so it is always a valid root directory
@@ -271,24 +275,15 @@ function Get-LatestPackageVersion {
         $configFilePath = $null
 
         # Prefer a GitHub-specific config if present, fall back to the repo-wide NuGet.Config
-        $nugetGitHubConfigPath = Join-Path $SourcesDirectory "NuGet-GitHub.Config"
+        $nugetGitHubConfigPath = Join-Path $SourcesDirectory $NugetConfigPath
         if (Test-Path $nugetGitHubConfigPath) {
             $configFilePath = $nugetGitHubConfigPath
             if ($EnableVerboseLogging) {
-                Write-Host "  [VERBOSE] Using NuGet-GitHub.Config from: $nugetGitHubConfigPath"
+                Write-Host "  [VERBOSE] Using '$NugetConfigPath' from: '$nugetGitHubConfigPath'."
             }
         }
         else {
-            $nugetConfigPath = Join-Path $SourcesDirectory "NuGet.Config"
-            if (Test-Path $nugetConfigPath) {
-                $configFilePath = $nugetConfigPath
-                if ($EnableVerboseLogging) {
-                    Write-Host "  [VERBOSE] Using NuGet.Config from: $nugetConfigPath"
-                }
-            }
-            else {
-                Write-Warning "NuGet-GitHub.Config or NuGet.Config not found under: $SourcesDirectory - search may not find private feeds"
-            }
+            Write-Warning "$NugetConfigPath not found under: $SourcesDirectory - search may not find private feeds"
         }
 
         $dotnetArgs = @(

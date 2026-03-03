@@ -24,17 +24,17 @@ jobs:
       - name: Install .NET 10 SDK
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
+          global-json-file: global.json
 
       - name: Update NuGet Packages
         shell: pwsh
         run: |
-          ./.github/scripts/Update-NuGetPackageVersions.ps1 -Verbose
+          ./.github/scripts/Update-NuGetPackageVersions.ps1 -Verbose -NugetConfigPath "NuGet-GitHub.Config"
 
       - name: Update .NET SDK
         shell: pwsh
         run: |
-          ./.github/scripts/Update-DotNetSdkVersions.ps1 -Verbose
+          ./.github/scripts/Update-DotNetSdkVersions.ps1 -Verbose -NugetConfigPath "NuGet-GitHub.Config"
 
       - name: Create branch, commit, push
         id: commit
