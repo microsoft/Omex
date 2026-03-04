@@ -3,14 +3,14 @@ name: Package Updates (GitHub)
 on:
   schedule:
     - cron: "0 6 * * 1"
-
+  workflow_dispatch:
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
   run-script-and-pr:
-    if: github.event_name == 'schedule'
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: windows-latest
     permissions:
       contents: write
