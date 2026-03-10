@@ -99,7 +99,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
-		[DynamicData(nameof(StatusSenders), DynamicDataSourceType.Method)]
+		[DynamicData(nameof(StatusSenders))]
 		public async Task SendStatusAsync_WhenUnsupportedStateUsed_Trows(SenderContext context)
 		{
 			await context.Sender.IntializeAsync(default);
@@ -110,7 +110,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
-		[DynamicData(nameof(StatusSenders), DynamicDataSourceType.Method)]
+		[DynamicData(nameof(StatusSenders))]
 		public async Task SendStatusAsync_ReportsHealthCorrectly(SenderContext context)
 		{
 			(string name, string description, HealthStatus status, HealthState expected)[] checks = new[]
@@ -138,7 +138,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 		}
 
 		[TestMethod]
-		[DynamicData(nameof(StatusSenders), DynamicDataSourceType.Method)]
+		[DynamicData(nameof(StatusSenders))]
 		public async Task SendStatusAsync_WhenNotInitialized_Throws(SenderContext context)
 		{
 			await Assert.ThrowsExactlyAsync<InvalidOperationException>(() =>

@@ -20,7 +20,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 			ILoggingBuilder builder = new MockLoggingBuilder();
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder.Services);
-			Assert.AreEqual(0, logScrubbingRules.Length);
+			Assert.IsEmpty(logScrubbingRules);
 		}
 
 		[TestMethod]
@@ -29,7 +29,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 			ILoggingBuilder builder = new MockLoggingBuilder().AddRegexLogScrubbingRule("valueToReplace", "replacementValue");
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder.Services);
-			Assert.AreEqual(1, logScrubbingRules.Length);
+			Assert.HasCount(1, logScrubbingRules);
 			Assert.IsInstanceOfType(logScrubbingRules[0], typeof(RegexLogScrubbingRule));
 		}
 
@@ -39,7 +39,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 			ILoggingBuilder builder = new MockLoggingBuilder().AddIPv4AddressLogScrubbingRule();
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder.Services);
-			Assert.AreEqual(1, logScrubbingRules.Length);
+			Assert.HasCount(1, logScrubbingRules);
 			Assert.IsInstanceOfType(logScrubbingRules[0], typeof(RegexLogScrubbingRule));
 		}
 
@@ -67,7 +67,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 			ILoggingBuilder builder = new MockLoggingBuilder().AddIPv6AddressLogScrubbingRule();
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder.Services);
-			Assert.AreEqual(1, logScrubbingRules.Length);
+			Assert.HasCount(1, logScrubbingRules);
 			Assert.IsInstanceOfType(logScrubbingRules[0], typeof(RegexLogScrubbingRule));
 		}
 
@@ -101,7 +101,7 @@ namespace Microsoft.Omex.Extensions.Logging.UnitTests.Scrubbing
 				.AddIPv6AddressLogScrubbingRule();
 
 			ILogScrubbingRule[] logScrubbingRules = GetTypeRegistrations(builder.Services);
-			Assert.AreEqual(3, logScrubbingRules.Length);
+			Assert.HasCount(3, logScrubbingRules);
 			Assert.IsInstanceOfType(logScrubbingRules[0], typeof(RegexLogScrubbingRule));
 			Assert.AreEqual("replacementValue", logScrubbingRules[0].Scrub("valueToReplace"));
 			Assert.IsInstanceOfType(logScrubbingRules[1], typeof(RegexLogScrubbingRule));

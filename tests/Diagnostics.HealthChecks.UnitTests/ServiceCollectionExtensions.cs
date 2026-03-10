@@ -32,7 +32,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				.GetRequiredService<IEnumerable<IHealthCheckPublisher>>()
 				.ToArray();
 
-			Assert.AreEqual(1, publishers.Length, "Published should be registered once");
+			Assert.HasCount(1, publishers, "Published should be registered once");
 			Assert.IsInstanceOfType(publishers[0], typeof(MockPublisher));
 		}
 

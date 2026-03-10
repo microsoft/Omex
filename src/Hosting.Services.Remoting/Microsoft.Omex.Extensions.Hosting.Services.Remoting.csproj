@@ -8,7 +8,7 @@
     <Summary>Microsoft Omex Extensions Hosting Services Remoting</Summary>
     <Description>This library contains functionality to configure the Service Fabric remoting listeners.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
-    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Hosting.Services.Remoting</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Hosting.Services.Remoting</PackageProjectUrl>
     <PackageTags>Microsoft;Omex;Extensions;Hosting;Services</PackageTags>
   </PropertyGroup>
   <ItemGroup>

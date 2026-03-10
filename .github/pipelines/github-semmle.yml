@@ -37,10 +37,8 @@ extends:
             steps:
               - checkout: self
                 clean: true
-              - task: UseDotNet@2
-                displayName: Temporarily install .NET 8 SDK while dual targeting
-                inputs:
-                  version: "8.0.x"
+              - task: NuGetAuthenticate@1
+                displayName: NuGet Authenticate
               - task: UseDotNet@2
                 displayName: Use .NET SDK from global.json
                 inputs:

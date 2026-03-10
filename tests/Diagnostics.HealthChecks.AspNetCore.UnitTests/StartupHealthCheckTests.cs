@@ -39,7 +39,6 @@ public class StartupHealthCheckTests
 			HealthCheckTestHelpers.GetHealthCheckContext(monitorHealthCheck),
 			source.Token);
 
-		Assert.IsNotNull(result);
 		Assert.AreEqual(healthStatus, result.Status);
 	}
 
@@ -50,7 +49,7 @@ public class StartupHealthCheckTests
 
 		IMemoryCache memoryCacheMock = new MemoryCache(new MemoryCacheOptions());
 		CancellationTokenSource source = new();
-		IHealthCheck healthCheck = new StartupHealthCheck(wrappedHealthCheck, memoryCacheMock);
+		StartupHealthCheck healthCheck = new(wrappedHealthCheck, memoryCacheMock);
 
 		for (int i = 0; i < 3; i++)
 		{

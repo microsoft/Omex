@@ -9,9 +9,13 @@
     <Summary>Microsoft Omex Extensions Testing Helpers</Summary>
     <Description>This library contains helpers for testing the Omex Extensions.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
-    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Testing.Helpers</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Testing.Helpers</PackageProjectUrl>
     <PackageTags>Microsoft;Omex;Extensions;Testing</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MSTest.TestFramework" />

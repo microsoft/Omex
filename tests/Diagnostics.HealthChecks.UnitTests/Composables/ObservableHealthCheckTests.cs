@@ -44,7 +44,6 @@ public class ObservableHealthCheckTests
 			HealthCheckTestHelpers.GetHealthCheckContext(monitorHealthCheck, registeredFailureStatus),
 			source.Token);
 
-		Assert.IsNotNull(result);
 		Assert.AreEqual(expectedStatus, result.Status);
 	}
 
@@ -67,7 +66,6 @@ public class ObservableHealthCheckTests
 			context,
 			source.Token);
 
-		Assert.IsNotNull(result);
 		Assert.AreEqual(context.Registration.FailureStatus, result.Status);
 	}
 }

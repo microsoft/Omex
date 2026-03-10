@@ -11,12 +11,15 @@ variables:
 - name: system.debug
   value: false
 - group: OmexOpenSourceExternal-VG
-- group: OmexAcTokensCorpNet
 resources:
   repositories:
   - repository: OfficePipelineTemplates
     type: git
     name: OE/OfficePipelineTemplates
+    ref: refs/heads/main
+  - repository: OmexPipelines
+    type: git
+    name: OC/OmexPipelines
     ref: refs/heads/main
 trigger: none
 pr: none
@@ -76,18 +79,31 @@ extends:
               git checkout -b feature/github-bridge-forward $commit
           env:
             omexgitbotexternalpat: $(omexgitbotexternalpat)
-            SYSTEM_ACCESSTOKEN: $(PatToken)
-            OMEX_PAT_TOKEN: $(PatToken)
-        - task: oenginternal.office-vsts-tasks-extension.e881ce1e-41bc-4f59-b8a2-9a6001f43efe.CreatePullRequest@10
-          displayName: Create Pull Request
+        - template: pipelines/templates/git-authenticate-steps-wif.yml@OmexPipelines
+          parameters:
+            azureServiceConnection: 'OmexGitHubInternal_AdoContributor_UAMI'
+            userEmail: 'omexac@microsoft.com'
+            username: 'Omex Service Account'
+        - task: PowerShell@2
+          displayName: Push Branch to ADO
           condition: and(succeeded(), ne(variables['ChangesFound'], 0))
           inputs:
-            SourceBranchName: github-bridge-forward-$(GITHUBCOMMIT)
-            TargetBranchName: $(GITHUBBRANCH)
-            Title: GitHub Forward Integration - $(GITHUBCOMMIT)
-            Description: GitHub forward integration Pull Request for commit '$(GITHUBCOMMIT)'
-            SkipIfNoChangesFound: false
-            WorkItemId: "9421495"
-            AutoCompleteUserId: 75d3c7a0-2045-6bf0-b50e-3ab2cf9ae644
-            Pat: $(OfficeOcCodeAccessCorpNet)
-            MergeStrategy: noFastForward
+            targetType: inline
+            script: |-
+              Write-Host "Pushing local branch to ADO as github-bridge-forward-$env:GITHUBCOMMIT..."
+              git push origin feature/github-bridge-forward:github-bridge-forward-$env:GITHUBCOMMIT
+              if ($LASTEXITCODE -ne 0) {
+                Write-Host "##vso[task.logissue type=error]Failed to push branch to ADO."
+                exit 1
+              }
+              Write-Host "Branch pushed successfully to ADO."
+        - template: pipelines/templates/create-pull-request-steps-wif.yml@OmexPipelines
+          parameters:
+            sourceBranchName: 'github-bridge-forward-$(GITHUBCOMMIT)'
+            targetBranchName: $(GITHUBBRANCH)
+            title: 'GitHub Forward Integration - $(GITHUBCOMMIT)'
+            description: 'GitHub forward integration Pull Request for commit ''$(GITHUBCOMMIT)'''
+            workItemIds: '9421495'
+            enableAutoComplete: true
+            mergeStrategy: 'noFastForward'
+            condition: and(succeeded(), ne(variables['ChangesFound'], 0))

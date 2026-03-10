@@ -7,7 +7,7 @@
     <Summary>Microsoft Omex Extensions Logging</Summary>
     <Description>This library contains functionality to configure and initialize the logging infrastructure.</Description>
     <ReleaseNotes>Initial release.</ReleaseNotes>
-    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Extensions/Logging</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/microsoft/Omex/tree/main/src/Logging</PackageProjectUrl>
     <PackageTags>Microsoft;Omex;Extensions;Logging</PackageTags>
   </PropertyGroup>
   <ItemGroup>

@@ -43,7 +43,7 @@ namespace Microsoft.Omex.Extensions.Hosting.Services.Web.UnitTests
 		{
 			Memory<byte> memory = new byte[provider.MaxBytesInIdentity];
 			(_, int bytes) = await provider.TryWriteBytesAsync(context, memory).ConfigureAwait(false);
-			Assert.IsTrue(provider.MaxBytesInIdentity >= bytes, "Written size bigger then max size");
+			Assert.IsGreaterThanOrEqualTo(bytes, provider.MaxBytesInIdentity, "Written size bigger then max size");
 			return memory.Span.ToArray();
 		}
 	}

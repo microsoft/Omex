@@ -141,7 +141,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 				// Wait for the publisher to see the cancellation token
 				await publishers[0].Started.TimeoutAfter(TimeSpan.FromSeconds(10));
-				Assert.AreEqual(1, publishers[0].Entries.Count);
+				Assert.HasCount(1, publishers[0].Entries);
 
 				// Act
 				await service.StopAsync(); // Trigger cancellation
@@ -195,7 +195,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 				for (int i = 0; i < publishers.Length; i++)
 				{
-					Assert.AreEqual(1, publishers[i].Entries.Count);
+					Assert.HasCount(1, publishers[i].Entries);
 					HealthReport report = publishers[i].Entries.Single().report;
 					CollectionAssert.AreEqual(new[] { "one", "two", }, report.Entries.Keys.OrderBy(k => k).ToArray());
 				}
@@ -277,7 +277,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 				for (int i = 0; i < publishers.Length; i++)
 				{
-					Assert.AreEqual(4, publishers[i].Entries.Count);
+					Assert.HasCount(4, publishers[i].Entries);
 					string[] entries = [.. publishers[i].Entries.SelectMany(e => e.report.Entries.Select(e2 => e2.Key)).OrderBy(k => k)];
 					CollectionAssert.AreEqual(
 						new[] { "CheckDefault", "CheckDelay2Period18", "CheckDelay7Period11", "CheckDelay9Period5" },
@@ -332,7 +332,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 
 				for (int i = 0; i < publishers.Length; i++)
 				{
-					Assert.AreEqual(1, publishers[i].Entries.Count);
+					Assert.HasCount(1, publishers[i].Entries);
 					HealthReport report = publishers[i].Entries.Single().report;
 					CollectionAssert.AreEqual(new[] { "one", "two", }, report.Entries.Keys.OrderBy(k => k).ToArray());
 				}
@@ -412,7 +412,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks.UnitTests
 				// Assert
 				for (int i = 0; i < publishers.Length; i++)
 				{
-					Assert.AreEqual(1, publishers[i].Entries.Count);
+					Assert.HasCount(1, publishers[i].Entries);
 					HealthReport report = publishers[i].Entries.Single().report;
 					CollectionAssert.AreEqual(new[] { "one" }, report.Entries.Keys.OrderBy(k => k).ToArray());
 				}
