@@ -63,7 +63,7 @@ jobs:
           GH_TOKEN: ${{ secrets.CREATE_PACKAGEUPDATE }}
         shell: pwsh
         run: |
-          git fetch origin main
+          git fetch --no-tags --depth=2 origin main
           $commits = git log --oneline origin/main..HEAD
           if (-not $commits) {
             Write-Host "No commits between origin/main and HEAD; skipping PR creation."
