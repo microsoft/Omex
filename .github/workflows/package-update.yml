@@ -34,7 +34,7 @@ jobs:
       - name: Update .NET SDK
         shell: pwsh
         run: |
-          ./.github/scripts/Update-DotNetSdkVersions.ps1 -Verbose -NugetConfigPath "NuGet-GitHub.Config"
+          ./.github/scripts/Update-DotNetSdkVersions.ps1 -Verbose -NugetConfigPath "NuGet-GitHub.Config" -SdkChannel "LTS"
 
       - name: Create branch, commit, push
         id: commit
