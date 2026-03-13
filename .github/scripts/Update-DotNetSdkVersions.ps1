@@ -44,7 +44,7 @@ param(
     [string]$GlobalJsonPath = "global.json",
 
     [Parameter(Mandatory = $false)]
-    [string]$SdkChannel = "STS",
+    [string]$SdkChannel = "LTS",
 
     [Parameter(Mandatory = $false)]
     [string]$SourcesDirectory = $(
