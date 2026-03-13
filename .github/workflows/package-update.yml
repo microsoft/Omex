@@ -54,7 +54,16 @@ jobs:
           }
 
           git commit -m "chore(automation): update NuGet packages and .NET SDK versions"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "git commit failed with exit code $LASTEXITCODE."
+            exit $LASTEXITCODE
+          }
+
           git push --set-upstream origin $branch
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "git push failed with exit code $LASTEXITCODE."
+            exit $LASTEXITCODE
+          }
           "has-changes=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 
       - name: Open PR with gh
