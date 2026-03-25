@@ -12,7 +12,7 @@
 
 .PARAMETER SdkChannel
     The .NET SDK release channel to track. Options: STS, LTS, 8.0, 9.0, etc.
-    Default: "STS"
+    Default: "LTS"
 
 .PARAMETER SourcesDirectory
     The root source directory containing the global.json file.
@@ -44,7 +44,7 @@ param(
     [string]$GlobalJsonPath = "global.json",
 
     [Parameter(Mandatory = $false)]
-    [string]$SdkChannel = "STS",
+    [string]$SdkChannel = "LTS",
 
     [Parameter(Mandatory = $false)]
     [string]$SourcesDirectory = $(
@@ -197,7 +197,7 @@ function Test-PreReleaseVersion {
 }
 
 function Get-LatestSdkVersion {
-    param ([string]$Channel = "STS")
+    param ([string]$Channel = "LTS")
     
     $sdkRedirectUrl = "https://aka.ms/dotnet/$Channel/dotnet-sdk-win-x64.zip"
     

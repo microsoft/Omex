@@ -34,7 +34,7 @@ jobs:
       - name: Update .NET SDK
         shell: pwsh
         run: |
-          ./.github/scripts/Update-DotNetSdkVersions.ps1 -Verbose -NugetConfigPath "NuGet-GitHub.Config"
+          ./.github/scripts/Update-DotNetSdkVersions.ps1 -Verbose -NugetConfigPath "NuGet-GitHub.Config" -SdkChannel "LTS"
 
       - name: Create branch, commit, push
         id: commit
@@ -48,23 +48,38 @@ jobs:
           git add -A
 
           if (git diff --cached --quiet) {
-            echo "No changes detected; skipping commit and PR creation."
-            echo "has-changes=false" >> $env:GITHUB_OUTPUT
+            Write-Host "No changes detected; skipping commit and PR creation."
+            "has-changes=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             exit 0
           }
 
           git commit -m "chore(automation): update NuGet packages and .NET SDK versions"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "git commit failed with exit code $LASTEXITCODE."
+            exit $LASTEXITCODE
+          }
+
           git push --set-upstream origin $branch
-          echo "has-changes=true" >> $env:GITHUB_OUTPUT
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "git push failed with exit code $LASTEXITCODE."
+            exit $LASTEXITCODE
+          }
+          "has-changes=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 
       - name: Open PR with gh
-        if: steps.commit.outputs.has-changes == 'true'
+        if: steps.commit.outputs.has-changes == 'true' && steps.commit.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.CREATE_PACKAGEUPDATE }}
         shell: pwsh
         run: |
+          git fetch --no-tags --depth=2 origin main
+          $commits = git log --oneline origin/main..HEAD
+          if (-not $commits) {
+            Write-Host "No commits between origin/main and HEAD; skipping PR creation."
+            exit 0
+          }
           gh pr create `
-            --title "Automated Package Update" `
+            --title "Automated Package Update - ${{ github.run_id }}" `
             --body "This PR was created automatically by the workflow run ${{ github.run_id }} (attempt ${{ github.run_attempt }})." `
             --base main `
             --head "automation/package-update-${{ github.run_id }}-${{ github.run_attempt }}" `
