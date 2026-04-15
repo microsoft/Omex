@@ -44,14 +44,15 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git checkout -b $branch
-          git add -A
-
-          if (git diff --cached --quiet) {
+          $ChangedFilesCount = $(git status --porcelain | Measure-Object | Select-Object -expand Count)
+          if ($ChangedFilesCount -eq 0) {
             Write-Host "No changes detected; skipping commit and PR creation."
             "has-changes=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             exit 0
           }
+
+          git checkout -b $branch
+          git add -A
 
           git commit -m "chore(automation): update NuGet packages and .NET SDK versions"
           if ($LASTEXITCODE -ne 0) {
