@@ -23,11 +23,8 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly HashSet<string> m_customTagObjectsDimension;
 		private readonly bool m_isSetParentNameAsDimensionEnabled;
 
-		/// <summary>
-		/// Maximum length for metric tag values to prevent
-		/// cardinality explosion via externally controlled
-		/// baggage or tag values.
-		/// </summary>
+		// Caps metric tag value length to reduce cardinality risk
+		// from externally controlled baggage or tag values
 		private const int MaxMetricTagValueLength = 256;
 
 		public ActivityMetricsSender(
@@ -75,11 +72,7 @@ namespace Microsoft.Omex.Extensions.Activities
 				string? baggageItem = activity.GetBaggageItem(dimension);
 				if (!string.IsNullOrWhiteSpace(baggageItem))
 				{
-					// Truncate to prevent metrics cardinality explosion
-					// via externally controlled W3C baggage header values
-					tagList.Add(dimension, baggageItem.Length > MaxMetricTagValueLength
-						? baggageItem[..MaxMetricTagValueLength]
-						: baggageItem);
+					tagList.Add(dimension, TruncateSafe(baggageItem, MaxMetricTagValueLength));
 				}
 			}
 
@@ -88,12 +81,16 @@ namespace Microsoft.Omex.Extensions.Activities
 				object? tagItem = activity.GetTagItem(dimension);
 				if (tagItem != null)
 				{
-					// Truncate string representation to prevent
-					// cardinality explosion via high-cardinality tag values
-					string tagValue = tagItem.ToString() ?? string.Empty;
-					tagList.Add(dimension, tagValue.Length > MaxMetricTagValueLength
-						? tagValue[..MaxMetricTagValueLength]
-						: tagValue);
+					// Only truncate string values — preserve original
+					// type for numeric/bool to avoid breaking exporters
+					if (tagItem is string stringValue)
+					{
+						tagList.Add(dimension, TruncateSafe(stringValue, MaxMetricTagValueLength));
+					}
+					else
+					{
+						tagList.Add(dimension, tagItem);
+					}
 				}
 			}
 
@@ -107,6 +104,19 @@ namespace Microsoft.Omex.Extensions.Activities
 			}
 
 			histogram.Record(durationMs, tagList);
+		}
+
+		// Truncates string to maxLength while avoiding
+		// splitting UTF-16 surrogate pairs
+		private static string TruncateSafe(string value, int maxLength)
+		{
+			if (value.Length <= maxLength)
+				return value;
+
+			if (char.IsHighSurrogate(value[maxLength - 1]))
+				return value[..(maxLength - 1)];
+
+			return value[..maxLength];
 		}
 
 		public void Dispose() => m_meter.Dispose();
