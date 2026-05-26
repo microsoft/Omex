@@ -23,6 +23,13 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly HashSet<string> m_customTagObjectsDimension;
 		private readonly bool m_isSetParentNameAsDimensionEnabled;
 
+		/// <summary>
+		/// Maximum length for metric tag values to prevent
+		/// cardinality explosion via externally controlled
+		/// baggage or tag values.
+		/// </summary>
+		private const int MaxMetricTagValueLength = 256;
+
 		public ActivityMetricsSender(
 			IExecutionContext executionContext,
 			IHostEnvironment hostEnvironment,
@@ -68,7 +75,11 @@ namespace Microsoft.Omex.Extensions.Activities
 				string? baggageItem = activity.GetBaggageItem(dimension);
 				if (!string.IsNullOrWhiteSpace(baggageItem))
 				{
-					tagList.Add(dimension, baggageItem);
+					// Truncate to prevent metrics cardinality explosion
+					// via externally controlled W3C baggage header values
+					tagList.Add(dimension, baggageItem.Length > MaxMetricTagValueLength
+						? baggageItem[..MaxMetricTagValueLength]
+						: baggageItem);
 				}
 			}
 
@@ -77,7 +88,12 @@ namespace Microsoft.Omex.Extensions.Activities
 				object? tagItem = activity.GetTagItem(dimension);
 				if (tagItem != null)
 				{
-					tagList.Add(dimension, tagItem);
+					// Truncate string representation to prevent
+					// cardinality explosion via high-cardinality tag values
+					string tagValue = tagItem.ToString() ?? string.Empty;
+					tagList.Add(dimension, tagValue.Length > MaxMetricTagValueLength
+						? tagValue[..MaxMetricTagValueLength]
+						: tagValue);
 				}
 			}
 
