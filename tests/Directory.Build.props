@@ -5,7 +5,7 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MSTest" />
+    <PackageReference Include="MSTest" PrivateAssets="All" />
     <PackageReference Include="Moq" />
   </ItemGroup>
 </Project>
