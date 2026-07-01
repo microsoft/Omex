@@ -24,11 +24,11 @@ namespace Microsoft.AspNetCore.Builder
 		/// </summary>
 		/// <param name="builder">Application builder</param>
 		/// <param name="environment">Environment information</param>
-		/// <param name="enableCorrelationHeaderBackwardCompatibility">Set it to true if the service needs to accept a request with old style correlation</param>
+		/// <param name="enableCorrelationHeaderBackwardCompatibility">An optional <see cref="bool"/> indicating whether to enable legacy correlation header/query support via <see cref="UseObsoleteCorrelationHeadersMiddleware"/>. Defaults to <c>false</c>.</param>
 		public static IApplicationBuilder UseOmexMiddlewares(
 			this IApplicationBuilder builder,
 			IHostEnvironment environment,
-			bool enableCorrelationHeaderBackwardCompatibility)
+			bool enableCorrelationHeaderBackwardCompatibility = false)
 		{
 			builder
 				.UseOmexExceptionHandler(environment)
