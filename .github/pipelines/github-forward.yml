@@ -40,6 +40,16 @@ extends:
         steps:
         - checkout: self
           clean: true
+        - task: AzureCLI@3
+          displayName: App Token – Mint
+          inputs:
+            connectionType: azureRM
+            azureSubscription: 'OmexGitHubInternal_AdoContributor_UAMI'
+            scriptType: pscore
+            scriptLocation: scriptPath
+            scriptPath: .github/actions/mint-github-app-token/New-GitHubAppToken.ps1
+          env:
+            GITHUB_APP_PERMISSIONS: '{"contents":"read"}'
         - task: PowerShell@2
           displayName: Check New Changes Exist
           inputs:
@@ -52,9 +62,9 @@ extends:
                 Write-Host "##vso[task.setvariable variable=ChangesFound]0"
                 exit 0
               }
-              <#[SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Not a secret")]#>
-              git remote add omexgithubremote https://$env:omexgitbotexternalpat@github.com/Microsoft/Omex
-              git fetch omexgithubremote
+              $auth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("x-access-token:$env:GITHUB_APP_TOKEN"))
+              git remote add omexgithubremote https://github.com/Microsoft/Omex
+              git -c "http.extraheader=AUTHORIZATION: basic $auth" fetch omexgithubremote
               $files = git diff --name-only origin/$env:GITHUBBRANCH omexgithubremote/$env:GITHUBBRANCH
               if ($files.length -eq 0) {
                 Write-Host "No changes between 'origin/$env:GITHUBBRANCH' and 'omexgithubremote/$env:GITHUBBRANCH' found."
@@ -66,7 +76,7 @@ extends:
 
               Write-Host "##vso[task.setvariable variable=ChangesFound]$ChangesFound"
           env:
-            omexgitbotexternalpat: $(omexgitbotexternalpat)
+            GITHUB_APP_TOKEN: $(GitHubAppToken)
         - task: PowerShell@2
           displayName: Create Feature Branch For PR Task
           condition: and(succeeded(), ne(variables['ChangesFound'], 0))
@@ -74,11 +84,11 @@ extends:
             targetType: inline
             script: |-
               $commit = $env:GITHUBCOMMIT
-              <#[SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Not a secret")]#>
-              git fetch https://$env:omexgitbotexternalpat@github.com/Microsoft/Omex $env:GITHUBBRANCH
+              $auth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("x-access-token:$env:GITHUB_APP_TOKEN"))
+              git -c "http.extraheader=AUTHORIZATION: basic $auth" fetch omexgithubremote $env:GITHUBBRANCH
               git checkout -b feature/github-bridge-forward $commit
           env:
-            omexgitbotexternalpat: $(omexgitbotexternalpat)
+            GITHUB_APP_TOKEN: $(GitHubAppToken)
         - template: pipelines/templates/git-authenticate-steps-wif.yml@OmexPipelines
           parameters:
             azureServiceConnection: 'OmexGitHubInternal_AdoContributor_UAMI'
