@@ -27,25 +27,27 @@ jobs:
       contents: read
       id-token: write
     steps:
-    - name: Checkout – Action
-      uses: actions/checkout@v7
-      with:
-        persist-credentials: false
-        sparse-checkout: .github/actions
-    - name: App Token – Mint
-      id: app-token
-      uses: ./.github/actions/mint-github-app-token
-      with:
-        azure-client-id: ${{ vars.AZURE_CLIENT_ID }}
-        azure-tenant-id: ${{ vars.AZURE_TENANT_ID }}
-        azure-subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-        permissions: '{"pull_requests":"write","statuses":"write"}'
     - name: Checkout
       uses: actions/checkout@v7
       with:
         fetch-depth: 0
         persist-credentials: false
         ref: refs/pull/${{ github.event.pull_request.number }}/merge
+    - name: Checkout – Trusted Action
+      uses: actions/checkout@v7
+      with:
+        path: trusted-action
+        persist-credentials: false
+        ref: ${{ github.event.pull_request.base.sha }}
+        sparse-checkout: .github/actions
+    - name: App Token – Mint
+      id: app-token
+      uses: ./trusted-action/.github/actions/mint-github-app-token
+      with:
+        azure-client-id: ${{ vars.AZURE_CLIENT_ID }}
+        azure-tenant-id: ${{ vars.AZURE_TENANT_ID }}
+        azure-subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+        permissions: '{"pull_requests":"write","statuses":"write"}'
     - name: PR Metrics
       uses: microsoft/PR-Metrics@v1.7.17
       env:
@@ -56,6 +58,9 @@ jobs:
   build:
     if: github.event_name != 'pull_request_target'
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      packages: write
     strategy:
       matrix:
         os: [windows-latest] # [ubuntu-latest, windows-latest, macOS-latest]

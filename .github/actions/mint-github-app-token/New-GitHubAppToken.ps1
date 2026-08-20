@@ -82,7 +82,9 @@ function Get-JsonWebToken
         [Parameter(Mandatory = $true)]
         [string] $ClientId,
         [Parameter(Mandatory = $true)]
-        [string] $PrivateKey
+        [string] $PrivateKey,
+        [Parameter(Mandatory = $true)]
+        [string] $SecretName
     )
 
     $issuedAt = [System.DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
@@ -109,7 +111,7 @@ function Get-JsonWebToken
         }
         catch
         {
-            throw "Azure Key Vault secret '$secretName' does not contain a valid RSA private key: $($_.Exception.Message)"
+            throw "Azure Key Vault secret '$SecretName' does not contain a valid RSA private key: $($_.Exception.Message)"
         }
 
         $signature = $rsa.SignData(
@@ -145,6 +147,7 @@ function Invoke-GitHubApi
         UserAgent = 'Omex'
         Headers   = @{
             Accept                 = 'application/vnd.github+json'
+            # Review tooling may redact this value in diffs. Runtime uses the supplied JWT.
             Authorization          = "Bearer $Jwt"
             'X-GitHub-Api-Version' = '2022-11-28'
         }
@@ -172,7 +175,7 @@ function Invoke-GitHubApi
 }
 
 $privateKey = Get-GitHubAppPrivateKey -VaultName $vaultName -SecretName $secretName
-$jwt = Get-JsonWebToken -ClientId $clientId -PrivateKey $privateKey
+$jwt = Get-JsonWebToken -ClientId $clientId -PrivateKey $privateKey -SecretName $secretName
 
 $installation = Invoke-GitHubApi -Uri "$apiUrl/repos/$owner/$repositoryName/installation" -Jwt $jwt -Method 'Get'
 if ($null -eq $installation.id)
@@ -193,7 +196,7 @@ if ([string]::IsNullOrWhiteSpace($accessToken.token))
 if ($env:GITHUB_ACTIONS -eq 'true')
 {
     Write-Output -InputObject "::add-mask::$($accessToken.token)"
-    "token=$($accessToken.token)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+    "token=$($accessToken.token)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 }
 elseif (-not [string]::IsNullOrWhiteSpace($env:TF_BUILD))
 {
