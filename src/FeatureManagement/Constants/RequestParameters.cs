@@ -41,23 +41,8 @@ internal static class RequestParameters
 		public const string Campaign = "campaign";
 
 		/// <summary>
-		/// The disabled features query-string parameter.
-		/// </summary>
-		public const string DisabledFeatures = "disabledFeatures";
-
-		/// <summary>
-		/// The enabled features query-string parameter.
-		/// </summary>
-		public const string EnabledFeatures = "enabledFeatures";
-
-		/// <summary>
 		/// The market query-string parameter.
 		/// </summary>
 		public const string Market = "market";
-
-		/// <summary>
-		/// The toggled features query-string parameter.
-		/// </summary>
-		public const string ToggledFeatures = "toggledFeatures";
 	}
 }

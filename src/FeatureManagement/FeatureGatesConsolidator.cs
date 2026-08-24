@@ -25,7 +25,6 @@ using Microsoft.Omex.Extensions.FeatureManagement.Extensions;
 ///
 /// 1. Static feature flags from configuration (appsettings.json)
 /// 2. Dynamic experimental features based on customer targeting
-/// 3. Query-string overrides for testing and debugging
 ///
 /// Key responsibilities:
 /// - Orchestrates calls to IFeatureGatesService for both static and dynamic features

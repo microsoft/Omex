@@ -11,7 +11,7 @@ Built on top of [Microsoft's Feature Management library](https://github.com/micr
 - **Feature Flags**: Toggle features on/off without code deployment
 - **A/B Testing**: Run experiments with customer targeting
 - **Multiple Filter Types**: Time window, percentage, market, campaign, and more
-- **Runtime Overrides**: Temporarily enable/disable features via query parameters
+- **Server-Controlled Overrides**: Force features on/off through configuration
 - **Frontend Support**: Automatic handling of frontend-specific features
 - **Custom Filters**: Extensible filter system for custom logic
 - **Comprehensive Observability**: Built-in logging and distributed tracing
@@ -52,9 +52,9 @@ It is recommended to use `IFeatureGatesConsolidator` where possible to simplify 
 
 This implementation uses a layered approach to feature resolution, allowing for multiple sources of truth. The order of precedence is as follows:
 
-1. **Query-String Overrides** (Highest Priority)
-   - `?features=Feature1;Feature2`: Enable features
-   - `?blockedFeatures=Feature3`: Disable features
+1. **Server-Controlled Overrides** (Highest Priority)
+   - `FeatureOverrideSettings.Enabled`: Enable features
+   - `FeatureOverrideSettings.Disabled`: Disable features
 1. **Experimental Features**
    - Customer-targeted experiments
    - A/B test allocations
@@ -252,9 +252,7 @@ How it works:
 
 - Define your complete feature logic in `appsettings.json` with all necessary filters (time windows, percentages, markets, etc).
 - Add the `Toggle` filter to keep the feature disabled by default.
-- Activate the feature at runtime through:
-  - The `toggledFeatures` query-string parameter (semicolon-separated list).
-  - Or your experimentation service (see [Experimental Features](#experimental-features)).
+- Activate the feature through the server-controlled `FeatureOverrideSettings.Toggled` configuration.
 
 This approach allows you to specify and deploy complex feature logic that could not be defined through query-string parameters alone. When activated, the feature evaluates all its configured filters normally – the toggle simply acts as a main switch.
 

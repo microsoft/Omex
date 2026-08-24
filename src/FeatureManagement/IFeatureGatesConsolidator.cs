@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.Http;
 ///
 /// 1. Static feature flags from configuration (appsettings.json)
 /// 2. Dynamic experimental features based on customer targeting
-/// 3. Query-string overrides for testing and debugging
 ///
 /// The consolidator requires an active HTTP context to operate, as it extracts partner information and other
 /// request-specific data from HTTP headers. Experimental features take precedence over static configuration when
@@ -49,7 +48,7 @@ public interface IFeatureGatesConsolidator
 	/// The consolidation process ensures that:
 	/// - Customers in experiments get their assigned treatments
 	/// - Customers not in experiments fall back to static configuration
-	/// - Override settings (from query strings) are respected
+	/// - Server-controlled override settings are respected
 	/// </remarks>
 	/// <param name="filters"> The experiment filters to apply when retrieving experimental features.</param>
 	/// <param name="headerPrefix">
