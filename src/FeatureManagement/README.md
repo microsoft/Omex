@@ -62,6 +62,8 @@ This implementation uses a layered approach to feature resolution, allowing for 
    - Features defined in `appsettings.json`
    - Default values
 
+HTTP query-string parameters and request headers cannot override feature states.
+
 ### Experimental Features
 
 If you have an experimentation service available, you can make runtime configuration changes to override the static configuration. You will need to inherit from [`IExperimentManager`](Experimentation/IExperimentManager.cs) and pass the class when calling `ConfigureFeatureManagement()`. By default, no experimentation service will be used.
@@ -254,7 +256,7 @@ How it works:
 - Add the `Toggle` filter to keep the feature disabled by default.
 - Activate the feature through the server-controlled `FeatureOverrideSettings.Toggled` configuration.
 
-This approach allows you to specify and deploy complex feature logic that could not be defined through query-string parameters alone. When activated, the feature evaluates all its configured filters normally – the toggle simply acts as a main switch.
+This approach allows you to deploy complex feature logic in advance, then activate it through server-controlled configuration. When activated, the feature evaluates all its configured filters normally – the toggle acts as a main switch.
 
 ```JSON
 "FeatureToggleA": {
