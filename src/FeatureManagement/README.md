@@ -70,6 +70,8 @@ If you have an experimentation service available, you can make runtime configura
 
 `FeatureOverrideSettings.Disabled` and `FeatureOverrideSettings.Enabled` turn a feature on or off regardless of the filters. If a feature is added to both settings, `FeatureOverrideSettings.Disabled` takes precedence.
 
+Override entries must use the complete configured feature key, including the `FE_` prefix for frontend features. Matching is case-insensitive.
+
 `FeatureOverrideSettings.Toggled` allows the enablement of a feature committed as disabled but with the `Toggle` filter present. On activation, this will evaluate the applied filters.
 
 ### Static Configuration
