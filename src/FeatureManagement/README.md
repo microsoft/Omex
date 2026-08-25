@@ -62,8 +62,6 @@ This implementation uses a layered approach to feature resolution, allowing for 
    - Features defined in `appsettings.json`
    - Default values
 
-HTTP query-string parameters and request headers cannot override feature states.
-
 ### Experimental Features
 
 If you have an experimentation service available, you can make runtime configuration changes to override the static configuration. You will need to inherit from [`IExperimentManager`](Experimentation/IExperimentManager.cs) and pass the class when calling `ConfigureFeatureManagement()`. By default, no experimentation service will be used.

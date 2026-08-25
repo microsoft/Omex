@@ -221,5 +221,4 @@ internal sealed class FeatureGatesService(
 
 		return variable;
 	}
-
 }

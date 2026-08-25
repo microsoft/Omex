@@ -257,5 +257,4 @@ public sealed class ExtendedFeatureManagerTests
 	}
 
 	#endregion
-
 }
