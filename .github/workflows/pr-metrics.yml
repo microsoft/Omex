@@ -23,7 +23,7 @@ jobs:
           persist-credentials: false
       - name: Fetch pull request merge ref
         shell: pwsh
-        run: git fetch --no-tags origin "+refs/pull/$env:PR_NUMBER/merge:refs/remotes/pull/$env:PR_NUMBER/merge"
+        run: git fetch --no-tags origin "+refs/pull/$env:PR_NUMBER/merge:refs/pull/$env:PR_NUMBER/merge"
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
       - name: App Token – Mint
