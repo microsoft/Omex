@@ -23,24 +23,24 @@ jobs:
       contents: read
       id-token: write
     steps:
-    - name: Checkout
-      uses: actions/checkout@v7
-      with:
-        fetch-depth: 0
-        persist-credentials: false
-        ref: refs/pull/${{ github.event.pull_request.number }}/merge
-    - name: App Token – Mint
-      id: app-token
-      uses: ./.github/actions/mint-github-app-token
-      with:
-        azure-client-id: ${{ vars.AZURE_CLIENT_ID }}
-        azure-tenant-id: ${{ vars.AZURE_TENANT_ID }}
-        azure-subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-        permissions: '{"pull_requests":"write"}'
-    - name: PR Metrics
-      uses: microsoft/PR-Metrics@v1.7.17
-      env:
-        PR_METRICS_ACCESS_TOKEN: ${{ steps.app-token.outputs.token }}
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+      - name: App Token – Mint
+        id: app-token
+        uses: ./.github/actions/mint-github-app-token
+        with:
+          azure-client-id: ${{ vars.AZURE_CLIENT_ID }}
+          azure-tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          azure-subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          permissions: '{"pull_requests":"write"}'
+      - name: PR Metrics
+        uses: microsoft/PR-Metrics@v1.7.17
+        env:
+          PR_METRICS_ACCESS_TOKEN: ${{ steps.app-token.outputs.token }}
 
   build:
     runs-on: ${{ matrix.os }}
@@ -52,29 +52,29 @@ jobs:
         configuration: [Release, Debug]
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v7
-      with:
-        persist-credentials: false
-    - name: Install .NET 10 SDK
-      uses: actions/setup-dotnet@v6
-      with:
-        dotnet-version: '10.0.x'
-    - name: Install SF SDK
-      shell: powershell
-      run: |
-        Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force -Scope CurrentUser
-        $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -OutFile setup.exe -Uri https://download.microsoft.com/download/b/8/a/b8a2fb98-0ec1-41e5-be98-9d8b5abf7856/MicrosoftServiceFabric.11.4.268.1.exe
-        .\setup.exe /accepteula /force /quiet /SkipPSExecutionPolicy
-    - name: Restore NuGet packages
-      run: dotnet restore --configfile NuGet-GitHub.Config
-    - name: Build with dotnet
-      run: dotnet build --configuration ${{ matrix.configuration }} --no-restore
-    - name: Run Unit Tests
-      run: dotnet test --no-build --configuration ${{ matrix.configuration }} --no-restore
-    - name: Create NuGet packages
-      run: dotnet pack --no-build --configuration ${{ matrix.configuration }} --no-restore
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install .NET 10 SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install SF SDK
+        shell: powershell
+        run: |
+          Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force -Scope CurrentUser
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest -OutFile setup.exe -Uri https://download.microsoft.com/download/b/8/a/b8a2fb98-0ec1-41e5-be98-9d8b5abf7856/MicrosoftServiceFabric.11.4.268.1.exe
+          .\setup.exe /accepteula /force /quiet /SkipPSExecutionPolicy
+      - name: Restore NuGet packages
+        run: dotnet restore --configfile NuGet-GitHub.Config
+      - name: Build with dotnet
+        run: dotnet build --configuration ${{ matrix.configuration }} --no-restore
+      - name: Run Unit Tests
+        run: dotnet test --no-build --configuration ${{ matrix.configuration }} --no-restore
+      - name: Create NuGet packages
+        run: dotnet pack --no-build --configuration ${{ matrix.configuration }} --no-restore
 
   publish:
     if: github.event_name == 'release' && !github.event.release.prerelease && github.event.release.target_commitish == 'main'
@@ -87,28 +87,28 @@ jobs:
     env:
       IsReleaseBuild: true
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v7
-      with:
-        persist-credentials: false
-    - name: Install .NET 10 SDK
-      uses: actions/setup-dotnet@v6
-      with:
-        dotnet-version: '10.0.x'
-    - name: Install SF SDK
-      shell: powershell
-      run: |
-        Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force -Scope CurrentUser
-        $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -OutFile setup.exe -Uri https://download.microsoft.com/download/b/8/a/b8a2fb98-0ec1-41e5-be98-9d8b5abf7856/MicrosoftServiceFabric.11.4.268.1.exe
-        .\setup.exe /accepteula /force /quiet /SkipPSExecutionPolicy
-    - name: Restore NuGet packages
-      run: dotnet restore --configfile NuGet-GitHub.Config
-    - name: Build with dotnet
-      run: dotnet build --configuration Release --no-restore
-    - name: Create NuGet packages
-      run: dotnet pack --no-build --configuration Release --no-restore
-    - name: Add GitHub package source
-      run: dotnet nuget add source https://nuget.pkg.github.com/microsoft/index.json --name "github" --username NotUsed --password ${{ secrets.GITHUB_TOKEN }}
-    - name: Publish NuGet packages
-      run: dotnet nuget push nuget\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate --no-symbols true
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install .NET 10 SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install SF SDK
+        shell: powershell
+        run: |
+          Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force -Scope CurrentUser
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest -OutFile setup.exe -Uri https://download.microsoft.com/download/b/8/a/b8a2fb98-0ec1-41e5-be98-9d8b5abf7856/MicrosoftServiceFabric.11.4.268.1.exe
+          .\setup.exe /accepteula /force /quiet /SkipPSExecutionPolicy
+      - name: Restore NuGet packages
+        run: dotnet restore --configfile NuGet-GitHub.Config
+      - name: Build with dotnet
+        run: dotnet build --configuration Release --no-restore
+      - name: Create NuGet packages
+        run: dotnet pack --no-build --configuration Release --no-restore
+      - name: Add GitHub package source
+        run: dotnet nuget add source https://nuget.pkg.github.com/microsoft/index.json --name "github" --username NotUsed --password ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish NuGet packages
+        run: dotnet nuget push nuget\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate --no-symbols true
