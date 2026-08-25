@@ -63,8 +63,12 @@ extends:
                 exit 0
               }
               $auth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("x-access-token:$env:GITHUB_APP_TOKEN"))
+              Write-Host "##vso[task.setsecret]$auth"
+              $env:GIT_CONFIG_COUNT = '1'
+              $env:GIT_CONFIG_KEY_0 = 'http.extraheader'
+              $env:GIT_CONFIG_VALUE_0 = "AUTHORIZATION: basic $auth"
               git remote add omexgithubremote https://github.com/Microsoft/Omex
-              git -c "http.extraheader=AUTHORIZATION: basic $auth" fetch omexgithubremote
+              git fetch omexgithubremote
               $files = git diff --name-only origin/$env:GITHUBBRANCH omexgithubremote/$env:GITHUBBRANCH
               if ($files.length -eq 0) {
                 Write-Host "No changes between 'origin/$env:GITHUBBRANCH' and 'omexgithubremote/$env:GITHUBBRANCH' found."
@@ -85,7 +89,11 @@ extends:
             script: |-
               $commit = $env:GITHUBCOMMIT
               $auth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("x-access-token:$env:GITHUB_APP_TOKEN"))
-              git -c "http.extraheader=AUTHORIZATION: basic $auth" fetch omexgithubremote $env:GITHUBBRANCH
+              Write-Host "##vso[task.setsecret]$auth"
+              $env:GIT_CONFIG_COUNT = '1'
+              $env:GIT_CONFIG_KEY_0 = 'http.extraheader'
+              $env:GIT_CONFIG_VALUE_0 = "AUTHORIZATION: basic $auth"
+              git fetch omexgithubremote $env:GITHUBBRANCH
               git checkout -b feature/github-bridge-forward $commit
           env:
             GITHUB_APP_TOKEN: $(GitHubAppToken)
