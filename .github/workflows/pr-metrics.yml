@@ -4,7 +4,6 @@ on:
   pull_request_target:
     branches:
       - main
-      - release
 
 permissions: {}
 
@@ -12,7 +11,7 @@ jobs:
   pr-metrics:
     name: PR Metrics
     runs-on: windows-latest
-    environment: github-app-pr-metrics
+    environment: github-app-main
     permissions:
       contents: read
       id-token: write
