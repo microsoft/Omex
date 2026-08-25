@@ -84,6 +84,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+    env:
+      IsReleaseBuild: true
     steps:
     - name: Checkout repository
       uses: actions/checkout@v7

@@ -62,10 +62,10 @@ extends:
                 Write-Host "##vso[task.setvariable variable=ChangesFound]0"
                 exit 0
               }
-              $auth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("x-access-token:$env:GITHUB_APP_TOKEN"))
+              $auth = [Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes("x-access-token:$env:GITHUB_APP_TOKEN"))
               Write-Host "##vso[task.setsecret]$auth"
               $env:GIT_CONFIG_COUNT = '1'
-              $env:GIT_CONFIG_KEY_0 = 'http.extraheader'
+              $env:GIT_CONFIG_KEY_0 = 'http.https://github.com/.extraheader'
               $env:GIT_CONFIG_VALUE_0 = "AUTHORIZATION: basic $auth"
               git remote add omexgithubremote https://github.com/Microsoft/Omex
               git fetch omexgithubremote
@@ -88,10 +88,10 @@ extends:
             targetType: inline
             script: |-
               $commit = $env:GITHUBCOMMIT
-              $auth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("x-access-token:$env:GITHUB_APP_TOKEN"))
+              $auth = [Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes("x-access-token:$env:GITHUB_APP_TOKEN"))
               Write-Host "##vso[task.setsecret]$auth"
               $env:GIT_CONFIG_COUNT = '1'
-              $env:GIT_CONFIG_KEY_0 = 'http.extraheader'
+              $env:GIT_CONFIG_KEY_0 = 'http.https://github.com/.extraheader'
               $env:GIT_CONFIG_VALUE_0 = "AUTHORIZATION: basic $auth"
               git fetch omexgithubremote $env:GITHUBBRANCH
               git checkout -b feature/github-bridge-forward $commit
