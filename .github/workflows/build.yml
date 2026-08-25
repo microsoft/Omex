@@ -15,6 +15,33 @@ on:
 permissions: {}
 
 jobs:
+  pr-metrics:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    name: PR Metrics
+    runs-on: windows-latest
+    environment: github-app-main
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: App Token – Mint
+        id: app-token
+        uses: ./.github/actions/mint-github-app-token
+        with:
+          azure-client-id: ${{ vars.AZURE_CLIENT_ID }}
+          azure-tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          azure-subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          permissions: '{"pull_requests":"write"}'
+      - name: PR Metrics
+        uses: microsoft/PR-Metrics@v1.7.17
+        env:
+          PR_METRICS_ACCESS_TOKEN: ${{ steps.app-token.outputs.token }}
+
   build:
     runs-on: ${{ matrix.os }}
     permissions:
