@@ -1,0 +1,42 @@
+name: PR Metrics
+
+on:
+  pull_request_target:
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  pr-metrics:
+    name: PR Metrics
+    runs-on: windows-latest
+    environment: github-app-main
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Fetch pull request merge ref
+        shell: pwsh
+        run: git fetch --no-tags origin "+refs/pull/$env:PR_NUMBER/merge:refs/pull/$env:PR_NUMBER/merge"
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+      - name: App Token – Mint
+        id: app-token
+        uses: ./.github/actions/mint-github-app-token
+        with:
+          azure-client-id: ${{ vars.AZURE_CLIENT_ID }}
+          azure-tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          azure-subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          permissions: '{"pull_requests":"write"}'
+      - name: PR Metrics
+        uses: microsoft/PR-Metrics@v1.7.17
+        env:
+          GITHUB_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          GITHUB_REF: refs/pull/${{ github.event.pull_request.number }}/merge
+          PR_METRICS_ACCESS_TOKEN: ${{ steps.app-token.outputs.token }}
