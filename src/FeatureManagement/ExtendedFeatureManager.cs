@@ -15,7 +15,7 @@ using Microsoft.Omex.Extensions.Abstractions;
 /// <summary>
 /// The extended feature manager provides support for server-controlled feature overrides.
 /// </summary>
-/// <param name="featureManager">The feature manger.</param>
+/// <param name="featureManager">The feature manager.</param>
 /// <param name="logger">The logger.</param>
 /// <param name="settings">The settings.</param>
 internal sealed class ExtendedFeatureManager(
