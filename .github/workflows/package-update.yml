@@ -4,22 +4,37 @@ on:
   schedule:
     - cron: "0 6 * * 1"
   workflow_dispatch:
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 jobs:
   run-script-and-pr:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: windows-latest
+    environment: github-app-main
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
+      id-token: write
     steps:
+      - name: Checkout – Action
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          sparse-checkout: .github/actions
+
+      - name: App Token – Mint
+        id: app-token
+        uses: ./.github/actions/mint-github-app-token
+        with:
+          azure-client-id: ${{ vars.AZURE_CLIENT_ID }}
+          azure-tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          azure-subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          permissions: '{"contents":"write","issues":"write","pull_requests":"write"}'
+
       - name: Checkout repository
         uses: actions/checkout@v7
         with:
           fetch-depth: 1
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Install .NET 10 SDK
         uses: actions/setup-dotnet@v6
@@ -70,7 +85,7 @@ jobs:
       - name: Open PR with gh
         if: steps.commit.outputs.has-changes == 'true' && steps.commit.outcome == 'success'
         env:
-          GH_TOKEN: ${{ secrets.CREATE_PACKAGEUPDATE }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         shell: pwsh
         run: |
           git fetch --no-tags --depth=2 origin main
