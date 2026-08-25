@@ -1,6 +1,4 @@
 * @microsoft/omex
-
-# Keep privileged GitHub App automation under explicit Omex administrator review.
-/.github/actions/mint-github-app-token/ @microsoft/omex
-/.github/pipelines/github-forward.yml @microsoft/omex
+/.github/actions/ @microsoft/omex-admin
+/.github/pipelines/ @microsoft/omex-admin
 /.github/workflows/ @microsoft/omex-admin
