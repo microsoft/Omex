@@ -8,6 +8,7 @@ $apiUrl = 'https://api.github.com'
 $keyVaultApiVersion = '2025-07-01'
 $outputVariable = 'GitHubAppToken'
 
+# GitHub App: Microsoft Omex
 $clientId = 'Iv23lid6KuWM6H8RIU1i'
 $owner = 'microsoft'
 $repositoryName = 'Omex'

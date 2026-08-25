@@ -12,6 +12,7 @@ jobs:
   pr-metrics:
     name: PR Metrics
     runs-on: windows-latest
+    environment: github-app-pr-metrics
     permissions:
       contents: read
       id-token: write

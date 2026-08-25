@@ -10,6 +10,7 @@ jobs:
   run-script-and-pr:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: windows-latest
+    environment: github-app-main
     permissions:
       contents: read
       id-token: write
