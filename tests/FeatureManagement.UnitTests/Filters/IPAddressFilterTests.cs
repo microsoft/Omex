@@ -239,6 +239,7 @@ public sealed class IPAddressFilterTests
 		// ASSERT
 		Assert.IsFalse(result);
 		VerifyLogging(false);
+		VerifyIPRangeLogging(false);
 	}
 
 	[TestMethod]
