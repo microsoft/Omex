@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 ///
 /// 1. Static feature flags from configuration (appsettings.json)
 /// 2. Dynamic experimental features based on customer targeting
+/// 3. Server-controlled feature override settings
 ///
 /// The consolidator requires an active HTTP context to operate, as it extracts partner information and other
 /// request-specific data from HTTP headers. Experimental features take precedence over static configuration when
