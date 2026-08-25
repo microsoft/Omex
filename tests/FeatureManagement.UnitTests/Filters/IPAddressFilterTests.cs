@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
-using Microsoft.Omex.Extensions.FeatureManagement.Constants;
 using Microsoft.Omex.Extensions.FeatureManagement.Filters;
 using Microsoft.Omex.Extensions.FeatureManagement.Filters.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -109,7 +108,7 @@ public sealed class IPAddressFilterTests
 	}
 
 	[TestMethod]
-	public async Task EvaluateAsync_WhenIpIsLocal_ReturnsTrue()
+	public async Task EvaluateAsync_WhenForwardedIpIsLoopbackAndProxyIsLocal_ReturnsFalse()
 	{
 		// ARRANGE
 		Dictionary<string, string?> configValues = new()
@@ -122,15 +121,17 @@ public sealed class IPAddressFilterTests
 			.Build();
 
 		m_context.Parameters = configuration;
-
-		m_httpContext.Request.Headers[RequestParameters.Header.ForwardedFor] = "127.0.0.1";
+		m_httpContext.Request.Headers["X-Forwarded-For"] = IPAddress.Loopback.ToString();
+		m_httpContext.Connection.RemoteIpAddress = IPAddress.Loopback;
+		m_httpContext.Connection.LocalIpAddress = IPAddress.Loopback;
 
 		// ACT
 		bool result = await m_filter.EvaluateAsync(m_context);
 
 		// ASSERT
-		Assert.IsTrue(result);
-		VerifyLogging(true);
+		Assert.IsFalse(result);
+		VerifyLogging(false);
+		VerifyIPRangeLogging(false);
 	}
 
 	[TestMethod]
@@ -147,8 +148,6 @@ public sealed class IPAddressFilterTests
 			.Build();
 
 		m_context.Parameters = configuration;
-
-		m_httpContext.Request.Headers[RequestParameters.Header.ForwardedFor] = IPAddress.None.ToString();
 
 		// ACT
 		bool result = await m_filter.EvaluateAsync(m_context);
@@ -175,7 +174,7 @@ public sealed class IPAddressFilterTests
 
 		// Use one of the test IPs from the static list.
 		IPAddress testIp = IPAddress.Parse("10.1.1.1");
-		m_httpContext.Request.Headers[RequestParameters.Header.ForwardedFor] = testIp.ToString();
+		m_httpContext.Connection.RemoteIpAddress = testIp;
 
 		// ACT
 		bool result = await m_filter.EvaluateAsync(m_context);
@@ -203,7 +202,7 @@ public sealed class IPAddressFilterTests
 
 		// Use a non-test IP.
 		IPAddress nonTestIp = IPAddress.Parse("203.0.113.10");
-		m_httpContext.Request.Headers[RequestParameters.Header.ForwardedFor] = nonTestIp.ToString();
+		m_httpContext.Connection.RemoteIpAddress = nonTestIp;
 
 		// ACT
 		bool result = await m_filter.EvaluateAsync(m_context);
@@ -232,7 +231,7 @@ public sealed class IPAddressFilterTests
 
 		// Use a test IP, but the range is not set to TESTIPS.
 		IPAddress testIp = IPAddress.Parse("10.1.1.1");
-		m_httpContext.Request.Headers[RequestParameters.Header.ForwardedFor] = testIp.ToString();
+		m_httpContext.Connection.RemoteIpAddress = testIp;
 
 		// ACT
 		bool result = await m_filter.EvaluateAsync(m_context);
@@ -268,7 +267,7 @@ public sealed class IPAddressFilterTests
 
 		// Use an IP that is in the custom range.
 		IPAddress customRangeIp = IPAddress.Parse("10.1.1.1");
-		m_httpContext.Request.Headers[RequestParameters.Header.ForwardedFor] = customRangeIp.ToString();
+		m_httpContext.Connection.RemoteIpAddress = customRangeIp;
 
 		// ACT
 		bool result = await m_filter.EvaluateAsync(m_context);
@@ -280,7 +279,7 @@ public sealed class IPAddressFilterTests
 	}
 
 	[TestMethod]
-	public async Task EvaluateAsync_WhenUsingForwardedAddress_ChecksForwardedAddressFirst()
+	public async Task EvaluateAsync_WhenForwardedAddressIsInRangeAndRemoteAddressIsNot_ReturnsFalse()
 	{
 		// ARRANGE
 		Dictionary<string, string?> configValues = new()
@@ -294,18 +293,17 @@ public sealed class IPAddressFilterTests
 
 		m_context.Parameters = configuration;
 
-		// Setup a forwarded address that is in the test range.
 		IPAddress forwardedIp = IPAddress.Parse("10.1.1.1");
-		m_httpContext.Request.Headers[RequestParameters.Header.ForwardedFor] = forwardedIp.ToString();
+		m_httpContext.Request.Headers["X-Forwarded-For"] = forwardedIp.ToString();
 		m_httpContext.Connection.RemoteIpAddress = IPAddress.Parse("203.0.113.10");
 
 		// ACT
 		bool result = await m_filter.EvaluateAsync(m_context);
 
 		// ASSERT
-		Assert.IsTrue(result);
-		VerifyLogging(true);
-		VerifyIPRangeLogging(true);
+		Assert.IsFalse(result);
+		VerifyLogging(false);
+		VerifyIPRangeLogging(false);
 	}
 
 	[TestMethod]
@@ -324,7 +322,7 @@ public sealed class IPAddressFilterTests
 		m_context.Parameters = configuration;
 
 		IPAddress testIp = IPAddress.Parse("10.1.1.1");
-		m_httpContext.Request.Headers[RequestParameters.Header.ForwardedFor] = testIp.ToString();
+		m_httpContext.Connection.RemoteIpAddress = testIp;
 
 		// ACT
 		bool result = await m_filter.EvaluateAsync(m_context);
@@ -353,7 +351,7 @@ public sealed class IPAddressFilterTests
 
 		// Use any IP address.
 		IPAddress testIp = IPAddress.Parse("203.0.113.10");
-		m_httpContext.Request.Headers[RequestParameters.Header.ForwardedFor] = testIp.ToString();
+		m_httpContext.Connection.RemoteIpAddress = testIp;
 
 		// ACT
 		bool result = await m_filter.EvaluateAsync(m_context);
@@ -381,7 +379,7 @@ public sealed class IPAddressFilterTests
 			.Build();
 
 		m_context.Parameters = configuration;
-		m_httpContext.Request.Headers[RequestParameters.Header.ForwardedFor] = ipAddress;
+		m_httpContext.Connection.RemoteIpAddress = IPAddress.Parse(ipAddress);
 
 		// ACT
 		await m_filter.EvaluateAsync(m_context);
@@ -397,7 +395,7 @@ public sealed class IPAddressFilterTests
 	}
 
 	[TestMethod]
-	public async Task EvaluateAsync_WhenHeaderHasMultipleForwardedIPs_UsesFirstIP()
+	public async Task EvaluateAsync_WhenHeaderHasMultipleForwardedIPs_IgnoresHeader()
 	{
 		// ARRANGE
 		Dictionary<string, string?> configValues = new()
@@ -409,16 +407,16 @@ public sealed class IPAddressFilterTests
 			.Build();
 		m_context.Parameters = configuration;
 
-		// First IP in list is within allowed range, whereas the second is not.
-		m_httpContext.Request.Headers[RequestParameters.Header.ForwardedFor] = "10.1.1.1,203.0.113.10";
+		m_httpContext.Request.Headers["X-Forwarded-For"] = "10.1.1.1,203.0.113.10";
+		m_httpContext.Connection.RemoteIpAddress = IPAddress.Parse("203.0.113.10");
 
 		// ACT
 		bool result = await m_filter.EvaluateAsync(m_context);
 
 		// ASSERT
-		Assert.IsTrue(result);
-		VerifyLogging(true);
-		VerifyIPRangeLogging(true);
+		Assert.IsFalse(result);
+		VerifyLogging(false);
+		VerifyIPRangeLogging(false);
 	}
 
 	#endregion

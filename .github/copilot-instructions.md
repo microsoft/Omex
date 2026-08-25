@@ -77,6 +77,8 @@ private readonly IFeatureGatesConsolidator _featureGates;
 var features = await _featureGates.GetFeatureGatesAsync(filters);
 ```
 
+`IPAddressFilter` must use only `HttpContext.Connection.RemoteIpAddress`. Applications behind a reverse proxy must configure `ForwardedHeadersMiddleware` with trusted `KnownProxies` or `KnownNetworks`. Never parse `X-Forwarded-For` directly or bypass configured IP ranges for local requests.
+
 #### Environment Configuration
 
 Use `OmexEnvironments` constants instead of magic strings:
@@ -181,7 +183,7 @@ dotnet pack --no-build --configuration Release
 - Layered resolution: Query overrides → Experiments → Static config
 - Support for A/B testing with customer targeting
 - HTTP context integration for web scenarios
-- Frontend feature handling with automatic header processing
+- Frontend feature handling with automatic partner/platform header processing
 
 ### Modern Telemetry
 
