@@ -36,7 +36,7 @@ jobs:
         azure-client-id: ${{ vars.AZURE_CLIENT_ID }}
         azure-tenant-id: ${{ vars.AZURE_TENANT_ID }}
         azure-subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-        permissions: '{"pull_requests":"write","statuses":"write"}'
+        permissions: '{"pull_requests":"write"}'
     - name: PR Metrics
       uses: microsoft/PR-Metrics@v1.7.17
       env:
