@@ -1,4 +1,4 @@
-name: PR Metrics for forked pull requests
+name: PR Metrics
 
 on:
   pull_request_target:
@@ -10,7 +10,6 @@ permissions: {}
 
 jobs:
   pr-metrics:
-    if: github.event.pull_request.head.repo.full_name != github.repository
     name: PR Metrics
     runs-on: windows-latest
     permissions:
