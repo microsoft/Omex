@@ -63,7 +63,7 @@ extends:
                 exit 0
               }
               $auth = [Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes("x-access-token:$env:GITHUB_APP_TOKEN"))
-              Write-Host "##vso[task.setsecret]$auth"
+              Write-Host -Object "##vso[task.setsecret]$auth"
               $env:GIT_CONFIG_COUNT = '1'
               $env:GIT_CONFIG_KEY_0 = 'http.https://github.com/.extraheader'
               $env:GIT_CONFIG_VALUE_0 = "AUTHORIZATION: basic $auth"
@@ -89,7 +89,7 @@ extends:
             script: |-
               $commit = $env:GITHUBCOMMIT
               $auth = [Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes("x-access-token:$env:GITHUB_APP_TOKEN"))
-              Write-Host "##vso[task.setsecret]$auth"
+              Write-Host -Object "##vso[task.setsecret]$auth"
               $env:GIT_CONFIG_COUNT = '1'
               $env:GIT_CONFIG_KEY_0 = 'http.https://github.com/.extraheader'
               $env:GIT_CONFIG_VALUE_0 = "AUTHORIZATION: basic $auth"
