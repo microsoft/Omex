@@ -16,7 +16,7 @@ permissions: {}
 
 jobs:
   pr-metrics:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     name: PR Metrics
     runs-on: windows-latest
     environment: github-app-main
