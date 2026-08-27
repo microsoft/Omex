@@ -13,7 +13,7 @@ This is a collection of shared .NET extensions and utilities for building scalab
 - **Hosting**: Service hosting utilities with environment-specific configurations (`OmexEnvironments`)
 - **Logging**: Centralized logging infrastructure with scrubbing capabilities
 - **Diagnostics.HealthChecks**: Composable health check framework using decorator pattern
-- **FeatureManagement**: Advanced feature flags with A/B testing, experimental features, and query overrides
+- **FeatureManagement**: Advanced feature flags with A/B testing, experimental features, and server-controlled overrides
 - **ServiceFabricGuest.Abstractions**: Service Fabric client wrappers and abstractions
 - **Services.Remoting**: Service Fabric remoting extensions with activity propagation
 - **Testing.Helpers**: Shared testing utilities including `NullableAssert`
@@ -73,7 +73,7 @@ The system supports layered feature resolution with experimental overrides:
 // Always inject IFeatureGatesConsolidator (higher level)
 private readonly IFeatureGatesConsolidator _featureGates;
 
-// Resolution order: Query params → Experiments → Static config
+// Resolution order: Server overrides → Experiments → Static config
 var features = await _featureGates.GetFeatureGatesAsync(filters);
 ```
 
@@ -180,7 +180,7 @@ dotnet pack --no-build --configuration Release
 
 ### Feature Management System
 
-- Layered resolution: Query overrides → Experiments → Static config
+- Layered resolution: Server overrides → Experiments → Static config
 - Support for A/B testing with customer targeting
 - HTTP context integration for web scenarios
 - Frontend feature handling with automatic partner/platform header processing
