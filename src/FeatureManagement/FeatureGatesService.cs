@@ -22,14 +22,13 @@ using Microsoft.Omex.Extensions.FeatureManagement.Experimentation;
 /// This implementation of IFeatureGatesService provides the core functionality for managing feature gates and
 /// experiments. It integrates with:
 ///
-/// - IExtendedFeatureManager: For static feature configuration and query-string overrides
+/// - IExtendedFeatureManager: For static feature configuration and server-controlled overrides
 /// - IExperimentManager: For dynamic, customer-targeted experimental features
 /// - ActivitySource: For distributed tracing and observability
 /// - ILogger: For diagnostic logging
 ///
 /// The service handles the "FE_" prefix convention for frontend features, automatically stripping this prefix when
-/// returning feature gates to clients. It also supports feature overrides through query-string parameters, which is
-/// useful for testing and debugging.
+/// returning feature gates to clients.
 /// </remarks>
 /// <param name="activitySource">The activity source for distributed tracing.</param>
 /// <param name="experimentManager">The experiment manager for retrieving experimental features.</param>
@@ -47,14 +46,6 @@ internal sealed class FeatureGatesService(
 	/// </summary>
 	private const string FrontendFeaturePrefix = "FE_";
 
-	/// <inheritdoc />
-	public string RequestedFeatures =>
-		featureManager.EnabledFeatures;
-
-	/// <inheritdoc/>
-	public string BlockedFeatures =>
-		featureManager.DisabledFeatures;
-
 	/// <inheritdoc/>
 	/// <remarks>
 	/// Implementation details:
@@ -62,8 +53,7 @@ internal sealed class FeatureGatesService(
 	/// 2. Filters for features starting with "FE_" prefix (case-insensitive)
 	/// 3. Evaluates each frontend feature using IsEnabledAsync
 	/// 4. Strips the "FE_" prefix when adding to the result dictionary
-	/// 5. Applies overrides from EnabledFeaturesList and DisabledFeaturesList
-	/// 6. Uses TryAdd to prevent duplicate keys (first value wins for case-insensitive duplicates)
+	/// 5. Uses TryAdd to prevent duplicate keys (first value wins for case-insensitive duplicates)
 	/// </remarks>
 	public async Task<IDictionary<string, object>> GetFeatureGatesAsync()
 	{
@@ -80,9 +70,6 @@ internal sealed class FeatureGatesService(
 				featureGates.TryAdd(feature.Substring(FrontendFeaturePrefix.Length), featureFlag);
 			}
 		}
-
-		UpdateFeatureMap(featureGates, featureManager.EnabledFeaturesList, true);
-		UpdateFeatureMap(featureGates, featureManager.DisabledFeaturesList, false);
 
 		activity?.MarkAsSuccess();
 		return featureGates;
@@ -177,7 +164,7 @@ internal sealed class FeatureGatesService(
 	/// <remarks>
 	/// Implementation details and evaluation order:
 	///
-	/// 1. Query-String Override Check (Highest Priority):
+	/// 1. Server Override Check (Highest Priority):
 	///    - Checks IExtendedFeatureManager.GetOverride for explicit overrides
 	///    - If present, immediately returns the override value
 	///    - Sets Activity metadata to "FromOverride_{featureGate}"
@@ -202,11 +189,11 @@ internal sealed class FeatureGatesService(
 			.StartActivity(FeatureManagementActivityNames.FeatureGatesService.IsExperimentApplicableAsync)?
 			.MarkAsExpectedError();
 
-		bool? queryParamOverride = featureManager.GetOverride(featureGate);
-		if (queryParamOverride.HasValue)
+		bool? overrideValue = featureManager.GetOverride(featureGate);
+		if (overrideValue.HasValue)
 		{
 			activity?.SetMetadata($"FromOverride_{featureGate}").MarkAsSuccess();
-			return queryParamOverride.Value;
+			return overrideValue.Value;
 		}
 
 		IDictionary<string, object> features = await GetExperimentalFeaturesAsync(filters, cancellationToken);
@@ -233,33 +220,5 @@ internal sealed class FeatureGatesService(
 		}
 
 		return variable;
-	}
-
-	/// <summary>
-	/// Updates the feature map with the override values from enabled or disabled feature lists.
-	/// </summary>
-	/// <remarks>
-	/// This helper method applies bulk overrides to the feature-gates dictionary. It handles the "FE_" prefix stripping
-	/// for frontend features and directly sets the override value for each feature in the list.
-	///
-	/// Unlike the main feature evaluation, this method uses direct assignment (not
-	/// <see cref="Dictionary{TKey, TValue}.TryAdd(TKey, TValue)"/>), so override values will replace any previously set
-	/// values in the dictionary.
-	/// </remarks>
-	/// <param name="featureGates">The feature-gates dictionary to update.</param>
-	/// <param name="features">The list of feature names to override.</param>
-	/// <param name="overrideValue">The value to set for all features in the list (<c>true</c> for enabled, <c>false</c> for disabled).</param>
-	private static void UpdateFeatureMap(Dictionary<string, object> featureGates, IEnumerable<string> features, bool overrideValue)
-	{
-		foreach (string feature in features)
-		{
-			string adjustedFeature = feature;
-			if (feature.StartsWith(FrontendFeaturePrefix, StringComparison.OrdinalIgnoreCase))
-			{
-				adjustedFeature = feature.Substring(FrontendFeaturePrefix.Length);
-			}
-
-			featureGates[adjustedFeature] = overrideValue;
-		}
 	}
 }

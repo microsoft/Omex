@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 /// a customer, supporting both static feature flags and dynamic experimentation scenarios.
 ///
 /// The service integrates with both a feature manager (for static configuration-based features) and an experiment
-/// manager (for dynamic, customer-targeted features). Features can be overridden via query-string parameters.
+/// manager (for dynamic, customer-targeted features). Features can be overridden through server configuration.
 ///
 /// Features prefixed with "FE_" are treated as frontend features, and this prefix is automatically stripped when
 /// returning feature-gate values to clients.
@@ -25,39 +25,11 @@ using System.Threading.Tasks;
 public interface IFeatureGatesService
 {
 	/// <summary>
-	/// Gets the list of features which are explicitly allowed for this request as a semicolon-delimited <see cref="string"/>.
-	/// </summary>
-	/// <remarks>
-	/// This property returns features that have been explicitly enabled via query-string overrides or configuration
-	/// settings. The format is a semicolon-delimited string (e.g., "Feature1;Feature2;FE_Feature3"). Frontend features
-	/// may include the "FE_" prefix in this list.
-	/// </remarks>
-	/// <example>
-	/// Example value: "FE_NewUI;FE_BetaFeature;BackendOptimization"
-	/// </example>
-	string RequestedFeatures { get; }
-
-	/// <summary>
-	/// Gets the list of features which are explicitly blocked for this request as a semicolon-delimited <see cref="string"/>.
-	/// </summary>
-	/// <remarks>
-	/// This property returns features that have been explicitly disabled via query-string overrides or configuration
-	/// settings. The format is a semicolon-delimited string (e.g., "Feature1;Feature2"). Frontend features may include
-	/// the "FE_" prefix in this list.
-	/// </remarks>
-	/// <example>
-	/// Example value: "FE_LegacyUI;DeprecatedFeature"
-	/// </example>
-	string BlockedFeatures { get; }
-
-	/// <summary>
 	/// Gets all the feature gates and their values.
 	/// </summary>
 	/// <remarks>
-	/// This method retrieves all configured feature gates, including both static features from configuration and any
-	/// overrides from query-string parameters. Frontend features (those prefixed with "FE_") will have their prefix
-	/// removed in the returned dictionary. The method also applies any explicit enable/disable overrides from the
-	/// RequestedFeatures and BlockedFeatures lists.
+	/// This method retrieves all configured feature gates. Frontend features (those prefixed with "FE_") will have
+	/// their prefix removed in the returned dictionary.
 	///
 	/// The returned dictionary uses case-insensitive keys to prevent duplicate features with different casing. Values
 	/// can be Boolean (true/false) or other object types depending on the feature configuration.
@@ -179,7 +151,7 @@ public interface IFeatureGatesService
 	/// <remarks>
 	/// This method provides a comprehensive check for feature availability by evaluating in the following order:
 	///
-	/// 1. Query-string overrides (via IExtendedFeatureManager.GetOverride) - Highest priority
+	/// 1. Server-controlled overrides (via IExtendedFeatureManager.GetOverride) - Highest priority
 	/// 2. Experiment allocation based on filters - Returns true for any non-empty, non-false value
 	/// 3. Static feature configuration (via IsFeatureGateApplicableAsync) - Fallback
 	///
@@ -189,8 +161,8 @@ public interface IFeatureGatesService
 	/// - Other string values: Treated as treatment allocation (returns true)
 	/// - Empty/whitespace values: Falls back to static configuration
 	///
-	/// This cascading evaluation ensures features can be controlled at multiple levels, from temporary overrides for
-	/// testing to experiment-based rollouts to global configuration.
+	/// This cascading evaluation ensures features can be controlled at multiple levels, from server overrides to
+	/// experiment-based rollouts to global configuration.
 	/// </remarks>
 	/// <param name="featureGate">The name of the feature gate to check.</param>
 	/// <param name="filters">The experiment filters to apply for determining allocation.</param>
@@ -209,7 +181,7 @@ public interface IFeatureGatesService
 	/// bool showFeature = await IsExperimentApplicableAsync("NewFeature", filters, cancellationToken);
 	///
 	/// // The method will check:
-	/// // 1. Query-string override (?features=NewFeature or ?blockedFeatures=NewFeature)
+	/// // 1. Server-controlled override
 	/// // 2. Experiment allocation for customer 12345
 	/// // 3. Static configuration in appsettings.json
 	/// </example>

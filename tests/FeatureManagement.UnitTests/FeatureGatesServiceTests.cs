@@ -42,40 +42,6 @@ public sealed class FeatureGatesServiceTests
 			m_loggerMock.Object);
 	}
 
-	#region RequestedFeatures
-
-	[TestMethod]
-	public void RequestedFeatures_WhenCalled_ReturnsFromFeatureManager()
-	{
-		// ARRANGE
-		m_featureManagerMock.Setup(m => m.EnabledFeatures).Returns("FE_Test1;FE_Test2");
-
-		// ACT
-		string result = m_featureGatesService.RequestedFeatures;
-
-		// ASSERT
-		Assert.AreEqual("FE_Test1;FE_Test2", result);
-	}
-
-	#endregion
-
-	#region BlockedFeatures
-
-	[TestMethod]
-	public void BlockedFeatures_WhenCalled_ReturnsFromFeatureManager()
-	{
-		// ARRANGE
-		m_featureManagerMock.Setup(m => m.DisabledFeatures).Returns("FE_Blocked1");
-
-		// ACT
-		string result = m_featureGatesService.BlockedFeatures;
-
-		// ASSERT
-		Assert.AreEqual("FE_Blocked1", result);
-	}
-
-	#endregion
-
 	#region GetFeatureGatesAsync
 
 	[TestMethod]
@@ -86,16 +52,14 @@ public sealed class FeatureGatesServiceTests
 		m_featureManagerMock.Setup(m => m.GetFeatureNamesAsync()).Returns(AsyncEnumerable.ToAsyncEnumerable(features));
 		m_featureManagerMock.Setup(m => m.IsEnabledAsync("FE_Test1")).ReturnsAsync(true);
 		m_featureManagerMock.Setup(m => m.IsEnabledAsync("FE_Test2")).ReturnsAsync(false);
-		m_featureManagerMock.Setup(m => m.EnabledFeaturesList).Returns(["FE_Test2"]);
-		m_featureManagerMock.Setup(m => m.DisabledFeaturesList).Returns(["FE_Test1"]);
 
 		// ACT
 		IDictionary<string, object> result = await m_featureGatesService.GetFeatureGatesAsync();
 
 		// ASSERT
 		Assert.HasCount(2, result);
-		Assert.IsFalse((bool)result["Test1"]); // DisabledFeaturesList overrides to false.
-		Assert.IsTrue((bool)result["Test2"]);  // EnabledFeaturesList overrides to true.
+		Assert.IsTrue((bool)result["Test1"]);
+		Assert.IsFalse((bool)result["Test2"]);
 	}
 
 	[TestMethod]
@@ -104,8 +68,6 @@ public sealed class FeatureGatesServiceTests
 		// ARRANGE
 		List<string> features = ["Other1", "Other2"];
 		m_featureManagerMock.Setup(m => m.GetFeatureNamesAsync()).Returns(AsyncEnumerable.ToAsyncEnumerable(features));
-		m_featureManagerMock.Setup(m => m.EnabledFeaturesList).Returns([]);
-		m_featureManagerMock.Setup(m => m.DisabledFeaturesList).Returns([]);
 
 		// ACT
 		IDictionary<string, object> result = await m_featureGatesService.GetFeatureGatesAsync();
@@ -122,8 +84,6 @@ public sealed class FeatureGatesServiceTests
 		m_featureManagerMock.Setup(m => m.GetFeatureNamesAsync()).Returns(AsyncEnumerable.ToAsyncEnumerable(features));
 		m_featureManagerMock.Setup(m => m.IsEnabledAsync("FE_Test1")).ReturnsAsync(true);
 		m_featureManagerMock.Setup(m => m.IsEnabledAsync("fe_test1")).ReturnsAsync(false);
-		m_featureManagerMock.Setup(m => m.EnabledFeaturesList).Returns([]);
-		m_featureManagerMock.Setup(m => m.DisabledFeaturesList).Returns([]);
 
 		// ACT
 		IDictionary<string, object> result = await m_featureGatesService.GetFeatureGatesAsync();
@@ -131,42 +91,6 @@ public sealed class FeatureGatesServiceTests
 		// ASSERT
 		Assert.HasCount(1, result);
 		Assert.IsTrue((bool)result["Test1"]); // First value wins due to TryAdd.
-	}
-
-	[TestMethod]
-	public async Task GetFeatureGatesAsync_WithEnabledFeaturesListWithoutPrefix_HandlesCorrectly()
-	{
-		// ARRANGE
-		List<string> features = [];
-		m_featureManagerMock.Setup(m => m.GetFeatureNamesAsync()).Returns(AsyncEnumerable.ToAsyncEnumerable(features));
-		m_featureManagerMock.Setup(m => m.EnabledFeaturesList).Returns(["Test1", "FE_Test2"]);
-		m_featureManagerMock.Setup(m => m.DisabledFeaturesList).Returns([]);
-
-		// ACT
-		IDictionary<string, object> result = await m_featureGatesService.GetFeatureGatesAsync();
-
-		// ASSERT
-		Assert.HasCount(2, result);
-		Assert.IsTrue((bool)result["Test1"]);
-		Assert.IsTrue((bool)result["Test2"]);
-	}
-
-	[TestMethod]
-	public async Task GetFeatureGatesAsync_WithDisabledFeaturesListWithoutPrefix_HandlesCorrectly()
-	{
-		// ARRANGE
-		List<string> features = [];
-		m_featureManagerMock.Setup(m => m.GetFeatureNamesAsync()).Returns(AsyncEnumerable.ToAsyncEnumerable(features));
-		m_featureManagerMock.Setup(m => m.EnabledFeaturesList).Returns([]);
-		m_featureManagerMock.Setup(m => m.DisabledFeaturesList).Returns(["Test1", "FE_Test2"]);
-
-		// ACT
-		IDictionary<string, object> result = await m_featureGatesService.GetFeatureGatesAsync();
-
-		// ASSERT
-		Assert.HasCount(2, result);
-		Assert.IsFalse((bool)result["Test1"]);
-		Assert.IsFalse((bool)result["Test2"]);
 	}
 
 	#endregion
