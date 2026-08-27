@@ -38,17 +38,11 @@ public sealed class IPAddressFilter(
 	{
 		IPAddressFilterSettings filterSettings = context.Parameters.GetOrCreate<IPAddressFilterSettings>();
 		if (string.IsNullOrWhiteSpace(filterSettings.AllowedRange) ||
-			httpContextAccessor.HttpContext is null)
+			httpContextAccessor.HttpContext?.Connection.RemoteIpAddress is not IPAddress remoteAddress)
 		{
 			return false;
 		}
 
-		if (httpContextAccessor.HttpContext.IsLocal())
-		{
-			return true;
-		}
-
-		IPAddress remoteAddress = httpContextAccessor.HttpContext.GetForwardedAddress();
 		bool isInRange = IsInIPRange(filterSettings.AllowedRange, remoteAddress);
 		logger.LogInformation(Tag.Create(), $"{nameof(IPAddressFilter)} '{{Verb}}' access to '{{FeatureName}}'.", isInRange ? "allowed" : "blocked", context.FeatureName);
 		return isInRange;

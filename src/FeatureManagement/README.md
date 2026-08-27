@@ -163,6 +163,8 @@ The IP address filter checks the caller's IP address against a predefined range.
 
 No ranges are defined by default. To define a range, inherit from [`IIPRangeProvider`](Filters/Configuration/IIPRangeProvider.cs) and pass the class when calling `ConfigureFeatureManagement()`.
 
+The filter reads `HttpContext.Connection.RemoteIpAddress`. It does not read `X-Forwarded-For` directly because clients can spoof that header. Applications behind a reverse proxy must configure [ASP.NET Core Forwarded Headers Middleware](https://learn.microsoft.com/aspnet/core/host-and-deploy/proxy-load-balancer) with trusted `KnownProxies` or `KnownNetworks` before feature evaluation. The trusted proxy must remove or overwrite client-supplied forwarding headers.
+
 #### Market
 
 The market filter considers the `market` query-string parameter. `Disabled` takes precedence over `Enabled`, so `US` is disabled in the example below.
