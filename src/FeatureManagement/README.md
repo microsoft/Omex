@@ -11,7 +11,7 @@ Built on top of [Microsoft's Feature Management library](https://github.com/micr
 - **Feature Flags**: Toggle features on/off without code deployment
 - **A/B Testing**: Run experiments with customer targeting
 - **Multiple Filter Types**: Time window, percentage, market, campaign, and more
-- **Runtime Overrides**: Temporarily enable/disable features via query parameters
+- **Server-Controlled Overrides**: Force features on/off through configuration
 - **Frontend Support**: Automatic handling of frontend-specific features
 - **Custom Filters**: Extensible filter system for custom logic
 - **Comprehensive Observability**: Built-in logging and distributed tracing
@@ -52,9 +52,9 @@ It is recommended to use `IFeatureGatesConsolidator` where possible to simplify 
 
 This implementation uses a layered approach to feature resolution, allowing for multiple sources of truth. The order of precedence is as follows:
 
-1. **Query-String Overrides** (Highest Priority)
-   - `?features=Feature1;Feature2`: Enable features
-   - `?blockedFeatures=Feature3`: Disable features
+1. **Server-Controlled Overrides** (Highest Priority)
+   - `FeatureOverrideSettings.Enabled`: Enable features
+   - `FeatureOverrideSettings.Disabled`: Disable features
 1. **Experimental Features**
    - Customer-targeted experiments
    - A/B test allocations
@@ -67,6 +67,8 @@ This implementation uses a layered approach to feature resolution, allowing for 
 If you have an experimentation service available, you can make runtime configuration changes to override the static configuration. You will need to inherit from [`IExperimentManager`](Experimentation/IExperimentManager.cs) and pass the class when calling `ConfigureFeatureManagement()`. By default, no experimentation service will be used.
 
 `FeatureOverrideSettings.Disabled` and `FeatureOverrideSettings.Enabled` turn a feature on or off regardless of the filters. If a feature is added to both settings, `FeatureOverrideSettings.Disabled` takes precedence.
+
+Override entries must use the complete configured feature key, including the `FE_` prefix for frontend features. Matching is case-insensitive.
 
 `FeatureOverrideSettings.Toggled` allows the enablement of a feature committed as disabled but with the `Toggle` filter present. On activation, this will evaluate the applied filters.
 
@@ -161,6 +163,8 @@ The IP address filter checks the caller's IP address against a predefined range.
 
 No ranges are defined by default. To define a range, inherit from [`IIPRangeProvider`](Filters/Configuration/IIPRangeProvider.cs) and pass the class when calling `ConfigureFeatureManagement()`.
 
+The filter reads `HttpContext.Connection.RemoteIpAddress`. It does not read `X-Forwarded-For` directly because clients can spoof that header. Applications behind a reverse proxy must configure [ASP.NET Core Forwarded Headers Middleware](https://learn.microsoft.com/aspnet/core/host-and-deploy/proxy-load-balancer) with trusted `KnownProxies` or `KnownNetworks` before feature evaluation. The trusted proxy must remove or overwrite client-supplied forwarding headers.
+
 #### Market
 
 The market filter considers the `market` query-string parameter. `Disabled` takes precedence over `Enabled`, so `US` is disabled in the example below.
@@ -252,11 +256,9 @@ How it works:
 
 - Define your complete feature logic in `appsettings.json` with all necessary filters (time windows, percentages, markets, etc).
 - Add the `Toggle` filter to keep the feature disabled by default.
-- Activate the feature at runtime through:
-  - The `toggledFeatures` query-string parameter (semicolon-separated list).
-  - Or your experimentation service (see [Experimental Features](#experimental-features)).
+- Activate the feature through the server-controlled `FeatureOverrideSettings.Toggled` configuration.
 
-This approach allows you to specify and deploy complex feature logic that could not be defined through query-string parameters alone. When activated, the feature evaluates all its configured filters normally – the toggle simply acts as a main switch.
+This approach allows you to deploy complex feature logic in advance, then activate it through server-controlled configuration. When activated, the feature evaluates all its configured filters normally – the toggle acts as a main switch.
 
 ```JSON
 "FeatureToggleA": {
