@@ -78,7 +78,7 @@ extends:
                   "Content-Type" = "application/json";
                   "Authorization" = "Bearer $env:UAMI_TOKEN"
               }
-              $Response = Invoke-WebRequest -Method 'POST' -Body $Body -Uri "https://office.visualstudio.com/OC/_apis/build/builds?api-version=7.1" -Headers $headers
+              $Response = Invoke-WebRequest -UseBasicParsing -Method 'POST' -Body $Body -Uri "https://office.visualstudio.com/OC/_apis/build/builds?api-version=7.1" -Headers $headers
 
               if ($Response.StatusCode -ne 200) {
                       Write-Warning "Non-200 status code encountered."
