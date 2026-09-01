@@ -1,5 +1,5 @@
-* @microsoft/omex/
-CODEOWNERS @microsoft/omex-admin
+* @microsoft/omex
+/CODEOWNERS @microsoft/omex-admin
 /.github/actions/ @microsoft/omex-admin
 /.github/pipelines/ @microsoft/omex-admin
 /.github/workflows/ @microsoft/omex-admin
