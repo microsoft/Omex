@@ -82,13 +82,19 @@ namespace Hosting.Services.UnitTests
 
 		private class MockLogger : ILogger<DiagnosticsObserversInitializer>
 		{
-			public List<Exception?> Exceptions { get; } = new();
+			public List<Exception> Exceptions { get; } = new();
 
 			public IDisposable? BeginScope<TState>(TState state) where TState : notnull => throw new NotImplementedException();
 
 			public bool IsEnabled(LogLevel logLevel) => true;
 
-			public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter) => Exceptions.Add(exception);
+			public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+			{
+				if (exception != null)
+				{
+					Exceptions.Add(exception);
+				}
+			}
 		}
 	}
 }
