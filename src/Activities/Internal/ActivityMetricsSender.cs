@@ -23,6 +23,10 @@ namespace Microsoft.Omex.Extensions.Activities
 		private readonly HashSet<string> m_customTagObjectsDimension;
 		private readonly bool m_isSetParentNameAsDimensionEnabled;
 
+		// Caps metric tag value length to reduce cardinality risk
+		// from externally controlled baggage or tag values
+		private const int MaxMetricTagValueLength = 256;
+
 		public ActivityMetricsSender(
 			IExecutionContext executionContext,
 			IHostEnvironment hostEnvironment,
@@ -68,7 +72,7 @@ namespace Microsoft.Omex.Extensions.Activities
 				string? baggageItem = activity.GetBaggageItem(dimension);
 				if (!string.IsNullOrWhiteSpace(baggageItem))
 				{
-					tagList.Add(dimension, baggageItem);
+					tagList.Add(dimension, TruncateSafe(baggageItem, MaxMetricTagValueLength));
 				}
 			}
 
@@ -77,7 +81,16 @@ namespace Microsoft.Omex.Extensions.Activities
 				object? tagItem = activity.GetTagItem(dimension);
 				if (tagItem != null)
 				{
-					tagList.Add(dimension, tagItem);
+					// Only truncate string values — preserve original
+					// type for numeric/bool to avoid breaking exporters
+					if (tagItem is string stringValue)
+					{
+						tagList.Add(dimension, TruncateSafe(stringValue, MaxMetricTagValueLength));
+					}
+					else
+					{
+						tagList.Add(dimension, tagItem);
+					}
 				}
 			}
 
@@ -91,6 +104,19 @@ namespace Microsoft.Omex.Extensions.Activities
 			}
 
 			histogram.Record(durationMs, tagList);
+		}
+
+		// Truncates string to maxLength while avoiding
+		// splitting UTF-16 surrogate pairs
+		private static string TruncateSafe(string value, int maxLength)
+		{
+			if (value.Length <= maxLength)
+				return value;
+
+			if (char.IsHighSurrogate(value[maxLength - 1]))
+				return value[..(maxLength - 1)];
+
+			return value[..maxLength];
 		}
 
 		public void Dispose() => m_meter.Dispose();
