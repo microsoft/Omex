@@ -31,8 +31,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 				.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
 				{
 					AllowAutoRedirect = false,
-					Credentials = CredentialCache.DefaultCredentials,
-					ServerCertificateCustomValidationCallback = (sender, x509Certificate, chain, errors) => true
+					Credentials = CredentialCache.DefaultCredentials
 				});
 
 			serviceCollection.TryAddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
