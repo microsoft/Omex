@@ -2,8 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Net;
-using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -27,13 +25,7 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 			// It add added here instead of AddHttpEndpointCheck method to avoid creating new configuration each time new health check added.
 			// It would be nice to register this HttpClient configuration once and only if HttpEndpointCheck used.
 			serviceCollection
-				.AddHttpClient(HealthCheckConstants.HttpClientLogicalName)
-				.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-				{
-					AllowAutoRedirect = false,
-					Credentials = CredentialCache.DefaultCredentials,
-					ServerCertificateCustomValidationCallback = (sender, x509Certificate, chain, errors) => true
-				});
+				.AddHealthCheckHttpClient(HealthCheckConstants.HttpClientLogicalName, allowLocalCertificateErrors: true, allowAutoRedirect: false);
 
 			serviceCollection.TryAddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
 			return serviceCollection;
@@ -41,12 +33,18 @@ namespace Microsoft.Omex.Extensions.Diagnostics.HealthChecks
 
 		/// <summary>
 		/// Register publisher for processing health check results directly to replicas
+		/// HTTP endpoint probes use the local certificate exception from
+		/// <see cref="HealthCheckHttpClientServiceCollectionExtensions.AddHealthCheckHttpClient(IServiceCollection, string)"/>
+		/// without automatic Windows authentication or redirects.
 		/// </summary>
 		public static IHealthChecksBuilder AddServiceFabricHealthChecks(this IServiceCollection serviceCollection) =>
 			serviceCollection.AddOmexHealthCheckDependencies<ServiceContextHealthStatusSender>();
 
 		/// <summary>
 		/// Register publisher for processing health check results directly to nodes using REST api
+		/// HTTP endpoint probes use the local certificate exception from
+		/// <see cref="HealthCheckHttpClientServiceCollectionExtensions.AddHealthCheckHttpClient(IServiceCollection, string)"/>
+		/// without automatic Windows authentication or redirects.
 		/// </summary>
 		public static IHealthChecksBuilder AddRestHealthChecksPublisher(this IServiceCollection serviceCollection) =>
 			serviceCollection

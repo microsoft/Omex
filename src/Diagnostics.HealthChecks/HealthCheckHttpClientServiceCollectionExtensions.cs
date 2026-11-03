@@ -2,7 +2,10 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Net.Security;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,13 +22,14 @@ public static class HealthCheckHttpClientServiceCollectionExtensions
 	/// Defines a <seealso cref="HttpClient"/> in the DI designed for Health Checks.
 	/// <para>
 	/// Server certificate errors are ignored only for requests that target the local machine, meaning a
-	/// loopback host such as <c>localhost</c>, <c>127.0.0.1</c> or <c>[::1]</c>, or a bare IP literal.
+	/// loopback host such as <c>localhost</c>, <c>127.0.0.1</c> or <c>[::1]</c>, or an IP address assigned
+	/// to a network interface on this machine.
 	/// This is an acceptable compromise because health checks are executed on the same machine as the
 	/// Service Fabric service itself and are commonly addressed by node IP rather than by the subject
 	/// name present on the certificate, so validation cannot succeed by construction.
 	/// </para>
 	/// <para>
-	/// Requests that target a DNS name, meaning any external or FQDN addressed endpoint, are fully
+	/// Requests that target a non-loopback DNS name or an IP address on another machine are fully
 	/// validated. Use <see cref="AddValidatedHealthCheckHttpClient"/> when the health check only ever
 	/// calls remote endpoints and the local relaxation is not wanted at all.
 	/// </para>
@@ -35,13 +39,15 @@ public static class HealthCheckHttpClientServiceCollectionExtensions
 	/// </para>
 	/// <para>
 	/// Every other use of this extension method apart from health checks should be avoided.
+	/// Automatic Windows authentication is not enabled; consumers must explicitly configure credentials
+	/// if their health check requires authentication.
 	/// </para>
 	/// </summary>
 	/// <param name="services">The services.</param>
 	/// <param name="name">The logical name of the <see cref="HttpClient"/> to configure.</param>
 	/// <returns>The <see cref="IHttpClientBuilder"/>.</returns>
 	public static IHttpClientBuilder AddHealthCheckHttpClient(this IServiceCollection services, string name) =>
-		services.AddHealthCheckHttpClient(name, allowLocalCertificateErrors: true);
+		services.AddHealthCheckHttpClient(name, allowLocalCertificateErrors: true, allowAutoRedirect: true);
 
 	/// <summary>
 	/// Defines a <seealso cref="HttpClient"/> in the DI designed for Health Checks that always validates
@@ -59,9 +65,9 @@ public static class HealthCheckHttpClientServiceCollectionExtensions
 	/// <param name="name">The logical name of the <see cref="HttpClient"/> to configure.</param>
 	/// <returns>The <see cref="IHttpClientBuilder"/>.</returns>
 	public static IHttpClientBuilder AddValidatedHealthCheckHttpClient(this IServiceCollection services, string name) =>
-		services.AddHealthCheckHttpClient(name, allowLocalCertificateErrors: false);
+		services.AddHealthCheckHttpClient(name, allowLocalCertificateErrors: false, allowAutoRedirect: true);
 
-	private static IHttpClientBuilder AddHealthCheckHttpClient(this IServiceCollection services, string name, bool allowLocalCertificateErrors) =>
+	internal static IHttpClientBuilder AddHealthCheckHttpClient(this IServiceCollection services, string name, bool allowLocalCertificateErrors, bool allowAutoRedirect) =>
 		services.AddHttpClient(name)
 			.ConfigurePrimaryHttpMessageHandler(provider =>
 			{
@@ -71,6 +77,7 @@ public static class HealthCheckHttpClientServiceCollectionExtensions
 
 				return new HttpClientHandler
 				{
+					AllowAutoRedirect = allowAutoRedirect,
 					ServerCertificateCustomValidationCallback = (request, _, _, errors) =>
 						errors == SslPolicyErrors.None
 						|| isDevelopment
@@ -80,11 +87,13 @@ public static class HealthCheckHttpClientServiceCollectionExtensions
 
 	/// <summary>
 	/// Determines whether a request targets the local machine, either through a loopback host or through
-	/// a bare IP literal, in which case a certificate issued for a DNS name cannot match the address used.
+	/// an IP address assigned to one of its network interfaces.
 	/// </summary>
 	private static bool IsLocalEndpoint(Uri? requestUri) =>
 		requestUri != null
 		&& (requestUri.IsLoopback
-			|| requestUri.HostNameType == UriHostNameType.IPv4
-			|| requestUri.HostNameType == UriHostNameType.IPv6);
+			|| (IPAddress.TryParse(requestUri.DnsSafeHost, out IPAddress? address)
+				&& NetworkInterface.GetAllNetworkInterfaces()
+					.SelectMany(networkInterface => networkInterface.GetIPProperties().UnicastAddresses)
+					.Any(unicastAddress => unicastAddress.Address.Equals(address))));
 }
