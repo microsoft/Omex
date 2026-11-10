@@ -33,7 +33,18 @@ namespace Microsoft.Omex.Extensions.Activities
 			m_context = executionContext;
 			m_hostEnvironment = hostEnvironment;
 			m_meter = new Meter(OmexActivityConfiguration.MeterName, "1.0.0");
-			m_activityHistogram = m_meter.CreateHistogram<long>(OmexActivityConfiguration.ActivitiesHistogramName);
+			m_activityHistogram = m_meter.CreateHistogram<long>(
+				OmexActivityConfiguration.ActivitiesHistogramName,
+				advice: new InstrumentAdvice<long>
+				{
+					HistogramBucketBoundaries =
+					[
+						0, 5, 10, 25, 50, 75, 100, 250, 500, 750,
+						1_000, 2_500, 5_000, 7_500, 10_000,
+						15_000, 20_000, 30_000, 40_000, 60_000,
+						120_000, 300_000, 600_000
+					]
+				});
 			m_healthCheckActivityHistogram = m_meter.CreateHistogram<long>(OmexActivityConfiguration.HealthCheckActivitiesHistogramName);
 			m_customBaggageDimension = customBaggageDimensions.CustomDimensions;
 			m_customTagObjectsDimension = customTagObjectsDimensions.CustomDimensions;
