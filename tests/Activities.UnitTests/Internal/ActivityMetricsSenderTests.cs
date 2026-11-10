@@ -20,6 +20,51 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 	public class ActivityMetricsSenderTests
 	{
 		[TestMethod]
+		[DoNotParallelize]
+		public void ActivityMetricsSender_HistogramsHaveExpectedAdvice()
+		{
+			List<Instrument> instruments = [];
+			using MeterListener listener = new()
+			{
+				InstrumentPublished = (instrument, _) =>
+				{
+					if (instrument.Meter.Name == OmexActivityConfiguration.MeterName &&
+						instrument.Meter.Version == "1.0.0" &&
+						(instrument.Name == OmexActivityConfiguration.ActivitiesHistogramName ||
+						 instrument.Name == OmexActivityConfiguration.HealthCheckActivitiesHistogramName))
+					{
+						instruments.Add(instrument);
+					}
+				}
+			};
+			listener.Start();
+
+			(IExecutionContext context, IHostEnvironment environment, IOptions<ActivityOption> options) = PrepareEnvironment();
+			using ActivityMetricsSender sender = new(
+				context,
+				environment,
+				new CustomBaggageDimensions(),
+				new CustomTagObjectsDimensions(),
+				options);
+
+			Histogram<long> activitiesHistogram = instruments.OfType<Histogram<long>>()
+				.Single(instrument => instrument.Name == OmexActivityConfiguration.ActivitiesHistogramName);
+			Histogram<long> healthCheckActivitiesHistogram = instruments.OfType<Histogram<long>>()
+				.Single(instrument => instrument.Name == OmexActivityConfiguration.HealthCheckActivitiesHistogramName);
+
+			CollectionAssert.AreEqual(
+				new long[]
+				{
+					0, 5, 10, 25, 50, 75, 100, 250, 500, 750,
+					1_000, 2_500, 5_000, 7_500, 10_000,
+					15_000, 20_000, 30_000, 40_000, 60_000,
+					120_000, 300_000, 600_000
+				},
+				activitiesHistogram.Advice!.HistogramBucketBoundaries!.ToArray());
+			Assert.IsNull(healthCheckActivitiesHistogram.Advice);
+		}
+
+		[TestMethod]
 		[DataRow(false)]
 		[DataRow(true)]
 		public void SendActivityMetric_NoCustomDimensions_ProduceMetricPointSuccessfully(bool isHealthCheck)
