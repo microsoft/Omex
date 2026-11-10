@@ -38,6 +38,7 @@ namespace Microsoft.Omex.Extensions.Activities.UnitTests.Internal
 				}
 			};
 			listener.Start();
+			instruments.Clear();
 
 			(IExecutionContext context, IHostEnvironment environment, IOptions<ActivityOption> options) = PrepareEnvironment();
 			using ActivityMetricsSender sender = new(
