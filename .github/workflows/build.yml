@@ -41,7 +41,7 @@ jobs:
           azure-subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           permissions: '{"pull_requests":"write"}'
       - name: PR Metrics
-        uses: microsoft/PR-Metrics@5fe360db472f2604e1d2c0f5d33600d033db40ae # v1.8.3
+        uses: microsoft/PR-Metrics@4b3f8521280a97e66ed665a5a259c0b430752e20 # v1.8.4
         env:
           PR_METRICS_ACCESS_TOKEN: ${{ steps.app-token.outputs.token }}
 
