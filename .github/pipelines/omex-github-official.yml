@@ -108,7 +108,7 @@ extends:
               inputs:
                 artifactName: binaries
                 targetPath: bin
-            - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@5
+            - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@6
               displayName: ESRP CodeSigning OSS
               inputs:
                 ConnectedServiceName: 'OmexCodeSigningESRP-Torus'
@@ -234,7 +234,7 @@ extends:
               inputs:
                 artifactName: unsigned_nuget
                 targetPath: $(Build.ArtifactStagingDirectory)/UnsignedNuget
-            - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@5
+            - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@6
               displayName: ESRP CodeSigning Nuget
               inputs:
                 ConnectedServiceName: 'OmexCodeSigningESRP-Torus'
