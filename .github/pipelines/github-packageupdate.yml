@@ -56,6 +56,7 @@ extends:
               Write-Host "##vso[task.setvariable variable=PullRequestTimestamp]$timestamp UTC"
         - task: oenginternal.office-vsts-tasks-extension.e881ce1e-41bc-4f59-b8a2-9a6001f43efe.CreatePullRequest@10
           displayName: Create Pull Request
+          condition: succeeded()
           inputs:
             SourceBranchName: nuget_packages_update
             TargetBranchName: main
