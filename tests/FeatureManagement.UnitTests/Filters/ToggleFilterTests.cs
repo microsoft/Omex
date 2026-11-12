@@ -117,7 +117,7 @@ public sealed class ToggleFilterTests
 			logger => logger.Log(
 				LogLevel.Information,
 				It.IsAny<EventId>(),
-				It.Is<It.IsAnyType>((v, t) => string.Equals(v.ToString(), $"ToggleFilter returning '{expectedIsEnabled}' for '{TestFeatureName}'.", StringComparison.Ordinal)),
+				It.Is<It.IsAnyType>((v, t) => v != null && string.Equals(v.ToString(), $"ToggleFilter returning '{expectedIsEnabled}' for '{TestFeatureName}'.", StringComparison.Ordinal)),
 				It.IsAny<Exception>(),
 				It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
 			Times.Once);

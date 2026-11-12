@@ -145,7 +145,7 @@ public sealed class FeatureGatesServiceTests
 			x => x.Log(
 				LogLevel.Information,
 				It.IsAny<EventId>(),
-				It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("CustomerId:12345") && v.ToString()!.Contains("Market:US")),
+				It.Is<It.IsAnyType>((v, t) => v != null && v.ToString()!.Contains("CustomerId:12345") && v.ToString()!.Contains("Market:US")),
 				It.IsAny<Exception>(),
 				It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
 			Times.Once);
