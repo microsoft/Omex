@@ -236,7 +236,7 @@ public sealed class ParentFilterTests
 			logger => logger.Log(
 				LogLevel.Error,
 				It.IsAny<EventId>(),
-				It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("ParentFilter could not resolve the IExtendedFeatureManager object")),
+				It.Is<It.IsAnyType>((v, t) => v != null && v.ToString()!.Contains("ParentFilter could not resolve the IExtendedFeatureManager object")),
 				It.IsAny<Exception>(),
 				It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
 			Times.Once);

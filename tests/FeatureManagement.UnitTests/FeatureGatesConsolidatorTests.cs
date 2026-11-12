@@ -307,7 +307,7 @@ public sealed class FeatureGatesConsolidatorTests : IDisposable
 			x => x.Log(
 				logLevel,
 				It.IsAny<EventId>(),
-				It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains(expectedMessage)),
+				It.Is<It.IsAnyType>((v, t) => v != null && v.ToString()!.Contains(expectedMessage)),
 				It.IsAny<Exception>(),
 				It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
 			Times.AtLeastOnce);
