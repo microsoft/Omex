@@ -95,6 +95,8 @@ extends:
               $env:GIT_CONFIG_VALUE_0 = "AUTHORIZATION: basic $auth"
               git fetch omexgithubremote $env:GITHUBBRANCH
               git checkout -b feature/github-bridge-forward $commit
+              $timestamp = [DateTime]::UtcNow.ToString('yyyy-MM-dd HH:mm')
+              Write-Host "##vso[task.setvariable variable=PullRequestTimestamp]$timestamp UTC"
           env:
             GITHUB_APP_TOKEN: $(GitHubAppToken)
         - template: pipelines/templates/git-authenticate-steps-wif.yml@OmexPipelines
@@ -119,7 +121,7 @@ extends:
           parameters:
             sourceBranchName: 'github-bridge-forward-$(GITHUBCOMMIT)'
             targetBranchName: $(GITHUBBRANCH)
-            title: 'GitHub Forward Integration - $(GITHUBCOMMIT)'
+            title: 'GitHub Forward Integration - $(PullRequestTimestamp) - $(GITHUBCOMMIT)'
             description: 'GitHub forward integration Pull Request for commit ''$(GITHUBCOMMIT)'''
             workItemIds: '9421495'
             enableAutoComplete: true

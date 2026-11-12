@@ -47,12 +47,20 @@ extends:
             NuGetConfigPath: NuGet.Config
             PropsFilePath: Directory.Packages.props
             SdkChannel: 'LTS'
+        - task: PowerShell@2
+          displayName: Set PR timestamp
+          inputs:
+            targetType: inline
+            script: |-
+              $timestamp = [DateTime]::UtcNow.ToString('yyyy-MM-dd HH:mm')
+              Write-Host "##vso[task.setvariable variable=PullRequestTimestamp]$timestamp UTC"
         - task: oenginternal.office-vsts-tasks-extension.e881ce1e-41bc-4f59-b8a2-9a6001f43efe.CreatePullRequest@10
           displayName: Create Pull Request
+          condition: succeeded()
           inputs:
             SourceBranchName: nuget_packages_update
             TargetBranchName: main
-            Title: Automatic NuGet package update
+            Title: 'Automatic NuGet package update - $(PullRequestTimestamp)'
             Description: update of NuGet packages
             WorkItemId: "12645834"
             Pat: $(omexgithubbotinternalpat)
